@@ -5116,18 +5116,16 @@
       "coin": "PRUX",
       "name": "PRUX",
       "coinpaprika_id": "prux-prux-coin",
-      "coingecko_id": "PRUX",
+      "coingecko_id": "test-coin",
       "nomics_id": "PRUX",
       "electrum": [
       {
         "url": "electrumxprux01.ddns.net:50010",
-        "protocol": "TCP",
-        "disable_cert_verification": false
+        "protocol": "TCP"
       },
       {
         "url": "electrumxprux02.sytes.net:50001",
-        "protocol": "TCP",
-        "disable_cert_verification": false
+        "protocol": "TCP"
       }
       ],
       "explorer_url": [
