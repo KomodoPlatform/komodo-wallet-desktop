@@ -5112,6 +5112,31 @@
       "active": false,
       "currently_enabled": false
   },
+  "PRUX": {
+      "coin": "PRUX",
+      "name": "PRUX",
+      "coinpaprika_id": "prux-prux-coin",
+      "coingecko_id": "PRUX",
+      "nomics_id": "PRUX",
+      "electrum": [
+      {
+        "url": "electrumxprux01.ddns.net:50010",
+        "protocol": "TCP",
+        "disable_cert_verification": false
+      },
+      {
+        "url": "electrumxprux02.sytes.net:50001",
+        "protocol": "TCP",
+        "disable_cert_verification": false
+      }
+      ],
+      "explorer_url": [
+        "https://explorer.prux.info/"
+      ],
+      "type": "UTXO",
+      "active": true,
+      "currently_enabled": false
+  },	
   "QIAIR": {
     "coin": "QIAIR",
     "name": "Qi Airdrop Token",
