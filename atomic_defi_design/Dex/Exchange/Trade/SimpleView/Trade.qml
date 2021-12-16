@@ -333,7 +333,9 @@ ClipRRect // Trade Card
 
                     radius: 10
                     border.width: 0
-                    color: _selectedTickerMouseArea.containsMouse ? "#8b95ed" : swap_from_card.color
+                    color: _selectedTickerMouseArea.containsMouse ?
+                                Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark ? "#2E2424" : "#F3F7FC" :
+                                swap_from_card.color
 
                     DefaultMouseArea
                     {
