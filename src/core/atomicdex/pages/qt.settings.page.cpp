@@ -431,12 +431,22 @@ namespace atomic_dex
             out["mm2_cfg"]      = nlohmann::json::object();
             out["adex_cfg"]     = nlohmann::json::object();
             const auto& mm2     = this->m_system_manager.get_system<mm2_service>();
+            if (parent_chain == "BNB")
+            {
+                out["mm2_cfg"]["chain_id"] = 56;
+            }
+            else if (parent_chain == "ETH")
+            {
+                out["mm2_cfg"]["chain_id"] = 1;
+            }
+
             if (resp.status_code() == 200)
             {
                 nlohmann::json raw_parent_cfg = mm2.get_raw_mm2_ticker_cfg(parent_chain);
                 nlohmann::json body_json      = nlohmann::json::parse(body).at("result")[0];
                 const auto     ticker         = body_json.at("symbol").get<std::string>() + "-" + type;
                 const auto     name_lowercase = body_json.at("tokenName").get<std::string>();
+
                 out["ticker"]                 = ticker;
                 out["name"]                   = name_lowercase;
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), atomic_dex::utils::retrieve_main_ticker(ticker));
@@ -457,6 +467,7 @@ namespace atomic_dex
                     out["mm2_cfg"]["avg_blocktime"]                                 = raw_parent_cfg.at("avg_blocktime");
                     out["mm2_cfg"]["required_confirmations"]                        = raw_parent_cfg.at("required_confirmations");
                     out["mm2_cfg"]["name"]                                          = name_lowercase;
+                    
                 }
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
