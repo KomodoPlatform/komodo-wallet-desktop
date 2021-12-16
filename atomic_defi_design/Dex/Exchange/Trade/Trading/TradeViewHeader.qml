@@ -88,11 +88,8 @@ Item
         height: 25
         visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
         radius: height / 2
-        color: cog_area.containsMouse ?
-                   'transparent' :
-                   API.app.trading_pg.current_trading_mode == TradingMode.Pro ?
-                       _viewLoader.item.dexConfig.visible ? 'transparent' : Dex.CurrentTheme.accentColor :
-                       Dex.CurrentTheme.accentColor
+        color: cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
+                   Dex.CurrentTheme.floatingBackgroundColor : Dex.CurrentTheme.accentColor
 
         Behavior on color { ColorAnimation { duration: 150 } }
 
@@ -102,11 +99,8 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             iconSize: 15
-            color: cog_area.containsMouse ?
-                       Dex.CurrentTheme.accentColor :
-                       API.app.trading_pg.current_trading_mode == TradingMode.Pro ?
-                           (_viewLoader.item.dexConfig.visible ? DexTheme.accentColor : DexTheme.surfaceColor) :
-                           DexTheme.surfaceColor
+            color: cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
+                       Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
         }
 
         DexMouseArea
