@@ -6303,6 +6303,7 @@
     "name": "Spacecoin",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "space-spacecoin7367",
+    "nomics_id": "SPACE7",
     "electrum": [
       {
         "url": "electrum1.spaceworks.co:50001"
