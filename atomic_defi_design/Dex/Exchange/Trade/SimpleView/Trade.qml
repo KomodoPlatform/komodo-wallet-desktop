@@ -405,30 +405,20 @@ ClipRRect // Trade Card
                     }
                 }
 
-                DefaultRectangle
+                ClickableText // MAX Button
                 {
+                    id: _maxClickableLabel
+
                     anchors.right: _selectTickerBut.left
-                    anchors.rightMargin: 5
+                    anchors.rightMargin: 10
                     anchors.verticalCenter: _selectTickerBut.verticalCenter
-                    width: 40
-                    height: 20
-                    radius: width / 2
 
-                    color: _maxClickableLabel.containsPress ? Dex.CurrentTheme.buttonColorPressed :
-                               _maxClickableLabel.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.innerBackgroundColor
+                    visible: selectedTicker !== ""
 
-                    ClickableText // MAX Button
-                    {
-                        id: _maxClickableLabel
+                    text: qsTr("MAX")
+                    color: Dex.CurrentTheme.foregroundColor2
 
-                        anchors.centerIn: parent
-
-                        visible: selectedTicker !== ""
-
-                        text: qsTr("MAX")
-
-                        onClicked: _fromValue.text = Constants.API.app.trading_pg.max_volume
-                    }
+                    onClicked: _fromValue.text = Constants.API.app.trading_pg.max_volume
                 }
             }
 
