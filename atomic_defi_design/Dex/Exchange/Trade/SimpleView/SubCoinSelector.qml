@@ -39,7 +39,7 @@ DefaultListView
             anchors.verticalCenter: parent.verticalCenter
             anchors.fill: parent
             spacing: 2
-            DexLabel             // "Token" Header
+            DefaultText             // "Token" Header
             {
             	property bool asc: true
 
@@ -49,7 +49,6 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
                 DexMouseArea
                 {
                 	anchors.fill: parent
@@ -61,7 +60,7 @@ DefaultListView
                 	}
                 }
             }
-            DexLabel             // "Balance" Header
+            DefaultText             // "Balance" Header
             {
             	property bool asc: true
 
@@ -71,7 +70,6 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
 
                 DexMouseArea
                 {
@@ -84,7 +82,7 @@ DefaultListView
                 	}
                 }
             }
-            DexLabel             // Fiat Balance Header
+            DefaultText             // Fiat Balance Header
             {
             	property bool asc: true
 
@@ -93,7 +91,6 @@ DefaultListView
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
 
                 DexMouseArea
                 {
