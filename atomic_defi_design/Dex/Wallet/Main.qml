@@ -311,7 +311,7 @@ Item
                     }
                 }
 
-                Image
+                DefaultImage
                 {
                     visible: API.app.wallet_pg.send_availability_state !== ""
 

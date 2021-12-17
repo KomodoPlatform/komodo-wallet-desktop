@@ -239,7 +239,7 @@ ClipRRect // Trade Card
                     elide: Text.ElideRight
                     color: DexTheme.foregroundColorLightColor1
 
-                    DexImage
+                    DefaultImage
                     {
                         id: _fromBalanceIcon
                         width: 16
@@ -672,7 +672,7 @@ ClipRRect // Trade Card
                     }
                 }
 
-                Image // Alert
+                DefaultImage // Alert
                 {
                     id: _swapAlert
 
