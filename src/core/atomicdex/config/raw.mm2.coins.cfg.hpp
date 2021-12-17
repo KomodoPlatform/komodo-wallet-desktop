@@ -89,6 +89,7 @@ namespace atomic_dex
         std::optional<std::string>    name{std::nullopt};
         std::optional<std::string>    fname{std::nullopt};
         std::optional<std::string>    etomic{std::nullopt};
+        std::optional<int64_t>        chain_id{std::nullopt};
         std::optional<int64_t>        rpcport{std::nullopt};
         std::optional<int64_t>        pubtype{std::nullopt};
         std::optional<int64_t>        p2_shtype{std::nullopt};
@@ -145,8 +146,8 @@ namespace atomic_dex
     inline void
     to_json(json& j, const atomic_dex::address_format& x)
     {
-        j            = json::object();
-        j["format"]  = x.format;
+        j           = json::object();
+        j["format"] = x.format;
         if (x.network.has_value())
         {
             j["network"] = x.network.value();
@@ -160,6 +161,7 @@ namespace atomic_dex
         x.name                   = atomic_dex::get_optional<std::string>(j, "name");
         x.fname                  = atomic_dex::get_optional<std::string>(j, "fname");
         x.etomic                 = atomic_dex::get_optional<std::string>(j, "etomic");
+        x.chain_id               = atomic_dex::get_optional<int64_t>(j, "chain_id");
         x.rpcport                = atomic_dex::get_optional<int64_t>(j, "rpcport"); // j.at("rpcport").get<int64_t>();
         x.pubtype                = atomic_dex::get_optional<int64_t>(j, "pubtype");
         x.p2_shtype              = atomic_dex::get_optional<int64_t>(j, "p2shtype");
@@ -205,6 +207,7 @@ namespace atomic_dex
         to_json_functor("name", x.name);
         to_json_functor("fname", x.fname);
         to_json_functor("etomic", x.etomic);
+        to_json_functor("chain_id", x.chain_id);
         to_json_functor("rpcport", x.rpcport);
         to_json_functor("pubtype", x.pubtype);
         to_json_functor("p2shtype", x.p2_shtype);
