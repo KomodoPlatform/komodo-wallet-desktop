@@ -6,9 +6,8 @@ import "../../Components"
 import "../../Constants"
 import Dex.Themes 1.0 as Dex
 
-// Price
-RowLayout {
-    
+ColumnLayout
+{
     readonly property string price: non_null_price
     readonly property string price_reversed: API.app.trading_pg.price_reversed
     readonly property string cex_price: API.app.trading_pg.cex_price
