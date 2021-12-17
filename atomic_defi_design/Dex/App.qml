@@ -195,17 +195,28 @@ DexRectangle
         Popup
         {
             id: alertPopup
-            property color backgroundColor: Qaterial.Colors.orange200
-            property color foregroundColor: Qaterial.Colors.gray900
+
+            property color  backgroundColor: Dex.CurrentTheme.notifPopupBackgroundColor
+            property color  foregroundColor: Dex.CurrentTheme.notifPopupTextColor
+
             property string title: "Test Title"
             property string subTitle: "Lorem ipsum dolor sit amet, consectetur adipis"
+
+            property color  timerColor: Dex.CurrentTheme.notifPopupTimerColor
+            property color  timerBackgroundColor: Dex.CurrentTheme.notifPopupTimerBackgroundColor
+
             property string icon: Qaterial.Icons.checkCircleOutline
-            property real iconSize: 50
-            property real timeout: 3000
+            property real   iconSize: 50
+            property color  iconStartColor: Dex.CurrentTheme.notifPopupIconStartColor
+            property color  iconEndColor: Dex.CurrentTheme.notifPopupIconEndColor
+
+            property real   timeout: 3000
+
             x: parent.width - width - 40
             y: 40
             width: 300
             height: col.height + 25
+
             function show(data)
             {
                 if ("backgroundColor" in data)
@@ -237,6 +248,7 @@ DexRectangle
                 {
                     alertPopup.timeout = data.timeout
                 }
+
                 alertPopup.open()
                 insideRect.width = 0
                 alertTimer.restart()
@@ -244,19 +256,27 @@ DexRectangle
 
             background: Qaterial.ClipRRect
             {
-                radius: 4
+                radius: 18
                 DefaultRectangle
                 {
                     anchors.fill: parent
                     color: alertPopup.backgroundColor
+                }
+
+                DefaultRectangle
+                {
+                    width: parent.width
+                    height: 8
+                    radius: 0
+                    border.width: 0
+                    color: alertPopup.timerBackgroundColor
                     DefaultRectangle
                     {
                         id: insideRect
                         width: parent.width
-                        height: 8
+                        height: parent.height
                         radius: 0
-                        opacity: .5
-                        color: Qt.lighter(alertPopup.backgroundColor)
+                        color: alertPopup.timerColor
                         border.width: 0
                         Behavior on width
                         {
@@ -268,6 +288,7 @@ DexRectangle
                     }
                 }
             }
+
             Timer
             {
                 id: alertTimer
@@ -289,6 +310,21 @@ DexRectangle
                         size: alertPopup.iconSize
                         anchors.centerIn: parent
                         color: alertPopup.foregroundColor
+
+                        LinearGradient
+                        {
+                            source: parent
+                            GradientStop
+                            {
+                                position: 0
+                                color: alertPopup.iconStartColor
+                            }
+                            GradientStop
+                            {
+                                position: 0.9311
+                                color: alertPopup.iconEndColor
+                            }
+                        }
                     }
                 }
                 Item
@@ -301,6 +337,7 @@ DexRectangle
                         width: parent.width
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: 6
+
                         DexLabel
                         {
                             text: alertPopup.title
@@ -336,8 +373,6 @@ DexRectangle
         {
             title: title,
             subTitle: subTitle,
-            backgroundColor: Qaterial.Colors.gray400,
-            foregroundColor: Qaterial.Colors.gray900,
             icon: Qaterial.Icons.contentCopy,
             iconSize: 35
         });

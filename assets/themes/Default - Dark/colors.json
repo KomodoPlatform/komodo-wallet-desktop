@@ -44,6 +44,13 @@
     "modalPageCounterGradientStartColor": "#1D80B0",
     "modalPageCounterGradientEndColor": "#5B69E6",
 
+    "notifPopupBackgroundColor": "#24273DFF",
+    "notifPopupTextColor": "#FFFFFFFF",
+    "notifPopupTimerColor": "#8790B2FF",
+    "notifPopupTimerBackgroundColor": "#94A3B11F",
+    "notifPopupIconStartColor": "#FFFFFFFF",
+    "notifPopupIconEndColor": "#FFFFFFFF",
+
     "scrollBarIndicatorColor": "#8790B2FF",
     "scrollBarBackgroundColor": "#94A3B11F",
 

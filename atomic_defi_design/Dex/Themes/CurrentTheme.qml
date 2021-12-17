@@ -140,6 +140,13 @@ ThemeData
         modalPageCounterGradientStartColor  = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientStartColor || defaultTheme.modalPageCounterGradientStartColor);
         modalPageCounterGradientEndColor    = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientEndColor || defaultTheme.modalPageCounterGradientEndColor);
 
+        notifPopupBackgroundColor           = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupBackgroundColor || defaultTheme.notifPopupBackgroundColor);
+        notifPopupTextColor                 = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupTextColor || defaultTheme.notifPopupTextColor);
+        notifPopupTimerColor                = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupTimerColor || defaultTheme.notifPopupTimerColor);
+        notifPopupTimerBackgroundColor      = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupTimerBackgroundColor || defaultTheme.notifPopupTimerBackgroundColor);
+        notifPopupIconStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupIconStartColor || defaultTheme.notifPopupIconStartColor);
+        notifPopupIconEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupIconEndColor || defaultTheme.notifPopupIconEndColor);
+
         scrollBarIndicatorColor             = Dex.Color.argbStrFromRgbaStr(themeData.scrollBarIndicatorColor || defaultTheme.scrollBarIndicatorColor);
         scrollBarBackgroundColor            = Dex.Color.argbStrFromRgbaStr(themeData.scrollBarBackgroundColor || defaultTheme.scrollBarBackgroundColor);
 
@@ -241,6 +248,13 @@ ThemeData
 
         console.info("Dex.Themes.CurrentTheme.printValues.modalPageCounterGradientStartColor : %1".arg(modalPageCounterGradientStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.modalPageCounterGradientEndColor : %1".arg(modalPageCounterGradientEndColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupBackgroundColor : %1".arg(notifPopupBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupTextColor : %1".arg(notifPopupTextColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupTimerColor : %1".arg(notifPopupTimerColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupTimerBackgroundColor : %1".arg(notifPopupTimerBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupIconStartColor : %1".arg(notifPopupIconStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupIconEndColor : %1".arg(notifPopupIconEndColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.scrollBarIndicatorColor : %1".arg(scrollBarIndicatorColor));
         console.info("Dex.Themes.CurrentTheme.printValues.scrollBarBackgroundColor : %1".arg(scrollBarBackgroundColor));
