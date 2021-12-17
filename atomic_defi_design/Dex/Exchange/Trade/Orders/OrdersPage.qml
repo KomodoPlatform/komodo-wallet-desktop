@@ -25,7 +25,8 @@ Item {
 
     property bool is_history: false
 
-    function update() {
+    function update()
+    {
         reset()
         if (combo_base.currentTicker !== "All" | combo_rel.currentTicker !== "All") {
             buttonDelay.start()

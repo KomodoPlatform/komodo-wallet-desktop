@@ -295,8 +295,8 @@ ColumnLayout {
                                 width: 150
                                 text: qsTr("Exchange Rates")
                                 font.pixelSize: 14
-                                textColor: checked ? Dex.CurrentTheme.tabSelectedColor : Dex.CurrentTheme.foregroundColor
-                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                textColor: checked ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                                 indicatorColor: Dex.CurrentTheme.tabSelectedColor
                                 opacity: checked ? 1 : .6
                             }
@@ -305,8 +305,8 @@ ColumnLayout {
                                 width: 120
                                 text: qsTr("Orders")
                                 font.pixelSize: 14
-                                textColor: checked ? Dex.CurrentTheme.tabSelectedColor : Dex.CurrentTheme.foregroundColor
-                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                textColor: checked ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                                 indicatorColor: Dex.CurrentTheme.tabSelectedColor
                                 opacity: checked ? 1 : .6
                             }
@@ -315,8 +315,8 @@ ColumnLayout {
                                 width: 120
                                 text: qsTr("History")
                                 font.pixelSize: 14
-                                textColor: checked ? Dex.CurrentTheme.tabSelectedColor : Dex.CurrentTheme.foregroundColor
-                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                textColor: checked ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                                 indicatorColor: Dex.CurrentTheme.tabSelectedColor
                                 opacity: checked ? 1 : .6
                             }
