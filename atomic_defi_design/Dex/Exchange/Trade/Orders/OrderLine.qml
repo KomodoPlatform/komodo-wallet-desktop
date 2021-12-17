@@ -41,7 +41,7 @@ Rectangle
         DefaultText
         {
             id: status_text
-            Layout.preferredWidth: (parent.width / 100) * 5
+            Layout.preferredWidth: (parent.width / 100) * 4
             Layout.alignment: Qt.AlignVCenter
             visible: clickable ? !details ? false :
                 (details.is_swap || !details.is_maker) : false
@@ -54,7 +54,7 @@ Rectangle
         Item
         {
             Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 5
+            Layout.preferredWidth: (parent.width / 100) * 4
             Layout.alignment: Qt.AlignVCenter
             visible: !status_text.visible ? clickable ? true : false : false
 
@@ -74,9 +74,9 @@ Rectangle
             font.pixelSize: base_amount.font.pixelSize
             text_value: !details ? "" : details.date ?? ""
             Layout.fillHeight: true
+            Layout.preferredWidth: (parent.width / 100) * 10
             verticalAlignment: Label.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: (parent.width / 100) * 10
         }
 
         DefaultImage
@@ -94,11 +94,9 @@ Rectangle
         {
             id: base_amount
             text_value: !details ? "" : General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
-            font.pixelSize: 11
-
-
+            font.pixelSize: 10
             Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 30
+            Layout.preferredWidth: (parent.width / 100) * 33
             verticalAlignment: Label.AlignVCenter
             privacy: is_placed_order
         }
@@ -110,8 +108,7 @@ Rectangle
             SwapIcon
             {
                 visible: !status_text.visible
-                width: 30
-                height: 50
+                anchors.fill: parent
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 top_arrow_ticker: !details ? atomic_app_primary_coin : details.base_coin ?? ""
@@ -124,9 +121,8 @@ Rectangle
             id: rel_amount
             text_value: !details ? "" : General.formatCrypto("", details.rel_amount, details.rel_coin, details.rel_amount_current_currency, API.app.settings_pg.current_currency)
             font.pixelSize: base_amount.font.pixelSize
-
             Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 30
+            Layout.preferredWidth: (parent.width / 100) * 33
             verticalAlignment: Label.AlignVCenter
             horizontalAlignment: Label.AlignRight
             privacy: is_placed_order
