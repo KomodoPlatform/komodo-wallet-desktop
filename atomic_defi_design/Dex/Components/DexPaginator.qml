@@ -12,7 +12,7 @@ RowLayout
 {
     id: root
 
-    spacing: 6
+    spacing: 4
 
     property var pageSize: Constants.API.app.orders_mdl.nb_pages
     property var currentValue: Constants.API.app.orders_mdl.current_page
@@ -74,9 +74,8 @@ RowLayout
         readonly property
         var options: [5, 10, 25, 50, 100, 200]
 
-        Layout.leftMargin: 0
-        Layout.alignment: Qt.AlignCenter
-        Layout.preferredWidth: 70
+        Layout.preferredWidth: (root.width / 100) * 14
+        Layout.alignment: Qt.AlignLeft
 
         model: options
         currentIndex: options.indexOf(item_count)
@@ -85,20 +84,21 @@ RowLayout
 
     DefaultText
     {
-        Layout.alignment: Qt.AlignCenter
+        Layout.preferredWidth: (root.width / 100) * 10
+        Layout.alignment: Qt.AlignLeft
         font.pixelSize: 11
         text_value: qsTr("items per page")
     }
+
     Item
     {
         Layout.fillWidth: true
-        Layout.fillHeight: true
     }
 
     PaginationButton
     {
-        Layout.preferredWidth: 32
-        Layout.preferredHeight: 32
+        Layout.preferredWidth: (root.width / 100) * 5
+        Layout.preferredHeight: width
         radius: 20
         opacity: enabled ? 1 : .5
         Qaterial.ColorIcon
@@ -128,8 +128,8 @@ RowLayout
         {
             text: modelData.number === -1 ? "..." : ("" + modelData.number)
             radius: 30
-            Layout.preferredWidth: 32
-            Layout.preferredHeight: 32
+            Layout.preferredWidth: (root.width / 100) * 4
+            Layout.preferredHeight: width
             Layout.alignment: Qt.AlignVCenter
             color: modelData.number === currentValue ? 'transparent' : Dex.CurrentTheme.buttonColorEnabled
             onClicked: {
@@ -140,10 +140,11 @@ RowLayout
             }
         }
     }
+
     PaginationButton
     {
-        Layout.preferredWidth: 32
-        Layout.preferredHeight: 32
+        Layout.preferredWidth: (root.width / 100) * 5
+        Layout.preferredHeight: width
         radius: 20
         opacity: enabled ? 1 : .5
         Qaterial.ColorIcon
