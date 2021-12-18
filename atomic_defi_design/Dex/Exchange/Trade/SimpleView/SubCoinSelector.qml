@@ -33,7 +33,6 @@ DefaultListView
     {
         width: _rowWidth
         height: _rowHeight
-        radius: 5
         z: 2
         color: Dex.CurrentTheme.floatingBackgroundColor
 
