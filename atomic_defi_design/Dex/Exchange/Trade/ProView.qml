@@ -341,11 +341,9 @@ ColumnLayout {
                                     else history_component.list_model_proxy.is_history = false;
                                 }
 
-                                ScrollView
+                                Qaterial.ScrollView
                                 {
                                     clip: true
-
-                                    ScrollBar.vertical: DexScrollBar {}
 
                                     PriceLine { width: swipeContainer.width; height: swipeContainer.height; id: price_line_obj; }
                                 }
