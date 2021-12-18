@@ -59,7 +59,8 @@ DefaultListView
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.fill: parent
-            DexLabel             // "Token" Header
+            spacing: 2
+            DefaultText             // "Token" Header
             {
                 Layout.preferredWidth: _tokenColumnSize
                 text: qsTr("Token")
@@ -68,7 +69,7 @@ DefaultListView
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DexLabel             // "Available Quantity" Header
+            DefaultText             // "Available Quantity" Header
             {
                 Layout.preferredWidth: _quantityColumnSize
                 text: qsTr("Available Quantity")
@@ -77,7 +78,7 @@ DefaultListView
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DexLabel             // "Available Quantity (in BASE)" header
+            DefaultText             // "Available Quantity (in BASE)" header
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
                 text: qsTr("Available Quantity (in %1)").arg(currentLeftToken)
@@ -86,7 +87,7 @@ DefaultListView
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DexLabel             // "Fiat Volume" column header
+            DefaultText             // "Fiat Volume" column header
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 text: qsTr("Fiat Volume")
@@ -95,7 +96,7 @@ DefaultListView
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DexLabel             // "CEX Rate" column header
+            DefaultText             // "CEX Rate" column header
             {
                 Layout.preferredWidth: _cexRateColumnSize
                 text: qsTr("CEX Rate")
