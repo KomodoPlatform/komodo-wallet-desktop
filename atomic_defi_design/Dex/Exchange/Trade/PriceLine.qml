@@ -28,18 +28,20 @@ ColumnLayout
         return parseFloat(General.formatDouble(value, 2))
     }
 
+    spacing: 20
+
     DefaultText
     {
         visible: !price_entered && invalid_cex_price
-        Layout.alignment: Qt.AlignHCenter
         text_value: qsTr("Set swap price for evaluation")
         font.pixelSize: fontSizeBigger
+        Layout.alignment: Qt.AlignCenter
     }
 
     ColumnLayout
     {
         visible: price_entered
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignCenter
 
         DefaultText
         {
@@ -70,7 +72,7 @@ ColumnLayout
     ColumnLayout
     {
         visible: price_entered && !invalid_cex_price
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignCenter
 
         DefaultText
         {
@@ -121,7 +123,7 @@ ColumnLayout
     ColumnLayout
     {
         visible: !invalid_cex_price
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignCenter
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter

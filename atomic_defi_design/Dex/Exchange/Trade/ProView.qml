@@ -323,6 +323,7 @@ ColumnLayout {
                         }
                         Item
                         {
+                            id: swipeContainer
                             anchors.horizontalCenter: parent.horizontalCenter
                             width: parent.width
                             height: optionBox.height - (tabView.height + 40)
@@ -340,7 +341,14 @@ ColumnLayout {
                                     else history_component.list_model_proxy.is_history = false;
                                 }
 
-                                PriceLine { id: price_line_obj }
+                                ScrollView
+                                {
+                                    clip: true
+
+                                    ScrollBar.vertical: DexScrollBar {}
+
+                                    PriceLine { width: swipeContainer.width; height: swipeContainer.height; id: price_line_obj; }
+                                }
 
                                 OrdersView.OrdersPage { id: order_component; clip: true }
                                 OrdersView.OrdersPage
