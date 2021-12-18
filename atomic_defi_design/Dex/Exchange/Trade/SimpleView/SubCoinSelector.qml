@@ -27,11 +27,13 @@ DefaultListView
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
+    clip: true
 
     header: DefaultRectangle
     {
         width: _rowWidth
         height: _rowHeight
+        z: 2
         color: Dex.CurrentTheme.floatingBackgroundColor
 
         RowLayout                   // Coins Columns Name
@@ -45,7 +47,7 @@ DefaultListView
 
                 Layout.preferredWidth: _tokenColumnSize
                 text: qsTr("Token")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -66,7 +68,7 @@ DefaultListView
 
                 Layout.fillWidth: true
                 text: qsTr("Balance")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -87,7 +89,7 @@ DefaultListView
             	property bool asc: true
 
                 text: qsTr("Balance Fiat")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
