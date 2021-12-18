@@ -295,8 +295,8 @@ ColumnLayout {
                                 width: 150
                                 text: qsTr("Exchange Rates")
                                 font.pixelSize: 14
-                                textColor: checked ? Dex.CurrentTheme.tabSelectedColor : Dex.CurrentTheme.foregroundColor
-                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                textColor: checked ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                                 indicatorColor: Dex.CurrentTheme.tabSelectedColor
                                 opacity: checked ? 1 : .6
                             }
@@ -305,8 +305,8 @@ ColumnLayout {
                                 width: 120
                                 text: qsTr("Orders")
                                 font.pixelSize: 14
-                                textColor: checked ? Dex.CurrentTheme.tabSelectedColor : Dex.CurrentTheme.foregroundColor
-                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                textColor: checked ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                                 indicatorColor: Dex.CurrentTheme.tabSelectedColor
                                 opacity: checked ? 1 : .6
                             }
@@ -315,14 +315,15 @@ ColumnLayout {
                                 width: 120
                                 text: qsTr("History")
                                 font.pixelSize: 14
-                                textColor: checked ? Dex.CurrentTheme.tabSelectedColor : Dex.CurrentTheme.foregroundColor
-                                textSecondaryColor: DexTheme.foregroundColorLightColor0
+                                textColor: checked ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+                                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                                 indicatorColor: Dex.CurrentTheme.tabSelectedColor
                                 opacity: checked ? 1 : .6
                             }
                         }
                         Item
                         {
+                            id: swipeContainer
                             anchors.horizontalCenter: parent.horizontalCenter
                             width: parent.width
                             height: optionBox.height - (tabView.height + 40)
@@ -340,7 +341,12 @@ ColumnLayout {
                                     else history_component.list_model_proxy.is_history = false;
                                 }
 
-                                PriceLine { id: price_line_obj }
+                                Qaterial.ScrollView
+                                {
+                                    clip: true
+
+                                    PriceLine { width: swipeContainer.width; height: swipeContainer.height; id: price_line_obj; }
+                                }
 
                                 OrdersView.OrdersPage { id: order_component; clip: true }
                                 OrdersView.OrdersPage
