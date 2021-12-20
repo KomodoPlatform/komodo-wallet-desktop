@@ -44,12 +44,12 @@
     "modalPageCounterGradientStartColor": "#BA2A45FF",
     "modalPageCounterGradientEndColor": "#BA2A45FF",
 
-    "notifPopupBackgroundColor": "#EDF4FFFF",
-    "notifPopupTextColor": "#456078FF",
-    "notifPopupTimerColor": "#DBE0E4FF",
+    "notifPopupBackgroundColor": "#F9F5F5FF",
+    "notifPopupTextColor": "#110202FF",
+    "notifPopupTimerColor": "#BA2A45FF",
     "notifPopupTimerBackgroundColor": "#93A3B1FF",
-    "notifPopupIconStartColor": "#000000FF",
-    "notifPopupIconEndColor": "#000000FF",
+    "notifPopupIconStartColor": "#F14263FF",
+    "notifPopupIconEndColor": "#F48EA1FF",
 
     "scrollBarIndicatorColor": "#DBE0E4",
     "scrollBarBackgroundColor": "#93A3B11F",
