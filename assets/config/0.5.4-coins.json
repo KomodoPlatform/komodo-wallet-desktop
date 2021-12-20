@@ -5132,7 +5132,7 @@
         "https://explorer.prux.info/"
       ],
       "type": "UTXO",
-      "active": true,
+      "active": false,
       "currently_enabled": false
   },	
   "QIAIR": {
