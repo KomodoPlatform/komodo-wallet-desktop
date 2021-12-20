@@ -1202,44 +1202,60 @@ namespace atomic_dex
         SPDLOG_DEBUG("process_tx ticker: {}", ticker);
         std::error_code ec;
         using namespace std::string_literals;
-        auto retrieve_api_functor = [this](const std::string& ticker, const std::string& address) -> std::string
+        auto construct_url_functor = [this](
+                                         const std::string& main_ticker, const std::string& test_ticker, const std::string& url, const std::string& token_url,
+                                         const std::string& ticker, const std::string& address)
+        {
+            std::string out;
+            if (ticker == main_ticker || ticker == test_ticker)
+            {
+                out = "/api/v1/" + url + "/" + address;
+            }
+            else
+            {
+                const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
+                out                                = "/api/v2/" + token_url + "/" + contract_address + "/" + address;
+            }
+            return out;
+        };
+        auto retrieve_api_functor = [this, construct_url_functor](const std::string& ticker, const std::string& address) -> std::string
         {
             const auto  coin_info = this->get_coin_info(ticker);
             std::string out;
             switch (coin_info.coin_type)
             {
             case CoinTypeGadget::ERC20:
-                if (ticker == "ETH" || ticker == "ETHR")
-                {
-                    out = "/api/v1/eth_tx_history/" + address;
-                }
-                else
-                {
-                    const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
-                    out                                = "/api/v2/erc_tx_history/" + contract_address + "/" + address;
-                }
+                out = construct_url_functor("ETH", "ETHR", "eth_tx_history", "erc_tx_history", ticker, address);
                 break;
             case CoinTypeGadget::BEP20:
-                if (ticker == "BNB" || ticker == "BNBT")
-                {
-                    out = "/api/v1/bnb_tx_history/" + address;
-                }
-                else
-                {
-                    const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
-                    out                                = "/api/v2/bep_tx_history/" + contract_address + "/" + address;
-                }
+                out = construct_url_functor("BNB", "BNBT", "bnb_tx_history", "bep_tx_history", ticker, address);
                 break;
             case CoinTypeGadget::Matic:
-                if (ticker == "MATIC" || ticker == "MATICTEST")
-                {
-                    out = "/api/v1/plg_tx_history/" + address;
-                }
-                else
-                {
-                    const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
-                    out                                = "/api/v2/plg_tx_history/" + contract_address + "/" + address;
-                }
+                out = construct_url_functor("MATIC", "MATICTEST", "plg_tx_history", "plg_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::Moonriver:
+                out = construct_url_functor("MOVR", "MOVRT", "moonriver_tx_history", "moonriver_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::FTM20:
+                out = construct_url_functor("FTM", "FTMT", "ftm_tx_history", "ftm_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::HecoChain:
+                out = construct_url_functor("HT", "HTT", "heco_tx_history", "heco_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::Arbitrum:
+                out = construct_url_functor("ETH-ARB20", "ETHR-ARB20", "arbitrum_tx_history", "arbitrum_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::Optimism:
+                out = construct_url_functor("ETH-OPT20", "ETHK-OPT20", "optimism_tx_history", "optimism_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::EthereumClassic:
+                out = construct_url_functor("ETC", "ETCT", "etc_tx_history", "etc_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::RSK:
+                out = construct_url_functor("RBTC", "RBTCT", "rsk_tx_history", "rsk_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::AVX20:
+                out = construct_url_functor("AVAX", "AVAXT", "avx_tx_history", "avx_tx_history", ticker, address);
                 break;
             default:
                 break;

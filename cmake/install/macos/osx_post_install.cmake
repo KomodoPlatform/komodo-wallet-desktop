@@ -7,7 +7,7 @@ if (EXISTS ${PROJECT_ROOT_DIR}/build-Release OR EXISTS ${PROJECT_ROOT_DIR}/build
 endif ()
 
 message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
-set(PROJECT_QML_DIR ${PROJECT_ROOT_DIR}/atomic_defi_design/qml)
+set(PROJECT_QML_DIR ${PROJECT_ROOT_DIR}/atomic_defi_design/Dex)
 message(STATUS "PROJECT_QML_DIR -> ${PROJECT_QML_DIR}")
 message(STATUS "bin dir -> ${CMAKE_CURRENT_SOURCE_DIR}/bin")
 set(TARGET_APP_PATH ${PROJECT_ROOT_DIR}/bundled/osx/)

@@ -173,7 +173,7 @@ namespace atomic_dex
                 {
                     return false;
                 }
-                if (is_cex_id_available && (rates > 100 || fiat_price <= 0 || safe_float(provider.get_total_volume(ticker)) < limit))
+                if (is_cex_id_available && (rates > 100 || fiat_price <= 0 || ((safe_float(provider.get_total_volume(ticker)) < limit) && coin_info.coin_type != CoinType::SmartChain)))
                 {
                     return false;
                 }
@@ -181,14 +181,6 @@ namespace atomic_dex
             }
         }
 
-        /*if (orderbook != nullptr && orderbook->get_orderbook_kind() == orderbook_model::kind::best_orders)
-        {
-            bool is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
-            if (!is_cex_id_available)
-            {
-                return false;
-            }
-        }*/
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 } // namespace atomic_dex
