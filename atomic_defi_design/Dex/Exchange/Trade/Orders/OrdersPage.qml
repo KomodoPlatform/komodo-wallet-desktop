@@ -16,19 +16,17 @@ Item {
     readonly property date default_min_date: new Date("2019-01-01")
     readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
 
-    property
-    var list_model: API.app.orders_mdl
-    property
-    var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
+    property var list_model: API.app.orders_mdl
+    property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
     property int page_index
 
     property alias title: order_list.title
-    //property alias empty_text: order_list.empty_text
     property alias items: order_list.items
 
     property bool is_history: false
 
-    function update() {
+    function update()
+    {
         reset()
         if (combo_base.currentTicker !== "All" | combo_rel.currentTicker !== "All") {
             buttonDelay.start()

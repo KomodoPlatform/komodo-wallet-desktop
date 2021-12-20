@@ -16,7 +16,7 @@ Rectangle
     color: Dex.CurrentTheme.accentColor
     radius: 18
 
-    Image
+    DefaultImage
     {
         id: _searchIcon
         anchors.left: parent.left

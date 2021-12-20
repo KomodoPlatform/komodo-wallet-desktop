@@ -46,6 +46,13 @@ QtObject
     property color  modalPageCounterGradientStartColor
     property color  modalPageCounterGradientEndColor
 
+    property color  notifPopupBackgroundColor
+    property color  notifPopupTextColor
+    property color  notifPopupTimerColor
+    property color  notifPopupTimerBackgroundColor
+    property color  notifPopupIconStartColor
+    property color  notifPopupIconEndColor
+
     property color  scrollBarIndicatorColor
     property color  scrollBarBackgroundColor
 

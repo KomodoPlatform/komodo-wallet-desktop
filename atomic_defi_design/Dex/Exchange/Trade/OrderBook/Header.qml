@@ -16,13 +16,14 @@ Item
         anchors.fill: parent
         DefaultText
         {
-            Layout.preferredWidth: (parent.width / 100) * 30
+            Layout.preferredWidth: (parent.width / 100) * 33
             text: is_ask ? qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")" :
                            qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
             font.family: DexTypo.fontFamily
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
+            horizontalAlignment: Text.AlignRight
         }
         DefaultText
         {
@@ -32,7 +33,7 @@ Item
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
-
+            horizontalAlignment: Text.AlignRight
         }
         DefaultText
         {
@@ -42,6 +43,7 @@ Item
             font.pixelSize: 12
             font.bold: true
             font.weight: Font.Black
+            horizontalAlignment: Text.AlignRight
         }
     }
 }
