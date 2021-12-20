@@ -62,8 +62,7 @@ sudo make -j3 install
 cd ..
 
 ## tar
-wget https://ftp.gnu.org/gnu/tar/tar-1.32.tar.gz
-tar xvf tar-1.32.tar.gz
+time wget --timeout=10 --tries=3 https://ftp.gnu.org/gnu/tar/tar-1.32.tar.gz || wget --timeout=10 --tries=3 https://mirrors.sjtug.sjtu.edu.cn/gnu/tar/tar-1.32.tar.gztar xvf tar-1.32.tar.gz
 cd tar-1.32
 export FORCE_UNSAFE_CONFIGURE=1
 ./configure
