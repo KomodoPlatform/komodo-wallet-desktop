@@ -1,0 +1,3 @@
+module Dex.Themes
+
+singleton CurrentTheme 1.0 CurrentTheme.qml

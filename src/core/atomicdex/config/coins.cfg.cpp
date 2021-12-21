@@ -69,6 +69,11 @@ namespace atomic_dex
             SPDLOG_INFO("coin: {} support segwit with current_segwit mode: {}", cfg.ticker, cfg.is_segwit_on);
         }
 
+        if (j.contains("alias_ticker"))
+        {
+            cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
+        }
+
         j.at("explorer_url").get_to(cfg.explorer_url);
         if (j.contains("explorer_tx_url"))
         {
@@ -146,6 +151,18 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::HecoChain;
         }
+        else if (cfg.type == "SmartBCH")
+        {
+            cfg.coin_type = CoinType::SmartBCH;
+        }
+        else if (cfg.type == "Ethereum Classic")
+        {
+            cfg.coin_type = CoinType::EthereumClassic;
+        }
+        else if (cfg.type == "RSK Smart Bitcoin")
+        {
+            cfg.coin_type = CoinType::RSK;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -215,6 +232,21 @@ namespace atomic_dex
         case CoinType::HecoChain:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "HTT" : "HT";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::SmartBCH:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "SBCHT" : "SBCH";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::EthereumClassic:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETCT" : "ETC";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::RSK:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "RBTCT" : "RBTC";
             cfg.is_erc_family          = true;
             break;
         case CoinType::SLP:

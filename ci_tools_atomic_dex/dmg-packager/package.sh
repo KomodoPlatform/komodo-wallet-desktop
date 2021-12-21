@@ -119,12 +119,15 @@ echo '
 
 sync
 
-# unmount it
-hdiutil detach "${DEVICE}"
+# unmount it (5 chances, with some sleep to catch up)
+for i in {1..5}; do hdiutil detach "${DEVICE}" && break || echo "unmount attempt $i" && sleep 15; done
 
-# now make the final image a compressed disk image
+
+
+# now make the final image a compressed disk image (5 chances, with some sleep to catch up)
 echo "Creating compressed image"
-hdiutil convert "${DMG_TMP}" -format UDZO -imagekey zlib-level=9 -o "${DMG_FINAL}"
+for i in {1..5}; do hdiutil convert "${DMG_TMP}" -format UDZO -imagekey zlib-level=9 -o "${DMG_FINAL}" && break || echo "convert attempt $i" && sleep 15; done
+
 
 # clean up
 rm -rf "${DMG_TMP}"
