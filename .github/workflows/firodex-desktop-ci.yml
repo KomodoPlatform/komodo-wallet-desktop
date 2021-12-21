@@ -156,10 +156,9 @@ jobs:
           echo "CC=clang-12" >> $GITHUB_ENV
 
       - name: vcpkg deps (All)
-        uses: KomodoPlatform/run-vcpkg@v7
+        uses: lukka/run-vcpkg@v10
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          setupOnly: true
           appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
 
       - name: Install deps (MacOS)
@@ -232,26 +231,26 @@ jobs:
           $Env:QT_VERSION = "${{ matrix.qt }}"
           .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
-      - name: Running Tests (Linux)
-        working-directory: ci_tools_atomic_dex
-        if: runner.os == 'Linux' && 'firoorg/FiroDEX-Desktop' == github.repository
-        run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
-          export PATH=$HOME/.nimble/bin:$PATH
-          #export CXXFLAGS=-stdlib=libc++
-          #export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-12
-          export CC=clang-12
-          echo "Running tests"
-          ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
-          cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
-          #curl https://report.ci/upload.py --output upload.py
-          ls
-          #python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
-          #echo "Uploading tests on Linux finished"
+      # - name: Running Tests (Linux)
+      #   working-directory: ci_tools_atomic_dex
+      #   if: runner.os == 'Linux' && 'firoorg/FiroDEX-Desktop' == github.repository
+      #   run: |
+      #     export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
+      #     export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+      #     export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
+      #     export PATH=$HOME/.nimble/bin:$PATH
+      #     #export CXXFLAGS=-stdlib=libc++
+      #     #export LDFLAGS=-stdlib=libc++
+      #     export CXX=clang++-12
+      #     export CC=clang-12
+      #     echo "Running tests"
+      #     ./ci_tools_atomic_dex tests release
+      #     cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
+      #     cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
+      #     #curl https://report.ci/upload.py --output upload.py
+      #     ls
+      #     #python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
+      #     #echo "Uploading tests on Linux finished"
 
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
@@ -277,7 +276,7 @@ jobs:
           echo "Running tests"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
           cd build\bin
-          ./firodex-desktop_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
+          ./${{ env.DEX_PROJECT_NAME }}_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
           #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
 
