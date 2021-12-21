@@ -1,10 +1,5 @@
 Set-ExecutionPolicy RemoteSigned -scope CurrentUser
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> a21448ddc0da1e6353734fe7a5914fbe8b871c7d
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
 scoop install llvm --global
 scoop install ninja --global
@@ -20,6 +15,5 @@ $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\$Env:QT_VERSION\msvc2019_64"
 $Env:QT_ROOT = "C:\Qt"
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../ 
-ninja
+cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
 ninja install
