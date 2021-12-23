@@ -7,7 +7,7 @@
     "secondBackgroundColor": "#F9F5F5FF",
     "backgroundColorDeep": "#F9F5F5FF",
 
-    "buttonColorDisabled": "#444444",
+    "buttonColorDisabled": "#D8E3F8",
     "buttonColorEnabled": "#F0F6F9",
     "buttonColorHovered": "#F0F6F9AA",
     "buttonColorPressed": "#F0F6F97A",
