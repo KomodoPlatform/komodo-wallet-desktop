@@ -2799,10 +2799,10 @@
     "nomics_id": "GRS",
     "electrum": [
       {
-        "url": "electrum10.groestlcoin.org:50001"
+        "url": "electrum11.groestlcoin.org:50001"
       },
       {
-        "url": "electrum11.groestlcoin.org:50001"
+        "url": "electrum12.groestlcoin.org:50001"
       },
       {
         "url": "electrum13.groestlcoin.org:50001"
