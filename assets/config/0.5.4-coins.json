@@ -5171,7 +5171,11 @@
       {
         "url": "electrumx.live:50010",
         "protocol": "TCP"
-      }	      
+      },
+      {
+        "url": "electrumxprux02.sytes.net:50001",
+        "protocol": "TCP"
+      }	  	      
       ],
       "explorer_url": [
         "https://explorer.prux.info/"
