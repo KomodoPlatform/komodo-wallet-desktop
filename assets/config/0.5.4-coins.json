@@ -5038,6 +5038,35 @@
     "active": false,
     "currently_enabled": false
   },
+  "NYAN": {
+    "coin": "NYAN",
+    "name": "NYAN",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "NYAN",
+    "electrum": [
+      {
+        "url": "txserver.live:50022",
+        "protocol": "SSL"
+      },
+      {
+        "url": "txserver.live:50020",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumxnyan01.ddns.net:50020",
+        "protocol": "TCP"
+      }
+    ],
+    "explorer_url": [
+      "https://www.nyanchain.com/"
+    ],
+      "explorer_tx_url": "tx.nyan?",
+      "explorer_address_url": "ad.nyan?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
   "PANGEA": {
     "coin": "PANGEA",
     "name": "Pangea",
