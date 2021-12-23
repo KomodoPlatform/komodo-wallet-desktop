@@ -5795,13 +5795,24 @@
     "nomics_id": "NAV",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10056"
+        "url": "electrum.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum.nav.community:40004"
       },
       {
-        "url": "electrum2.cipig.net:10056"
+        "url": "electrum2.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum2.nav.community:40004"
       },
       {
-        "url": "electrum3.cipig.net:10056"
+        "url": "electrum3.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum3.nav.community:40004"
+      },
+      {
+        "url": "electrum4.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum4.nav.community:40004"
       }
     ],
     "explorer_url": [
