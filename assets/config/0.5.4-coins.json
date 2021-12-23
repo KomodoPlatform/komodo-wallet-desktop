@@ -5161,13 +5161,17 @@
         "protocol": "SSL"
       },
       {
-        "url": "electrumxprux01.ddns.net:50010",
+        "url": "electrumx.live:50012",
+        "protocol": "SSL"
+      },
+      {
+        "url": "txserver.live:50001",
         "protocol": "TCP"
       },
       {
-        "url": "electrumxprux02.sytes.net:50001",
+        "url": "electrumx.live:50010",
         "protocol": "TCP"
-      }
+      }	      
       ],
       "explorer_url": [
         "https://explorer.prux.info/"
