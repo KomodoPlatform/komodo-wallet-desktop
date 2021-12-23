@@ -5120,6 +5120,10 @@
       "nomics_id": "PRUX",
       "electrum": [
       {
+        "url": "txserver.live:50002",
+        "protocol": "SSL"
+      },
+      {
         "url": "electrumxprux01.ddns.net:50010",
         "protocol": "TCP"
       },
