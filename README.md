@@ -101,18 +101,6 @@ Check out AtomicDEX mobile, available for [Android and iOS](https://atomicdex.io
 | taskflow      | 2.2.0         | Parallel and Heterogeneous Task Programming in Modern C++                                                                                       | Threading           |
 | qt            | 5.15.2        | Qt is a cross-platform application development framework for desktop, embedded and mobile.                                                      | GUI                 |
 
-  
-## License
-
-For details please refer to our [license](https://github.com/KomodoPlatform/atomicDEX-Desktop/blob/master/LICENSE).
-
-This is experimental alpha software - use at your own risk!
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 
 ## Contributors / Thanks
   
@@ -162,3 +150,15 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 	  </tr>
 	</table>
 </div>
+
+  
+## License
+
+For details please refer to our [license](https://github.com/KomodoPlatform/atomicDEX-Desktop/blob/master/LICENSE).
+
+This is experimental alpha software - use at your own risk!
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
