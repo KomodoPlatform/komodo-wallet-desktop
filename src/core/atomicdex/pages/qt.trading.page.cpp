@@ -160,7 +160,7 @@ namespace atomic_dex
             .price_numer                    = is_selected_order ? m_preferred_order->at("price_numer").get<std::string>() : "",
             .volume_denom                   = is_selected_order ? m_preferred_order->at("base_max_volume_denom").get<std::string>() : "",
             .volume_numer                   = is_selected_order ? m_preferred_order->at("base_max_volume_numer").get<std::string>() : "",
-            .is_exact_selected_order_volume = is_selected_max && m_max_volume.toStdString() == m_preferred_order->at("base_max_volume").get<std::string>(),
+            .is_exact_selected_order_volume = is_selected_max && m_max_volume.toStdString() == utils::extract_large_float(m_preferred_order->at("base_max_volume").get<std::string>()),
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
             .min_volume = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_min_trade_vol().toStdString()};

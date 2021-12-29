@@ -1,8 +1,10 @@
 #!/bin/bash
 
 brew update
+
 brew tap-new $USER/local-nim
 brew extract --version=1.4.8 nim $USER/local-nim
+
 brew install autoconf \
             automake \
             libtool \

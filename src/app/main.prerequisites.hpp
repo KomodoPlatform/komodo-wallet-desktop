@@ -60,7 +60,7 @@
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/utilities/kill.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
-
+#include "atomicdex/filesystem.qml.hpp"
 #include "atomicdex/utilities/log.prerequisites.hpp"
 
 #ifdef __APPLE__
@@ -382,13 +382,14 @@ run_app(int argc, char** argv)
 
     //! Qt utilities declaration.
     atomic_dex::qt_utilities qt_utilities;
+    atomic_dex::filesystem qml_filesystem;
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QtWebEngine::initialize();
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
 
-    app->setWindowIcon(QIcon(":/atomic_defi_design/assets/images/logo/dex-logo.png"));
+    app->setWindowIcon(QIcon(":/assets/images/logo/dex-logo.png"));
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
     QQmlApplicationEngine engine;
@@ -436,6 +437,7 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_settings", &settings);
     engine.rootContext()->setContextProperty("dex_current_version", QString::fromStdString(atomic_dex::get_version()));
     engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
+    engine.rootContext()->setContextProperty("DexFilesystem", &qml_filesystem);
     SPDLOG_INFO("QML context properties created");
     // Load Qaterial.
 
@@ -445,13 +447,13 @@ run_app(int argc, char** argv)
     //  SPDLOG_INFO("{}",  QQuickStyle::ge))
     SPDLOG_INFO("Qaterial type created");
 
-    engine.addImportPath("qrc:/atomic_defi_design/imports");
-    engine.addImportPath("qrc:/atomic_defi_design/Constants");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/DexTheme.qml"), "App", 1, 0, "DexTheme");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/DexTypo.qml"), "App", 1, 0, "DexTypo");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");
+    engine.addImportPath("qrc:/imports");
+    engine.addImportPath("qrc:/Constants");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/DexTheme.qml"), "App", 1, 0, "DexTheme");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/DexTypo.qml"), "App", 1, 0, "DexTypo");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/General.qml"), "App", 1, 0, "General");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/Style.qml"), "App", 1, 0, "Style");
+    qmlRegisterSingletonType(QUrl("qrc:/Dex/Constants/API.qml"), "App", 1, 0, "API");
     qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
     SPDLOG_INFO("QML singleton created");
 
@@ -468,7 +470,7 @@ run_app(int argc, char** argv)
 #else
     SPDLOG_INFO("Load qml engine");
     engine.rootContext()->setContextProperty("debug_bar", QVariant(false));
-    const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/Dex/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, app.get(),
         [url](QObject* obj, const QUrl& objUrl)

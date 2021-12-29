@@ -12,6 +12,8 @@ namespace atomic_dex::komodo_prices::api
         binance,
         coingecko,
         coinpaprika,
+        forex,
+        nomics,
         unknown
     };
 
@@ -38,5 +40,5 @@ namespace atomic_dex::komodo_prices::api
 
 namespace atomic_dex::komodo_prices::api
 {
-    ENTT_API pplx::task<web::http::http_response> async_market_infos();
+    ENTT_API pplx::task<web::http::http_response> async_market_infos(bool fallback = false);
 }

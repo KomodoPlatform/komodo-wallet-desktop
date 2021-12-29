@@ -69,6 +69,11 @@ namespace atomic_dex
             SPDLOG_INFO("coin: {} support segwit with current_segwit mode: {}", cfg.ticker, cfg.is_segwit_on);
         }
 
+        if (j.contains("alias_ticker"))
+        {
+            cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
+        }
+
         j.at("explorer_url").get_to(cfg.explorer_url);
         if (j.contains("explorer_tx_url"))
         {
@@ -106,6 +111,58 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::SLP;
         }
+        else if (cfg.type == "Matic")
+        {
+            cfg.coin_type = CoinType::Matic;
+        }
+        else if (cfg.type == "Optimism")
+        {
+            cfg.coin_type = CoinType::Optimism;
+        }
+        else if (cfg.type == "Arbitrum")
+        {
+            cfg.coin_type = CoinType::Arbitrum;
+        }
+        else if (cfg.type == "AVX-20")
+        {
+            cfg.coin_type = CoinType::AVX20;
+        }
+        else if (cfg.type == "FTM-20")
+        {
+            cfg.coin_type = CoinType::FTM20;
+        }
+        else if (cfg.type == "HRC-20")
+        {
+            cfg.coin_type = CoinType::HRC20;
+        }
+        else if (cfg.type == "Ubiq")
+        {
+            cfg.coin_type = CoinType::Ubiq;
+        }
+        else if (cfg.type == "KRC-20")
+        {
+            cfg.coin_type = CoinType::KRC20;
+        }
+        else if (cfg.type == "Moonriver")
+        {
+            cfg.coin_type = CoinType::Moonriver;
+        }
+        else if (cfg.type == "HecoChain")
+        {
+            cfg.coin_type = CoinType::HecoChain;
+        }
+        else if (cfg.type == "SmartBCH")
+        {
+            cfg.coin_type = CoinType::SmartBCH;
+        }
+        else if (cfg.type == "Ethereum Classic")
+        {
+            cfg.coin_type = CoinType::EthereumClassic;
+        }
+        else if (cfg.type == "RSK Smart Bitcoin")
+        {
+            cfg.coin_type = CoinType::RSK;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -120,10 +177,77 @@ namespace atomic_dex
         case CoinType::ERC20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHR" : "ETH";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::BEP20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "BNBT" : "BNB";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::Matic:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "MATICTEST" : "MATIC";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::Optimism:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHK-OPT20" : "ETH-OPT20";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::Arbitrum:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHR-ARB20" : "ETH-ARB20";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::AVX20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "AVAXT" : "AVAX";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::FTM20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "FTMT" : "FTM";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::HRC20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ONET" : "ONE";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::Ubiq:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "UBQT" : "UBQ";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::KRC20:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "KCST" : "KCS";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::Moonriver:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "MOVRT" : "MOVR";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::HecoChain:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "HTT" : "HT";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::SmartBCH:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "SBCHT" : "SBCH";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::EthereumClassic:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETCT" : "ETC";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::RSK:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "RBTCT" : "RBTC";
+            cfg.is_erc_family          = true;
             break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;

@@ -3,7 +3,7 @@
 import QmlProject 1.1
 
 Project {
-    mainFile: "qml/main.qml"
+    mainFile: "Dex/main.qml"
 
     /* Include .qml, .js, and image files from current directory and subdirectories */
     QmlFiles {
@@ -34,7 +34,7 @@ Project {
     }
 
     /* List of plugin directories passed to QML runtime */
-    importPaths: [ "imports", "qml/Constants" ]
+    importPaths: [ "imports", "../build/_deps/qmaterial-src/qml", "./" ]
 
     /* Required for deployment */
     targetDirectory: "/opt/atomicQtDesign"

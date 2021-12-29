@@ -38,7 +38,8 @@ namespace
 namespace atomic_dex
 {
     orderbook_model::orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent) :
-        QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_system_mgr(system_mgr), m_model_proxy(new orderbook_proxy_model(system_mgr, this))
+        QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_system_mgr(system_mgr),
+        m_model_proxy(new orderbook_proxy_model(system_mgr, this))
     {
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
@@ -95,7 +96,7 @@ namespace atomic_dex
                 const auto  coin         = m_model_data.at(index.row()).rel_coin.value();
                 const auto& portfolio_pg = m_system_mgr.get_system<portfolio_page>();
                 const auto  cfg          = portfolio_pg.get_global_cfg()->get_coin_info(coin);
-                return QString::fromStdString(coin+cfg.name);
+                return QString::fromStdString(coin + cfg.name);
             }
             return QString::fromStdString(m_model_data.at(index.row()).coin);
         }
@@ -196,11 +197,13 @@ namespace atomic_dex
         {
             if (m_current_orderbook_kind == kind::best_orders)
             {
-                const auto& data       = m_model_data.at(index.row());
-                const auto& trading_pg = m_system_mgr.get_system<trading_page>();
-                t_float_50  volume_f   = safe_float(trading_pg.get_volume().toStdString());
-                const bool  is_buy     = trading_pg.get_market_mode() == MarketMode::Buy;
-                if (!is_buy) {
+                const auto& data         = m_model_data.at(index.row());
+                const auto& trading_pg   = m_system_mgr.get_system<trading_page>();
+                t_float_50  volume_f     = safe_float(trading_pg.get_volume().toStdString());
+                const bool  is_buy       = trading_pg.get_market_mode() == MarketMode::Buy;
+                const auto  trading_mode = trading_pg.get_current_trading_mode();
+                if (!is_buy && trading_mode == TradingMode::Simple)
+                {
                     volume_f = safe_float(data.base_max_volume);
                 }
                 t_float_50 total_amount_f = volume_f * safe_float(data.price);
@@ -238,7 +241,7 @@ namespace atomic_dex
         case HaveCEXIDRole:
         {
             const auto* global_cfg = m_system_mgr.get_system<portfolio_page>().get_global_cfg();
-            auto infos = global_cfg->get_coin_info(data(index, CoinRole).toString().toStdString());
+            auto        infos      = global_cfg->get_coin_info(data(index, CoinRole).toString().toStdString());
             return infos.coingecko_id != "test-coin" || infos.coinpaprika_id != "test-coin";
         }
         }

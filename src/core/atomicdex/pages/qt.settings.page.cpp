@@ -114,7 +114,7 @@ namespace atomic_dex
         SPDLOG_INFO("Locale before parsing AtomicDEX settings: {}", QLocale().name().toStdString());
         QLocale::setDefault(get_locale(new_lang.toStdString()));
         SPDLOG_INFO("Locale after parsing AtomicDEX settings: {}", QLocale().name().toStdString());
-        [[maybe_unused]] auto res = this->m_translator.load("atomic_defi_" + new_lang, QLatin1String(":/atomic_defi_design/assets/languages"));
+        [[maybe_unused]] auto res = this->m_translator.load("atomic_defi_" + new_lang, QLatin1String(":/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
         this->m_qml_engine->retranslate();
@@ -431,14 +431,16 @@ namespace atomic_dex
             out["mm2_cfg"]      = nlohmann::json::object();
             out["adex_cfg"]     = nlohmann::json::object();
             const auto& mm2     = this->m_system_manager.get_system<mm2_service>();
+
             if (resp.status_code() == 200)
             {
                 nlohmann::json raw_parent_cfg = mm2.get_raw_mm2_ticker_cfg(parent_chain);
                 nlohmann::json body_json      = nlohmann::json::parse(body).at("result")[0];
                 const auto     ticker         = body_json.at("symbol").get<std::string>() + "-" + type;
                 const auto     name_lowercase = body_json.at("tokenName").get<std::string>();
-                out["ticker"]                 = ticker;
-                out["name"]                   = name_lowercase;
+
+                out["ticker"] = ticker;
+                out["name"]   = name_lowercase;
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), atomic_dex::utils::retrieve_main_ticker(ticker));
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
@@ -456,7 +458,11 @@ namespace atomic_dex
                     out["mm2_cfg"]["decimals"]                                      = std::stoi(body_json.at("divisor").get<std::string>());
                     out["mm2_cfg"]["avg_blocktime"]                                 = raw_parent_cfg.at("avg_blocktime");
                     out["mm2_cfg"]["required_confirmations"]                        = raw_parent_cfg.at("required_confirmations");
-                    out["mm2_cfg"]["name"]                                          = name_lowercase;
+                    if (raw_parent_cfg.contains("chain_id"))
+                    {
+                        out["mm2_cfg"]["chain_id"] = raw_parent_cfg.at("chain_id");
+                    }
+                    out["mm2_cfg"]["name"] = name_lowercase;
                 }
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
@@ -659,8 +665,8 @@ namespace atomic_dex
                         auto       show_priv_key_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::show_priv_key_answer>(answer, "show_priv_key");
                         auto*      portfolio_mdl        = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
                         const auto idx                  = portfolio_mdl->match(
-                            portfolio_mdl->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(show_priv_key_answer.coin), 1,
-                            Qt::MatchFlag::MatchExactly);
+                                             portfolio_mdl->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(show_priv_key_answer.coin), 1,
+                                             Qt::MatchFlag::MatchExactly);
                         if (not idx.empty())
                         {
                             update_value(portfolio_model::PrivKey, QString::fromStdString(show_priv_key_answer.priv_key), idx.at(0), *portfolio_mdl);

@@ -23,7 +23,7 @@ namespace atomic_dex
         t_komodo_prices_time_point m_clock;
 
         //! private functions
-        void                                    process_update();
+        void                                    process_update(bool fallback = false);
         komodo_prices::api::komodo_ticker_infos get_info_answer(const std::string& ticker) const;
 
       public:

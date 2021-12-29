@@ -4,6 +4,7 @@
 //! Project Headers
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 //! Constructor
 namespace atomic_dex
@@ -29,11 +30,11 @@ namespace atomic_dex
     }
 
     void
-    komodo_prices_provider::process_update()
+    komodo_prices_provider::process_update(bool fallback)
     {
         SPDLOG_INFO("komodo price service tick loop");
 
-        auto answer_functor = [this](web::http::http_response resp)
+        auto answer_functor = [this, fallback](web::http::http_response resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
@@ -46,15 +47,19 @@ namespace atomic_dex
                     m_market_registry = std::move(answer);
                     SPDLOG_INFO("komodo price registry size: {}", m_market_registry.size());
                 }
-                dispatcher_.trigger<fiat_rate_updated>("");
             }
             else
             {
                 SPDLOG_ERROR("Error during the rpc call to komodo price provider: {}", body);
+                if (!fallback)
+                {
+                    process_update(true);
+                }
             }
+            dispatcher_.trigger<fiat_rate_updated>("");
         };
 
-        auto error_functor = [](pplx::task<void> previous_task)
+        auto error_functor = [this, fallback](pplx::task<void> previous_task)
         {
             try
             {
@@ -62,11 +67,16 @@ namespace atomic_dex
             }
             catch (const std::exception& e)
             {
+                dispatcher_.trigger<fiat_rate_updated>("");
                 SPDLOG_ERROR("error occured when fetching price: {}", e.what());
+                if (!fallback)
+                {
+                    process_update(true);
+                }
             };
         };
 
-        atomic_dex::komodo_prices::api::async_market_infos().then(answer_functor).then(error_functor);
+        atomic_dex::komodo_prices::api::async_market_infos(fallback).then(answer_functor).then(error_functor);
     }
 } // namespace atomic_dex
 
@@ -120,7 +130,7 @@ namespace atomic_dex
     std::string
     komodo_prices_provider::get_price_provider(const std::string& ticker) const
     {
-        auto provider = get_info_answer(ticker).price_provider;
+        auto provider = get_info_answer(utils::retrieve_main_ticker(ticker)).price_provider;
         switch (provider)
         {
         case komodo_prices::api::provider::binance:
@@ -129,6 +139,10 @@ namespace atomic_dex
             return "coingecko";
         case komodo_prices::api::provider::coinpaprika:
             return "coinpaprika";
+        case komodo_prices::api::provider::forex:
+            return "forex";
+        case komodo_prices::api::provider::nomics:
+            return "nomics";
         default:
             return "unknown";
         }

@@ -28,9 +28,9 @@
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
-#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/kill.hpp" ///< no delete
@@ -514,6 +514,7 @@ namespace atomic_dex
                     catch (const std::exception& error)
                     {
                         SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
+                        this->dispatcher_.trigger<tx_fetch_finished>(true);
                     }
                 })
             .then([this, batch = batch_array](pplx::task<void> previous_task)
@@ -527,8 +528,9 @@ namespace atomic_dex
         nlohmann::json           batch_array   = nlohmann::json::array();
         std::vector<std::string> tickers_idx;
         std::vector<std::string> tokens_to_fetch;
-        const auto&              ticker = get_current_ticker();
-        if (auto coin_type = get_coin_info(ticker).coin_type; coin_type != CoinType::ERC20 && coin_type != CoinType::BEP20)
+        const auto&              ticker    = get_current_ticker();
+        auto                     coin_info = get_coin_info(ticker);
+        if (!coin_info.is_erc_family)
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -625,7 +627,7 @@ namespace atomic_dex
                 continue;
             }
 
-            if (coin_info.coin_type != CoinType::ERC20 && coin_info.coin_type != CoinType::BEP20)
+            if (!coin_info.is_erc_family)
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,
@@ -729,15 +731,16 @@ namespace atomic_dex
                         catch (const std::exception& error)
                         {
                             SPDLOG_ERROR("exception caught in batch_enable_coins: {}", error.what());
-                            //update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
+                            // update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                             //! Emit event here
                         }
                     })
-                .then([this, tickers, batch_array](pplx::task<void> previous_task)
-                      {
-                          this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch_array);
-                          //update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
-                      });
+                .then(
+                    [this, tickers, batch_array](pplx::task<void> previous_task)
+                    {
+                        this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch_array);
+                        // update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
+                    });
         };
 
         SPDLOG_DEBUG("starting async enabling coin");
@@ -1043,9 +1046,8 @@ namespace atomic_dex
         const auto& ticker = get_current_ticker();
         // SPDLOG_DEBUG("asking history of ticker: {}", ticker);
         const auto underlying_tx_history_map = m_tx_informations.synchronize();
-        const auto coin_type                 = get_coin_info(ticker).coin_type;
-        const auto it                        = !(coin_type == CoinType::ERC20 || coin_type == CoinType::BEP20) ? underlying_tx_history_map->find("result")
-                                                                                                               : underlying_tx_history_map->find(ticker);
+        const auto coin_info                 = get_coin_info(ticker);
+        const auto it                        = !(coin_info.is_erc_family) ? underlying_tx_history_map->find("result") : underlying_tx_history_map->find(ticker);
         if (it == underlying_tx_history_map->cend())
         {
             ec = dextop_error::tx_history_of_a_non_enabled_coin;
@@ -1200,33 +1202,61 @@ namespace atomic_dex
         SPDLOG_DEBUG("process_tx ticker: {}", ticker);
         std::error_code ec;
         using namespace std::string_literals;
-        auto retrieve_api_functor = [this](const std::string& ticker, const std::string& address) -> std::string
+        auto construct_url_functor = [this](
+                                         const std::string& main_ticker, const std::string& test_ticker, const std::string& url, const std::string& token_url,
+                                         const std::string& ticker, const std::string& address)
+        {
+            std::string out;
+            if (ticker == main_ticker || ticker == test_ticker)
+            {
+                out = "/api/v1/" + url + "/" + address;
+            }
+            else
+            {
+                const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
+                out                                = "/api/v2/" + token_url + "/" + contract_address + "/" + address;
+            }
+            return out;
+        };
+        auto retrieve_api_functor = [this, construct_url_functor](const std::string& ticker, const std::string& address) -> std::string
         {
             const auto  coin_info = this->get_coin_info(ticker);
             std::string out;
             switch (coin_info.coin_type)
             {
             case CoinTypeGadget::ERC20:
-                if (ticker == "ETH" || ticker == "ETHR")
-                {
-                    out = "/api/v1/eth_tx_history/" + address;
-                }
-                else
-                {
-                    const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
-                    out                                = "/api/v2/erc_tx_history/" + contract_address + "/" + address;
-                }
+                out = construct_url_functor("ETH", "ETHR", "eth_tx_history", "erc_tx_history", ticker, address);
                 break;
             case CoinTypeGadget::BEP20:
-                if (ticker == "BNB" || ticker == "BNBT")
-                {
-                    out = "/api/v1/bnb_tx_history/" + address;
-                }
-                else
-                {
-                    const std::string contract_address = get_raw_mm2_ticker_cfg(ticker).at("protocol").at("protocol_data").at("contract_address");
-                    out                                = "/api/v2/bep_tx_history/" + contract_address + "/" + address;
-                }
+                out = construct_url_functor("BNB", "BNBT", "bnb_tx_history", "bep_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::Matic:
+                out = construct_url_functor("MATIC", "MATICTEST", "plg_tx_history", "plg_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::Moonriver:
+                out = construct_url_functor("MOVR", "MOVRT", "moonriver_tx_history", "moonriver_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::FTM20:
+                out = construct_url_functor("FTM", "FTMT", "ftm_tx_history", "ftm_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::HecoChain:
+                out = construct_url_functor("HT", "HTT", "heco_tx_history", "heco_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::Arbitrum:
+                out = construct_url_functor("ETH-ARB20", "ETHR-ARB20", "arbitrum_tx_history", "arbitrum_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::Optimism:
+                out = construct_url_functor("ETH-OPT20", "ETHK-OPT20", "optimism_tx_history", "optimism_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::EthereumClassic:
+                out = construct_url_functor("ETC", "ETCT", "etc_tx_history", "etc_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::RSK:
+                out = construct_url_functor("RBTC", "RBTCT", "rsk_tx_history", "rsk_tx_history", ticker, address);
+                break;
+            case CoinTypeGadget::AVX20:
+                out = construct_url_functor("AVAX", "AVAXT", "avx_tx_history", "avx_tx_history", ticker, address);
+                break;
             default:
                 break;
             }
@@ -1237,6 +1267,7 @@ namespace atomic_dex
             return out;
         };
         std::string url = retrieve_api_functor(ticker, address(ticker, ec));
+        SPDLOG_INFO("url scan: {}", url);
         ::mm2::api::async_process_rpc_get(::mm2::api::g_etherscan_proxy_http_client, "tx_history", url)
             .then(
                 [this, ticker](web::http::http_response resp)
@@ -1305,7 +1336,12 @@ namespace atomic_dex
                         this->dispatcher_.trigger<tx_fetch_finished>();
                     }
                 })
-            .then([this](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "process_tx_tokenscan", {}); });
+            .then(
+                [this](pplx::task<void> previous_task)
+                {
+                    this->dispatcher_.trigger<tx_fetch_finished>();
+                    this->handle_exception_pplx_task(previous_task, "process_tx_tokenscan", {});
+                });
     }
 
     void
@@ -1525,12 +1561,12 @@ namespace atomic_dex
 
         t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
         answer_r.balance  = result.str(8, std::ios_base::fixed);
-        //auto copy_coin = answer_r.coin;
+        // auto copy_coin = answer_r.coin;
         {
             std::unique_lock lock(m_balance_mutex);
             m_balance_informations[answer_r.coin] = std::move(answer_r);
         }
-        //m_system_manager.get_system<portfolio_page>().get_portfolio()->update_balance_values({copy_coin});
+        // m_system_manager.get_system<portfolio_page>().get_portfolio()->update_balance_values({copy_coin});
     }
 
     mm2_client&
@@ -1750,11 +1786,11 @@ namespace atomic_dex
             }
             for (auto&& cur: request) cur["userpass"] = "";
             SPDLOG_ERROR("pplx task error: {} from: {}, request: {}", e.what(), from, request.dump(4));
-            //this->dispatcher_.trigger<batch_failed>(from, e.what());
+            // this->dispatcher_.trigger<batch_failed>(from, e.what());
 
-//#if defined(linux) || defined(__APPLE__)
-            //SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
-//#endif
+            //#if defined(linux) || defined(__APPLE__)
+            // SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
+            //#endif
             if (std::string(e.what()).find("Failed to read HTTP status line") != std::string::npos ||
                 std::string(e.what()).find("WinHttpReceiveResponse: 12002: The operation timed out") != std::string::npos)
             {

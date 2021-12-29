@@ -11,6 +11,8 @@
 namespace
 {
     constexpr const char*                 g_komodo_prices_endpoint = "https://prices.komodo.live:1313";
+    constexpr const char*                 g_komodo_prices_endpoint_fallback = "https://prices.cipig.net:1717";
+
     web::http::client::http_client_config g_komodo_prices_cfg{[]()
                                                               {
                                                                   web::http::client::http_client_config cfg;
@@ -19,6 +21,7 @@ namespace
                                                                   return cfg;
                                                               }()};
     t_http_client_ptr g_komodo_prices_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodo_prices_endpoint), g_komodo_prices_cfg);
+    t_http_client_ptr g_komodo_prices_client_fallback = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodo_prices_endpoint_fallback), g_komodo_prices_cfg);
 } // namespace
 
 namespace atomic_dex::komodo_prices::api
@@ -54,6 +57,14 @@ namespace atomic_dex::komodo_prices::api
         {
             x = provider::coinpaprika;
         }
+        else if (j == "forex")
+        {
+            x = provider::forex;
+        }
+        else if (j == "nomics")
+        {
+            x = provider::nomics;
+        }
         else
         {
             x = provider::unknown;
@@ -64,12 +75,12 @@ namespace atomic_dex::komodo_prices::api
 namespace atomic_dex::komodo_prices::api
 {
     pplx::task<web::http::http_response>
-    async_market_infos()
+    async_market_infos(bool fallback)
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
-        SPDLOG_INFO("url: {}", TO_STD_STR(g_komodo_prices_client->base_uri().to_string()) + "api/v1/tickers?expire_at=600");
-        req.set_request_uri(FROM_STD_STR("/api/v1/tickers?expire_at=600"));
-        return g_komodo_prices_client->request(req);
+        SPDLOG_INFO("url: {}", TO_STD_STR(g_komodo_prices_client->base_uri().to_string()) + "api/v2/tickers?expire_at=600");
+        req.set_request_uri(FROM_STD_STR("/api/v2/tickers?expire_at=600"));
+        return fallback ? g_komodo_prices_client_fallback->request(req) : g_komodo_prices_client->request(req);
     }
 } // namespace atomic_dex::komodo_prices::api
