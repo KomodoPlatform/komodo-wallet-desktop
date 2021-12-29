@@ -2214,7 +2214,7 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrum3.egulden.org:50002",
+        "url": "electrum2.egulden.org:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
       },
