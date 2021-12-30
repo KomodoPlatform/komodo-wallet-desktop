@@ -88,7 +88,7 @@ Check out AtomicDEX mobile, available for [Android and iOS](https://atomicdex.io
 
 | Dependencies  | Version       | Description                                                                                                                                     | Categories          |
 |---------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
-| boost         | 1.75          | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
+| boost         | 1.77          | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
 | doctest       | 2.3.8         | The fastest feature-rich C++11/14/17/20 single-header testing framework                                                                         | Testing             |
 | fmt           | 7.1.0         | A modern formatting library                                                                                                                     | Formatting          |
 | nlohmann_json | 3.9.1         | JSON for Modern C++                                                                                                                             | Parsing             |
