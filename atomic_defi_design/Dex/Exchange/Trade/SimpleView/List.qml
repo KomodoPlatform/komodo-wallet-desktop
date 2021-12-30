@@ -81,7 +81,7 @@ DexListView
                         DefaultText
                         {
                             anchors.centerIn: parent
-                            font.pixelSize: 9
+                            font.pixelSize: getStatusFontSize(details.order_status)
                             color: !details ? "white" : getStatusColor(details.order_status)
                             text_value: !details ? "" :
                                         visible ? getStatusStep(details.order_status) : ''
