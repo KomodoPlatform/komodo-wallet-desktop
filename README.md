@@ -1,41 +1,41 @@
-# [![AtomicDEX](https://i.ibb.co/D5GJLWy/adex.png)](https://atomicdex.io)
+# [![AtomicDEX](https://i.ibb.co/D5GJLWy/adex.png)](https://firo.org)
 
-[![Discord](https://img.shields.io/discord/302123079818149888.svg?style=for-the-badge&logo=discord)](https://discord.gg/tvp96Gf)
-[![GitHub license](https://img.shields.io/github/license/KomodoPlatform/atomicDEX-Desktop?style=for-the-badge)](https://raw.githubusercontent.com/KomodoPlatform/atomicDEX-Desktop/master/LICENSE)
-[![GitHub All Releases](https://img.shields.io/github/downloads/KomodoPlatform/atomicDEX-Desktop/total?style=for-the-badge)](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases) <br/>
-[![Website](https://img.shields.io/website?down_message=offline&style=for-the-badge&up_message=online&url=https%3A%2F%2Fatomicdex.io%2F)](https://atomicdex.io/)
+[![Discord](https://img.shields.io/discord/302123079818149888.svg?style=for-the-badge&logo=discord)](https://discord.com/invite/TGZPRbRT3Y)
+[![GitHub license](https://img.shields.io/github/license/KomodoPlatform/atomicDEX-Desktop?style=for-the-badge)](https://raw.githubusercontent.com/firoorg/FiroDEX-Desktop/dev/LICENSE)
+[![GitHub All Releases](https://img.shields.io/github/downloads/KomodoPlatform/atomicDEX-Desktop/total?style=for-the-badge)](https://github.com/firoorg/FiroDEX-Desktop/releases) <br/>
+[![Website](https://img.shields.io/website?down_message=offline&style=for-the-badge&up_message=online&url=https%3A%2F%2Fatomicdex.io%2F)](https://firo.org)
 [![GitHub issues](https://img.shields.io/github/issues-raw/KomodoPlatform/atomicDEX-Desktop?style=for-the-badge)](https://github.com/KomodoPlatform/atomicdex-desktop/issues)
-[![PRs](https://img.shields.io/github/issues-pr-closed/komodoplatform/atomicdex-desktop?style=for-the-badge)](https://github.com/KomodoPlatform/atomicdex-desktop/pulls) <br/>
-[![Commits](https://img.shields.io/github/commit-activity/y/komodoplatform/atomicdex-desktop?style=for-the-badge)](https://github.com/KomodoPlatform/atomicdex-desktop/commits/dev)
-[![Contributors](https://img.shields.io/github/contributors/komodoplatform/atomicdex-desktop?style=for-the-badge)](https://github.com/KomodoPlatform/atomicdex-desktop/graphs/contributors)
-[![Last Commit](https://img.shields.io/github/last-commit/komodoplatform/atomicdex-desktop/dev?style=for-the-badge)](https://github.com/KomodoPlatform/atomicdex-desktop/graphs/commit-activity) <br/>
-[![gitstars](https://img.shields.io/github/stars/KomodoPlatform/atomicDEX-Desktop?style=social)](https://github.com/KomodoPlatform/atomicdex-desktop/stargazers)
-[![twitter](https://img.shields.io/twitter/follow/atomicdex?style=social)](https://twitter.com/atomicdex)
+[![PRs](https://img.shields.io/github/issues-pr-closed/komodoplatform/atomicdex-desktop?style=for-the-badge)](https://github.com/firoorg/FiroDEX-Desktop/pulls) <br/>
+[![Commits](https://img.shields.io/github/commit-activity/y/komodoplatform/atomicdex-desktop?style=for-the-badge)](https://github.com/firoorg/FiroDEX-Desktop/commits/dev)
+[![Contributors](https://img.shields.io/github/contributors/komodoplatform/atomicdex-desktop?style=for-the-badge)](https://github.com/firoorg/FiroDEX-Desktop/graphs/contributors)
+[![Last Commit](https://img.shields.io/github/last-commit/komodoplatform/atomicdex-desktop/dev?style=for-the-badge)](https://github.com/firoorg/FiroDEX-Desktop/graphs/commit-activity) <br/>
+[![gitstars](https://img.shields.io/github/stars/KomodoPlatform/atomicDEX-Desktop?style=social)](https://github.com/firoorg/FiroDEX-Desktop/stargazers)
+[![twitter](https://img.shields.io/twitter/follow/atomicdex?style=social)](https://twitter.com/firoorg)
 
-[![atomicDEX Gif](https://i.imgur.com/KN4i6XS.gif)](https://atomicdex.io)
+[![atomicDEX Gif](https://i.imgur.com/KN4i6XS.gif)](https://firo.org)
 
 ## CI/CD status
 
 | CI/CD Names | Status |
 |-------------|--------|
-| Windows/Linux/macOS  | [![GitHub All Releases](https://img.shields.io/github/workflow/status/KomodoPlatform/atomicDEX-Desktop/AtomicDex-Desktop%20CI?style=for-the-badge)](https://github.com/KomodoPlatform/atomicDEX-Desktop/actions) |
+| Windows/Linux/macOS  | [![GitHub All Releases](https://img.shields.io/github/workflow/status/KomodoPlatform/atomicDEX-Desktop/AtomicDex-Desktop%20CI?style=for-the-badge)](https://github.com/firoorg/FiroDEX-Desktop/actions) |
 
 ## Useful links
 
-- :book: [AtomicDEX Documentation](https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-tutorials/introduction-to-atomicdex.html)
-- :link: [AtomicDEX Website](https://atomicdex.io/)
-- :speech_balloon: [AtomicDEX Discord](https://discord.gg/tvp96Gf)
-- :hammer_and_wrench: [AtomicDEX Development Boards](https://github.com/KomodoPlatform/atomicDEX-Desktop/projects)
-- :notebook_with_decorative_cover: [AtomicDex Wiki](https://github.com/KomodoPlatform/atomicDEX-Desktop/wiki/)
+- :book: [FiroDEX Documentation](https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-tutorials/introduction-to-atomicdex.html)
+- :link: [FiroDEX Website](https://firo.org)
+- :speech_balloon: [FiroDEX Discord](https://discord.com/invite/TGZPRbRT3Y)
+- :hammer_and_wrench: [FiroDEX Development Boards](https://github.com/firoorg/FiroDEX-Desktop/projects)
+- :notebook_with_decorative_cover: [FiroDex Wiki](https://github.com/firoorg/FiroDEX-Desktop/wiki)
 
-## What is AtomicDEX?
+## What is FiroDEX?
 
-AtomicDEX is a secure wallet and non-custodial decentralized exchange rolled into one application. Store your coins,
+FiroDEX is a secure wallet and non-custodial decentralized exchange rolled into one application. Store your coins,
 trade peer-to-peer with minimal fees and never give up control over your digital assets.
 
-## On which platforms can I use AtomicDEX Desktop?
+## On which platforms can I use FiroDEX Desktop?
 
-AtomicDEX Desktop has been tested on the following platforms:
+FiroDEX Desktop has been tested on the following platforms:
 
 - Windows 10
 - Linux (Ubuntu 18.04+)
@@ -44,20 +44,15 @@ AtomicDEX Desktop has been tested on the following platforms:
 
 ## Get Started
 
-You can [download](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases) the pre-built <b>beta</b> binaries on
-our [GitHub release page](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases).
+You can [download](https://github.com/firoorg/FiroDEX-Desktop/releases) the pre-built <b>beta</b> binaries on
+our [GitHub release page](https://github.com/firoorg/FiroDEX-Desktop/releases).
 
-Please join our [Discord Server](https://komodoplatform.com/discord) discussions around AtomicDEX and general UI/UX
+Please join our [Discord Server](https://discord.com/invite/TGZPRbRT3Y) discussions around AtomicDEX and general UI/UX
 feedback.
-
-## AtomicDEX mobile
-
-Check out AtomicDEX mobile, available
-for [Android and iOS](https://atomicdex.io) [![atomicDEX mobile](https://s5.gifyu.com/images/atomicdex_animation_small2.gif)](https://atomicdex.io)
 
 ## License
 
-For details please refer to our [license](https://github.com/KomodoPlatform/atomicDEX-Desktop/blob/master/LICENSE).
+For details please refer to our [license](https://github.com/firoorg/FiroDEX-Desktop/blob/dev/LICENSE).
 
 This is experimental alpha software - use at your own risk!
 
@@ -85,7 +80,7 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 
 ## How do I build it ?
 
-Build instructions can be found [here](https://github.com/KomodoPlatform/atomicDEX-Desktop/wiki/Build-Instructions)
+Build instructions can be found [here](https://github.com/firoorg/FiroDEX-Desktop/wiki/Build-Instructions)
 
 ## Contributors / Thanks
 
