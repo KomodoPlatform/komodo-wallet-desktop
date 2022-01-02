@@ -2214,7 +2214,7 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrum3.egulden.org:50002",
+        "url": "electrum2.egulden.org:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
       },
@@ -2799,10 +2799,10 @@
     "nomics_id": "GRS",
     "electrum": [
       {
-        "url": "electrum10.groestlcoin.org:50001"
+        "url": "electrum11.groestlcoin.org:50001"
       },
       {
-        "url": "electrum11.groestlcoin.org:50001"
+        "url": "electrum12.groestlcoin.org:50001"
       },
       {
         "url": "electrum13.groestlcoin.org:50001"
@@ -5038,6 +5038,43 @@
     "active": false,
     "currently_enabled": false
   },
+  "NYAN": {
+    "coin": "NYAN",
+    "name": "Nyancoin",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "NYAN",
+    "electrum": [
+      {
+        "url": "txserver.live:50022",
+        "protocol": "SSL"
+      },
+      {
+        "url": "txserver.live:50020",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumx.live:50022",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrumx.live:50020",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumxnyan01.ddns.net:50020",
+        "protocol": "TCP"
+      }	    
+    ],
+    "explorer_url": [
+      "https://www.nyanchain.com/"
+    ],
+      "explorer_tx_url": "tx.nyan?",
+      "explorer_address_url": "ad.nyan?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
   "PANGEA": {
     "coin": "PANGEA",
     "name": "Pangea",
@@ -5120,13 +5157,25 @@
       "nomics_id": "PRUX",
       "electrum": [
       {
-        "url": "electrumxprux01.ddns.net:50010",
+        "url": "txserver.live:50002",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrumx.live:50012",
+        "protocol": "SSL"
+      },
+      {
+        "url": "txserver.live:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumx.live:50010",
         "protocol": "TCP"
       },
       {
         "url": "electrumxprux02.sytes.net:50001",
         "protocol": "TCP"
-      }
+      }	  	      
       ],
       "explorer_url": [
         "https://explorer.prux.info/"
@@ -5801,13 +5850,24 @@
     "nomics_id": "NAV",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10056"
+        "url": "electrum.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum.nav.community:40004"
       },
       {
-        "url": "electrum2.cipig.net:10056"
+        "url": "electrum2.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum2.nav.community:40004"
       },
       {
-        "url": "electrum3.cipig.net:10056"
+        "url": "electrum3.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum3.nav.community:40004"
+      },
+      {
+        "url": "electrum4.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum4.nav.community:40004"
       }
     ],
     "explorer_url": [
@@ -6423,7 +6483,7 @@
     "coin": "TKL",
     "name": "Tokel",
     "coinpaprika_id": "tkl-tokel",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "tokel",
     "nomics_id": "TKL2",
     "electrum": [
       {
