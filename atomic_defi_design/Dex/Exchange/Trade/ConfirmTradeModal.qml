@@ -222,7 +222,7 @@ BasicModal {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 10
 
-                color: Style.colorRed3
+                color: Style.colorRed2
 
                 width: dpow_off_warning.width + 20
                 height: dpow_off_warning.height + 20
@@ -233,7 +233,7 @@ BasicModal {
 
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
-
+                        color: Style.colorWhite0
                         text_value: Style.warningCharacter + " " + qsTr("Warning, this atomic swap is not dPoW protected!")
                     }
                 }

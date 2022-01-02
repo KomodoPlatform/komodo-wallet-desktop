@@ -286,6 +286,26 @@ Item {
         }
     }
 
+    function getStatusFontSize(status)
+    {
+        switch (status) {
+            case "matching":
+                return 9
+            case "matched":
+                return 9
+            case "ongoing":
+                return 9
+            case "successful":
+                return 16
+            case "refunding":
+                return 16
+            case "failed":
+                return 12
+            default:
+                return 9
+        }
+    }
+
     function getStatusText(status, short_text=false)
     {
         switch(status) {
