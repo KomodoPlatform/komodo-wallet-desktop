@@ -48,7 +48,7 @@ MouseArea
         to: 1
     }
 
-    Image
+    DefaultImage
     {
         id: dexLogo
         anchors.horizontalCenter: parent.horizontalCenter

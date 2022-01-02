@@ -154,7 +154,7 @@ DexWindow
         layoutDirection: isOsx ? Qt.RightToLeft : Qt.LeftToRight
         spacing: 5
 
-        Image
+        DefaultImage
         {
             source: "qrc:/assets/images/dex-tray-icon.png"
             width: 15

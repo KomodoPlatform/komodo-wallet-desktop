@@ -1988,6 +1988,37 @@
     "active": false,
     "currently_enabled": false
   },
+  "DIMI-BEP20": {
+    "coin": "DIMI-BEP20",
+    "name": "DiminutiveCoin",
+    "coinpaprika_id": "dimi-diminutive-coin",
+    "coingecko_id": "diminutive-coin",
+    "nomics_id": "DIMI",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "DIMI-QRC20": {
+    "coin": "DIMI-QRC20",
+    "name": "DiminutiveCoin",
+    "coinpaprika_id": "dimi-diminutive-coin",
+    "coingecko_id": "diminutive-coin",
+    "nomics_id": "DIMI",
+    "explorer_url": [
+      "https://explorer.qtum.org/"
+    ],
+    "type": "QRC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "DODO-BEP20": {
     "coin": "DODO-BEP20",
     "name": "DODO",
@@ -2183,7 +2214,7 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrum3.egulden.org:50002",
+        "url": "electrum2.egulden.org:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
       },
@@ -2768,10 +2799,10 @@
     "nomics_id": "GRS",
     "electrum": [
       {
-        "url": "electrum10.groestlcoin.org:50001"
+        "url": "electrum11.groestlcoin.org:50001"
       },
       {
-        "url": "electrum11.groestlcoin.org:50001"
+        "url": "electrum12.groestlcoin.org:50001"
       },
       {
         "url": "electrum13.groestlcoin.org:50001"
@@ -5007,6 +5038,43 @@
     "active": false,
     "currently_enabled": false
   },
+  "NYAN": {
+    "coin": "NYAN",
+    "name": "Nyancoin",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "NYAN",
+    "electrum": [
+      {
+        "url": "txserver.live:50022",
+        "protocol": "SSL"
+      },
+      {
+        "url": "txserver.live:50020",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumx.live:50022",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrumx.live:50020",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumxnyan01.ddns.net:50020",
+        "protocol": "TCP"
+      }	    
+    ],
+    "explorer_url": [
+      "https://www.nyanchain.com/"
+    ],
+      "explorer_tx_url": "tx.nyan?",
+      "explorer_address_url": "ad.nyan?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },
   "PANGEA": {
     "coin": "PANGEA",
     "name": "Pangea",
@@ -5081,6 +5149,41 @@
       "active": false,
       "currently_enabled": false
   },
+  "PRUX": {
+      "coin": "PRUX",
+      "name": "PRUX",
+      "coinpaprika_id": "prux-prux-coin",
+      "coingecko_id": "test-coin",
+      "nomics_id": "PRUX",
+      "electrum": [
+      {
+        "url": "txserver.live:50002",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrumx.live:50012",
+        "protocol": "SSL"
+      },
+      {
+        "url": "txserver.live:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumx.live:50010",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumxprux02.sytes.net:50001",
+        "protocol": "TCP"
+      }	  	      
+      ],
+      "explorer_url": [
+        "https://explorer.prux.info/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
+  },	
   "QIAIR": {
     "coin": "QIAIR",
     "name": "Qi Airdrop Token",
@@ -5741,13 +5844,24 @@
     "nomics_id": "NAV",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10056"
+        "url": "electrum.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum.nav.community:40004"
       },
       {
-        "url": "electrum2.cipig.net:10056"
+        "url": "electrum2.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum2.nav.community:40004"
       },
       {
-        "url": "electrum3.cipig.net:10056"
+        "url": "electrum3.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum3.nav.community:40004"
+      },
+      {
+        "url": "electrum4.nav.community:40002",
+        "protocol": "SSL",
+        "ws_url": "electrum4.nav.community:40004"
       }
     ],
     "explorer_url": [
@@ -6272,6 +6386,7 @@
     "name": "Spacecoin",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "space-spacecoin7367",
+    "nomics_id": "SPACE7",
     "electrum": [
       {
         "url": "electrum1.spaceworks.co:50001"
@@ -6362,7 +6477,7 @@
     "coin": "TKL",
     "name": "Tokel",
     "coinpaprika_id": "tkl-tokel",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "tokel",
     "nomics_id": "TKL2",
     "electrum": [
       {
@@ -7234,6 +7349,10 @@
         "url": "failover.zet.ewmci.xyz:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
+      },
+      {
+        "url": "electrumx.zet.ewmcx.info:50001",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [
@@ -8924,12 +9043,11 @@
     "currently_enabled": false
   },
   "USBL": {
-    "active": false,
     "coin": "USBL",
-    "name": "Balanced",
+    "name": "Balanced Dollar",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
+    "nomics_id": "USBL",
     "electrum": [
       {
         "url": "swap.softbalanced.com:50001",
@@ -8945,7 +9063,9 @@
       "https://softbalanced.com:3001/insight/"
     ],
     "explorer_tx_url": "tx/",
-    "type": "UTXO"
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
   },
   "UTK": {
     "coin": "UTK",

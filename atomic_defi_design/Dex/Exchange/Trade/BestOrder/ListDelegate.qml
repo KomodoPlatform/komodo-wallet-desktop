@@ -45,7 +45,7 @@ Item {
             Layout.preferredWidth: 130
             leftPadding: -10
             spacing: 5
-            Image {
+            DefaultImage {
                 source: Constants.General.coinIcon(coin)
                 width: 20
                 height: 20

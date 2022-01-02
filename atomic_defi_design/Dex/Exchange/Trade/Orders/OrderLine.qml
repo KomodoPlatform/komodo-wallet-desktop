@@ -41,12 +41,12 @@ Rectangle
         DefaultText
         {
             id: status_text
-            Layout.preferredWidth: 20
+            Layout.preferredWidth: (parent.width / 100) * 4
             Layout.alignment: Qt.AlignVCenter
             visible: clickable ? !details ? false :
                 (details.is_swap || !details.is_maker) : false
 
-            font.pixelSize: base_amount.font.pixelSize
+            font.pixelSize: getStatusFontSize(details.order_status)
             color: !details ? Dex.CurrentTheme.foregroundColor : getStatusColor(details.order_status)
             text_value: !details ? "" : visible ? getStatusStep(details.order_status) : ''
         }
@@ -54,13 +54,14 @@ Rectangle
         Item
         {
             Layout.fillHeight: true
-            Layout.preferredWidth: 20
-
+            Layout.preferredWidth: (parent.width / 100) * 4
+            Layout.alignment: Qt.AlignVCenter
             visible: !status_text.visible ? clickable ? true : false : false
 
             Qaterial.ColorIcon
             {
-                anchors.centerIn: parent
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
                 iconSize: 17
                 color: Dex.CurrentTheme.foregroundColor
                 source: Qaterial.Icons.clipboardTextSearchOutline
@@ -73,9 +74,9 @@ Rectangle
             font.pixelSize: base_amount.font.pixelSize
             text_value: !details ? "" : details.date ?? ""
             Layout.fillHeight: true
+            Layout.preferredWidth: (parent.width / 100) * 10
             verticalAlignment: Label.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: 80
         }
 
         DefaultImage
@@ -93,11 +94,9 @@ Rectangle
         {
             id: base_amount
             text_value: !details ? "" : General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
-            font.pixelSize: 11
-
-
+            font.pixelSize: 10
             Layout.fillHeight: true
-            Layout.preferredWidth: 160
+            Layout.preferredWidth: (parent.width / 100) * 33
             verticalAlignment: Label.AlignVCenter
             privacy: is_placed_order
         }
@@ -109,8 +108,7 @@ Rectangle
             SwapIcon
             {
                 visible: !status_text.visible
-                width: 30
-                height: 50
+                anchors.fill: parent
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 top_arrow_ticker: !details ? atomic_app_primary_coin : details.base_coin ?? ""
@@ -123,13 +121,13 @@ Rectangle
             id: rel_amount
             text_value: !details ? "" : General.formatCrypto("", details.rel_amount, details.rel_coin, details.rel_amount_current_currency, API.app.settings_pg.current_currency)
             font.pixelSize: base_amount.font.pixelSize
-
             Layout.fillHeight: true
-            Layout.preferredWidth: 160
+            Layout.preferredWidth: (parent.width / 100) * 33
             verticalAlignment: Label.AlignVCenter
             horizontalAlignment: Label.AlignRight
             privacy: is_placed_order
         }
+
         DefaultImage
         {
             id: rel_icon
@@ -148,7 +146,7 @@ Rectangle
             visible: !details || details.recoverable === undefined ? false :
                 details.recoverable && details.order_status !== "refunding"
             Layout.fillHeight: true
-            Layout.preferredWidth: 40
+            Layout.preferredWidth: (parent.width / 100) * 5
             verticalAlignment: Label.AlignVCenter
             horizontalAlignment: Label.AlignHCenter
             text_value: Style.warningCharacter
@@ -173,7 +171,7 @@ Rectangle
             visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouse_area.containsMouse || hovered) ? true : false : false
 
             Layout.fillHeight: true
-            Layout.preferredWidth: 30
+            Layout.preferredWidth: (parent.width / 100) * 3
             Layout.alignment: Qt.AlignVCenter
 
             outlinedColor: Dex.CurrentTheme.noColor
@@ -197,22 +195,6 @@ Rectangle
                 scale: parent.visible ? 1 : 0
             }
 
-        }
-
-        Rectangle
-        {
-            visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouse_area.containsMouse || cancel_button_text.hovered) ? false : true : false
-            width: 5
-            height: 5
-            color: Dex.CurrentTheme.noColor
-            Layout.alignment: Qt.AlignVCenter
-        }
-
-        Item
-        {
-            Layout.fillHeight: true
-            Layout.preferredWidth: 40
-            visible: !clickable
         }
     }
 

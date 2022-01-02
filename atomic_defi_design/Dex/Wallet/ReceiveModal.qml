@@ -30,7 +30,7 @@ BasicModal {
             }
         }
 
-        Image {
+        DefaultImage {
             Layout.alignment: Qt.AlignHCenter
 
             source: current_ticker_infos.qrcode_address

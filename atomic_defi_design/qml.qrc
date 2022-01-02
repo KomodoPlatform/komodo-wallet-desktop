@@ -172,6 +172,7 @@
         <file>assets/images/coins/nexo.png</file>
         <file>assets/images/coins/nmc.png</file>
         <file>assets/images/coins/nvc.png</file>
+        <file>assets/images/coins/nyan.png</file>        
         <file>assets/images/coins/nzds.png</file>
         <file>assets/images/coins/oc.png</file>
         <file>assets/images/coins/ocean.png</file>
@@ -186,6 +187,7 @@
         <file>assets/images/coins/pnk.png</file>
         <file>assets/images/coins/powr.png</file>
         <file>assets/images/coins/ppc.png</file>
+        <file>assets/images/coins/prux.png</file>
         <file>assets/images/coins/put.png</file>
         <file>assets/images/coins/qbt.png</file>
         <file>assets/images/coins/qc.png</file>
@@ -605,5 +607,7 @@
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Dex/Components/PopupManager.qml</file>
+        <file>imports/bignumberjs/qmldir</file>
+        <file>imports/bignumberjs/bignumber.js/bignumber.js</file>
     </qresource>
 </RCC>

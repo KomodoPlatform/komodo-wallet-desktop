@@ -239,7 +239,7 @@ ClipRRect // Trade Card
                     elide: Text.ElideRight
                     color: DexTheme.foregroundColorLightColor1
 
-                    DexImage
+                    DefaultImage
                     {
                         id: _fromBalanceIcon
                         width: 16
@@ -333,7 +333,9 @@ ClipRRect // Trade Card
 
                     radius: 10
                     border.width: 0
-                    color: _selectedTickerMouseArea.containsMouse ? "#8b95ed" : swap_from_card.color
+                    color: _selectedTickerMouseArea.containsMouse ?
+                                Dex.CurrentTheme.buttonColorHovered :
+                                swap_from_card.color
 
                     DefaultMouseArea
                     {
@@ -403,30 +405,20 @@ ClipRRect // Trade Card
                     }
                 }
 
-                DefaultRectangle
+                ClickableText // MAX Button
                 {
+                    id: _maxClickableLabel
+
                     anchors.right: _selectTickerBut.left
-                    anchors.rightMargin: 5
+                    anchors.rightMargin: 10
                     anchors.verticalCenter: _selectTickerBut.verticalCenter
-                    width: 40
-                    height: 20
-                    radius: width / 2
 
-                    color: _maxClickableLabel.containsPress ? Dex.CurrentTheme.buttonColorPressed :
-                               _maxClickableLabel.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.innerBackgroundColor
+                    visible: selectedTicker !== ""
 
-                    ClickableText // MAX Button
-                    {
-                        id: _maxClickableLabel
+                    text: qsTr("MAX")
+                    color: Dex.CurrentTheme.foregroundColor2
 
-                        anchors.centerIn: parent
-
-                        visible: selectedTicker !== ""
-
-                        text: qsTr("MAX")
-
-                        onClicked: _fromValue.text = Constants.API.app.trading_pg.max_volume
-                    }
+                    onClicked: _fromValue.text = Constants.API.app.trading_pg.max_volume
                 }
             }
 
@@ -492,7 +484,7 @@ ClipRRect // Trade Card
                     radius: 10
                     border.width: 0
 
-                    color: _bestOrdersMouseArea.containsMouse ? "#8b95ed" : swap_from_card.color
+                    color: _bestOrdersMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : swap_from_card.color
                     opacity: _bestOrdersMouseArea.enabled ? 1 : 0.3
 
                     DefaultMouseArea
@@ -680,7 +672,7 @@ ClipRRect // Trade Card
                     }
                 }
 
-                Image // Alert
+                DefaultImage // Alert
                 {
                     id: _swapAlert
 

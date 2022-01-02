@@ -4,6 +4,6 @@ import Dex.Themes 1.0 as Dex
 
 AnimatedRectangle
 {
-    height: 2
+    height: 1
     color: Dex.CurrentTheme.lineSeparatorColor
 }

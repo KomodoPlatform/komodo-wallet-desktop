@@ -15,8 +15,24 @@ Rectangle
 
     gradient: Gradient
     {
-        GradientStop { position: 0.5; color: Dex.CurrentTheme.gradientButtonStartColor }
-        GradientStop { position: 0.8; color: Dex.CurrentTheme.gradientButtonEndColor }
+        GradientStop
+        {
+            position: 0.5;
+            color: enabled ? _mouseArea.containsMouse ? _mouseArea.containsPress ?
+                    Dex.CurrentTheme.gradientButtonPressedStartColor :
+                    Dex.CurrentTheme.gradientButtonHoveredStartColor :
+                    Dex.CurrentTheme.gradientButtonStartColor :
+                    Dex.CurrentTheme.gradientButtonDisabledStartColor
+        }
+        GradientStop
+        {
+            position: 0.8
+            color: enabled ? _mouseArea.containsMouse ? _mouseArea.containsPress ?
+                    Dex.CurrentTheme.gradientButtonPressedEndColor :
+                    Dex.CurrentTheme.gradientButtonHoveredEndColor :
+                    Dex.CurrentTheme.gradientButtonEndColor :
+                    Dex.CurrentTheme.gradientButtonDisabledEndColor
+        }
     }
 
     Rectangle
@@ -25,28 +41,23 @@ Rectangle
         width: parent.width - 6
         height: parent.height - 6
         radius: parent.radius - 3
-        color: _mouseArea.containsPress ?
-                   Dex.CurrentTheme.backgroundColorDeep : _mouseArea.containsMouse ?
-                       Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.backgroundColor
+        color: _mouseArea.containsMouse || _mouseArea.containsPress ? 'transparent' : Dex.CurrentTheme.backgroundColor
     }
 
-    DefaultText
+    Text
     {
         id: _label
-
         anchors.centerIn: parent
-
         font.pixelSize: 16
+        color: _mouseArea.containsMouse || _mouseArea.containsPress ? Dex.CurrentTheme.gradientButtonTextEnabledColor : Dex.CurrentTheme.foregroundColor
     }
 
     MouseArea
     {
         id: _mouseArea
-
         anchors.fill: parent
-
         hoverEnabled: true
-
+        cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
         onClicked: parent.clicked()
     }
 }
