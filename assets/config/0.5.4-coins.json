@@ -8560,6 +8560,58 @@
     "active": false,
     "currently_enabled": false
   },
+  "PRCY-BEP20": {
+    "coin": "PRCY-BEP20",
+    "name": "PRivaCY Coin",
+    "coinpaprika_id": "prcy-privacy-coin",
+    "coingecko_id": "privacy-coin",
+    "nomics_id": "PRCY",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "PRCY-ERC20": {
+    "coin": "PRCY-ERC20",
+    "name": "PRivaCY Coin",
+    "coinpaprika_id": "prcy-privacy-coin",
+    "coingecko_id": "privacy-coin",
+    "nomics_id": "PRCY",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "PRCY-PLG20": {
+    "coin": "PRCY-PLG20",
+    "name": "PRivaCY Coin",
+    "coinpaprika_id": "prcy-privacy-coin",
+    "coingecko_id": "privacy-coin",
+    "nomics_id": "PRCY",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "REP": {
     "coin": "REP",
     "name": "Reputation",
