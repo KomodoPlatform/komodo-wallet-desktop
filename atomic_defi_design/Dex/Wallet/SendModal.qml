@@ -344,8 +344,6 @@ BasicModal
                     Layout.preferredWidth: 385
                     Layout.preferredHeight: 44
 
-                    Component.onCompleted: console.log(backgroundColor)
-
                     placeholderText: qsTr("Amount to send")
                 }
 
