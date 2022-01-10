@@ -1138,7 +1138,7 @@
       }
     ],
     "explorer_url": [
-      "https://btczexplorer.blockhub.info/"
+      "https://explorer.btcz.rocks/"
     ],
     "type": "UTXO",
     "active": false,
@@ -5830,7 +5830,7 @@
       }
     ],
     "explorer_url": [
-      "https://mona.chainsight.info/"
+      "https://blockbook.electrum-mona.org/"
     ],
     "type": "UTXO",
     "active": false,
