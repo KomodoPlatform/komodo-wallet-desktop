@@ -334,17 +334,52 @@ BasicModal
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 20
 
-                // Amount input
-                AmountField
+                ColumnLayout
                 {
-                    id: input_amount
+                    // Amount input
+                    AmountField
+                    {
+                        id: input_amount
 
-                    enabled: !root.is_send_busy && !input_max_amount.checked
+                        enabled: !root.is_send_busy && !input_max_amount.checked
 
-                    Layout.preferredWidth: 385
-                    Layout.preferredHeight: 44
+                        Layout.preferredWidth: 385
+                        Layout.preferredHeight: 44
 
-                    placeholderText: qsTr("Amount to send")
+                        onTextChanged:
+                        {
+                            if (text.length === 0)
+                            {
+                                fiatInput.text = "";
+                                return;
+                            }
+                            fiatInput.text = parseFloat(text) * parseFloat(current_ticker_infos.current_currency_ticker_price)
+                        }
+
+                        placeholderText: qsTr("Amount to send")
+                    }
+
+                    // Amount input in fiat
+                    AmountField
+                    {
+                        id: fiatInput
+
+                        enabled: input_amount.enabled
+
+                        Layout.preferredWidth: input_amount.width
+                        Layout.preferredHeight: input_amount.height
+
+                        onTextChanged:
+                        {
+                            if (text.length === 0)
+                            {
+                                input_amount.text = "";
+                                return;
+                            }
+                            input_amount.text = parseFloat(text) / parseFloat(current_ticker_infos.current_currency_ticker_price)
+                        }
+                        placeholderText: qsTr("Amount to send in fiat")
+                    }
                 }
 
                 DexCheckBox
