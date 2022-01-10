@@ -68,6 +68,7 @@ BasicModal {
 
             Qaterial.RawMaterialButton
             {
+                Layout.preferredWidth: 50
                 backgroundColor: "transparent"
                 icon.source: Qaterial.Icons.contentCopy
                 icon.color: Dex.CurrentTheme.foregroundColor
