@@ -346,6 +346,8 @@ BasicModal
                         Layout.preferredWidth: 385
                         Layout.preferredHeight: 44
 
+                        placeholderText: qsTr("Amount to send")
+
                         onTextChanged:
                         {
                             if (text.length === 0)
@@ -356,7 +358,15 @@ BasicModal
                             fiatInput.text = parseFloat(text) * parseFloat(current_ticker_infos.current_currency_ticker_price)
                         }
 
-                        placeholderText: qsTr("Amount to send")
+                        DefaultText
+                        {
+                            anchors.right: parent.right
+                            anchors.rightMargin: 10
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            text: API.app.wallet_pg.ticker
+                            font.pixelSize: 16
+                        }
                     }
 
                     // Amount input in fiat
@@ -369,6 +379,8 @@ BasicModal
                         Layout.preferredWidth: input_amount.width
                         Layout.preferredHeight: input_amount.height
 
+                        placeholderText: qsTr("Amount to send in fiat")
+
                         onTextChanged:
                         {
                             if (text.length === 0)
@@ -378,7 +390,16 @@ BasicModal
                             }
                             input_amount.text = parseFloat(text) / parseFloat(current_ticker_infos.current_currency_ticker_price)
                         }
-                        placeholderText: qsTr("Amount to send in fiat")
+
+                        DefaultText
+                        {
+                            anchors.right: parent.right
+                            anchors.rightMargin: 10
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            text: API.app.settings_pg.current_currency
+                            font.pixelSize: 16
+                        }
                     }
                 }
 
