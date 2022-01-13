@@ -5270,11 +5270,6 @@
     "currently_enabled": false,
     "wallet_only": true
   },
-<<<<<<< HEAD:assets/config/0.5.3-coins.json
-  "SMTF-v2": {
-    "coin": "SMTF-v2",
-    "name": "SmartFi",
-=======
   "SBCH": {
     "coin": "SBCH",
     "name": "SmartBCH",
@@ -5295,7 +5290,6 @@
   "SIBM-BEP20": {
     "coin": "SIBM-BEP20",
     "name": "SibMining",
->>>>>>> a21448ddc0da1e6353734fe7a5914fbe8b871c7d:assets/config/0.5.4-coins.json
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "nodes": [
