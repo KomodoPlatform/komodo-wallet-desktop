@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import bignumberjs 1.0
+
 import "../Components"
 import "../Constants"
 import App 1.0
@@ -348,14 +350,17 @@ BasicModal
 
                         placeholderText: qsTr("Amount to send")
 
-                        onTextChanged:
+                        onTextEdited:
                         {
+                            if (new BigNumber(current_ticker_infos.current_currency_ticker_price).isLessThanOrEqualTo(0))
+                                return;
                             if (text.length === 0)
                             {
                                 fiatInput.text = "";
                                 return;
                             }
-                            fiatInput.text = parseFloat(text) * parseFloat(current_ticker_infos.current_currency_ticker_price)
+                            let value = new BigNumber(text);
+                            fiatInput.text = value.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                         }
 
                         DefaultText
@@ -374,21 +379,22 @@ BasicModal
                     {
                         id: fiatInput
 
-                        enabled: input_amount.enabled
+                        enabled: input_amount.enabled && new BigNumber(current_ticker_infos.current_currency_ticker_price).isGreaterThan(0)
 
                         Layout.preferredWidth: input_amount.width
                         Layout.preferredHeight: input_amount.height
 
                         placeholderText: qsTr("Amount to send in fiat")
 
-                        onTextChanged:
+                        onTextEdited:
                         {
                             if (text.length === 0)
                             {
                                 input_amount.text = "";
                                 return;
                             }
-                            input_amount.text = parseFloat(text) / parseFloat(current_ticker_infos.current_currency_ticker_price)
+                            let value = new BigNumber(text);
+                            input_amount.text = value.dividedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                         }
 
                         DefaultText
@@ -416,8 +422,11 @@ BasicModal
 
                     onCheckStateChanged:
                     {
-                        if (checked) input_amount.text = parseFloat(current_ticker_infos.balance);
-                        else input_amount.text = "";
+                        if (checked)
+                        {
+                            input_amount.text = current_ticker_infos.balance;
+                            fiatInput.text = new BigNumber(input_amount.text).multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
+                        }
                     }
                 }
             }
