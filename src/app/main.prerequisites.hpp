@@ -389,7 +389,7 @@ run_app(int argc, char** argv)
     QtWebEngine::initialize();
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
 
-    app->setWindowIcon(QIcon(":/atomic_defi_design/assets/images/logo/dex-logo.png"));
+    app->setWindowIcon(QIcon(":/assets/images/logo/dex-logo.png"));
     app->setOrganizationName("Firo Core Team");
     app->setOrganizationDomain("com");
     QQmlApplicationEngine engine;

@@ -5,6 +5,7 @@ on:
     types: [ opened, synchronize, reopened ]
   push:
     branches:
+      - dev
       - master
   schedule:
     - cron: '0 0 * * 1'
