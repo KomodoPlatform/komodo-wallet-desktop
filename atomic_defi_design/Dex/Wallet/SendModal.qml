@@ -286,6 +286,7 @@ BasicModal
 
                 ClickableText
                 {
+                    id: addressbook_link
                     Layout.alignment: Qt.AlignVCenter
                     Layout.leftMargin: 10
 
