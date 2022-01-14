@@ -309,6 +309,8 @@ BasicModal
                 DefaultText
                 {
                     id: reason
+                    Layout.preferredWidth: 385
+                    Layout.preferredHeight: 44
 
                     wrapMode: Label.Wrap
                     color: Style.colorRed
@@ -320,14 +322,16 @@ BasicModal
                     enabled: !root.is_send_busy
                     visible: needFix
 
-                    Layout.alignment: Qt.AlignRight
-                    Layout.preferredWidth: 50
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.leftMargin: 10
+                    Layout.preferredWidth: addressbook_link.width
                     Layout.preferredHeight: 40
 
                     text: qsTr("Fix")
                     onClicked: api_wallet_page.convert_address(input_address.text, address_data.to_address_format)
 
                 }
+
             }
 
             // Amount to send
