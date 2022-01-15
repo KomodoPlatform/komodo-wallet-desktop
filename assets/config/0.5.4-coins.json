@@ -1096,7 +1096,7 @@
       },
       {
         "url": "electrum1.cipig.net:10000",
-        "ws_url": "electrum3.cipig.net:30000"
+        "ws_url": "electrum1.cipig.net:30000"
       }
     ],
     "explorer_url": [
@@ -4699,11 +4699,11 @@
       },
       {
         "url": "electrum2.cipig.net:10001",
-        "ws_url": "electrum3.cipig.net:30001"
+        "ws_url": "electrum2.cipig.net:30001"
       },
       {
         "url": "electrum1.cipig.net:10001",
-        "ws_url": "electrum3.cipig.net:30001"
+        "ws_url": "electrum1.cipig.net:30001"
       }
     ],
     "explorer_url": [
@@ -8820,6 +8820,7 @@
     "name": "Ubiq",
     "coinpaprika_id": "ubq-ubiq",
     "coingecko_id": "ubiq",
+    "nomics_id": "UBQ",
     "nodes": [
       "https://rpc.octano.dev/"
     ],
