@@ -47,25 +47,33 @@ function getHardcoded()
         modalPageCounterGradientStartColor: "#9DD4F3",
         modalPageCounterGradientEndColor: "#9DD4F3",
 
+        notifPopupBackgroundColor: "#EDF4FFFF",
+        notifPopupTextColor: "#456078FF",
+        notifPopupTimerColor: "#DBE0E4FF",
+        notifPopupTimerBackgroundColor: "#93A3B1FF",
+        notifPopupIconStartColor: "#000000FF",
+        notifPopupIconEndColor: "#000000FF",
+
         scrollBarIndicatorColor: "#DBE0E4FF",
         scrollBarBackgroundColor: "#93A3B1FF",
 
         tabSelectedColor: "#DCE8FD",
 
         textDisabledColor: "#C5CFD8",
-        textSelectionColor: "#14bca6",
+        textSelectionColor: "#14BCA6FF",
         textPlaceholderColor: "#91A8E8",
         textSelectedColor: "#f9f9fb",
 
+        textFieldBackgroundColor: "#F3F5F6FF",
         textFieldPrefixColor: "#45607894",
-        textFieldSuffixColor: "#456078",
+        textFieldSuffixColor: "#456078FF",
 
         chartTradingLineBackgroundColor: "#C5F2EF",
         chartTradingLineColor: "#53EBD7",
 
-        innerBackgroundColor: "#f7faff",
+        innerBackgroundColor: "#edf4ff",
 
-        floatingBackgroundColor: "#f7faff",
+        floatingBackgroundColor: "#edf4ff",
 
         rangeSliderBackgroundColor: "#5A68E6FF",
         rangeSliderDistanceColor: "#4986EA3B",

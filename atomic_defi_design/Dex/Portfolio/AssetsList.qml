@@ -116,8 +116,7 @@ Dex.DefaultListView
             {
                 Layout.preferredWidth: _assetNameColumnWidth
 
-                Image
-                {
+                Dex.DefaultImage {
                     id: assetImage
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
@@ -203,16 +202,14 @@ Dex.DefaultListView
             {
                 Layout.preferredWidth: _assetProviderColumnWidth
 
-                Image // Price Provider Icon.
-                {
+                Dex.DefaultImage {
                     id: priceProviderIcon
-
                     enabled: priceProvider !== "unknown"
                     visible: enabled
                     anchors.centerIn: parent
+                    source: enabled ? Dex.General.providerIcon(priceProvider) : ""
                     width: 16
                     height: 16
-                    source: enabled ? Dex.General.providerIcon(priceProvider) : ""
 
                     Dex.DefaultMouseArea
                     {

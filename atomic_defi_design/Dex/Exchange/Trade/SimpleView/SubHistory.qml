@@ -15,7 +15,8 @@ import "Main.js" as Main
 
 import App 1.0
 
-Item {
+Item
+{
     id: _subHistoryRoot
 
     readonly property date default_min_date: new Date("2019-01-01")
@@ -140,45 +141,43 @@ Item {
             Layout.fillWidth: true
             property bool is_history: true
 
-            Component.onCompleted: {
-                _subHistoryRoot.list_model_proxy.is_history = is_history
-            }
-            List {
-                id: order_list_view
-            }
-            DexRectangle {
-                anchors.fill: parent
-                color: DexTheme.portfolioPieGradient ? 'transparent' : DexTheme.dexBoxBackgroundColor
-                opacity: .8
-                visible: _subHistoryRoot.displayFilter
-                border.width: 0
-            }
-            DexRectangle {
-                width: parent.width
+            Component.onCompleted:  _subHistoryRoot.list_model_proxy.is_history = is_history
+
+            List { id: order_list_view }
+
+            DefaultRectangle
+            {
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width - 20
                 height: _subHistoryRoot.displayFilter ? parent.height : 60
-                visible: height>100
-                sizeAnimation: true
-                color: DexTheme.portfolioPieGradient ? DexTheme.contentColorTopBold : DexTheme.dexBoxBackgroundColor
-                radius: 0
-                y: -20
-                Column {
+                visible: height > 100
+                radius: 18
+
+                Column
+                {
                     anchors.horizontalCenter: parent.horizontalCenter
                     leftPadding: 15
                     rightPadding: 15
                     visible: parent.height > 250
-                    DexLabel {
+
+                    DefaultText
+                    {
                         text: qsTr("Filter settings")
                         topPadding: 10
                         leftPadding: 10
                         font: DexTypo.head6
                         opacity: .8
                     }
-                    RowLayout {
+
+                    RowLayout
+                    {
                         width: main_order.width - 30
                         height: 35
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 0
-                        DefaultSweetComboBox {
+
+                        DefaultSweetComboBox
+                        {
                             id: combo_base
                             Layout.fillWidth: true
                             model: Constants.API.app.portfolio_pg.global_cfg_mdl.all_proxy
@@ -189,12 +188,15 @@ Item {
                         }
 
                     }
-                    RowLayout {
+
+                    RowLayout
+                    {
                         width: main_order.width - 30
                         height: 35
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 5
-                        DefaultSweetComboBox {
+                        DefaultSweetComboBox
+                        {
                             id: combo_rel
                             Layout.fillWidth: true
                             model: Constants.API.app.portfolio_pg.global_cfg_mdl.all_proxy//combo_base.model
@@ -202,17 +204,19 @@ Item {
                             height: 60
                             valueRole: "ticker"
                             textRole: 'ticker'
-
                         }
-
                     }
+
                     spacing: 10
-                    RowLayout {
+
+                    RowLayout
+                    {
                         width: main_order.width - 40
                         height: 50
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 5
-                        Qaterial.TextFieldDatePicker {
+                        Qaterial.TextFieldDatePicker
+                        {
                             id: min_date
                             title: qsTr("From")
                             from: default_min_date
@@ -226,7 +230,8 @@ Item {
                             backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                         }
 
-                        Qaterial.TextFieldDatePicker {
+                        Qaterial.TextFieldDatePicker
+                        {
                             id: max_date
                             enabled: min_date.enabled
                             title: qsTr("To")
@@ -241,36 +246,39 @@ Item {
                             color: DexTheme.foregroundColor
                             backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                         }
-
                     }
                 }
 
-                Item {
+                Item
+                {
                     anchors.bottom: parent.bottom
                     width: parent.width - 40
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 60
-                    RowLayout {
+
+                    RowLayout
+                    {
                         anchors.fill: parent
                         spacing: 15
-                        DexAppButton {
+
+                        DefaultButton
+                        {
                             Layout.fillWidth: true
-                            radius: 10
                             Layout.alignment: Qt.AlignVCenter
+                            radius: 10
                             text: qsTr("Cancel")
-                            onClicked: {
-                                _subHistoryRoot.displayFilter = false
-                            }
+                            onClicked: _subHistoryRoot.displayFilter = false
                         }
-                        DexAppOutlineButton {
+
+                        DefaultButton
+                        {
                             id: applyButton
-                            height: 35
                             Layout.fillWidth: true
-                            radius: 10
                             Layout.alignment: Qt.AlignVCenter
-                            opacity: containsMouse ? .7 : 1
+                            radius: 10
                             text: qsTr("Apply filter")
-                            onClicked: {
+                            onClicked:
+                            {
                                 _subHistoryRoot.displayFilter = false
                                 _subHistoryRoot.applyFilter()
                                 _subHistoryRoot.applyAllFiltering()
@@ -286,10 +294,12 @@ Item {
             height: 2
             Layout.fillWidth: true
         }
-        Item {
+        Item
+        {
             Layout.fillWidth: true
             Layout.preferredHeight: 30
-            Item{
+            Item
+            {
                 width: parent.width
                 height: 50
                 y: -20

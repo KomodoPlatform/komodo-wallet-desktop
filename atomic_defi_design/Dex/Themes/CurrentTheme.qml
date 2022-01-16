@@ -5,9 +5,60 @@ import "DefaultTheme.js" as DexDefaultTheme
 
 ThemeData
 {
+    enum ColorMode
+    {
+        None,
+        Light,
+        Dark
+    }
+
     readonly property var defaultTheme: DexDefaultTheme.getHardcoded()
 
+    property string _themeName
+
     signal themeChanged()
+
+    function getColorMode()
+    {
+        if (_themeName.endsWith(" - Light")) return CurrentTheme.ColorMode.Light;
+        if (_themeName.endsWith(" - Dark")) return CurrentTheme.ColorMode.Dark;
+        return CurrentTheme.ColorMode.None;
+    }
+
+    function hasColorMode(colorMode)
+    {
+        let currentColorMode = getColorMode();
+        let colorModeStr = _themeName;
+
+        if (currentColorMode !== colorMode && colorMode === CurrentTheme.ColorMode.Light)
+            colorModeStr = colorModeStr.replace(" - Dark", " - Light");
+        else if (currentColorMode !== colorMode && colorMode === CurrentTheme.ColorMode.Dark)
+            colorModeStr = colorModeStr.replace(" - Light", " - Dark");
+
+        return DexFilesystem.exists(DexFilesystem.getThemeFolder(colorModeStr))
+    }
+
+    function hasDarkAndLightMode() { return hasColorMode(CurrentTheme.ColorMode.Light) && hasColorMode(CurrentTheme.ColorMode.Dark); }
+
+    function switchColorMode()
+    {
+        let colorMode = getColorMode();
+        let colorModeStr = _themeName;
+
+        console.log(colorMode);
+        console.log(colorModeStr);
+        if (colorMode === CurrentTheme.ColorMode.Light)
+        {
+            colorModeStr = colorModeStr.replace(" - Light", " - Dark");
+        }
+        else if (colorMode === CurrentTheme.ColorMode.Dark)
+        {
+            colorModeStr = colorModeStr.replace(" - Dark", " - Light");
+        }
+        else return;
+        console.log(colorModeStr);
+        loadFromFilesystem(colorModeStr);
+    }
 
     function loadFromFilesystem(themeName)
     {
@@ -16,6 +67,8 @@ ThemeData
         try
         {
             if (!DexFilesystem.exists(DexFilesystem.getThemeFolder(themeName))) throw `${themeName} does not exist in the filesystem.`;
+
+            _themeName = themeName
 
             let themeData = atomic_qt_utilities.load_theme(themeName);
             loadColors(themeData);
@@ -87,6 +140,13 @@ ThemeData
         modalPageCounterGradientStartColor  = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientStartColor || defaultTheme.modalPageCounterGradientStartColor);
         modalPageCounterGradientEndColor    = Dex.Color.argbStrFromRgbaStr(themeData.modalPageCounterGradientEndColor || defaultTheme.modalPageCounterGradientEndColor);
 
+        notifPopupBackgroundColor           = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupBackgroundColor || defaultTheme.notifPopupBackgroundColor);
+        notifPopupTextColor                 = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupTextColor || defaultTheme.notifPopupTextColor);
+        notifPopupTimerColor                = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupTimerColor || defaultTheme.notifPopupTimerColor);
+        notifPopupTimerBackgroundColor      = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupTimerBackgroundColor || defaultTheme.notifPopupTimerBackgroundColor);
+        notifPopupIconStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupIconStartColor || defaultTheme.notifPopupIconStartColor);
+        notifPopupIconEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.notifPopupIconEndColor || defaultTheme.notifPopupIconEndColor);
+
         scrollBarIndicatorColor             = Dex.Color.argbStrFromRgbaStr(themeData.scrollBarIndicatorColor || defaultTheme.scrollBarIndicatorColor);
         scrollBarBackgroundColor            = Dex.Color.argbStrFromRgbaStr(themeData.scrollBarBackgroundColor || defaultTheme.scrollBarBackgroundColor);
 
@@ -97,6 +157,7 @@ ThemeData
         textPlaceholderColor                = Dex.Color.argbStrFromRgbaStr(themeData.textPlaceholderColor || defaultTheme.textPlaceholderColor);
         textSelectedColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textSelectedColor || defaultTheme.textSelectedColor);
 
+        textFieldBackgroundColor            = Dex.Color.argbStrFromRgbaStr(themeData.textFieldBackgroundColor || defaultTheme.textFieldBackgroundColor);
         textFieldPrefixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldPrefixColor || defaultTheme.textFieldPrefixColor);
         textFieldSuffixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldSuffixColor || defaultTheme.textFieldSuffixColor);
 
@@ -188,6 +249,13 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.modalPageCounterGradientStartColor : %1".arg(modalPageCounterGradientStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.modalPageCounterGradientEndColor : %1".arg(modalPageCounterGradientEndColor));
 
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupBackgroundColor : %1".arg(notifPopupBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupTextColor : %1".arg(notifPopupTextColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupTimerColor : %1".arg(notifPopupTimerColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupTimerBackgroundColor : %1".arg(notifPopupTimerBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupIconStartColor : %1".arg(notifPopupIconStartColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.notifPopupIconEndColor : %1".arg(notifPopupIconEndColor));
+
         console.info("Dex.Themes.CurrentTheme.printValues.scrollBarIndicatorColor : %1".arg(scrollBarIndicatorColor));
         console.info("Dex.Themes.CurrentTheme.printValues.scrollBarBackgroundColor : %1".arg(scrollBarBackgroundColor));
 
@@ -196,6 +264,10 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.textSelectionColor : %1".arg(textSelectionColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textPlaceholderColor : %1".arg(textPlaceholderColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textSelectedColor : %1".arg(textSelectedColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.textFieldBackgroundColor : %1".arg(textFieldBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.textFieldPrefixColor : %1".arg(textFieldPrefixColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.textFieldSuffixColor : %1".arg(textFieldSuffixColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.chartTradingLineBackgroundColor : %1".arg(chartTradingLineBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.chartTradingLineColor : %1".arg(chartTradingLineColor));

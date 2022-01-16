@@ -11,12 +11,29 @@ TextField
     property alias left_text: left_text.text_value
     property alias right_text: right_text.text_value
     property alias radius: background.radius
+    property alias backgroundColor: background.color
 
     font: DexTypo.body2
     placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
     selectedTextColor: Dex.CurrentTheme.textSelectedColor
     selectionColor: Dex.CurrentTheme.textSelectionColor
     color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
+
+    // Right click Context Menu
+    selectByMouse: true
+    persistentSelection: true
+
+    leftPadding: Math.max(0, left_text.width + 20)
+    rightPadding: Math.max(0, right_text.width + 20)
+    topPadding: 7
+
+    background: DefaultRectangle
+    {
+        id: background
+        color: Dex.CurrentTheme.textFieldBackgroundColor
+        radius: 18
+        anchors.fill: parent
+    }
 
     Behavior on color
     {
@@ -25,6 +42,7 @@ TextField
             duration: Style.animationDuration
         }
     }
+
     Behavior on placeholderTextColor
     {
         ColorAnimation
@@ -32,23 +50,6 @@ TextField
             duration: Style.animationDuration
         }
     }
-
-    // Right click Context Menu
-    selectByMouse: true
-    persistentSelection: true
-
-    background: Rectangle
-    {
-        id: background
-        color: Dex.CurrentTheme.backgroundColor
-        opacity: .4
-        radius: 18
-        anchors.fill: parent
-    }
-
-    leftPadding: Math.max(0, left_text.width + 20)
-    rightPadding: Math.max(0, right_text.width + 20)
-    topPadding: 7
 
     RightClickMenu {}
 

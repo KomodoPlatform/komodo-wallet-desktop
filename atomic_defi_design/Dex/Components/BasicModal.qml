@@ -55,7 +55,8 @@ DefaultModal
         NumberAnimation { target: root; property: "opacity"; to: 1; duration: fade_out.duration }
     }
 
-    Column {
+    Column
+    {
         id: column_layout
         spacing: Style.rowSpacing
         width: parent.width

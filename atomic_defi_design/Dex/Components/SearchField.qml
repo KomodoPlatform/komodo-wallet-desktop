@@ -11,10 +11,12 @@ Rectangle
     property alias searchIcon: _searchIcon
     property alias textField: _textField
 
+    function forceActiveFocus() { _textField.forceActiveFocus(); }
+
     color: Dex.CurrentTheme.accentColor
     radius: 18
 
-    Image
+    DefaultImage
     {
         id: _searchIcon
         anchors.left: parent.left

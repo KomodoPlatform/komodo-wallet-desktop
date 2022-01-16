@@ -27,11 +27,13 @@ DefaultListView
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
+    clip: true
 
     header: DefaultRectangle
     {
         width: _rowWidth
         height: _rowHeight
+        z: 2
         color: Dex.CurrentTheme.floatingBackgroundColor
 
         RowLayout                   // Coins Columns Name
@@ -39,17 +41,16 @@ DefaultListView
             anchors.verticalCenter: parent.verticalCenter
             anchors.fill: parent
             spacing: 2
-            DexLabel             // "Token" Header
+            DefaultText             // "Token" Header
             {
             	property bool asc: true
 
                 Layout.preferredWidth: _tokenColumnSize
                 text: qsTr("Token")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
                 DexMouseArea
                 {
                 	anchors.fill: parent
@@ -61,17 +62,16 @@ DefaultListView
                 	}
                 }
             }
-            DexLabel             // "Balance" Header
+            DefaultText             // "Balance" Header
             {
             	property bool asc: true
 
                 Layout.fillWidth: true
                 text: qsTr("Balance")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
 
                 DexMouseArea
                 {
@@ -84,16 +84,15 @@ DefaultListView
                 	}
                 }
             }
-            DexLabel             // Fiat Balance Header
+            DefaultText             // Fiat Balance Header
             {
             	property bool asc: true
 
                 text: qsTr("Balance Fiat")
-                font.family: Style.font_family
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
-                color: children[1].containsMouse? DexTheme.accentColor : DexTheme.foregroundColor 
 
                 DexMouseArea
                 {

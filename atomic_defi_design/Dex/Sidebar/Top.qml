@@ -7,37 +7,35 @@ import Dex.Themes 1.0 as Dex
 
 MouseArea
 {
+    id: root
+
     hoverEnabled: true
 
     Connections
     {
         target: parent.parent
 
-        function onIsExpandedChanged()
+        function onExpanded(isExpanded)
         {
             if (isExpanded)
             {
-                waitForSidebarExpansionTimer.start();
-            }
-            else
-            {
-                versionLabel.opacity = 0;
-                waitForSidebarExpansionTimer.stop();
-                dexLogo.source = Dex.CurrentTheme.logoPath;
-                dexLogo.scale = .5;
+                fadeInTextVerAnimation.start();
+                dexLogo.scale = .8;
+                dexLogo.source = Dex.CurrentTheme.bigLogoPath;
+                dexLogo.sourceSize.width = 200;
             }
         }
-    }
 
-    Timer
-    {
-        id: waitForSidebarExpansionTimer
-        interval: 200
-        onTriggered:
+        function onExpandStarted(isExpanding)
         {
-            fadeInTextVerAnimation.start();
-            dexLogo.source = Dex.CurrentTheme.bigLogoPath;
-            dexLogo.scale = .8;
+            if (!isExpanding)
+            {
+                versionLabel.opacity = 0;
+                dexLogo.scale = .5;
+                dexLogo.source = Dex.CurrentTheme.logoPath;
+                dexLogo.sourceSize.width = 80;
+                versionLabel.opacity = 0;
+            }
         }
     }
 
@@ -50,25 +48,40 @@ MouseArea
         to: 1
     }
 
-    Image
+    DefaultImage
     {
         id: dexLogo
         anchors.horizontalCenter: parent.horizontalCenter
-        scale: .8
-        source: Dex.CurrentTheme.bigLogoPath
 
-        DefaultText
+        Component.onCompleted:
         {
-            id: versionLabel
-            visible: isExpanded
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.bottom
-            anchors.topMargin: 35
-
-            scale: 1.1
-            text_value: General.version_string
-            font: DexTypo.caption
-            color: Dex.CurrentTheme.sidebarVersionTextColor
+            sourceSize.width = parent.width
+            source = isExpanded ? Dex.CurrentTheme.bigLogoPath : Dex.CurrentTheme.logoPath;
+            scale = isExpanded ? .8 : .5
         }
+
+        Connections
+        {
+            target: Dex.CurrentTheme
+            function onThemeChanged()
+            {
+                dexLogo.source = isExpanded ? Dex.CurrentTheme.bigLogoPath : Dex.CurrentTheme.logoPath
+            }
+        }
+    }
+
+    DefaultText
+    {
+        id: versionLabel
+        anchors.horizontalCenter: dexLogo.horizontalCenter
+        anchors.top: dexLogo.bottom
+        anchors.topMargin: 35
+
+        text_value: General.version_string
+        font: DexTypo.caption
+        color: Dex.CurrentTheme.sidebarVersionTextColor
+        visible: root.width > 120
+
+        Component.onCompleted: opacity = isExpanded ? 1 : 0
     }
 }

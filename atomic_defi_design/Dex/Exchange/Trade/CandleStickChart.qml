@@ -8,6 +8,7 @@ import QtWebEngine 1.8
 import "../../Components"
 
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 // List
 
@@ -63,8 +64,16 @@ DexBox {
             }
         }
 
-        readonly property string theme: DexTheme.chartTheme
-        onThemeChanged:  try{loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin, true)}catch(e){}
+        readonly property string theme: Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark ? "dark" : "light"
+
+        Connections
+        {
+            target: Dex.CurrentTheme
+            function onThemeChanged()
+            {
+                loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin, true)
+            }
+        }
 
         property string chart_base
         property string chart_rel

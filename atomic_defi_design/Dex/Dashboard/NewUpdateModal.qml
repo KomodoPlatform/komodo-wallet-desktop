@@ -19,7 +19,6 @@ BasicModal
     readonly property real   update_download_progress: self_update_service.update_download_progress
     readonly property bool   update_ready:             self_update_service.update_ready
     property bool            invalid_update_files:     self_update_service.invalid_update_files
-
     // Display the good modal section according to current self update service state
     function select_index()
     {
@@ -71,9 +70,11 @@ BasicModal
     ModalContent
     {
         title: qsTr("Searching new updates...")
+        titleAlignment: Label.AlignHCenter
 
         DefaultText
         {
+            horizontalAlignment: Label.AlignHCenter
             text: qsTr("Please wait while the application is finding a new update... You can close this modal if you want.")
         }
     }
@@ -82,11 +83,24 @@ BasicModal
     ModalContent
     {
         title: qsTr("Already updated")
+        titleAlignment: Label.AlignHCenter
+
 
         DefaultText
         {
+            horizontalAlignment: Label.AlignHCenter
+            Layout.fillWidth: true
             text: qsTr("%1 is already up-to-date !").arg(API.app_name)
         }
+        footer:
+        [
+            DexAppButton
+            {
+                text: qsTr("Close")
+                Layout.alignment: Qt.AlignHCenter
+                onClicked: root.visible = false
+            }
+        ]
     }
 
     // Second section. Asks user to update its client.

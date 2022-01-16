@@ -4,42 +4,84 @@ import QtQuick.Controls 2.15
 import Qt.labs.platform 1.0
 import Qaterial 1.0 as Qaterial
 
+import Dex.Themes 1.0 as Dex
+
 import "../Constants"
 import App 1.0
 import "../Components"
 import "../Screens"
 
-DexPopup {
+DexPopup
+{
     id: root
 
-    width: 400
-    height: 440
-
+    width: 406
+    height: 526
     property
-    var notification_map: [{
-        icon: Qaterial.Icons.arrowUpCircleOutline,
-        color: DexTheme.redColor
-    }, {
-        icon: Qaterial.Icons.arrowDownCircleOutline,
-        color: DexTheme.greenColor
-    }, {
-        icon: Qaterial.Icons.emailOutline,
-        color: DexTheme.foregroundColor
+    var default_gradient: Gradient
+    {
+        orientation: Qt.Horizontal
+        GradientStop
+        {
+            position: 0.1255
+            color: Dex.CurrentTheme.gradientButtonPressedStartColor
+        }
+        GradientStop
+        {
+            position: 0.933
+            color: Dex.CurrentTheme.gradientButtonPressedEndColor
+        }
+    }
+    property
+    var default_red_gradient: Gradient
+    {
+        orientation: Qt.Horizontal
+        GradientStop
+        {
+            position: 0.1255
+            color: Dex.CurrentTheme.tradeSellModeSelectorBackgroundColorStart
+        }
+        GradientStop
+        {
+            position: 0.933
+            color: Dex.CurrentTheme.tradeSellModeSelectorBackgroundColorEnd
+        }
+    }
+    property
+    var notification_map: [
+    {
+        icon: Qaterial.Icons.arrowTopRight,
+        color: Dex.CurrentTheme.foregroundColor,
+        gradient: default_red_gradient
+    },
+    {
+        icon: Qaterial.Icons.arrowBottomRight,
+        color: Dex.CurrentTheme.foregroundColor,
+        gradient: default_gradient
+    },
+    {
+        icon: Qaterial.Icons.messageOutline,
+        color: DexTheme.foregroundColor,
+        gradient: default_gradient
     }]
-    backgroundColor: Qt.darker(DexTheme.dexBoxBackgroundColor, 0.9)
+    backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
 
-    function reset() {
+    function reset()
+    {
         notifications_list = []
         root.close()
     }
-    enum NotificationKind {
+    enum NotificationKind
+    {
         Send,
         Receive,
         Others
     }
 
-    function showApp() {
-        switch (window.real_visibility) {
+    function showApp()
+    {
+        switch (window.real_visibility)
+        {
             case 4:
                 window.showMaximized()
                 break
@@ -54,10 +96,12 @@ DexPopup {
         window.requestActivate()
     }
 
-    function performNotificationAction(notification) {
+    function performNotificationAction(notification)
+    {
         root.close()
 
-        switch (notification.click_action) {
+        switch (notification.click_action)
+        {
             case "open_notifications":
                 root.open()
                 break
@@ -68,7 +112,8 @@ DexPopup {
             case "open_swaps_page":
                 dashboard.switchPage(Dashboard.PageType.DEX)
 
-                dashboard.loader.onLoadComplete = () => {
+                dashboard.loader.onLoadComplete = () =>
+                {
                     dashboard.current_component.current_page = dashboard.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
                 }
                 break
@@ -81,10 +126,12 @@ DexPopup {
         }
     }
 
-    function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications", long_message = "") {
+    function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications", long_message = "")
+    {
 
         let obj;
-        if (title.indexOf("You received") !== -1) {
+        if (title.indexOf("You received") !== -1)
+        {
             obj = {
                 event_name,
                 params,
@@ -96,7 +143,9 @@ DexPopup {
                 long_message,
                 kind: NotificationsModal.NotificationKind.Receive
             }
-        } else if (title.indexOf("You sent") !== -1) {
+        }
+        else if (title.indexOf("You sent") !== -1)
+        {
             obj = {
                 event_name,
                 params,
@@ -108,7 +157,9 @@ DexPopup {
                 long_message,
                 kind: NotificationsModal.NotificationKind.Send
             }
-        } else {
+        }
+        else
+        {
             obj = {
                 event_name,
                 params,
@@ -124,8 +175,10 @@ DexPopup {
 
         // Update if it already exists
         let updated_existing_one = false
-        for (let i = 0; i < notifications_list.length; ++i) {
-            if (notifications_list[i].id === obj.id) {
+        for (let i = 0; i < notifications_list.length; ++i)
+        {
+            if (notifications_list[i].id === obj.id)
+            {
                 notifications_list[i] = General.clone(obj)
                 updated_existing_one = true
                 break
@@ -133,7 +186,8 @@ DexPopup {
         }
 
         // Add new line
-        if (!updated_existing_one) {
+        if (!updated_existing_one)
+        {
             notifications_list = [obj].concat(notifications_list)
         }
 
@@ -146,8 +200,10 @@ DexPopup {
     }
 
 
-    function getOrderStatusText(status, short_text = false) {
-        switch (status) {
+    function getOrderStatusText(status, short_text = false)
+    {
+        switch (status)
+        {
             case "matching":
                 return short_text ? qsTr("Matching") : qsTr("Order Matching")
             case "matched":
@@ -166,8 +222,10 @@ DexPopup {
     }
 
     // Events
-    function onUpdateSwapStatus(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
-        newNotification("onUpdateSwapStatus", {
+    function onUpdateSwapStatus(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date)
+    {
+        newNotification("onUpdateSwapStatus",
+            {
                 old_swap_status,
                 new_swap_status,
                 swap_uuid,
@@ -182,29 +240,39 @@ DexPopup {
             "open_swaps_page")
     }
 
-    function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp) {
+    function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp)
+    {
         const change = General.formatCrypto("", amount, ticker)
-        if(!app.segwit_on) {
-            newNotification("onBalanceUpdateStatus", {
-                am_i_sender,
-                amount,
-                ticker,
+        if (!app.segwit_on)
+        {
+            newNotification("onBalanceUpdateStatus",
+                {
+                    am_i_sender,
+                    amount,
+                    ticker,
+                    human_date,
+                    timestamp
+                },
+                timestamp,
+                am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
+                qsTr("Your wallet balance changed"),
                 human_date,
-                timestamp
-            },
-            timestamp,
-            am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
-            qsTr("Your wallet balance changed"),
-            human_date,
-            "open_wallet_page")
-        } else { app.segwit_on = false }
+                "open_wallet_page")
+        }
+        else
+        {
+            app.segwit_on = false
+        }
     }
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
-    function onEnablingCoinFailedStatus(coin, error, human_date, timestamp) {
+    function onEnablingCoinFailedStatus(coin, error, human_date, timestamp)
+    {
         // Check if there is mismatch error, ignore this one
-        for (let n of notifications_list) {
-            if (n.event_name === "onMismatchCustomCoinConfiguration" && n.params.asset === coin) {
+        for (let n of notifications_list)
+        {
+            if (n.event_name === "onMismatchCustomCoinConfiguration" && n.params.asset === coin)
+            {
                 console.log("Ignoring onEnablingCoinFailedStatus event because onMismatchCustomCoinConfiguration exists for", coin)
                 return
             }
@@ -215,7 +283,8 @@ DexPopup {
 
         error = check_internet_connection_text + "\n\n" + error
 
-        newNotification("onEnablingCoinFailedStatus", {
+        newNotification("onEnablingCoinFailedStatus",
+            {
                 coin,
                 error,
                 human_date,
@@ -231,12 +300,14 @@ DexPopup {
         toast.show(title, General.time_toast_important_error, error)
     }
 
-    function onEndpointNonReacheableStatus(base_uri, human_date, timestamp) {
+    function onEndpointNonReacheableStatus(base_uri, human_date, timestamp)
+    {
         const title = qsTr("Endpoint not reachable")
 
         const error = qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri
 
-        newNotification("onEndpointNonReacheableStatus", {
+        newNotification("onEndpointNonReacheableStatus",
+            {
                 base_uri,
                 human_date,
                 timestamp
@@ -251,10 +322,12 @@ DexPopup {
         toast.show(title, General.time_toast_important_error, error)
     }
 
-    function onMismatchCustomCoinConfiguration(asset, human_date, timestamp) {
+    function onMismatchCustomCoinConfiguration(asset, human_date, timestamp)
+    {
         const title = qsTr("Mismatch at %1 custom asset configuration", "TICKER").arg(asset)
 
-        newNotification("onMismatchCustomCoinConfiguration", {
+        newNotification("onMismatchCustomCoinConfiguration",
+            {
                 asset,
                 human_date,
                 timestamp
@@ -267,10 +340,12 @@ DexPopup {
         toast.show(title, General.time_toast_important_error, "", true, true)
     }
 
-    function onBatchFailed(reason, from, human_date, timestamp) {
+    function onBatchFailed(reason, from, human_date, timestamp)
+    {
         const title = qsTr("Batch %1 failed. Reason: %2").arg(from).arg(reason)
 
-        newNotification("onBatchFailed", {
+        newNotification("onBatchFailed",
+            {
                 human_date,
                 timestamp
             },
@@ -283,7 +358,8 @@ DexPopup {
     }
 
     // System
-    Component.onCompleted: {
+    Component.onCompleted:
+    {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
@@ -291,7 +367,8 @@ DexPopup {
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
         API.app.notification_mgr.batchFailed.connect(onBatchFailed)
     }
-    Component.onDestruction: {
+    Component.onDestruction:
+    {
         API.app.notification_mgr.updateSwapStatus.disconnect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.disconnect(onBalanceUpdateStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
@@ -300,161 +377,200 @@ DexPopup {
         API.app.notification_mgr.batchFailed.disconnect(onBatchFailed)
     }
 
-    function displayMessage(title, message) {
+    function displayMessage(title, message)
+    {
         if (API.app.settings_pg.notification_enabled)
             tray.showMessage(title, message)
     }
-    SystemTrayIcon {
+    SystemTrayIcon
+    {
         id: tray
         visible: true
         iconSource: General.image_path + "dex-tray-icon.png"
 
         tooltip: API.app_name
-        onMessageClicked: {
+        onMessageClicked:
+        {
             if (notifications_list.length > 0)
                 performNotificationAction(notifications_list[0])
             showApp()
         }
-        menu: Menu {
-            MenuItem {
+        menu: Menu
+        {
+            MenuItem
+            {
                 text: qsTr("Show")
                 onTriggered: showApp()
             }
 
-            MenuItem {
+            MenuItem
+            {
                 text: qsTr("Restart")
                 onTriggered: API.app.restart()
             }
 
-            MenuItem {
+            MenuItem
+            {
                 text: qsTr("Quit")
                 onTriggered: Qt.quit()
             }
         }
     }
 
-    ColumnLayout {
+    ColumnLayout
+    {
         anchors.fill: parent
-        Item {
-            Layout.preferredHeight: 65
-            Layout.fillWidth: parent
-            RowLayout {
-                anchors.fill: parent
-                DexLabel {
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
-                    leftPadding: 15
-                    font: DexTypo.head6
-                    text: "Notifications"
-                }
-                Qaterial.AppBarButton {
-                    enabled: list.count > 0
-                    Layout.alignment: Qt.AlignVCenter
-                    foregroundColor: DexTheme.foregroundColor
-                    icon.source: Qaterial.Icons.checkAll
-                    onClicked: notifications_list = []
-                }
+        anchors.margins: 30
+        anchors.topMargin: 20
+        spacing: 24
+        DexLabel
+        {
+            Layout.fillWidth: true
+            font
+            {
+                pixelSize: 20
+                weight: Font.Normal
             }
-            Rectangle {
-                height: 2
-                color: DexTheme.foregroundColor
-                opacity: .05
-                width: parent.width - 20
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-            }
+            text: "Notifications"
         }
 
-        Item {
+        Item
+        {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            DefaultText {
+            Qaterial.Icon
+            {
+
+                anchors.centerIn: parent
+                icon: Qaterial.Icons.bellOutline
+                size: 166
+                opacity: 0.03
+
+            }
+
+            DefaultText
+            {
                 anchors.centerIn: parent
                 visible: !list.visible
                 text_value: qsTr("There isn't any notification")
-                font.pixelSize: Style.textSizeSmall2
+                font.pixelSize: 14
             }
 
-            DefaultListView {
+            DefaultListView
+            {
                 id: list
                 visible: notifications_list.length !== 0
-                anchors.fill: parent
+                width: parent.width + 58
+                height: parent.height
+                anchors.horizontalCenter: parent.horizontalCenter
                 model: notifications_list
-                delegate: Rectangle {
-                    color: mouseArea.containsMouse ? DexTheme.dexBoxBackgroundColor : 'transparent'
-                    function removeNotification() {
+                delegate: Item
+                {
+
+                    Rectangle
+                    {
+                        anchors.fill: parent
+                        opacity: 0.7
+                        gradient: Gradient
+                        {
+                            orientation: Qt.Horizontal
+                            GradientStop
+                            {
+                                position: 0.1255
+                                color: mouseArea.containsMouse ? Dex.CurrentTheme.buttonColorEnabled : 'transparent'
+                            }
+                            GradientStop
+                            {
+                                position: 0.933
+                                color: 'transparent'
+                            }
+                        }
+                    }
+
+                    function removeNotification()
+                    {
                         notifications_list.splice(index, 1)
                         notifications_list = notifications_list
                     }
                     height: _column.height + 10
-                    width: list.width - 10
-                    MouseArea {
-                        id: mouseArea
-                        hoverEnabled: true
+                    width: list.width
+
+                    RowLayout
+                    {
                         anchors.fill: parent
-                        onClicked: {
-                            performNotificationAction(notifications_list[index])
-                            removeNotification()
-                        }
-                    }
-                    RowLayout {
-                        anchors.fill: parent
-                        Item {
+                        Item
+                        {
                             Layout.fillHeight: true
                             Layout.preferredWidth: 60
-                            Qaterial.ColorIcon {
-                                anchors.verticalCenter: parent.verticalCenter
-                                source: notification_map[modelData.kind].icon
-                                iconSize: 32
-                                x: 10
-                                color: notification_map[modelData.kind].color
-                                opacity: .6
+                            Rectangle
+                            {
+                                width: 23
+                                height: 23
+                                radius: 12
+                                gradient: notification_map[modelData.kind].gradient
+
+                                anchors.right: parent.right
+                                anchors.rightMargin: -5
+                                y: 13
+                                Qaterial.Icon
+                                {
+                                    anchors.centerIn: parent
+                                    size: 16
+                                    icon: notification_map[modelData.kind].icon
+
+                                }
                             }
                         }
-                        VerticalLine {
-                            Layout.preferredHeight: 50
-                            Layout.preferredWidth: 1
-                        }
-                        Item {
+                        Item
+                        {
                             Layout.fillHeight: true
                             Layout.fillWidth: true
-                            Column {
+                            Column
+                            {
                                 id: _column
                                 width: parent.width
                                 leftPadding: 15
-                                topPadding: 5
+                                topPadding: 10
                                 bottomPadding: 5
                                 spacing: 5
-                                DexLabel {
+                                DexLabel
+                                {
                                     text: modelData.title
-                                    font: DexTypo.body1
+                                    font: DexTypo.subtitle1
                                     width: parent.width
                                     wrapMode: Label.Wrap
                                 }
-                                DexLabel {
+                                DexLabel
+                                {
                                     text: modelData.message
                                     font: DexTypo.subtitle2
-                                    width: parent.width
+                                    width: parent.width - 20
                                     wrapMode: Label.Wrap
-                                    color: DexTheme.accentColor
                                 }
-                                DexLabel {
+                                DexLabel
+                                {
                                     text: modelData.human_date
                                     font: DexTypo.caption
+                                    opacity: 0.7
                                 }
 
                             }
-                            Qaterial.AppBarButton {
+                            Qaterial.AppBarButton
+                            {
                                 id: action_button
                                 scale: .6
                                 anchors.bottom: parent.bottom
                                 anchors.right: parent.right
+                                anchors.rightMargin: 5
                                 anchors.bottomMargin: -4
                                 foregroundColor: DexTheme.foregroundColor
-                                icon.source: {
+                                visible: modelData.event_name !== "check"
+                                icon.source:
+                                {
                                     let name
-                                    switch (modelData.event_name) {
+                                    switch (modelData.event_name)
+                                    {
                                         case "onEnablingCoinFailedStatus":
                                             name = "repeat"
                                             break
@@ -469,17 +585,20 @@ DexPopup {
                                     return General.qaterialIcon(name)
                                 }
 
-                                function removeNotification() {
+                                function removeNotification()
+                                {
                                     notifications_list.splice(index, 1)
                                     notifications_list = notifications_list
                                 }
 
-                                onClicked: {
+                                onClicked:
+                                {
                                     // Action might create another event so we save it and then remove the current one, then take the action
                                     const event_before_removal = General.clone(modelData)
 
                                     // Action
-                                    switch (event_before_removal.event_name) {
+                                    switch (event_before_removal.event_name)
+                                    {
                                         case "onEnablingCoinFailedStatus":
                                             removeNotification()
                                             console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
@@ -499,17 +618,29 @@ DexPopup {
                         }
                     }
 
-                    Rectangle {
-                        height: 2
-                        color: DexTheme.foregroundColor
-                        opacity: .05
-                        visible: !(list.count == index + 1)
-                        width: parent.width - 20
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.bottom: parent.bottom
+                    DexMouseArea
+                    {
+                        id: mouseArea
+                        hoverEnabled: true
+                        cursorShape: "PointingHandCursor"
+                        anchors.fill: parent
+                        onClicked:
+                        {
+                            performNotificationAction(notifications_list[index])
+                            removeNotification()
+                        }
                     }
                 }
             }
+
+        }
+
+        OutlineButton
+        {
+            text: qsTr('Mark all as read')
+            height: 40
+            Layout.alignment: Qt.AlignHCenter
+            onClicked: root.reset()
         }
     }
 }

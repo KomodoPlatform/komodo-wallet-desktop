@@ -6,8 +6,10 @@ import Qaterial 1.0 as Qaterial
 
 //! Project Imports.
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-Item {
+Item
+{
     id: control
 
     property int    padding: 10
@@ -27,7 +29,7 @@ Item {
         id: _label
         anchors.centerIn: parent
         icon: parent.icon
-        color: DexTheme.foregroundColor
+        color: Dex.CurrentTheme.foregroundColor
         opacity: _controlMouseArea.containsMouse ? 1 : .7
     }
 

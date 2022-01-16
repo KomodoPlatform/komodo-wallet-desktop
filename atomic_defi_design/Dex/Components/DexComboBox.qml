@@ -14,12 +14,13 @@ ComboBox
 {
     id: control
 
-    property alias  radius: bg_rect.radius
-    property color  lineHoverColor: DexTheme.hoverColor
-    property color  mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property int    dropDownMaxHeight: 300
-    property color  dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property var    dropdownLineText: m => textRole === "" ?
+    property alias radius: bg_rect.radius
+    property color lineHoverColor: DexTheme.hoverColor
+    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property int dropDownMaxHeight: 300
+    property color dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property
+    var dropdownLineText: m => textRole === "" ?
         m.modelData :
         !m.modelData ? m[textRole] : m.modelData[textRole]
     property string mainLineText: control.displayText
@@ -30,7 +31,10 @@ ComboBox
 
     Behavior on lineHoverColor
     {
-        ColorAnimation { duration: Style.animationDuration }
+        ColorAnimation
+        {
+            duration: Style.animationDuration
+        }
     }
 
     hoverEnabled: true
@@ -44,11 +48,8 @@ ComboBox
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 13
-            width: parent.width - anchors.leftMargin
-
             font: DexTypo.subtitle2
             text_value: control.mainLineText
-            elide: Text.ElideRight
         }
     }
 
@@ -84,6 +85,7 @@ ComboBox
                 anchors.right: _list.right
                 anchors.rightMargin: 2
                 width: 7
+                visible: true
                 background: DefaultRectangle
                 {
                     radius: 12
@@ -117,12 +119,10 @@ ComboBox
         width: control.width
         highlighted: control.highlightedIndex === index
 
-        contentItem: DefaultText
+        contentItem: DexLabel
         {
-            width: control.width
             font: DexTypo.subtitle2
             text_value: control.dropdownLineText(model)
-            elide: Text.ElideRight
         }
     }
 
