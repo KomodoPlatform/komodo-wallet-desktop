@@ -31,7 +31,7 @@ sudo apt-get install build-essential \
 # get llvm
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
-sudo ./llvm.sh 12
+sudo ./llvm.sh 12 all
 # set clang version
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 777
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 777
@@ -68,4 +68,5 @@ cd tar-1.32
 export FORCE_UNSAFE_CONFIGURE=1
 ./configure
 sudo make -j install
+sudo ln -s /bin/tar /usr/local/bin/tar
 sudo update-alternatives --install /usr/bin/tar tar /usr/local/bin/tar 777
