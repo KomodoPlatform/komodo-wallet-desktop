@@ -57,6 +57,8 @@ BasicModal {
         // Transaction Hash
         RowLayout
         {
+            spacing: 1
+
             TextEditWithTitle
             {
                 id: txHash
@@ -69,6 +71,7 @@ BasicModal {
             Qaterial.RawMaterialButton
             {
                 Layout.preferredWidth: 50
+                Layout.topMargin: 16
                 backgroundColor: "transparent"
                 icon.source: Qaterial.Icons.contentCopy
                 icon.color: Dex.CurrentTheme.foregroundColor
@@ -118,6 +121,7 @@ BasicModal {
                 }
             }
         }
+
         // Notes
         TextAreaWithTitle {
             id: notes
