@@ -232,26 +232,34 @@ BasicModal
         }
     }
 
-    onIs_validate_address_busyChanged: {
-        console.log("Address busy changed to === %1".arg(is_validate_address_busy))
-        if(!is_validate_address_busy) {
+    onIs_validate_address_busyChanged:
+    {
+        if (!is_validate_address_busy)
+        {
             address_data = api_wallet_page.validate_address_data
-            if (address_data.reason!=="") {
-                errorView = true
-                reason.text = address_data.reason
-            }else {
-                errorView = false
+            if (address_data.reason !== "")
+            {
+                errorView = true;
+                reason.text = address_data.reason;
             }
-            if(address_data.convertible) {
-                reason.text =  address_data.reason
-                if(needFix!==true)
-                    needFix = true
+            else
+            {
+                errorView = false;
+            }
+            if (address_data.convertible)
+            {
+                reason.text =  address_data.reason;
+                if (needFix!==true) needFix = true;
             }
         }
     }
-    onIs_convert_address_busyChanged: {
-        if(!is_convert_address_busy){
-            if(needFix===true) {
+
+    onIs_convert_address_busyChanged:
+    {
+        if (!is_convert_address_busy)
+        {
+            if (needFix === true)
+            {
                 needFix = false
                 input_address.text = api_wallet_page.converted_address
             }
@@ -310,8 +318,9 @@ BasicModal
                 DefaultText
                 {
                     id: reason
+
+                    Layout.alignment: Qt.AlignVCenter
                     Layout.preferredWidth: 385
-                    Layout.preferredHeight: 44
 
                     wrapMode: Label.Wrap
                     color: Style.colorRed
@@ -326,13 +335,11 @@ BasicModal
                     Layout.alignment: Qt.AlignVCenter
                     Layout.leftMargin: 10
                     Layout.preferredWidth: addressbook_link.width
-                    Layout.preferredHeight: 40
 
                     text: qsTr("Fix")
+
                     onClicked: api_wallet_page.convert_address(input_address.text, address_data.to_address_format)
-
                 }
-
             }
 
             // Amount to send
