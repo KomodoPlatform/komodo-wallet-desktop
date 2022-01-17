@@ -5,9 +5,9 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
-import App 1.0
-import Dex.Themes 1.0 as Dex
 import bignumberjs 1.0
+import "../../../Constants"
+import Dex.Themes 1.0 as Dex
 
 Item
 {
@@ -42,13 +42,13 @@ Item
         hoverEnabled: true
         onClicked:
         {
-            if(is_mine) return
+            if (is_mine) return
 
-            if(!enough_funds_to_pay_min_volume);
-            else
+            if (enough_funds_to_pay_min_volume )
             {
                 exchange_trade.orderSelected = true
                 orderList.currentIndex = index
+
                 if (isAsk)
                 {
                     selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
@@ -177,34 +177,39 @@ Item
         }
     }
 
-    Qaterial.ColorIcon {
+    Qaterial.ColorIcon
+    {
         id: cancel_button_text
         property bool requested_cancel: false
+
         visible: is_mine && !requested_cancel
 
-        source: Qaterial.Icons.close
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: 1
         anchors.right: parent.right
         anchors.rightMargin:  mouse_are.containsMouse || cancel_button.containsMouse? 12 : 6
-        Behavior on iconSize {
-            NumberAnimation {
+
+        source: Qaterial.Icons.close
+        iconSize: mouse_are.containsMouse || cancel_button.containsMouse? 16 : 0
+        color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_are.containsMouse? Dex.CurrentTheme.foregroundColor: Qaterial.Colors.red
+
+        Behavior on iconSize
+        {
+            NumberAnimation
+            {
                 duration: 200
             }
         }
 
-        iconSize: mouse_are.containsMouse || cancel_button.containsMouse? 16 : 0
-
-        color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_are.containsMouse? DexTheme.foregroundColor: Qaterial.Colors.red
-
-        DefaultMouseArea {
+        DefaultMouseArea
+        {
             id: cancel_button
             anchors.fill: parent
             hoverEnabled: true
 
-
-            onClicked: {
-                if(!is_mine) return
+            onClicked:
+            {
+                if (!is_mine) return
 
                 cancel_button_text.requested_cancel = true
                 cancelOrder(uuid)

@@ -78,49 +78,4 @@ Item
             Layout.fillWidth: true
         } 
     }
-
-    // Options menu present in pro mode.
-    Rectangle
-    {
-        anchors.right: parent.right
-        y: -10
-        width: 40
-        height: 25
-        visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
-        radius: height / 2
-        color: cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
-                   Dex.CurrentTheme.floatingBackgroundColor : Dex.CurrentTheme.accentColor
-
-        Behavior on color { ColorAnimation { duration: 150 } }
-
-        Qaterial.ColorIcon
-        {
-            source: Qaterial.Icons.cog
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            iconSize: 15
-            color: cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
-                       Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
-        }
-
-        DexMouseArea
-        {
-            id: cog_area
-            hoverEnabled: true
-            anchors.fill: parent
-            onClicked: {
-                if (API.app.trading_pg.current_trading_mode == TradingMode.Pro)
-                {
-                    if (_viewLoader.item.dexConfig.visible)
-                    {
-                        _viewLoader.item.dexConfig.close()
-                    }
-                    else
-                    {
-                        _viewLoader.item.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
-                    }
-                }
-            }
-        }
-    }
 }

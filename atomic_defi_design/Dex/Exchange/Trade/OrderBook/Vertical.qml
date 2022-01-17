@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
+import "../../../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
@@ -21,9 +22,11 @@ FloatingBackground
         anchors.margins: 20
         spacing: 10
 
-        Header
+        DefaultText
         {
-            font: DexTypo.subtitle3
+            Layout.leftMargin: 10
+            Layout.topMargin: 10
+            font: DexTypo.subtitle1
             text: qsTr("Order Book")
         }
 
@@ -36,10 +39,16 @@ FloatingBackground
         }
         Item
         {
-            Layout.preferredHeight: 8
+            Layout.preferredHeight: 4
             Layout.fillWidth: true
+            Rectangle
+            {
+                width: parent.width
+                height: parent.height
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: Dex.CurrentTheme.floatingBackgroundColor
+            }
         }
-
         List
         {
             isAsk: false
