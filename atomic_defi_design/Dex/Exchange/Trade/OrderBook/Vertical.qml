@@ -19,7 +19,7 @@ FloatingBackground
     {
         anchors.fill: parent
         anchors.margins: 20
-        spacing: 12
+        spacing: 10
 
         Header
         {
