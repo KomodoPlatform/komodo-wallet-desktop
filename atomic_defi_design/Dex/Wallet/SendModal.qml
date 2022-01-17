@@ -232,26 +232,34 @@ BasicModal
         }
     }
 
-    onIs_validate_address_busyChanged: {
-        console.log("Address busy changed to === %1".arg(is_validate_address_busy))
-        if(!is_validate_address_busy) {
+    onIs_validate_address_busyChanged:
+    {
+        if (!is_validate_address_busy)
+        {
             address_data = api_wallet_page.validate_address_data
-            if (address_data.reason!=="") {
-                errorView = true
-                reason.text = address_data.reason
-            }else {
-                errorView = false
+            if (address_data.reason !== "")
+            {
+                errorView = true;
+                reason.text = address_data.reason;
             }
-            if(address_data.convertible) {
-                reason.text =  address_data.reason
-                if(needFix!==true)
-                    needFix = true
+            else
+            {
+                errorView = false;
+            }
+            if (address_data.convertible)
+            {
+                reason.text =  address_data.reason;
+                if (needFix!==true) needFix = true;
             }
         }
     }
-    onIs_convert_address_busyChanged: {
-        if(!is_convert_address_busy){
-            if(needFix===true) {
+
+    onIs_convert_address_busyChanged:
+    {
+        if (!is_convert_address_busy)
+        {
+            if (needFix === true)
+            {
                 needFix = false
                 input_address.text = api_wallet_page.converted_address
             }
@@ -286,6 +294,7 @@ BasicModal
 
                 ClickableText
                 {
+                    id: addressbook_link
                     Layout.alignment: Qt.AlignVCenter
                     Layout.leftMargin: 10
 
@@ -310,6 +319,9 @@ BasicModal
                 {
                     id: reason
 
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: 385
+
                     wrapMode: Label.Wrap
                     color: Style.colorRed
                     text_value: qsTr("The address has to be mixed case.")
@@ -320,13 +332,13 @@ BasicModal
                     enabled: !root.is_send_busy
                     visible: needFix
 
-                    Layout.alignment: Qt.AlignRight
-                    Layout.preferredWidth: 50
-                    Layout.preferredHeight: 40
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.leftMargin: 10
+                    Layout.preferredWidth: addressbook_link.width
 
                     text: qsTr("Fix")
-                    onClicked: api_wallet_page.convert_address(input_address.text, address_data.to_address_format)
 
+                    onClicked: api_wallet_page.convert_address(input_address.text, address_data.to_address_format)
                 }
             }
 
