@@ -55,33 +55,17 @@ BasicModal {
         }
 
         // Transaction Hash
-        RowLayout
+        TextEditWithTitle
         {
-            spacing: 1
+            id: txHash
+            title: qsTr("Transaction Hash")
+            text: !details ? "" :
+                    details.tx_hash
+            privacy: true
+            copy: true
 
-            TextEditWithTitle
-            {
-                id: txHash
-                title: qsTr("Transaction Hash")
-                text: !details ? "" :
-                        details.tx_hash
-                privacy: true
-            }
-
-            Qaterial.RawMaterialButton
-            {
-                Layout.preferredWidth: 50
-                Layout.topMargin: 16
-                backgroundColor: "transparent"
-                icon.source: Qaterial.Icons.contentCopy
-                icon.color: Dex.CurrentTheme.foregroundColor
-
-                onClicked:
-                {
-                    API.qt_utilities.copy_text_to_clipboard(txHash.text)
-                    app.notifyCopy(qsTr("Transactions"), qsTr("txid copied to clipboard"))
-                }
-            }
+            onCopyNotificationTitle: qsTr("Transactions")
+            onCopyNotificationMsg: qsTr("txid copied to clipboard")
         }
 
         // Confirmations
