@@ -23,8 +23,8 @@ FloatingBackground
 
         Header
         {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 30
+            font: DexTypo.subtitle3
+            text: qsTr("Order Book")
         }
 
         List
