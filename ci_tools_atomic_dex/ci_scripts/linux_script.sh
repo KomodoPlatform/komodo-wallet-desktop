@@ -33,8 +33,8 @@ wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
 sudo ./llvm.sh
 # set clang version
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 777
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 777
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-13 777
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-13 777
 # set gnu compilers version
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
@@ -68,4 +68,4 @@ cd tar-1.32
 export FORCE_UNSAFE_CONFIGURE=1
 ./configure
 sudo make -j install
-sudo update-alternatives --install /usr/bin/tar tar /usr/local/bin/tar 777
+sudo update-alternatives --install /bin/tar tar /usr/local/bin/tar 777
