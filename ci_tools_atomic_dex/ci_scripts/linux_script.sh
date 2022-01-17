@@ -42,8 +42,8 @@ sudo apt-get update
 sudo apt-get install libc++abi-11-dev libc++-11-dev -y
 #export CXXFLAGS=-stdlib=libc++
 #export LDFLAGS=-stdlib=libc++
-export CXX=clang++-12
-export CC=clang-12
+export CXX=clang++-13
+export CC=clang-13
 
 # get right cmake version
 wget https://github.com/Kitware/CMake/releases/download/v3.19.0-rc3/cmake-3.19.0-rc3-Linux-x86_64.tar.gz
