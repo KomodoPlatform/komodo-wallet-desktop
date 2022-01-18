@@ -2,9 +2,12 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 // Open Transaction Details Modal
 BasicModal {
@@ -52,11 +55,17 @@ BasicModal {
         }
 
         // Transaction Hash
-        TextEditWithTitle {
+        TextEditWithTitle
+        {
+            id: txHash
             title: qsTr("Transaction Hash")
             text: !details ? "" :
                     details.tx_hash
             privacy: true
+            copy: true
+
+            onCopyNotificationTitle: qsTr("Transactions")
+            onCopyNotificationMsg: qsTr("txid copied to clipboard")
         }
 
         // Confirmations
@@ -96,6 +105,7 @@ BasicModal {
                 }
             }
         }
+
         // Notes
         TextAreaWithTitle {
             id: notes
