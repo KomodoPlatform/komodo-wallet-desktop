@@ -2777,6 +2777,7 @@
     "name": "GRMS",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "grms-grms",
+    "nomics_id": "GRMS",
     "electrum": [
       {
         "url": "89.108.102.188:17485"
