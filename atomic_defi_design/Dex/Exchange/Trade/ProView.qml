@@ -392,6 +392,8 @@ GridLayout
         Layout.fillHeight: true
         Layout.fillWidth: true
 
+        spacing: 20
+
         DefaultText { font: DexTypo.subtitle1; text: qsTr("Trading Information") }
 
         Qaterial.LatoTabBar
@@ -405,8 +407,6 @@ GridLayout
             anchors.horizontalCenter: parent.horizontalCenter
             Material.foreground: Dex.CurrentTheme.foregroundColor
             background: null
-            topPadding: 15
-            leftPadding: 5
 
             Qaterial.LatoTabButton
             {
@@ -439,6 +439,7 @@ GridLayout
                 opacity: checked ? 1 : .6
             }
         }
+
         Rectangle
         {
             anchors.horizontalCenter: parent.horizontalCenter
