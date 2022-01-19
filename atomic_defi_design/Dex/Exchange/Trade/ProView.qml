@@ -414,6 +414,7 @@ GridLayout
                 text: qsTr("Exchange Rates")
                 font.pixelSize: 14
                 textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+                indicatorColor: Dex.CurrentTheme.foregroundColor
                 textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                 opacity: checked ? 1 : .6
             }
@@ -424,6 +425,7 @@ GridLayout
                 font.pixelSize: 14
                 textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
                 textSecondaryColor: Dex.CurrentTheme.foregroundColor2
+                indicatorColor: Dex.CurrentTheme.foregroundColor
                 opacity: checked ? 1 : .6
             }
             Qaterial.LatoTabButton
@@ -433,6 +435,7 @@ GridLayout
                 font.pixelSize: 14
                 textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
                 textSecondaryColor: Dex.CurrentTheme.foregroundColor2
+                indicatorColor: Dex.CurrentTheme.foregroundColor
                 opacity: checked ? 1 : .6
             }
         }
