@@ -391,7 +391,9 @@ GridLayout
         Layout.preferredHeight: prefHeight(this)
         Layout.fillHeight: true
         Layout.fillWidth: true
-        DefaultText { font: DexTypo.subtitle3; text: qsTr("Trading Information") }
+
+        DefaultText { font: DexTypo.subtitle1; text: qsTr("Trading Information") }
+
         Qaterial.LatoTabBar
         {
             id: tabView
