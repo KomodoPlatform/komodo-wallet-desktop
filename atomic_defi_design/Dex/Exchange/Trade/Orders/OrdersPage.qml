@@ -82,229 +82,160 @@ Item {
     ColumnLayout
     {
         anchors.horizontalCenter: parent.horizontalCenter
-
         anchors.fill: parent
+        anchors.margins: 28
         anchors.bottomMargin: is_history ? 0 : 10
         spacing: 15
 
-        // Bottom part
-        Item
+        RowLayout
         {
-            id: orders_settings
-
-            property bool displaySetting: false
-
-            Layout.fillWidth: true
-            Layout.preferredHeight: displaySetting ? 150 : 30
-
-            Behavior on Layout.preferredHeight
+            spacing: 10
+            DefaultButton
             {
-                NumberAnimation
+                Layout.preferredWidth: 86
+                Layout.preferredHeight: 29
+                radius: 7
+                label.font.pixelSize: 14
+                text: qsTr("Filter")
+                iconSource: Qaterial.Icons.filter
+                onClicked: settings.visible = !settings.visible
+            }
+
+            DefaultButton
+            {
+                visible: root.is_history
+                Layout.preferredWidth: 86
+                Layout.preferredHeight: 29
+                radius: 7
+                label.font.pixelSize: 14
+                text: qsTr("Export CSV")
+                onClicked:
                 {
-                    duration: 150
+                    export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
+                    export_csv_dialog.open()
                 }
             }
 
-            Rectangle
+            DefaultText
             {
-                width: parent.width
-                height: orders_settings.displaySetting ? 50 : 10
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: -15
-                visible: false
-                color: Dex.CurrentTheme.foregroundColor
-
-                Behavior on height
-                {
-                    NumberAnimation
-                    {
-                        duration: 150
-                    }
-                }
+                color: Dex.CurrentTheme.foregroundColor2
+                visible: !settings.visible
+                text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5".arg(combo_base.currentTicker).arg(combo_rel.currentTicker).arg(qsTr("Date")).arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd")).arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
             }
+        }
 
-            Row
+        ColumnLayout
+        {
+            id: settings
+            visible: false
+            spacing: 8
+
+            RowLayout
             {
-                x: 5
-                y: 0
-                spacing: 5
-                Qaterial.OutlineButton
+                spacing: 10
+                DefaultButton
                 {
-                    icon.source: Qaterial.Icons.filter
-                    text: qsTr("Filter")
-                    anchors.verticalCenter: parent.verticalCenter
-                    outlinedColor: Dex.CurrentTheme.foregroundColor
-                    foregroundColor: Dex.CurrentTheme.foregroundColor
-                    onClicked: orders_settings.displaySetting = !orders_settings.displaySetting
-                }
-
-                DefaultText
-                {
-                    color: Dex.CurrentTheme.foregroundColor2
-                    visible: !orders_settings.displaySetting
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5"
-                        .arg(combo_base.currentTicker)
-                        .arg(combo_rel.currentTicker)
-                        .arg(qsTr("Date"))
-                        .arg(min_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
-                        .arg(max_date.date.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
-                }
-
-                Qaterial.OutlineButton
-                {
-                    visible: root.is_history && orders_settings.displaySetting
-                    foregroundColor: Dex.CurrentTheme.foregroundColor
-                    outlinedColor: Dex.CurrentTheme.foregroundColor
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Export CSV")
-                    enabled: list_model.length > 0
-                    onClicked:
-                    {
-                        export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
-                        export_csv_dialog.open()
-                    }
-                }
-            }
-
-            Row
-            {
-                anchors.right: parent.right
-                y: 0
-                rightPadding: 5
-                Qaterial.OutlineButton
-                {
-                    visible: root.is_history & orders_settings.displaySetting
-                    Layout.leftMargin: 30
-                    text: qsTr("Apply Filter")
-                    foregroundColor: enabled ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.buttonColorDisabled
-                    outlinedColor: enabled ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.buttonColorDisabled
+                    visible: root.is_history
                     enabled: list_model_proxy.can_i_apply_filtering
+                    Layout.preferredWidth: 86
+                    Layout.preferredHeight: 29
+                    radius: 7
+                    label.font.pixelSize: 14
+                    text: qsTr("Apply Filter")
                     onClicked: list_model_proxy.apply_all_filtering()
-                    anchors.verticalCenter: parent.verticalCenter
                 }
-                Qaterial.OutlineButton
+                DefaultButton
                 {
-                    icon.source: Qaterial.Icons.close
-                    text: "Cancel All"
-                    visible: !is_history && API.app.orders_mdl.length > 0
-                    anchors.verticalCenter: parent.verticalCenter
-                    outlinedColor: Dex.CurrentTheme.noColor
-                    foregroundColor: Dex.CurrentTheme.noColor
+                    visible: !root.is_history && API.app.orders_mdl.length > 0
+                    Layout.preferredWidth: 86
+                    Layout.preferredHeight: 29
+                    radius: 7
+                    label.font.pixelSize: 14
+                    text: qsTr("Cancel All")
+                    iconSource: Qaterial.Icons.close
                     onClicked: API.app.trading_pg.orders.cancel_order(list_model_proxy.get_filtered_ids())
                 }
             }
 
-            ColumnLayout
+            RowLayout
             {
-                visible: orders_settings.height > 75
-                width: parent.width - 20
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: -15
-                spacing: 10
+                Layout.alignment: Qt.AlignHCenter
 
-                RowLayout
+                DefaultSweetComboBox
                 {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 50
-                    Item 
-                    {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        DefaultSweetComboBox
-                        {
-                            id: combo_base
-
-                            anchors.fill: parent
-
-                            model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
-                            onCurrentTickerChanged: applyFilter()
-                            
-                            valueRole: "ticker"
-                            textRole: 'ticker'
-
-                            backgroundColor: Dex.CurrentTheme.backgroundColor
-                            popupBackgroundColor: Dex.CurrentTheme.backgroundColor
-                        }
-                    }
-                    
-
-                    Qaterial.ColorIcon
-                    {
-                        source: Qaterial.Icons.swapHorizontal
-                        color: Dex.CurrentTheme.foregroundColor
-                        DefaultMouseArea
-                        {
-                            id: swap_button
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onClicked:
-                            {
-                                const base_idx = combo_base.currentTicker
-                                combo_base.currentTicker = combo_rel.currentTicker
-                                combo_rel.currentTicker = base_idx
-                            }
-                        }
-                    }
-
-                    Item 
-                    {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-
-                        DefaultSweetComboBox
-                        {
-                            id: combo_rel
-
-                            anchors.fill: parent
-
-                            model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
-                            onCurrentTickerChanged: applyFilter()
-                            Layout.fillWidth: true
-                            valueRole: "ticker"
-                            textRole: 'ticker'
-
-                            backgroundColor: Dex.CurrentTheme.backgroundColor
-                            popupBackgroundColor: Dex.CurrentTheme.backgroundColor
-                        }
-                    }
-
-                    
+                    id: combo_base
+                    Layout.preferredWidth: parent.width / 2 - swapCoinFilterIcon.width
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+                    valueRole: "ticker"
+                    textRole: 'ticker'
+                    backgroundColor: Dex.CurrentTheme.backgroundColor
+                    popupBackgroundColor: Dex.CurrentTheme.backgroundColor
+                    onCurrentTickerChanged: applyFilter()
                 }
 
-                RowLayout
+                Qaterial.ColorIcon
                 {
-                    Qaterial.TextFieldDatePicker
+                    id: swapCoinFilterIcon
+                    source: Qaterial.Icons.swapHorizontal
+                    color: Dex.CurrentTheme.foregroundColor
+                    DefaultMouseArea
                     {
-                        id: min_date
-                        title: qsTr("From")
-                        from: default_min_date
-                        to: default_max_date
-                        date: default_min_date
-                        font.pixelSize: 13
-                        opacity: .8
-                        color: Dex.CurrentTheme.foregroundColor
-                        backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
-                        onAccepted: applyDateFilter()
-                        Layout.fillWidth: true
+                        id: swap_button
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked:
+                        {
+                            const base_idx = combo_base.currentTicker
+                            combo_base.currentTicker = combo_rel.currentTicker
+                            combo_rel.currentTicker = base_idx
+                        }
                     }
+                }
 
-                    Qaterial.TextFieldDatePicker
-                    {
-                        id: max_date
-                        enabled: min_date.enabled
-                        title: qsTr("To")
-                        from: min_date.date
-                        to: default_max_date
-                        date: default_max_date
-                        font.pixelSize: 13
-                        opacity: .8
-                        color: Dex.CurrentTheme.foregroundColor
-                        backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
-                        onAccepted: applyDateFilter()
-                        Layout.fillWidth: true
-                    }
+                DefaultSweetComboBox
+                {
+                    id: combo_rel
+                    Layout.fillWidth: true
+                    model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+                    valueRole: "ticker"
+                    textRole: 'ticker'
+                    backgroundColor: Dex.CurrentTheme.backgroundColor
+                    popupBackgroundColor: Dex.CurrentTheme.backgroundColor
+                    onCurrentTickerChanged: applyFilter()
+                }
+            }
+
+            RowLayout
+            {
+                Qaterial.TextFieldDatePicker
+                {
+                    id: min_date
+                    title: qsTr("From")
+                    from: default_min_date
+                    to: default_max_date
+                    date: default_min_date
+                    font.pixelSize: 13
+                    opacity: .8
+                    color: Dex.CurrentTheme.foregroundColor
+                    backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
+                    onAccepted: applyDateFilter()
+                    Layout.fillWidth: true
+                }
+
+                Qaterial.TextFieldDatePicker
+                {
+                    id: max_date
+                    enabled: min_date.enabled
+                    title: qsTr("To")
+                    from: min_date.date
+                    to: default_max_date
+                    date: default_max_date
+                    font.pixelSize: 13
+                    opacity: .8
+                    color: Dex.CurrentTheme.foregroundColor
+                    backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
+                    onAccepted: applyDateFilter()
+                    Layout.fillWidth: true
                 }
             }
         }
