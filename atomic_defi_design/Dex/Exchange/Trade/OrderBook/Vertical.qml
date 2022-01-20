@@ -20,7 +20,7 @@ FloatingBackground
     {
         anchors.fill: parent
         anchors.margins: 20
-        spacing: 10
+        spacing: 20
 
         DefaultText
         {
@@ -30,6 +30,12 @@ FloatingBackground
             text: qsTr("Order Book")
         }
 
+        Header
+        {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+        }
+
         List
         {
             isAsk: true
@@ -37,6 +43,7 @@ FloatingBackground
             Layout.fillHeight: true
             Layout.fillWidth: true
         }
+
         Item
         {
             Layout.preferredHeight: 4
@@ -49,6 +56,7 @@ FloatingBackground
                 color: Dex.CurrentTheme.floatingBackgroundColor
             }
         }
+
         List
         {
             isAsk: false
