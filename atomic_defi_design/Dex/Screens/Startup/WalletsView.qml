@@ -174,13 +174,13 @@ SetupPage
                                 height: width
                                 radius: 18
                                 color: mouse_area.containsMouse ? Dex.CurrentTheme.floatingBackgroundColor : 'transparent'
+
                                 Qaterial.ColorIcon
                                 {
-                                    anchors.centerIn: parent
-                                    color: Dex.CurrentTheme.foregroundColor
+                                    anchors.fill: parent
+                                    color: Dex.CurrentTheme.loginWalletIconColorStart
                                     source: Qaterial.Icons.account
-                                    iconSize: 16
-
+                                    iconSize: 28
                                 }
                             }
 
