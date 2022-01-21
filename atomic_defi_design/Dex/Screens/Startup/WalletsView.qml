@@ -205,6 +205,7 @@ SetupPage
                             width: 30
                             Qaterial.ColorIcon
                             {
+                                visible: mouse_area.containsMouse || _deleteArea.containsMouse
                                 source: Qaterial.Icons.close
                                 iconSize: 18
                                 anchors.centerIn: parent
