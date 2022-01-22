@@ -79,6 +79,7 @@
     "sidebarCursorStartColor": "#5A68E6",
     "sidebarCursorEndColor": "#2CB9F000",
     "sidebarLineTextHovered": "#2C87B9",
+    "sidebarLineTextSelected": "#FFFFFFFF",
 
     "tradeBuyModeSelectorBackgroundColorStart": "#6A4DE3FF",
     "tradeBuyModeSelectorBackgroundColorEnd": "#2279F1FF",

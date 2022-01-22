@@ -85,6 +85,7 @@ QtObject
     property color  sidebarCursorStartColor
     property color  sidebarCursorEndColor
     property color  sidebarLineTextHovered
+    property color  sidebarLineTextSelected
 
     // Trading page related
     property color  tradeBuyModeSelectorBackgroundColorStart

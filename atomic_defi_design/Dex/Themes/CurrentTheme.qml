@@ -178,6 +178,7 @@ ThemeData
         sidebarCursorStartColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarCursorStartColor || defaultTheme.sidebarCursorStartColor);
         sidebarCursorEndColor               = Dex.Color.argbStrFromRgbaStr(themeData.sidebarCursorEndColor || defaultTheme.sidebarCursorEndColor);
         sidebarLineTextHovered              = Dex.Color.argbStrFromRgbaStr(themeData.sidebarLineTextHovered || defaultTheme.sidebarLineTextHovered);
+        sidebarLineTextSelected             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarLineTextSelected || defaultTheme.sidebarLineTextSelected);
 
         tradeBuyModeSelectorBackgroundColorStart            = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorStart || defaultTheme.tradeBuyModeSelectorBackgroundColorStart);
         tradeBuyModeSelectorBackgroundColorEnd              = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorEnd || defaultTheme.tradeBuyModeSelectorBackgroundColorEnd);
@@ -286,6 +287,7 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarCursorStartColor : %1".arg(sidebarCursorStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarCursorEndColor : %1".arg(sidebarCursorEndColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarLineTextHovered : %1".arg(sidebarLineTextHovered));
+        console.info("Dex.Themes.CurrentTheme.printValues.sidebarLineTextSelected : %1".arg(sidebarLineTextSelected));
 
         console.info("Dex.Themes.CurrentTheme.printValues.tradeBuyModeSelectorBackgroundColorStart : %1".arg(tradeBuyModeSelectorBackgroundColorStart));
         console.info("Dex.Themes.CurrentTheme.printValues.tradeBuyModeSelectorBackgroundColorEnd : %1".arg(tradeBuyModeSelectorBackgroundColorEnd));
