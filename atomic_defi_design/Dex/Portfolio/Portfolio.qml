@@ -14,6 +14,7 @@ import AtomicDEX.WalletChartsCategories 1.0
 import "../Components"
 import "../Constants" as Constants
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 // Portfolio
 Item {
@@ -173,10 +174,14 @@ Item {
                         DexCheckBox
                         {
                             Layout.alignment: Qt.AlignVCenter
-                            text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))
-                            checked: portfolio_coins.with_balance
-                            onCheckedChanged: portfolio_coins.with_balance = checked
 
+                            text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))
+                            textColor: Dex.CurrentTheme.foregroundColor2
+                            label.font.pixelSize: 14
+
+                            checked: portfolio_coins.with_balance
+
+                            onCheckedChanged: portfolio_coins.with_balance = checked
                             Component.onDestruction: portfolio_coins.with_balance = false
                         }
                     }
