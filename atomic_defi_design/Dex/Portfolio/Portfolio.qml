@@ -231,13 +231,14 @@ Item {
                     
                     DexGradientAppButton
                     {
-                        height: 61.5
+                        width: 213
+                        height: 61.51
                         iconSource: Qaterial.Icons.plus
                         radius: 18
                         leftPadding: 5
                         rightPadding: 5
                         padding: 16
-                        text: qsTr("Add asset")
+                        text: qsTr("ADD ASSET")
                         onClicked: enable_coin_modal.open()
                     }
                 }
