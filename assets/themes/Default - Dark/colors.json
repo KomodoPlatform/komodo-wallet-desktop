@@ -77,6 +77,9 @@
     "rangeSliderIndicatorBackgroundStartColor": "#5A68E6FF",
     "rangeSliderIndicatorBackgroundEndColor": "#4986EAFF",
 
+    "loginWalletIconColorStart": "#5A68E6FF",
+    "loginWalletIconColorEnd": "#4986EAAD",
+
     "sidebarBgColor": "#202337",
     "sidebarVersionTextColor": "#2F5688",
     "sidebarCursorStartColor": "#31B1F0",

@@ -79,6 +79,10 @@ QtObject
     property color  rangeSliderIndicatorBackgroundStartColor
     property color  rangeSliderIndicatorBackgroundEndColor
 
+    // Login page related
+    property color  loginWalletIconColorStart
+    property color  loginWalletIconColorEnd     // Property not yet used.
+
     // Sidebar related
     property color  sidebarBgColor
     property color  sidebarVersionTextColor
