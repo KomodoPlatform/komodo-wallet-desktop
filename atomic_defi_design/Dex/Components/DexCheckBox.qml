@@ -11,6 +11,7 @@ CheckBox
 {
     id: control
 
+    property alias label: _label
     property color textColor: Dex.CurrentTheme.foregroundColor
 
     property alias boxWidth: _indicator.implicitWidth
@@ -24,6 +25,7 @@ CheckBox
 
     contentItem: DefaultText
     {
+        id: _label
         text: control.text
         font: control.font
         color: control.textColor
