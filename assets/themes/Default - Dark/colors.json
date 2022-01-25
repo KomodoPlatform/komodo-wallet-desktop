@@ -4,11 +4,11 @@
     "backgroundColor": "#18171FFF",
     "backgroundColorDeep": "#0A0A0A",
   
-    "buttonColorDisabled": "#F0650063",
-    "buttonColorEnabled": "#FFCB87",
-    "buttonColorHovered": "#F0961F",
+    "buttonColorDisabled": "#B06D13FF",
+    "buttonColorEnabled": "#F0961F",
+    "buttonColorHovered": "#F06500FF",
     "buttonColorPressed": "#F06500AA",
-    "buttonTextDisabledColor": "#3B3B3B",
+    "buttonTextDisabledColor": "#e6e6e6FF",
     "buttonTextEnabledColor": "#fafffa",
     "buttonTextHoveredColor": "#fafffa",
     "buttonTextPressedColor": "#fafffa",
@@ -21,10 +21,10 @@
     "gradientButtonHoveredEndColor": "#FF6865",
     "gradientButtonPressedStartColor": "#F06500",
     "gradientButtonPressedEndColor": "#FF6865",
-    "gradientButtonTextEnabledColor": "#080707",
-    "gradientButtonTextDisabledColor": "#3B3B3B",
-    "gradientButtonTextHoveredColor": "#000000",
-    "gradientButtonTextPressedColor": "#000000",
+    "gradientButtonTextEnabledColor": "#FFFFFFFF",
+    "gradientButtonTextDisabledColor": "#FFFFFFFF",
+    "gradientButtonTextHoveredColor": "#FFFFFFFF",
+    "gradientButtonTextPressedColor": "#FFFFFFFF",
   
     "checkBoxGradientStartColor": "#F06500",
     "checkBoxGradientEndColor": "#FF6865",
@@ -77,11 +77,11 @@
     "loginWalletIconColorStart": "#F06500FF",
     "loginWalletIconColorEnd": "#FF6865FF",
   
-    "sidebarBgColor": "#161515",
+    "sidebarBgColor": "#18171FFF",
     "sidebarVersionTextColor": "#BBB",
-    "sidebarCursorStartColor": "#F06500",
+    "sidebarCursorStartColor": "#F06500FF",
     "sidebarCursorEndColor": "#F0650000",
-    "sidebarLineTextHovered": "#F06500",
+    "sidebarLineTextHovered": "#F06500FF",
   
     "tradeBuyModeSelectorBackgroundColorStart": "#6A4DE3FF",
     "tradeBuyModeSelectorBackgroundColorEnd": "#2279F1FF",
@@ -92,8 +92,8 @@
     "okColor": "#74fbee",
     "noColor": "#d13990",
   
-    "arrowUpColor": "#F85757",
-    "arrowDownColor": "#845FEF",
+    "arrowUpColor": "#F85757FF",
+    "arrowDownColor": "#00C058FF",
   
     "lineSeparatorColor": "#222"
 }
