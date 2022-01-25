@@ -10,8 +10,8 @@
     "buttonColorPressed": "#F06500AA",
     "buttonTextDisabledColor": "#3B3B3B",
     "buttonTextEnabledColor": "#fafffa",
-    "buttonTextHoveredColor": "#000000",
-    "buttonTextPressedColor": "#000000",
+    "buttonTextHoveredColor": "#fafffa",
+    "buttonTextPressedColor": "#fafffa",
   
     "gradientButtonStartColor": "#F06500",
     "gradientButtonEndColor": "#FF6865",
