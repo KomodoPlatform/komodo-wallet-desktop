@@ -997,6 +997,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "BONE-ERC20" : {
+    "coin": "BONE-ERC20",
+    "name": "Bone ShibaSwap",
+    "coinpaprika_id": "bone-bone-shibaswap",
+    "coingecko_id": "bone-shibaswap",
+    "nomics_id": "bone6-bone-shibaswap",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "BRZ-BEP20": {
     "coin": "BRZ-BEP20",
     "name": "Brazilian Digital Token",
@@ -8358,6 +8376,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "LEASH-ERC20" : {
+    "coin": "LEASH-ERC20",
+    "name": "Doge Killer",
+    "coinpaprika_id": "leash-doge-killer",
+    "coingecko_id": "leash",
+    "nomics_id": "leash-leash",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "LEO-ERC20": {
     "coin": "LEO-ERC20",
     "name": "LEO Token",
@@ -8703,6 +8739,42 @@
     "name": "S4FE",
     "coinpaprika_id": "s4f-s4fe",
     "coingecko_id": "s4fe",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "SHIB-BEP20": {
+    "coin": "SHIB-BEP20",
+    "name": "Shiba Inu",
+    "coinpaprika_id": "shib-shiba-inu",
+    "coingecko_id": "shiba-inu",
+    "nomics_id": "shib-shiba-inu",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "SHIB-ERC20": {
+    "coin": "SHIB-ERC20",
+    "name": "Shiba Inu",
+    "coinpaprika_id": "shib-shiba-inu",
+    "coingecko_id": "shiba-inu",
+    "nomics_id": "shib-shiba-inu",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
