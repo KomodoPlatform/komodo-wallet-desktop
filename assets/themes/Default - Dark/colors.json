@@ -34,19 +34,19 @@
     "switchGradientStartColor2": "#FFF",
     "switchGradientEndColor2": "#FFF",
   
-    "comboBoxBackgroundColor": "#FFFFFFFF",
-    "comboBoxArrowsColor": "#456078FF",
-    "comboBoxDropdownItemHighlightedColor": "#456078FF",
+    "comboBoxBackgroundColor": "#18171FFF",
+    "comboBoxArrowsColor": "#A9A9A9FF",
+    "comboBoxDropdownItemHighlightedColor": "#CDB7B712",
   
     "modalPageCounterGradientStartColor": "#FF6865",
     "modalPageCounterGradientEndColor": "#FF6865",
   
-    "notifPopupBackgroundColor": "#EDF4FFFF",
-    "notifPopupTextColor": "#456078FF",
-    "notifPopupTimerColor": "#DBE0E4FF",
-    "notifPopupTimerBackgroundColor": "#93A3B1FF",
-    "notifPopupIconStartColor": "#000000FF",
-    "notifPopupIconEndColor": "#000000FF",
+    "notifPopupBackgroundColor": "#1F1E1EFF",
+    "notifPopupTextColor": "#FFFFFFFF",
+    "notifPopupTimerColor": "#F06500FF",
+    "notifPopupTimerBackgroundColor": "#93A3B11F",
+    "notifPopupIconStartColor": "##F06500FF",
+    "notifPopupIconEndColor": "#FF6865FF",
   
     "scrollBarIndicatorColor": "#DBE0E4FF",
     "scrollBarBackgroundColor": "#93A3B1FF",
@@ -55,12 +55,12 @@
   
     "textDisabledColor": "#444444",
     "textSelectionColor": "#14bca6",
-    "textPlaceholderColor": "#8B6900",
+    "textPlaceholderColor": "#878787FF",
     "textSelectedColor": "#0e1021",
   
-    "textFieldBackgroundColor": "#0e0e0e",
-    "textFieldPrefixColor": "#45607894",
-    "textFieldSuffixColor": "#456078FF",
+    "textFieldBackgroundColor": "#262525FF",
+    "textFieldPrefixColor": "#A9A9A9FF",
+    "textFieldSuffixColor": "#FFFFFFFF",
   
     "chartTradingLineBackgroundColor": "#24283d",
     "chartTradingLineColor": "#74fbee",
@@ -83,10 +83,10 @@
     "sidebarCursorEndColor": "#F0650000",
     "sidebarLineTextHovered": "#F06500FF",
   
-    "tradeBuyModeSelectorBackgroundColorStart": "#6A4DE3FF",
-    "tradeBuyModeSelectorBackgroundColorEnd": "#2279F1FF",
-    "tradeSellModeSelectorBackgroundColorStart": "#E52167FF",
-    "tradeSellModeSelectorBackgroundColorEnd": "#E216A9FF",
+    "tradeBuyModeSelectorBackgroundColorStart": "#10A376FF",
+    "tradeBuyModeSelectorBackgroundColorEnd": "#02C5A2FF",
+    "tradeSellModeSelectorBackgroundColorStart": "#F00500FF",
+    "tradeSellModeSelectorBackgroundColorEnd": "#FF8A88FF",
     "tradeMarketModeSelectorNotSelectedBackgroundColor": "#89B6FF21",
   
     "okColor": "#74fbee",
