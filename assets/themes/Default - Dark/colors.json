@@ -1,7 +1,7 @@
 {
     "accentColor": "#0A0A0A",
     "foregroundColor": "#ffffff",
-    "backgroundColor": "#161515",
+    "backgroundColor": "#18171FFF",
     "backgroundColorDeep": "#0A0A0A",
   
     "buttonColorDisabled": "#F0650063",
@@ -65,9 +65,9 @@
     "chartTradingLineBackgroundColor": "#24283d",
     "chartTradingLineColor": "#74fbee",
   
-    "innerBackgroundColor": "#111",
+    "innerBackgroundColor": "#1C1B24FF",
   
-    "floatingBackgroundColor": "#222",
+    "floatingBackgroundColor": "#1C1B24FF",
   
     "rangeSliderBackgroundColor": "#5A68E6FF",
     "rangeSliderDistanceColor": "#4986EA3B",
