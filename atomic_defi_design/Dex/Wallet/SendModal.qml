@@ -59,8 +59,6 @@ BasicModal
             gas_price,
             gas_limit: gas_limit === "" ? 0 : parseInt(gas_limit)
         }
-
-        console.log("Passing fees info: ", JSON.stringify(fees_info))
         api_wallet_page.send(address, amount, max, with_fees, fees_info)
     }
 
