@@ -69,16 +69,16 @@
   
     "floatingBackgroundColor": "#1C1B24FF",
   
-    "rangeSliderBackgroundColor": "#5A68E6FF",
-    "rangeSliderDistanceColor": "#4986EA3B",
-    "rangeSliderIndicatorBackgroundStartColor": "#5A68E6FF",
-    "rangeSliderIndicatorBackgroundEndColor": "#4986EAFF",
+    "rangeSliderBackgroundColor": "#FFFFFFFF",
+    "rangeSliderDistanceColor": "#F06500FF",
+    "rangeSliderIndicatorBackgroundStartColor": "#F06500FF",
+    "rangeSliderIndicatorBackgroundEndColor": "#F06500FF",
 
     "loginWalletIconColorStart": "#F06500FF",
     "loginWalletIconColorEnd": "#FF6865FF",
   
     "sidebarBgColor": "#18171FFF",
-    "sidebarVersionTextColor": "#BBB",
+    "sidebarVersionTextColor": "#878787FF",
     "sidebarCursorStartColor": "#F06500FF",
     "sidebarCursorEndColor": "#F0650000",
     "sidebarLineTextHovered": "#F06500FF",
@@ -89,11 +89,11 @@
     "tradeSellModeSelectorBackgroundColorEnd": "#FF8A88FF",
     "tradeMarketModeSelectorNotSelectedBackgroundColor": "#89B6FF21",
   
-    "okColor": "#74fbee",
-    "noColor": "#d13990",
+    "okColor": "#00AC6EFF",
+    "noColor": "#F00500FF",
   
     "arrowUpColor": "#F85757FF",
     "arrowDownColor": "#00C058FF",
   
-    "lineSeparatorColor": "#222"
+    "lineSeparatorColor": "#65656542"
 }
