@@ -37,7 +37,7 @@
         <file>assets/images/coins/babydoge.png</file>
         <file>assets/images/coins/bal.png</file>
         <file>assets/images/coins/band.png</file>
-        <file>assets/images/coins/band.png</file>
+        <file>assets/images/coins/banano.png</file>
         <file>assets/images/coins/bat.png</file>
         <file>assets/images/coins/bch.png</file>
         <file>assets/images/coins/best.png</file>
@@ -75,6 +75,7 @@
         <file>assets/images/coins/cro.png</file>
         <file>assets/images/coins/crv.png</file>
         <file>assets/images/coins/crypto.png</file>
+        <file>assets/images/coins/cummies.png</file>
         <file>assets/images/coins/cvc.png</file>
         <file>assets/images/coins/cvt.png</file>
         <file>assets/images/coins/dai.png</file>
@@ -86,6 +87,8 @@
         <file>assets/images/coins/dimi.png</file>
         <file>assets/images/coins/dodo.png</file>
         <file>assets/images/coins/doge.png</file>
+        <file>assets/images/coins/dogedash.png</file>
+        <file>assets/images/coins/doggy.png</file>
         <file>assets/images/coins/dot.png</file>
         <file>assets/images/coins/dp.png</file>
         <file>assets/images/coins/dust.png</file>
@@ -104,6 +107,7 @@
         <file>assets/images/coins/ethr.png</file>
         <file>assets/images/coins/eurs.png</file>
         <file>assets/images/coins/fet.png</file>
+        <file>assets/images/coins/floki.png</file>
         <file>assets/images/coins/flux.png</file>
         <file>assets/images/coins/fil.png</file>
         <file>assets/images/coins/firo.png</file>
@@ -115,6 +119,7 @@
         <file>assets/images/coins/gleec.png</file>
         <file>assets/images/coins/gno.png</file>
         <file>assets/images/coins/grms.png</file>
+        <file>assets/images/coins/gm.png</file>
         <file>assets/images/coins/gms.png</file>
         <file>assets/images/coins/grs.png</file>
         <file>assets/images/coins/grt.png</file>
@@ -288,6 +293,7 @@
         <file>assets/images/coins/zec.png</file>
         <file>assets/images/coins/zer.png</file>
         <file>assets/images/coins/zet.png</file>
+        <file>assets/images/coins/zinu.png</file>
         <file>assets/images/coins/zil.png</file>
         <file>assets/images/coins/zilla.png</file>
         <file>assets/images/coins/zrx.png</file>
