@@ -45,8 +45,10 @@ BasicModal
     property alias address_field: input_address
     property alias amount_field: input_amount
 
+    function getCryptoAmount() { return _preparePage.cryptoSendMode ? input_amount.text : equivalentAmount.value }
+
     function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price) {
-        let max = input_max_amount.checked || parseFloat(current_ticker_infos.balance) === parseFloat(amount)
+        let max = parseFloat(current_ticker_infos.balance) === parseFloat(amount)
 
         // Save for later check
         async_param_max = max
@@ -90,24 +92,20 @@ BasicModal
         input_custom_fees_gas.text = ""
         input_custom_fees_gas_price.text = ""
         custom_fees_switch.checked = false
-        input_max_amount.checked = false
         root.currentIndex = 0
     }
 
     function feeIsHigherThanAmount() {
         if(!custom_fees_switch.checked) return false
-        if(input_max_amount.checked) return false
 
-        const amt = parseFloat(input_amount.text)
+        const amt = parseFloat(getCryptoAmount())
         const fee_amt = parseFloat(input_custom_fees.text)
 
         return amt < fee_amt
     }
 
     function hasFunds() {
-        if(input_max_amount.checked) return true
-
-        if(!General.hasEnoughFunds(true, api_wallet_page.ticker, "", "", input_amount.text))
+        if(!General.hasEnoughFunds(true, api_wallet_page.ticker, "", "", _preparePage.cryptoSendMode ? input_amount.text : equivalentAmount.value))
             return false
 
         if(custom_fees_switch.checked) {
@@ -120,7 +118,7 @@ BasicModal
 
                 const parent_ticker = current_ticker_infos.type === "ERC-20" ? "ETH" : "QTUM"
                 if(api_wallet_page.ticker === parent_ticker) {
-                    const amount = parseFloat(input_amount.text)
+                    const amount = parseFloat(getCryptoAmount())
                     const total_needed = amount + fee_parent_token
                     if(!General.hasEnoughFunds(true, parent_ticker, "", "", total_needed.toString()))
                         return false
@@ -152,7 +150,7 @@ BasicModal
 
     function fieldAreFilled() {
         return input_address.text != "" &&
-             (input_max_amount.checked || (input_amount.text != "" && input_amount.acceptableInput && parseFloat(input_amount.text) > 0)) &&
+             ((input_amount.text != "" && input_amount.acceptableInput && parseFloat(input_amount.text) > 0)) &&
              feesAreFilled()
     }
 
@@ -265,404 +263,397 @@ BasicModal
     }
 
     // Prepare Page
-    ModalContent
+    ModalContent2
     {
-        title: qsTr("Prepare to send ") + current_ticker_infos.name
-        titleAlignment: Text.AlignHCenter
+        id: _preparePage
 
-        ColumnLayout
+        titleText: qsTr("Prepare to send ") + current_ticker_infos.name
+        titleAlignment: Qt.AlignHCenter
+
+        property bool cryptoSendMode: true
+
+        // Send address
+        DefaultTextField
         {
-            property bool cryptoSendMode: true
+            id: input_address
+            enabled: !root.segwit && !root.is_send_busy
+
+            Layout.preferredWidth: 385
+            Layout.preferredHeight: 44
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 18
+
+            placeholderText: qsTr("Address of the recipient")
+            onTextChanged: api_wallet_page.validate_address(text)
+
+            Rectangle
+            {
+                width: 30
+                height: 30
+                radius: 7
+                anchors.right: parent.right
+                anchors.rightMargin: 13
+                anchors.verticalCenter: parent.verticalCenter
+
+                color: addrbookIconMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : "transparent"
+
+                DefaultMouseArea
+                {
+                    id: addrbookIconMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: contact_list.open()
+                }
+            }
+
+            DefaultImage
+            {
+                id: addrbookIcon
+                anchors.right: parent.right
+                anchors.rightMargin: 18
+                anchors.verticalCenter: parent.verticalCenter
+                width: 20
+                height: 12
+                source: General.image_path + "addressbook.png"
+            }
+
+            ColorOverlay
+            {
+                anchors.fill: addrbookIcon
+                source: addrbookIcon
+                color: Dex.CurrentTheme.foregroundColor
+            }
+        }
+
+        // ERC-20 Lowercase issue
+        RowLayout
+        {
+            visible: errorView && input_address.text !== ""
+
+            Layout.preferredWidth: input_address.width
+
+            DefaultText
+            {
+                id: reason
+
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredWidth: 385
+
+                wrapMode: Label.Wrap
+                color: Style.colorRed
+                text_value: qsTr("The address has to be mixed case.")
+            }
+
+            DefaultButton
+            {
+                enabled: !root.is_send_busy
+                visible: needFix
+
+                Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 10
+                Layout.preferredWidth: addressbook_link.width
+
+                text: qsTr("Fix")
+
+                onClicked: api_wallet_page.convert_address(input_address.text, address_data.to_address_format)
+            }
+        }
+
+        // Amount to send
+        AmountField
+        {
+            id: input_amount
+
+            enabled: !root.is_send_busy
 
             Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 385
+            Layout.preferredHeight: 44
+            Layout.topMargin: 32
 
-            // Send address
-            DefaultTextField
+            placeholderText: qsTr("Amount to send")
+
+            onTextEdited:
             {
-                id: input_address
-                enabled: !root.segwit && !root.is_send_busy
-
-                Layout.preferredWidth: 385
-                Layout.preferredHeight: 44
-                Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 18
-
-                placeholderText: qsTr("Address of the recipient")
-                onTextChanged: api_wallet_page.validate_address(text)
-
-                Rectangle
+                if (text.length === 0)
                 {
-                    width: 30
-                    height: 30
-                    radius: 7
-                    anchors.right: parent.right
-                    anchors.rightMargin: 13
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    color: addrbookIconMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : "transparent"
-
-                    DefaultMouseArea
-                    {
-                        id: addrbookIconMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: contact_list.open()
-                    }
-                }
-
-                DefaultImage
-                {
-                    id: addrbookIcon
-                    anchors.right: parent.right
-                    anchors.rightMargin: 18
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 20
-                    height: 12
-                    source: General.image_path + "addressbook.png"
-                }
-
-                ColorOverlay
-                {
-                    anchors.fill: addrbookIcon
-                    source: addrbookIcon
-                    color: Dex.CurrentTheme.foregroundColor
+                    text = "";
+                    return;
                 }
             }
 
-            // ERC-20 Lowercase issue
-            RowLayout
+            DefaultText
             {
-                visible: errorView && input_address.text !== ""
+                anchors.right: maxBut.left
+                anchors.rightMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
 
-                Layout.preferredWidth: input_address.width
-
-                DefaultText
-                {
-                    id: reason
-
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: 385
-
-                    wrapMode: Label.Wrap
-                    color: Style.colorRed
-                    text_value: qsTr("The address has to be mixed case.")
-                }
-
-                DefaultButton
-                {
-                    enabled: !root.is_send_busy
-                    visible: needFix
-
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.leftMargin: 10
-                    Layout.preferredWidth: addressbook_link.width
-
-                    text: qsTr("Fix")
-
-                    onClicked: api_wallet_page.convert_address(input_address.text, address_data.to_address_format)
-                }
+                text: _preparePage.cryptoSendMode ? API.app.wallet_pg.ticker : API.app.settings_pg.current_currency
+                font.pixelSize: 16
             }
 
-            // Amount to send
-            AmountField
+            Rectangle
             {
-                id: input_amount
-
-                enabled: !root.is_send_busy
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: 385
-                Layout.preferredHeight: 44
-                Layout.topMargin: 20
-
-                placeholderText: qsTr("Amount to send")
-
-                onTextEdited:
-                {
-                    if (text.length === 0)
-                    {
-                        text = "";
-                        return;
-                    }
-                }
+                id: maxBut
+                anchors.right: parent.right
+                anchors.rightMargin: 11
+                anchors.verticalCenter: parent.verticalCenter
+                width: 46
+                height: 23
+                radius: 7
+                color: maxButMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
 
                 DefaultText
                 {
-                    anchors.right: maxBut.left
-                    anchors.rightMargin: 10
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    text: parent.parent.cryptoSendMode ? API.app.wallet_pg.ticker : API.app.settings_pg.current_currency
-                    font.pixelSize: 16
+                    anchors.centerIn: parent
+                    text: qsTr("MAX")
                 }
 
-                Rectangle
+                DefaultMouseArea
                 {
-                    id: maxBut
-                    anchors.right: parent.right
-                    anchors.rightMargin: 11
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 46
-                    height: 23
-                    radius: 7
-                    color: maxButMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
-
-                    DefaultText
+                    id: maxButMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked:
                     {
-                        anchors.centerIn: parent
-                        text: qsTr("MAX")
-                    }
-
-                    DefaultMouseArea
-                    {
-                        id: maxButMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked:
+                        if (_preparePage.cryptoSendMode)
                         {
-                            if (parent.parent.parent.cryptoSendMode)
-                            {
-                                input_amount.text = current_ticker_infos.balance;
-                            }
-                            else
-                            {
-                                let cryptoBalance = new BigNumber(current_ticker_infos.balance);
-                                input_amount.text = cryptoBalance.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Crypto/fiat switch
-            RowLayout
-            {
-                Layout.topMargin: 10
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: 385
-
-                DefaultText
-                {
-                    id: equivalentAmount
-
-                    property string value: "0"
-
-                    enabled: !(new BigNumber(current_ticker_infos.current_currency_ticker_price).isLessThanOrEqualTo(0))
-                    text:
-                    {
-                        if (!enabled)
-                        {
-                            return qsTr("Fiat amount: Unavailable");
-                        }
-                        else if (parent.parent.cryptoSendMode)
-                        {
-                            return qsTr("Fiat amount: %1").arg(value);
+                            input_amount.text = current_ticker_infos.balance;
                         }
                         else
                         {
-                            return qsTr("%1 amount: %2").arg(API.app.wallet_pg.ticker).arg(value);
-                        }
-                    }
-
-                    Connections
-                    {
-                        target: input_amount
-
-                        function onTextEdited()
-                        {
-                            let imputAmount = new BigNumber(input_amount.text);
-                            if (input_amount.text === "" || imputAmount.isLessThanOrEqualTo(0))
-                                equivalentAmount.value = "0"
-                            else if (parent.parent.cryptoSendMode)
-                                equivalentAmount.value = imputAmount.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
-                            else
-                                equivalentAmount.value = imputAmount.dividedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
+                            let cryptoBalance = new BigNumber(current_ticker_infos.balance);
+                            input_amount.text = cryptoBalance.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                         }
                     }
                 }
+            }
+        }
+
+        // Crypto/fiat switch
+        RowLayout
+        {
+            Layout.topMargin: 10
+            Layout.alignment: Qt.AlignHCenter
+
+            DefaultText
+            {
+                id: equivalentAmount
+
+                property string value: "0"
+
+                enabled: !(new BigNumber(current_ticker_infos.current_currency_ticker_price).isLessThanOrEqualTo(0))
+                text:
+                {
+                    if (!enabled)
+                    {
+                        return qsTr("Fiat amount: Unavailable");
+                    }
+                    else if (_preparePage.cryptoSendMode)
+                    {
+                        return qsTr("Fiat amount: %1").arg(value);
+                    }
+                    else
+                    {
+                        return qsTr("%1 amount: %2").arg(API.app.wallet_pg.ticker).arg(value);
+                    }
+                }
+
+                Connections
+                {
+                    target: input_amount
+
+                    function onTextEdited()
+                    {
+                        let imputAmount = new BigNumber(input_amount.text);
+                        if (input_amount.text === "" || imputAmount.isLessThanOrEqualTo(0))
+                            equivalentAmount.value = "0"
+                        else if (_preparePage.cryptoSendMode)
+                            equivalentAmount.value = imputAmount.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
+                        else
+                            equivalentAmount.value = imputAmount.dividedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
+                    }
+                }
+            }
+
+            Item { Layout.fillWidth: true }
+
+            Rectangle
+            {
+                enabled: equivalentAmount.enabled
+                Layout.preferredWidth: cryptoFiatSwitchText.width + cryptoFiatSwitchIcon.width + 20
+                Layout.preferredHeight: 32
+                radius: 16
+
+                color: cryptoFiatSwitchMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
 
                 Rectangle
                 {
-                    enabled: equivalentAmount.enabled
-                    Layout.preferredWidth: cryptoFiatSwitchText.width + cryptoFiatSwitchIcon.width + 20
-                    Layout.preferredHeight: 32
-                    radius: 16
-
-                    color: cryptoFiatSwitchMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
-
-                    Rectangle
-                    {
-                        id: cryptoFiatSwitchIcon
-                        width: 28
-                        height: 28
-                        radius: width / 2
-                        anchors.left: parent.left
-                        anchors.leftMargin: 3
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: Dex.CurrentTheme.backgroundColor
-
-                        DefaultText
-                        {
-                            visible: parent.parent.parent.parent.cryptoSendMode
-                            font.pixelSize: 18
-                            anchors.centerIn: parent
-                            text: API.app.settings_pg.current_fiat_sign
-                        }
-
-                        DefaultImage
-                        {
-                            visible: !parent.parent.parent.parent.cryptoSendMode
-                            anchors.centerIn: parent
-                            width: 18
-                            height: 18
-                            source: General.coinIcon(API.app.wallet_pg.ticker)
-                        }
-                    }
+                    id: cryptoFiatSwitchIcon
+                    width: 28
+                    height: 28
+                    radius: width / 2
+                    anchors.left: parent.left
+                    anchors.leftMargin: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: Dex.CurrentTheme.backgroundColor
 
                     DefaultText
                     {
-                        id: cryptoFiatSwitchText
-                        anchors.left: cryptoFiatSwitchIcon.right
-                        anchors.leftMargin: 7
-                        anchors.verticalCenter: parent.verticalCenter
-                        font.pixelSize: 12
-                        text:
-                        {
-                            if (parent.parent.parent.cryptoSendMode) qsTr("Specify in Fiat");
-                            else                                     qsTr("Specify in Crypto");
-                        }
+                        visible: _preparePage.cryptoSendMode
+                        font.pixelSize: 18
+                        anchors.centerIn: parent
+                        text: API.app.settings_pg.current_fiat_sign
                     }
 
-                    DefaultMouseArea
+                    DefaultImage
                     {
-                        id: cryptoFiatSwitchMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: parent.parent.parent.cryptoSendMode = !parent.parent.parent.cryptoSendMode
+                        visible: !_preparePage.cryptoSendMode
+                        anchors.centerIn: parent
+                        width: 18
+                        height: 18
+                        source: General.coinIcon(API.app.wallet_pg.ticker)
                     }
                 }
-            }
 
-            // Custom fees switch
-            DexSwitch
+                DefaultText
+                {
+                    id: cryptoFiatSwitchText
+                    anchors.left: cryptoFiatSwitchIcon.right
+                    anchors.leftMargin: 7
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 12
+                    text:
+                    {
+                        if (_preparePage.cryptoSendMode) qsTr("Specify in Fiat");
+                        else                                     qsTr("Specify in Crypto");
+                    }
+                }
+
+                DefaultMouseArea
+                {
+                    id: cryptoFiatSwitchMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: _preparePage.cryptoSendMode = !_preparePage.cryptoSendMode
+                }
+            }
+        }
+
+        // Custom fees switch
+        DexSwitch
+        {
+            id: custom_fees_switch
+
+            enabled: !root.is_send_busy
+
+            Layout.topMargin: 32
+
+            text: qsTr("Enable Custom Fees")
+
+            onCheckedChanged: input_custom_fees.text = ""
+        }
+
+        // Custom fees warning
+        DefaultText
+        {
+            visible: custom_fees_switch.checked
+
+            font.pixelSize: 14
+            color: Dex.CurrentTheme.noColor
+            text_value: qsTr("Only use custom fees if you know what you are doing!")
+        }
+
+        // Custom Fees section
+        ColumnLayout
+        {
+            visible: custom_fees_switch.checked
+
+            Layout.preferredWidth: parent.width
+            Layout.topMargin: 8
+
+            // Normal coins, Custom fees input
+            AmountField
             {
-                id: custom_fees_switch
+                visible: !isSpecialToken()
+
+                id: input_custom_fees
 
                 enabled: !root.is_send_busy
 
-                Layout.topMargin: 15
+                Layout.preferredWidth: 385
+                Layout.preferredHeight: 38
+                Layout.alignment: Qt.AlignHCenter
 
-                text: qsTr("Enable Custom Fees")
-
-                onCheckedChanged: input_custom_fees.text = ""
-
-                // Custom fees warning
-                DefaultText
-                {
-                    visible: parent.checked
-
-                    anchors.left: parent.right
-                    anchors.leftMargin: 8
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    font.pixelSize: 14
-                    color: Dex.CurrentTheme.noColor
-                    text_value: qsTr("Only use custom fees if you know what you are doing!")
-                }
+                placeholderText: qsTr("Enter the custom fee") + " [" + api_wallet_page.ticker + "]"
             }
 
-            // Custom Fees section
+            // Token coins
             ColumnLayout
             {
-                visible: custom_fees_switch.checked
+                visible: isSpecialToken()
+                Layout.alignment: Qt.AlignHCenter
 
-                Layout.preferredWidth: parent.width
-                Layout.topMargin: 8
-
-                // Normal coins, Custom fees input
-                AmountField
+                // Gas input
+                AmountIntField
                 {
-                    visible: !isSpecialToken()
-
-                    id: input_custom_fees
+                    id: input_custom_fees_gas
 
                     enabled: !root.is_send_busy
 
                     Layout.preferredWidth: 385
                     Layout.preferredHeight: 38
-                    Layout.alignment: Qt.AlignHCenter
 
-                    placeholderText: qsTr("Enter the custom fee") + " [" + api_wallet_page.ticker + "]"
+                    placeholderText: qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
                 }
 
-                // Token coins
-                ColumnLayout
+                // Gas price input
+                AmountIntField
                 {
-                    visible: isSpecialToken()
-                    Layout.alignment: Qt.AlignHCenter
+                    id: input_custom_fees_gas_price
 
-                    // Gas input
-                    AmountIntField
-                    {
-                        id: input_custom_fees_gas
+                    enabled: !root.is_send_busy
 
-                        enabled: !root.is_send_busy
+                    Layout.preferredWidth: 385
+                    Layout.preferredHeight: 38
 
-                        Layout.preferredWidth: 385
-                        Layout.preferredHeight: 38
-
-                        placeholderText: qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
-                    }
-
-                    // Gas price input
-                    AmountIntField
-                    {
-                        id: input_custom_fees_gas_price
-
-                        enabled: !root.is_send_busy
-
-                        Layout.preferredWidth: 385
-                        Layout.preferredHeight: 38
-
-                        placeholderText: qsTr("Gas price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
-                    }
-                }
-
-                // Fee is higher than amount error
-                DefaultText
-                {
-                    id: fee_error
-                    visible: feeIsHigherThanAmount()
-
-                    Layout.alignment: Qt.AlignHCenter
-
-                    wrapMode: Text.Wrap
-                    color: Style.colorRed
-                    text_value: qsTr("Custom Fee can't be higher than the amount")
+                    placeholderText: qsTr("Gas price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
                 }
             }
 
-            // Not enough funds error
+            // Fee is higher than amount error
             DefaultText
             {
+                id: fee_error
+                visible: feeIsHigherThanAmount()
+
+                Layout.alignment: Qt.AlignHCenter
+
                 wrapMode: Text.Wrap
-                visible: !fee_error.visible && fieldAreFilled() && !hasFunds()
-
-                color: Dex.CurrentTheme.noColor
-
-                text_value: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
+                color: Style.colorRed
+                text_value: qsTr("Custom Fee can't be higher than the amount")
             }
-
-            DefaultBusyIndicator { visible: root.is_send_busy }
-
         }
+
+        // Not enough funds error
+        DefaultText
+        {
+            Layout.topMargin: 16
+            wrapMode: Text.Wrap
+            visible: !fee_error.visible && fieldAreFilled() && !hasFunds()
+
+            color: Dex.CurrentTheme.noColor
+
+            text_value: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
+        }
+
+        DefaultBusyIndicator { visible: root.is_send_busy }
 
         // Footer
         RowLayout
         {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
-            Layout.preferredWidth: parent.width - 100
 
             DefaultButton
             {
@@ -686,7 +677,7 @@ BasicModal
 
                 text: qsTr("Prepare")
 
-                onClicked: prepareSendCoin(input_address.text, input_amount.text, custom_fees_switch.checked, input_custom_fees.text,
+                onClicked: prepareSendCoin(input_address.text, getCryptoAmount(), custom_fees_switch.checked, input_custom_fees.text,
                                            isSpecialToken(), input_custom_fees_gas.text, input_custom_fees_gas_price.text)
             }
         }
@@ -725,7 +716,7 @@ BasicModal
         TextEditWithTitle
         {
             title: qsTr("Amount")
-            text: empty_data ? "" : "%1 %2 (%3 %4)".arg(api_wallet_page.ticker).arg(input_amount.text).arg(API.app.settings_pg.current_fiat_sign).arg(send_result.withdraw_answer.total_amount_fiat)
+            text: empty_data ? "" : "%1 %2 (%3 %4)".arg(api_wallet_page.ticker).arg(getCryptoAmount()).arg(API.app.settings_pg.current_fiat_sign).arg(send_result.withdraw_answer.total_amount_fiat)
         }
 
         // Fees
@@ -788,7 +779,7 @@ BasicModal
         })
         address: input_address.text
         tx_hash: broadcast_result
-        custom_amount: input_amount.text
+        custom_amount: getCryptoAmount()
 
         function onClose() {
             if(root.segwit) {
