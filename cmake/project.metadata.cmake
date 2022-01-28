@@ -1,12 +1,12 @@
 # Default project values
-set(DEX_PROJECT_NAME "atomicdex-desktop")
-set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
-set(DEX_MAINTENANCE_TOOL_NAME "AtomicDEX Maintenance Tool")
-set(DEX_COMPANY "KomodoPlatform")
-set(DEX_WEBSITE "https://atomicdex.io/")
+set(DEX_PROJECT_NAME "shibaDEX")
+set(DEX_DISPLAY_NAME "shibaDEX Desktop")
+set(DEX_MAINTENANCE_TOOL_NAME "shibaDEX Maintenance Tool")
+set(DEX_COMPANY "CZ Web Service S.A")
+set(DEX_WEBSITE "https://shibadex.io/")
 set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
 set(DEX_DISCORD "https://komodoplatform.com/discord")
-set(DEX_TWITTER "https://twitter.com/AtomicDEX")
+set(DEX_TWITTER "https://twitter.com/shibadex")
 set(DEX_PRIMARY_COIN "KMD")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
 set(DEX_SECOND_PRIMARY_COIN "LTC")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
