@@ -458,6 +458,7 @@
         <file>Dex/Components/LogModal.qml</file>
         <file>Dex/Components/MinTradeModal.qml</file>
         <file>Dex/Components/ModalContent.qml</file>
+        <file>Dex/Components/ModalContent2.qml</file>
         <file>Dex/Components/ModalHeader.qml</file>
         <file>Dex/Components/ModalLoader.qml</file>
         <file>Dex/Components/OutlineButton.qml</file>
