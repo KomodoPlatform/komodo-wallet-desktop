@@ -9,14 +9,14 @@ set(DEX_DISCORD "https://komodoplatform.com/discord")
 set(DEX_TWITTER "https://twitter.com/shibadex")
 set(DEX_PRIMARY_COIN "KMD")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
 set(DEX_SECOND_PRIMARY_COIN "LTC")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
-option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
-set(DEX_REPOSITORY_OWNER ${DEX_COMPANY})
+option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" ON)
+set(DEX_REPOSITORY_OWNER "KomodoPlatform")
 set(DEX_REPOSITORY_NAME "atomicDEX-Desktop")
 set(DEX_CHECKSUM_API_URL "https://komodo.live/static/checksum.json")
 if (APPLE)
-    set(DEX_APPDATA_FOLDER "AtomicDex Desktop")
+    set(DEX_APPDATA_FOLDER "shibadex")
 else ()
-    set(DEX_APPDATA_FOLDER "atomic_qt")
+    set(DEX_APPDATA_FOLDER "shibadex")
 endif ()
 message(STATUS "APPDATA folder is ${DEX_APPDATA_FOLDER}")
 
