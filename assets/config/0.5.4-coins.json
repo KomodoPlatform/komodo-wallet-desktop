@@ -5184,11 +5184,7 @@
       {
         "url": "electrumx.live:50020",
         "protocol": "TCP"
-      },
-      {
-        "url": "electrumxnyan01.ddns.net:50020",
-        "protocol": "TCP"
-      }	    
+      }
     ],
     "explorer_url": [
       "https://www.nyanchain.com/"
