@@ -605,8 +605,8 @@
     "active": false,
     "currently_enabled": false
   },
-  "BABYDOGE": {
-    "coin": "BABYDOGE",
+  "BABYDOGE-BEP20": {
+    "coin": "BABYDOGE-BEP20",
     "name": "Baby Doge Coin",
     "coinpaprika_id": "babydoge-baby-doge-coin",
     "coingecko_id": "baby-doge-coin",
@@ -687,6 +687,24 @@
       "https://polygonscan.com/"
     ],
     "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
+  "BANANO-BEP20": {
+    "coin": "BANANO-BEP20",
+    "name": "Banano",
+    "nomics_id": "ban-banano",
+    "coinpaprika_id": "ban-banano",
+    "coingecko_id": "banano",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
     "active": false,
     "currently_enabled": false
   },
@@ -994,6 +1012,24 @@
       "https://polygonscan.com/"
     ],
     "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
+  "BONE-ERC20" : {
+    "coin": "BONE-ERC20",
+    "name": "Bone ShibaSwap",
+    "coinpaprika_id": "bone-bone-shibaswap",
+    "coingecko_id": "bone-shibaswap",
+    "nomics_id": "bone6-bone-shibaswap",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
     "active": false,
     "currently_enabled": false
   },
@@ -1731,6 +1767,24 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "CUMMIES-BEP20": {
+    "coin": "CUMMIES-BEP20",
+    "name": "CumRocket",
+    "nomics_id": "cummies-cumrocket",
+    "coinpaprika_id": "cummies-cumrocket",
+    "coingecko_id": "cumrocket",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "DAI-AVX20": {
     "coin": "DAI-AVX20",
     "name": "Dai",
@@ -2114,6 +2168,42 @@
     "active": false,
     "currently_enabled": false
   },
+  "DOGEDASH-BEP20": {
+    "coin": "DOGEDASH-BEP20",
+    "name": "Doge Dash",
+    "nomics_id": "dogedash-doge-dash",
+    "coinpaprika_id": "dogedash-doge-dash",
+    "coingecko_id": "doge-dash",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "DOGGY-BEP20": {
+    "coin": "DOGGY-BEP20",
+    "name": "Doggy",
+    "nomics_id": "doggy-doggy",
+    "coinpaprika_id": "doggy-doggy",
+    "coingecko_id": "doggy",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "DOT-BEP20": {
     "coin": "DOT-BEP20",
     "name": "Polkadot",
@@ -2443,6 +2533,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "FLOKI-BEP20": {
+    "coin": "FLOKI-BEP20",
+    "name": "Floki Inu",
+    "nomics_id": "floki15-floki-inu-bep-20-v2",
+    "coinpaprika_id": "floki-floki-inu",
+    "coingecko_id": "floki-inu",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "FLUX": {
     "coin": "FLUX",
     "name": "Flux",
@@ -2768,6 +2876,21 @@
       "https://gleechain.com/"
     ],
     "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "GM-BEP20": {
+    "coin": "GM-BEP20",
+    "name": "GM Wagmi",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
     "active": false,
     "currently_enabled": false
   },
@@ -8358,6 +8481,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "LEASH-ERC20" : {
+    "coin": "LEASH-ERC20",
+    "name": "Doge Killer",
+    "coinpaprika_id": "leash-doge-killer",
+    "coingecko_id": "leash",
+    "nomics_id": "leash-leash",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "LEO-ERC20": {
     "coin": "LEO-ERC20",
     "name": "LEO Token",
@@ -8703,6 +8844,42 @@
     "name": "S4FE",
     "coinpaprika_id": "s4f-s4fe",
     "coingecko_id": "s4fe",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "SHIB-BEP20": {
+    "coin": "SHIB-BEP20",
+    "name": "Shiba Inu",
+    "coinpaprika_id": "shib-shiba-inu",
+    "coingecko_id": "shiba-inu",
+    "nomics_id": "shib-shiba-inu",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "SHIB-ERC20": {
+    "coin": "SHIB-ERC20",
+    "name": "Shiba Inu",
+    "coinpaprika_id": "shib-shiba-inu",
+    "coingecko_id": "shiba-inu",
+    "nomics_id": "shib-shiba-inu",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -9206,6 +9383,24 @@
       "http://152.89.247.97:50604/"
     ],
     "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
+  "ZINU-BEP20": {
+    "coin": "ZINU-BEP20",
+    "name": "Zombie Inu",
+    "nomics_id": "zinubep20-zombie-inu-bep-20",
+    "coinpaprika_id": "zombie-inu",
+    "coingecko_id": "zinu-zombie-inu",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
     "active": false,
     "currently_enabled": false
   }
