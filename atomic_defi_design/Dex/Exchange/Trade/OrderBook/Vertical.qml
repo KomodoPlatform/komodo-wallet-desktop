@@ -24,8 +24,6 @@ FloatingBackground
 
         DefaultText
         {
-            Layout.leftMargin: 10
-            Layout.topMargin: 10
             font: DexTypo.subtitle1
             text: qsTr("Order Book")
         }
