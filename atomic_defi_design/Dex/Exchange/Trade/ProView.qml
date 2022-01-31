@@ -253,7 +253,7 @@ GridLayout
                 Layout.topMargin: 20
                 Layout.leftMargin: 20
                 text: qsTr("Place Order")
-                font: DexTypo.subtitle3
+                font: DexTypo.subtitle1
             }
 
             // Market mode selector
