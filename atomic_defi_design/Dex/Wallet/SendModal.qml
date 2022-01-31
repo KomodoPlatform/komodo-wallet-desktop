@@ -329,18 +329,16 @@ BasicModal
         RowLayout
         {
             visible: errorView && input_address.text !== ""
-
-            Layout.preferredWidth: input_address.width
+            Layout.alignment: Qt.AlignHCenter
 
             DefaultText
             {
                 id: reason
 
                 Layout.alignment: Qt.AlignVCenter
-                Layout.preferredWidth: 385
 
                 wrapMode: Label.Wrap
-                color: Style.colorRed
+                color: Dex.CurrentTheme.noColor
                 text_value: qsTr("The address has to be mixed case.")
             }
 
@@ -351,7 +349,8 @@ BasicModal
 
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: 10
-                Layout.preferredWidth: addressbook_link.width
+                Layout.preferredWidth: 50
+                Layout.preferredHeight: 28
 
                 text: qsTr("Fix")
 
