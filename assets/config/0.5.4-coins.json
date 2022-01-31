@@ -619,7 +619,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "BAL-BEP20": {
@@ -705,7 +705,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "BAND-BEP20": {
@@ -947,7 +947,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "BNBT": {
@@ -1030,7 +1030,7 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "BRZ-BEP20": {
@@ -1494,7 +1494,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "CASE": {
@@ -1782,7 +1782,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "DAI-AVX20": {
@@ -2148,7 +2148,7 @@
       "https://dogechain.info/"
     ],
     "type": "UTXO",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "DOGE-BEP20": {
@@ -2165,7 +2165,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "DOGEDASH-BEP20": {
@@ -2183,7 +2183,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "DOGGY-BEP20": {
@@ -2201,7 +2201,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "DOT-BEP20": {
@@ -2548,7 +2548,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "FLUX": {
@@ -2891,7 +2891,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "GRMS": {
@@ -4160,7 +4160,7 @@
     "name": "Moonriver"
   },
   "ETH": {
-    "active": false,
+    "active": true,
     "coin": "ETH",
     "coingecko_id": "ethereum",
     "coinpaprika_id": "eth-ethereum",
@@ -5295,7 +5295,7 @@
       {
         "url": "electrumxprux02.sytes.net:50001",
         "protocol": "TCP"
-      }	  	      
+      }
       ],
       "explorer_url": [
         "https://explorer.prux.info/"
@@ -5303,7 +5303,7 @@
       "type": "UTXO",
       "active": false,
       "currently_enabled": false
-  },	
+  },
   "QIAIR": {
     "coin": "QIAIR",
     "name": "Qi Airdrop Token",
@@ -5953,7 +5953,7 @@
       "https://blockbook.electrum-mona.org/"
     ],
     "type": "UTXO",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "NAV": {
@@ -8492,7 +8492,7 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "LEO-ERC20": {
@@ -8867,7 +8867,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "SHIB-ERC20": {
@@ -8885,7 +8885,7 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "SHR": {
@@ -9397,7 +9397,7 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   }
 }
