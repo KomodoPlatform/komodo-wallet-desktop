@@ -1020,7 +1020,7 @@
     "name": "Bone ShibaSwap",
     "coinpaprika_id": "bone-bone-shibaswap",
     "coingecko_id": "bone-shibaswap",
-    "nomics_id": "bone6-bone-shibaswap",
+    "nomics_id": "BONE6",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -1770,7 +1770,7 @@
   "CUMMIES-BEP20": {
     "coin": "CUMMIES-BEP20",
     "name": "CumRocket",
-    "nomics_id": "cummies-cumrocket",
+    "nomics_id": "CUMMIES",
     "coinpaprika_id": "cummies-cumrocket",
     "coingecko_id": "cumrocket",
     "nodes": [
@@ -2171,7 +2171,7 @@
   "DOGEDASH-BEP20": {
     "coin": "DOGEDASH-BEP20",
     "name": "Doge Dash",
-    "nomics_id": "dogedash-doge-dash",
+    "nomics_id": "DOGEDASH",
     "coinpaprika_id": "dogedash-doge-dash",
     "coingecko_id": "doge-dash",
     "nodes": [
@@ -2189,7 +2189,7 @@
   "DOGGY-BEP20": {
     "coin": "DOGGY-BEP20",
     "name": "Doggy",
-    "nomics_id": "doggy-doggy",
+    "nomics_id": "DOGGY",
     "coinpaprika_id": "doggy-doggy",
     "coingecko_id": "doggy",
     "nodes": [
@@ -2536,7 +2536,7 @@
   "FLOKI-BEP20": {
     "coin": "FLOKI-BEP20",
     "name": "Floki Inu",
-    "nomics_id": "floki15-floki-inu-bep-20-v2",
+    "nomics_id": "FLOKI15",
     "coinpaprika_id": "floki-floki-inu",
     "coingecko_id": "floki-inu",
     "nodes": [
@@ -8482,7 +8482,7 @@
     "name": "Doge Killer",
     "coinpaprika_id": "leash-doge-killer",
     "coingecko_id": "leash",
-    "nomics_id": "leash-leash",
+    "nomics_id": "LEASH",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -8857,7 +8857,7 @@
     "name": "Shiba Inu",
     "coinpaprika_id": "shib-shiba-inu",
     "coingecko_id": "shiba-inu",
-    "nomics_id": "shib-shiba-inu",
+    "nomics_id": "SHIB",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -8875,7 +8875,7 @@
     "name": "Shiba Inu",
     "coinpaprika_id": "shib-shiba-inu",
     "coingecko_id": "shiba-inu",
-    "nomics_id": "shib-shiba-inu",
+    "nomics_id": "SHIB",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -9385,7 +9385,7 @@
   "ZINU-BEP20": {
     "coin": "ZINU-BEP20",
     "name": "Zombie Inu",
-    "nomics_id": "zinubep20-zombie-inu-bep-20",
+    "nomics_id": "ZINUBEP20",
     "coinpaprika_id": "zombie-inu",
     "coingecko_id": "zinu-zombie-inu",
     "nodes": [
