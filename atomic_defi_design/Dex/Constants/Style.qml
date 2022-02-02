@@ -305,6 +305,7 @@ QtObject {
                                           "CRV": "#517AB5",
                                           "DGC": "#BC7600",
                                           "DIMI": "#0BFBE2",
+                                          "DOI": "#120641",
                                           "DUST": "#6A032F",
                                           "EOS": "#4D4D4D",
                                           "FET": "#202944",
