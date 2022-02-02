@@ -6572,6 +6572,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "TFT-BEP20": {
+    "coin": "TFT-BEP20",
+    "name": "ThreeFold",
+    "coinpaprika_id": "tft-threefold-token",
+    "coingecko_id": "threefold-token",
+    "nomics_id": "THREEFOLDBEP20",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "THC": {
     "coin": "THC",
     "name": "HempCoin",

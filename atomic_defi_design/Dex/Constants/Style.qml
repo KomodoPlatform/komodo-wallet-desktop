@@ -381,6 +381,7 @@ QtObject {
                                           "VRSC": "#3164D3",
                                           "WCN": "#E49F00",
                                           "WWCN": "#E49F00",
+                                          "TFT": "#80C7CF",
                                           "THC": "#819F6F",
                                           "1INCH": "#95A7C5",
                                           "BABYDOGE": "#F3AA47",
