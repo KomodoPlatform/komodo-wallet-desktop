@@ -1276,9 +1276,10 @@
   },
   "BTT-BEP20": {
     "coin": "BTT-BEP20",
-    "name": "BitTorrent",
+    "name": "BitTorrent (OLD)",
     "coinpaprika_id": "btt-bittorrent",
-    "coingecko_id": "bittorrent-2",
+    "coingecko_id": "bittorrent-old",
+    "nomics_id": "BITTORRENT",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
