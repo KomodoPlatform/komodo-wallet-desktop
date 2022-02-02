@@ -65,6 +65,7 @@ function getHardcoded()
         textSelectedColor: "#f9f9fb",
 
         textFieldBackgroundColor: "#F3F5F6FF",
+        textFieldActiveBackgroundColor: "#F3F5F6CC",
         textFieldPrefixColor: "#45607894",
         textFieldSuffixColor: "#456078FF",
 
