@@ -30,7 +30,7 @@ TextField
     background: DefaultRectangle
     {
         id: background
-        color: Dex.CurrentTheme.textFieldBackgroundColor
+        color: text_field.focus ? Dex.CurrentTheme.textFieldActiveBackgroundColor : Dex.CurrentTheme.textFieldBackgroundColor
         radius: 18
         anchors.fill: parent
     }
