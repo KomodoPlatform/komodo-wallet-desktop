@@ -85,10 +85,6 @@ jobs:
           version: ${{ matrix.qt }}
           host: 'mac'
           target: 'desktop'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
-          mirror: https://qt-mirror.dannhauer.de
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
