@@ -2185,7 +2185,9 @@
     "explorer_url": [
       "https://explorer.doichain.org/"
     ],
-    "type": "UTXO"
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
   },
   "DOGE-BEP20": {
     "coin": "DOGE-BEP20",
@@ -5257,6 +5259,22 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "PGX-PLG20": {
+    "coin": "PGX-PLG20",
+    "name": "Pegaxy Stone",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "pegaxy-stone",
+    "nomics_id": "PGX",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
   },
   "PIC": {
     "coin": "PIC",

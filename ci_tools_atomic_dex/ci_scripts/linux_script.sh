@@ -31,7 +31,7 @@ sudo apt-get install build-essential \
 # get llvm
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
-sudo ./llvm.sh 12 all
+sudo ./llvm.sh 12
 # set clang version
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 777
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 777
