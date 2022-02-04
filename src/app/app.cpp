@@ -151,6 +151,12 @@ namespace atomic_dex
         return true;
     }
 
+    bool               
+    application::disable_no_balance_coins()
+    {
+        
+    }
+
     bool
     atomic_dex::application::first_run()
     {
