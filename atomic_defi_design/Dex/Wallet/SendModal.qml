@@ -450,7 +450,7 @@ BasicModal
                     }
                     else if (_preparePage.cryptoSendMode)
                     {
-                        return qsTr("Fiat amount: %1").arg(value);
+                        return qsTr("Fiat amount: %1 %2").arg(value).arg(API.app.settings_pg.current_fiat_sign);
                     }
                     else
                     {
