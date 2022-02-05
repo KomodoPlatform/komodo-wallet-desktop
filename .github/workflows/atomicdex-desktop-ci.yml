@@ -70,10 +70,6 @@ jobs:
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
-          mirror: https://qt-mirror.dannhauer.de
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
@@ -104,10 +100,6 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
-          mirror: https://qt-mirror.dannhauer.de
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
