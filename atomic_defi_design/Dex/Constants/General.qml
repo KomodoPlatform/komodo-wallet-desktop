@@ -1023,6 +1023,8 @@ QtObject {
                                                 "DIA/UST": "BINANCE:DIAUSD",
                                                 "DIA/DAI": "BINANCE:DIAUSD",
                                                 "DIA/PAX": "BINANCE:DIAUSD",
+                                                "DIA/EURS": "COINBASE:DIAEUR",
+                                                "DIA/JEUR": "COINBASE:DIAEUR",
                                                 "DIA/BNB": "BINANCE:DIABNB",
                                                 "DODO/BTC": "BINANCE:DODOBTC",
                                                 "DODO/USDT": "BINANCE:DODOUSD",
