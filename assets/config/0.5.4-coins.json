@@ -2160,19 +2160,27 @@
     "electrum": [
       {
         "url": "itchy-jellyfish-89.doi.works:50002",
+        "protocol": "SSL",
         "ws-url": "itchy-jellyfish-89.doi.works:50004"
       },
       {
         "url": "big-parrot-60.doi.works:50002",
+        "protocol": "SSL",
         "ws-url": "big-parrot-60.doi.works:50004"
       },
       {
         "url": "ugly-bird-70.doi.works:50002",
+        "protocol": "SSL",
         "ws-url": "ugly-bird-70.doi.works:50004"
       },
       {
         "url":"pink-deer-69.doi.works:50002",
+        "protocol": "SSL",
         "ws-url": "pink-deer-69.doi.works:50004"
+      },
+      {
+        "url":"pink-deer-69.doi.works:50001",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [
