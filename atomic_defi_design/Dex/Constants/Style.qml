@@ -392,6 +392,7 @@ QtObject {
                                           "HUSD": "#0075FB",
                                           "DAI": "#B68900",
                                           "USDC": "#317BCB",
+                                          "USDI": "#C29E47",
                                           "USDT": "#26A17B",
                                           "PAX": "#408C69",
                                           "PAXG": "#DABE37",
