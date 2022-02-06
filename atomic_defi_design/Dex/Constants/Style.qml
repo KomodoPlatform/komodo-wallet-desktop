@@ -484,6 +484,7 @@ QtObject {
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",
+                                          "WHIVE": "#FFCC00",
                                           "XEC": "#273498",
                                           "XEP": "#0277E5",
                                           "XLM": "#737373",

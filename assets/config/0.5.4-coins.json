@@ -9345,6 +9345,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "WHIVE": {
+    "active": true,
+    "coin": "WHIVE",
+    "coingecko_id": "whive",
+    "coinpaprika_id": "whive-the-whive-protocol",
+    "nomics_id": "whive",
+    "electrum": [
+      {
+       "url": "electrumx1.cointest.com:50002",
+       "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrumx2.cointest.com:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrumx1.cointest.com:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumx2.cointest.com:50001",
+        "protocol": "TCP"
+      }
+    ],
+    "explorer_url": [
+      "https://whiveexplorer.cointest.com"
+    ],
+    "type": "UTXO",
+    "name": "Whive",
+    "is_segwit_on": true,
+    "currently_enabled": false
+  },
   "XOR": {
     "coin": "XOR",
     "name": "Sora Token",
