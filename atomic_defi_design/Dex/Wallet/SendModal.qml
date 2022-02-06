@@ -278,7 +278,7 @@ BasicModal
             id: input_address
             enabled: !root.segwit && !root.is_send_busy
 
-            Layout.preferredWidth: 385
+            Layout.preferredWidth: 380
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 18
@@ -366,7 +366,7 @@ BasicModal
             enabled: !root.is_send_busy
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 385
+            Layout.preferredWidth: 380
             Layout.preferredHeight: 44
             Layout.topMargin: 32
 
@@ -580,7 +580,7 @@ BasicModal
 
                 enabled: !root.is_send_busy
 
-                Layout.preferredWidth: 385
+                Layout.preferredWidth: 380
                 Layout.preferredHeight: 38
                 Layout.alignment: Qt.AlignHCenter
 
@@ -600,7 +600,7 @@ BasicModal
 
                     enabled: !root.is_send_busy
 
-                    Layout.preferredWidth: 385
+                    Layout.preferredWidth: 380
                     Layout.preferredHeight: 38
 
                     placeholderText: qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
@@ -613,7 +613,7 @@ BasicModal
 
                     enabled: !root.is_send_busy
 
-                    Layout.preferredWidth: 385
+                    Layout.preferredWidth: 380
                     Layout.preferredHeight: 38
 
                     placeholderText: qsTr("Gas price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
