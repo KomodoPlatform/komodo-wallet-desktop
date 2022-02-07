@@ -13,69 +13,55 @@ import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
+// Simple/Pro toggle group
 Item
 {
-    width: parent.width - 5
-    anchors.horizontalCenter: parent.horizontalCenter
-
-    ColumnLayout
+    // Simple/Pro select cursor
+    Rectangle
     {
-        anchors.fill: parent
-        spacing: 50
+        width: 86
+        height: 34
+        radius: 18
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? _simpleLabel.horizontalCenter : _proLabel.horizontalCenter
+        color: Dex.CurrentTheme.tabSelectedColor
+    }
 
-        // Simple/Pro toggle group
-        Item
+    DexLabel
+    {
+        id: _simpleLabel
+        text: "Simple"
+        color: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        font.pixelSize: 16
+        font.weight: Font.Bold
+
+        DexMouseArea
         {
-            Layout.leftMargin: 30
-            Layout.preferredWidth: 120
-
-            // Simple/Pro select cursor
-            Rectangle
-            {
-                width: 84
-                height: 32
-                radius: 18
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? _simpleLabel.horizontalCenter : _proLabel.horizontalCenter
-                color: Dex.CurrentTheme.tabSelectedColor
-            }
-
-            DexLabel
-            {
-                id: _simpleLabel
-                text: "Simple"
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                font.bold: true
-                DexMouseArea
-                {
-                    id: simple_area
-                    hoverEnabled: true
-                    anchors.fill: parent
-                    onClicked: API.app.trading_pg.current_trading_mode = TradingMode.Simple
-                }
-            }
-
-            DexLabel
-            {
-                id: _proLabel
-                text: "Pro"
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                font.bold: true
-                DexMouseArea
-                {
-                    id: pro_area
-                    hoverEnabled: true
-                    anchors.fill: parent
-                    onClicked: API.app.trading_pg.current_trading_mode = TradingMode.Pro
-                }
-            }
+            id: simple_area
+            hoverEnabled: true
+            anchors.fill: parent
+            onClicked: API.app.trading_pg.current_trading_mode = TradingMode.Simple
         }
-        Item
+    }
+
+    DexLabel
+    {
+        id: _proLabel
+        text: "Pro"
+        color: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        font.pixelSize: 16
+        font.weight: Font.Bold
+
+        DexMouseArea
         {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        } 
+            id: pro_area
+            hoverEnabled: true
+            anchors.fill: parent
+            onClicked: API.app.trading_pg.current_trading_mode = TradingMode.Pro
+        }
     }
 }

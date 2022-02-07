@@ -162,14 +162,20 @@ Item
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
+    TradeViewHeader
+    {
+        width: 138
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        anchors.top: parent.top
+    }
+
     Loader
     {
         id: _viewLoader
         anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
+        anchors.topMargin: 70
+        anchors.leftMargin: 50
         source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView/Main.qml"
     }
-
-    TradeViewHeader { }
 }

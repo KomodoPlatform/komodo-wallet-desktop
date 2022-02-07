@@ -66,10 +66,6 @@ GridLayout
     function prefWidth(item) { return (width / columns) * item.Layout.columnSpan; }
     function prefHeight(item) { return (height / rows) * item.Layout.rowSpan; }
 
-    anchors.topMargin: 20
-    anchors.leftMargin: 10
-    anchors.fill: parent
-
     rows: 12
     columns: 12
 
