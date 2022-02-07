@@ -530,7 +530,7 @@ BasicModal
                     text:
                     {
                         if (_preparePage.cryptoSendMode) qsTr("Specify in Fiat");
-                        else                                     qsTr("Specify in Crypto");
+                        else                             qsTr("Specify in Crypto");
                     }
                 }
 
