@@ -10,15 +10,13 @@ import App 1.0
 import "../../../Components"
 import Dex.Themes 1.0 as Dex
 
-Rectangle
+FloatingBackground
 {
     property var            details
     property alias          clickable: mouse_area.enabled
     readonly property bool  is_placed_order: !details ? false : details.order_id !== ''
 
-    width: list.model.count > 6 ? list.width - 15 : list.width - 8
-    height: 40
-    color: mouse_area.containsMouse? DexTheme.hightlightColor : "transparent"
+    height: 30
 
     DefaultMouseArea
     {
@@ -35,48 +33,15 @@ Rectangle
     RowLayout
     {
         anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-
-        DefaultText
-        {
-            id: status_text
-            Layout.preferredWidth: (parent.width / 100) * 4
-            Layout.alignment: Qt.AlignVCenter
-            visible: clickable ? !details ? false :
-                (details.is_swap || !details.is_maker) : false
-
-            font.pixelSize: getStatusFontSize(details.order_status)
-            color: !details ? Dex.CurrentTheme.foregroundColor : getStatusColor(details.order_status)
-            text_value: !details ? "" : visible ? getStatusStep(details.order_status) : ''
-        }
-
-        Item
-        {
-            Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 4
-            Layout.alignment: Qt.AlignVCenter
-            visible: !status_text.visible ? clickable ? true : false : false
-
-            Qaterial.ColorIcon
-            {
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                iconSize: 17
-                color: Dex.CurrentTheme.foregroundColor
-                source: Qaterial.Icons.clipboardTextSearchOutline
-            }
-        }
 
         DefaultText
         {
             visible: clickable
-            font.pixelSize: base_amount.font.pixelSize
+            Layout.preferredWidth: (parent.width / 100) * 18
+            font.pixelSize: 12
             text_value: !details ? "" : details.date ?? ""
-            Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 10
-            verticalAlignment: Label.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
+            elide: Text.ElideRight
+            maximumLineCount: 1
         }
 
         DefaultImage
@@ -84,48 +49,93 @@ Rectangle
             id: base_icon
             source: General.coinIcon(!details ? atomic_app_primary_coin :
                 details.base_coin ?? atomic_app_primary_coin)
-            Layout.preferredWidth: Style.textSize1
-            Layout.preferredHeight: Style.textSize1
+            Layout.preferredWidth: 15
+            Layout.preferredHeight: width
             Layout.alignment: Qt.AlignVCenter
-            Layout.leftMargin: 2
+            Layout.leftMargin: 5
         }
 
-        DefaultText
+        Row
         {
-            id: base_amount
-            text_value: !details ? "" : General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_current_currency, API.app.settings_pg.current_currency)
-            font.pixelSize: 10
-            Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 33
-            verticalAlignment: Label.AlignVCenter
-            privacy: is_placed_order
+            Layout.preferredWidth: (parent.width / 100) * 30
+            spacing: 6
+            DefaultText
+            {
+                font.weight: Font.Bold
+                font.pixelSize: 12
+                text: !details ? "" : details.base_coin
+                privacy: is_placed_order
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                width: implicitWidth > (parent.width / 100) * 30 ? (parent.width / 100) * 30 : implicitWidth
+            }
+            DefaultText
+            {
+                font.pixelSize: 12
+                text: !details ? "" : details.base_amount
+                privacy: is_placed_order
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                width: implicitWidth > (parent.width / 100) * 40 ? (parent.width / 100) * 40 : implicitWidth
+            }
+            DefaultText
+            {
+                font.pixelSize: 12
+                text: !details ? "" : "(%1 %2)".arg(details.base_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
+                privacy: is_placed_order
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                width: implicitWidth > (parent.width / 100) * 30 ? (parent.width / 100) * 30 : implicitWidth
+            }
         }
 
         Item
         {
-            Layout.fillHeight: true
             Layout.fillWidth: true
             SwapIcon
             {
-                visible: !status_text.visible
                 anchors.fill: parent
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
+                color: details.order_status === "failed" ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.foregroundColor
                 top_arrow_ticker: !details ? atomic_app_primary_coin : details.base_coin ?? ""
                 bottom_arrow_ticker: !details ? atomic_app_primary_coin : details.rel_coin ?? ""
             }
         }
 
-        DefaultText
+        Row
         {
-            id: rel_amount
-            text_value: !details ? "" : General.formatCrypto("", details.rel_amount, details.rel_coin, details.rel_amount_current_currency, API.app.settings_pg.current_currency)
-            font.pixelSize: base_amount.font.pixelSize
-            Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 33
-            verticalAlignment: Label.AlignVCenter
-            horizontalAlignment: Label.AlignRight
-            privacy: is_placed_order
+            layoutDirection: Qt.RightToLeft
+            Layout.preferredWidth: (parent.width / 100) * 30
+            spacing: 6
+            DefaultText
+            {
+                font.pixelSize: 12
+                text: !details ? "" : "(%1 %2)".arg(details.rel_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
+                privacy: is_placed_order
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                width: implicitWidth > (parent.width / 100) * 30 ? (parent.width / 100) * 30 : implicitWidth
+            }
+            DefaultText
+            {
+                font.pixelSize: 12
+                text: !details ? "" : details.rel_amount
+                privacy: is_placed_order
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                width: implicitWidth > (parent.width / 100) * 40 ? (parent.width / 100) * 40 : implicitWidth
+            }
+            DefaultText
+            {
+                font.weight: Font.Bold
+                font.pixelSize: 12
+                text: !details ? "" : details.rel_coin
+                privacy: is_placed_order
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                width: implicitWidth > (parent.width / 100) * 30 ? (parent.width / 100) * 30 : implicitWidth
+            }
         }
 
         DefaultImage
@@ -133,20 +143,18 @@ Rectangle
             id: rel_icon
             source: General.coinIcon(!details ? atomic_app_primary_coin :
                 details.rel_coin ?? atomic_app_secondary_coin)
-
-            width: base_icon.width
-            Layout.preferredWidth: Style.textSize1
-            Layout.preferredHeight: Style.textSize1
+            Layout.preferredWidth: 15
+            Layout.preferredHeight: 15
             Layout.alignment: Qt.AlignVCenter
         }
 
         DefaultText
         {
-            font.pixelSize: base_amount.font.pixelSize
+            font.pixelSize: 12
             visible: !details || details.recoverable === undefined ? false :
                 details.recoverable && details.order_status !== "refunding"
-            Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 5
+            Layout.preferredWidth: (parent.width / 100) * 2
+            Layout.preferredHeight: width
             verticalAlignment: Label.AlignVCenter
             horizontalAlignment: Label.AlignHCenter
             text_value: Style.warningCharacter
@@ -164,18 +172,14 @@ Rectangle
             }
         }
 
-        Qaterial.FlatButton
+        MouseArea
         {
             id: cancel_button_text
 
-            visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouse_area.containsMouse || hovered) ? true : false : false
+            visible: !is_history
 
-            Layout.fillHeight: true
-            Layout.preferredWidth: (parent.width / 100) * 3
-            Layout.alignment: Qt.AlignVCenter
-
-            outlinedColor: Dex.CurrentTheme.noColor
-            hoverEnabled: true
+            Layout.preferredWidth: (parent.width / 100) * 2
+            Layout.preferredHeight: width
 
             onClicked: if (details) cancelOrder(details.order_id)
 
@@ -188,13 +192,11 @@ Rectangle
             }
             Qaterial.ColorIcon
             {
-                anchors.centerIn: parent
-                iconSize: 13
+                anchors.fill: parent
+                iconSize: 14
                 color: Dex.CurrentTheme.noColor
                 source: Qaterial.Icons.close
-                scale: parent.visible ? 1 : 0
             }
-
         }
     }
 

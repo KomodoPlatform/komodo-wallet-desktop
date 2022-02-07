@@ -146,7 +146,8 @@ Item {
                 }
                 DefaultButton
                 {
-                    visible: !root.is_history && API.app.orders_mdl.length > 0
+                    visible: !root.is_history
+                    enabled: API.app.orders_mdl.length > 0
                     Layout.preferredWidth: 86
                     Layout.preferredHeight: 29
                     radius: 7
@@ -240,22 +241,13 @@ Item {
             }
         }
 
-        RowLayout
+        OrderList
         {
-            Layout.fillWidth: true
+            id: order_list
+            items: list_model
+            is_history: root.is_history
             Layout.fillHeight: true
-
-            spacing: parent.spacing
-
-            OrderList
-            {
-                id: order_list
-                items: list_model
-                is_history: root.is_history
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-            }
-
+            Layout.fillWidth: true
         }
     }
     ModalLoader

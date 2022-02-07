@@ -9,13 +9,15 @@ import "../../../"
 
 Item
 {
+    id: root
+
     property string title
     property var    items
     property bool   is_history: false
 
     ColumnLayout
     {
-        width: parent.width - 10
+        width: parent.width
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -48,6 +50,7 @@ Item
 
                 details: model
                 opacity: anim_time
+                width: root.width
             }
 
             populate: Transition

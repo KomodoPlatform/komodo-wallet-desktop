@@ -2,38 +2,38 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
-import App 1.0
-
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
+import Dex.Themes 1.0 as Dex
 import "../../../Components"
 
-BasicModal {
+BasicModal
+{
     id: root
 
     property var details
 
-    onDetailsChanged: {
-        if (!details) root.close()
-    }
-
+    onDetailsChanged: if (!details) root.close()
     onOpened: swap_progress.updateSimulatedTime()
-
     onClosed: details = undefined
 
-    ModalContent {
+    ModalContent
+    {
         title: !details ? "" : details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
         titleAlignment: Qt.AlignHCenter
 
         // Complete image
-        DefaultImage {
+        DefaultImage
+        {
             visible: !details ? false : details.is_swap && details.order_status === "successful"
             Layout.alignment: Qt.AlignHCenter
             source: General.image_path + "exchange-trade-complete.png"
         }
 
         // Loading symbol
-        DefaultBusyIndicator {
+        DefaultBusyIndicator
+        {
             visible: !details ? false : details.is_swap && details.order_status !== "successful"
             running: (!details ? false :
                 details.is_swap &&
@@ -43,20 +43,21 @@ BasicModal {
         }
 
         // Status Text
-        DefaultText {
+        DefaultText
+        {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 5
             font.pixelSize: Style.textSize1
             font.bold: true 
             visible: !details ? false :
                 details.is_swap || !details.is_maker
-            color: !details ? "white" :
-                visible ? getStatusColor(details.order_status) : ''
+            color: Dex.CurrentTheme.foregroundColor
             text_value: !details ? "" :
                 visible ? getStatusText(details.order_status) : ''
         }
 
-        OrderContent {
+        OrderContent
+        {
             Layout.topMargin: 25
             Layout.preferredWidth: 500
             Layout.alignment: Qt.AlignHCenter
@@ -65,21 +66,17 @@ BasicModal {
             in_modal: true
         }
 
-        HorizontalLine {
-            Layout.fillWidth: true
-            Layout.bottomMargin: 20
-            color: Style.colorWhite8
-        }
-
         // Maker/Taker
-        DefaultText {
+        DefaultText
+        {
             text_value: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
             color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
         }
 
         // Refund state
-        TextFieldWithTitle {
+        TextFieldWithTitle
+        {
             Layout.topMargin: -20
 
             title: qsTr("Refund State")
@@ -91,14 +88,16 @@ BasicModal {
         }
 
         // Date
-        TextEditWithTitle {
+        TextEditWithTitle
+        {
             title: qsTr("Date")
             text: !details ? "" : details.date
             visible: text !== ''
         }
 
         // ID
-        TextEditWithTitle {
+        TextEditWithTitle
+        {
             title: qsTr("ID")
             text: !details ? "" : details.order_id
             visible: text !== ''
@@ -107,7 +106,8 @@ BasicModal {
         }
 
         // Payment ID
-        TextEditWithTitle {
+        TextEditWithTitle
+        {
             title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
             text: !details ? "" : details.maker_payment_id
             visible: text !== ''
@@ -115,7 +115,8 @@ BasicModal {
         }
 
         // Payment ID
-        TextEditWithTitle {
+        TextEditWithTitle
+        {
             title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
             text: !details ? "" : details.taker_payment_id
             visible: text !== ''
@@ -123,14 +124,16 @@ BasicModal {
         }
 
         // Error ID
-        TextEditWithTitle {
+        TextEditWithTitle
+        {
             title: qsTr("Error ID")
             text: !details ? "" : details.order_error_state
             visible: text !== ''
         }
 
         // Error Details
-        TextFieldWithTitle {
+        TextFieldWithTitle
+        {
             title: qsTr("Error Log")
             field.text: !details ? "" : details.order_error_message
             field.readOnly: true
@@ -139,15 +142,8 @@ BasicModal {
             visible: field.text !== ''
         }
 
-        HorizontalLine {
-            visible: swap_progress.visible
-            Layout.fillWidth: true
-            Layout.topMargin: 10
-            Layout.bottomMargin: Layout.topMargin
-            color: Style.colorWhite8
-        }
-
-        SwapProgress {
+        SwapProgress
+        {
             id: swap_progress
             visible: General.exists(details) && details.order_status !== "matching"
             Layout.fillWidth: true
