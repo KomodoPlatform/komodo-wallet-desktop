@@ -472,6 +472,11 @@ BasicModal
                         else
                             equivalentAmount.value = imputAmount.dividedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                     }
+
+                    function onTextChanged()
+                    {
+                        onTextEdited()
+                    }
                 }
             }
 
