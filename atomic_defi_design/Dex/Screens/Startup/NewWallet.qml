@@ -78,13 +78,13 @@ SetupPage
     {
         switch(num) {
           case 1: case 21:
-            return num + "st";
+            return num + qsTr("st");
           case 2: case 22:
-            return num + "nd"
+            return num + qsTr("nd");
           case 3: case 23:
-            return num + "rd"
+            return num + qsTr("rd");
           default:
-            return num + "th"
+            return num + qsTr("th");
         }
     }
 
