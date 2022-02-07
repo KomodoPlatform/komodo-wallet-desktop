@@ -2791,6 +2791,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "FLOW-BEP20": {
+    "coin": "FLOW-BEP20",
+    "name": "Flow",
+    "coinpaprika_id": "flow-flow",
+    "coingecko_id": "flow",
+    "nomics_id": "FLOW2",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "STFIRO": {
     "coin": "STFIRO",
     "name": "StakedFIRO",
@@ -4621,6 +4639,28 @@
       "https://polygonscan.com/"
     ],
     "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
+  "USDI": {
+    "coin": "USDI",
+    "name": "USD Inflation Coin",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "usdi1.blackcoin.nl:10002",
+        "protocol": "SSL"
+      },
+      {
+        "url": "usdi2.blackcoin.nl:20002",
+        "protocol": "SSL"
+      }
+    ],
+    "explorer_url": [
+      "https://usdiexplorer.com/"
+    ],
+    "type": "UTXO",
     "active": false,
     "currently_enabled": false
   },
@@ -6589,6 +6629,24 @@
       "https://polygonscan.com/"
     ],
     "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
+  "SOL-BEP20": {
+    "coin": "SOL-BEP20",
+    "name": "Solana",
+    "coinpaprika_id": "sol-solana",
+    "coingecko_id": "solana",
+    "nomics_id": "SOL",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
     "active": false,
     "currently_enabled": false
   },
