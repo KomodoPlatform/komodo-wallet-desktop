@@ -17,6 +17,8 @@ RowLayout
     property var pageSize: Constants.API.app.orders_mdl.nb_pages
     property var currentValue: Constants.API.app.orders_mdl.current_page
 
+    property alias itemsPerPageComboBox: itemsPerPageComboBox
+
     function refreshBtn()
     {
         currentValue = Constants.API.app.orders_mdl.current_page
@@ -70,6 +72,8 @@ RowLayout
 
     DefaultComboBox
     {
+        id: itemsPerPageComboBox
+
         readonly property int item_count: Constants.API.app.orders_mdl.limit_nb_elements
         readonly property
         var options: [5, 10, 25, 50, 100, 200]
