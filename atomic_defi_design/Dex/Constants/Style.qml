@@ -309,6 +309,7 @@ QtObject {
                                           "DUST": "#6A032F",
                                           "EOS": "#4D4D4D",
                                           "FET": "#202944",
+                                          "FLOW": "#00EF8B",
                                           "FTC": "#FFFFFF",
                                           "FTM": "#13B5EC",
                                           "GLEEC": "#8C41FF",

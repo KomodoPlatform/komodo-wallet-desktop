@@ -2791,6 +2791,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "FLOW-BEP20": {
+    "coin": "FLOW-BEP20",
+    "name": "Flow",
+    "coinpaprika_id": "flow-flow",
+    "coingecko_id": "flow",
+    "nomics_id": "FLOW2",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "STFIRO": {
     "coin": "STFIRO",
     "name": "StakedFIRO",
