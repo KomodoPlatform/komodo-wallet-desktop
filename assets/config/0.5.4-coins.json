@@ -2918,6 +2918,42 @@
     "active": false,
     "currently_enabled": false
   },
+  "GALA-ERC20": {
+    "coin": "GALA-ERC20",
+    "name": "Gala",
+    "coinpaprika_id": "gala-gala",
+    "coingecko_id": "gala",
+    "nomics_id": "GALA",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "GALA-BEP20": {
+    "coin": "GALA-BEP20",
+    "name": "Gala",
+    "coinpaprika_id": "gala-gala",
+    "coingecko_id": "gala",
+    "nomics_id": "GALA",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "GLEEC": {
     "coin": "GLEEC",
     "name": "Gleec",
