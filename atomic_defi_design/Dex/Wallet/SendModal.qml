@@ -539,7 +539,13 @@ BasicModal
                     id: cryptoFiatSwitchMouseArea
                     anchors.fill: parent
                     hoverEnabled: true
-                    onClicked: _preparePage.cryptoSendMode = !_preparePage.cryptoSendMode
+                    onClicked:
+                    {
+                        _preparePage.cryptoSendMode = !_preparePage.cryptoSendMode
+                        let temp = input_amount.text
+                        input_amount.text = equivalentAmount.value;
+                        equivalentAmount.value = temp;
+                    }
                 }
             }
         }
