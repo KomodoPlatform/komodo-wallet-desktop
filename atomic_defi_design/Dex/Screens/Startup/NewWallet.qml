@@ -74,6 +74,20 @@ SetupPage
         return [false, false];
     }
 
+    function getNumSuffix(num)
+    {
+        switch(num) {
+          case 1: case 21:
+            return num + "st";
+          case 2: case 22:
+            return num + "nd"
+          case 3: case 23:
+            return num + "rd"
+          default:
+            return num + "th"
+        }
+    }
+
     function isFinalGuess()
     {
         return guess_count === 3
@@ -582,7 +596,7 @@ SetupPage
                     field.font: DexTypo.body2
                     field.horizontalAlignment: Qt.AlignLeft
                     field.leftPadding: 75
-                    field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
+                    field.placeholderText: qsTr("Enter the ") + " %1 ".arg(getNumSuffix(current_word_idx + 1)) + qsTr("word")
                     field.validator: RegExpValidator
                     {
                         regExp: /[a-z]+/
