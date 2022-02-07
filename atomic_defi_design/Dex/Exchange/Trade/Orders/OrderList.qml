@@ -3,9 +3,9 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import App 1.0
-
 import "../../../Components"
 import "../../../"
+import Dex.Themes 1.0 as Dex
 
 Item
 {
@@ -97,6 +97,8 @@ Item
             Layout.maximumHeight: 70
             Layout.preferredWidth: parent.width
             Layout.bottomMargin: 10
+            itemsPerPageComboBox.mainBackgroundColor: Dex.CurrentTheme.buttonColorEnabled
+            itemsPerPageComboBox.dropdownBackgroundColor: Dex.CurrentTheme.buttonColorEnabled
         }
     }
 
