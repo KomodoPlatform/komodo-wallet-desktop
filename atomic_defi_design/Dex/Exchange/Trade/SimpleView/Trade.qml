@@ -703,6 +703,7 @@ ClipRRect // Trade Card
                     anchors.verticalCenter: parent.verticalCenter
 
                     source: Qaterial.Icons.alert
+                    visible: _swapAlert.getAlert() !== ""
 
                     DexTooltip
                     {
