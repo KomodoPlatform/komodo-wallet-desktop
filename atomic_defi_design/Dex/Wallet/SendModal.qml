@@ -644,7 +644,7 @@ BasicModal
         {
             Layout.topMargin: 16
             wrapMode: Text.Wrap
-            visible: !fee_error.visible && fieldAreFilled() && !hasFunds()
+            visible: !fee_error.visible && !hasFunds()
 
             color: Dex.CurrentTheme.noColor
 
