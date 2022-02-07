@@ -471,6 +471,7 @@ QtObject {
                                           "SFUSD": "#9881B8",
                                           "SNT": "#596BED",
                                           "SNX": "#00D1FF",
+                                          "SOL": "#7BFBB5",
                                           "SOULJA": "#8F734A",
                                           "STFIRO": "#00D4F7",
                                           "STORJ": "#2683FF",
