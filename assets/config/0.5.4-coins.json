@@ -2193,6 +2193,7 @@
     "name": "Doichain",
     "coinpaprika_id": "doi-doicoin",
     "coingecko_id": "doichain",
+    "nomics_id": "DOI",
     "electrum": [
       {
         "url": "itchy-jellyfish-89.doi.works:50002",
@@ -6518,6 +6519,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "RSR-ERC20": {
+    "coin": "RSR-ERC20",
+    "name": "Reserve Rights",
+    "coinpaprika_id": "rsr-reserve-rights",
+    "coingecko_id": "reserve-rights-token",
+    "nomics_id": "RSR",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "RTM": {
     "coin": "RTM",
     "name": "Raptoreum",
@@ -9001,23 +9020,6 @@
       "https://polygonscan.com/"
     ],
     "type": "Matic",
-    "active": false,
-    "currently_enabled": false
-  },
-  "RSR": {
-    "coin": "RSR",
-    "name": "Reserve Rights",
-    "coinpaprika_id": "rsr-reserve-rights",
-    "coingecko_id": "reserve-rights-token",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
     "active": false,
     "currently_enabled": false
   },
