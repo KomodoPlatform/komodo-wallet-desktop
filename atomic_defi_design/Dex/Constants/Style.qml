@@ -312,6 +312,7 @@ QtObject {
                                           "FLOW": "#00EF8B",
                                           "FTC": "#FFFFFF",
                                           "FTM": "#13B5EC",
+                                          "GALA": "#011B36",
                                           "GLEEC": "#8C41FF",
                                           "GRMS": "#12B690",
                                           "GMS": "#0BFBE2",
