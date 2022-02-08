@@ -97,7 +97,6 @@ SetupPage
     {
         current_mnemonic = ""
         text_error = ""
-
         form_is_filled = false
         guess_text_error = ""
         guess_count = 1
@@ -483,6 +482,7 @@ SetupPage
 
                             currentStep++
                             input_seed_word.field.text = ""
+                            guess_text_error = ""
                             guess_count = 1
                             setRandomGuessWord()
                         }
