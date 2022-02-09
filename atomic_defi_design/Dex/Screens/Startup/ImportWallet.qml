@@ -244,7 +244,7 @@ SetupPage
                                 }
                             })
                         }
-                        else allow_custom_seed.checked = false;
+                        allow_custom_seed.checked = false;
                     }
                 }
 
