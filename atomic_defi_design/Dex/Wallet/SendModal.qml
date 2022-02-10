@@ -434,6 +434,7 @@ BasicModal
         {
             Layout.topMargin: 10
             Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 380
 
             DefaultText
             {
@@ -480,11 +481,12 @@ BasicModal
                 }
             }
 
-            Item { Layout.fillWidth: true }
+            Item { }
 
             Rectangle
             {
                 enabled: equivalentAmount.enabled
+                Layout.alignment: Qt.AlignRight
                 Layout.preferredWidth: cryptoFiatSwitchText.width + cryptoFiatSwitchIcon.width + 20
                 Layout.preferredHeight: 32
                 radius: 16
