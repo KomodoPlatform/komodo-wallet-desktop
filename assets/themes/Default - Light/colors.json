@@ -77,11 +77,14 @@
     "rangeSliderIndicatorBackgroundStartColor": "#EE5C78FF",
     "rangeSliderIndicatorBackgroundEndColor": "#EE5C78FF",
 
+    "loginWalletIconColorStart": "#9B1C2E",
+    "loginWalletIconColorEnd": "#EE5C78",
     "sidebarBgColor": "#FCFCFCFF",
     "sidebarVersionTextColor": "#110202FF",
     "sidebarCursorStartColor": "#F6D7DBFF",
     "sidebarCursorEndColor": "#FFFFFFFF",
     "sidebarLineTextHovered": "#7C1624",
+    "sidebarLineTextSelected": "#7C1624",
 
     "tradeBuyModeSelectorBackgroundColorStart": "#00C3AAFF",
     "tradeBuyModeSelectorBackgroundColorEnd": "#1FE7C3FF",

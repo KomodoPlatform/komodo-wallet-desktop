@@ -23,6 +23,7 @@ Line
         source: _icon
         color: !_icon.enabled ? Dex.CurrentTheme.textDisabledColor :
                mouseArea.containsMouse && currentLineType !== type ? Dex.CurrentTheme.sidebarLineTextHovered :
-                                                                      Dex.CurrentTheme.foregroundColor
+               currentLineType === type ?                            Dex.CurrentTheme.sidebarLineTextSelected :
+                                                                     Dex.CurrentTheme.foregroundColor
     }
 }
