@@ -9346,8 +9346,8 @@
     "currently_enabled": false
   },
   "WHIVE": {
-    "active": true,
     "coin": "WHIVE",
+    "name": "Whive",
     "coingecko_id": "whive",
     "coinpaprika_id": "whive-the-whive-protocol",
     "nomics_id": "whive",
@@ -9372,10 +9372,10 @@
       }
     ],
     "explorer_url": [
-      "https://whiveexplorer.cointest.com"
+      "https://whiveexplorer.cointest.com/"
     ],
     "type": "UTXO",
-    "name": "Whive",
+    "active": true,
     "is_segwit_on": true,
     "currently_enabled": false
   },
