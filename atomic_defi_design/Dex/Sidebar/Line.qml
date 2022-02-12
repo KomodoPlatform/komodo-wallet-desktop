@@ -37,6 +37,7 @@ Item
         style: Text.Normal
         color: !enabled ?                                             Dex.CurrentTheme.textDisabledColor :
                _mouseArea.containsMouse && currentLineType !== type ? Dex.CurrentTheme.sidebarLineTextHovered :
+               currentLineType === type ?                             Dex.CurrentTheme.sidebarLineTextSelected :
                                                                       Dex.CurrentTheme.foregroundColor
     }
 

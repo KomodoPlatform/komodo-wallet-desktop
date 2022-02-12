@@ -702,12 +702,19 @@ ClipRRect // Trade Card
                     anchors.leftMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
 
-                    visible: ToolTip.text !== ""
-
                     source: Qaterial.Icons.alert
+                    visible: _swapAlert.getAlert() !== ""
 
-                    ToolTip.visible: _alertMouseArea.containsMouse
-                    ToolTip.text: getAlert()
+                    DexTooltip
+                    {
+                        contentItem: DefaultText
+                        {
+                           text: _swapAlert.getAlert()
+                           font: DexTypo.caption
+                           padding: 5
+                        }
+                        visible: _alertMouseArea.containsMouse
+                    }
 
                     DefaultColorOverlay
                     {

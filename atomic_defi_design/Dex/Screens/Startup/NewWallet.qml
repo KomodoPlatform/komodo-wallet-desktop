@@ -37,11 +37,12 @@ SetupPage
         return current_mnemonic.split(" ")
     }
 
-    function setRandomGuessWord()
+    function setRandomGuessWord(words)
     {
         const prev_idx = current_word_idx
         while (current_word_idx === prev_idx)
-            current_word_idx = General.getRandomInt(0, getWords().length - 1)
+            current_word_idx = General.getRandomInt(0, words.length - 1)
+        return words[current_word_idx]
     }
 
     function validGuessField(field)
@@ -63,7 +64,6 @@ SetupPage
                 else
                 {
                     ++guess_count;
-                    setRandomGuessWord();
                 }
                 field.text = "";
                 guess_text_error = "";
@@ -72,6 +72,20 @@ SetupPage
             else guess_text_error = qsTr("Wrong word, please check again");
         }
         return [false, false];
+    }
+
+    function getNumSuffix(num)
+    {
+        switch(num) {
+          case 1: case 21:
+            return num + qsTr("st");
+          case 2: case 22:
+            return num + qsTr("nd");
+          case 3: case 23:
+            return num + qsTr("rd");
+          default:
+            return num + qsTr("th");
+        }
     }
 
     function isFinalGuess()
@@ -83,7 +97,6 @@ SetupPage
     {
         current_mnemonic = ""
         text_error = ""
-
         form_is_filled = false
         guess_text_error = ""
         guess_count = 1
@@ -109,23 +122,24 @@ SetupPage
         return array;
     }
 
-    function getRandom4x(list, keep)
+    function getRandomWords(num_words)
     {
-        // remove keep
-        const index = list.indexOf(keep);
-        if (index > -1) list.splice(index, 1);
+        if (current_mnemonic) {
 
-        // randomlise
-        let randomList = shuffle(list)
+            // get word to confirm
+            let list = current_mnemonic.split(" ");
+            let keep = setRandomGuessWord(list);
 
-        // set keeped word
-        let newList = [randomList[0], randomList[1], randomList[2], keep]
+            // remove confirm word from list
+            list.splice(list.indexOf(keep), 1)
 
-        // randomlise again
-        let finalList = shuffle(newList)
+            // randomise and re-add confirm word
+            let randomList = shuffle(list).slice(0, num_words - 1)
+            randomList.push(keep)
 
-        // return final word list
-        return finalList
+            // return final word list (shuffled)
+            return shuffle(randomList)
+        }
     }
 
     function onClickedCreate(password, generated_seed, wallet_name)
@@ -173,7 +187,6 @@ SetupPage
             currentStep++
             input_seed_word.field.text = ""
             guess_count = 1
-            setRandomGuessWord()
 
             form_is_filled = true
         }
@@ -194,9 +207,8 @@ SetupPage
             {
                 input_seed_word.field.text = ""
                 input_seed_word.error = true
-                setRandomGuessWord()
-                mmo.model = getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
             }
+            mmo.model = getRandomWords(4)
         }
         ColumnLayout
         {
@@ -469,8 +481,9 @@ SetupPage
 
                             currentStep++
                             input_seed_word.field.text = ""
+                            guess_text_error = ""
                             guess_count = 1
-                            setRandomGuessWord()
+                            mmo.model = getRandomWords(4)
                         }
                     }
                 }
@@ -545,7 +558,7 @@ SetupPage
                             Repeater
                             {
                                 id: mmo
-                                model: getRandom4x(current_mnemonic.split(" "), getWords()[current_word_idx])
+                                model: ""
 
                                 delegate: DexAppButton
                                 {
@@ -582,7 +595,7 @@ SetupPage
                     field.font: DexTypo.body2
                     field.horizontalAlignment: Qt.AlignLeft
                     field.leftPadding: 75
-                    field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
+                    field.placeholderText: qsTr("Enter the ") + " %1 ".arg(getNumSuffix(current_word_idx + 1)) + qsTr("word")
                     field.validator: RegExpValidator
                     {
                         regExp: /[a-z]+/
@@ -641,13 +654,18 @@ SetupPage
                     }
                 }
 
-                DefaultText
+                Item
                 {
-                    text_value: guess_text_error
-                    color: Dex.CurrentTheme.noColor
-                    visible: input_seed_word.error
-                    DexVisibleBehavior on visible
-                    {}
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 20
+                    DefaultText
+                    {
+                        text_value: guess_text_error
+                        color: Dex.CurrentTheme.noColor
+                        visible: input_seed_word.error
+                        DexVisibleBehavior on visible
+                        {}
+                    }
                 }
             }
 

@@ -37,7 +37,7 @@
         <file>assets/images/coins/babydoge.png</file>
         <file>assets/images/coins/bal.png</file>
         <file>assets/images/coins/band.png</file>
-        <file>assets/images/coins/band.png</file>
+        <file>assets/images/coins/banano.png</file>
         <file>assets/images/coins/bat.png</file>
         <file>assets/images/coins/bch.png</file>
         <file>assets/images/coins/best.png</file>
@@ -47,6 +47,7 @@
         <file>assets/images/coins/bnb.png</file>
         <file>assets/images/coins/bnbt.png</file>
         <file>assets/images/coins/bnt.png</file>
+        <file>assets/images/coins/bone.png</file>
         <file>assets/images/coins/bots.png</file>
         <file>assets/images/coins/brz.png</file>
         <file>assets/images/coins/bsty.png</file>
@@ -74,6 +75,7 @@
         <file>assets/images/coins/cro.png</file>
         <file>assets/images/coins/crv.png</file>
         <file>assets/images/coins/crypto.png</file>
+        <file>assets/images/coins/cummies.png</file>
         <file>assets/images/coins/cvc.png</file>
         <file>assets/images/coins/cvt.png</file>
         <file>assets/images/coins/dai.png</file>
@@ -85,6 +87,9 @@
         <file>assets/images/coins/dimi.png</file>
         <file>assets/images/coins/dodo.png</file>
         <file>assets/images/coins/doge.png</file>
+        <file>assets/images/coins/dogedash.png</file>
+        <file>assets/images/coins/doggy.png</file>
+        <file>assets/images/coins/doi.png</file>
         <file>assets/images/coins/dot.png</file>
         <file>assets/images/coins/dp.png</file>
         <file>assets/images/coins/dust.png</file>
@@ -103,17 +108,21 @@
         <file>assets/images/coins/ethr.png</file>
         <file>assets/images/coins/eurs.png</file>
         <file>assets/images/coins/fet.png</file>
+        <file>assets/images/coins/floki.png</file>
         <file>assets/images/coins/flux.png</file>
         <file>assets/images/coins/fil.png</file>
         <file>assets/images/coins/firo.png</file>
         <file>assets/images/coins/fjc.png</file>
         <file>assets/images/coins/fjcb.png</file>
+        <file>assets/images/coins/flow.png</file>
         <file>assets/images/coins/ftc.png</file>
         <file>assets/images/coins/ftm.png</file>
         <file>assets/images/coins/ftmt.png</file>
+        <file>assets/images/coins/gala.png</file>
         <file>assets/images/coins/gleec.png</file>
         <file>assets/images/coins/gno.png</file>
         <file>assets/images/coins/grms.png</file>
+        <file>assets/images/coins/gm.png</file>
         <file>assets/images/coins/gms.png</file>
         <file>assets/images/coins/grs.png</file>
         <file>assets/images/coins/grt.png</file>
@@ -144,6 +153,7 @@
         <file>assets/images/coins/labs.png</file>
         <file>assets/images/coins/lbc.png</file>
         <file>assets/images/coins/lcc.png</file>
+        <file>assets/images/coins/leash.png</file>
         <file>assets/images/coins/leo.png</file>
         <file>assets/images/coins/link.png</file>
         <file>assets/images/coins/lrc.png</file>
@@ -187,6 +197,8 @@
         <file>assets/images/coins/pnk.png</file>
         <file>assets/images/coins/powr.png</file>
         <file>assets/images/coins/ppc.png</file>
+        <file>assets/images/coins/prcy.png</file>
+        <file>assets/images/coins/pgx.png</file>
         <file>assets/images/coins/prux.png</file>
         <file>assets/images/coins/put.png</file>
         <file>assets/images/coins/qbt.png</file>
@@ -212,12 +224,14 @@
         <file>assets/images/coins/sbch.png</file>
         <file>assets/images/coins/sfusd.png</file>
         <file>assets/images/coins/shr.png</file>
+        <file>assets/images/coins/shib.png</file>
         <file>assets/images/coins/sibm.png</file>
         <file>assets/images/coins/skl.png</file>
         <file>assets/images/coins/smart-chain.png</file>
         <file>assets/images/coins/smtf.png</file>
         <file>assets/images/coins/snt.png</file>
         <file>assets/images/coins/snx.png</file>
+        <file>assets/images/coins/sol.png</file>
         <file>assets/images/coins/soulja.png</file>
         <file>assets/images/coins/sca.png</file>
         <file>assets/images/coins/space.png</file>
@@ -232,6 +246,7 @@
         <file>assets/images/coins/tblk.png</file>
         <file>assets/images/coins/tbtc.png</file>
         <file>assets/images/coins/tel.png</file>
+        <file>assets/images/coins/tft.png</file>
         <file>assets/images/coins/thc.png</file>
         <file>assets/images/coins/thx.png</file>
         <file>assets/images/coins/tkl.png</file>
@@ -254,6 +269,7 @@
         <file>assets/images/coins/uqc.png</file>
         <file>assets/images/coins/usbl.png</file>
         <file>assets/images/coins/usdc.png</file>
+        <file>assets/images/coins/usdi.png</file>
         <file>assets/images/coins/usdt.png</file>
         <file>assets/images/coins/ust.png</file>
         <file>assets/images/coins/utk.png</file>
@@ -284,6 +300,7 @@
         <file>assets/images/coins/zec.png</file>
         <file>assets/images/coins/zer.png</file>
         <file>assets/images/coins/zet.png</file>
+        <file>assets/images/coins/zinu.png</file>
         <file>assets/images/coins/zil.png</file>
         <file>assets/images/coins/zilla.png</file>
         <file>assets/images/coins/zrx.png</file>

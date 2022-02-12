@@ -65,31 +65,23 @@ jobs:
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: KomodoPlatform/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
-          mirror: https://qt-mirror.dannhauer.de
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
 
       - name: Install QT (MacOS)
         if: runner.os == 'macOS'
-        uses: KomodoPlatform/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
           host: 'mac'
           target: 'desktop'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
-          mirror: https://qt-mirror.dannhauer.de
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
@@ -103,16 +95,12 @@ jobs:
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: KomodoPlatform/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          #mirror: 'http://mirrors.ocf.berkeley.edu/qt'
-          mirror: https://qt-mirror.dannhauer.de
-          #mirror: https://www.funet.fi/pub/mirrors/download.qt-project.org
-          #mirror: https://ftp.fau.de/qtproject
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 

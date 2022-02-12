@@ -151,6 +151,24 @@ namespace atomic_dex
         return true;
     }
 
+    bool               
+    application::disable_no_balance_coins()
+    {
+        auto* portfolio_page = get_portfolio_page();
+        auto* portfolio_mdl = portfolio_page->get_portfolio();
+        auto portfolio_data = portfolio_mdl->get_underlying_data();
+        QStringList coins_to_disable{};
+        
+        for (auto& coin : portfolio_data)
+        {
+            if (coin.balance.toFloat() == 0)
+            {
+                coins_to_disable.push_back(coin.ticker);
+            }
+        }
+        return disable_coins(coins_to_disable);
+    }
+
     bool
     atomic_dex::application::first_run()
     {
