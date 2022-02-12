@@ -35,6 +35,18 @@ QtObject {
         }
     }
 
+    function coinContractAddress(ticker) {
+        var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
+        if (cfg.hasOwnProperty('protocol')) {
+            if (cfg.protocol.hasOwnProperty('protocol_data')) {
+                if (cfg.protocol.protocol_data.hasOwnProperty('contract_address')) {
+                    return cfg.protocol.protocol_data.contract_address
+                }
+            }
+        }
+        return ""
+    }
+
     function isIDO(ticker) {
         let IDO_chains = []
         return IDO_chains.includes(ticker)
