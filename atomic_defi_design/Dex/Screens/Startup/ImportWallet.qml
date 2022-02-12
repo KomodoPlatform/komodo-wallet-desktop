@@ -202,14 +202,13 @@ SetupPage
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: _seedError
                     visible: _seedField.error
-                    text: qsTr("BIP39 seed validation failed, try again or select 'Allow custom seed'")
+                    text: qsTr("Your seed is not BIP39 compliant.\nTry again or select 'Allow custom seed' to continue.")
                     color: Dex.CurrentTheme.noColor
                     Layout.preferredWidth: parent.width - 40
-                    wrapMode: DexLabel.Wrap
                     font: DexTypo.body2
                 }
 
@@ -231,7 +230,7 @@ SetupPage
                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                 validator: (text) =>
                                 {
-                                    if (text === qsTr("I understand"))
+                                    if (text.toLowerCase() === qsTr("i understand"))
                                     {
                                         allow_custom_seed.checked = true;
                                     }
@@ -239,7 +238,7 @@ SetupPage
                                     {
                                         allow_custom_seed.checked = false;
                                     }
-                                    return text === qsTr("I understand")
+                                    return text.toLowerCase() === qsTr("i understand")
                                 },
                                 yesButtonText: qsTr("Ok")
                             })
