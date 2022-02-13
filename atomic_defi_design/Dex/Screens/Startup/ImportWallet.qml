@@ -202,14 +202,13 @@ SetupPage
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: _seedError
                     visible: _seedField.error
-                    text: qsTr("BIP39 seed validation failed, try again or select 'Allow custom seed'")
+                    text: qsTr("Your seed is not BIP39 compliant.\nTry again or select 'Allow custom seed' to continue.")
                     color: Dex.CurrentTheme.noColor
                     Layout.preferredWidth: parent.width - 40
-                    wrapMode: DexLabel.Wrap
                     font: DexTypo.body2
                 }
 
@@ -225,26 +224,25 @@ SetupPage
                             let dialog = app.getText(
                             {
                                 title: qsTr("<strong>Allow custom seed</strong>"),
+                                closePolicy: Popup.NoAutoClose,
                                 text: qsTr("Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).<br><br>To confirm you understand the risk and know what you are doing, type <strong>'I understand'</strong> in the box below."),
                                 placeholderText: qsTr("I understand"),
                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                 validator: (text) =>
                                 {
-                                    return text === qsTr("I understand")
+                                    if (text.toLowerCase() === qsTr("i understand"))
+                                    {
+                                        allow_custom_seed.checked = true;
+                                    }
+                                    else
+                                    {
+                                        allow_custom_seed.checked = false;
+                                    }
+                                    return text.toLowerCase() === qsTr("i understand")
                                 },
-                                yesButtonText: qsTr("Enable"),
-                                onAccepted: function()
-                                {
-                                    allow_custom_seed.checked = true;
-                                    dialog.close()
-                                },
-                                onRejected: function()
-                                {
-                                    allow_custom_seed.checked = false;
-                                }
+                                yesButtonText: qsTr("Ok")
                             })
                         }
-                        else allow_custom_seed.checked = false;
                     }
                 }
 
