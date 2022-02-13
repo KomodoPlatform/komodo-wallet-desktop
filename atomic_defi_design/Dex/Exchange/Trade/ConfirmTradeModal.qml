@@ -11,17 +11,19 @@ import "Orders/"
 
 import App 1.0
 
-BasicModal {
+BasicModal
+{
     id: root
 
     width: 650
-
     readonly property var fees: API.app.trading_pg.fees
 
-    ModalContent {
+    ModalContent
+    {
         title: qsTr("Confirm Exchange Details")
 
-        OrderContent {
+        OrderContent
+        {
             Layout.topMargin: 25
             Layout.fillWidth: true
             Layout.leftMargin: 20
@@ -41,7 +43,8 @@ BasicModal {
             in_modal: true
         }
 
-        Column {
+        Column
+        {
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: 500
             PriceLineSimplified {
@@ -49,56 +52,80 @@ BasicModal {
             }
         }
         
-
-        HorizontalLine {
+        HorizontalLine
+        {
             Layout.topMargin: 10
             Layout.bottomMargin: 10
             Layout.fillWidth: true
         }
 
-        Column {
+        Column
+        {
             Layout.preferredWidth: 500
             Layout.alignment: Qt.AlignHCenter
             Layout.bottomMargin: 10
 
-            ColumnLayout {
+            ColumnLayout
+            {
                 id: warning_texts
                 width: 500
 
-                DexLabel {
+                DexLabel
+                {
                     Layout.alignment: Qt.AlignLeft
-
                     text_value: qsTr("This swap request can not be undone and is a final event!")
                 }
 
-                DexLabel {
+                DexLabel
+                {
                     Layout.alignment: Qt.AlignLeft
-
                     text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
                     font.pixelSize: Style.textSizeSmall4
                 }
             }
         }
 
-        Item  {
+        Item
+        {
             Layout.preferredWidth: 500
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: feesColumn.height + 10
+            Layout.preferredHeight: fees_detail.height + 10
             opacity: .7
-            Column {
-                id: feesColumn
+            Column
+            {
+                id: fees_detail
                 anchors.verticalCenter: parent.verticalCenter
+                visible: !API.app.trading_pg.preimage_rpc_busy
 
-                Repeater {
-                  model: fees.total_fees
+                Repeater
+                {
+                  model: !API.app.trading_pg.preimage_rpc_busy ? General.getFeesDetail(fees) : []
                   delegate: DefaultText {
                     visible: true
-                    text: qsTr("Total %1 fees: %2 (%3)").arg(modelData.coin).arg(parseFloat(modelData.required_balance).toFixed(8) / 1).arg(General.getFiatText(modelData.required_balance, modelData.coin, false))
+                    font.pixelSize: Style.textSizeSmall1
+                    text: General.getFeesDetailText(modelData.label, modelData.fee, modelData.ticker)
                   }
                   anchors.horizontalCenter: parent.horizontalCenter
                 }
+
+                Repeater
+                {
+                  model: fees.total_fees
+                  delegate: DefaultText {
+                    visible: true
+                    text: General.getFeesDetailText(
+                        qsTr("<b>Total %1 fees:</b>").arg(modelData.coin),
+                        modelData.required_balance,
+                        modelData.coin
+                    )
+                  }
+                  anchors.horizontalCenter: parent.horizontalCenter
+                }
+
                 Item {width: 1; height: 10}
-                DefaultText {
+
+                DefaultText
+                {
                     id: errors
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: parent.width
@@ -114,7 +141,6 @@ BasicModal {
                 }
             }
         }
-
 
         ColumnLayout {
             id: config_section
@@ -134,7 +160,6 @@ BasicModal {
                     text_value: qsTr("Security configuration")
                     font.weight: Font.Medium
                 }
-
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
