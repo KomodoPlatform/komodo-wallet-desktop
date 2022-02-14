@@ -9375,8 +9375,8 @@
       "https://whiveexplorer.cointest.com/"
     ],
     "type": "UTXO",
-    "active": true,
-    "is_segwit_on": true,
+    "active": false,
+    "is_segwit_on": false,
     "currently_enabled": false
   },
   "XOR": {
