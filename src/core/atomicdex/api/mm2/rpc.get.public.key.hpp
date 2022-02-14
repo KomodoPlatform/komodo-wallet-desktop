@@ -37,7 +37,9 @@ namespace atomic_dex::mm2
             std::string public_key;
         } answer;
     };
+    using get_public_key_request = get_public_key::expected_request_type;
     using get_public_key_answer = get_public_key::expected_answer_type;
 
+    inline void to_json(nlohmann::json& j, const get_public_key_request&) { }
     void from_json(const nlohmann::json& json, get_public_key_answer& in);
 }
