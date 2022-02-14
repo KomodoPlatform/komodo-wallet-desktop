@@ -1,22 +1,34 @@
-//
-// Created by Sztergbaum Roman on 27/03/2021.
-//
+/******************************************************************************
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
 
-//! Deps
+// Deps Headers
 #include <meta/detection/detection.hpp>
 
-//! Project Headers
+// Project Headers
 #include "atomicdex/api/mm2/mm2.client.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
+#include "rpc.get.public.key.hpp"
 
 namespace
 {
     template <typename T>
     using have_error_field = decltype(std::declval<T&>().error.has_value());
 
-    t_http_client
-    generate_client()
+    t_http_client generate_client()
     {
         web::http::client::http_client_config cfg;
         using namespace std::chrono_literals;
