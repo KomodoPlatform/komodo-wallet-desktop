@@ -27,6 +27,7 @@ namespace atomic_dex::mm2
     struct get_public_key
     {
         static constexpr auto endpoint = "get_public_key";
+        static constexpr bool is_v2     = true;
         struct expected_request_type
         {
 
