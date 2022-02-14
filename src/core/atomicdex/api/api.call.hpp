@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#pragma once
+
 namespace atomic_dex
 {
     template <typename T>
