@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,19 +16,19 @@
 
 #pragma once
 
-//! QT
+// QT Headers
 #include <QApplication>
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QString>
 #include <QTranslator>
 
-//! Deps
+// Deps Headers
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/synchronized_value.hpp>
 #include <nlohmann/json.hpp>
 
-//! Project headers
+// Project Headers
 #include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
@@ -36,10 +36,9 @@ namespace atomic_dex
 {
     class settings_page final : public QObject, public ag::ecs::pre_update_system<settings_page>
     {
-        //! Q_Object definition
         Q_OBJECT
 
-        //! Properties
+        //! QML Properties
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY onLangChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY onCurrencyChanged)
         Q_PROPERTY(QString current_currency_sign READ get_current_currency_sign NOTIFY onCurrencySignChanged)
@@ -67,10 +66,13 @@ namespace atomic_dex
         explicit settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent = nullptr);
         ~settings_page() final = default;
 
-        //! Public override
+        void init_lang();
+        void garbage_collect_qml();
+
+        // Base Class ag::ecs::pre_update_system
         void update() final;
 
-        //! Properties
+        // Getters|Setters
         [[nodiscard]] QString  get_current_lang() const;
         void                   set_current_lang(QString new_lang);
         [[nodiscard]] QString  get_current_currency() const;
@@ -87,13 +89,9 @@ namespace atomic_dex
         void                   set_custom_token_data(QVariant rpc_data);
         [[nodiscard]] bool     is_fetching_priv_key_busy() const;
         void                   set_fetching_priv_key_busy(bool status);
-
-        //! Public API
         [[nodiscard]] atomic_dex::cfg&       get_cfg();
         [[nodiscard]] const atomic_dex::cfg& get_cfg() const;
-        void                                 init_lang();
         void                                 set_qml_engine(QQmlApplicationEngine* engine);
-        void                                 garbage_collect_qml();
 
         // QML API
         Q_INVOKABLE void                      remove_custom_coin(const QString& ticker);
