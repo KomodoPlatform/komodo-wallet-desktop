@@ -24,11 +24,11 @@ BasicModal
 
         OrderContent
         {
-            Layout.topMargin: 25
+            Layout.topMargin: 10
             Layout.fillWidth: true
             Layout.leftMargin: 20
             Layout.rightMargin: Layout.leftMargin
-            height: 120
+            height: 50
             Layout.alignment: Qt.AlignHCenter
 
             details: ({
@@ -54,8 +54,8 @@ BasicModal
         
         HorizontalLine
         {
-            Layout.topMargin: 10
-            Layout.bottomMargin: 10
+            Layout.topMargin: 5
+            Layout.bottomMargin: 5
             Layout.fillWidth: true
         }
 
@@ -63,7 +63,7 @@ BasicModal
         {
             Layout.preferredWidth: 500
             Layout.alignment: Qt.AlignHCenter
-            Layout.bottomMargin: 10
+            Layout.bottomMargin: 5
 
             ColumnLayout
             {
@@ -95,50 +95,49 @@ BasicModal
             {
                 id: fees_detail
                 anchors.verticalCenter: parent.verticalCenter
-                visible: !API.app.trading_pg.preimage_rpc_busy
+                visible: fees.base_transaction_fees_ticker && !API.app.trading_pg.preimage_rpc_busy
 
                 Repeater
                 {
-                  model: !API.app.trading_pg.preimage_rpc_busy ? General.getFeesDetail(fees) : []
-                  delegate: DefaultText {
-                    visible: true
-                    font.pixelSize: Style.textSizeSmall1
-                    text: General.getFeesDetailText(modelData.label, modelData.fee, modelData.ticker)
-                  }
-                  anchors.horizontalCenter: parent.horizontalCenter
+                    model: fees.base_transaction_fees_ticker && !API.app.trading_pg.preimage_rpc_busy ? General.getFeesDetail(fees) : []
+                    delegate: DefaultText {
+                        visible: true
+                        font.pixelSize: Style.textSizeSmall1
+                        text: General.getFeesDetailText(modelData.label, modelData.fee, modelData.ticker)
+                    }
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
 
                 Repeater
                 {
-                  model: fees.total_fees
-                  delegate: DefaultText {
-                    visible: true
-                    text: General.getFeesDetailText(
-                        qsTr("<b>Total %1 fees:</b>").arg(modelData.coin),
-                        modelData.required_balance,
-                        modelData.coin
-                    )
-                  }
+                    model: fees.base_transaction_fees_ticker ? fees.total_fees : []
+                    delegate: DefaultText {
+                        visible: true
+                        text: General.getFeesDetailText(
+                            qsTr("<b>Total %1 fees:</b>").arg(modelData.coin),
+                            modelData.required_balance,
+                            modelData.coin
+                        )
+                    }
                   anchors.horizontalCenter: parent.horizontalCenter
                 }
 
                 Item {width: 1; height: 10}
 
-                DefaultText
-                {
-                    id: errors
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    font: DexTypo.caption
-                    color: DexTheme.redColor
-
-                    text_value: General.getTradingError(
-                                    last_trading_error,
-                                    curr_fee_info,
-                                    base_ticker,
-                                    rel_ticker, left_ticker, right_ticker)
-                }
+            }
+            DefaultText
+            {
+                id: errors
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
+                horizontalAlignment: DefaultText.AlignHCenter
+                font: DexTypo.caption
+                color: DexTheme.redColor
+                text_value: General.getTradingError(
+                                last_trading_error,
+                                curr_fee_info,
+                                base_ticker,
+                                rel_ticker, left_ticker, right_ticker)
             }
         }
 
@@ -278,10 +277,10 @@ BasicModal
             },
             DexAppButton {
                 text: qsTr("Cancel")
-                padding: 17
+                padding: 10
                 leftPadding: 45
                 rightPadding: 45
-                radius: 18
+                radius: 10
                 onClicked: {
                     //fees = []
                     root.close()
@@ -292,11 +291,11 @@ BasicModal
             },
             DexGradientAppButton {
                 text: qsTr("Confirm")
-                padding: 17
+                padding: 10
                 leftPadding: 45
                 rightPadding: 45
 
-                radius: 18
+                radius: 10
                 enabled: !buy_sell_rpc_busy && last_trading_error === TradingError.None
                 onClicked: {
                     trade({
