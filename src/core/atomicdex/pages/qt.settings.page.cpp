@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,17 +14,17 @@
  *                                                                            *
  ******************************************************************************/
 
-//! QT
+// Qt Headers
 #include <QDebug>
 #include <QFile>
 #include <QJsonDocument>
 #include <QLocale>
 #include <QSettings>
 
-//! Deps
+// Deps Headers
 #include <boost/algorithm/string/case_conv.hpp>
 
-//! Project Headers
+// Project Headers
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/models/qt.global.coins.cfg.model.hpp"
@@ -35,13 +35,12 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/api/mm2/rpc.get.public.key.hpp"
 
 namespace
 {
-    void
-    copy_icon(const QString icon_filepath, const QString icons_path_directory, const std::string& ticker)
+    void copy_icon(const QString icon_filepath, const QString icons_path_directory, const std::string& ticker)
     {
-        SPDLOG_INFO("copying icon");
         if (not icon_filepath.isEmpty())
         {
             const fs::path& suffix = fs::path(icon_filepath.toStdString()).extension();
@@ -49,41 +48,42 @@ namespace
                 icon_filepath.toStdString(), fs::path(icons_path_directory.toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
                 get_override_options());
         }
-        SPDLOG_INFO("copying icon finished");
     }
-} // namespace
+} // anonymous namespace
 
-//! Constructo destructor
 namespace atomic_dex
 {
     settings_page::settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent) :
         QObject(parent), system(registry), m_system_manager(system_manager), m_app(app)
+    {}
+
+    void settings_page::init_lang()
     {
-        SPDLOG_INFO("settings_page created");
+        set_current_lang(get_current_lang());
+    }
+
+    void settings_page::garbage_collect_qml()
+    {
+        SPDLOG_INFO("Garbage collecting QML Engine");
+        m_qml_engine->collectGarbage();
+        m_qml_engine->trimComponentCache();
+        m_qml_engine->clearComponentCache();
     }
 } // namespace atomic_dex
 
-//! Override
-namespace atomic_dex
-{
-    void
-    settings_page::update()
-    {
-    }
-} // namespace atomic_dex
+// Base Class ag::ecs::pre_update_system
+namespace atomic_dex { void settings_page::update() {} }
 
-//! Properties
+// Getters|Setters
 namespace atomic_dex
 {
-    QString
-    settings_page::get_current_lang() const
+    QString settings_page::get_current_lang() const
     {
         QSettings& settings = entity_registry_.ctx<QSettings>();
         return settings.value("CurrentLang").toString();
     }
 
-    void
-    atomic_dex::settings_page::set_current_lang(QString new_lang)
+    void atomic_dex::settings_page::set_current_lang(QString new_lang)
     {
         const std::string new_lang_std = new_lang.toStdString();
         QSettings&        settings     = entity_registry_.ctx<QSettings>();
@@ -122,14 +122,12 @@ namespace atomic_dex
         SPDLOG_INFO("Post lang changed");
     }
 
-    bool
-    atomic_dex::settings_page::is_notification_enabled() const
+    bool atomic_dex::settings_page::is_notification_enabled() const
     {
         return m_config.notification_enabled;
     }
 
-    void
-    settings_page::set_notification_enabled(bool is_enabled)
+    void settings_page::set_notification_enabled(bool is_enabled)
     {
         if (m_config.notification_enabled != is_enabled)
         {
@@ -138,26 +136,22 @@ namespace atomic_dex
         }
     }
 
-    QString
-    settings_page::get_current_currency_sign() const
+    QString settings_page::get_current_currency_sign() const
     {
         return QString::fromStdString(this->m_config.current_currency_sign);
     }
 
-    QString
-    settings_page::get_current_fiat_sign() const
+    QString settings_page::get_current_fiat_sign() const
     {
         return QString::fromStdString(this->m_config.current_fiat_sign);
     }
 
-    QString
-    settings_page::get_current_currency() const
+    QString settings_page::get_current_currency() const
     {
         return QString::fromStdString(this->m_config.current_currency);
     }
 
-    void
-    settings_page::set_current_currency(const QString& current_currency)
+    void settings_page::set_current_currency(const QString& current_currency)
     {
         bool        can_proceed = true;
         std::string reason      = "";
@@ -200,14 +194,12 @@ namespace atomic_dex
         }
     }
 
-    QString
-    settings_page::get_current_fiat() const
+    QString settings_page::get_current_fiat() const
     {
         return QString::fromStdString(this->m_config.current_fiat);
     }
 
-    void
-    settings_page::set_current_fiat(const QString& current_fiat)
+    void settings_page::set_current_fiat(const QString& current_fiat)
     {
         if (m_system_manager.get_system<global_price_service>().is_fiat_available(current_fiat.toStdString()))
         {
@@ -224,42 +216,78 @@ namespace atomic_dex
             SPDLOG_ERROR("Cannot change fiat, because other rates are not available");
         }
     }
-} // namespace atomic_dex
 
-//! Public API
-namespace atomic_dex
-{
-    atomic_dex::cfg&
-    settings_page::get_cfg()
+    bool settings_page::is_fetching_custom_token_data_busy() const
+    {
+        return m_fetching_erc_data_busy.load();
+    }
+
+    void settings_page::set_fetching_custom_token_data_busy(bool status)
+    {
+        if (m_fetching_erc_data_busy != status)
+        {
+            m_fetching_erc_data_busy = status;
+            emit customTokenDataStatusChanged();
+        }
+    }
+
+    QVariant settings_page::get_custom_token_data() const
+    {
+        return nlohmann_json_object_to_qt_json_object(m_custom_token_data.get());
+    }
+
+    void settings_page::set_custom_token_data(QVariant rpc_data)
+    {
+        nlohmann::json out  = nlohmann::json::parse(QString(QJsonDocument(rpc_data.toJsonObject()).toJson()).toStdString());
+        m_custom_token_data = out;
+        emit customTokenDataChanged();
+    }
+
+    bool settings_page::is_fetching_priv_key_busy() const
+    {
+        return m_fetching_priv_keys_busy.load();
+    }
+
+    void settings_page::set_fetching_priv_key_busy(bool status)
+    {
+        if (m_fetching_priv_keys_busy != status)
+        {
+            m_fetching_priv_keys_busy = status;
+            emit privKeyStatusChanged();
+        }
+    }
+
+    bool settings_page::is_fetching_public_key() const
+    {
+        return fetching_public_key;
+    }
+
+    const QString& settings_page::get_public_key() const
+    {
+        return public_key;
+    }
+
+    atomic_dex::cfg& settings_page::get_cfg()
     {
         return m_config;
     }
 
-    const atomic_dex::cfg&
-    settings_page::get_cfg() const
+    const atomic_dex::cfg& settings_page::get_cfg() const
     {
         return m_config;
     }
-
-    void
-    settings_page::init_lang()
-    {
-        set_current_lang(get_current_lang());
-    }
 } // namespace atomic_dex
 
-//! QML API
+// QML API
 namespace atomic_dex
 {
-    QStringList
-    settings_page::get_available_langs() const
+    QStringList settings_page::get_available_langs() const
     {
         QSettings& settings = entity_registry_.ctx<QSettings>();
         return settings.value("AvailableLang").toStringList();
     }
 
-    QStringList
-    settings_page::get_available_fiats() const
+    QStringList settings_page::get_available_fiats() const
     {
         QStringList out;
         out.reserve(m_config.available_fiat.size());
@@ -268,8 +296,7 @@ namespace atomic_dex
         return out;
     }
 
-    QStringList
-    settings_page::get_recommended_fiats() const
+    QStringList settings_page::get_recommended_fiats() const
     {
         static const auto nb_recommended = 6;
         QStringList       out;
@@ -281,8 +308,7 @@ namespace atomic_dex
         return out;
     }
 
-    QStringList
-    settings_page::get_available_currencies() const
+    QStringList settings_page::get_available_currencies() const
     {
         QStringList out;
         out.reserve(m_config.possible_currencies.size());
@@ -290,26 +316,22 @@ namespace atomic_dex
         return out;
     }
 
-    bool
-    settings_page::is_this_ticker_present_in_raw_cfg(const QString& ticker) const
+    bool settings_page::is_this_ticker_present_in_raw_cfg(const QString& ticker) const
     {
         return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_raw_cfg(ticker.toStdString());
     }
 
-    bool
-    settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const
+    bool settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const
     {
         return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
     }
 
-    QString
-    settings_page::get_custom_coins_icons_path() const
+    QString settings_page::get_custom_coins_icons_path() const
     {
         return std_path_to_qstring(utils::get_runtime_coins_path());
     }
 
-    void
-    settings_page::process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath)
+    void settings_page::process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath)
     {
         this->set_fetching_custom_token_data_busy(true);
         using namespace std::string_literals;
@@ -395,8 +417,7 @@ namespace atomic_dex
         ::mm2::api::async_process_rpc_get(::mm2::api::g_qtum_proxy_http_client, "qrc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
-    void
-    settings_page::process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type)
+    void settings_page::process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type)
     {
         this->set_fetching_custom_token_data_busy(true);
         using namespace std::string_literals;
@@ -493,38 +514,7 @@ namespace atomic_dex
         ::mm2::api::async_process_rpc_get(*endpoint, "token_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
-    bool
-    settings_page::is_fetching_custom_token_data_busy() const
-    {
-        return m_fetching_erc_data_busy.load();
-    }
-
-    void
-    settings_page::set_fetching_custom_token_data_busy(bool status)
-    {
-        if (m_fetching_erc_data_busy != status)
-        {
-            m_fetching_erc_data_busy = status;
-            emit customTokenDataStatusChanged();
-        }
-    }
-
-    QVariant
-    settings_page::get_custom_token_data() const
-    {
-        return nlohmann_json_object_to_qt_json_object(m_custom_token_data.get());
-    }
-
-    void
-    settings_page::set_custom_token_data(QVariant rpc_data)
-    {
-        nlohmann::json out  = nlohmann::json::parse(QString(QJsonDocument(rpc_data.toJsonObject()).toJson()).toStdString());
-        m_custom_token_data = out;
-        emit customTokenDataChanged();
-    }
-
-    void
-    settings_page::submit()
+    void settings_page::submit()
     {
         SPDLOG_DEBUG("submit whole cfg");
         nlohmann::json out = m_custom_token_data.get();
@@ -532,21 +522,18 @@ namespace atomic_dex
         this->set_custom_token_data(QJsonObject{{}});
     }
 
-    void
-    settings_page::remove_custom_coin(const QString& ticker)
+    void settings_page::remove_custom_coin(const QString& ticker)
     {
         SPDLOG_DEBUG("remove ticker: {}", ticker.toStdString());
         this->m_system_manager.get_system<mm2_service>().remove_custom_coin(ticker.toStdString());
     }
 
-    void
-    settings_page::set_qml_engine(QQmlApplicationEngine* engine)
+    void settings_page::set_qml_engine(QQmlApplicationEngine* engine)
     {
         m_qml_engine = engine;
     }
 
-    void
-    settings_page::reset_coin_cfg()
+    void settings_page::reset_coin_cfg()
     {
         using namespace std::string_literals;
         const std::string wallet_name                = qt_wallet_manager::get_default_wallet_name().toStdString();
@@ -614,8 +601,7 @@ namespace atomic_dex
         functor_remove(std::move(theme_path));
     }
 
-    QStringList
-    settings_page::retrieve_seed(const QString& wallet_name, const QString& password)
+    QStringList settings_page::retrieve_seed(const QString& wallet_name, const QString& password)
     {
         QStringList     out;
         std::error_code ec;
@@ -680,52 +666,40 @@ namespace atomic_dex
         return {QString::fromStdString(seed), QString::fromStdString(::mm2::api::get_rpc_password())};
     }
 
-    QString
-    settings_page::get_version()
+    QString settings_page::get_version()
     {
         return QString::fromStdString(atomic_dex::get_version());
     }
 
-    QString
-    settings_page::get_log_folder()
+    QString settings_page::get_log_folder()
     {
         return QString::fromStdString(utils::get_atomic_dex_logs_folder().string());
     }
 
-    QString
-    settings_page::get_mm2_version()
+    QString settings_page::get_mm2_version()
     {
         return QString::fromStdString(::mm2::api::rpc_version());
     }
 
-    QString
-    settings_page::get_export_folder()
+    QString settings_page::get_export_folder()
     {
         return QString::fromStdString(utils::get_atomic_dex_export_folder().string());
     }
 
-    bool
-    settings_page::is_fetching_priv_key_busy() const
+    void settings_page::fetchPublicKey()
     {
-        return m_fetching_priv_keys_busy.load();
-    }
-    void
-    settings_page::set_fetching_priv_key_busy(bool status)
-    {
-        if (m_fetching_priv_keys_busy != status)
+        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        auto  get_pub_key_rpc_callback = [this](auto pub_key_answ)
         {
-            m_fetching_priv_keys_busy = status;
-            emit privKeyStatusChanged();
-        }
-    }
+            public_key = QString::fromStdString(pub_key_answ.public_key);
+            fetching_public_key = false;
+            emit publicKeyChanged();
+            emit fetchingPublicKeyChanged();
+        };
 
-    void
-    settings_page::garbage_collect_qml()
-    {
-        SPDLOG_INFO("garbage_collect_qml");
-        m_qml_engine->collectGarbage();
-        // m_qml_engine->
-        m_qml_engine->trimComponentCache();
-        m_qml_engine->clearComponentCache();
+        fetching_public_key = true;
+        emit fetchingPublicKeyChanged();
+
+        mm2_system.get_mm2_client().process_rpc_async<atomic_dex::mm2::get_public_key>(get_pub_key_rpc_callback);
     }
 } // namespace atomic_dex
