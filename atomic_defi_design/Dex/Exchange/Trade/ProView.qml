@@ -232,42 +232,58 @@ GridLayout
     {
         Layout.columnSpan: 3
         Layout.rowSpan: 6
-        Layout.preferredWidth: prefWidth(this)
+        Layout.minimumWidth: 302
+        Layout.maximumWidth: prefWidth(this)
         Layout.preferredHeight: prefHeight(this)
         Layout.fillWidth: true
         Layout.fillHeight: true
         radius: 10
         color: Dex.CurrentTheme.floatingBackgroundColor
 
+        DefaultText
+        {
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            text: qsTr("Place Order")
+            font: DexTypo.subtitle1
+        }
+
         ColumnLayout
         {
             anchors.fill: parent
+            anchors.topMargin: 40
+            anchors.leftMargin: 20
+            anchors.rightMargin: 20
+            anchors.bottomMargin: 20
             spacing: 10
-
-            DefaultText
-            {
-                Layout.topMargin: 20
-                Layout.leftMargin: 20
-                text: qsTr("Place Order")
-                font: DexTypo.subtitle1
-            }
 
             // Market mode selector
             RowLayout
             {
-                spacing: 10
                 Layout.topMargin: 10
                 Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: true
+                Layout.minimumHeight: 40
+                Layout.maximumHeight: 48
+                Layout.preferredWidth: parent.width
+
                 MarketModeSelector
                 {
-                    Layout.alignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignLeft
+                    Layout.preferredWidth: (parent.width / 100) * 46
+                    Layout.fillHeight: true
                     marketMode: MarketMode.Buy
                     ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                 }
+
+                Item { Layout.fillWidth: true }
+
                 MarketModeSelector
                 {
-                    Layout.alignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignRight
+                    Layout.preferredWidth: (parent.width / 100) * 46
+                    Layout.fillHeight: true
                     ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                 }
             }
@@ -276,7 +292,7 @@ GridLayout
             Rectangle
             {
                 visible: API.app.trading_pg.preffered_order.price !== undefined
-                Layout.preferredWidth: parent.width - 20
+                Layout.preferredWidth: parent.width
                 Layout.preferredHeight: 40
                 Layout.alignment: Qt.AlignHCenter
                 radius: 8
@@ -293,13 +309,14 @@ GridLayout
 
                 Qaterial.FlatButton
                 {
+                    anchors.right: parent.right
+                    anchors.rightMargin: 15
+                    anchors.verticalCenter: parent.verticalCenter
                     foregroundColor: Dex.CurrentTheme.noColor
                     icon.source: Qaterial.Icons.close
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: 40
-                    width: 40
-                    anchors.rightMargin: 15
+                    backgroundImplicitWidth: 40
+                    backgroundImplicitHeight: 30
+
                     onClicked: API.app.trading_pg.reset_order()
                 }
             }
@@ -307,30 +324,14 @@ GridLayout
             OrderForm
             {
                 id: form_base
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.leftMargin: 10
-                Layout.rightMargin: 10
+                Layout.preferredWidth: parent.width
                 Layout.alignment: Qt.AlignHCenter
             }
 
             TotalView
             {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.leftMargin: 10
-                Layout.rightMargin: 10
+                Layout.preferredWidth: parent.width
                 Layout.alignment: Qt.AlignHCenter
-            }
-
-            FeeInfo
-            {
-                id: bg
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.leftMargin: 10
-                Layout.rightMargin: 10
-                visible: false
             }
 
             DexGradientAppButton
@@ -350,7 +351,6 @@ GridLayout
             {
                 spacing: parent.spacing
                 visible: errors.text_value !== ""
-                Layout.fillWidth: true
                 Layout.preferredWidth: parent.width
 
                 HorizontalLine
@@ -364,7 +364,7 @@ GridLayout
                 {
                     id: errors
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.fillWidth: true
+                    Layout.preferredWidth: parent.width
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: Style.textSizeSmall4
                     color: Dex.CurrentTheme.noColor

@@ -55,7 +55,7 @@ ColumnLayout
 
     Item
     {
-        Layout.fillWidth: true
+        Layout.preferredWidth: parent.width
         Layout.preferredHeight: input_price.height + price_usd_value.height + price_usd_value.anchors.topMargin
 
         AmountField
@@ -91,7 +91,7 @@ ColumnLayout
 
     Item
     {
-        Layout.fillWidth: true
+        Layout.preferredWidth: parent.width
         Layout.topMargin: 10
         Layout.preferredHeight: input_volume.height + inputVolumePrice.height + inputVolumePrice.anchors.topMargin
 
@@ -123,18 +123,25 @@ ColumnLayout
         }
     }
 
-    DefaultText
+    Item
     {
-        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: minVolLabel.height
         Layout.topMargin: 6
-        font.pixelSize: 13
-        text: qsTr("Min volume: ") + API.app.trading_pg.min_trade_vol
 
         DefaultText
         {
-            anchors.left: parent.right
+            id: minVolLabel
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.pixelSize: 13
+            text: qsTr("Min volume: ") + API.app.trading_pg.min_trade_vol
+        }
+
+        DefaultText
+        {
+            anchors.left: minVolLabel.right
             anchors.leftMargin: 8
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenter: minVolLabel.verticalCenter
 
             text: General.cex_icon
             color: Dex.CurrentTheme.foregroundColor3
@@ -167,7 +174,7 @@ ColumnLayout
         enabled: input_volume.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
 
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: parent.width - 20
+        Layout.preferredWidth: parent.width
 
         from: API.app.trading_pg.orderbook.current_min_taker_vol
         to: Math.max(0, parseFloat(max_volume))
@@ -188,6 +195,7 @@ ColumnLayout
 
         Layout.topMargin: 15
         Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width
 
         boxWidth: 20.76
         boxHeight: 20.76

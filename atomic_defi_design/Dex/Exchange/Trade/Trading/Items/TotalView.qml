@@ -13,12 +13,15 @@ import Dex.Themes 1.0 as Dex
 ColumnLayout
 {
     spacing: 5
+
     RowLayout
     {
-        Layout.fillWidth: true
+        Layout.preferredWidth: parent.width
         Layout.preferredHeight: 30
+
         DefaultText
         {
+            Layout.alignment: Qt.AlignLeft
             color: Dex.CurrentTheme.foregroundColor3
             text: "Total " + API.app.settings_pg.current_fiat + " " + General.cex_icon
             font.pixelSize:  14
@@ -26,33 +29,30 @@ ColumnLayout
             opacity: .6
             CexInfoTrigger {}
         }
-        Item
+
+        Item { Layout.fillWidth: true }
+
+        DefaultText
         {
-            Layout.preferredHeight: 30
-            Layout.fillWidth: true
-            DefaultText
-            {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.rightMargin: 20
-                anchors.right: parent.right
-                font.weight: Font.DemiBold
-                font.pixelSize: 16
-                font.family: 'lato'
-                text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon, "")
-            }
+            Layout.alignment: Qt.AlignRight
+            font.weight: Font.DemiBold
+            font.pixelSize: 16
+            font.family: 'lato'
+            text_value: General.getFiatText(total_amount, right_ticker).replace(General.cex_icon, "")
         }
     }
 
     HorizontalLine
     {
         color: Dex.CurrentTheme.lineSeparatorColor
-        width: parent.width - 20
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: 1
         Layout.alignment: Qt.AlignHCenter
     }
 
     RowLayout
     {
-        Layout.fillWidth: true
+        Layout.preferredWidth: parent.width
         Layout.preferredHeight: 30
 
         DexLabel
@@ -63,20 +63,15 @@ ColumnLayout
             opacity: .6
             font.weight: Font.Normal
         }
-        Item
+
+        Item { Layout.fillWidth: true }
+
+        DefaultText
         {
-            Layout.preferredHeight: 30
-            Layout.fillWidth: true
-            DefaultText
-            {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.rightMargin: 20
-                anchors.right: parent.right
-                font.weight: Font.DemiBold
-                font.pixelSize: 16
-                font.family: 'lato'
-                text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker, "")
-            }
+            font.weight: Font.DemiBold
+            font.pixelSize: 16
+            font.family: 'lato'
+            text_value: General.formatCrypto("", total_amount, right_ticker).replace(right_ticker, "")
         }
     }
 }
