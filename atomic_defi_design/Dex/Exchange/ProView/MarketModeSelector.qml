@@ -10,8 +10,6 @@ Rectangle
     property int    marketMode: Dex.MarketMode.Sell
     property string ticker: ""
 
-    width: 124
-    height: 48
     radius: 18
 
     gradient: Gradient
