@@ -108,6 +108,7 @@ BasicModal
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
+                Item {width: 1; height: 10}
                 Repeater
                 {
                     model: fees.base_transaction_fees_ticker ? fees.total_fees : []

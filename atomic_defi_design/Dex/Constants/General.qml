@@ -173,7 +173,7 @@ QtObject {
             ).arg(
                 feetype
             ).arg(
-                parseFloat(amount).toFixed(8) / 1
+                formatDouble(amount, 8, false)
             ).arg(
                 ticker
             ).arg(
