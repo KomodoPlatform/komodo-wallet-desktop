@@ -9,6 +9,7 @@
         <file>assets/fonts/Ubuntu-R.ttf</file>
         <file>assets/fonts/Ubuntu-RI.ttf</file>
         <file>assets/fonts/Ubuntu-Th.ttf</file>
+        <file>assets/images/addressbook.png</file>
         <file>assets/images/arrow-down.svg</file>
         <file>assets/images/arrow-up.svg</file>
         <file>assets/images/arrow_down.svg</file>
@@ -281,6 +282,7 @@
         <file>assets/images/coins/vrsc.png</file>
         <file>assets/images/coins/wbtc.png</file>
         <file>assets/images/coins/wcn.png</file>
+        <file>assets/images/coins/whive.png</file>
         <file>assets/images/coins/wsb.png</file>
         <file>assets/images/coins/wwcn.png</file>
         <file>assets/images/coins/xec.png</file>
@@ -474,6 +476,7 @@
         <file>Dex/Components/LogModal.qml</file>
         <file>Dex/Components/MinTradeModal.qml</file>
         <file>Dex/Components/ModalContent.qml</file>
+        <file>Dex/Components/ModalContent2.qml</file>
         <file>Dex/Components/ModalHeader.qml</file>
         <file>Dex/Components/ModalLoader.qml</file>
         <file>Dex/Components/OutlineButton.qml</file>
@@ -624,7 +627,7 @@
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Dex/Components/PopupManager.qml</file>
-        <file>imports/bignumberjs/qmldir</file>
-        <file>imports/bignumberjs/bignumber.js/bignumber.js</file>
+        <file>bignumberjs/qmldir</file>
+        <file>bignumberjs/bignumber.js/bignumber.js</file>
     </qresource>
 </RCC>

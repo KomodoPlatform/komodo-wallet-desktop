@@ -10,7 +10,7 @@ import App 1.0
 ColumnLayout
 {
     property var           titleAlignment: Qt.AlignLeft
-    property int           titleTopMargin: 30
+    property int           titleTopMargin: 20
 
     property alias         title: _title.text
     default property alias content: _innerLayout.data

@@ -693,7 +693,7 @@
   "BANANO-BEP20": {
     "coin": "BANANO-BEP20",
     "name": "Banano",
-    "nomics_id": "ban-banano",
+    "nomics_id": "BAN",
     "coinpaprika_id": "ban-banano",
     "coingecko_id": "banano",
     "nodes": [
@@ -1503,6 +1503,7 @@
       "name": "Case Token",
       "coinpaprika_id": "test-coin",
       "coingecko_id": "test-coin",
+      "nomics_id": "CASE",
       "nodes": [
         "http://bsc1.cipig.net:8655",
         "http://bsc2.cipig.net:8655",
@@ -9531,6 +9532,40 @@
     ],
     "type": "Matic",
     "active": false,
+    "currently_enabled": false
+  },
+  "WHIVE": {
+    "coin": "WHIVE",
+    "name": "Whive",
+    "coingecko_id": "whive",
+    "coinpaprika_id": "whive-the-whive-protocol",
+    "nomics_id": "WHIVE",
+    "electrum": [
+      {
+       "url": "electrumx1.cointest.com:50002",
+       "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrumx2.cointest.com:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": true
+      },
+      {
+        "url": "electrumx1.cointest.com:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrumx2.cointest.com:50001",
+        "protocol": "TCP"
+      }
+    ],
+    "explorer_url": [
+      "https://whiveexplorer.cointest.com/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "is_segwit_on": false,
     "currently_enabled": false
   },
   "XOR": {
