@@ -922,6 +922,13 @@ ClipRRect // Trade Card
                 anchors.centerIn: parent
                 visible: Constants.API.app.trading_pg.preimage_rpc_busy || _feesList.count == 0
             }
+            DefaultText
+            {
+                anchors.centerIn: parent
+                text: qsTr("Calculating fee estimate... ")
+                font.pixelSize: Constants.Style.textSizeSmall3
+                visible: fees_busy.visible
+            }
 
             DefaultListView
             {
