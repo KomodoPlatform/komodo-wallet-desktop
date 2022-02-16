@@ -556,13 +556,9 @@ BasicModal
         DexSwitch
         {
             id: custom_fees_switch
-
             enabled: !root.is_send_busy
-
             Layout.topMargin: 32
-
             text: qsTr("Enable Custom Fees")
-
             onCheckedChanged: input_custom_fees.text = ""
         }
 
@@ -570,7 +566,6 @@ BasicModal
         DefaultText
         {
             visible: custom_fees_switch.checked
-
             font.pixelSize: 14
             color: Dex.CurrentTheme.noColor
             text_value: qsTr("Only use custom fees if you know what you are doing!")
@@ -672,7 +667,7 @@ BasicModal
                 text: qsTr("Close")
 
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: 199
+                Layout.preferredWidth: parent.width / 100 * 48
                 Layout.preferredHeight: 48
 
                 label.font.pixelSize: 16
@@ -681,11 +676,14 @@ BasicModal
                 onClicked: root.close()
             }
 
+            Item { Layout.fillWidth: true }
+
             OutlineButton
             {
                 enabled: fieldAreFilled() && hasFunds() && !errorView && !root.is_send_busy
 
                 Layout.alignment: Qt.AlignRight
+                Layout.preferredWidth: parent.width / 100 * 48
 
                 text: qsTr("Prepare")
 

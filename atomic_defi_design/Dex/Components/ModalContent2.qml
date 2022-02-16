@@ -18,16 +18,12 @@ ColumnLayout
     default property alias content:         _innerLayout.data
 
     Layout.fillWidth:       true
-    Layout.leftMargin:      88
-    Layout.rightMargin:     88
-    Layout.topMargin:       52
-    Layout.bottomMargin:    52
 
     DefaultText
     {
         id: _title
-        Layout.topMargin: parent.titleTopMargin
-        Layout.alignment: parent.titleAlignment
+        Layout.topMargin: root.titleTopMargin
+        Layout.alignment: root.titleAlignment
         font: DexTypo.head6
     }
 
