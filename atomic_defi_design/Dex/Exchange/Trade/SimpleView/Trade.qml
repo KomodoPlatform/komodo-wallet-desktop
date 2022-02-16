@@ -224,6 +224,12 @@ ClipRRect // Trade Card
                     font.pixelSize: Constants.Style.textSizeSmall4
                 }
 
+                DefaultBusyIndicator
+                {
+                    anchors.centerIn: parent
+                    visible: Constants.API.app.trading_pg.max_volume == 0
+                }
+
                 Text // Tradable Balance
                 {
                     readonly property int _maxWidth: 140
@@ -282,7 +288,9 @@ ClipRRect // Trade Card
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
                     anchors.leftMargin: 2
-                    placeholderText: typeof selectedOrder !== 'undefined' ? qsTr("Min: %1").arg(Constants.API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
+                    placeholderText: Constants.API.app.trading_pg.max_volume == 0 ?
+                            "Loading wallet..." : typeof selectedOrder !== 'undefined' ?
+                            qsTr("Min: %1").arg(Constants.API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
                     font.pixelSize: Constants.Style.textSizeSmall5
                     background: Rectangle { color: swap_from_card.color}
 
@@ -893,10 +901,13 @@ ClipRRect // Trade Card
             id: _feesCard
             anchors.horizontalCenter: parent.horizontalCenter
             width: 350
-            height: 60
+            height: 50
 
             enabled: !_swapAlert.visible
-            visible: _feesList.count !== 0 & _tradeCard.selectedOrder !== undefined &  parseFloat(_fromValue.text) > 0 & !bestOrderSimplified.visible & !coinSelectorSimplified.visible
+            visible: _tradeCard.selectedOrder !== undefined
+                    & parseFloat(_fromValue.text) > 0
+                    & !bestOrderSimplified.visible
+                    & !coinSelectorSimplified.visible
 
             DexRectangle {
                 radius: 25
@@ -905,9 +916,11 @@ ClipRRect // Trade Card
 
             DefaultBusyIndicator
             {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                visible: Constants.API.app.trading_pg.preimage_rpc_busy
+                id: fees_busy
+                width: 30
+                height: 30
+                anchors.centerIn: parent
+                visible: Constants.API.app.trading_pg.preimage_rpc_busy || _feesList.count == 0
             }
 
             DefaultListView
@@ -922,8 +935,8 @@ ClipRRect // Trade Card
                 delegate: RowLayout
                 {
                     width: _feesCard.width
-                    Component.onCompleted: _feesCard.height += 20
-                    Component.onDestruction: _feesCard.height -= 20
+                    Component.onCompleted: _feesCard.height += 10
+                    Component.onDestruction: _feesCard.height -= 10
 
                     DefaultText
                     {
