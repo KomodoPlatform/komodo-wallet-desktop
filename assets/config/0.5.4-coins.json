@@ -693,7 +693,7 @@
   "BANANO-BEP20": {
     "coin": "BANANO-BEP20",
     "name": "Banano",
-    "nomics_id": "ban-banano",
+    "nomics_id": "BAN",
     "coinpaprika_id": "ban-banano",
     "coingecko_id": "banano",
     "nodes": [
@@ -9539,7 +9539,7 @@
     "name": "Whive",
     "coingecko_id": "whive",
     "coinpaprika_id": "whive-the-whive-protocol",
-    "nomics_id": "whive",
+    "nomics_id": "WHIVE",
     "electrum": [
       {
        "url": "electrumx1.cointest.com:50002",
