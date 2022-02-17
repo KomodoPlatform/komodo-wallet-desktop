@@ -328,7 +328,7 @@ Item
                             {
                                 id: contract_address_title
                                 text_value: General.coinPlatform(api_wallet_page.ticker) + qsTr(" Contract Address")
-                                font.pixelSize: headerTextFont
+                                font.pixelSize: headerSmallTitleFont
                                 color: headerTitleColor
                             }
                         }
@@ -344,14 +344,14 @@ Item
                             {
                                 id: contract_address
                                 text_value: General.coinContractAddress(api_wallet_page.ticker)
-                                Layout.preferredWidth: contract_title_row_layout.width - 20
-                                font.pixelSize: headerSmallFont
+                                Layout.preferredWidth: contract_title_row_layout.width - 2 * headerTextFont
+                                font: DexTypo.monoSpace
                                 color: headerTextColor
                                 elide: Text.ElideMiddle
                                 wrapMode: Text.NoWrap
                             }
                             Qaterial.Icon {
-                                size: headerSmallFont
+                                size: headerTextFont
                                 icon: Qaterial.Icons.contentCopy
                                 color: contract_copyArea.containsMouse ? headerTextColor : headerTitleColor
                                 DexMouseArea {
@@ -366,7 +366,7 @@ Item
                                 }
                             }
                             Qaterial.Icon {
-                                size: headerSmallFont
+                                size: headerTextFont
                                 icon: Qaterial.Icons.linkVariant
                                 color: contract_linkArea.containsMouse ? headerTextColor : headerTitleColor
                                 visible: General.contractURL(api_wallet_page.ticker) != ""
