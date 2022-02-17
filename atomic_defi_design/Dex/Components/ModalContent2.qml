@@ -18,7 +18,7 @@ ColumnLayout
 
     default property alias content:         _innerLayout.data
 
-    Layout.fillWidth:       true
+    Layout.fillWidth: true
 
     DefaultText
     {
