@@ -16,25 +16,27 @@ BasicModal
     property var portfolio_model: API.app.portfolio_pg.portfolio_mdl
     property var settings_page: API.app.settings_pg
 
-    property bool wrong_password: false
+    property bool wrongPassword: false
 
-    function tryViewSeed()
+    function tryViewKeysAndSeed()
     {
-        if(!submit_button.enabled) return
+        if(!submitButton.enabled) return
 
-        const result = API.app.settings_pg.retrieve_seed(API.app.wallet_mgr.wallet_default_name, input_password.field.text)
+        API.app.settings_pg.fetchPublicKey()
 
-        if(result.length === 2)
+        const result = API.app.settings_pg.retrieve_seed(API.app.wallet_mgr.wallet_default_name, inputPassword.field.text)
+
+        if (result.length === 2)
         {
-            seed_text.text = result[0]
-            rpc_pw.text = result[1]
-            wrong_password = false
+            seedLabel.text = result[0]
+            rpcPwLabel.text = result[1]
+            wrongPassword = false
             root.nextPage()
             loading.running = true
         }
         else
         {
-            wrong_password = true
+            wrongPassword = true
         }
     }
 
@@ -42,77 +44,63 @@ BasicModal
 
     onClosed:
     {
-        wrong_password = false
-        input_password.reset()
-        seed_text.text = ""
+        wrongPassword = false
+        inputPassword.reset()
+        seedLabel.text = ""
+        rpcPwLabel.text = ""
         portfolio_model.clean_priv_keys()
         currentIndex = 0
     }
 
-    ModalContent
+    ModalContent2
     {
-        title: qsTr("View seed and private keys")
+        titleText: qsTr("View seed and private keys")
 
-        ColumnLayout
+        DefaultText
         {
-            DefaultText
-            {
-                Layout.topMargin: 10
-                Layout.bottomMargin: 10
-                Layout.alignment: Qt.AlignHCenter
-
-                text_value: qsTr("Please enter your password to view the seed.")
-            }
-
-            DexAppPasswordField
-            {
-                id: input_password
-                Layout.fillWidth: true
-                field.onAccepted: tryViewSeed()
-                background.color: Dex.CurrentTheme.floatingBackgroundColor
-
-                leftIconColor: Dex.CurrentTheme.foregroundColor
-                hideFieldButton.icon.color: Dex.CurrentTheme.foregroundColor
-            }
-
-            DefaultText
-            {
-                text_value: qsTr("Wrong Password")
-                color: Style.colorRed
-                visible: wrong_password
-            }
+            text_value: qsTr("Please enter your password to view the seed.")
         }
 
-        // Buttons
-        footer:
-        [
+        DexAppPasswordField
+        {
+            id: inputPassword
+            Layout.fillWidth: true
+            field.onAccepted: tryViewKeysAndSeed()
+            background.color: Dex.CurrentTheme.floatingBackgroundColor
+            leftIconColor: Dex.CurrentTheme.foregroundColor
+            hideFieldButton.icon.color: Dex.CurrentTheme.foregroundColor
+        }
+
+        // Footer
+        RowLayout
+        {
+            Layout.preferredWidth: parent.width
+            Layout.topMargin: 30
             DefaultButton
             {
                 text: qsTr("Cancel")
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width / 100 * 48
                 onClicked: root.close()
-            },
+            }
 
             PrimaryButton
             {
-                id: submit_button
+                id: submitButton
+                Layout.preferredWidth: parent.width / 100 * 48
+                enabled: inputPassword.field.length > 0
                 text: qsTr("View")
-                Layout.fillWidth: true
-                enabled: input_password.isValid()
-                onClicked: tryViewSeed()
+                onClicked: tryViewKeysAndSeed()
             }
-        ]
+        }
     }
 
-    ModalContent
+    ModalContent2
     {
-        title: qsTr("View seed and private keys")
-        Layout.fillWidth: true
+        titleText: qsTr("View seed and private keys")
 
         Timer
         {
             id: loading
-
             repeat: true
             running: false
             onTriggered:
@@ -120,361 +108,319 @@ BasicModal
                 if (!settings_page.fetching_priv_keys_busy)
                 {
                     repeat = false
-                    busy_view.visible = false
-                    busy_view.enabled = false
-                    seed_container.visible = true
-                    seed_container.enabled = true
-                    coins_list.visible = true
-                    coins_list.enabled = true
+                    busyView.visible = false
+                    busyView.enabled = false
+                    seedContainer.visible = true
+                    seedContainer.enabled = true
+                    coinsList.visible = true
+                    coinsList.enabled = true
                 }
             }
         }
 
-        DefaultBusyIndicator
-        {
-            id: busy_view
-            Layout.alignment: Qt.AlignHCenter
-        }
+        DefaultBusyIndicator { id: busyView; Layout.alignment: Qt.AlignHCenter }
 
-        DefaultRectangle
+        RowLayout
         {
-            id: seed_container
+            id: seedContainer
             visible: false
             enabled: false
-            height: 120
-            width: parent.width
+            spacing: 10
 
-            RowLayout
+            DefaultImage
             {
-                Layout.fillWidth: true
-                anchors.verticalCenter: parent.verticalCenter
+                source: Dex.CurrentTheme.bigLogoPath
+                Layout.preferredWidth: 32
+                Layout.preferredHeight: 32
+            }
 
-                DefaultImage
-                {
-                    Layout.leftMargin: 10
-                    source: Dex.CurrentTheme.bigLogoPath
-                    Layout.preferredWidth: 32
-                    Layout.preferredHeight: 32
-                }
+            DefaultText
+            {
+                text: API.app_name
+                font.pixelSize: Style.textSizeSmall5
+            }
 
-                DefaultText
-                {
-                    Layout.leftMargin: 5
-                    Layout.preferredWidth: 100
-                    text: API.app_name
-                    font.pixelSize: Style.textSizeSmall5
-                }
+            ColumnLayout
+            {
+                spacing: 10
 
-                ColumnLayout
+                // Seed
+                RowLayout
                 {
-                    RowLayout
+                    spacing: 5
+                    Qaterial.RawMaterialButton
                     {
-                        Qaterial.RawMaterialButton
+                        backgroundImplicitWidth: 40
+                        backgroundImplicitHeight: 30
+                        backgroundColor: "transparent"
+                        icon.source: Qaterial.Icons.qrcodeScan
+                        icon.color: Dex.CurrentTheme.foregroundColor
+                        onClicked:
                         {
-                            implicitWidth: 45
-                            backgroundColor: "transparent"
-                            icon.source: Qaterial.Icons.qrcodeScan
-                            icon.color: Dex.CurrentTheme.foregroundColor
-
-                            DefaultMouseArea
-                            {
-                                anchors.fill: parent
-                                hoverEnabled: true
-
-                                onClicked:
-                                {
-                                    qrcode_modal.qrcode_svg = API.qt_utilities.get_qrcode_svg_from_string(seed_text.text)
-                                    qrcode_modal.open()
-                                }
-                            }
-                        }
-
-                        Qaterial.RawMaterialButton
-                        {
-                            implicitWidth: 45
-                            backgroundColor: "transparent"
-                            icon.source: Qaterial.Icons.contentCopy
-                            icon.color: Dex.CurrentTheme.foregroundColor
-
-                            DefaultMouseArea
-                            {
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                onClicked:
-                                {
-                                    API.qt_utilities.copy_text_to_clipboard(seed_text.text)
-                                    app.notifyCopy(qsTr("Seed phrase"), qsTr("copied to clipboard"))
-                                }
-                            }                            
+                            qrcodeModal.qrcodeSvg = API.qt_utilities.get_qrcode_svg_from_string(seedLabel.text)
+                            qrcodeModal.open()
                         }
                     }
-                    RowLayout
+                    Qaterial.RawMaterialButton
                     {
-                        Qaterial.RawMaterialButton
+                        backgroundImplicitWidth: 40
+                        backgroundImplicitHeight: 30
+                        backgroundColor: "transparent"
+                        icon.source: Qaterial.Icons.contentCopy
+                        icon.color: Dex.CurrentTheme.foregroundColor
+                        onClicked:
                         {
-                            implicitWidth: 45
-                            backgroundColor: "transparent"
-                            icon.source: Qaterial.Icons.qrcodeScan
-                            icon.color: Dex.CurrentTheme.foregroundColor
-
-                            DefaultMouseArea
-                            {
-                                anchors.fill: parent
-                                hoverEnabled: true
-
-                                onClicked:
-                                {
-                                    qrcode_modal.qrcode_svg = API.qt_utilities.get_qrcode_svg_from_string(rpc_pw.text)
-                                    qrcode_modal.open()
-                                }
-                            }
+                            API.qt_utilities.copy_text_to_clipboard(seedLabel.text)
+                            app.notifyCopy(qsTr("Seed"), qsTr("copied to clipboard"))
                         }
-
-                        Qaterial.RawMaterialButton
-                        {
-                            implicitWidth: 45
-                            backgroundColor: "transparent"
-                            icon.source: Qaterial.Icons.contentCopy
-                            icon.color: Dex.CurrentTheme.foregroundColor
-
-                            DefaultMouseArea
-                            {
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                onClicked:
-                                {
-                                    API.qt_utilities.copy_text_to_clipboard(rpc_pw.text)
-                                    app.notifyCopy(qsTr("RPC password"), qsTr("phrase key copied to clipboard"))
-                                }
-                            }
-                        }
+                    }
+                    ColumnLayout
+                    {
+                        DefaultText { text: qsTr("Backup Seed"); font.pixelSize: Style.textSizeSmall2 }
+                        DefaultText { id: seedLabel; Layout.fillWidth: true; font.pixelSize: Style.textSizeSmall1; maximumLineCount: 4; wrapMode: Text.WrapAnywhere }
                     }
                 }
 
-                ColumnLayout
+
+                // RPC Password
+                RowLayout
                 {
-                    // Seed
-                    DefaultText
+                    spacing: 5
+                    Qaterial.RawMaterialButton
                     {
-                        text: qsTr("Backup seed")
-                        color: Style.modalValueColor
-                        font.pixelSize: Style.textSizeSmall2
+                        backgroundImplicitWidth: 40
+                        backgroundImplicitHeight: 30
+                        backgroundColor: "transparent"
+                        icon.source: Qaterial.Icons.qrcodeScan
+                        icon.color: Dex.CurrentTheme.foregroundColor
+                        onClicked:
+                        {
+                            qrcodeModal.qrcodeSvg = API.qt_utilities.get_qrcode_svg_from_string(rpcPwLabel.text)
+                            qrcodeModal.open()
+                        }
                     }
-                    DefaultText
+                    Qaterial.RawMaterialButton
                     {
-                        Layout.preferredWidth: 400
-                        id: seed_text
-                        font.pixelSize: Style.textSizeSmall1
+                        backgroundImplicitWidth: 40
+                        backgroundImplicitHeight: 30
+                        backgroundColor: "transparent"
+                        icon.source: Qaterial.Icons.contentCopy
+                        icon.color: Dex.CurrentTheme.foregroundColor
+                        onClicked:
+                        {
+                            API.qt_utilities.copy_text_to_clipboard(rpcPwLabel.text)
+                            app.notifyCopy(qsTr("RPC Password"), qsTr("copied to clipboard"))
+                        }
                     }
+                    ColumnLayout
+                    {
+                        DefaultText { text: qsTr("RPC Password"); font.pixelSize: Style.textSizeSmall2 }
+                        DefaultText { id: rpcPwLabel; Layout.fillWidth: true; font.pixelSize: Style.textSizeSmall1; maximumLineCount: 4; wrapMode: Text.WrapAnywhere }
+                    }
+                }
 
-                    // RPC Password
-                    DefaultText
+                // Public Key
+                RowLayout
+                {
+                    spacing: 5
+                    Qaterial.RawMaterialButton
                     {
-                        Layout.topMargin: 10
-                        text: qsTr("RPC Password")
-                        color: Style.modalValueColor
-                        font.pixelSize: Style.textSizeSmall2
+                        backgroundImplicitWidth: 40
+                        backgroundImplicitHeight: 30
+                        backgroundColor: "transparent"
+                        icon.source: Qaterial.Icons.qrcodeScan
+                        icon.color: Dex.CurrentTheme.foregroundColor
+                        onClicked:
+                        {
+                            qrcodeModal.qrcodeSvg = API.qt_utilities.get_qrcode_svg_from_string(settings_page.publicKey)
+                            qrcodeModal.open()
+                        }
                     }
-
-                    DefaultText
+                    Qaterial.RawMaterialButton
                     {
-                        id: rpc_pw
-                        font.pixelSize: Style.textSizeSmall3
+                        backgroundImplicitWidth: 40
+                        backgroundImplicitHeight: 30
+                        backgroundColor: "transparent"
+                        icon.source: Qaterial.Icons.contentCopy
+                        icon.color: Dex.CurrentTheme.foregroundColor
+                        onClicked:
+                        {
+                            API.qt_utilities.copy_text_to_clipboard(settings_page.publicKey)
+                            app.notifyCopy(qsTr("Public Key"), qsTr("copied to clipboard"))
+                        }
+                    }
+                    ColumnLayout
+                    {
+                        DefaultText { text: qsTr("Public Key"); font.pixelSize: Style.textSizeSmall2 }
+                        DefaultText { text: settings_page.publicKey; Layout.fillWidth: true; font.pixelSize: Style.textSizeSmall1; maximumLineCount: 4; wrapMode: Text.WrapAnywhere }
                     }
                 }
             }
         }
 
-        // Search input
+        HorizontalLine { Layout.topMargin: 10; Layout.fillWidth: true }
+
         DefaultTextField
         {
-            Layout.fillWidth: true
+            visible: coinsList.visible
+            enabled: coinsList.enabled
+            Layout.topMargin: 10
+            Layout.preferredWidth: parent.width / 2
             placeholderText: qsTr("Search a coin.")
             onTextChanged: portfolio_model.portfolio_proxy_mdl.setFilterFixedString(text)
-
             Component.onDestruction: portfolio_model.portfolio_proxy_mdl.setFilterFixedString("")
         }
 
-        DexListView
-        {
-            id: coins_list
 
+        DefaultRectangle
+        {
+            id: coinsList
             visible: false
             enabled: false
+            Layout.topMargin: 10
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 300
+            radius: 10
+            border.color: Dex.CurrentTheme.lineSeparatorColor
+            border.width: 2
 
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            model: portfolio_mdl.portfolio_proxy_mdl
-            
-            delegate: DefaultRectangle
+            DefaultListView
             {
-                height: seed_container.height
-                width: seed_container.width
+                anchors.fill: parent
+                model: portfolio_mdl.portfolio_proxy_mdl
 
-                RowLayout
+                delegate: ColumnLayout
                 {
-                    Layout.fillWidth: true
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    DefaultImage
+                    width: coinsList.width
+                    RowLayout
                     {
-                        Layout.leftMargin: 10
-                        source: General.coinIcon(model.ticker)
-                        Layout.preferredWidth: 32
-                        Layout.preferredHeight: 32
-                    }
-
-                    DefaultText
-                    {
-                        Layout.preferredWidth: 100
-                        Layout.leftMargin: 5
-                        text: model.name
-                        font.pixelSize: Style.textSizeSmall5
-                    }
-
-                    // QR/Copy buttons
-                    ColumnLayout
-                    { 
-                        spacing: 3
-
-                        RowLayout
+                        Layout.fillWidth: true
+                        DefaultImage
                         {
-                            Qaterial.RawMaterialButton
+                            source: General.coinIcon(model.ticker)
+                            Layout.leftMargin: 4
+                            Layout.preferredWidth: 20
+                            Layout.preferredHeight: 20
+                        }
+
+                        DefaultText
+                        {
+                            Layout.preferredWidth: 100
+                            Layout.leftMargin: 5
+                            text: model.name
+                            font.pixelSize: Style.textSizeSmall5
+                        }
+
+                        ColumnLayout
+                        {
+                            // Public Address
+                            RowLayout
                             {
-                                Layout.topMargin: 2
-                                implicitWidth: 45
-                                backgroundColor: "transparent"
-                                icon.source: Qaterial.Icons.qrcodeScan
-                                icon.color: Dex.CurrentTheme.foregroundColor
-
-                                DefaultMouseArea
+                                Qaterial.RawMaterialButton
                                 {
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-
+                                    backgroundImplicitWidth: 40
+                                    backgroundImplicitHeight: 30
+                                    backgroundColor: "transparent"
+                                    icon.source: Qaterial.Icons.qrcodeScan
+                                    icon.color: Dex.CurrentTheme.foregroundColor
                                     onClicked:
                                     {
-                                        qrcode_modal.qrcode_svg = API.qt_utilities.get_qrcode_svg_from_string(model.public_address)
-                                        qrcode_modal.open()
+                                        qrcodeModal.qrcodeSvg = API.qt_utilities.get_qrcode_svg_from_string(publicAddress.text)
+                                        qrcodeModal.open()
+                                    }
+                                }
+                                Qaterial.RawMaterialButton
+                                {
+                                    backgroundImplicitWidth: 40
+                                    backgroundImplicitHeight: 30
+                                    backgroundColor: "transparent"
+                                    icon.source: Qaterial.Icons.contentCopy
+                                    icon.color: Dex.CurrentTheme.foregroundColor
+                                    onClicked:
+                                    {
+                                        API.qt_utilities.copy_text_to_clipboard(publicAddress.text)
+                                        app.notifyCopy(model.name, qsTr("Public Address copied to clipboard"))
+                                    }
+                                }
+                                ColumnLayout
+                                {
+                                    Layout.fillWidth: true
+                                    DefaultText
+                                    {
+                                        text: qsTr("Public Address")
+                                        font.pixelSize: Style.textSizeSmall2
+                                    }
+                                    DefaultText
+                                    {
+                                        id: publicAddress
+                                        Layout.fillWidth: true
+                                        text: model.public_address
+                                        font.pixelSize: Style.textSizeSmall1
+                                        maximumLineCount: 4; wrapMode: Text.WrapAnywhere
                                     }
                                 }
                             }
 
-                            // Copy clipboard button
-                            Qaterial.RawMaterialButton
-                            { 
-                                implicitWidth: 45
-                                backgroundColor: "transparent"
-                                icon.source: Qaterial.Icons.contentCopy
-                                icon.color: Dex.CurrentTheme.foregroundColor
-
-                                DefaultMouseArea
+                            // Private Key
+                            RowLayout
+                            {
+                                Qaterial.RawMaterialButton
                                 {
-                                    anchors.fill: parent
-                                    hoverEnabled: true
+                                    backgroundImplicitWidth: 40
+                                    backgroundImplicitHeight: 30
+                                    backgroundColor: "transparent"
+                                    icon.source: Qaterial.Icons.qrcodeScan
+                                    icon.color: Dex.CurrentTheme.foregroundColor
                                     onClicked:
                                     {
-                                        API.qt_utilities.copy_text_to_clipboard(model.public_address)
-                                        app.notifyCopy(qsTr("%1 address").arg(model.ticker), qsTr("copied to clipboard"))
+                                        qrcodeModal.qrcodeSvg = API.qt_utilities.get_qrcode_svg_from_string(privateKey.text)
+                                        qrcodeModal.open()
+                                    }
+                                }
+                                Qaterial.RawMaterialButton
+                                {
+                                    backgroundImplicitWidth: 40
+                                    backgroundImplicitHeight: 30
+                                    backgroundColor: "transparent"
+                                    icon.source: Qaterial.Icons.contentCopy
+                                    icon.color: Dex.CurrentTheme.foregroundColor
+                                    onClicked:
+                                    {
+                                        API.qt_utilities.copy_text_to_clipboard(privateKey.text)
+                                        app.notifyCopy(model.name, qsTr("Private Key copied to clipboard"))
+                                    }
+                                }
+                                ColumnLayout
+                                {
+                                    Layout.fillWidth: true
+                                    DefaultText
+                                    {
+                                        text: qsTr("Private Key")
+                                        font.pixelSize: Style.textSizeSmall2
+                                    }
+                                    DefaultText
+                                    {
+                                        id: privateKey
+                                        Layout.fillWidth: true
+                                        text: model.priv_key
+                                        font.pixelSize: Style.textSizeSmall1
+                                        maximumLineCount: 4; wrapMode: Text.WrapAnywhere
                                     }
                                 }
                             }
                         }
-
-                        RowLayout
-                        {
-                            Qaterial.RawMaterialButton
-                            {
-                                implicitWidth: 45
-                                backgroundColor: "transparent"
-                                icon.source: Qaterial.Icons.qrcodeScan
-                                icon.color: Dex.CurrentTheme.foregroundColor
-
-                                DefaultMouseArea
-                                {
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-
-                                    onClicked:
-                                    {
-                                        qrcode_modal.qrcode_svg = API.qt_utilities.get_qrcode_svg_from_string(model.priv_key)
-                                        qrcode_modal.open()
-                                    }
-                                }
-                            }
-
-                            // Copy clipboard button
-                            Qaterial.RawMaterialButton
-                            {
-                                implicitWidth: 45
-                                backgroundColor: "transparent"
-                                icon.source: Qaterial.Icons.contentCopy
-                                icon.color: Dex.CurrentTheme.foregroundColor
-
-                                DefaultMouseArea
-                                {
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                    onClicked:
-                                    {
-                                        API.qt_utilities.copy_text_to_clipboard(model.priv_key)
-                                        app.notifyCopy(qsTr("%1 private key").arg(model.ticker), qsTr("copied to clipboard"))
-                                    }
-                                }             
-                            }
-                        }
                     }
 
-                    // Addresses
-                    ColumnLayout
-                    { 
-                        DefaultText
-                        {
-                            text: qsTr("Public Address")
-                            color: Style.modalValueColor
-                            font.pixelSize: Style.textSizeSmall2
-                        }
-
-                        DefaultText
-                        {
-                            text: model.public_address
-                            font.pixelSize: Style.textSizeSmall3
-                        }
-
-                        DefaultText
-                        {
-                            Layout.topMargin: 10
-                            text: qsTr("Private Key")
-                            color: Style.modalValueColor
-                            font.pixelSize: Style.textSizeSmall2
-                        }
-
-                        DefaultText
-                        {
-                            text: model.priv_key
-                            font.pixelSize: Style.textSizeSmall3
-                        }
-                    }
+                    HorizontalLine { Layout.fillWidth: true }
                 }
             }
         }
 
-        // Buttons
-        footer:
-        [
-            DefaultButton
-            {
-                text: qsTr("Close")
-                Layout.fillWidth: true
-                onClicked: root.close()
-            }
-        ]
-
         ModalLoader
         {
-            id: qrcode_modal
+            id: qrcodeModal
 
-            property string qrcode_svg
+            property string qrcodeSvg
 
             sourceComponent: Popup
             {
@@ -483,12 +429,11 @@ BasicModal
                 x: (root.width - width) / 2
                 y: ((root.height - height) / 2) - 250
 
-                onClosed: qrcode_svg = ""
+                onClosed: qrcodeSvg = ""
 
                 background: Image
                 {
-                    source: qrcode_svg
-
+                    source: qrcodeSvg
                     sourceSize.width: 200
                     sourceSize.height: 200
                 }
