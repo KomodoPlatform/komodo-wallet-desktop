@@ -10,7 +10,7 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -263,7 +263,7 @@ BasicModal
     }
 
     // Prepare Page
-    ModalContent2
+    MultipageModalContent
     {
         id: _preparePage
 
@@ -710,9 +710,9 @@ BasicModal
     }
 
     // Send Page
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Send")
+        titleText: qsTr("Send")
 
         // Address
         TextEditWithTitle

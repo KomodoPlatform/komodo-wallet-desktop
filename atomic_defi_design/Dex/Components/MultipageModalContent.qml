@@ -17,6 +17,7 @@ ColumnLayout
     property int           topMarginAfterTitle: 30
 
     default property alias content:         _innerLayout.data
+    property alias         footer:          _footer.data
 
     Layout.fillWidth: true
 
@@ -43,5 +44,13 @@ ColumnLayout
             anchors.centerIn: parent
             width: parent.width
         }
+    }
+
+    // Footer
+    RowLayout
+    {
+        id: _footer
+        Layout.topMargin: Style.rowSpacing
+        spacing: Style.buttonSpacing
     }
 }

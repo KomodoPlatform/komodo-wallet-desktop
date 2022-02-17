@@ -6,7 +6,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     readonly property bool empty_data: !prepare_claim_rewards_result || !prepare_claim_rewards_result.withdraw_answer
@@ -105,8 +105,8 @@ BasicModal {
 
     // Inside modal
     width: 1200
-    ModalContent {
-        title: qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker)
+    MultipageModalContent {
+        titleText: qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker)
 
         DefaultBusyIndicator {
             visible: !can_claim || is_broadcast_busy

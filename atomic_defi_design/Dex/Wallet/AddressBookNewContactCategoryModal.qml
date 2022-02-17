@@ -7,15 +7,14 @@ import "../Constants"
 import App 1.0
 
 //! New category form
-BasicModal {
+MultipageModal {
     id: root
     width: 500
 
     property var contactModel
 
-    ModalContent {
-        Layout.fillWidth: true
-        title: qsTr("Add a new tag")
+    MultipageModalContent {
+        titleText: qsTr("Add a new tag")
 
         RowLayout {
             //! Category name input.

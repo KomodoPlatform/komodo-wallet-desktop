@@ -350,13 +350,13 @@ Item
             Component
             {
                 id: enable_fees_coin_comp
-                BasicModal
+                MultipageModal
                 {
                     id: root
                     width: 300
-                    ModalContent
+                    MultipageModalContent
                     {
-                        title: qsTr("Enable %1 ?").arg(coin_to_enable_ticker)
+                        titleText: qsTr("Enable %1 ?").arg(coin_to_enable_ticker)
                         RowLayout
                         {
                             Layout.fillWidth: true

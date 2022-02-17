@@ -11,15 +11,15 @@ import "Orders/"
 
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     width: 650
 
     readonly property var fees: API.app.trading_pg.fees
 
-    ModalContent {
-        title: qsTr("Confirm Exchange Details")
+    MultipageModalContent {
+        titleText: qsTr("Confirm Exchange Details")
 
         OrderContent {
             Layout.topMargin: 25

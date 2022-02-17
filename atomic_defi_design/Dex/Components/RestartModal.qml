@@ -7,7 +7,7 @@ import QtQuick.Controls 2.15
 import "../Constants"
 import App 1.0
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -33,10 +33,10 @@ BasicModal
         }
     }
 
-    ModalContent
+    MultipageModalContent
     {
         Layout.fillWidth: true
-        title: qsTr("Applying the changes...")
+        titleText: qsTr("Applying the changes...")
 
         Timer
         {

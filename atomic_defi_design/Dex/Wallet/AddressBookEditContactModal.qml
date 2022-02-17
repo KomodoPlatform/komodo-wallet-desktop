@@ -14,7 +14,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     property var contactModel
@@ -50,11 +50,11 @@ BasicModal {
 
     onClosed: contactModel.reload()
 
-    ModalContent {
+    MultipageModalContent {
         Layout.topMargin: 5
         Layout.fillWidth: true
 
-        title: qsTr("Edit contact")
+        titleText: qsTr("Edit contact")
 
         // Contact name section
         TextFieldWithTitle {
@@ -447,10 +447,10 @@ BasicModal {
 
             id: enable_coin_modal
 
-            sourceComponent: BasicModal {
-                ModalContent {
+            sourceComponent: MultipageModal {
+                MultipageModalContent {
                     Layout.fillWidth: true
-                    title: qsTr("Enable " + coin_name)
+                    titleText: qsTr("Enable " + coin_name)
 
                     DefaultText {
                         text: qsTr("The selected address belongs to a disabled coin, you need to enabled it before sending.")
@@ -511,9 +511,9 @@ BasicModal {
         ModalLoader {
             id: cannot_send_modal
 
-            sourceComponent: BasicModal {
-                ModalContent {
-                    title: qsTr("Cannot send to this address")
+            sourceComponent: MultipageModal {
+                MultipageModalContent {
+                    titleText: qsTr("Cannot send to this address")
 
                     DefaultText {
                         text: qsTr("Your balance is empty")
@@ -537,12 +537,12 @@ BasicModal {
             property string addressKey
             property string addressType
 
-            sourceComponent: BasicModal
+            sourceComponent: MultipageModal
             {
                 width: 250
-                ModalContent
+                MultipageModalContent
                 {
-                    title: qsTr("Remove address ?")
+                    titleText: qsTr("Remove address ?")
 
                     RowLayout
                     {

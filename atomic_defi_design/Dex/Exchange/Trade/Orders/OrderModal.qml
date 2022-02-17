@@ -8,7 +8,7 @@ import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
 
-BasicModal {
+MultipageModal {
     id: root
 
     property var details
@@ -21,8 +21,8 @@ BasicModal {
 
     onClosed: details = undefined
 
-    ModalContent {
-        title: !details ? "" : details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
+    MultipageModalContent {
+        titleText: !details ? "" : details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
         titleAlignment: Qt.AlignHCenter
 
         // Complete image

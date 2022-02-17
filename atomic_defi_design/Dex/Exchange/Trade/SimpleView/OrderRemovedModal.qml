@@ -1,13 +1,13 @@
 import "../../../Components"
 import "../../../Constants"
 
-BasicModal
+MultipageModal
 {
     id: root
     width: 1000
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Selected Order Removed")
+        titleText: qsTr("Selected Order Removed")
 
         DefaultText
         {

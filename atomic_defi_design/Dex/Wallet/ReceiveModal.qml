@@ -6,7 +6,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     function reset() {
@@ -15,8 +15,8 @@ BasicModal {
 
     width: 500
 
-    ModalContent {
-        title: qsTr("Receive")
+    MultipageModalContent {
+        titleText: qsTr("Receive")
 
         // Receive address
         TextAreaWithTitle {

@@ -7,7 +7,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     readonly property var glbCoinsCfgModel: API.app.portfolio_pg.global_cfg_mdl
     property alias        selected_wallet_type: wallet_list.selected_wallet_type
 
@@ -44,13 +44,13 @@ BasicModal {
     onOpened: _searchbar.forceActiveFocus()
     onClosed: resetModal()
 
-    ModalContent
+    MultipageModalContent
     {
         id: wallet_list
 
         property string selected_wallet_type: ""
 
-        title: qsTr("Select wallet type")
+        titleText: qsTr("Select wallet type")
 
         // Search input
         DefaultTextField

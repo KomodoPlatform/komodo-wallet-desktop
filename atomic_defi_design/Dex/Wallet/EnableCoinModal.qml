@@ -12,7 +12,7 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -46,9 +46,9 @@ BasicModal
         coin_cfg_model.checked_nb = 0;
     }
 
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Enable assets")
+        titleText: qsTr("Enable assets")
         titleAlignment: Qt.AlignHCenter
 
         // Search input

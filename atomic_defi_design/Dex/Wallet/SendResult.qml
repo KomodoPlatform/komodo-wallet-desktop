@@ -6,7 +6,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-ModalContent {
+MultipageModalContent {
     property var result: ({ balance_change:"", fees: "", date: "", explorer_url: "" })
     property alias address: address.text
     property string custom_amount
@@ -14,7 +14,7 @@ ModalContent {
 
     function onClose() {}
 
-    title: qsTr("Transaction Complete!")
+    titleText: qsTr("Transaction Complete!")
 
     // Address
     TextEditWithTitle {

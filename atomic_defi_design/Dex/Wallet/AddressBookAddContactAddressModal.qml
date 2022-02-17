@@ -9,7 +9,7 @@ import App 1.0
 import "../Components"
 
 // Contact address entry creation/edition modal
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -49,12 +49,12 @@ BasicModal
     Component.onCompleted:   API.app.wallet_pg.validate_address_data = {}
     Component.onDestruction: API.app.wallet_pg.validate_address_data = {}
 
-    ModalContent
+    MultipageModalContent
     {
         Layout.topMargin: 5
         Layout.fillWidth: true
 
-        title: isEdition ? qsTr("Edit address entry") : qsTr("Create a new address")
+        titleText: isEdition ? qsTr("Edit address entry") : qsTr("Create a new address")
 
         // Wallet Type Selector
         DexButton

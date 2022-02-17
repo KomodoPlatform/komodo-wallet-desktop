@@ -9,7 +9,7 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -52,7 +52,7 @@ BasicModal
         currentIndex = 0
     }
 
-    ModalContent2
+    MultipageModalContent
     {
         titleText: qsTr("View seed and private keys")
 
@@ -94,7 +94,7 @@ BasicModal
         }
     }
 
-    ModalContent2
+    MultipageModalContent
     {
         titleText: qsTr("View seed and private keys")
 

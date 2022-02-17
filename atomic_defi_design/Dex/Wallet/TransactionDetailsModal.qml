@@ -10,7 +10,7 @@ import App 1.0
 import Dex.Themes 1.0 as Dex
 
 // Open Transaction Details Modal
-BasicModal {
+MultipageModal {
     id: root
 
     function reset() {
@@ -24,8 +24,8 @@ BasicModal {
         details = undefined
     }
 
-    ModalContent {
-        title: qsTr("Transaction Details")
+    MultipageModalContent {
+        titleText: qsTr("Transaction Details")
 
         // Amount
         TextEditWithTitle {

@@ -8,7 +8,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     width: 500
@@ -17,9 +17,9 @@ BasicModal {
     property string ticker: api_wallet_page.ticker
     property var selected_address: ""
 
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Select a contact with an %1 address").arg(ticker)
+        titleText: qsTr("Select a contact with an %1 address").arg(ticker)
 
         // Searchbar
         DefaultTextField
@@ -132,7 +132,7 @@ BasicModal {
         }
     }
 
-    ModalContent
+    MultipageModalContent
     {
         id: addresses_view
 
@@ -146,7 +146,7 @@ BasicModal {
         }
         property var contactModel: defaultContactModel
 
-        title: qsTr("Choose an %1 address of %2")
+        titleText: qsTr("Choose an %1 address of %2")
                    .arg(contactModel.proxy_filter.filter_type)
                    .arg(contactModel.name)
 
