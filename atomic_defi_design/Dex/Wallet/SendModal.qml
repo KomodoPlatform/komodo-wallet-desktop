@@ -281,7 +281,6 @@ BasicModal
             Layout.preferredWidth: 380
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 18
 
             placeholderText: qsTr("Address of the recipient")
             onTextChanged: api_wallet_page.validate_address(text)

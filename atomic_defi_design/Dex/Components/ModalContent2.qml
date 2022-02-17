@@ -10,10 +10,11 @@ ColumnLayout
 {
     id: root
 
-    property alias         title:           _title
-    property alias         titleText:       _title.text
-    property var           titleAlignment:  Qt.AlignLeft
-    property int           titleTopMargin:  20
+    property alias         title:               _title
+    property alias         titleText:           _title.text
+    property var           titleAlignment:      Qt.AlignLeft
+    property int           titleTopMargin:      20
+    property int           topMarginAfterTitle: 30
 
     default property alias content:         _innerLayout.data
 
@@ -31,6 +32,7 @@ ColumnLayout
     {
         flickableDirection: Flickable.VerticalFlick
 
+        Layout.topMargin: root.topMarginAfterTitle
         Layout.fillWidth: true
         Layout.preferredHeight: _innerLayout.height
         Layout.maximumHeight: window.height - 200
