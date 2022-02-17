@@ -41,6 +41,7 @@ ColumnLayout
         {
             id: _innerLayout
             anchors.centerIn: parent
+            width: parent.width
         }
     }
 }
