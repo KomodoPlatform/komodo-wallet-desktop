@@ -153,6 +153,34 @@ QtObject {
         return text
     }
 
+    function logObject(obj) {
+        for (var key in obj) {
+            console.log(key + ": " + obj[key]);
+        }
+    }
+
+    function getFeesDetail(fees) {
+        return [
+            {"label": qsTr("<b>Taker tx fee:</b> "), "fee": fees.base_transaction_fees, "ticker": fees.base_transaction_fees_ticker},
+            {"label": qsTr("<b>Dex tx fee:</b> "), "fee": fees.fee_to_send_taker_fee, "ticker": fees.fee_to_send_taker_fee_ticker},
+            {"label": qsTr("<b>Dex fee:</b> "), "fee": fees.trading_fee, "ticker": fees.trading_fee_ticker},
+            {"label": qsTr("<b>Maker tx fee:</b> "), "fee": fees.rel_transaction_fees, "ticker": fees.rel_transaction_fees_ticker}
+        ]
+    }
+
+    function getFeesDetailText(feetype, amount, ticker) {
+        return qsTr("%1 %2 %3 (%4)"
+            ).arg(
+                feetype
+            ).arg(
+                formatDouble(amount, 8, false)
+            ).arg(
+                ticker
+            ).arg(
+                General.getFiatText(amount, ticker, false)
+            )
+    }
+
     function absString(str) {
         return str.replace("-", "")
     }
