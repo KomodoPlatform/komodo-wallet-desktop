@@ -22,9 +22,10 @@ Item
     property alias send_modal: send_modal
     readonly property int layout_margin: 20
     readonly property string headerTitleColor: Style.colorText2
-    readonly property string headerTitleFont: Style.textSizeMid
+    readonly property string headerTitleFont: Style.textSizeMid1
     readonly property string headerTextColor: Dex.CurrentTheme.foregroundColor
-    readonly property string headerTextFont: Style.textSizeSmall5
+    readonly property string headerTextFont: Style.textSize
+    readonly property string headerSmallTitleFont: Style.textSizeSmall4
     readonly property string headerSmallFont: Style.textSizeSmall2
 
     function loadingPercentage(remaining) {
@@ -39,48 +40,65 @@ Item
     ColumnLayout
     {
         id: wallet_layout
-        spacing: 20
+
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: layout_margin
         anchors.bottom: parent.bottom
 
+        spacing: 20
+
         // Balance box
         InnerBackground
         {
             id: balance_box
+
             Layout.fillWidth: true
             Layout.preferredHeight: 100
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
 
-            RowLayout
-            {
+            RowLayout {
+
                 anchors.fill: parent
 
-                RowLayout
-                {
+                RowLayout {
                     Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
-                    Layout.leftMargin: 10
-                    spacing: 10
+                    Layout.leftMargin: 20
+                    Layout.rightMargin: Layout.leftMargin
+                    spacing: 5
 
-                    // Icon
-                    DefaultImage
+                    // Icon & Full name
+                    ColumnLayout
                     {
-                        id: icon_img
-                        Layout.preferredHeight: 80
-                        Layout.preferredWidth: Layout.preferredHeight
-                        source: General.coinIcon(api_wallet_page.ticker)
+                        DefaultImage
+                        {
+                            id: icon_img
+                            Layout.bottomMargin: 0
+                            source: General.coinIcon(api_wallet_page.ticker)
+                            Layout.preferredHeight: 60
+                            Layout.preferredWidth: Layout.preferredHeight
+                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        }
+
+                        DexLabel
+                        {
+                            id: ticker_name
+                            Layout.topMargin: 0
+                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                            text_value: api_wallet_page.ticker // current_ticker_infos.name
+                            font.pixelSize: headerTextFont
+                            color: headerTextColor
+                        }
                     }
 
                     Item { Layout.fillWidth: true }
-
-                    // Name and crypto amount
+                    // Ticker and crypto / fiat amount
                     ColumnLayout
                     {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -88,119 +106,47 @@ Item
 
                         DexLabel
                         {
-                            id: name
+                            id: balance_title
                             Layout.alignment: Qt.AlignHCenter
-                            text_value: General.fullCoinName(current_ticker_infos.name, api_wallet_page.ticker)
+                            text_value: current_ticker_infos.name + " Balance" // "Wallet Balance"
                             font.pixelSize: headerTitleFont
-                            color: headerTextColor
+                            color: headerTitleColor
                         }
 
                         DexLabel
                         {
+                            id: name_value
                             Layout.alignment: Qt.AlignHCenter
-                            text_value:
-                            {
-                                const fiat_amount = parseFloat(current_ticker_infos.fiat_amount)
-                                const portfolio_balance = parseFloat(API.app.portfolio_pg.balance_fiat_all)
-                                if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
-
-                                return General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false)
-                                + " of Portfolio"
-                            }
-                            visible: text_value !== '-'
+                            text_value: General.formatCrypto("", current_ticker_infos.balance, "", current_ticker_infos.fiat_amount, API.app.settings_pg.current_currency)
                             font.pixelSize: headerTextFont
                             color: headerTextColor
                             privacy: true
                         }
+                    }
 
-                        RowLayout
-                        {
-                            Layout.topMargin: 0
-                            Layout.bottomMargin: 0
-                            Layout.alignment: Qt.AlignHCenter
-
-                            DexLabel
-                            {
-                                id: wallet_address
-                                text_value: qsTr("Address: ") + api_wallet_page.ticker_infos.address
-                                font.pixelSize: headerSmallFont
-                                color: headerTitleColor
-                            }
-
-                            Qaterial.Icon {
-                                x: wallet_address.implicitWidth + 10
-                                size: headerSmallFont
-                                icon: Qaterial.Icons.contentCopy
-                                color: address_copyArea.containsMouse ? headerTextColor : headerTitleColor
-
-                                DexMouseArea {
-                                    id: address_copyArea
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-
-                                    onClicked:
-                                    {
-                                        API.qt_utilities.copy_text_to_clipboard(api_wallet_page.ticker_infos.address)
-                                        app.notifyCopy(qsTr("Address"), qsTr("copied to clipboard"))
-
-                                    }
-                                }
-                            }
-                        }
-
-                        RowLayout
-                        {
-                            Layout.topMargin: 0
-                            Layout.bottomMargin: 0
-                            Layout.alignment: Qt.AlignHCenter
-                            Layout.preferredHeight: coinContractAddress(api_wallet_page.ticker) ? headerSmallFont : 0
-                            visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
-
-                            DexLabel
-                            {
-                                id: contract_address
-                                text_value:  api_wallet_page.ticker_infos.type + qsTr(" Contract: ") + General.coinContractAddress(api_wallet_page.ticker)
-                                font.pixelSize: headerSmallFont
-                                color: headerTitleColor
-                            }
-
-                            Qaterial.Icon {
-                                x: contract_address.implicitWidth + 10
-                                size: headerSmallFont
-                                icon: Qaterial.Icons.contentCopy
-                                color: contract_copyArea.containsMouse ? headerTextColor : headerTitleColor
-                                visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
-
-                                DexMouseArea {
-                                    id: contract_copyArea
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-
-                                    onClicked: {
-                                        API.qt_utilities.copy_text_to_clipboard(General.coinContractAddress(api_wallet_page.ticker), "")
-                                        app.notifyCopy(qsTr("Contract address"), qsTr("copied to clipboard"))
-                                    }
-                                }
-                            }
-                        }
+                    Item { Layout.fillWidth: true }
+                    VerticalLine
+                    {
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.rightMargin: 0
+                        Layout.preferredHeight: parent.height * 0.6
+                        color: Style.colorThemeDarkLight
                     }
                     Item { Layout.fillWidth: true }
 
                     ColumnLayout {
+                        visible: false //current_ticker_infos.segwit_supported
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         spacing: 2
-                        visible: false //current_ticker_infos.segwit_supported
-
                         DexLabel {
-                           Layout.alignment: Qt.AlignLeft
-                           text_value: qsTr("Segwit")
-                           font.pixelSize: name.font.pixelSize
+                            text_value: qsTr("Segwit")
+                            Layout.alignment: Qt.AlignLeft
+                            font.pixelSize: headerTitleFont
+                            color: headerTitleColor
                         }
-
                         DefaultSwitch {
                             id: segwitSwitch
                             Layout.alignment: Qt.AlignVCenter
-
                             onToggled: {
                                 if(parseFloat(current_ticker_infos.balance) > 0) {
                                      Qaterial.DialogManager.showDialog({
@@ -260,94 +206,180 @@ Item
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.leftMargin: 10
                         Layout.rightMargin: 10
-                        spacing: 5
 
+                        spacing: 5
                         DexLabel
                         {
                             id: price
-                            Layout.alignment: Qt.AlignHCenter
                             text_value: qsTr("Price")
-                            font.pixelSize: name.font.pixelSize
+                            Layout.alignment: Qt.AlignHCenter
                             color: headerTitleColor
+                            font.pixelSize: headerTitleFont
                         }
 
                         DexLabel
                         {
-                            Layout.alignment: Qt.AlignHCenter
                             text_value:
                             {
                                 const v = General.formatFiat('', current_ticker_infos.current_currency_ticker_price, API.app.settings_pg.current_currency)
                                 return current_ticker_infos.current_currency_ticker_price == 0 ? 'N/A' : v
                             }
+                            Layout.alignment: Qt.AlignHCenter
                             font.pixelSize: headerTextFont
                             color: headerTextColor
                         }
+                    }
+
+                    // 24hr change
+                    ColumnLayout
+                    {
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.leftMargin: 10
+                        Layout.rightMargin: 10
+
+                        spacing: 5
+                        DexLabel
+                        {
+                            id: change_24hr
+                            text_value: qsTr("Change 24hr")
+                            Layout.alignment: Qt.AlignHCenter
+                            color: headerTitleColor
+                            font.pixelSize: headerTitleFont
+                        }
+
                         DexLabel
                         {
                             Layout.alignment: Qt.AlignHCenter
                             text_value:
                             {
                                 const v = parseFloat(current_ticker_infos.change_24h)
-                                return v === 0 ? '-' : General.formatPercent(v) + " (24hr)"
+                                return v === 0 ? 'N/A' : General.formatPercent(v)
                             }
-                            visible: text_value !== "-"
-                            font.pixelSize: headerSmallFont
+                            font.pixelSize: headerTextFont
                             color: DexTheme.getValueColor(current_ticker_infos.change_24h)
                         }
                     }
 
-                    Item { Layout.fillWidth: true }
-
-                    // Balance
+                    // Porfolio %
                     ColumnLayout
                     {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.leftMargin: 10
                         Layout.rightMargin: 10
+
                         spacing: 5
-
                         DexLabel
                         {
-                            id: balance
+                            id: portfolio_title
+                            text_value: qsTr("Porfolio")
                             Layout.alignment: Qt.AlignHCenter
-                            text_value: qsTr("Balance")
-                            font.pixelSize: name.font.pixelSize
                             color: headerTitleColor
+                            font.pixelSize: headerTitleFont
                         }
 
                         DexLabel
                         {
-                            id: name_value
                             Layout.alignment: Qt.AlignHCenter
-                            text_value: General.formatCrypto("", current_ticker_infos.balance, "")
+                            text_value:
+                            {
+                                const fiat_amount = parseFloat(current_ticker_infos.fiat_amount)
+                                const portfolio_balance = parseFloat(API.app.portfolio_pg.balance_fiat_all)
+                                if(fiat_amount <= 0 || portfolio_balance <= 0) return "N/A"
+                                return General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false)
+                            }
                             font.pixelSize: headerTextFont
                             color: headerTextColor
-                            privacy: true
-                        }
-
-                        DexLabel
-                        {
-                            id: fiat_value
-                            Layout.alignment: Qt.AlignHCenter
-                            text_value: General.formatFiat("", current_ticker_infos.fiat_amount, API.app.settings_pg.current_currency)
-                            visible: current_ticker_infos.fiat_amount != 0
-                            font.pixelSize: headerTextFont
-                            color: headerTextColor
-                            privacy: true
-
                         }
                     }
 
-                    Item { Layout.fillWidth: true }
+                    Item {
+                        Layout.fillWidth: true
+                        visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
+                    }
+                    VerticalLine
+                    {
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.rightMargin: 0
+                        Layout.preferredHeight: parent.height * 0.6
+                        color: Style.colorThemeDarkLight
+                        visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
+                    }
+                    Item {
+                        Layout.fillWidth: true
+                        visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
+                    }
 
-                    DefaultImage {
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        Layout.leftMargin: 10
-                        Layout.rightMargin: 10
-                        opacity: 0.7
-                        source: current_ticker_infos.qrcode_address
-                        sourceSize.width: 80
-                        sourceSize.height: 80
+                    // Contract address
+                    ColumnLayout
+                    {
+                        visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
+                        RowLayout
+                        {
+                            Layout.alignment: Qt.AlignLeft
+                            id: contract_title_row_layout
+                            DefaultImage
+                            {
+                                id: protocol_img
+                                source: General.platformIcon(General.coinPlatform(api_wallet_page.ticker))
+                                Layout.preferredHeight: 18
+                                Layout.preferredWidth: Layout.preferredHeight
+                            }
+                            DexLabel
+                            {
+                                id: contract_address_title
+                                text_value: General.coinPlatform(api_wallet_page.ticker) + qsTr(" Contract Address")
+                                font.pixelSize: headerTextFont
+                                color: headerTitleColor
+                            }
+                        }
+
+                        RowLayout
+                        {
+                            Layout.topMargin: 0
+                            Layout.bottomMargin: 0
+                            Layout.alignment: Qt.AlignLeft
+                            Layout.preferredHeight: General.coinContractAddress(api_wallet_page.ticker) ? headerSmallFont : 0
+                            visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
+                            DexLabel
+                            {
+                                id: contract_address
+                                text_value: General.coinContractAddress(api_wallet_page.ticker)
+                                Layout.preferredWidth: contract_title_row_layout.width - 20
+                                font.pixelSize: headerSmallFont
+                                color: headerTextColor
+                                elide: Text.ElideMiddle
+                                wrapMode: Text.NoWrap
+                            }
+                            Qaterial.Icon {
+                                size: headerSmallFont
+                                icon: Qaterial.Icons.contentCopy
+                                color: contract_copyArea.containsMouse ? headerTextColor : headerTitleColor
+                                DexMouseArea {
+                                    id: contract_copyArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    onClicked: {
+                                        API.qt_utilities.copy_text_to_clipboard(General.coinContractAddress(api_wallet_page.ticker), "")
+                                        app.notifyCopy(qsTr("Contract address"), qsTr("copied to clipboard"))
+                                        Qt.openUrlExternally(link)
+                                    }
+                                }
+                            }
+                            Qaterial.Icon {
+                                size: headerSmallFont
+                                icon: Qaterial.Icons.linkVariant
+                                color: contract_linkArea.containsMouse ? headerTextColor : headerTitleColor
+                                visible: General.contractURL(api_wallet_page.ticker) != ""
+                                DexMouseArea {
+                                    id: contract_linkArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    onClicked: {
+                                        Qt.openUrlExternally(General.contractURL(api_wallet_page.ticker))
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
