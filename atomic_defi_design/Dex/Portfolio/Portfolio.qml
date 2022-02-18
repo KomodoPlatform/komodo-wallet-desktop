@@ -118,10 +118,10 @@ Item {
             spacing: 35
 
             Item {
+                visible: API.app.portfolio_pg.balance_fiat_all > 0
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
-                visible: true
-                height: portfolio.isUltraLarge ? 600 : 350
+                height: portfolio.isUltraLarge ? 400 : 350
                 RowLayout {
                     anchors.fill: parent
                     anchors.rightMargin: 40
@@ -137,7 +137,7 @@ Item {
                     AssetPieChart {
                         id: pie
                         Layout.fillWidth: true
-                        Layout.preferredHeight: portfolio.isUltraLarge ? 600 : 350
+                        Layout.preferredHeight: portfolio.isUltraLarge ? 400 : 350
                         Layout.alignment: Qt.AlignTop
                     }
                 }
@@ -236,13 +236,11 @@ Item {
                     
                     DexGradientAppButton
                     {
-                        width: 213
-                        height: 61.51
+                        width: 180
+                        height: 50
                         iconSource: Qaterial.Icons.plus
-                        radius: 18
-                        leftPadding: 5
-                        rightPadding: 5
-                        padding: 16
+                        radius: 15
+                        padding: 5
                         text: qsTr("ADD ASSET")
                         onClicked: enable_coin_modal.open()
                     }

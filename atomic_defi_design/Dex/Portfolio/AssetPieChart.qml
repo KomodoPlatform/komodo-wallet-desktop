@@ -15,9 +15,10 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-// Portfolio
-Item {
+Item
+{
     property alias pieTimer2: pieTimer
+
     function refresh() {
         pieSeries.clear()
         for (var i = 0; i < portfolio_mdl.pie_chart_proxy_mdl.rowCount(); i++) {
@@ -25,6 +26,7 @@ Item {
             addItem(data)
         }
     }
+
     function addItem(value) {
         var item = pieSeries.append(value.ticker, value.main_currency_balance)
         item.labelColor = 'white'
@@ -48,25 +50,31 @@ Item {
             }
         })
     }
-    Timer {
+    Timer
+    {
         id: pieTimer
         interval: 500
-        onTriggered: {
+        onTriggered:
+        {
             refresh()
         }
     }
-    Gradient {
+    Gradient
+    {
         id: gd
-        GradientStop {
+        GradientStop
+        {
             position: .80
             color: DexTheme.contentColorTop
         }
-        GradientStop {
+        GradientStop
+        {
             position: 1
             color: 'transparent'
         }
     }
-    DexRectangle {
+    DexRectangle
+    {
         id: bg
         y: 35
         height: parent.height
@@ -75,13 +83,17 @@ Item {
         border.width: 0
         gradient: DexTheme.portfolioPieGradient ? gd : undefined
         
-        RowLayout {
+        RowLayout
+        {
             anchors.fill: parent
-            spacing: 0 
-            Item {
+            spacing: 0
+            // Portfolio pie
+            Item
+            {
                 Layout.preferredWidth: (parent.width / 2) - 150
                 Layout.fillHeight: true
-                ChartView {
+                ChartView
+                {
                     id: _chartView
 
                     width: 620
@@ -102,21 +114,27 @@ Item {
                     anchors.centerIn: parent
                     dropShadowEnabled: true
 
-                    PieSeries {
+                    PieSeries
+                    {
                         id: pieSeries
                     }
-                    DexRectangle {
+                    DexRectangle
+                    {
                         anchors.centerIn: parent
                         color: DexTheme.theme === "light" ? DexTheme.contentColorTopBold : bg.color
                         width: 380
                         height: width
                         radius: width / 2
-                        Column {
+                        Column
+                        {
                             anchors.centerIn: parent
                             spacing: 5
                             DexLabel {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text_value: currentTotal !== "" ? currentTotal : General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
+                                text_value: currentTotal !== "" 
+                                    ? currentTotal : General.formatFiat("",
+                                                        API.app.portfolio_pg.balance_fiat_all,
+                                                        API.app.settings_pg.current_currency)
                                 font: DexTypo.head4
                                 color: currency_change_button.containsMouse ? DexTheme.foregroundColor : DexTheme.foregroundColorDarkColor3
                                 privacy: true
@@ -127,7 +145,8 @@ Item {
                                     font.family = 'Lato'
                                 }
                             }
-                            DexLabel {
+                            DexLabel
+                            {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text_value: portfolio.currentValue
                                 font: DexTypo.body2
@@ -141,17 +160,16 @@ Item {
                                     font.family = 'Lato'
                                 }
                             }
-                            DexLabel {
+                            DexLabel
+                            {
                                 id: count_label
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text_value: portfolio_helper.count + " " + qsTr(
-                                                "Assets")
+                                text_value: portfolio_helper.count + " " + qsTr("Assets")
                                 font: DexTypo.body2
                                 DexFadebehavior on text {
                                     fadeDuration: 100
                                 }
-                                color: Qt.lighter(
-                                           DexTheme.foregroundColor, 0.8)
+                                color: Qt.lighter(DexTheme.foregroundColor, 0.8)
                                 privacy: true
                                 visible: portfolio.currentValue == ""
 
@@ -160,7 +178,8 @@ Item {
                                 }
                             }
                         }
-                        DefaultMouseArea {
+                        DefaultMouseArea
+                        {
                             id: currency_change_button
 
                             width: parent.width - 100
@@ -180,21 +199,25 @@ Item {
                             }
                         }
                     }
-                    Rectangle {
+                    Rectangle
+                    {
                         anchors.centerIn: parent
                         width: 295
                         height: width
                         color: 'transparent'
-                        radius: width/2
+                        radius: width / 2
                         border.width: API.app.portfolio_pg.balance_fiat_all > 0 ? 0 : 5
                         border.color: Qt.lighter(DexTheme.contentColorTop)
                     }
                 }
             }
-            Item {
+            // Portfolio list
+            Item
+            {
                 Layout.preferredWidth: (parent.width / 2) + 150
                 Layout.fillHeight: true
-                Item {
+                Item
+                {
                     scale: portfolio.isUltraLarge ? 1 : 0.95
                     y: 10 
                     Behavior on scale {
@@ -202,26 +225,31 @@ Item {
                             duration: 200
                         }
                     }
-                    width: parent.width-100
+                    width: parent.width - 100
                     anchors.verticalCenter: parent.verticalCenter
-                    height: !portfolio.isUltraLarge? _pieColumn.contentHeight > 300 ? 300 : _pieColumn.contentHeight : _pieColumn.contentHeight > 550 ? 550 :_pieColumn.contentHeight
+                    height: !portfolio.isUltraLarge 
+                        ? _pieColumn.contentHeight > 300 
+                        ? 300 : _pieColumn.contentHeight : _pieColumn.contentHeight > 550 
+                        ? 550 : _pieColumn.contentHeight
 
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    DexListView {
+                    DexListView
+                    {
                         id: _pieColumn
                         anchors.fill: parent
                         clip: true
                         model: portfolio_mdl.pie_chart_proxy_mdl
                         scrollbar_visible: false
-                        delegate: RowLayout {
+                        delegate: RowLayout
+                        {
                             id: rootItem
-                            property color itemColor: Style.getCoinColor(
-                                                          ticker)
+                            property color itemColor: Style.getCoinColor(ticker)
                             width: _pieColumn.width
                             height: 50
                             spacing: 20
-                            DexLabel {
+                            DexLabel
+                            {
                                 Layout.preferredWidth: 60
                                 text: ticker
                                 font.bold: true
@@ -229,18 +257,20 @@ Item {
                                 Component.onCompleted: font.weight = Font.Bold
                             }
 
-                            Item {
+                            Item
+                            {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.fillWidth: true
                                 height: 5
-                                Rectangle {
+                                Rectangle
+                                {
                                     anchors.fill: parent
                                     radius: 10
                                     opacity: 0.1
                                     color: DexTheme.foregroundColorLightColor5
-                                    
                                 }
-                                Rectangle {
+                                Rectangle
+                                {
                                     height: parent.height
                                     width: (parseFloat(percent_main_currency) * parent.width) / 100
                                     radius: 10
@@ -248,26 +278,16 @@ Item {
                                 }
                             }
 
-                            
-
-                            DexLabel {
-                                
+                            DexLabel
+                            {
                                 text: percent_main_currency + " %"
-
                                 Layout.alignment: Qt.AlignVCenter
-                                
                                 Component.onCompleted: font.family = 'lato'
                             }
                         }
                     }
-
                 }
             }
         }
-        
-        
-
-
-       
     }
 }
