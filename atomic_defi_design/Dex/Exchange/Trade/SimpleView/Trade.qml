@@ -134,7 +134,6 @@ ClipRRect // Trade Card
 
         width: parent.width
         spacing: 20
-
         Column // Header
         {
             id: _swapCardHeader
@@ -703,21 +702,32 @@ ClipRRect // Trade Card
                     {
                         var left_ticker = Constants.API.app.trading_pg.market_pairs_mdl.left_selected_coin
                         var right_ticker = Constants.API.app.trading_pg.market_pairs_mdl.right_selected_coin
+                        var right_parent = Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)
+                        var left_parent = Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)
+                        var last_trading_error = Constants.API.app.trading_pg.last_trading_error
+                        var fees_error = Constants.API.app.trading_pg.fees.error
+
                         if (_fromValue.text === "" || parseFloat(_fromValue.text) === 0)
                             return qsTr("Entered amount must be superior than 0.")
                         if (typeof selectedOrder === 'undefined')
                             return qsTr("You must select an order.")
-                        if (Constants.API.app.trading_pg.last_trading_error == TradingError.VolumeIsLowerThanTheMinimum)
+                        if (last_trading_error == TradingError.VolumeIsLowerThanTheMinimum)
                             return qsTr("Entered amount is below the minimum required by this order: %1").arg(selectedOrder.base_min_volume)
-                        if (Constants.API.app.trading_pg.last_trading_error == TradingError.LeftParentChainNotEnabled)
+                        if (last_trading_error == TradingError.LeftParentChainNotEnabled)
                             return qsTr("%1 needs to be enabled in order to use %2").arg(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
-                        if (Constants.API.app.trading_pg.last_trading_error == TradingError.LeftParentChainNotEnoughBalance)
-                            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
-                        if (Constants.API.app.trading_pg.last_trading_error == TradingError.RightParentChainNotEnabled)
+                        if (last_trading_error == TradingError.LeftParentChainNotEnoughBalance)
+                            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(left_parent).arg(left_ticker)
+                        if (last_trading_error == TradingError.RightParentChainNotEnabled)
                             return qsTr("%1 needs to be enabled in order to use %2").arg(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
-                        if (Constants.API.app.trading_pg.last_trading_error == TradingError.RightParentChainNotEnoughBalance)
-                            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
-
+                        if (last_trading_error == TradingError.RightParentChainNotEnoughBalance)
+                            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(right_parent).arg(right_ticker)
+                        if (fees_error) {
+                            let coin = right_ticker
+                            if (fees_error.search(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)) > -1) {
+                                coin = left_ticker
+                            }
+                            return qsTr("%1 balance does not have enough funds to pay the gas of %2 transactions").arg(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(coin)).arg(coin)
+                        }
                         return ""
                     }
 
@@ -920,10 +930,11 @@ ClipRRect // Trade Card
 
             enabled: !_swapAlert.visible
             visible: _tradeCard.selectedOrder !== undefined
-                    & parseFloat(_fromValue.text) > 0
-                    & !bestOrderSimplified.visible
-                    & !coinSelectorSimplified.visible
-                    & parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+                    && parseFloat(_fromValue.text) > 0
+                    && !bestOrderSimplified.visible
+                    && !coinSelectorSimplified.visible
+                    && parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+                    && !_swapAlert.visible
 
             DexRectangle {
                 radius: 25
@@ -944,7 +955,9 @@ ClipRRect // Trade Card
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                visible: !Constants.API.app.trading_pg.preimage_rpc_busy
+                visible: {
+                    return !Constants.API.app.trading_pg.preimage_rpc_busy
+                }
                 enabled: parent.enabled
                 model: Constants.API.app.trading_pg.fees.total_fees
                 delegate: RowLayout
@@ -968,6 +981,7 @@ ClipRRect // Trade Card
                                 .arg(parseFloat(modelData.required_balance).toFixed(8) / 1)
                                 .arg(Constants.General.getFiatText(modelData.required_balance, modelData.coin, false))
                         font.pixelSize: Constants.Style.textSizeSmall3
+                            
                     }
                 }
             }
