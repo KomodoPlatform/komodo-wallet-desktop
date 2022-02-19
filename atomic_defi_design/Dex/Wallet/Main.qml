@@ -344,26 +344,11 @@ Item
                             {
                                 id: contract_address
                                 text_value: General.coinContractAddress(api_wallet_page.ticker)
-                                Layout.preferredWidth: contract_title_row_layout.width - 2 * headerTextFont
+                                Layout.preferredWidth: contract_title_row_layout.width - headerTextFont
                                 font: DexTypo.monoSpace
                                 color: headerTextColor
                                 elide: Text.ElideMiddle
                                 wrapMode: Text.NoWrap
-                            }
-                            Qaterial.Icon {
-                                size: headerTextFont
-                                icon: Qaterial.Icons.contentCopy
-                                color: contract_copyArea.containsMouse ? headerTextColor : headerTitleColor
-                                DexMouseArea {
-                                    id: contract_copyArea
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                    onClicked: {
-                                        API.qt_utilities.copy_text_to_clipboard(General.coinContractAddress(api_wallet_page.ticker), "")
-                                        app.notifyCopy(qsTr("Contract address"), qsTr("copied to clipboard"))
-                                        Qt.openUrlExternally(link)
-                                    }
-                                }
                             }
                             Qaterial.Icon {
                                 size: headerTextFont
