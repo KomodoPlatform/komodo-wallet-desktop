@@ -98,6 +98,7 @@ Item
                     }
 
                     Item { Layout.fillWidth: true }
+
                     // Ticker and crypto / fiat amount
                     ColumnLayout
                     {
@@ -125,13 +126,14 @@ Item
                     }
 
                     Item { Layout.fillWidth: true }
+
                     VerticalLine
                     {
                         Layout.alignment: Qt.AlignHCenter
                         Layout.rightMargin: 0
                         Layout.preferredHeight: parent.height * 0.6
-                        color: Style.colorThemeDarkLight
                     }
+
                     Item { Layout.fillWidth: true }
 
                     ColumnLayout {
@@ -249,6 +251,7 @@ Item
 
                         DexLabel
                         {
+                            id: change_24hr_value
                             Layout.alignment: Qt.AlignHCenter
                             text_value:
                             {
@@ -256,7 +259,7 @@ Item
                                 return v === 0 ? 'N/A' : General.formatPercent(v)
                             }
                             font.pixelSize: headerTextFont
-                            color: DexTheme.getValueColor(current_ticker_infos.change_24h)
+                            color: change_24hr_value.text_value == "N/A" ? headerTextColor : DexTheme.getValueColor(current_ticker_infos.change_24h)
                         }
                     }
 
@@ -292,18 +295,16 @@ Item
                         }
                     }
 
-                    Item {
-                        Layout.fillWidth: true
-                        visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
-                    }
+                    Item { Layout.fillWidth: true }
+
                     VerticalLine
                     {
                         Layout.alignment: Qt.AlignHCenter
                         Layout.rightMargin: 0
                         Layout.preferredHeight: parent.height * 0.6
-                        color: Style.colorThemeDarkLight
                         visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
                     }
+
                     Item {
                         Layout.fillWidth: true
                         visible: General.coinContractAddress(api_wallet_page.ticker) !== ""
