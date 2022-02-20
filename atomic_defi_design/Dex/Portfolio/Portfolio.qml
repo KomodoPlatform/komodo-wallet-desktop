@@ -163,14 +163,26 @@ Item {
         contentHeight: _column.height
         clip: true
 
+
         Column {
             id: _column
             topPadding: 0
             width: parent.width
             spacing: 20
 
+            Connections
+            {
+                target: Constants.API.app.portfolio_pg.portfolio_mdl
+
+                function onLengthChanged()
+                {
+                    pie_container.visible = Constants.API.app.portfolio_pg.portfolio_mdl.pie_chart_proxy_mdl.rowCount() > 1       
+                }
+            }
+
             Item {
-                visible: API.app.portfolio_pg.balance_fiat_all > 0
+                id: pie_container
+                visible: Constants.API.app.portfolio_pg.portfolio_mdl.pie_chart_proxy_mdl.rowCount() > 1
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 220
