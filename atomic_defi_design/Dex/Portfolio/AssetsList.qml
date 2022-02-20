@@ -24,7 +24,7 @@ Dex.DefaultListView
     property real _assetProviderColumnWidth: 42
 
     width: _assetNameColumnWidth + _assetNameColumnLeftMargin + _assetBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
-    height: (count * _assetRowHeight) + 30
+    height: (count * _assetRowHeight) + 46
 
     // Header
     header: RowLayout

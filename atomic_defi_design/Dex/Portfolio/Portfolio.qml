@@ -176,7 +176,7 @@ Item {
 
                 function onLengthChanged()
                 {
-                    pie_container.visible = Constants.API.app.portfolio_pg.portfolio_mdl.pie_chart_proxy_mdl.rowCount() > 1       
+                    pie_container.visible = Constants.API.app.portfolio_pg.portfolio_mdl.pie_chart_proxy_mdl.rowCount() > 1
                 }
             }
 
