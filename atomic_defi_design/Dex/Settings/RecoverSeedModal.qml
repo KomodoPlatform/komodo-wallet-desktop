@@ -70,6 +70,7 @@ BasicModal
                 Layout.fillWidth: true
                 field.onAccepted: tryViewSeed()
                 background.color: Dex.CurrentTheme.floatingBackgroundColor
+                forceFocus: true
 
                 leftIconColor: Dex.CurrentTheme.foregroundColor
                 hideFieldButton.icon.color: Dex.CurrentTheme.foregroundColor

@@ -161,7 +161,7 @@ Item {
                             Layout.preferredHeight: 42
 
                             textField.placeholderText: qsTr("Search asset")
-
+                            forceFocus: true
                             textField.font.pixelSize: Constants.Style.textSizeSmall3
                             textField.onTextChanged: portfolio_coins.setFilterFixedString(textField.text)
                             Component.onDestruction: portfolio_coins.setFilterFixedString("")

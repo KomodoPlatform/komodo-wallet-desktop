@@ -76,6 +76,7 @@ SetupPage
             height: 50
             width: 300
             background.color: Dex.CurrentTheme.floatingBackgroundColor
+            forceFocus: true
             field.onAccepted:
             {
                 if (_keyChecker.isValid())
