@@ -164,18 +164,31 @@ Item
 
     TradeViewHeader
     {
+        id: header
         width: 138
         anchors.left: parent.left
         anchors.leftMargin: 50
         anchors.top: parent.top
     }
 
-    Loader
+    ProView
     {
-        id: _viewLoader
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        anchors.top: header.bottom
+        anchors.topMargin: 30
+        width: parent.width - anchors.leftMargin - anchors.rightMargin
+        height: parent.height - header.height - anchors.topMargin
+        visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
+        enabled: visible
+    }
+
+    SimpleView.Main
+    {
         anchors.fill: parent
-        anchors.topMargin: 70
-        anchors.leftMargin: 50
-        source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView/Main.qml"
+        visible: API.app.trading_pg.current_trading_mode == TradingMode.Simple
+        enabled: false
     }
 }
