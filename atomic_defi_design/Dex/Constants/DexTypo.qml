@@ -103,4 +103,10 @@ QtObject {
         family: fontFamily,
         weight: Font.Normal
     })
+    property font monoSpace: Qt.font({
+        pixelSize: 14 * fontDensity,
+        letterSpacing: 0,
+        family: "Courier",
+        weight: Font.Normal
+    })
 }
