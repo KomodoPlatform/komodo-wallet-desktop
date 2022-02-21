@@ -83,6 +83,8 @@ ColumnLayout
         id: bg
         Layout.fillHeight: true
         Layout.fillWidth: true
+        Layout.leftMargin: 20
+        Layout.rightMargin: 20
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
         gradient: DexTheme.portfolioPieGradient ? gd : undefined
 
@@ -235,7 +237,7 @@ ColumnLayout
 
                 Item
                 {
-                    height: 220
+                    height: 210
                     width: parent.width
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
@@ -259,8 +261,9 @@ ColumnLayout
                             id: rootItem
                             property color itemColor: Style.getCoinColor(ticker)
                             width: _pieColumn.width
-                            height: 40
-                            spacing: 10
+                            height: 42
+                            spacing: 5
+
 
                             DexLabel
                             {
@@ -271,10 +274,12 @@ ColumnLayout
                                 Component.onCompleted: font.weight = Font.Bold
                             }
 
+                            // Progress bar
                             Item
                             {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.fillWidth: true
+                                Layout.rightMargin: 10
                                 height: 5
 
                                 Rectangle
@@ -296,6 +301,7 @@ ColumnLayout
 
                             DexLabel
                             {
+                                Layout.preferredWidth: 60
                                 text: percent_main_currency + " %"
                                 Layout.alignment: Qt.AlignVCenter
                                 Component.onCompleted: font.family = 'lato'
