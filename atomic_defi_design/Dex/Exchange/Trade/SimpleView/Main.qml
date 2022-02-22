@@ -37,7 +37,7 @@ Item
     Column
     {
         width: root.currentSubPage === subPages.Trade ? _simpleTrade.best ? 600 : 450 : 450
-        y: 120
+        y: 80
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -45,7 +45,7 @@ Item
         {
             anchors.horizontalCenter: parent.horizontalCenter
             width: _selectedTabMarker.width * 3
-            height: 47
+            height: 30
 
             Rectangle // Selected Tab Rectangle
             {
@@ -72,7 +72,7 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 height: parent.height
                 width: 108
-                radius: 18
+                radius: 15
                 color: Dex.CurrentTheme.tabSelectedColor
 
                 Behavior on x { NumberAnimation { duration: 150 } }

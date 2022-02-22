@@ -56,7 +56,7 @@ BasicModal
             text_value: reasonMsg !== "" ? qsTr("Restarting the application. %1").arg(reasonMsg) : qsTr("Restarting the application...")
         }
 
-        DexBusyIndicator { Layout.alignment: Qt.AlignHCenter }
+        DefaultBusyIndicator { Layout.alignment: Qt.AlignHCenter }
 
         DexLabel
         {

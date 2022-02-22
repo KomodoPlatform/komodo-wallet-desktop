@@ -8,7 +8,7 @@ BusyIndicator {
     id: control
 
     Universal.theme: Style.dark_theme ? Universal.Dark : Universal.Light
-    Universal.accent: DexTheme.greenColor
+    Universal.accent: DexTheme.colorBusyIndicator
     Universal.foreground: Style.colorQtThemeForeground
     Universal.background: Style.colorQtThemeBackground
 

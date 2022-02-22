@@ -220,7 +220,7 @@ InnerBackground {
             color: DexTheme.dexBoxBackgroundColor
             visible: portfolio_asset_chart.isProgress
             radius: parent.radius
-            DexBusyIndicator {
+            DefaultBusyIndicator {
                 anchors.centerIn: parent
                 running: visible
                 visible: portfolio_asset_chart.isProgress && parseFloat(API.app.portfolio_pg.balance_fiat_all)>0

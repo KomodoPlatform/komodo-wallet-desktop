@@ -412,7 +412,6 @@
         <file>Dex/Components/DexAppPasswordField.qml</file>
         <file>Dex/Components/DexBox.qml</file>
         <file>Dex/Components/DexBoxManager.qml</file>
-        <file>Dex/Components/DexBusyIndicator.qml</file>
         <file>Dex/Components/DexButton.qml</file>
         <file>Dex/Components/DexCheckBox.qml</file>
         <file>Dex/Components/DexCheckEye.qml</file>
