@@ -111,12 +111,9 @@ GridLayout
     ColumnLayout
     {
         Layout.columnSpan: 6
-        Layout.rowSpan: 5
+        Layout.rowSpan: 4
 
         Layout.fillWidth: true
-
-        Layout.minimumHeight: 200
-        Layout.maximumHeight: 400
         Layout.fillHeight: true
 
         spacing: 10
@@ -129,17 +126,6 @@ GridLayout
 
             Layout.fillWidth: true
             Layout.fillHeight: true
-
-            Component.onCompleted:
-            {
-                dashboard.webEngineView.parent = chartView;
-                dashboard.webEngineView.anchors.fill = chartView;
-            }
-            Component.onDestruction:
-            {
-                dashboard.webEngineView.visible = false;
-                dashboard.webEngineView.stop();
-            }
         }
     }
 
@@ -162,14 +148,12 @@ GridLayout
     ColumnLayout
     {
         Layout.columnSpan: 6
-        Layout.rowSpan: 6
+        Layout.rowSpan: 7
 
         Layout.fillWidth: true
-
-        Layout.minimumHeight: 350
         Layout.fillHeight: true
 
-        spacing: 14
+        spacing: 10
 
         DefaultText { font: DexTypo.subtitle1; text: qsTr("Trading Information") }
 
@@ -182,36 +166,31 @@ GridLayout
 
             Material.foreground: Dex.CurrentTheme.foregroundColor
             background: null
+            Layout.leftMargin: 6
 
             Qaterial.LatoTabButton
             {
-                width: 150
                 text: qsTr("Exchange Rates")
                 font.pixelSize: 14
                 textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
                 indicatorColor: Dex.CurrentTheme.foregroundColor
                 textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-                opacity: checked ? 1 : .6
             }
             Qaterial.LatoTabButton
             {
-                width: 120
                 text: qsTr("Orders")
                 font.pixelSize: 14
                 textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
                 textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                 indicatorColor: Dex.CurrentTheme.foregroundColor
-                opacity: checked ? 1 : .6
             }
             Qaterial.LatoTabButton
             {
-                width: 120
                 text: qsTr("History")
                 font.pixelSize: 14
                 textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
                 textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                 indicatorColor: Dex.CurrentTheme.foregroundColor
-                opacity: checked ? 1 : .6
             }
         }
 
@@ -252,12 +231,11 @@ GridLayout
     OrderBook.Vertical
     {
         Layout.columnSpan: 4
-        Layout.rowSpan: 6
+        Layout.rowSpan: 7
 
         Layout.minimumWidth: 340
         Layout.fillWidth: true
 
-        Layout.minimumHeight: 365
         Layout.maximumHeight: 536
         Layout.fillHeight: true
     }
@@ -266,12 +244,11 @@ GridLayout
     BestOrder.List
     {
         Layout.columnSpan: 4
-        Layout.rowSpan: 4
+        Layout.rowSpan: 5
 
         Layout.minimumWidth: 340
         Layout.fillWidth: true
 
-        Layout.minimumHeight: 196
         Layout.fillHeight: true
     }
 
@@ -279,14 +256,14 @@ GridLayout
     Rectangle
     {
         Layout.columnSpan: 2
-        Layout.rowSpan: 12
+        Layout.rowSpan: 8
 
         Layout.minimumWidth: 280
         Layout.maximumWidth: 315
         Layout.fillWidth: true
 
         Layout.minimumHeight: 589
-        Layout.maximumHeight: 610
+        Layout.fillHeight: true
 
         radius: 10
         color: Dex.CurrentTheme.floatingBackgroundColor
@@ -317,7 +294,8 @@ GridLayout
                 Layout.alignment: Qt.AlignHCenter
                 Layout.minimumHeight: 40
                 Layout.maximumHeight: 48
-                Layout.preferredWidth: parent.width
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
                 MarketModeSelector
                 {
@@ -424,6 +402,7 @@ GridLayout
                                     curr_fee_info,
                                     base_ticker,
                                     rel_ticker, left_ticker, right_ticker)
+                    elide: Text.ElideRight
                 }
             }
         }
