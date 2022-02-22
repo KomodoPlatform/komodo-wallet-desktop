@@ -748,6 +748,44 @@ Item
             }
         }
 
+        // Transactions or loading
+        Item {
+            id: loading_tx
+            visible: current_ticker_infos.tx_state === "InProgress"
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            implicitHeight: 100
+
+            ColumnLayout {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                DexLabel {
+                    text_value: qsTr("Loading")
+                    Layout.alignment: Qt.AlignHCenter
+                    font.pixelSize: Style.textSize2
+                }
+
+                DefaultBusyIndicator {
+                    Layout.alignment: Qt.AlignHCenter
+                }
+
+                DexLabel {
+                    text_value: General.isTokenType(current_ticker_infos.type) ?
+                                (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
+                                (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
+
+                    Layout.alignment: Qt.AlignHCenter
+                }
+            }
+        }
+
+        // Separator line
+        HorizontalLine {
+            visible: loading_tx.visible && transactions_mdl.length > 0
+            width: 720
+            Layout.alignment: Qt.AlignHCenter
+        }
+
         Rectangle {
             id: transactions_bg
             Layout.fillWidth: true
