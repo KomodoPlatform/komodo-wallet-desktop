@@ -40,21 +40,13 @@ ThemeData
 
     function hasDarkAndLightMode() { return hasColorMode(CurrentTheme.ColorMode.Light) && hasColorMode(CurrentTheme.ColorMode.Dark); }
 
-    function toggleMode(color) {
-        if (color == 'Dark') {
-            return 'Light'
-        }
-        return 'Dark'
-    }
-
     function switchColorMode()
     {
         let colorMode = getColorMode();
         let current = _themeName
-        let current_label = current.replace(" - Light", "").replace(" - Dark", "")
-        let current_mode = current.replace(" - ", "").replace(current_label, "")
-        current = current_label + " - " + toggleMode(current_mode)
-        console.log("Theme changed to: " + current);
+        let currentLabel = current.replace(" - Light", "").replace(" - Dark", "")
+        let currentMode = current.replace(" - ", "").replace(currentLabel, "")
+        current = currentLabel + " - " + (currentMode === "Dark" ? "Light" : "Dark");
         loadFromFilesystem(current);
         return current
     }
