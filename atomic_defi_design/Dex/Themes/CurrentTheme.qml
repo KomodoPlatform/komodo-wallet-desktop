@@ -43,21 +43,12 @@ ThemeData
     function switchColorMode()
     {
         let colorMode = getColorMode();
-        let colorModeStr = _themeName;
-
-        console.log(colorMode);
-        console.log(colorModeStr);
-        if (colorMode === CurrentTheme.ColorMode.Light)
-        {
-            colorModeStr = colorModeStr.replace(" - Light", " - Dark");
-        }
-        else if (colorMode === CurrentTheme.ColorMode.Dark)
-        {
-            colorModeStr = colorModeStr.replace(" - Dark", " - Light");
-        }
-        else return;
-        console.log(colorModeStr);
-        loadFromFilesystem(colorModeStr);
+        let current = _themeName
+        let currentLabel = current.replace(" - Light", "").replace(" - Dark", "")
+        let currentMode = current.replace(" - ", "").replace(currentLabel, "")
+        current = currentLabel + " - " + (currentMode === "Dark" ? "Light" : "Dark");
+        loadFromFilesystem(current);
+        return current
     }
 
     function loadFromFilesystem(themeName)
