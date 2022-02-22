@@ -158,6 +158,7 @@ ThemeData
         textSelectedColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textSelectedColor || defaultTheme.textSelectedColor);
 
         textFieldBackgroundColor            = Dex.Color.argbStrFromRgbaStr(themeData.textFieldBackgroundColor || defaultTheme.textFieldBackgroundColor);
+        textFieldActiveBackgroundColor      = Dex.Color.argbStrFromRgbaStr(themeData.textFieldActiveBackgroundColor || defaultTheme.textFieldActiveBackgroundColor);
         textFieldPrefixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldPrefixColor || defaultTheme.textFieldPrefixColor);
         textFieldSuffixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldSuffixColor || defaultTheme.textFieldSuffixColor);
 
@@ -173,11 +174,15 @@ ThemeData
         rangeSliderIndicatorBackgroundStartColor    = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderIndicatorBackgroundStartColor || defaultTheme.rangeSliderIndicatorBackgroundStartColor);
         rangeSliderIndicatorBackgroundEndColor      = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderIndicatorBackgroundEndColor || defaultTheme.rangeSliderIndicatorBackgroundEndColor);
 
+        loginWalletIconColorStart                   = Dex.Color.argbStrFromRgbaStr(themeData.loginWalletIconColorStart || defaultTheme.loginWalletIconColorStart)
+        loginWalletIconColorEnd                     = Dex.Color.argbStrFromRgbaStr(themeData.loginWalletIconColorEnd || defaultTheme.loginWalletIconColorEnd)
+
         sidebarBgColor                      = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgColor || defaultTheme.sidebarBgColor);
         sidebarVersionTextColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarVersionTextColor || defaultTheme.sidebarVersionTextColor);
         sidebarCursorStartColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarCursorStartColor || defaultTheme.sidebarCursorStartColor);
         sidebarCursorEndColor               = Dex.Color.argbStrFromRgbaStr(themeData.sidebarCursorEndColor || defaultTheme.sidebarCursorEndColor);
         sidebarLineTextHovered              = Dex.Color.argbStrFromRgbaStr(themeData.sidebarLineTextHovered || defaultTheme.sidebarLineTextHovered);
+        sidebarLineTextSelected             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarLineTextSelected || defaultTheme.sidebarLineTextSelected);
 
         tradeBuyModeSelectorBackgroundColorStart            = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorStart || defaultTheme.tradeBuyModeSelectorBackgroundColorStart);
         tradeBuyModeSelectorBackgroundColorEnd              = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorEnd || defaultTheme.tradeBuyModeSelectorBackgroundColorEnd);
@@ -265,6 +270,7 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.textPlaceholderColor : %1".arg(textPlaceholderColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textSelectedColor : %1".arg(textSelectedColor));
 
+        console.info("Dex.Themes.CurrentTheme.printValues.textFieldActiveBackgroundColor : %1".arg(textFieldActiveBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldBackgroundColor : %1".arg(textFieldBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldPrefixColor : %1".arg(textFieldPrefixColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldSuffixColor : %1".arg(textFieldSuffixColor));
@@ -281,11 +287,15 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderIndicatorBackgroundStartColor : %1".arg(rangeSliderIndicatorBackgroundStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderIndicatorBackgroundEndColor : %1".arg(rangeSliderIndicatorBackgroundEndColor));
 
+        console.info("Dex.Themes.CurrentTheme.printValues.loginWalletIconColorStart : %1".arg(loginWalletIconColorStart));
+        console.info("Dex.Themes.CurrentTheme.printValues.loginWalletIconColorEnd : %1".arg(loginWalletIconColorEnd));
+
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarBgColor : %1".arg(sidebarBgColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarVersionTextColor : %1".arg(sidebarVersionTextColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarCursorStartColor : %1".arg(sidebarCursorStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarCursorEndColor : %1".arg(sidebarCursorEndColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarLineTextHovered : %1".arg(sidebarLineTextHovered));
+        console.info("Dex.Themes.CurrentTheme.printValues.sidebarLineTextSelected : %1".arg(sidebarLineTextSelected));
 
         console.info("Dex.Themes.CurrentTheme.printValues.tradeBuyModeSelectorBackgroundColorStart : %1".arg(tradeBuyModeSelectorBackgroundColorStart));
         console.info("Dex.Themes.CurrentTheme.printValues.tradeBuyModeSelectorBackgroundColorEnd : %1".arg(tradeBuyModeSelectorBackgroundColorEnd));

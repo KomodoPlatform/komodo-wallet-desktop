@@ -43,7 +43,12 @@
   "textSelectionColor": "#14bca6",
   "textPlaceholderColor": "#8B6900",
   "textSelectedColor": "#0e1021",
+
   "textFieldBackgroundColor": "#0e0e0e",
+  "textFieldActiveBackgroundColor": "#0c0c0c",
+  "textFieldPrefixColor": "#8790B2FF",
+  "textFieldSuffixColor": "#456078FF#",
+
 
   "chartTradingLineBackgroundColor": "#24283d",
   "chartTradingLineColor": "#74fbee",

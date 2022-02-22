@@ -62,6 +62,7 @@
     "textSelectedColor": "#0e1021",
 
     "textFieldBackgroundColor": "#313555FF",
+    "textFieldActiveBackgroundColor": "#313555CC",
     "textFieldPrefixColor": "#8790B2FF",
     "textFieldSuffixColor": "#456078FF#",
 
@@ -77,11 +78,15 @@
     "rangeSliderIndicatorBackgroundStartColor": "#5A68E6FF",
     "rangeSliderIndicatorBackgroundEndColor": "#4986EAFF",
 
+    "loginWalletIconColorStart": "#5A68E6FF",
+    "loginWalletIconColorEnd": "#4986EAAD",
+
     "sidebarBgColor": "#202337",
     "sidebarVersionTextColor": "#2F5688",
     "sidebarCursorStartColor": "#31B1F0",
     "sidebarCursorEndColor": "#5B69E600",
     "sidebarLineTextHovered": "#2C87B9",
+    "sidebarLineTextSelected": "#FFFFFFFF",
 
     "tradeBuyModeSelectorBackgroundColorStart": "#6A4DE3FF",
     "tradeBuyModeSelectorBackgroundColorEnd": "#2279F1FF",

@@ -20,7 +20,10 @@ QtObject {
     function coinIcon(ticker) {
         if(ticker === "" || ticker === "All" || ticker===undefined) {
             return ""
-        }else {
+        } else {
+            if (['THC-BEP20'].indexOf(ticker) >= 0) {
+                return coin_icons_path + ticker.toString().toLowerCase().replace('-', '_') + ".png"
+            }
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + atomic_qt_utilities.retrieve_main_ticker(ticker.toString()).toLowerCase() + ".png"
         }
@@ -29,9 +32,73 @@ QtObject {
     function coinName(ticker) {
         if(ticker === "" || ticker === "All" || ticker===undefined) {
             return ""
-        }else {
+        } else {
             const name = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).name
             return name
+        }
+    }
+
+    function coinContractAddress(ticker) {
+        var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
+        if (cfg.hasOwnProperty('protocol')) {
+            if (cfg.protocol.hasOwnProperty('protocol_data')) {
+                if (cfg.protocol.protocol_data.hasOwnProperty('contract_address')) {
+                    return cfg.protocol.protocol_data.contract_address
+                }
+            }
+        }
+        return ""
+    }
+
+    function coinPlatform(ticker) {
+        var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
+        if (cfg.hasOwnProperty('protocol')) {
+            if (cfg.protocol.hasOwnProperty('protocol_data')) {
+                if (cfg.protocol.protocol_data.hasOwnProperty('platform')) {
+                    return cfg.protocol.protocol_data.platform
+                }
+            }
+        }
+        return ""
+    }
+
+    function platformIcon(ticker) {
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        } else {
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+            return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path)
+                + atomic_qt_utilities.retrieve_main_ticker(ticker.toString()).toLowerCase() + ".png"
+        }
+    }
+
+    function contractURL(ticker) {
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        } else {
+            let token_platform = coinPlatform(ticker)
+            switch(token_platform) {
+                case "BNB":
+                    return "https://bscscan.com/token/" + coinContractAddress(ticker)
+                case "FTM":
+                    return "https://ftmscan.com/token/" + coinContractAddress(ticker)
+                case "HT":
+                    return "https://hecoinfo.com/token/" + coinContractAddress(ticker)
+                case "MATIC":
+                    return "https://polygonscan.com/token/" + coinContractAddress(ticker)
+                case "AVAX":
+                    return "https://avascan.info/blockchain/c/address/" + coinContractAddress(ticker)
+                case "KCS":
+                    return "https://explorer.kcc.io/en/token/" + coinContractAddress(ticker)
+                case "ETH":
+                    return "https://etherscan.io/token/" + coinContractAddress(ticker)
+                case "ONE":
+                    return "https://explorer.harmony.one/address/" + coinContractAddress(ticker)
+                case "MOVR":
+                    return "https://moonriver.moonscan.io/token/" + coinContractAddress(ticker)
+                default:
+                    return ""
+            }
         }
     }
 
@@ -151,6 +218,34 @@ QtObject {
         if(text === "") text += qsTr("-")
 
         return text
+    }
+
+    function logObject(obj) {
+        for (var key in obj) {
+            console.log(key + ": " + obj[key]);
+        }
+    }
+
+    function getFeesDetail(fees) {
+        return [
+            {"label": qsTr("<b>Taker tx fee:</b> "), "fee": fees.base_transaction_fees, "ticker": fees.base_transaction_fees_ticker},
+            {"label": qsTr("<b>Dex tx fee:</b> "), "fee": fees.fee_to_send_taker_fee, "ticker": fees.fee_to_send_taker_fee_ticker},
+            {"label": qsTr("<b>Dex fee:</b> "), "fee": fees.trading_fee, "ticker": fees.trading_fee_ticker},
+            {"label": qsTr("<b>Maker tx fee:</b> "), "fee": fees.rel_transaction_fees, "ticker": fees.rel_transaction_fees_ticker}
+        ]
+    }
+
+    function getFeesDetailText(feetype, amount, ticker) {
+        return qsTr("%1 %2 %3 (%4)"
+            ).arg(
+                feetype
+            ).arg(
+                formatDouble(amount, 8, false)
+            ).arg(
+                ticker
+            ).arg(
+                General.getFiatText(amount, ticker, false)
+            )
     }
 
     function absString(str) {
@@ -1023,6 +1118,8 @@ QtObject {
                                                 "DIA/UST": "BINANCE:DIAUSD",
                                                 "DIA/DAI": "BINANCE:DIAUSD",
                                                 "DIA/PAX": "BINANCE:DIAUSD",
+                                                "DIA/EURS": "COINBASE:DIAEUR",
+                                                "DIA/JEUR": "COINBASE:DIAEUR",
                                                 "DIA/BNB": "BINANCE:DIABNB",
                                                 "DODO/BTC": "BINANCE:DODOBTC",
                                                 "DODO/USDT": "BINANCE:DODOUSD",
@@ -1224,6 +1321,20 @@ QtObject {
                                                 "FIRO/UST": "BITTREX:FIROUSD",
                                                 "FIRO/DAI": "BITTREX:FIROUSD",
                                                 "FIRO/PAX": "BITTREX:FIROUSD",
+                                                "FLOW/BTC": "BINANCE:FLOWBTC",
+                                                "FLOW/ETH": "KRAKEN:FLOWETH",
+                                                "FLOW/USDT": "BINANCE:FLOWUSD",
+                                                "FLOW/BUSD": "BINANCE:FLOWUSD",
+                                                "FLOW/USDC": "BINANCE:FLOWUSD",
+                                                "FLOW/TUSD": "BINANCE:FLOWUSD",
+                                                "FLOW/HUSD": "BINANCE:FLOWUSD",
+                                                "FLOW/UST": "BINANCE:FLOWUSD",
+                                                "FLOW/DAI": "BINANCE:FLOWUSD",
+                                                "FLOW/PAX": "BINANCE:FLOWUSD",
+                                                "FLOW/EURS": "KRAKEN:FLOWEUR",
+                                                "FLOW/JEUR": "KRAKEN:FLOWEUR",
+                                                "FLOW/JGBP": "KRAKEN:FLOWGBP",
+                                                "FLOW/BNB": "BINANCE:FLOWBNB",
                                                 "FLUX/BTC": "KUCOIN:FLUXBTC",
                                                 "FLUX/USDT": "KUCOIN:FLUXUSDT",
                                                 "FLUX/BUSD": "KUCOIN:FLUXUSDT",
@@ -1264,6 +1375,21 @@ QtObject {
                                                 "FUN/UST": "BINANCE:FUNUSD",
                                                 "FUN/DAI": "BINANCE:FUNUSD",
                                                 "FUN/PAX": "BINANCE:FUNUSD",
+                                                "GALA/BTC": "BINANCE:GALABTC",
+                                                "GALA/ETH": "BINANCE:GALAETH",
+                                                "GALA/USDT": "BINANCE:GALAUSD",
+                                                "GALA/BUSD": "BINANCE:GALAUSD",
+                                                "GALA/USDC": "BINANCE:GALAUSD",
+                                                "GALA/TUSD": "BINANCE:GALAUSD",
+                                                "GALA/HUSD": "BINANCE:GALAUSD",
+                                                "GALA/UST": "BINANCE:GALAUSD",
+                                                "GALA/DAI": "BINANCE:GALAUSD",
+                                                "GALA/PAX": "BINANCE:GALAUSD",
+                                                "GALA/EURS": "BITSTAMP:GALAEUR",
+                                                "GALA/JEUR": "BITSTAMP:GALAEUR",
+                                                "GALA/TRYB": "BINANCE:GALATRY",
+                                                "GALA/BRZ": "BINANCE:GALABRL",
+                                                "GALA/BNB": "BINANCE:GALABNB",
                                                 "GLEEC/BTC": "BITTREX:GLEECBTC",
                                                 "GLEEC/USDT": "BITTREX:GLEECUSD",
                                                 "GLEEC/BUSD": "BITTREX:GLEECUSD",
@@ -1900,6 +2026,24 @@ QtObject {
                                                 "SNX/PAX": "BINANCE:SNXUSD",
                                                 "SNX/EURS": "KRAKEN:SNXEUR",
                                                 "SNX/JEUR": "KRAKEN:SNXEUR",
+                                                "SOL/BTC": "BINANCE:SOLBTC",
+                                                "SOL/ETH": "HUOBI:SOLETH",
+                                                "SOL/USDT": "FTX:SOLUSD",
+                                                "SOL/BUSD": "FTX:SOLUSD",
+                                                "SOL/USDC": "FTX:SOLUSD",
+                                                "SOL/TUSD": "FTX:SOLUSD",
+                                                "SOL/HUSD": "FTX:SOLUSD",
+                                                "SOL/UST": "FTX:SOLUSD",
+                                                "SOL/DAI": "FTX:SOLUSD",
+                                                "SOL/PAX": "FTX:SOLUSD",
+                                                "SOL/EURS": "BINANCE:SOLEUR",
+                                                "SOL/JEUR": "BINANCE:SOLEUR",
+                                                "SOL/JGBP": "COINBASE:SOLGBP",
+                                                "SOL/TRYB": "BINANCE:SOLTRY",
+                                                "SOL/BIDR": "BINANCE:SOLBIDR",
+                                                "SOL/BRZ": "BINANCE:SOLBRL",
+                                                "SOL/CADC": "EIGHTCAP:SOLCAD",
+                                                "SOL/BNB": "BINANCE:SOLBNB",
                                                 "SPC/BTC": "BITTREX:SPCBTC",
                                                 "SPC/ETH": "HITBTC:SPCETH",
                                                 "SPC/USDT": "HITBTC:SPCUSDT",
