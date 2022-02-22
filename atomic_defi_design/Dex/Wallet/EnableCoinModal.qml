@@ -136,9 +136,9 @@ BasicModal
                 }
 
                 RowLayout {
+                    anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.right
                     spacing:6
-                    Layout.alignment: Qt.AlignVCenter
 
                     // Icon
                     DefaultImage
