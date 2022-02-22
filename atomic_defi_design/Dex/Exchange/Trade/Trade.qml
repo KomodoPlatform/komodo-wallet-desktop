@@ -162,33 +162,34 @@ Item
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
-    TradeViewHeader
-    {
-        id: header
-        width: 138
-        anchors.left: parent.left
-        anchors.leftMargin: 50
-        anchors.top: parent.top
-    }
-
-    ProView
-    {
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 20
-        anchors.top: header.bottom
-        anchors.topMargin: 30
-        width: parent.width - anchors.leftMargin - anchors.rightMargin
-        height: parent.height - header.height - anchors.topMargin
-        visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
-        enabled: visible
-    }
-
-    SimpleView.Main
+    Column
     {
         anchors.fill: parent
-        visible: API.app.trading_pg.current_trading_mode == TradingMode.Simple
-        enabled: false
+        spacing: 20
+        anchors.leftMargin: 20
+        anchors.rightMargin: 20
+
+        TradeViewHeader
+        {
+            id: header
+            width: (parent.width / 100) * 10
+            height: parent.height * 0.06
+        }
+
+        ProView
+        {
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
+            height: parent.height * 0.90
+            visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
+            enabled: visible
+        }
+
+        SimpleView.Main
+        {
+            anchors.horizontalCenter: parent.horizontalCenter
+            visible: API.app.trading_pg.current_trading_mode == TradingMode.Simple
+            enabled: visible
+        }
     }
 }

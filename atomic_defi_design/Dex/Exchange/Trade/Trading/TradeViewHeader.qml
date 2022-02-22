@@ -19,9 +19,10 @@ Item
     // Simple/Pro select cursor
     Rectangle
     {
-        width: 86
-        height: 34
-        radius: 18
+        id: cursorRect
+        width: (parent.width / 100) * 48
+        height: _simpleLabel.height + 14
+        radius: 16
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? _simpleLabel.horizontalCenter : _proLabel.horizontalCenter
         color: Dex.CurrentTheme.tabSelectedColor
@@ -31,10 +32,10 @@ Item
     {
         id: _simpleLabel
         text: "Simple"
-        color: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+        color: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: 16
+        font.pixelSize: 14
         font.weight: Font.Bold
 
         DexMouseArea
@@ -50,10 +51,11 @@ Item
     {
         id: _proLabel
         text: "Pro"
-        color: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
-        anchors.right: parent.right
+        color: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+        anchors.left: _simpleLabel.right
+        anchors.leftMargin: 10 + cursorRect.width / 2
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: 16
+        font.pixelSize: 14
         font.weight: Font.Bold
 
         DexMouseArea
