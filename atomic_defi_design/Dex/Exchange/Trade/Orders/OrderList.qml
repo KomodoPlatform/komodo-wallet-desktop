@@ -50,7 +50,7 @@ Item
 
                 details: model
                 opacity: anim_time
-                width: root.width
+                width: root.width * 0.985
             }
 
             populate: Transition
