@@ -1,22 +1,22 @@
 # Default project values
-set(DEX_PROJECT_NAME "firodex-desktop")
-set(DEX_DISPLAY_NAME "FiroDEX Desktop")
-set(DEX_MAINTENANCE_TOOL_NAME "FiroDEX Maintenance Tool")
-set(DEX_COMPANY "firoorg")
+set(DEX_PROJECT_NAME "firodex")
+set(DEX_DISPLAY_NAME "Firo Dex")
+set(DEX_MAINTENANCE_TOOL_NAME "Firo Dex Maintenance Tool")
+set(DEX_COMPANY "Firo")
 set(DEX_WEBSITE "https://firo.org/")
-set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
+set(DEX_SUPPORT_PAGE "https://firo.org/guide/")
 set(DEX_DISCORD "https://discord.com/invite/TGZPRbRT3Y")
 set(DEX_TWITTER "https://twitter.com/firoorg")
 set(DEX_PRIMARY_COIN "FIRO")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
-set(DEX_SECOND_PRIMARY_COIN "BTC")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
+set(DEX_SECOND_PRIMARY_COIN "KMD")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" ON)
 set(DEX_REPOSITORY_OWNER ${DEX_COMPANY})
 set(DEX_REPOSITORY_NAME "FiroDEX-Desktop")
 set(DEX_CHECKSUM_API_URL "https://komodo.live/static/checksum.json")
 if (APPLE)
-    set(DEX_APPDATA_FOLDER "FiroDex Desktop")
+    set(DEX_APPDATA_FOLDER "firodex")
 else ()
-    set(DEX_APPDATA_FOLDER "firo_qt")
+    set(DEX_APPDATA_FOLDER "firodex")
 endif ()
 message(STATUS "APPDATA folder is ${DEX_APPDATA_FOLDER}")
 

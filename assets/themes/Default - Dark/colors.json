@@ -44,6 +44,13 @@
     "modalPageCounterGradientStartColor": "#BA2A45FF",
     "modalPageCounterGradientEndColor": "#BA2A45FF",
 
+    "notifPopupBackgroundColor": "#1F1E1EFF",
+    "notifPopupTextColor": "#FFFFFFFF",
+    "notifPopupTimerColor": "#BA2A45FF",
+    "notifPopupTimerBackgroundColor": "#93A3B11F",
+    "notifPopupIconStartColor": "#F14263FF",
+    "notifPopupIconEndColor": "#F48EA1FF",
+
     "scrollBarIndicatorColor": "#DBE0E4",
     "scrollBarBackgroundColor": "#93A3B11F",
 
@@ -70,15 +77,14 @@
     "rangeSliderIndicatorBackgroundStartColor": "#EE5C78FF",
     "rangeSliderIndicatorBackgroundEndColor": "#EE5C78FF",
 
-    "loginWalletIconColorStart": "#5A68E6FF",
-    "loginWalletIconColorEnd": "#4986EAAD",
-
-    "sidebarBgColor": "#202337",
-    "sidebarVersionTextColor": "#2F5688",
-    "sidebarCursorStartColor": "#31B1F0",
-    "sidebarCursorEndColor": "#5B69E600",
-    "sidebarLineTextHovered": "#2C87B9",
-    "sidebarLineTextSelected": "#FFFFFFFF",
+    "loginWalletIconColorStart": "#9B1C2E",
+    "loginWalletIconColorEnd": "#EE5C78",
+    "sidebarBgColor": "#161515FF",
+    "sidebarVersionTextColor": "#878787FF",
+    "sidebarCursorStartColor": "#BA2A45",
+    "sidebarCursorEndColor": "#BA2A4500",
+    "sidebarLineTextHovered": "#BA2A45",
+    "sidebarLineTextSelected": "#FFFFFF",
 
     "tradeBuyModeSelectorBackgroundColorStart": "#00C3AAFF",
     "tradeBuyModeSelectorBackgroundColorEnd": "#1FE7C3FF",

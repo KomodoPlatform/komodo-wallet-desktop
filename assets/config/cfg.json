@@ -80,6 +80,7 @@
   ],
   "possible_currencies": [
     "USD",
-    "BTC"
+    "BTC",
+    "KMD"
   ]
 }

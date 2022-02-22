@@ -11,9 +11,9 @@ on:
     - cron: '0 0 * * 1'
 
 env:
-  DEX_PROJECT_NAME: "firodex-desktop"
-  DEX_DISPLAY_NAME: "FiroDex Desktop"
-  DEX_COMPANY: "Firo Core Team"
+  DEX_PROJECT_NAME: "firodex"
+  DEX_DISPLAY_NAME: "Firo Dex"
+  DEX_COMPANY: "Firo"
   DEX_WEBSITE: "https://firo.org/"
 
 jobs:

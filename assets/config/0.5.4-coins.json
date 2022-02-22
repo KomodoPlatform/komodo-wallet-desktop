@@ -2824,7 +2824,7 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "FTC": {
