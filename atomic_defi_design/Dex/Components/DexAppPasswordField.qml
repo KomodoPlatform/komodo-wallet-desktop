@@ -32,7 +32,8 @@ DexAppTextField
     field.leftPadding: 75
     field.rightPadding: 60
     field.placeholderText: qsTr("Type password")
-    Component.onCompleted: {
+    Component.onCompleted:
+    {
         if (forceFocus) field.forceActiveFocus()
     }
 

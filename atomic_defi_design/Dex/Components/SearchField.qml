@@ -50,7 +50,8 @@ Rectangle
         placeholderText: qsTr("Search")
         placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
         font.pixelSize: 14
-        Component.onCompleted: {
+        Component.onCompleted:
+        {
             if (forceFocus) _textField.forceActiveFocus()
         }
     }
