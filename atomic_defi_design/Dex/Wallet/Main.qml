@@ -371,8 +371,7 @@ Item
             }
         }
 
-
-        // Address Book, Send, Receive buttons
+        // Buttons
         RowLayout
         {
             Layout.leftMargin: layout_margin
@@ -380,21 +379,27 @@ Item
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
+
+            Item { Layout.fillWidth: true }
+            Item { Layout.fillWidth: true }
+
             Item
             {
-                Layout.preferredWidth: 199
-                Layout.preferredHeight: 48
+                Layout.preferredWidth: 150
+                Layout.preferredHeight: 40
+
+                // Send Button
                 DexAppButton
                 {
                     enabled: API.app.wallet_pg.send_available
 
                     anchors.fill: parent
-                    radius: 18
+                    radius: 12
 
                     label.text: qsTr("Send")
                     label.font.pixelSize: 16
                     content.anchors.left: content.parent.left
-                    content.anchors.leftMargin: enabled ? 23 : 60
+                    content.anchors.leftMargin: enabled ? 23 : 48
 
                     onClicked:
                     {
@@ -412,6 +417,7 @@ Item
                     }
                 }
 
+                // Send button error icon
                 DefaultImage
                 {
                     visible: API.app.wallet_pg.send_availability_state !== ""
@@ -497,11 +503,14 @@ Item
                 sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker }
             }
 
+            Item { Layout.fillWidth: true }
+
+            // Receive Button
             DexAppButton
             {
-                Layout.preferredWidth: 199
-                Layout.preferredHeight: 48
-                radius: 18
+                Layout.preferredWidth: 150
+                Layout.preferredHeight: 40
+                radius: 12
 
                 label.text: qsTr("Receive")
                 label.font.pixelSize: 16
@@ -525,77 +534,134 @@ Item
                 sourceComponent: ReceiveModal {}
             }
 
-            DexAppButton
-            {
-                visible: !is_dex_banned
-
-                Layout.preferredWidth: 199
-                Layout.preferredHeight: 48
-                radius: 18
-
-                // Inner text.
-                label.text: qsTr("Swap")
-                label.font.pixelSize: 16
-                content.anchors.left: content.parent.left
-                content.anchors.leftMargin: 23
-
-                onClicked: onClickedSwap()
-
-                Row
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: arrow_send.anchors.rightMargin
-                    spacing: 2
-                    
-                    Arrow
-                    {
-                        up: true
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Arrow
-                    {
-                        up: false
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-            }
-
             Item { Layout.fillWidth: true }
 
-            DexAppButton
+            // Swap Button
+            Item
             {
-                text: qsTr("Rewards")
+                visible: !is_dex_banned
                 Layout.preferredWidth: 150
-                Layout.preferredHeight: 48
-                radius: 18
-                font.pixelSize: 16
-                visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
-                enabled: parseFloat(current_ticker_infos.balance) > 0
-                onClicked:
+                Layout.preferredHeight: 40
+
+                DexAppButton
                 {
-                    claimRewardsModal.open()
-                    claimRewardsModal.item.prepareClaimRewards()
+                    enabled: !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
+                    anchors.fill: parent
+                    radius: 12
+
+                    // Inner text.
+                    label.text: qsTr("Swap")
+                    label.font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
+
+                    onClicked: onClickedSwap()
+
+                    Row
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: arrow_send.anchors.rightMargin
+                        spacing: 2
+
+                        Arrow
+                        {
+                            up: true
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Arrow
+                        {
+                            up: false
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                }
+
+                // Send button error icon
+                DefaultImage
+                {
+                    visible: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: 14
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: Qaterial.Icons.alert
+
+                    DefaultColorOverlay
+                    {
+                        anchors.fill: parent
+                        source: parent
+                        color: "yellow"
+                    }
+                    MouseArea
+                    {
+                        id: swap_alert_mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
+
+                    DefaultTooltip
+                    {
+                        visible: swap_alert_mouse_area.containsMouse
+                        text: api_wallet_page.ticker + qsTr(" is wallet only")
+                    }
                 }
             }
 
-            ModalLoader
-            {
-                id: claimRewardsModal
-                sourceComponent: ClaimRewardsModal {}
+            Item {
+                Layout.fillWidth: true
+                visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
             }
 
-            DexAppButton
-            {
-                text: qsTr("Faucet")
+            // Rewards Button
+            Item {
                 Layout.preferredWidth: 150
-                Layout.preferredHeight: 48
-                radius: 18
-                font.pixelSize: 16
+                Layout.preferredHeight: 40
+                visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
+
+                Item { Layout.fillWidth: true }
+
+                DexAppButton
+                {
+                    text: qsTr("Rewards")
+                    radius: 12
+                    font.pixelSize: 16
+                    anchors.fill: parent
+                    enabled: parseFloat(current_ticker_infos.balance) > 0
+                    onClicked:
+                    {
+                        claimRewardsModal.open()
+                        claimRewardsModal.item.prepareClaimRewards()
+                    }
+                }
+
+                ModalLoader
+                {
+                    id: claimRewardsModal
+                    sourceComponent: ClaimRewardsModal {}
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+                visible: enabled && current_ticker_infos.is_smartchain_test_coin
+            }
+
+            // Faucet Button
+            Item {
+                Layout.preferredWidth: 150
+                Layout.preferredHeight: 40
                 visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
-                onClicked: api_wallet_page.claim_faucet()
+                DexAppButton
+                {
+                    text: qsTr("Faucet")
+                    radius: 12
+                    font.pixelSize: 16
+                    anchors.fill: parent
+                    onClicked: api_wallet_page.claim_faucet()
+                }
             }
 
             Component.onCompleted: api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
@@ -606,6 +672,9 @@ Item
                 id: claimFaucetResultModal
                 sourceComponent: ClaimFaucetResultModal {}
             }
+
+            Item { Layout.fillWidth: true }
+            Item { Layout.fillWidth: true }
         }
 
         // Price Graph
