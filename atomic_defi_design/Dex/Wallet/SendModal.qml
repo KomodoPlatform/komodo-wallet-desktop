@@ -442,6 +442,8 @@ MultipageModal
                 property string value: "0"
 
                 enabled: !(new BigNumber(current_ticker_infos.current_currency_ticker_price).isLessThanOrEqualTo(0))
+                visible: enabled
+
                 text:
                 {
                     if (!enabled)
@@ -485,6 +487,8 @@ MultipageModal
             Rectangle
             {
                 enabled: equivalentAmount.enabled
+                visible: equivalentAmount.visible
+
                 Layout.alignment: Qt.AlignRight
                 Layout.preferredWidth: cryptoFiatSwitchText.width + cryptoFiatSwitchIcon.width + 20
                 Layout.preferredHeight: 32
