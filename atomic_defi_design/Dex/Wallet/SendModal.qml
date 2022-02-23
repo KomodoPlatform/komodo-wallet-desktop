@@ -329,14 +329,16 @@ MultipageModal
         {
             visible: errorView && input_address.text !== ""
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
 
             DefaultText
             {
                 id: reason
 
                 Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
 
-                wrapMode: Label.Wrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 color: Dex.CurrentTheme.noColor
                 text_value: qsTr("The address has to be mixed case.")
             }
