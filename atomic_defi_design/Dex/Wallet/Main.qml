@@ -59,11 +59,12 @@ Item
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
 
-            RowLayout {
-
+            RowLayout
+            {
                 anchors.fill: parent
 
-                RowLayout {
+                RowLayout
+                {
                     Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     Layout.fillWidth: true
                     Layout.fillHeight: true
@@ -136,20 +137,24 @@ Item
 
                     Item { Layout.fillWidth: true }
 
-                    ColumnLayout {
+                    ColumnLayout
+                    {
                         visible: false //current_ticker_infos.segwit_supported
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         spacing: 2
-                        DexLabel {
+                        DexLabel
+                        {
                             text_value: qsTr("Segwit")
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: headerTitleFont
                             color: headerTitleColor
                         }
-                        DefaultSwitch {
+                        DefaultSwitch
+                        {
                             id: segwitSwitch
                             Layout.alignment: Qt.AlignVCenter
-                            onToggled: {
+                            onToggled:
+                            {
                                 if(parseFloat(current_ticker_infos.balance) > 0) {
                                      Qaterial.DialogManager.showDialog({
                                         title: qsTr("Confirmation"),
@@ -185,7 +190,6 @@ Item
                                     app.segwit_on = true
                                     API.app.wallet_pg.post_switch_address_mode(!current_ticker_infos.is_segwit_on)
                                 }
-
                             }
                         }
                     }
@@ -193,10 +197,8 @@ Item
                     Connections
                     {
                         target: API.app.wallet_pg
-                        function onTickerInfosChanged()
-                        {
-                            if (segwitSwitch.checked != current_ticker_infos.is_segwit_on)
-                            {
+                        function onTickerInfosChanged() {
+                            if (segwitSwitch.checked != current_ticker_infos.is_segwit_on) {
                                 segwitSwitch.checked = current_ticker_infos.is_segwit_on
                             }
                         }
@@ -380,13 +382,10 @@ Item
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
 
-            Item { Layout.fillWidth: true }
-            Item { Layout.fillWidth: true }
-
             Item
             {
-                Layout.preferredWidth: 150
-                Layout.preferredHeight: 40
+                Layout.preferredWidth: 180
+                Layout.preferredHeight: 48
 
                 // Send Button
                 DexAppButton
@@ -394,7 +393,7 @@ Item
                     enabled: API.app.wallet_pg.send_available
 
                     anchors.fill: parent
-                    radius: 12
+                    radius: 18
 
                     label.text: qsTr("Send")
                     label.font.pixelSize: 16
@@ -480,7 +479,8 @@ Item
                                     close()
                                 }
                             }
-                            DefaultButton {
+                            DefaultButton
+                            {
                                 Layout.fillWidth: true
                                 text: qsTr("No")
                                 onClicked: close()
@@ -503,14 +503,12 @@ Item
                 sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker }
             }
 
-            Item { Layout.fillWidth: true }
-
             // Receive Button
             DexAppButton
             {
-                Layout.preferredWidth: 150
-                Layout.preferredHeight: 40
-                radius: 12
+                Layout.preferredWidth: 180
+                Layout.preferredHeight: 48
+                radius: 18
 
                 label.text: qsTr("Receive")
                 label.font.pixelSize: 16
@@ -534,20 +532,18 @@ Item
                 sourceComponent: ReceiveModal {}
             }
 
-            Item { Layout.fillWidth: true }
-
             // Swap Button
             Item
             {
                 visible: !is_dex_banned
-                Layout.preferredWidth: 150
-                Layout.preferredHeight: 40
+                Layout.preferredWidth: 180
+                Layout.preferredHeight: 48
 
                 DexAppButton
                 {
                     enabled: !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
                     anchors.fill: parent
-                    radius: 12
+                    radius: 18
 
                     // Inner text.
                     label.text: qsTr("Swap")
@@ -609,15 +605,13 @@ Item
                 }
             }
 
-            Item {
-                Layout.fillWidth: true
-                visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
-            }
+            Item { Layout.fillWidth: true }
 
             // Rewards Button
-            Item {
-                Layout.preferredWidth: 150
-                Layout.preferredHeight: 40
+            Item
+            {
+                Layout.preferredWidth: 180
+                Layout.preferredHeight: 48
                 visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
 
                 Item { Layout.fillWidth: true }
@@ -625,7 +619,7 @@ Item
                 DexAppButton
                 {
                     text: qsTr("Rewards")
-                    radius: 12
+                    radius: 18
                     font.pixelSize: 16
                     anchors.fill: parent
                     enabled: parseFloat(current_ticker_infos.balance) > 0
@@ -643,21 +637,17 @@ Item
                 }
             }
 
-            Item {
-                Layout.fillWidth: true
-                visible: enabled && current_ticker_infos.is_smartchain_test_coin
-            }
-
             // Faucet Button
-            Item {
-                Layout.preferredWidth: 150
-                Layout.preferredHeight: 40
+            Item
+            {
+                Layout.preferredWidth: 180
+                Layout.preferredHeight: 48
                 visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
                 DexAppButton
                 {
                     text: qsTr("Faucet")
-                    radius: 12
+                    radius: 18
                     font.pixelSize: 16
                     anchors.fill: parent
                     onClicked: api_wallet_page.claim_faucet()
@@ -668,13 +658,11 @@ Item
             Component.onDestruction: api_wallet_page.claimingFaucetRpcDataChanged.disconnect(onClaimFaucetRpcResultChanged)
             function onClaimFaucetRpcResultChanged() { claimFaucetResultModal.open() }
 
-            ModalLoader {
+            ModalLoader
+            {
                 id: claimFaucetResultModal
                 sourceComponent: ClaimFaucetResultModal {}
             }
-
-            Item { Layout.fillWidth: true }
-            Item { Layout.fillWidth: true }
         }
 
         // Price Graph
@@ -818,27 +806,32 @@ Item
         }
 
         // Transactions or loading
-        Item {
+        Item
+        {
             id: loading_tx
             visible: current_ticker_infos.tx_state === "InProgress"
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             implicitHeight: 100
 
-            ColumnLayout {
+            ColumnLayout
+            {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                DexLabel {
+                DexLabel
+                {
                     text_value: qsTr("Loading")
                     Layout.alignment: Qt.AlignHCenter
                     font.pixelSize: Style.textSize2
                 }
 
-                DefaultBusyIndicator {
+                DefaultBusyIndicator
+                {
                     Layout.alignment: Qt.AlignHCenter
                 }
 
-                DexLabel {
+                DexLabel
+                {
                     text_value: General.isTokenType(current_ticker_infos.type) ?
                                 (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
                                 (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
@@ -849,13 +842,15 @@ Item
         }
 
         // Separator line
-        HorizontalLine {
+        HorizontalLine
+        {
             visible: loading_tx.visible && transactions_mdl.length > 0
             width: 720
             Layout.alignment: Qt.AlignHCenter
         }
 
-        Rectangle {
+        Rectangle
+        {
             id: transactions_bg
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -868,7 +863,8 @@ Item
             color: Dex.CurrentTheme.floatingBackgroundColor
             radius: 22
 
-            ClipRRect {
+            ClipRRect
+            {
                 radius: parent.radius
                 width: transactions_bg.width
                 height: transactions_bg.height
@@ -884,14 +880,16 @@ Item
                     }
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     anchors.centerIn: parent
                     visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
                     text_value: api_wallet_page.tx_fetching_busy ? (qsTr("Refreshing") + "...") : qsTr("No transactions")
                     font.pixelSize: Style.textSize
                 }
 
-                Transactions {
+                Transactions
+                {
                     width: parent.width
                     height: parent.height
                     model: transactions_mdl.proxy_mdl
@@ -899,7 +897,8 @@ Item
             }
         }
 
-        RowLayout {
+        RowLayout
+        {
             id: fetching_text_row
             visible: api_wallet_page.tx_fetching_busy
             Layout.preferredHeight: fetching_text.font.pixelSize * 1.5
@@ -909,13 +908,15 @@ Item
 
             Layout.alignment: Qt.AlignHCenter
             spacing: 10
-            DefaultBusyIndicator {
+            DefaultBusyIndicator
+            {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredWidth: Style.textSizeSmall3
                 Layout.preferredHeight: Layout.preferredWidth
             }
 
-            DefaultText {
+            DefaultText
+            {
                 id: fetching_text
                 Layout.alignment: Qt.AlignVCenter
                 text_value: qsTr("Fetching transactions") + "..."
