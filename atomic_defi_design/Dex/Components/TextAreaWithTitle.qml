@@ -12,42 +12,46 @@ ColumnLayout {
     property alias save_button: save_button
     property alias hide_button: hide_button
     property alias hide_button_area: hide_button.mouse_area
-    property bool copyable: false
-    property bool hidable: false
-    property var onReturn // function
+    property bool  copyable: false
+    property bool  hidable: false
+    property var   onReturn // function
 
     property alias remove_newline: input_field.remove_newline
-    property bool hiding: true
+    property bool  hiding: true
 
-    property bool saveable: false
+    property bool  saveable: false
 
     signal saved()
     signal copied()
 
-    // Local
-    function reset() {
-        input_field.text = ''
-    }
+    function reset() { input_field.text = '' }
 
-    RowLayout {
-        TitleText {
-            id: title_text
+    TitleText
+    {
+        id: title_text
+
+        Layout.alignment: Qt.AlignVCenter
+
+        Qaterial.Icon
+        {
+            visible: control.copyable
+
             Layout.alignment: Qt.AlignVCenter
-            Qaterial.Icon {
-                visible: control.copyable
-                Layout.alignment: Qt.AlignVCenter
-                x: title_text.implicitWidth + 10
-                size: 16
-                icon: Qaterial.Icons.contentCopy
-                color: copyArea.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.foregroundColor
-                DexMouseArea {
-                    id: copyArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: {
-                        Qaterial.Clipboard.text = input_field.text
-                        control.copied()
-                    }
+
+            x: title_text.implicitWidth + 10
+            size: 16
+            icon: Qaterial.Icons.contentCopy
+            color: copyArea.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.foregroundColor
+
+            DefaultMouseArea
+            {
+                id: copyArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked:
+                {
+                    Qaterial.Clipboard.text = input_field.text
+                    control.copied()
                 }
             }
         }
