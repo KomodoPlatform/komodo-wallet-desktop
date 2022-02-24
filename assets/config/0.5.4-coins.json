@@ -1350,7 +1350,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -1891,7 +1891,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -3996,7 +3996,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -4285,7 +4285,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "name": "Moonriver"
@@ -4564,7 +4564,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -4711,7 +4711,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -5916,7 +5916,7 @@
         "https://rpc.api.moonriver.moonbeam.network"
       ],
       "explorer_url": [
-        "https://blockscout.moonriver.moonbeam.network/"
+        "https://moonriver.moonscan.io/"
       ],
       "type": "Moonriver",
       "active": false,
