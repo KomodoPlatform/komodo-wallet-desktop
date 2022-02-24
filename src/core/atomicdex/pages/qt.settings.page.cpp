@@ -588,7 +588,7 @@ namespace atomic_dex
         if (fs::exists(wallet_cfg_path))
         {
             nlohmann::json wallet_config_json_data;
-            nlohmann::json active_list = nlohmann::json::array();
+            std::unordered_set<std::string> active_list;
             QFile          fs;
             fs.setFileName(std_path_to_qstring(wallet_cfg_path));
             fs.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -600,7 +600,7 @@ namespace atomic_dex
             //! Get the active coins
             for (auto&& [key, value]: wallet_config_json_data.items())
             {
-                if (value["active"]) { active_list.push_back(key); }
+                if (value["active"]) { active_list.insert(key); }
             }
 
             // remove old coins file
@@ -622,7 +622,7 @@ namespace atomic_dex
             //! set active coins again
             for (auto&& [key, value]: wallet_config_json_data.items())
             {
-                if (std::find(active_list.begin(), active_list.end(), key) != active_list.end())
+                if (active_list.contains(key))
                 {
                     value["active"] = true;
                 }
@@ -632,7 +632,6 @@ namespace atomic_dex
             fs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
             fs.write(QString::fromStdString(wallet_config_json_data.dump(4)).toUtf8());
             fs.close();
-
         }
 
 
