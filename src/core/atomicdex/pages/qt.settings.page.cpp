@@ -602,7 +602,6 @@ namespace atomic_dex
             {
                 if (value["active"]) { active_list.push_back(key); }
             }
-            SPDLOG_WARN("Active list created: {}", active_list);
 
             // remove old coins file
             functor_remove(std::move(wallet_cfg_path));
@@ -628,7 +627,8 @@ namespace atomic_dex
                     value["active"] = true;
                 }
             }
-            SPDLOG_WARN("Active list resurrected");            //! Write
+            
+            //! Write
             fs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
             fs.write(QString::fromStdString(wallet_config_json_data.dump(4)).toUtf8());
             fs.close();
