@@ -620,11 +620,11 @@ namespace atomic_dex
             fs.close();
 
             //! set active coins again
-            for (auto&& [key, value]: wallet_config_json_data.items())
+            for (auto&& key: active_list)
             {
                 if (active_list.contains(key))
                 {
-                    value["active"] = true;
+                    wallet_config_json_data[key]["active"] = true;
                 }
             }
             
