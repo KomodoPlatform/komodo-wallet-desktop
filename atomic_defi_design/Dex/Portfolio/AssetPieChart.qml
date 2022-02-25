@@ -40,7 +40,7 @@ ColumnLayout
                 item.explodeDistanceFactor = 0.03
                 item.color = Qt.lighter(Style.getCoinColor(value.ticker))
                 portfolio.currentValue = value.balance + " " + item.label
-                portfolio.currentTotal = API.app.settings_pg.current_fiat_sign + " " + value.main_currency_balance
+                portfolio.currentTotal = API.app.settings_pg.current_currency_sign + " " + value.main_currency_balance
             } else {
                 item.borderWidth = 2
                 item.explodeDistanceFactor = 0.01

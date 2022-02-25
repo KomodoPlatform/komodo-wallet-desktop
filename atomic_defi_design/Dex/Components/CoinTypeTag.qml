@@ -9,14 +9,14 @@ AnimatedRectangle {
     height: type_tag.font.pixelSize * 1.5
     width: type_tag.width + 8
 
-    color: Style.getCoinTypeColor(model.type)
+    color: Style.getCoinTypeColor(type)
 
     DexLabel {
         id: type_tag
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
         text: type
-        color: Style.getCoinTypeTextColor(model.type)
+        color: Style.getCoinTypeTextColor(type)
         font: DexTypo.overLine
     }
 }

@@ -59,7 +59,7 @@ Item
                     Layout.preferredHeight: 38
 
                     textField.placeholderText: qsTr("Search coin")
-
+                    forceFocus: true
                     textField.onTextChanged: portfolio_coins.setFilterFixedString(textField.text)
                     Component.onDestruction: portfolio_coins.setFilterFixedString("")
 

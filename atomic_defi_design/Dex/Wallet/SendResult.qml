@@ -26,13 +26,21 @@ ModalContent {
     // Amount
     TextEditWithTitle {
         title: qsTr("Amount")
-        text: General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker)
+        text: "%1 %2 (%3 %4)"
+            .arg(api_wallet_page.ticker)
+            .arg(custom_amount !== "" ? custom_amount : result.balance_change)
+            .arg(API.app.settings_pg.current_fiat_sign)
+            .arg(send_result.withdraw_answer.total_amount_fiat)
     }
 
     // Fees
     TextEditWithTitle {
         title: qsTr("Fees")
-        text: General.formatCrypto("", result.fees, current_ticker_infos.fee_ticker)
+        text: "%1 %2 (%3 %4)"
+            .arg(current_ticker_infos.fee_ticker)
+            .arg(send_result.withdraw_answer.fee_details.amount)
+            .arg(API.app.settings_pg.current_fiat_sign)
+            .arg(send_result.withdraw_answer.fee_details.amount_fiat)
     }
 
     // Date
