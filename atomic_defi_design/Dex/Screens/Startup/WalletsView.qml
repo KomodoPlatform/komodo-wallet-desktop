@@ -26,7 +26,7 @@ SetupPage
     signal walletSelected(string walletName);
 
     image_path: Dex.CurrentTheme.bigLogoPath
-    image_margin: 30
+    image_margin: 15
 
     backgroundColor: Dex.CurrentTheme.backgroundColor
 
@@ -117,7 +117,7 @@ SetupPage
 
                 width: content_column.width
                 Layout.minimumHeight: row_height
-                Layout.preferredHeight: (50 * Math.min(wallets.length, 3)) + 10
+                Layout.preferredHeight: (50 * Math.min(wallets.length, 5)) - 10
                 color: Dex.CurrentTheme.floatingBackgroundColor
                 radius: 18
 
@@ -267,10 +267,7 @@ SetupPage
                     }
                 }
             }
-
-
         }
-
 
         HorizontalLine
         {}
@@ -280,7 +277,7 @@ SetupPage
     {
         Layout.alignment: Qt.AlignHCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+        anchors.bottomMargin: 20
 
         anchors.horizontalCenter: parent.horizontalCenter
 
