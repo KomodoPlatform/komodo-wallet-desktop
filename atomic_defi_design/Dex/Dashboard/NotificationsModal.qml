@@ -268,6 +268,12 @@ DexPopup
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp)
     {
+        // Ignore if coin already enabled (e.g. parent chain in batch)
+        if (error.search("already initialized") > -1) {
+            console.log("Ignoring onEnablingCoinFailedStatus event because " + coin + " already enabled.")
+            return
+        }
+
         // Check if there is mismatch error, ignore this one
         for (let n of notifications_list)
         {
