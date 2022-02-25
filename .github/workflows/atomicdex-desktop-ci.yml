@@ -42,7 +42,7 @@ jobs:
             type: 'release'
 
           - name: windows-10-qt-5-15-2
-            os: windows-latest
+            os: windows-2019
             qt: '5.15.2'
             type: 'release'
 
