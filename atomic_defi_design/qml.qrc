@@ -626,7 +626,5 @@
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Dex/Components/PopupManager.qml</file>
-        <file>imports/bignumberjs/qmldir</file>
-        <file>imports/bignumberjs/bignumber.js/bignumber.js</file>
     </qresource>
 </RCC>
