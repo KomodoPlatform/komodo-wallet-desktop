@@ -356,10 +356,10 @@ QtObject {
         return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
 
-    function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
-        return diffPrefix(received) +  atomic_qt_utilities.retrieve_main_ticker(ticker) + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
+    function formatCrypto(received, amount, ticker, fiat_amount, fiat, use_full_ticker) {
+        if (!use_full_ticker) ticker = atomic_qt_utilities.retrieve_main_ticker(ticker)
+        return diffPrefix(received) + ticker + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
-    
 
     function fullCoinName(name, ticker) {
         return name + " (" + ticker + ")"
