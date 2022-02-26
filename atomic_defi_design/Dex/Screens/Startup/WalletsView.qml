@@ -18,8 +18,8 @@ SetupPage
     // Override
     id: _setup
 
-    property
-    var wallets: API.app.wallet_mgr.get_wallets()
+    property var wallets: API.app.wallet_mgr.get_wallets()
+    readonly property int wallet_count: API.app.wallet_mgr.get_wallets().length
 
     signal newWalletClicked()
     signal importWalletClicked();
@@ -76,38 +76,24 @@ SetupPage
         ColumnLayout
         {
             spacing: Style.rowSpacing
+            visible: wallet_count > 0
 
-            visible: wallets.length > 0
-
-            RowLayout
+            // Searchbar
+            DefaultTextField
             {
+                id: wallet_search
+                visible: true
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.fillWidth: true
-                spacing: 10
-                Rectangle
+                Layout.preferredHeight: 40
+                placeholderText: qsTr("Search your wallets...")
+                onTextChanged:
                 {
-                    Layout.fillWidth: true
-                    height: 1
-                    color: Dex.CurrentTheme.floatingBackgroundColor
-                    Layout.alignment: Qt.AlignVCenter
-                    opacity: .5
+                    console.log(text)
+                    wallets = API.app.wallet_mgr.get_wallets(text)
                 }
-                DexLabel
-                {
-                    text_value: qsTr("My Wallets")
-                    font.pixelSize: Style.textSizeSmall2
-                    font.bold: true
-                    Layout.alignment: Qt.AlignHCenter
-                }
-                Rectangle
-                {
-                    Layout.fillWidth: true
-                    height: 1
-                    color: Dex.CurrentTheme.floatingBackgroundColor
-                    Layout.alignment: Qt.AlignVCenter
-                    opacity: .5
-                }
+                Component.onDestruction: wallets = API.app.wallet_mgr.get_wallets()
             }
-
 
             DexRectangle
             {
@@ -117,15 +103,31 @@ SetupPage
 
                 width: content_column.width
                 Layout.minimumHeight: row_height
-                Layout.preferredHeight: (50 * Math.min(wallets.length, 5)) - 10
+                Layout.preferredHeight: (50 * Math.min(wallet_count, 5)) - 10
                 color: Dex.CurrentTheme.floatingBackgroundColor
                 radius: 18
+
+                RowLayout
+                {
+                    anchors.fill: parent
+
+                    Item { Layout.fillWidth: true }
+
+                    DexLabel
+                    {
+                        text_value: qsTr("No wallets found!")
+                        visible: wallets.length == 0
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                    }
+
+                    Item { Layout.fillWidth: true }
+                }
 
 
                 DefaultListView
                 {
                     id: list
-                    implicitHeight: bg.Layout.preferredHeight
+                    Layout.preferredHeight: bg.Layout.preferredHeight
                     anchors.fill: parent
                     anchors.margins: 10
                     spacing: 5
@@ -244,7 +246,7 @@ SetupPage
                                                     yesButtonText: qsTr("Ok"), titleBold: true,
                                                     standardButtons: Dialog.Ok
                                                 })
-                                                _setup.wallets = API.app.wallet_mgr.get_wallets()
+                                                wallets = API.app.wallet_mgr.get_wallets()
                                             }
                                             else
                                             {

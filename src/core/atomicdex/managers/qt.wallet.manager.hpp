@@ -68,7 +68,7 @@ namespace atomic_dex
         //! Q_INVOKABLE (QML API)
         Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
         Q_INVOKABLE bool               create(const QString& password, const QString& seed, const QString& wallet_name);
-        Q_INVOKABLE static QStringList get_wallets() ;
+        Q_INVOKABLE static QStringList get_wallets(const QString& wallet_name = "") ;
         Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name) ;
         Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void               set_emergency_password(const QString& emergency_password);
