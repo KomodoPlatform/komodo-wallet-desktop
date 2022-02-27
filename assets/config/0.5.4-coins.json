@@ -1347,10 +1347,10 @@
     "coinpaprika_id": "busd-binance-usd",
     "coingecko_id": "binance-usd",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -1888,10 +1888,10 @@
     "coinpaprika_id": "dai-dai",
     "coingecko_id": "dai",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -3993,10 +3993,10 @@
     "coingecko_id": "million",
     "nomics_id": "MM4",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -4282,10 +4282,10 @@
     "nomics_id": "MOVR",
     "currently_enabled": false,
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "name": "Moonriver"
@@ -4561,10 +4561,10 @@
     "coinpaprika_id": "usdc-usd-coin",
     "coingecko_id": "usd-coin",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -4708,10 +4708,10 @@
     "coinpaprika_id": "usdt-tether",
     "coingecko_id": "tether",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -5913,10 +5913,10 @@
       "coingecko_id": "sushi",
       "nomics_id": "SUSHI",
       "nodes": [
-        "https://rpc.moonriver.moonbeam.network"
+        "https://rpc.api.moonriver.moonbeam.network"
       ],
       "explorer_url": [
-        "https://blockscout.moonriver.moonbeam.network/"
+        "https://moonriver.moonscan.io/"
       ],
       "type": "Moonriver",
       "active": false,
@@ -6244,16 +6244,7 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrumx1.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx2.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx3.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx4.nmc.bitclc.net:50001"
+        "url": "46.229.238.187:57001"
       }
     ],
     "explorer_url": [
@@ -6813,6 +6804,24 @@
       "https://thc.explorer.dexstats.info/"
     ],
     "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
+  "THC-BEP20": {
+    "coin": "THC-BEP20",
+    "name": "HempCoin",
+    "coinpaprika_id": "thc-hempcoin",
+    "coingecko_id": "hempcoin-thc",
+    "nomics_id": "THC",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
     "active": false,
     "currently_enabled": false
   },

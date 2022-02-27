@@ -60,6 +60,12 @@ QtObject {
         family: fontFamily,
         weight: Font.Medium
     })
+    property font head7: Qt.font({
+        pixelSize: 18 * fontDensity,
+        letterSpacing: 0.15,
+        family: fontFamily,
+        weight: Font.Medium
+    })
     property font subtitle1: Qt.font({
         pixelSize: 16 * fontDensity,
         letterSpacing: 0.15,
@@ -101,6 +107,12 @@ QtObject {
         letterSpacing: 1.25,
         capitalization: Font.AllUppercase,
         family: fontFamily,
+        weight: Font.Normal
+    })
+    property font monoSpace: Qt.font({
+        pixelSize: 14 * fontDensity,
+        letterSpacing: 0,
+        family: "Courier",
         weight: Font.Normal
     })
 }

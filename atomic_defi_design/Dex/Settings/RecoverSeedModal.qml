@@ -65,6 +65,7 @@ MultipageModal
         {
             id: inputPassword
             Layout.fillWidth: true
+            forceFocus: true
             field.onAccepted: tryViewKeysAndSeed()
             background.color: Dex.CurrentTheme.floatingBackgroundColor
             leftIconColor: Dex.CurrentTheme.foregroundColor

@@ -191,7 +191,7 @@ Item {
 
             anchors.fill: parent
 
-            DexBusyIndicator
+            DefaultBusyIndicator
             {
                 anchors.centerIn: parent
                 running: !loader.visible
