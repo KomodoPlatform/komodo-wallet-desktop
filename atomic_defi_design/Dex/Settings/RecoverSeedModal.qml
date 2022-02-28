@@ -20,9 +20,7 @@ MultipageModal
 
     function tryViewKeysAndSeed()
     {
-        if(!submitButton.enabled) return
-
-        API.app.settings_pg.fetchPublicKey()
+        if (!submitButton.enabled) return
 
         const result = API.app.settings_pg.retrieve_seed(API.app.wallet_mgr.wallet_default_name, inputPassword.field.text)
 
@@ -217,43 +215,6 @@ MultipageModal
                     {
                         DefaultText { text: qsTr("RPC Password"); font.pixelSize: Style.textSizeSmall2 }
                         DefaultText { id: rpcPwLabel; Layout.fillWidth: true; font.pixelSize: Style.textSizeSmall1; maximumLineCount: 4; wrapMode: Text.WrapAnywhere }
-                    }
-                }
-
-                // Public Key
-                RowLayout
-                {
-                    spacing: 5
-                    Qaterial.RawMaterialButton
-                    {
-                        backgroundImplicitWidth: 40
-                        backgroundImplicitHeight: 30
-                        backgroundColor: "transparent"
-                        icon.source: Qaterial.Icons.qrcodeScan
-                        icon.color: Dex.CurrentTheme.foregroundColor
-                        onClicked:
-                        {
-                            qrcodeModal.qrcodeSvg = API.qt_utilities.get_qrcode_svg_from_string(settings_page.publicKey)
-                            qrcodeModal.open()
-                        }
-                    }
-                    Qaterial.RawMaterialButton
-                    {
-                        backgroundImplicitWidth: 40
-                        backgroundImplicitHeight: 30
-                        backgroundColor: "transparent"
-                        icon.source: Qaterial.Icons.contentCopy
-                        icon.color: Dex.CurrentTheme.foregroundColor
-                        onClicked:
-                        {
-                            API.qt_utilities.copy_text_to_clipboard(settings_page.publicKey)
-                            app.notifyCopy(qsTr("Public Key"), qsTr("copied to clipboard"))
-                        }
-                    }
-                    ColumnLayout
-                    {
-                        DefaultText { text: qsTr("Public Key"); font.pixelSize: Style.textSizeSmall2 }
-                        DefaultText { text: settings_page.publicKey; Layout.fillWidth: true; font.pixelSize: Style.textSizeSmall1; maximumLineCount: 4; wrapMode: Text.WrapAnywhere }
                     }
                 }
             }
