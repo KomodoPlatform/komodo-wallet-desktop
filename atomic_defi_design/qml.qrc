@@ -392,6 +392,7 @@
         <file>Dex/Components/DefaultRangeSlider.qml</file>
         <file>Dex/Components/DefaultRectangle.qml</file>
         <file>Dex/Components/DefaultScrollBar.qml</file>
+        <file>Dex/Components/DefaultScrollView.qml</file>
         <file>Dex/Components/DefaultSlider.qml</file>
         <file>Dex/Components/DefaultSplitView.qml</file>
         <file>Dex/Components/DefaultSubstractRectangle.qml</file>
