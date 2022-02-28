@@ -59,7 +59,7 @@ MultipageModal
             searchIconLeftMargin: 20
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 10
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.preferredHeight: 44
             textField.placeholderText: qsTr("Search asset")
 
@@ -70,7 +70,7 @@ MultipageModal
         {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 5
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.preferredHeight: 25
 
             DexCheckBox
@@ -100,7 +100,7 @@ MultipageModal
             }
         }
 
-        HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.preferredWidth: 500 }
+        HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.fillWidth: true }
 
         DefaultListView
         {
@@ -111,7 +111,7 @@ MultipageModal
             Layout.topMargin: -5
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredHeight: 300
-            Layout.preferredWidth: 515
+            Layout.fillWidth: true
 
             delegate: DexCheckBox
             {
@@ -188,7 +188,7 @@ MultipageModal
         Item
         {
             Layout.topMargin: 6
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
 
             DexLabel
@@ -210,7 +210,7 @@ MultipageModal
         Item
         {
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.preferredHeight: 40
 
             DexTransparentButton
@@ -241,25 +241,20 @@ MultipageModal
             }
         }
 
-        Item
+        RowLayout
         {
-            Layout.preferredWidth: 500
-            Layout.preferredHeight: 40
-            Layout.alignment: Qt.AlignHCenter
-
+            Layout.fillWidth: true
             DefaultButton
             {
-                anchors.left: parent.left
-                width: 199
+                Layout.preferredWidth: 199
                 text: qsTr("Close")
                 radius: 20
                 onClicked: root.close()
             }
-
+            Item { Layout.fillWidth: true }
             DexGradientAppButton
             {
-                anchors.right: parent.right
-                width: 199
+                Layout.preferredWidth: 199
                 visible: coin_cfg_model.length > 0
                 enabled: coin_cfg_model.checked_nb > 0
                 text: qsTr("Enable")
