@@ -20,7 +20,7 @@ Popup
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-    background: DefaultRectangle { radius: root.radius }
+    background: DefaultRectangle { radius: root.radius; color: Dex.CurrentTheme.floatingBackgroundColor }
 
     Overlay.modal: Rectangle { color: "#AA000000" }
 
