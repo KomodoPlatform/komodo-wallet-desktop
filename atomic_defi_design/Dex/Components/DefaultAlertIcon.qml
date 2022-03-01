@@ -17,7 +17,7 @@ Qaterial.Icon
     anchors.leftMargin: iconSize / 2
     anchors.rightMargin: iconSize / 2
     anchors.verticalCenter: parent.verticalCenter
-    color: alertArea.containsMouse ? iconColor : iconColorHover
+    color: alertArea.containsMouse ? iconColorHover : iconColor
 
     DexMouseArea
     {

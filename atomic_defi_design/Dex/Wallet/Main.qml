@@ -422,8 +422,8 @@ Item
                     visible: API.app.wallet_pg.send_availability_state !== ""
                     tooltipText: API.app.wallet_pg.send_availability_state
                     iconSize: 24
-                    iconColor: "yellow"
-                    iconColorHover: "red"
+                    iconColor: "gold"
+                    iconColorHover: "yellow"
                 }
             }
 
