@@ -733,7 +733,7 @@ MultipageModal
             title: qsTr("Amount")
             text: empty_data ? "" : "%1 %2 (%3 %4)"
                 .arg(api_wallet_page.ticker)
-                .arg(getCryptoAmount() !== "" ? getCryptoAmount() : result.balance_change)
+                .arg(getCryptoAmount())
                 .arg(API.app.settings_pg.current_fiat_sign)
                 .arg(send_result.withdraw_answer.total_amount_fiat)
         }
