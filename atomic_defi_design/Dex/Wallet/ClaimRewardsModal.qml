@@ -6,7 +6,8 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-MultipageModal {
+MultipageModal
+{
     id: root
 
     readonly property bool empty_data: !prepare_claim_rewards_result || !prepare_claim_rewards_result.withdraw_answer
@@ -417,8 +418,10 @@ MultipageModal {
         }
 
         // Buttons
-        footer: [
-            DexAppButton {
+        footer:
+        [
+            DexAppButton
+            {
                 text: qsTr("Cancel")
                 leftPadding: 40
                 rightPadding: 40
@@ -426,11 +429,13 @@ MultipageModal {
                 onClicked: root.close()
             },
 
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
             },
 
-            DexAppOutlineButton {
+            DexAppOutlineButton
+            {
                 text: qsTr("Confirm")
                 leftPadding: 40
                 rightPadding: 40
@@ -443,12 +448,9 @@ MultipageModal {
     }
 
     // Result Page
-    SendResult {
-        result: ({
-            balance_change: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.my_balance_change,
-            fees: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
-            date: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.date
-        })
+    SendResult
+    {
+        result: prepare_claim_rewards_result
         tx_hash: broadcast_result
 
         function onClose() { root.close() }

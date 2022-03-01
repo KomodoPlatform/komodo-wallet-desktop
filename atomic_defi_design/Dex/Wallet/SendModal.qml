@@ -763,11 +763,14 @@ MultipageModal
         }
 
         // Buttons
-        footer: [
-        Item {
+        footer:
+        [
+            Item
+            {
                 Layout.fillWidth: true
             },
-            DexAppButton {
+            DexAppButton
+            {
                 text: qsTr("Back")
                 leftPadding: 40
                 rightPadding: 40
@@ -775,10 +778,12 @@ MultipageModal
                 onClicked: root.currentIndex = 0
                 enabled: !root.is_broadcast_busy
             },
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
             },
-            DexAppOutlineButton {
+            DexAppOutlineButton
+            {
                 text: qsTr("Send")
                 onClicked: sendCoin()
                 leftPadding: 40
@@ -786,27 +791,24 @@ MultipageModal
                 radius: 18
                 enabled: !root.is_broadcast_busy
             },
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
             }
         ]
     }
 
     // Result Page
-    SendResult {
-        result: ({
-            balance_change: empty_data ? "" : send_result.withdraw_answer.my_balance_change,
-            fees: empty_data ? "" : send_result.withdraw_answer.fee_details.amount,
-            date: empty_data ? "" : send_result.withdraw_answer.date
-        })
+    SendResult
+    {
+        result: send_result
         address: input_address.text
         tx_hash: broadcast_result
         custom_amount: getCryptoAmount()
 
-        function onClose() {
-            if(root.segwit) {
-                root.segwit_success = true
-            }
+        function onClose()
+        {
+            if (root.segwit) root.segwit_success = true
             root.close()
         }
     }
