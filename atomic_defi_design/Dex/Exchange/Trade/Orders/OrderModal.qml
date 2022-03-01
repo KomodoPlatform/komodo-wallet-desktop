@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
+import "../../../Constants"
 import Dex.Themes 1.0 as Dex
 import App 1.0
 
@@ -50,120 +51,239 @@ MultipageModal
             font.pixelSize: Style.textSize1
             font.bold: true 
             visible: !details ? false : details.is_swap || !details.is_maker
-            color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
             text_value: !details ? "" : visible ? getStatusText(details.order_status) : ''
         }
 
-        OrderContent
+        RowLayout
         {
-            Layout.topMargin: 25
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter
-            details: root.details
-            in_modal: true
-        }
+            Layout.topMargin: 22
 
-        DefaultScrollView
-        {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            DefaultRectangle
+            {
+                Layout.preferredWidth: 226
+                Layout.preferredHeight: 66
+                radius: 10
 
-            ColumnLayout
+                RowLayout
+                {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 23
+
+                    DefaultImage
+                    {
+                        Layout.preferredWidth: 35
+                        Layout.preferredHeight: 35
+                        Layout.alignment: Qt.AlignVCenter
+
+                        source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin)
+                    }
+
+                    ColumnLayout
+                    {
+                        Layout.fillWidth: true
+                        RowLayout
+                        {
+                            Layout.fillWidth: true
+                            spacing: 5
+                            DefaultText
+                            {
+                                Layout.fillWidth: true
+                                text: details ? details.base_coin : ""
+                            }
+
+                            DefaultText
+                            {
+                                Layout.fillWidth: true
+                                text: details ? General.coinName(details.base_coin) : ""
+                                wrapMode: Text.NoWrap
+                                elide: Text.ElideRight
+                                font.pixelSize: 11
+                            }
+                        }
+
+                        DefaultText
+                        {
+                            Layout.fillWidth: true
+                            text: details ? details.base_amount : ""
+                            font.pixelSize: 11
+                            wrapMode: Text.NoWrap
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+            }
+
+            Qaterial.Icon
             {
                 Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
 
-                HorizontalLine
+                color: Dex.CurrentTheme.foregroundColor
+                icon: Qaterial.Icons.swapHorizontal
+            }
+
+            DefaultRectangle
+            {
+                Layout.preferredWidth: 226
+                Layout.preferredHeight: 66
+                radius: 10
+
+                RowLayout
                 {
-                    Layout.fillWidth: true
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 23
+
+                    DefaultImage
+                    {
+                        Layout.preferredWidth: 35
+                        Layout.preferredHeight: 35
+                        Layout.alignment: Qt.AlignVCenter
+
+                        source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin)
+                    }
+
+                    ColumnLayout
+                    {
+                        Layout.fillWidth: true
+                        RowLayout
+                        {
+                            Layout.fillWidth: true
+                            spacing: 5
+                            DefaultText
+                            {
+                                Layout.fillWidth: true
+                                text: details ? details.rel_coin : ""
+                            }
+
+                            DefaultText
+                            {
+                                Layout.fillWidth: true
+                                text: details ? General.coinName(details.rel_coin) : ""
+                                wrapMode: Text.NoWrap
+                                elide: Text.ElideRight
+                                font.pixelSize: 11
+                            }
+                        }
+
+                        DefaultText
+                        {
+                            Layout.fillWidth: true
+                            text: details ? details.rel_amount : ""
+                            font.pixelSize: 11
+                            wrapMode: Text.NoWrap
+                            elide: Text.ElideRight
+                        }
+                    }
                 }
+            }
+        }
 
-                // Maker/Taker
-                DefaultText
+        Item
+        {
+            Layout.topMargin: 20
+            Layout.fillWidth: true
+            Layout.preferredHeight: 300
+
+            DefaultScrollView
+            {
+                anchors.fill: parent
+                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+                ColumnLayout
                 {
-                    text_value: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
-                    color: Dex.CurrentTheme.foregroundColor2
-                    Layout.alignment: Qt.AlignRight
-                }
+                    width: parent.width - 30
+                    spacing: 12
 
-                // Refund state
-                TextFieldWithTitle
-                {
-                    Layout.topMargin: -20
+                    // Maker/Taker
+                    DefaultText
+                    {
+                        text_value: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
+                        color: Dex.CurrentTheme.foregroundColor2
+                        Layout.alignment: Qt.AlignRight
+                    }
 
-                    title: qsTr("Refund State")
-                    field.text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
-                    field.readOnly: true
-                    visible: field.text !== ''
-                }
+                    // Refund state
+                    TextFieldWithTitle
+                    {
+                        Layout.topMargin: -20
 
-                // Date
-                TextEditWithTitle
-                {
-                    title: qsTr("Date")
-                    text: !details ? "" : details.date
-                    visible: text !== ''
-                }
+                        title: qsTr("Refund State")
+                        field.text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
+                        field.readOnly: true
+                        visible: field.text !== ''
+                    }
 
-                // ID
-                TextEditWithTitle
-                {
-                    title: qsTr("ID")
-                    text: !details ? "" : details.order_id
-                    visible: text !== ''
-                    copy: true
-                    privacy: true
-                }
+                    // Date
+                    TextEditWithTitle
+                    {
+                        title: qsTr("Date")
+                        text: !details ? "" : details.date
+                        visible: text !== ''
+                    }
 
-                // Payment ID
-                TextEditWithTitle
-                {
-                    title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
-                    text: !details ? "" : details.maker_payment_id
-                    visible: text !== ''
-                    privacy: true
-                }
+                    // ID
+                    TextEditWithTitle
+                    {
+                        title: qsTr("ID")
+                        text: !details ? "" : details.order_id
+                        visible: text !== ''
+                        copy: true
+                        privacy: true
+                    }
 
-                // Payment ID
-                TextEditWithTitle
-                {
-                    title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
-                    text: !details ? "" : details.taker_payment_id
-                    visible: text !== ''
-                    privacy: true
-                }
+                    // Payment ID
+                    TextEditWithTitle
+                    {
+                        title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
+                        text: !details ? "" : details.maker_payment_id
+                        visible: text !== ''
+                        privacy: true
+                    }
 
-                // Error ID
-                TextEditWithTitle
-                {
-                    title: qsTr("Error ID")
-                    text: !details ? "" : details.order_error_state
-                    visible: text !== ''
-                }
+                    // Payment ID
+                    TextEditWithTitle
+                    {
+                        title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
+                        text: !details ? "" : details.taker_payment_id
+                        visible: text !== ''
+                        privacy: true
+                    }
 
-                // Error Details
-                TextFieldWithTitle
-                {
-                    title: qsTr("Error Log")
-                    field.text: !details ? "" : details.order_error_message
-                    field.readOnly: true
-                    copyable: true
+                    // Error ID
+                    TextEditWithTitle
+                    {
+                        title: qsTr("Error ID")
+                        text: !details ? "" : details.order_error_state
+                        visible: text !== ''
+                    }
 
-                    visible: field.text !== ''
-                }
+                    // Error Details
+                    TextFieldWithTitle
+                    {
+                        title: qsTr("Error Log")
+                        field.text: !details ? "" : details.order_error_message
+                        field.readOnly: true
+                        copyable: true
 
-                HorizontalLine
-                {
-                    visible: swap_progress.visible
-                    Layout.fillWidth: true
-                    Layout.topMargin: 10
-                }
+                        visible: field.text !== ''
+                    }
 
-                SwapProgress
-                {
-                    id: swap_progress
-                    visible: General.exists(details) && details.order_status !== "matching"
-                    Layout.fillWidth: true
-                    details: root.details
+                    HorizontalLine
+                    {
+                        visible: swap_progress.visible
+                        Layout.fillWidth: true
+                        Layout.topMargin: 10
+                    }
+
+                    SwapProgress
+                    {
+                        id: swap_progress
+                        visible: General.exists(details) && details.order_status !== "matching"
+                        Layout.fillWidth: true
+                        details: root.details
+                    }
                 }
             }
         }
