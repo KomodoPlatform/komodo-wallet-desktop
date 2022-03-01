@@ -16,5 +16,7 @@ ToolTip
     }
 
     background: FloatingBackground
-    {}
+    {
+        color: Dex.CurrentTheme.accentColor
+    }
 }

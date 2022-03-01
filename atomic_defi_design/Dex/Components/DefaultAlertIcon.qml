@@ -6,10 +6,10 @@ import App 1.0
 
 Qaterial.Icon
 {
-    property int iconSize: 14
+    property int iconSize: 24
     property string tooltipText: ""
-    property var iconColor: Style.colorText2
-    property var iconColorHover: DexTheme.foregroundColor
+    property var iconColor: "gold"
+    property var iconColorHover: "yellow"
 
     icon: Qaterial.Icons.alert
     size: iconSize
@@ -28,7 +28,7 @@ Qaterial.Icon
 
     DefaultTooltip
     {
-        visible: alertArea.containsMouse
+        visible: alertArea.containsMouse && tooltipText != ""
         text: tooltipText
     }
 }
