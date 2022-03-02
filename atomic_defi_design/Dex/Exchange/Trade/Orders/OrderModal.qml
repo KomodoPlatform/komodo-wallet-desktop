@@ -197,21 +197,20 @@ MultipageModal
                     spacing: 12
 
                     // Maker/Taker
-                    DefaultText
+                    TextEditWithTitle
                     {
-                        text_value: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
-                        color: Dex.CurrentTheme.foregroundColor2
-                        Layout.alignment: Qt.AlignRight
+                        title: qsTr("Order Type")
+                        text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
+                        label.font.pixelSize: 13
                     }
 
                     // Refund state
                     TextFieldWithTitle
                     {
-                        Layout.topMargin: -20
-
                         title: qsTr("Refund State")
                         field.text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
                         field.readOnly: true
+                        field.font.pixelSize: 13
                         visible: field.text !== ''
                     }
 
@@ -220,6 +219,7 @@ MultipageModal
                     {
                         title: qsTr("Date")
                         text: !details ? "" : details.date
+                        label.font.pixelSize: 13
                         visible: text !== ''
                     }
 
@@ -228,6 +228,7 @@ MultipageModal
                     {
                         title: qsTr("ID")
                         text: !details ? "" : details.order_id
+                        label.font.pixelSize: 13
                         visible: text !== ''
                         copy: true
                         privacy: true
@@ -238,6 +239,7 @@ MultipageModal
                     {
                         title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
                         text: !details ? "" : details.maker_payment_id
+                        label.font.pixelSize: 13
                         visible: text !== ''
                         privacy: true
                     }
@@ -247,6 +249,7 @@ MultipageModal
                     {
                         title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
                         text: !details ? "" : details.taker_payment_id
+                        label.font.pixelSize: 13
                         visible: text !== ''
                         privacy: true
                     }
@@ -256,6 +259,7 @@ MultipageModal
                     {
                         title: qsTr("Error ID")
                         text: !details ? "" : details.order_error_state
+                        label.font.pixelSize: 13
                         visible: text !== ''
                     }
 
@@ -265,6 +269,7 @@ MultipageModal
                         title: qsTr("Error Log")
                         field.text: !details ? "" : details.order_error_message
                         field.readOnly: true
+                        field.font.pixelSize: 13
                         copyable: true
 
                         visible: field.text !== ''
