@@ -135,42 +135,51 @@ BasicModal
                     }
                 }
 
-                // Icon
-                DefaultImage
-                {
-                    id: icon
-                    anchors.left: parent.right
-                    anchors.leftMargin: 8
+                RowLayout {
                     anchors.verticalCenter: parent.verticalCenter
-                    source: General.coinIcon(model.ticker)
-                    width: 18
-                    height: 18
+                    anchors.left: parent.right
+                    spacing:6
 
+                    // Icon
+                    DefaultImage
+                    {
+                        id: icon
+                        Layout.leftMargin: 8
+                        Layout.alignment: Qt.AlignVCenter
+                        source: General.coinIcon(model.ticker)
+                        Layout.preferredWidth: 18
+                        Layout.preferredHeight: 18
+                    }
                     DefaultText
                     {
-                        anchors.left: parent.right
-                        anchors.leftMargin: 4
-                        anchors.verticalCenter: parent.verticalCenter
+                        Layout.leftMargin: 4
+                        Layout.alignment: Qt.AlignVCenter
                         text: model.name + " (" + model.ticker + ")"
+                    }
+                    CoinTypeTag
+                    {
+                        id: typeTag
+                        Layout.leftMargin: 6
+                        Layout.alignment: Qt.AlignVCenter
+                        type: model.type
+                    }
 
-                        CoinTypeTag
-                        {
-                            id: typeTag
-                            anchors.left: parent.right
-                            anchors.leftMargin: 6
-                            anchors.verticalCenter: parent.verticalCenter
-                            type: model.type
-                        }
+                    CoinTypeTag
+                    {
+                        Layout.leftMargin: 6
+                        Layout.alignment: Qt.AlignVCenter
+                        enabled: General.isIDO(model.ticker)
+                        visible: enabled
+                        type: "IDO"
+                    }
 
-                        CoinTypeTag
-                        {
-                            anchors.left: typeTag.right
-                            anchors.leftMargin: 6
-                            anchors.verticalCenter: parent.verticalCenter
-                            enabled: General.isIDO(model.ticker)
-                            visible: enabled
-                            type: "IDO"
-                        }
+                    CoinTypeTag
+                    {
+                        Layout.leftMargin: 6
+                        Layout.alignment: Qt.AlignVCenter
+                        enabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_wallet_only
+                        visible: enabled
+                        type: "WALLET ONLY"
                     }
                 }
             }

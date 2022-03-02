@@ -1350,7 +1350,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -1891,7 +1891,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -2983,33 +2983,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "GLEEC-OLD": {
-    "coin": "GLEEC-OLD",
-    "name": "Gleec",
-    "coinpaprika_id": "gleec-gleec-coin",
-    "coingecko_id": "gleec-coin",
-    "nomics_id": "GLEEC",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10069",
-        "ws_url": "electrum1.cipig.net:30069"
-      },
-      {
-        "url": "electrum2.cipig.net:10069",
-        "ws_url": "electrum2.cipig.net:30069"
-      },
-      {
-        "url": "electrum3.cipig.net:10069",
-        "ws_url": "electrum3.cipig.net:30069"
-      }
-    ],
-    "explorer_url": [
-      "https://gleechain.com/"
-    ],
-    "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
-  },
   "GM-BEP20": {
     "coin": "GM-BEP20",
     "name": "GM Wagmi",
@@ -3996,7 +3969,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -4285,7 +4258,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "name": "Moonriver"
@@ -4564,7 +4537,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -4711,7 +4684,7 @@
       "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -5916,7 +5889,7 @@
         "https://rpc.api.moonriver.moonbeam.network"
       ],
       "explorer_url": [
-        "https://blockscout.moonriver.moonbeam.network/"
+        "https://moonriver.moonscan.io/"
       ],
       "type": "Moonriver",
       "active": false,
@@ -6244,16 +6217,7 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrumx1.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx2.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx3.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx4.nmc.bitclc.net:50001"
+        "url": "46.229.238.187:57001"
       }
     ],
     "explorer_url": [

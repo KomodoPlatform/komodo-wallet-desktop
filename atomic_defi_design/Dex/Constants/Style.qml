@@ -240,6 +240,7 @@ QtObject {
             case 'ERC-20':      return getCoinColor("ETH")
             case 'QRC-20':      return getCoinColor("QTUM")
             case 'Smart Chain': return getCoinColor("KMD")
+            case 'WALLET ONLY': return "#4D4D4D"
             case 'UTXO':        return getCoinColor("BTC")
             case 'BEP-20':      return getCoinColor("BNB")
             case 'SLP':         return getCoinColor("BCH")
