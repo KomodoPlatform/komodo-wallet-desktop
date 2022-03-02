@@ -100,8 +100,17 @@ BasicModal {
                 AddressList {
                     width: parent.width
                     title: qsTr("To")
-                    model: !details ? [] :
-                            details.to
+                    model:
+                    {
+                        let recipients = []
+                        if (details)
+                        {
+                            recipients = details.to
+                            let i = recipients.indexOf(details.from[0])
+                            if (i > -1) recipients.splice(i, 1);
+                        }
+                        return recipients
+                    }
                 }
             }
         }
