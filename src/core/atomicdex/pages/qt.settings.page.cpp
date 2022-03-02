@@ -589,13 +589,13 @@ namespace atomic_dex
         {
             nlohmann::json wallet_config_json_data;
             std::unordered_set<std::string> active_coins_registry;
-            QFile          fs;
-            fs.setFileName(std_path_to_qstring(wallet_cfg_path));
-            fs.open(QIODevice::ReadOnly | QIODevice::Text);
+            QFile          file;
+            file.setFileName(std_path_to_qstring(wallet_cfg_path));
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
 
             //! Read Contents
-            wallet_config_json_data = nlohmann::json::parse(QString(fs.readAll()).toStdString());
-            fs.close();
+            wallet_config_json_data = nlohmann::json::parse(QString(file.readAll()).toStdString());
+            file.close();
 
             //! Get the active coins
             for (auto&& [key, value]: wallet_config_json_data.items())
@@ -612,12 +612,12 @@ namespace atomic_dex
             fs::copy(cfg_path / filename, wallet_cfg_path);
 
             //! Open coins file
-            fs.setFileName(std_path_to_qstring(wallet_cfg_path));
-            fs.open(QIODevice::ReadOnly | QIODevice::Text);
+            file.setFileName(std_path_to_qstring(wallet_cfg_path));
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
 
             //! Read Contents
-            wallet_config_json_data = nlohmann::json::parse(QString(fs.readAll()).toStdString());
-            fs.close();
+            wallet_config_json_data = nlohmann::json::parse(QString(file.readAll()).toStdString());
+            file.close();
 
             //! set active coins again
             for (auto&& key: active_coins_registry)
@@ -626,30 +626,30 @@ namespace atomic_dex
             }
             
             //! Write
-            fs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
-            fs.write(QString::fromStdString(wallet_config_json_data.dump(4)).toUtf8());
-            fs.close();
+            file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            file.write(QString::fromStdString(wallet_config_json_data.dump(4)).toUtf8());
+            file.close();
         }
 
 
         if (fs::exists(wallet_custom_cfg_path))
         {
             nlohmann::json custom_config_json_data;
-            QFile          fs;
-            fs.setFileName(std_path_to_qstring(wallet_custom_cfg_path));
-            fs.open(QIODevice::ReadOnly | QIODevice::Text);
+            QFile          file;
+            file.setFileName(std_path_to_qstring(wallet_custom_cfg_path));
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
 
             //! Read Contents
-            custom_config_json_data = nlohmann::json::parse(QString(fs.readAll()).toStdString());
-            fs.close();
+            custom_config_json_data = nlohmann::json::parse(QString(file.readAll()).toStdString());
+            file.close();
 
             //! Modify
             for (auto&& [key, value]: custom_config_json_data.items()) { value["active"] = false; }
 
             //! Write
-            fs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
-            fs.write(QString::fromStdString(custom_config_json_data.dump()).toUtf8());
-            fs.close();
+            file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+            file.write(QString::fromStdString(custom_config_json_data.dump()).toUtf8());
+            file.close();
         }
 
 
