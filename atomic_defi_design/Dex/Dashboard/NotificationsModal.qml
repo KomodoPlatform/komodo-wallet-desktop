@@ -269,8 +269,9 @@ DexPopup
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp)
     {
         // Ignore if coin already enabled (e.g. parent chain in batch)
-        if (error.search("already initialized") > -1) {
-            console.log("Ignoring onEnablingCoinFailedStatus event because " + coin + " already enabled.")
+        if (error.search("already initialized") > -1)
+        {
+            console.trace()
             return
         }
 
@@ -279,7 +280,7 @@ DexPopup
         {
             if (n.event_name === "onMismatchCustomCoinConfiguration" && n.params.asset === coin)
             {
-                console.log("Ignoring onEnablingCoinFailedStatus event because onMismatchCustomCoinConfiguration exists for", coin)
+                console.trace()
                 return
             }
         }
