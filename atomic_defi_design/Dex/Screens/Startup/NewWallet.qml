@@ -472,7 +472,8 @@ SetupPage
 
                         onClicked:
                         {
-                            text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+                            if (input_wallet_name.field.text.length >= 25) text_error = "Wallet name must 25 chars or less"
+                            else text_error = General.checkIfWalletExists(input_wallet_name.field.text)
                             if (text_error !== "")
                             {
                                 input_wallet_name.error = true

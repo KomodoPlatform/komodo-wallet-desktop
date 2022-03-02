@@ -67,8 +67,12 @@ SetupPage
         function tryPassLevel1()
         {
             if (input_wallet_name.field.text == "") input_wallet_name.error = true;
-
-            if (_seedField.isValid() && input_wallet_name.field.text !== "")
+            else if (input_wallet_name.field.text.length >= 25)
+            {
+                input_wallet_name.error = true;
+                text_error = "Wallet name must 25 chars or less"
+            }
+            else if (_seedField.isValid())
             {
                 let checkWalletName = General.checkIfWalletExists(input_wallet_name.field.text)
                 if (checkWalletName === "")

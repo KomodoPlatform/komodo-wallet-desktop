@@ -82,28 +82,39 @@ SetupPage
             DefaultTextField
             {
                 id: wallet_search
-                visible: true
+                visible: wallet_count > 5
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40
                 placeholderText: qsTr("Search your wallets...")
                 onTextChanged:
                 {
-                    console.log(text)
                     wallets = API.app.wallet_mgr.get_wallets(text)
                 }
                 Component.onDestruction: wallets = API.app.wallet_mgr.get_wallets()
             }
 
+            DexLabel
+            {
+                visible: !wallet_search.visible
+                topPadding: 10
+                text_value: qsTr("My Wallets")
+                font.pixelSize: Style.textSizeSmall2
+                font.bold: true
+                Layout.alignment: Qt.AlignHCenter
+            }
+
+
+            // Wallets List
             DexRectangle
             {
-                id: bg
+                id: wallet_list_bg
 
                 readonly property int row_height: 40
 
                 width: content_column.width
                 Layout.minimumHeight: row_height
-                Layout.preferredHeight: (50 * Math.min(wallet_count, 5)) - 10
+                Layout.preferredHeight: (row_height * Math.min(wallet_count, 5)) + 20
                 color: Dex.CurrentTheme.floatingBackgroundColor
                 radius: 18
 
@@ -127,18 +138,18 @@ SetupPage
                 DefaultListView
                 {
                     id: list
-                    Layout.preferredHeight: bg.Layout.preferredHeight
+                    Layout.preferredHeight: wallet_list_bg.Layout.preferredHeight
                     anchors.fill: parent
                     anchors.margins: 10
-                    spacing: 5
+                    spacing: 0
 
                     model: wallets
 
                     delegate: ClipRRect
                     {
                         radius: 18
-                        width: bg.width - 20
-                        height: bg.row_height
+                        width: wallet_list_bg.width - 20
+                        height: wallet_list_bg.row_height
 
                         DefaultRectangle
                         {
@@ -202,7 +213,8 @@ SetupPage
                         Item
                         {
                             anchors.right: parent.right
-                            anchors.margins: 10
+                            anchors.leftMargin: 10
+                            anchors.rightMargin: 10
                             height: parent.height
                             width: 30
                             Qaterial.ColorIcon
