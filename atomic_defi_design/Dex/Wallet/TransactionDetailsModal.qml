@@ -35,6 +35,7 @@ MultipageModal
             text: !details ? "" : General.formatCrypto(!details.am_i_sender, details.amount, api_wallet_page.ticker, details.amount_fiat, API.app.settings_pg.current_currency)
             value_color: !details ? "white" : details.am_i_sender ?  DexTheme.redColor : DexTheme.greenColor
             privacy: true
+            label.font.pixelSize: 13
         }
 
         // Fees
@@ -44,6 +45,7 @@ MultipageModal
             text: !details ? "" : General.formatCrypto(parseFloat(details.fees) < 0, Math.abs(parseFloat(details.fees)), current_ticker_infos.fee_ticker, details.fees_amount_fiat, API.app.settings_pg.current_currency)
             value_color: !details ? "white" : parseFloat(details.fees) > 0 ? DexTheme.redColor : DexTheme.greenColor
             privacy: true
+            label.font.pixelSize: 13
         }
 
         // Date
@@ -51,6 +53,7 @@ MultipageModal
         {
             title: qsTr("Date")
             text: !details ? "" : details.timestamp === 0 ? qsTr("Unconfirmed"):  details.date
+            label.font.pixelSize: 13
         }
 
         // Transaction Hash
@@ -59,6 +62,7 @@ MultipageModal
             id: txHash
             title: qsTr("Transaction Hash")
             text: !details ? "" : details.tx_hash
+            label.font.pixelSize: 13
             privacy: true
             copy: true
 
@@ -71,6 +75,7 @@ MultipageModal
         {
             title: qsTr("Confirmations")
             text: !details ? "" : details.confirmations
+            label.font.pixelSize: 13
         }
 
         // Block Height
@@ -78,18 +83,21 @@ MultipageModal
         {
             title: qsTr("Block Height")
             text: !details ? "" : details.blockheight
+            label.font.pixelSize: 13
         }
 
         AddressList
         {
             title: qsTr("From")
             model: !details ? [] : details.from
+            addressFontSize: 13
         }
 
         AddressList
         {
             title: qsTr("To")
             model: !details ? [] : details.to
+            addressFontSize: 13
         }
 
         // Notes
@@ -100,6 +108,7 @@ MultipageModal
             property string prev_text: ""
 
             title: qsTr("Notes")
+            titleColor: Dex.CurrentTheme.foregroundColor2
             remove_newline: false
             field.text: !details ? "" : details.transaction_note
             saveable: true

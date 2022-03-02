@@ -11,6 +11,7 @@ ComponentWithTitle
 {
     id: control
 
+    property alias  label: text
     property alias  text: text.text_value
     property alias  value_color: text.color
     property alias  privacy: text.privacy
@@ -26,7 +27,6 @@ ComponentWithTitle
         {
             id: text
 
-            Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredHeight: show_content ? contentHeight : 0
 

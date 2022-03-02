@@ -1,13 +1,17 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
+
 import Qaterial 1.0 as Qaterial
+
 import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-ColumnLayout {
+ColumnLayout
+{
     id: control
     property alias title: title_text.text
+    property color titleColor: Dex.CurrentTheme.foregroundColor
     property alias field: input_field
     property alias save_button: save_button
     property alias hide_button: hide_button
@@ -31,6 +35,8 @@ ColumnLayout {
         id: title_text
 
         Layout.alignment: Qt.AlignVCenter
+
+        color: titleColor
 
         Qaterial.Icon
         {
@@ -91,9 +97,5 @@ ColumnLayout {
             font.pixelSize: Style.textSizeSmall
             height: 20
         }
-    }
-
-    
+    } 
 }
-
-
