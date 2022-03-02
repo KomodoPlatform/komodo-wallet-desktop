@@ -242,7 +242,7 @@ DexPopup
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp)
     {
-        const change = General.formatCrypto("", amount, ticker, "", "", true)
+        const change = General.formatFullCrypto("", amount, ticker, "", "", true)
         if (!app.segwit_on)
         {
             newNotification("onBalanceUpdateStatus",
