@@ -359,7 +359,6 @@ QtObject {
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
         return diffPrefix(received) +  atomic_qt_utilities.retrieve_main_ticker(ticker) + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
-    
 
     function fullCoinName(name, ticker) {
         return name + " (" + ticker + ")"
@@ -481,6 +480,11 @@ QtObject {
 
 
         return tx_fee + "\n" + trading_fee +"<br>"+minimum_amount
+    }
+
+    function validateWallet(wallet_name) {
+        if (wallet_name.length >= 25) return "Wallet name must 25 chars or less"
+        return checkIfWalletExists(wallet_name)
     }
 
     function txFeeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {

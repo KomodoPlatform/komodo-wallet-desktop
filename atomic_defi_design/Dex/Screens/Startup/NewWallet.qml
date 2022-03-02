@@ -177,7 +177,7 @@ SetupPage
         {
 
             if (!nextButton.enabled) return
-            text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+            text_error = General.validateWallet(input_wallet_name.field.text)
             if (text_error !== "")
             {
                 input_wallet_name.error = true
@@ -308,7 +308,7 @@ SetupPage
                     field.horizontalAlignment: Qt.AlignLeft
                     field.leftPadding: 75
                     field.placeholderText: "Wallet Name"
-                    field.onTextChanged: text_error = ""
+                    field.onTextChanged: text_error = General.validateWallet(input_wallet_name.field.text)
 
                     DexRectangle
                     {
@@ -451,6 +451,13 @@ SetupPage
                     Layout.preferredWidth: 400
                     spacing: Style.buttonSpacing
 
+                    DefaultText
+                    {
+                        text_value: text_error
+                        color: Dex.CurrentTheme.noColor
+                        visible: text !== ''
+                    }
+
                     Item
                     {
                         Layout.fillWidth: true
@@ -465,15 +472,14 @@ SetupPage
                         leftPadding: 5
                         rightPadding: 5
                         padding: 16
-                        enabled: input_wallet_name.field.text !== ""
+                        enabled: input_wallet_name.field.text !== "" && text_error == ""
                         opacity: enabled ? 1 : .7
                         Layout.preferredHeight: 45
                         iconSourceRight: Qaterial.Icons.arrowRight
 
                         onClicked:
                         {
-                            if (input_wallet_name.field.text.length >= 25) text_error = "Wallet name must 25 chars or less"
-                            else text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+                            text_error = General.validateWallet(input_wallet_name.field.text)
                             if (text_error !== "")
                             {
                                 input_wallet_name.error = true
@@ -487,13 +493,6 @@ SetupPage
                             mmo.model = getRandomWords(4)
                         }
                     }
-                }
-
-                DefaultText
-                {
-                    text_value: text_error
-                    color: Dex.CurrentTheme.noColor
-                    visible: text !== ''
                 }
             }
 
