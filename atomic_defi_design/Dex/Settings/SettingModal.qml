@@ -527,8 +527,8 @@ Qaterial.Dialog
                                 {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_version()
-                                    onCopyNotificationTitle: qsTr("DEX Version")
-                                    onCopyNotificationMsg: qsTr("DEX Version copied to clipboard.")
+                                    onCopyNotificationTitle: qsTr("AtomicDEX Desktop Version")
+                                    onCopyNotificationMsg: qsTr("copied to clipboard")
                                 }
                             }
                             RowLayout
