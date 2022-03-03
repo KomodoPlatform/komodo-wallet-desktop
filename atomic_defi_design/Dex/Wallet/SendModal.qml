@@ -507,9 +507,9 @@ BasicModal
                     DefaultText
                     {
                         visible: _preparePage.cryptoSendMode
-                        font.pixelSize: 18
+                        font.pixelSize: 16
                         anchors.centerIn: parent
-                        text: API.app.settings_pg.current_fiat_sign
+                        text: API.app.settings_pg.current_currency
                     }
 
                     DefaultImage
