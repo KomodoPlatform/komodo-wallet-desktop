@@ -57,39 +57,26 @@ MultipageModalContent
     TextEditWithTitle
     {
         id: tx_hash
+        Layout.fillWidth: true
         title: qsTr("Transaction Hash")
     }
 
     // Buttons
     footer:
     [
-        Item
-        {
-            Layout.fillWidth: true
-        },
         DexButton
         {
+            Layout.fillWidth: true
             text: qsTr("Close")
-            leftPadding: 40
-            rightPadding: 40
             radius: 18
             onClicked: close()
         },
-        Item
-        {
-            Layout.fillWidth: true
-        },
         DexAppOutlineButton
         {
+            Layout.fillWidth: true
             text: qsTr("View on Explorer")
-            leftPadding: 40
-            rightPadding: 40
             radius: 18
             onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
-        },
-        Item
-        {
-            Layout.fillWidth: true
         }
     ]
 }
