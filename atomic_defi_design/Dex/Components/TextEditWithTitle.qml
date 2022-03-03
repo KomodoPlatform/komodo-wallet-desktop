@@ -19,7 +19,7 @@ ComponentWithTitle
     property string onCopyNotificationTitle: qsTr("Swap ID")
     property string onCopyNotificationMsg: qsTr("copied to clipboard")
 
-    RowLayout
+    Row
     {
         Layout.fillWidth: true
 
@@ -27,8 +27,7 @@ ComponentWithTitle
         {
             id: text
 
-            Layout.alignment: Qt.AlignVCenter
-            Layout.preferredHeight: show_content ? contentHeight : 0
+            width: implicitWidth > parent.width * 0.9 ? parent.width * 0.9 : implicitWidth
 
             clip: true
             textFormat: TextEdit.AutoText
@@ -43,8 +42,7 @@ ComponentWithTitle
         {
             visible: control.copy
 
-            Layout.alignment: Qt.AlignVCenter
-
+            width: parent.width * 0.1
             size: 16
             icon: Qaterial.Icons.contentCopy
             color: copyArea.containsMouse ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
