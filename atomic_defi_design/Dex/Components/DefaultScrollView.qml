@@ -16,6 +16,7 @@ ScrollView
         color: Dex.CurrentTheme.scrollBarIndicatorColor
         radius: 8
     }
+    ScrollBar.vertical.policy: contentHeight > height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     ScrollBar.horizontal.background: Rectangle { color: Dex.CurrentTheme.scrollBarBackgroundColor; radius: 8 }
     ScrollBar.horizontal.contentItem: Rectangle
     {
@@ -24,4 +25,5 @@ ScrollView
         color: Dex.CurrentTheme.scrollBarIndicatorColor
         radius: 8
     }
+    ScrollBar.horizontal.policy: contentHeight > height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
 }

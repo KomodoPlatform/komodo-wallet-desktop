@@ -180,115 +180,110 @@ MultipageModal
             }
         }
 
-        Item
+        DefaultScrollView
         {
             Layout.topMargin: 20
             Layout.fillWidth: true
             Layout.preferredHeight: 300
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-            DefaultScrollView
+            ColumnLayout
             {
-                anchors.fill: parent
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                width: parent.width - 30
+                spacing: 12
 
-                ColumnLayout
+                // Maker/Taker
+                TextEditWithTitle
                 {
-                    width: parent.width - 30
-                    spacing: 12
+                    title: qsTr("Order Type")
+                    text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
+                    label.font.pixelSize: 13
+                }
 
-                    // Maker/Taker
-                    TextEditWithTitle
-                    {
-                        title: qsTr("Order Type")
-                        text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
-                        label.font.pixelSize: 13
-                    }
+                // Refund state
+                TextFieldWithTitle
+                {
+                    title: qsTr("Refund State")
+                    field.text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
+                    field.readOnly: true
+                    field.font.pixelSize: 13
+                    visible: field.text !== ''
+                }
 
-                    // Refund state
-                    TextFieldWithTitle
-                    {
-                        title: qsTr("Refund State")
-                        field.text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
-                        field.readOnly: true
-                        field.font.pixelSize: 13
-                        visible: field.text !== ''
-                    }
+                // Date
+                TextEditWithTitle
+                {
+                    title: qsTr("Date")
+                    text: !details ? "" : details.date
+                    label.font.pixelSize: 13
+                    visible: text !== ''
+                }
 
-                    // Date
-                    TextEditWithTitle
-                    {
-                        title: qsTr("Date")
-                        text: !details ? "" : details.date
-                        label.font.pixelSize: 13
-                        visible: text !== ''
-                    }
+                // ID
+                TextEditWithTitle
+                {
+                    title: qsTr("ID")
+                    text: !details ? "" : details.order_id
+                    label.font.pixelSize: 13
+                    visible: text !== ''
+                    copy: true
+                    privacy: true
+                }
 
-                    // ID
-                    TextEditWithTitle
-                    {
-                        title: qsTr("ID")
-                        text: !details ? "" : details.order_id
-                        label.font.pixelSize: 13
-                        visible: text !== ''
-                        copy: true
-                        privacy: true
-                    }
+                // Payment ID
+                TextEditWithTitle
+                {
+                    title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
+                    text: !details ? "" : details.maker_payment_id
+                    label.font.pixelSize: 13
+                    visible: text !== ''
+                    privacy: true
+                }
 
-                    // Payment ID
-                    TextEditWithTitle
-                    {
-                        title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
-                        text: !details ? "" : details.maker_payment_id
-                        label.font.pixelSize: 13
-                        visible: text !== ''
-                        privacy: true
-                    }
+                // Payment ID
+                TextEditWithTitle
+                {
+                    title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
+                    text: !details ? "" : details.taker_payment_id
+                    label.font.pixelSize: 13
+                    visible: text !== ''
+                    privacy: true
+                }
 
-                    // Payment ID
-                    TextEditWithTitle
-                    {
-                        title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
-                        text: !details ? "" : details.taker_payment_id
-                        label.font.pixelSize: 13
-                        visible: text !== ''
-                        privacy: true
-                    }
+                // Error ID
+                TextEditWithTitle
+                {
+                    title: qsTr("Error ID")
+                    text: !details ? "" : details.order_error_state
+                    label.font.pixelSize: 13
+                    visible: text !== ''
+                }
 
-                    // Error ID
-                    TextEditWithTitle
-                    {
-                        title: qsTr("Error ID")
-                        text: !details ? "" : details.order_error_state
-                        label.font.pixelSize: 13
-                        visible: text !== ''
-                    }
+                // Error Details
+                TextFieldWithTitle
+                {
+                    title: qsTr("Error Log")
+                    field.text: !details ? "" : details.order_error_message
+                    field.readOnly: true
+                    field.font.pixelSize: 13
+                    copyable: true
 
-                    // Error Details
-                    TextFieldWithTitle
-                    {
-                        title: qsTr("Error Log")
-                        field.text: !details ? "" : details.order_error_message
-                        field.readOnly: true
-                        field.font.pixelSize: 13
-                        copyable: true
+                    visible: field.text !== ''
+                }
 
-                        visible: field.text !== ''
-                    }
+                HorizontalLine
+                {
+                    visible: swap_progress.visible
+                    Layout.fillWidth: true
+                    Layout.topMargin: 10
+                }
 
-                    HorizontalLine
-                    {
-                        visible: swap_progress.visible
-                        Layout.fillWidth: true
-                        Layout.topMargin: 10
-                    }
-
-                    SwapProgress
-                    {
-                        id: swap_progress
-                        visible: General.exists(details) && details.order_status !== "matching"
-                        Layout.fillWidth: true
-                        details: root.details
-                    }
+                SwapProgress
+                {
+                    id: swap_progress
+                    visible: General.exists(details) && details.order_status !== "matching"
+                    Layout.fillWidth: true
+                    details: root.details
                 }
             }
         }
@@ -342,7 +337,6 @@ MultipageModal
                 visible: !refundButton.visible & !cancelOrderButton.visible
                 Layout.fillWidth: true
             },
-
 
             DexAppOutlineButton
             {
