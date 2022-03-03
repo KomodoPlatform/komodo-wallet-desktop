@@ -157,8 +157,10 @@ MultipageModal
             DexCheckBox
             {
                 Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
                 id: enable_custom_config
 
+                spacing: 2
                 text: qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker)
             }
 
