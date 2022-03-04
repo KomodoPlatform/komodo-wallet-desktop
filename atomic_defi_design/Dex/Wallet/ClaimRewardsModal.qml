@@ -126,8 +126,7 @@ BasicModal {
                     !amount ? "" :
                     !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
                     !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
-
-                    General.formatCrypto(
+                    qsTr("You will receive ") + General.formatCrypto(
                         '',
                         amount,
                         api_wallet_page.ticker,
