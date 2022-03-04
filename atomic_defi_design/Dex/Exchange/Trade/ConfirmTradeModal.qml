@@ -158,10 +158,15 @@ MultipageModal
             {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
+                Layout.maximumWidth: config_section.width
+
                 id: enable_custom_config
 
                 spacing: 2
                 text: qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker)
+                boxWidth: 24
+                boxHeight: 24
+                label.horizontalAlignment: Text.AlignHCenter
             }
 
             // Configuration settings
