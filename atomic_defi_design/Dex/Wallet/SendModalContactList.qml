@@ -59,20 +59,9 @@ MultipageModal {
                     {
                         modelData.proxy_filter.filter_type = ticker
                         addressesCount = modelData.proxy_filter.rowCount()
-                        console.debug("SendModal: Apply %1 filter to contact %2. It has %3 %4 addresses"
-                                        .arg(ticker)
-                                        .arg(modelData.name)
-                                        .arg(addressesCount)
-                                        .arg(modelData.proxy_filter.filter_type))
-                    }
+                }
 
-                    Component.onDestruction:
-                    {
-                        contactModel.proxy_filter.filter_type = ""
-                        console.debug("SendModal: Remove %1 filter to contact %2"
-                                        .arg(ticker)
-                                        .arg(contactModel.name))
-                    }
+                Component.onDestruction: contactModel.proxy_filter.filter_type = ""
 
                     DexMouseArea
                     {
