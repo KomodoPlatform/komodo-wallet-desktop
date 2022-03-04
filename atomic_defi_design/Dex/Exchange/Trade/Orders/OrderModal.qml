@@ -185,16 +185,19 @@ MultipageModal
             Layout.topMargin: 20
             Layout.fillWidth: true
             Layout.preferredHeight: 300
+
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
             ColumnLayout
             {
-                width: parent.width - 30
+                width: 400
+                height: parent.height - 30
                 spacing: 12
 
                 // Maker/Taker
                 TextEditWithTitle
                 {
+                    Layout.fillWidth: true
                     title: qsTr("Order Type")
                     text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
                     label.font.pixelSize: 13
@@ -203,6 +206,7 @@ MultipageModal
                 // Refund state
                 TextFieldWithTitle
                 {
+                    Layout.fillWidth: true
                     title: qsTr("Refund State")
                     field.text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
                     field.readOnly: true
@@ -213,6 +217,7 @@ MultipageModal
                 // Date
                 TextEditWithTitle
                 {
+                    Layout.fillWidth: true
                     title: qsTr("Date")
                     text: !details ? "" : details.date
                     label.font.pixelSize: 13
@@ -222,6 +227,7 @@ MultipageModal
                 // ID
                 TextEditWithTitle
                 {
+                    Layout.fillWidth: true
                     title: qsTr("ID")
                     text: !details ? "" : details.order_id
                     label.font.pixelSize: 13
@@ -233,6 +239,7 @@ MultipageModal
                 // Payment ID
                 TextEditWithTitle
                 {
+                    Layout.fillWidth: true
                     title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
                     text: !details ? "" : details.maker_payment_id
                     label.font.pixelSize: 13
@@ -243,6 +250,7 @@ MultipageModal
                 // Payment ID
                 TextEditWithTitle
                 {
+                    Layout.fillWidth: true
                     title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
                     text: !details ? "" : details.taker_payment_id
                     label.font.pixelSize: 13
@@ -253,6 +261,7 @@ MultipageModal
                 // Error ID
                 TextEditWithTitle
                 {
+                    Layout.fillWidth: true
                     title: qsTr("Error ID")
                     text: !details ? "" : details.order_error_state
                     label.font.pixelSize: 13
@@ -260,15 +269,15 @@ MultipageModal
                 }
 
                 // Error Details
-                TextFieldWithTitle
+                TextEditWithTitle
                 {
+                    Layout.fillWidth: true
                     title: qsTr("Error Log")
-                    field.text: !details ? "" : details.order_error_message
-                    field.readOnly: true
-                    field.font.pixelSize: 13
-                    copyable: true
-
-                    visible: field.text !== ''
+                    text: !details ? "" : details.order_error_message
+                    label.font.pixelSize: 13
+                    visible: text !== ''
+                    copy: true
+                    onCopyNotificationTitle: qsTr("Error Log")
                 }
 
                 HorizontalLine
