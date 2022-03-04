@@ -7,12 +7,13 @@ import QtQuick.Controls 2.15
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-MultipageModal {
+MultipageModal
+{
     id: root
 
-    width: 500
-    height: 400
+    width: 600
 
     property string ticker: api_wallet_page.ticker
     property var selected_address: ""
@@ -32,89 +33,90 @@ MultipageModal {
         }
 
         // Contact List
-        ColumnLayout
+        DefaultListView
         {
-            Layout.alignment: Qt.AlignHCenter
+            id: contactListView
+
             Layout.fillWidth: true
 
-            DefaultListView
+            model: API.app.addressbook_pg.model.proxy
+            delegate: DefaultRectangle
             {
-                readonly property int rowHeight: 30 // Visual height of a row.
+                property int addressesCount
+                property var contactModel: modelData
 
-                Component.onCompleted: API.app.addressbook_pg.model.proxy.type_filter = ticker
-                Component.onDestruction: API.app.addressbook_pg.model.proxy.type_filter = ""
+                width: contactListView.width
+                height: 30
+                color: mouse_area.containsMouse ? Dex.CurrentTheme.accentColor : index % 2 === 0 ? Dex.CurrentTheme.backgroundColor : Dex.CurrentTheme.backgroundColorDeep
 
-                model: API.app.addressbook_pg.model.proxy
-                delegate: AnimatedRectangle
+                Component.onCompleted:
                 {
-                    property int addressesCount
-                    property var contactModel: modelData
-
-
-                    width: 450
-                    height: 30
-                    color: mouse_area.containsMouse ? DexTheme.buttonColorHovered : index % 2 === 0 ? DexTheme.contentColorTopBold : "transparent"
-
-                    Component.onCompleted:
-                    {
-                        modelData.proxy_filter.filter_type = ticker
-                        addressesCount = modelData.proxy_filter.rowCount()
+                    modelData.proxy_filter.filter_type = ticker
+                    addressesCount = modelData.proxy_filter.rowCount()
                 }
-
                 Component.onDestruction: contactModel.proxy_filter.filter_type = ""
 
-                    DexMouseArea
+                DefaultMouseArea
+                {
+                    id: mouse_area
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked:
                     {
-                        id: mouse_area
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked:
-                        {
-                            addresses_view.contactModel = modelData
-                            root.currentIndex = 1
-                        }
-                    }
-
-                    DefaultText // Contact Name
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        text: modelData.name
-                        elide: Qt.ElideRight
-                    }
-
-                    DefaultText // Contact Addresses Count
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
-                        anchors.rightMargin: 18
-                        text: addressesCount > 1 ? qsTr("%1 addresses").arg(addressesCount) :
-                                                   qsTr("1 address")
-                    }
-
-                    HorizontalLine
-                    {
-                        width: parent.width
-                        height: 2
-                        anchors.bottom: parent.bottom
+                        addressesView.contactModel = modelData
+                        root.currentIndex = 1
                     }
                 }
+
+                DefaultText // Contact Name
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    width: parent * 0.4
+                    text: modelData.name
+                    elide: Qt.ElideRight
+                }
+
+                DefaultText // Contact Addresses Count
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 10
+                    width: parent * 0.4
+                    text: addressesCount > 1 ? qsTr("%1 addresses").arg(addressesCount) : qsTr("1 address")
+                    elide: Qt.ElideRight
+                }
+
+                HorizontalLine
+                {
+                    width: parent.width
+                    height: 2
+                    anchors.bottom: parent.bottom
+                }
             }
+
+            Component.onCompleted: API.app.addressbook_pg.model.proxy.type_filter = ticker
+            Component.onDestruction: API.app.addressbook_pg.model.proxy.type_filter = ""
         }
 
-        DefaultButton // Back to Send Modal Button
-        {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            text: qsTr("Back")
-            onClicked: close()
-        }
+        footer:
+        [
+            Item { Layout.fillWidth: true },
+            DefaultButton // Back to Send Modal Button
+            {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: 280
+                text: qsTr("Back")
+                onClicked: close()
+            },
+            Item { Layout.fillWidth: true }
+        ]
     }
 
     MultipageModalContent
     {
-        id: addresses_view
+        id: addressesView
 
         readonly property var defaultContactModel:
         {
@@ -126,85 +128,91 @@ MultipageModal {
         }
         property var contactModel: defaultContactModel
 
-        titleText: qsTr("Choose an %1 address of %2")
-                   .arg(contactModel.proxy_filter.filter_type)
-                   .arg(contactModel.name)
+        property int columnsMargin: 10
+        property int nameColumnWidth: width * 0.3
+
+        titleText: qsTr("Choose an %1 address of %2").arg(contactModel.proxy_filter.filter_type).arg(contactModel.name)
 
         RowLayout
         {
             Layout.fillWidth: true
+            spacing: 0
 
             DefaultText
             {
-                Layout.leftMargin: 5
-                Layout.preferredWidth: 210
+                Layout.leftMargin: addressesView.columnsMargin
+                Layout.preferredWidth: addressesView.nameColumnWidth
                 text: qsTr("Name")
-                color: DexTheme.foregroundColor
-                opacity: .7
+                color: Dex.CurrentTheme.foregroundColor2
             }
 
             DefaultText
             {
+                Layout.leftMargin: addressesView.columnsMargin
                 text: qsTr("Address")
-                color: DexTheme.foregroundColor
-                opacity: .7
+                color: Dex.CurrentTheme.foregroundColor2
             }
         }
 
-        // Address List
-        ColumnLayout
+        DefaultListView
         {
-            id: address_list_bg
+            id: addressListView
 
             Layout.fillWidth: true
 
-            DefaultListView
+            model: addressesView.contactModel.proxy_filter
+            delegate: DefaultRectangle
             {
-                readonly property int rowHeight: 30 // Visual height of a row.
+                width: addressListView.width
+                height: 30
+                color: address_mouse_area.containsMouse ? Dex.CurrentTheme.accentColor : index % 2 === 0 ? Dex.CurrentTheme.backgroundColor : Dex.CurrentTheme.backgroundColorDeep
 
-                model: addresses_view.contactModel.proxy_filter
-                delegate: AnimatedRectangle { // Address Row
-                    implicitWidth: 450
-                    height: 30
-                    color: address_mouse_area.containsMouse ? DexTheme.buttonColorHovered : index % 2 === 0 ? DexTheme.contentColorTopBold : "transparent"
-
-                    DexMouseArea {
-                        id: address_mouse_area
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: {
-                            selected_address = model.address_value
-                            close()
-                        }
+                DefaultMouseArea
+                {
+                    id: address_mouse_area
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked:
+                    {
+                        selected_address = model.address_value
+                        close()
                     }
+                }
 
-                    DefaultText { // Address Key
-                        width: 150
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        text: model.address_key
-                        elide: Qt.ElideRight
-                    }
+                DefaultText
+                {
+                    id: addressKeyLabel
+                    width: addressesView.nameColumnWidth
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: addressesView.columnsMargin
+                    text: model.address_key
+                    elide: Qt.ElideRight
+                }
 
-                    DefaultText { // Address Value
-                        width: 220
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        text: model.address_value
-                        elide: Qt.ElideRight
-                    }
+                DefaultText
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: addressKeyLabel.right
+                    anchors.leftMargin: addressesView.columnsMargin
+                    anchors.right: parent.right
+                    anchors.rightMargin: addressesView.columnsMargin
+                    text: model.address_value
+                    elide: Qt.ElideRight
                 }
             }
         }
 
-        DexAppButton
-        {
-            radius: 16
-            Layout.alignment: Qt.AlignBottom
-            text: qsTr("Back")
-            onClicked: currentIndex = 0
-        }
+        footer:
+        [
+            Item { Layout.fillWidth: true },
+            DefaultButton
+            {
+                Layout.preferredWidth: 280
+                text: qsTr("Back")
+                onClicked: currentIndex = 0
+            },
+            Item { Layout.fillWidth: true }
+        ]
     }
 }
