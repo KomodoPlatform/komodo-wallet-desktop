@@ -123,13 +123,17 @@ BasicModal {
                 text_value:
                 {
                     let amount = prepare_claim_rewards_result.withdraw_answer.my_balance_change
-                    let fiat_amount = API.app.get_fiat_from_amount(api_wallet_page.ticker, amount)
+                    !amount ? "" :
                     !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
                     !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
-                        qsTr("You will receive %1 %2 (%3)")
-                            .arg(api_wallet_page.ticker)
-                            .arg(amount)
-                            .arg(General.formatFiat("", fiat_amount, API.app.settings_pg.current_fiat))
+
+                    General.formatCrypto(
+                        '',
+                        amount,
+                        api_wallet_page.ticker,
+                        API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                        API.app.settings_pg.current_fiat
+                    )
                 }
             }
 

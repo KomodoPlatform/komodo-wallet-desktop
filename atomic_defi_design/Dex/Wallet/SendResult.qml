@@ -32,12 +32,13 @@ ModalContent
         text:
         {
             let amount = custom_amount !== "" ? custom_amount : result.balance_change
-            if (!amount) return ""
-            let fiat_amount = API.app.get_fiat_from_amount(api_wallet_page.ticker, amount)
-            return "%1 %2 (%3)"
-                .arg(api_wallet_page.ticker)
-                .arg(amount)
-                .arg(General.formatFiat("", fiat_amount, API.app.settings_pg.current_fiat))
+            !amount ? "" : General.formatCrypto(
+                '',
+                amount,
+                api_wallet_page.ticker,
+                API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                API.app.settings_pg.current_fiat
+            )
         }
     }
 
@@ -48,12 +49,13 @@ ModalContent
         text:
         {
             let amount = result.fees
-            if (!amount) return ""
-            let fiat_amount = API.app.get_fiat_from_amount(api_wallet_page.ticker, amount)
-            return "%1 %2 (%3)"
-                .arg(current_ticker_infos.fee_ticker)
-                .arg(amount)
-                .arg(General.formatFiat("", fiat_amount, API.app.settings_pg.current_fiat))
+            !amount ? "" : General.formatCrypto(
+                '',
+                amount,
+                current_ticker_infos.fee_ticker,
+                API.app.get_fiat_from_amount(current_ticker_infos.fee_ticker, amount),
+                API.app.settings_pg.current_fiat
+            )
         }
     }
 
