@@ -728,22 +728,32 @@ BasicModal
         TextEditWithTitle
         {
             title: qsTr("Amount")
-            text: empty_data ? "" : "%1 %2 (%3 %4)"
-                .arg(api_wallet_page.ticker)
-                .arg(getCryptoAmount() !== "" ? getCryptoAmount() : result.balance_change)
-                .arg(API.app.settings_pg.current_fiat_sign)
-                .arg(send_result.withdraw_answer.total_amount_fiat)
+            text:
+            {
+                let amount = getCryptoAmount()
+                if (!amount) return ""
+                let fiat_amount = API.app.get_fiat_from_amount(api_wallet_page.ticker, amount)
+                return "%1 %2 (%3)"
+                    .arg(api_wallet_page.ticker)
+                    .arg(amount)
+                    .arg(General.formatFiat("", fiat_amount, API.app.settings_pg.current_fiat))
+            }
         }
 
         // Fees
         TextEditWithTitle
         {
             title: qsTr("Fees")
-            text: empty_data ? "" : "%1 %2 (%3 %4)"
-                .arg(current_ticker_infos.fee_ticker)
-                .arg(send_result.withdraw_answer.fee_details.amount)
-                .arg(API.app.settings_pg.current_fiat_sign)
-                .arg(send_result.withdraw_answer.fee_details.amount_fiat)
+            text:
+            {
+                let amount = send_result.withdraw_answer.fee_details.amount
+                if (!amount) return ""
+                let fiat_amount = API.app.get_fiat_from_amount(current_ticker_infos.fee_ticker, amount)
+                return "%1 %2 (%3)"
+                    .arg(current_ticker_infos.fee_ticker)
+                    .arg(amount)
+                    .arg(General.formatFiat("", fiat_amount, API.app.settings_pg.current_fiat))
+            }
         }
 
         // Date
