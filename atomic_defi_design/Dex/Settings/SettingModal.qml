@@ -527,7 +527,7 @@ Qaterial.Dialog
                                 {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_version()
-                                    onCopyNotificationTitle: qsTr("AtomicDEX Desktop Version")
+                                    onCopyNotificationTitle: qsTr("%1 Version").arg(API.app_name)
                                     onCopyNotificationMsg: qsTr("copied to clipboard")
                                 }
                             }
