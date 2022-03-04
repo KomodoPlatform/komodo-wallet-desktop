@@ -41,18 +41,9 @@ MultipageModal {
             {
                 readonly property int rowHeight: 30 // Visual height of a row.
 
-                Component.onCompleted:
-                {
-                    API.app.addressbook_pg.model.proxy.type_filter = ticker
-                    console.debug("SendModal: Show contact list of given ticker %1 and of size %2"
-                                    .arg(API.app.addressbook_pg.model.proxy.type_filter)
-                                    .arg(count))
-                }
-                Component.onDestruction:
-                {
-                    API.app.addressbook_pg.model.proxy.type_filter = ""
-                    console.debug("SendModal: Destroying contact list")
-                }
+                Component.onCompleted: API.app.addressbook_pg.model.proxy.type_filter = ticker
+                Component.onDestruction: API.app.addressbook_pg.model.proxy.type_filter = ""
+
                 model: API.app.addressbook_pg.model.proxy
                 delegate: AnimatedRectangle
                 {
