@@ -527,7 +527,7 @@ Qaterial.Dialog
                                 {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: API.app.settings_pg.get_version()
-                                    onCopyNotificationTitle: qsTr("%1 Version").arg(API.app_name)
+                                    onCopyNotificationTitle: qsTr("Application Version")
                                     onCopyNotificationMsg: qsTr("copied to clipboard")
                                 }
                             }
