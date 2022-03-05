@@ -86,10 +86,12 @@ BasicModal {
             Layout.fillWidth: true
             Layout.preferredHeight: addressColumn.height + 10
             color: DexTheme.contentColorTop
+
             Column {
                 id: addressColumn
                 width: parent.width - 10
                 anchors.centerIn: parent
+
                 AddressList {
                     width: parent.width
                     title: qsTr("From")
@@ -100,17 +102,9 @@ BasicModal {
                 AddressList {
                     width: parent.width
                     title: qsTr("To")
-                    model:
-                    {
-                        let recipients = []
-                        if (details)
-                        {
-                            recipients = details.to
-                            let i = recipients.indexOf(details.from[0])
-                            if (i > -1) recipients.splice(i, 1);
-                        }
-                        return recipients
-                    }
+                    model: !details ?
+                           [] : details.to.length > 1 ?
+                           General.arrayExclude(details.to, details.from[0]) : details.to
                 }
             }
         }
