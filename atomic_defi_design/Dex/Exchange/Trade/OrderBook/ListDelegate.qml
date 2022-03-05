@@ -37,7 +37,7 @@ Item
 
     DefaultMouseArea
     {
-        id: mouse_are
+        id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
         onClicked:
@@ -76,7 +76,7 @@ Item
 
         AnimatedRectangle
         {
-            visible: mouse_are.containsMouse
+            visible: mouse_area.containsMouse
             width: parent.width
             height: parent.height
             color: Dex.CurrentTheme.foregroundColor
@@ -104,12 +104,13 @@ Item
 
             Rectangle
             {
+                id: depth_bar
                 anchors.top: parent.top
                 height: 2
                 radius: 3
                 color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
                 width: 0
-                Component.onCompleted: width = ((depth * 100) * (parent.parent.width + 40)) / 100
+                Component.onCompleted: width = ((depth * 100) * (mouse_area.width + 40)) / 100
                 opacity: 0.8
                 Behavior on width { NumberAnimation { duration: 1000 } }
             }
@@ -124,7 +125,7 @@ Item
 
             Qaterial.ColorIcon
             {
-                visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume
+                visible: mouse_area.containsMouse && !enough_funds_to_pay_min_volume
                 source: Qaterial.Icons.alert
                 Layout.alignment: Qt.AlignVCenter
                 iconSize: 12
@@ -159,13 +160,14 @@ Item
                 font.pixelSize: 12
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                onTextChanged: depth_bar.width = ((depth * 100) * (mouse_area.width + 40)) / 100
             }
 
             // Total
             DefaultText
             {
                 Layout.preferredWidth: (parent.width / 100) * 30
-                rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
+                rightPadding: (is_mine) && (mouse_area.containsMouse || cancel_button.containsMouse) ? 30 : 0
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 text: { new BigNumber(total).toFixed(6) }
@@ -186,16 +188,16 @@ Item
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: 1
         anchors.right: parent.right
-        anchors.rightMargin:  mouse_are.containsMouse || cancel_button.containsMouse? 12 : 6
+        anchors.rightMargin:  mouse_area.containsMouse || cancel_button.containsMouse? 12 : 6
         Behavior on iconSize {
             NumberAnimation {
                 duration: 200
             }
         }
 
-        iconSize: mouse_are.containsMouse || cancel_button.containsMouse? 16 : 0
+        iconSize: mouse_area.containsMouse || cancel_button.containsMouse? 16 : 0
 
-        color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_are.containsMouse? DexTheme.foregroundColor: Qaterial.Colors.red
+        color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_area.containsMouse? DexTheme.foregroundColor: Qaterial.Colors.red
 
         DefaultMouseArea {
             id: cancel_button
@@ -214,7 +216,7 @@ Item
 
     AnimatedRectangle
     {
-        visible: !enough_funds_to_pay_min_volume && mouse_are.containsMouse
+        visible: !enough_funds_to_pay_min_volume && mouse_area.containsMouse
         color: Dex.CurrentTheme.backgroundColor
         anchors.fill: parent
         opacity: .3
