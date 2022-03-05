@@ -487,6 +487,11 @@ QtObject {
         return tx_fee + "\n" + trading_fee +"<br>"+minimum_amount
     }
 
+    function validateWallet(wallet_name) {
+        if (wallet_name.length >= 25) return "Wallet name must 25 chars or less"
+        return checkIfWalletExists(wallet_name)
+    }
+
     function txFeeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
 
         if(!trade_info || !trade_info.trading_fee) return ""
