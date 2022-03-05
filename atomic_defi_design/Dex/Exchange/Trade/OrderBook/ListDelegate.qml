@@ -26,8 +26,12 @@ Item
 
                 qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
                     .arg(parseFloat(min_volume).toFixed(8))
-                    .arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin)
-                    .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ? "Your max balance after fees is: %1".arg(isAsk ? relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
+                    .arg(isAsk ?
+                        API.app.trading_pg.market_pairs_mdl.right_selected_coin :
+                        API.app.trading_pg.market_pairs_mdl.left_selected_coin)
+                    .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ?
+                        "Your max balance after fees is: %1".arg(isAsk ?
+                        relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
             }
             width: 300
         }
@@ -49,13 +53,22 @@ Item
             {
                 exchange_trade.orderSelected = true
                 orderList.currentIndex = index
+
                 if (isAsk)
                 {
-                    selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
+                    selectOrder(true, coin, price, quantity, price_denom,
+                                price_numer, quantity_denom, quantity_numer,
+                                min_volume, base_min_volume, base_max_volume,
+                                rel_min_volume, rel_max_volume, base_max_volume_denom,
+                                base_max_volume_numer, uuid)
                 }
                 else
                 {
-                    selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
+                    selectOrder(false, coin, price, quantity, price_denom,
+                                price_numer, quantity_denom, quantity_numer,
+                                min_volume, base_min_volume, base_max_volume,
+                                rel_min_volume, rel_max_volume, base_max_volume_denom,
+                                base_max_volume_numer, uuid)
                 }
 
                 if (order_form.visible === false)
@@ -98,21 +111,21 @@ Item
         {
             anchors.bottom: parent.bottom
             height: 2
+            width: parent.width
             radius: 3
             color: Dex.CurrentTheme.backgroundColor
-            width: parent.width
 
             Rectangle
             {
                 id: depth_bar
                 anchors.top: parent.top
                 height: 2
-                radius: 3
-                color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
                 width: 0
-                Component.onCompleted: width = ((depth * 100) * (mouse_area.width + 40)) / 100
-                opacity: 0.8
                 Behavior on width { NumberAnimation { duration: 1000 } }
+                radius: 3
+                opacity: 0.8
+                color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+                Component.onCompleted: width = ((depth * 100) * (mouse_area.width + 40)) / 100
             }
         }
 
@@ -179,7 +192,8 @@ Item
         }
     }
 
-    Qaterial.ColorIcon {
+    Qaterial.ColorIcon
+    {
         id: cancel_button_text
         property bool requested_cancel: false
         visible: is_mine && !requested_cancel
@@ -188,24 +202,30 @@ Item
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: 1
         anchors.right: parent.right
-        anchors.rightMargin:  mouse_area.containsMouse || cancel_button.containsMouse? 12 : 6
-        Behavior on iconSize {
-            NumberAnimation {
+        anchors.rightMargin:  mouse_area.containsMouse || cancel_button.containsMouse ? 12 : 6
+        Behavior on iconSize
+        {
+            NumberAnimation
+            {
                 duration: 200
             }
         }
 
         iconSize: mouse_area.containsMouse || cancel_button.containsMouse? 16 : 0
 
-        color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_area.containsMouse? DexTheme.foregroundColor: Qaterial.Colors.red
+        color: cancel_button.containsMouse ?
+            Qaterial.Colors.red : mouse_area.containsMouse ?
+            DexTheme.foregroundColor: Qaterial.Colors.red
 
-        DefaultMouseArea {
+        DefaultMouseArea
+        {
             id: cancel_button
             anchors.fill: parent
             hoverEnabled: true
 
 
-            onClicked: {
+            onClicked:
+            {
                 if(!is_mine) return
 
                 cancel_button_text.requested_cancel = true
