@@ -272,10 +272,9 @@ BasicModal
 
         property bool cryptoSendMode: true
 
-        // Send address
-        DefaultTextField
+        DefaultRectangle
         {
-            id: input_address
+
             enabled: !root.segwit && !root.is_send_busy
 
             Layout.preferredWidth: 380
@@ -283,8 +282,19 @@ BasicModal
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 18
 
-            placeholderText: qsTr("Address of the recipient")
-            onTextChanged: api_wallet_page.validate_address(text)
+            color: input_address.background.color
+            radius: input_address.background.radius
+
+            DefaultTextField
+            {
+                id: input_address
+
+                width: 350
+                height: 44
+
+                placeholderText: qsTr("Address of the recipient")
+                onTextChanged: api_wallet_page.validate_address(text)
+            }
 
             Rectangle
             {
