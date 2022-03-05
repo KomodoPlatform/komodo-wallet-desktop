@@ -38,7 +38,7 @@ MultipageModal
         }
     }
 
-    width: 800
+    width: 820
 
     onClosed:
     {
@@ -126,17 +126,16 @@ MultipageModal
             enabled: false
             spacing: 10
 
-            DefaultImage
+            // Logo
+            ColumnLayout
             {
-                source: Dex.CurrentTheme.bigLogoPath
-                Layout.preferredWidth: 32
-                Layout.preferredHeight: 32
-            }
-
-            DefaultText
-            {
-                text: API.app_name
-                font.pixelSize: Style.textSizeSmall5
+                DefaultImage
+                {
+                    source: Dex.CurrentTheme.bigLogoPath
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: 144
+                    Layout.preferredHeight: 144
+                }
             }
 
             ColumnLayout
@@ -147,6 +146,7 @@ MultipageModal
                 RowLayout
                 {
                     spacing: 5
+
                     Qaterial.RawMaterialButton
                     {
                         backgroundImplicitWidth: 40
@@ -160,6 +160,7 @@ MultipageModal
                             qrcodeModal.open()
                         }
                     }
+
                     Qaterial.RawMaterialButton
                     {
                         backgroundImplicitWidth: 40
@@ -173,18 +174,19 @@ MultipageModal
                             app.notifyCopy(qsTr("Seed"), qsTr("copied to clipboard"))
                         }
                     }
+
                     ColumnLayout
                     {
                         DefaultText { text: qsTr("Backup Seed"); font.pixelSize: Style.textSizeSmall2 }
-                        DefaultText { id: seedLabel; Layout.fillWidth: true; font.pixelSize: Style.textSizeSmall1; maximumLineCount: 4; wrapMode: Text.WrapAnywhere }
+                        DefaultText { id: seedLabel; Layout.fillWidth: true; font.pixelSize: Style.textSizeSmall1; maximumLineCount: 4; wrapMode: Text.Wrap }
                     }
                 }
-
 
                 // RPC Password
                 RowLayout
                 {
                     spacing: 5
+
                     Qaterial.RawMaterialButton
                     {
                         backgroundImplicitWidth: 40
@@ -198,6 +200,7 @@ MultipageModal
                             qrcodeModal.open()
                         }
                     }
+
                     Qaterial.RawMaterialButton
                     {
                         backgroundImplicitWidth: 40
@@ -211,6 +214,7 @@ MultipageModal
                             app.notifyCopy(qsTr("RPC Password"), qsTr("copied to clipboard"))
                         }
                     }
+
                     ColumnLayout
                     {
                         DefaultText { text: qsTr("RPC Password"); font.pixelSize: Style.textSizeSmall2 }
@@ -227,12 +231,11 @@ MultipageModal
             visible: coinsList.visible
             enabled: coinsList.enabled
             Layout.topMargin: 10
-            Layout.preferredWidth: parent.width / 2
+            Layout.preferredWidth: parent.width / 3
             placeholderText: qsTr("Search a coin.")
             onTextChanged: portfolio_model.portfolio_proxy_mdl.setFilterFixedString(text)
             Component.onDestruction: portfolio_model.portfolio_proxy_mdl.setFilterFixedString("")
         }
-
 
         DefaultRectangle
         {
@@ -242,6 +245,7 @@ MultipageModal
             Layout.topMargin: 10
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 300
+            Layout.alignment: Qt.AlignHCenter
             radius: 10
             border.color: Dex.CurrentTheme.lineSeparatorColor
             border.width: 2
@@ -254,23 +258,31 @@ MultipageModal
                 delegate: ColumnLayout
                 {
                     width: coinsList.width
+
                     RowLayout
                     {
                         Layout.fillWidth: true
-                        DefaultImage
-                        {
-                            source: General.coinIcon(model.ticker)
-                            Layout.leftMargin: 4
-                            Layout.preferredWidth: 20
-                            Layout.preferredHeight: 20
-                        }
+                        Layout.leftMargin: 5
 
-                        DefaultText
+                        ColumnLayout
                         {
-                            Layout.preferredWidth: 100
-                            Layout.leftMargin: 5
-                            text: model.name
-                            font.pixelSize: Style.textSizeSmall5
+                            Layout.fillWidth: true
+
+                            DefaultImage
+                            {
+                                source: General.coinIcon(model.ticker)
+                                Layout.preferredWidth: 30
+                                Layout.preferredHeight: 30
+                                Layout.alignment: Qt.AlignCenter
+                            }
+
+                            DefaultText
+                            {
+                                text: model.name
+                                font.pixelSize: Style.textSizeSmall5
+                                horizontalAlignment: Text.AlignHCenter
+                                Layout.preferredWidth: 100
+                            }
                         }
 
                         ColumnLayout
@@ -291,6 +303,7 @@ MultipageModal
                                         qrcodeModal.open()
                                     }
                                 }
+
                                 Qaterial.RawMaterialButton
                                 {
                                     backgroundImplicitWidth: 40
@@ -304,18 +317,20 @@ MultipageModal
                                         app.notifyCopy(model.name, qsTr("Public Address copied to clipboard"))
                                     }
                                 }
+
                                 ColumnLayout
                                 {
                                     Layout.fillWidth: true
+
                                     DefaultText
                                     {
                                         text: qsTr("Public Address")
                                         font.pixelSize: Style.textSizeSmall2
                                     }
+
                                     DefaultText
                                     {
                                         id: publicAddress
-                                        Layout.fillWidth: true
                                         text: model.public_address
                                         font.pixelSize: Style.textSizeSmall1
                                         maximumLineCount: 4; wrapMode: Text.WrapAnywhere
@@ -339,6 +354,7 @@ MultipageModal
                                         qrcodeModal.open()
                                     }
                                 }
+
                                 Qaterial.RawMaterialButton
                                 {
                                     backgroundImplicitWidth: 40
@@ -352,18 +368,20 @@ MultipageModal
                                         app.notifyCopy(model.name, qsTr("Private Key copied to clipboard"))
                                     }
                                 }
+
                                 ColumnLayout
                                 {
                                     Layout.fillWidth: true
+
                                     DefaultText
                                     {
                                         text: qsTr("Private Key")
                                         font.pixelSize: Style.textSizeSmall2
                                     }
+
                                     DefaultText
                                     {
                                         id: privateKey
-                                        Layout.fillWidth: true
                                         text: model.priv_key
                                         font.pixelSize: Style.textSizeSmall1
                                         maximumLineCount: 4; wrapMode: Text.WrapAnywhere
@@ -372,7 +390,6 @@ MultipageModal
                             }
                         }
                     }
-
                     HorizontalLine { Layout.fillWidth: true }
                 }
             }
