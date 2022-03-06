@@ -285,6 +285,7 @@ BasicModal
 
             placeholderText: qsTr("Address of the recipient")
             onTextChanged: api_wallet_page.validate_address(text)
+            forceFocus: true
 
             Rectangle
             {
@@ -451,7 +452,7 @@ BasicModal
                     }
                     else if (_preparePage.cryptoSendMode)
                     {
-                        return qsTr("Fiat amount: %1%2").arg(API.app.settings_pg.current_fiat_sign).arg(value);
+                        return qsTr("Fiat amount: %1").arg(General.formatFiat('', value, API.app.settings_pg.current_fiat_sign));
                     }
                     else
                     {
@@ -506,15 +507,16 @@ BasicModal
 
                     DefaultText
                     {
-                        visible: _preparePage.cryptoSendMode
+                        id: fiat_symbol
+                        visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD"
                         font.pixelSize: 18
                         anchors.centerIn: parent
-                        text: API.app.settings_pg.current_fiat_sign
+                        text: API.app.settings_pg.current_currency_sign
                     }
 
                     DefaultImage
                     {
-                        visible: !_preparePage.cryptoSendMode
+                        visible: !fiat_symbol.visible
                         anchors.centerIn: parent
                         width: 18
                         height: 18
@@ -730,7 +732,7 @@ BasicModal
             title: qsTr("Amount")
             text: empty_data ? "" : "%1 %2 (%3 %4)"
                 .arg(api_wallet_page.ticker)
-                .arg(getCryptoAmount() !== "" ? getCryptoAmount() : result.balance_change)
+                .arg(getCryptoAmount())
                 .arg(API.app.settings_pg.current_fiat_sign)
                 .arg(send_result.withdraw_answer.total_amount_fiat)
         }
