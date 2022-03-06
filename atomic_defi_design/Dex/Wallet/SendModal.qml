@@ -158,7 +158,7 @@ BasicModal
         input_amount.text = current_ticker_infos.balance
     }
 
-    width: 563
+    width: 650
 
     closePolicy: Popup.NoAutoClose
 
@@ -277,7 +277,7 @@ BasicModal
 
             enabled: !root.segwit && !root.is_send_busy
 
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 18
@@ -289,7 +289,7 @@ BasicModal
             {
                 id: input_address
 
-                width: 350
+                width: 390
                 height: 44
 
                 placeholderText: qsTr("Address of the recipient")
@@ -377,7 +377,7 @@ BasicModal
             enabled: !root.is_send_busy
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.topMargin: 32
 
