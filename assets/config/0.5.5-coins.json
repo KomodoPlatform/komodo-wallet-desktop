@@ -4658,6 +4658,7 @@
     "name": "USD Inflation Coin",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
+    "nomics_id": "USDI",
     "electrum": [
       {
         "url": "usdi1.blackcoin.nl:10002",
