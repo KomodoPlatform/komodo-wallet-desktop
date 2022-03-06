@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
+import "../../../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 import bignumberjs 1.0
@@ -48,42 +49,20 @@ Item
         {
             if(is_mine) return
 
-            if(!enough_funds_to_pay_min_volume);
-            else
+            if(enough_funds_to_pay_min_volume)
             {
                 exchange_trade.orderSelected = true
                 orderList.currentIndex = index
 
-                if (isAsk)
-                {
-                    selectOrder(true, coin, price, quantity, price_denom,
-                                price_numer, quantity_denom, quantity_numer,
-                                min_volume, base_min_volume, base_max_volume,
-                                rel_min_volume, rel_max_volume, base_max_volume_denom,
-                                base_max_volume_numer, uuid)
-                }
-                else
-                {
-                    selectOrder(false, coin, price, quantity, price_denom,
-                                price_numer, quantity_denom, quantity_numer,
-                                min_volume, base_min_volume, base_max_volume,
-                                rel_min_volume, rel_max_volume, base_max_volume_denom,
-                                base_max_volume_numer, uuid)
-                }
+                selectOrder(isAsk, coin, price, quantity, price_denom,
+                            price_numer, quantity_denom, quantity_numer,
+                            min_volume, base_min_volume, base_max_volume,
+                            rel_min_volume, rel_max_volume, base_max_volume_denom,
+                            base_max_volume_numer, uuid)
 
-                if (order_form.visible === false)
-                {
-                    order_form.visible = true
-                }
-
-                if (order_form.hidden === true)
-                {
-                    order_form.hidden = false
-                    if (order_form.contentVisible === false)
-                    {
-                        order_form.contentVisible = true
-                    }
-                }
+                order_form.visible = General.flipFalse(order_form.visible)
+                order_form.hidden = General.flipTrue(order_form.hidden)
+                if (!order_form.hidden) order_form.contentVisible = General.flipFalse(order_form.contentVisible)
             }
         }
 
