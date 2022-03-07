@@ -158,7 +158,7 @@ BasicModal
         input_amount.text = current_ticker_infos.balance
     }
 
-    width: 563
+    width: 650
 
     closePolicy: Popup.NoAutoClose
 
@@ -272,20 +272,30 @@ BasicModal
 
         property bool cryptoSendMode: true
 
-        // Send address
-        DefaultTextField
+        DefaultRectangle
         {
-            id: input_address
+
             enabled: !root.segwit && !root.is_send_busy
 
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 18
 
-            placeholderText: qsTr("Address of the recipient")
-            onTextChanged: api_wallet_page.validate_address(text)
-            forceFocus: true
+            color: input_address.background.color
+            radius: input_address.background.radius
+
+            DefaultTextField
+            {
+                id: input_address
+
+                width: 390
+                height: 44
+
+                placeholderText: qsTr("Address of the recipient")
+                onTextChanged: api_wallet_page.validate_address(text)
+                forceFocus: true
+            }
 
             Rectangle
             {
@@ -367,7 +377,7 @@ BasicModal
             enabled: !root.is_send_busy
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.topMargin: 32
 
