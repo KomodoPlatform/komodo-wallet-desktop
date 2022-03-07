@@ -109,15 +109,6 @@ MultipageModal
             }
         }
 
-        DefaultButton
-        {
-            Layout.preferredWidth: 120
-            Layout.leftMargin: 10
-            visible: !API.app.wallet_pg.convert_address_busy && API.app.wallet_pg.validate_address_data.convertible ? API.app.wallet_pg.validate_address_data.convertible : false
-            text: qsTr("Convert")
-            onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, retrieveWalletTypeTicker(), API.app.wallet_pg.validate_address_data.to_address_format);
-        }
-
         DefaultText
         {
             id: invalidAddressMsgLabel
@@ -130,6 +121,14 @@ MultipageModal
 
         footer:
         [
+            DefaultButton
+            {
+                Layout.preferredWidth: 120
+                visible: !API.app.wallet_pg.convert_address_busy && API.app.wallet_pg.validate_address_data.convertible ? API.app.wallet_pg.validate_address_data.convertible : false
+                text: qsTr("Convert")
+                onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, retrieveWalletTypeTicker(), API.app.wallet_pg.validate_address_data.to_address_format);
+            },
+
             DefaultButton
             {
                 id: validateButton
