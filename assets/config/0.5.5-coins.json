@@ -9607,6 +9607,8 @@
     "coin": "IC",
     "name": "Ignition",
     "coingecko_id": "ignition",
+    "coinpaprika_id": "ic-ignition",
+    "nomics_id": "IC",
     "electrum": [
       {
         "url": "electrum1.ignitioncoin.org:10001",
@@ -9620,6 +9622,8 @@
     "explorer_url": [
       "https://chainz.cryptoid.info/ic/"
     ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
