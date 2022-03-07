@@ -226,6 +226,16 @@ QtObject {
         }
     }
 
+    function flipFalse(obj) {
+        if (obj === false) return true
+        return obj
+    }
+
+    function flipTrue(obj) {
+        if (obj === true) return false
+        return obj
+    }
+
     function getFeesDetail(fees) {
         return [
             {"label": qsTr("<b>Taker tx fee:</b> "), "fee": fees.base_transaction_fees, "ticker": fees.base_transaction_fees_ticker},
