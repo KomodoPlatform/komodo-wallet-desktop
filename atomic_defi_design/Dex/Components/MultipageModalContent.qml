@@ -35,8 +35,10 @@ ColumnLayout
 
         Layout.topMargin: root.topMarginAfterTitle
         Layout.fillWidth: true
-        Layout.preferredHeight: _innerLayout.height
+        Layout.preferredHeight: contentHeight
         Layout.maximumHeight: window.height - 200
+
+        contentHeight: _innerLayout.height
 
         ColumnLayout
         {
