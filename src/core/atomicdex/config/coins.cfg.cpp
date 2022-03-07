@@ -147,6 +147,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::Moonriver;
         }
+        else if (cfg.type == "Moonbeam")
+        {
+            cfg.coin_type = CoinType::Moonbeam;
+        }
         else if (cfg.type == "HecoChain")
         {
             cfg.coin_type = CoinType::HecoChain;
@@ -227,6 +231,11 @@ namespace atomic_dex
         case CoinType::Moonriver:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "MOVRT" : "MOVR";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::Moonbeam:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "GLMRT" : "GLMR";
             cfg.is_erc_family          = true;
             break;
         case CoinType::HecoChain:

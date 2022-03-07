@@ -11,6 +11,8 @@ import App 1.0
 Item {
     id: root
 
+    readonly property bool update_needed: API.app.self_update_service.update_needed
+
     DexFlickable {
         id: layout_background
 

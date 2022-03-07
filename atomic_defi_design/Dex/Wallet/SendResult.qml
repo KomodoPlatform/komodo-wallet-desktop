@@ -29,21 +29,36 @@ MultipageModalContent
     TextEditWithTitle
     {
         title: qsTr("Amount")
-        text: "%1 %2 (%3 %4)"
-            .arg(api_wallet_page.ticker)
-            .arg(custom_amount !== "" ? custom_amount : result.withdraw_answer.my_balance_change)
-            .arg(API.app.settings_pg.current_fiat_sign)
-            .arg(result.withdraw_answer.total_amount_fiat)
+
+        text:
+        {
+            let amount = custom_amount !== "" ? custom_amount : result.withdraw_answer.my_balance_change
+            !amount ? "" : General.formatCrypto(
+                '',
+                amount,
+                api_wallet_page.ticker,
+                API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                API.app.settings_pg.current_fiat
+            )
+        }
     }
 
     // Fees
     TextEditWithTitle
     {
         title: qsTr("Fees")
-        text: "%1 %2 (%3 %4)".arg(current_ticker_infos.fee_ticker)
-            .arg(result.withdraw_answer.fee_details.amount)
-            .arg(API.app.settings_pg.current_fiat_sign)
-            .arg(result.withdraw_answer.fee_details.amount_fiat)
+
+        text:
+        {
+            let amount = result.withdraw_answer.fee_details.amount
+            !amount ? "" : General.formatCrypto(
+                '',
+                amount,
+                current_ticker_infos.fee_ticker,
+                API.app.get_fiat_from_amount(current_ticker_infos.fee_ticker, amount),
+                API.app.settings_pg.current_fiat
+            )
+        }
     }
 
     // Date

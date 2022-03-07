@@ -113,6 +113,13 @@ namespace mm2::api
             j["urls"]                   = cfg.urls;
             break;
         }
+        case CoinType::Moonbeam:
+        {
+            j["swap_contract_address"]  = cfg.is_testnet ? cfg.glmr_erc_testnet_swap_contract_address : cfg.glmr_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.is_testnet ? cfg.glmr_erc_testnet_fallback_swap_contract_address : cfg.glmr_erc_fallback_swap_contract_address;
+            j["urls"]                   = cfg.urls;
+            break;
+        }
         case CoinType::HecoChain:
         {
             j["swap_contract_address"]  = cfg.is_testnet ? cfg.hco_erc_testnet_swap_contract_address : cfg.hco_erc_swap_contract_address;

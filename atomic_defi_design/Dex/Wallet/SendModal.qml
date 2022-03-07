@@ -158,7 +158,7 @@ MultipageModal
         input_amount.text = current_ticker_infos.balance
     }
 
-    width: 563
+    width: 650
 
     closePolicy: Popup.NoAutoClose
 
@@ -272,18 +272,29 @@ MultipageModal
 
         property bool cryptoSendMode: true
 
-        // Send address
-        DefaultTextField
+        DefaultRectangle
         {
-            id: input_address
+
             enabled: !root.segwit && !root.is_send_busy
 
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
 
-            placeholderText: qsTr("Address of the recipient")
-            onTextChanged: api_wallet_page.validate_address(text)
+            color: input_address.background.color
+            radius: input_address.background.radius
+
+            DefaultTextField
+            {
+                id: input_address
+
+                width: 390
+                height: 44
+
+                placeholderText: qsTr("Address of the recipient")
+                onTextChanged: api_wallet_page.validate_address(text)
+                forceFocus: true
+            }
 
             Rectangle
             {
@@ -367,7 +378,7 @@ MultipageModal
             enabled: !root.is_send_busy
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.topMargin: 32
 
@@ -454,7 +465,7 @@ MultipageModal
                     }
                     else if (_preparePage.cryptoSendMode)
                     {
-                        return qsTr("Fiat amount: %1%2").arg(API.app.settings_pg.current_fiat_sign).arg(value);
+                        return qsTr("Fiat amount: %1").arg(General.formatFiat('', value, API.app.settings_pg.current_fiat_sign));
                     }
                     else
                     {
@@ -511,15 +522,16 @@ MultipageModal
 
                     DefaultText
                     {
-                        visible: _preparePage.cryptoSendMode
+                        id: fiat_symbol
+                        visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD"
                         font.pixelSize: 18
                         anchors.centerIn: parent
-                        text: API.app.settings_pg.current_fiat_sign
+                        text: API.app.settings_pg.current_currency_sign
                     }
 
                     DefaultImage
                     {
-                        visible: !_preparePage.cryptoSendMode
+                        visible: !fiat_symbol.visible
                         anchors.centerIn: parent
                         width: 18
                         height: 18
@@ -731,22 +743,35 @@ MultipageModal
         TextEditWithTitle
         {
             title: qsTr("Amount")
-            text: empty_data ? "" : "%1 %2 (%3 %4)"
-                .arg(api_wallet_page.ticker)
-                .arg(getCryptoAmount())
-                .arg(API.app.settings_pg.current_fiat_sign)
-                .arg(send_result.withdraw_answer.total_amount_fiat)
+
+            text:
+            {
+                let amount = getCryptoAmount()
+                !amount ? "" : General.formatCrypto(
+                    '',
+                    amount,
+                    api_wallet_page.ticker,
+                    API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                    API.app.settings_pg.current_fiat
+                )
+            }
         }
 
         // Fees
         TextEditWithTitle
         {
             title: qsTr("Fees")
-            text: empty_data ? "" : "%1 %2 (%3 %4)"
-                .arg(current_ticker_infos.fee_ticker)
-                .arg(send_result.withdraw_answer.fee_details.amount)
-                .arg(API.app.settings_pg.current_fiat_sign)
-                .arg(send_result.withdraw_answer.fee_details.amount_fiat)
+            text:
+            {
+                let amount = send_result.withdraw_answer.fee_details.amount
+                !amount ? "" : General.formatCrypto(
+                    '',
+                    amount,
+                    current_ticker_infos.fee_ticker,
+                    API.app.get_fiat_from_amount(current_ticker_infos.fee_ticker, amount),
+                    API.app.settings_pg.current_fiat
+                )
+            }
         }
 
         // Date

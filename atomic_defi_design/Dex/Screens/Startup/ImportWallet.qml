@@ -58,7 +58,7 @@ SetupPage
         {
             if (!submit_button.enabled) return;
 
-            text_error = General.checkIfWalletExists(input_wallet_name.field.text);
+            text_error = General.validateWallet(input_wallet_name.field.text);
             if (text_error !== "") return;
 
             eula_modal.open();
@@ -66,25 +66,20 @@ SetupPage
 
         function tryPassLevel1()
         {
-            if (input_wallet_name.field.text == "") input_wallet_name.error = true;
+            text_error = General.validateWallet(input_wallet_name.field.text)
 
-            if (_seedField.isValid() && input_wallet_name.field.text !== "")
+            if (text_error === "" && input_wallet_name.field.text !== "")
             {
-                let checkWalletName = General.checkIfWalletExists(input_wallet_name.field.text)
-                if (checkWalletName === "")
+                if (_seedField.isValid())
                 {
                     _seedField.error = false;
                     _inputPassword.field.text = "";
                     _inputPasswordConfirm.field.text = "";
                     currentStep++;
                 }
-                else
-                {
-                    input_wallet_name.error = true;
-                    text_error = checkWalletName;
-                }
+                else _seedField.error = true;
             }
-            else _seedField.error = true;
+            else input_wallet_name.error = true;
         }
 
         ColumnLayout
@@ -162,7 +157,7 @@ SetupPage
                     field.leftPadding: 75
                     field.placeholderText: qsTr("Wallet Name")
                     field.onAccepted: tryPassLevel1()
-                    field.onTextChanged: text_error = ""
+                    field.onTextChanged: text_error = General.validateWallet(input_wallet_name.field.text)
                     DefaultRectangle
                     {
                         x: 5
@@ -257,17 +252,23 @@ SetupPage
                     Layout.preferredWidth: 400
                     spacing: Style.buttonSpacing
 
+                    DefaultText
+                    {
+                        text_value: text_error
+                        color: Dex.CurrentTheme.noColor
+                        visible: text !== ''
+                    }
+
                     Item
                     {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 10
                     }
 
-
                     DexGradientAppButton
                     {
                         id: nextButton
-                        enabled: input_wallet_name.field.text !== "" && _seedField.field.text !== ""
+                        enabled: input_wallet_name.field.text !== "" && _seedField.field.text !== "" && text_error == ""
                         onClicked: tryPassLevel1()
                         radius: 20
 
@@ -279,13 +280,6 @@ SetupPage
                         Layout.preferredHeight: 45
                         iconSourceRight: Qaterial.Icons.arrowRight
                     }
-                }
-
-                DefaultText
-                {
-                    text_value: text_error
-                    color: Dex.CurrentTheme.noColor
-                    visible: text !== ''
                 }
             }
 
