@@ -254,6 +254,7 @@ QtObject {
             case 'Ubiq':        return getCoinColor("UBQ")
             case 'KRC-20':      return getCoinColor("KCS")
             case 'Moonriver':   return getCoinColor("MOVR")
+            case 'Moonbeam':    return getCoinColor("GLMR")
             case 'HecoChain':   return getCoinColor("HECO")
             case 'SmartBCH':    return getCoinColor("SBCH")
             case 'Ethereum Classic':  return getCoinColor("ETC")
@@ -368,6 +369,7 @@ QtObject {
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
                                           "MOVR": "#52CCC9",
+                                          "GLMR": "#F6007C",
                                           "NMC": "#186C9D",
                                           "NZDS": "#1B3044",
                                           "RFOX": "#D83331",

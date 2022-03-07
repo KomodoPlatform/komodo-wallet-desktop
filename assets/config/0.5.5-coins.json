@@ -4263,6 +4263,22 @@
     "type": "Moonriver",
     "name": "Moonriver"
   },
+  "GLMR": {
+    "active": false,
+    "coin": "GLMR",
+    "coingecko_id": "moonbeam",
+    "coinpaprika_id": "glmr-moonbeam",
+    "nomics_id": "GLMR",
+    "currently_enabled": false,
+    "nodes": [
+      "https://rpc.api.moonbeam.network"
+    ],
+    "explorer_url": [
+      "https://moonscan.io/"
+    ],
+    "type": "Moonbeam",
+    "name": "Moonbeam"
+  },
   "ETH": {
     "active": false,
     "coin": "ETH",
