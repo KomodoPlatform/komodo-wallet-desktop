@@ -740,22 +740,35 @@ BasicModal
         TextEditWithTitle
         {
             title: qsTr("Amount")
-            text: empty_data ? "" : "%1 %2 (%3 %4)"
-                .arg(api_wallet_page.ticker)
-                .arg(getCryptoAmount())
-                .arg(API.app.settings_pg.current_fiat_sign)
-                .arg(send_result.withdraw_answer.total_amount_fiat)
+
+            text:
+            {
+                let amount = getCryptoAmount()
+                !amount ? "" : General.formatCrypto(
+                    '',
+                    amount,
+                    api_wallet_page.ticker,
+                    API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                    API.app.settings_pg.current_fiat
+                )
+            }
         }
 
         // Fees
         TextEditWithTitle
         {
             title: qsTr("Fees")
-            text: empty_data ? "" : "%1 %2 (%3 %4)"
-                .arg(current_ticker_infos.fee_ticker)
-                .arg(send_result.withdraw_answer.fee_details.amount)
-                .arg(API.app.settings_pg.current_fiat_sign)
-                .arg(send_result.withdraw_answer.fee_details.amount_fiat)
+            text:
+            {
+                let amount = send_result.withdraw_answer.fee_details.amount
+                !amount ? "" : General.formatCrypto(
+                    '',
+                    amount,
+                    current_ticker_infos.fee_ticker,
+                    API.app.get_fiat_from_amount(current_ticker_infos.fee_ticker, amount),
+                    API.app.settings_pg.current_fiat
+                )
+            }
         }
 
         // Date
