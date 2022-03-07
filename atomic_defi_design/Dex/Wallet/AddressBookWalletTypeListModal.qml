@@ -7,7 +7,8 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-MultipageModal {
+MultipageModal
+{
     readonly property var glbCoinsCfgModel: API.app.portfolio_pg.global_cfg_mdl
     property alias        selected_wallet_type: wallet_list.selected_wallet_type
 
@@ -39,7 +40,7 @@ MultipageModal {
         close()
     }
 
-    width: 400
+    width: 600
 
     onOpened: _searchbar.forceActiveFocus()
     onClosed: resetModal()
@@ -68,8 +69,10 @@ MultipageModal {
         {
             id: _qrc20Expandable
 
+            Layout.topMargin: 20
             Layout.rightMargin: 10
             Layout.fillWidth: true
+            Layout.fillHeight: true
 
             title: "QRC-20 coins"
             type_title: "QRC-20"
