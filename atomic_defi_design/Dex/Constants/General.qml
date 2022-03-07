@@ -258,6 +258,12 @@ QtObject {
             )
     }
 
+    function arrayExclude(arr, excl) {
+        let i = arr.indexOf(excl)
+        if (i > -1) arr.splice(i, 1);
+        return arr
+    }
+
     function absString(str) {
         return str.replace("-", "")
     }
