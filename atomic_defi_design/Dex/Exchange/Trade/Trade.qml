@@ -22,7 +22,6 @@ Item
 
     readonly property string total_amount: API.app.trading_pg.total_amount
     property bool orderSelected: false
-    property bool isUltraLarge: true // width > 1400
     property bool isBigScreen: width > 1400
 
     Component.onCompleted:
@@ -40,17 +39,6 @@ Item
     }
 
     Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
-
-    onIsUltraLargeChanged:
-    {
-        if (isUltraLarge) {
-            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(
-                        0, Qt.DescendingOrder)
-        } else {
-            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(
-                        0, Qt.AscendingOrder)
-        }
-    }
 
     readonly property bool block_everything: swap_cooldown.running
                                              || fetching_multi_ticker_fees_busy

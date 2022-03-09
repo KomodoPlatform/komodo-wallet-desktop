@@ -11,7 +11,6 @@ import Dex.Themes 1.0 as Dex
 
 FloatingBackground
 {
-    visible: isUltraLarge
     Layout.fillWidth: true
     Layout.fillHeight: true
     radius: 10
