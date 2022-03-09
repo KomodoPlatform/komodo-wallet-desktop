@@ -1347,10 +1347,10 @@
     "coinpaprika_id": "busd-binance-usd",
     "coingecko_id": "binance-usd",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -1888,10 +1888,10 @@
     "coinpaprika_id": "dai-dai",
     "coingecko_id": "dai",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -2983,33 +2983,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "GLEEC-OLD": {
-    "coin": "GLEEC-OLD",
-    "name": "Gleec",
-    "coinpaprika_id": "gleec-gleec-coin",
-    "coingecko_id": "gleec-coin",
-    "nomics_id": "GLEEC",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10069",
-        "ws_url": "electrum1.cipig.net:30069"
-      },
-      {
-        "url": "electrum2.cipig.net:10069",
-        "ws_url": "electrum2.cipig.net:30069"
-      },
-      {
-        "url": "electrum3.cipig.net:10069",
-        "ws_url": "electrum3.cipig.net:30069"
-      }
-    ],
-    "explorer_url": [
-      "https://gleechain.com/"
-    ],
-    "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
-  },
   "GM-BEP20": {
     "coin": "GM-BEP20",
     "name": "GM Wagmi",
@@ -3993,10 +3966,10 @@
     "coingecko_id": "million",
     "nomics_id": "MM4",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -4282,13 +4255,29 @@
     "nomics_id": "MOVR",
     "currently_enabled": false,
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "name": "Moonriver"
+  },
+  "GLMR": {
+    "active": false,
+    "coin": "GLMR",
+    "coingecko_id": "moonbeam",
+    "coinpaprika_id": "glmr-moonbeam",
+    "nomics_id": "GLMR",
+    "currently_enabled": false,
+    "nodes": [
+      "https://rpc.api.moonbeam.network"
+    ],
+    "explorer_url": [
+      "https://moonscan.io/"
+    ],
+    "type": "Moonbeam",
+    "name": "Moonbeam"
   },
   "ETH": {
     "active": false,
@@ -4561,10 +4550,10 @@
     "coinpaprika_id": "usdc-usd-coin",
     "coingecko_id": "usd-coin",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -4685,6 +4674,7 @@
     "name": "USD Inflation Coin",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
+    "nomics_id": "USDI",
     "electrum": [
       {
         "url": "usdi1.blackcoin.nl:10002",
@@ -4696,8 +4686,10 @@
       }
     ],
     "explorer_url": [
-      "https://usdiexplorer.com/"
+      "https://chainz.cryptoid.info/usdi/"
     ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
@@ -4708,10 +4700,10 @@
     "coinpaprika_id": "usdt-tether",
     "coingecko_id": "tether",
     "nodes": [
-      "https://rpc.moonriver.moonbeam.network"
+      "https://rpc.api.moonriver.moonbeam.network"
     ],
     "explorer_url": [
-      "https://blockscout.moonriver.moonbeam.network/"
+      "https://moonriver.moonscan.io/"
     ],
     "type": "Moonriver",
     "active": false,
@@ -5460,11 +5452,7 @@
       {
         "url": "electrumx.live:50010",
         "protocol": "TCP"
-      },
-      {
-        "url": "electrumxprux02.sytes.net:50001",
-        "protocol": "TCP"
-      }	  	      
+      }
       ],
       "explorer_url": [
         "https://explorer.prux.info/"
@@ -5913,10 +5901,10 @@
       "coingecko_id": "sushi",
       "nomics_id": "SUSHI",
       "nodes": [
-        "https://rpc.moonriver.moonbeam.network"
+        "https://rpc.api.moonriver.moonbeam.network"
       ],
       "explorer_url": [
-        "https://blockscout.moonriver.moonbeam.network/"
+        "https://moonriver.moonscan.io/"
       ],
       "type": "Moonriver",
       "active": false,
@@ -6244,16 +6232,7 @@
         "disable_cert_verification": true
       },
       {
-        "url": "electrumx1.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx2.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx3.nmc.bitclc.net:50001"
-      },
-      {
-        "url": "electrumx4.nmc.bitclc.net:50001"
+        "url": "46.229.238.187:57001"
       }
     ],
     "explorer_url": [
@@ -9638,6 +9617,31 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+    "IC": {
+    "coin": "IC",
+    "name": "Ignition",
+    "coingecko_id": "ignition",
+    "coinpaprika_id": "ic-ignition",
+    "nomics_id": "IC",
+    "electrum": [
+      {
+        "url": "electrum1.ignitioncoin.org:10001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrum2.ignitioncoin.org:10001",
+        "protocol": "TCP"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/ic/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
     "active": false,
     "currently_enabled": false
   }

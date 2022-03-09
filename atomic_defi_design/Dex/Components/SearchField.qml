@@ -7,11 +7,10 @@ import Dex.Themes 1.0 as Dex
 Rectangle
 {
     property int   searchIconLeftMargin: 13
+    property bool forceFocus: false
 
     property alias searchIcon: _searchIcon
     property alias textField: _textField
-
-    function forceActiveFocus() { _textField.forceActiveFocus(); }
 
     color: Dex.CurrentTheme.accentColor
     radius: 18
@@ -51,5 +50,9 @@ Rectangle
         placeholderText: qsTr("Search")
         placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
         font.pixelSize: 14
+        Component.onCompleted:
+        {
+            if (forceFocus) _textField.forceActiveFocus()
+        }
     }
 }

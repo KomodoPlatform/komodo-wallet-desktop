@@ -1158,6 +1158,13 @@ namespace atomic_dex
                 auto           answers               = nlohmann::json::parse(body);
                 nlohmann::json answer                = answers[0];
                 auto           trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
+                if (trade_preimage_answer.error.has_value())
+                {
+                    auto        error_answer = trade_preimage_answer.error.value();
+                    QVariantMap fees;
+                    fees["error"] = QString::fromStdString(error_answer);
+                    this->set_fees(fees);
+                }
                 if (trade_preimage_answer.result.has_value())
                 {
                     auto        success_answer = trade_preimage_answer.result.value();

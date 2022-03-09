@@ -59,11 +59,12 @@ Item
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
 
-            RowLayout {
-
+            RowLayout
+            {
                 anchors.fill: parent
 
-                RowLayout {
+                RowLayout
+                {
                     Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     Layout.fillWidth: true
                     Layout.fillHeight: true
@@ -136,20 +137,24 @@ Item
 
                     Item { Layout.fillWidth: true }
 
-                    ColumnLayout {
+                    ColumnLayout
+                    {
                         visible: false //current_ticker_infos.segwit_supported
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         spacing: 2
-                        DexLabel {
+                        DexLabel
+                        {
                             text_value: qsTr("Segwit")
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: headerTitleFont
                             color: headerTitleColor
                         }
-                        DefaultSwitch {
+                        DefaultSwitch
+                        {
                             id: segwitSwitch
                             Layout.alignment: Qt.AlignVCenter
-                            onToggled: {
+                            onToggled:
+                            {
                                 if(parseFloat(current_ticker_infos.balance) > 0) {
                                      Qaterial.DialogManager.showDialog({
                                         title: qsTr("Confirmation"),
@@ -185,7 +190,6 @@ Item
                                     app.segwit_on = true
                                     API.app.wallet_pg.post_switch_address_mode(!current_ticker_infos.is_segwit_on)
                                 }
-
                             }
                         }
                     }
@@ -193,10 +197,8 @@ Item
                     Connections
                     {
                         target: API.app.wallet_pg
-                        function onTickerInfosChanged()
-                        {
-                            if (segwitSwitch.checked != current_ticker_infos.is_segwit_on)
-                            {
+                        function onTickerInfosChanged() {
+                            if (segwitSwitch.checked != current_ticker_infos.is_segwit_on) {
                                 segwitSwitch.checked = current_ticker_infos.is_segwit_on
                             }
                         }
@@ -371,8 +373,7 @@ Item
             }
         }
 
-
-        // Address Book, Send, Receive buttons
+        // Buttons
         RowLayout
         {
             Layout.leftMargin: layout_margin
@@ -380,10 +381,13 @@ Item
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
             spacing: 25
+
             Item
             {
-                Layout.preferredWidth: 199
+                Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
+
+                // Send Button
                 DexAppButton
                 {
                     enabled: API.app.wallet_pg.send_available
@@ -394,7 +398,7 @@ Item
                     label.text: qsTr("Send")
                     label.font.pixelSize: 16
                     content.anchors.left: content.parent.left
-                    content.anchors.leftMargin: enabled ? 23 : 60
+                    content.anchors.leftMargin: enabled ? 23 : 48
 
                     onClicked:
                     {
@@ -412,6 +416,7 @@ Item
                     }
                 }
 
+                // Send button error icon
                 DefaultImage
                 {
                     visible: API.app.wallet_pg.send_availability_state !== ""
@@ -474,7 +479,8 @@ Item
                                     close()
                                 }
                             }
-                            DefaultButton {
+                            DefaultButton
+                            {
                                 Layout.fillWidth: true
                                 text: qsTr("No")
                                 onClicked: close()
@@ -497,9 +503,10 @@ Item
                 sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker }
             }
 
+            // Receive Button
             DexAppButton
             {
-                Layout.preferredWidth: 199
+                Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
                 radius: 18
 
@@ -525,84 +532,134 @@ Item
                 sourceComponent: ReceiveModal {}
             }
 
-            DexAppButton
+            // Swap Button
+            Item
             {
                 visible: !is_dex_banned
-
-                Layout.preferredWidth: 199
+                Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
-                radius: 18
 
-                // Inner text.
-                label.text: qsTr("Swap")
-                label.font.pixelSize: 16
-                content.anchors.left: content.parent.left
-                content.anchors.leftMargin: 23
-
-                onClicked: onClickedSwap()
-
-                Row
+                DexAppButton
                 {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: arrow_send.anchors.rightMargin
-                    spacing: 2
-                    
-                    Arrow
+                    enabled: !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
+                    anchors.fill: parent
+                    radius: 18
+
+                    // Inner text.
+                    label.text: qsTr("Swap")
+                    label.font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
+
+                    onClicked: onClickedSwap()
+
+                    Row
                     {
-                        up: true
                         anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: arrow_send.anchors.rightMargin
+                        spacing: 2
+
+                        Arrow
+                        {
+                            up: true
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Arrow
+                        {
+                            up: false
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                }
+
+                // Send button error icon
+                DefaultImage
+                {
+                    visible: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: 14
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: Qaterial.Icons.alert
+
+                    DefaultColorOverlay
+                    {
+                        anchors.fill: parent
+                        source: parent
+                        color: "yellow"
+                    }
+                    MouseArea
+                    {
+                        id: swap_alert_mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: true
                     }
 
-                    Arrow
+                    DefaultTooltip
                     {
-                        up: false
-                        anchors.verticalCenter: parent.verticalCenter
+                        visible: swap_alert_mouse_area.containsMouse
+                        text: api_wallet_page.ticker + qsTr(" is wallet only")
                     }
                 }
             }
 
             Item { Layout.fillWidth: true }
 
-            DexAppButton
+            // Rewards Button
+            Item
             {
-                text: qsTr("Rewards")
-                Layout.preferredWidth: 150
+                Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
-                radius: 18
-                font.pixelSize: 16
                 visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
-                enabled: parseFloat(current_ticker_infos.balance) > 0
-                onClicked:
+
+                Item { Layout.fillWidth: true }
+
+                DexAppButton
                 {
-                    claimRewardsModal.open()
-                    claimRewardsModal.item.prepareClaimRewards()
+                    text: qsTr("Rewards")
+                    radius: 18
+                    font.pixelSize: 16
+                    anchors.fill: parent
+                    enabled: parseFloat(current_ticker_infos.balance) > 0
+                    onClicked:
+                    {
+                        claimRewardsModal.open()
+                        claimRewardsModal.item.prepareClaimRewards()
+                    }
+                }
+
+                ModalLoader
+                {
+                    id: claimRewardsModal
+                    sourceComponent: ClaimRewardsModal {}
                 }
             }
 
-            ModalLoader
+            // Faucet Button
+            Item
             {
-                id: claimRewardsModal
-                sourceComponent: ClaimRewardsModal {}
-            }
-
-            DexAppButton
-            {
-                text: qsTr("Faucet")
-                Layout.preferredWidth: 150
+                Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
-                radius: 18
-                font.pixelSize: 16
                 visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
-                onClicked: api_wallet_page.claim_faucet()
+                DexAppButton
+                {
+                    text: qsTr("Faucet")
+                    radius: 18
+                    font.pixelSize: 16
+                    anchors.fill: parent
+                    onClicked: api_wallet_page.claim_faucet()
+                }
             }
 
             Component.onCompleted: api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
             Component.onDestruction: api_wallet_page.claimingFaucetRpcDataChanged.disconnect(onClaimFaucetRpcResultChanged)
             function onClaimFaucetRpcResultChanged() { claimFaucetResultModal.open() }
 
-            ModalLoader {
+            ModalLoader
+            {
                 id: claimFaucetResultModal
                 sourceComponent: ClaimFaucetResultModal {}
             }
@@ -748,44 +805,6 @@ Item
             }
         }
 
-        // Transactions or loading
-        Item {
-            id: loading_tx
-            visible: current_ticker_infos.tx_state === "InProgress"
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            implicitHeight: 100
-
-            ColumnLayout {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                DexLabel {
-                    text_value: qsTr("Loading")
-                    Layout.alignment: Qt.AlignHCenter
-                    font.pixelSize: Style.textSize2
-                }
-
-                DefaultBusyIndicator {
-                    Layout.alignment: Qt.AlignHCenter
-                }
-
-                DexLabel {
-                    text_value: General.isTokenType(current_ticker_infos.type) ?
-                                (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
-                                (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
-
-                    Layout.alignment: Qt.AlignHCenter
-                }
-            }
-        }
-
-        // Separator line
-        HorizontalLine {
-            visible: loading_tx.visible && transactions_mdl.length > 0
-            width: 720
-            Layout.alignment: Qt.AlignHCenter
-        }
-
         Rectangle {
             id: transactions_bg
             Layout.fillWidth: true
@@ -799,7 +818,8 @@ Item
             color: Dex.CurrentTheme.floatingBackgroundColor
             radius: 22
 
-            ClipRRect {
+            ClipRRect
+            {
                 radius: parent.radius
                 width: transactions_bg.width
                 height: transactions_bg.height
@@ -815,14 +835,16 @@ Item
                     }
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     anchors.centerIn: parent
                     visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
                     text_value: api_wallet_page.tx_fetching_busy ? (qsTr("Refreshing") + "...") : qsTr("No transactions")
                     font.pixelSize: Style.textSize
                 }
 
-                Transactions {
+                Transactions
+                {
                     width: parent.width
                     height: parent.height
                     model: transactions_mdl.proxy_mdl
@@ -830,7 +852,8 @@ Item
             }
         }
 
-        RowLayout {
+        RowLayout
+        {
             id: fetching_text_row
             visible: api_wallet_page.tx_fetching_busy
             Layout.preferredHeight: fetching_text.font.pixelSize * 1.5
@@ -840,13 +863,15 @@ Item
 
             Layout.alignment: Qt.AlignHCenter
             spacing: 10
-            DefaultBusyIndicator {
+            DefaultBusyIndicator
+            {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredWidth: Style.textSizeSmall3
                 Layout.preferredHeight: Layout.preferredWidth
             }
 
-            DefaultText {
+            DefaultText
+            {
                 id: fetching_text
                 Layout.alignment: Qt.AlignVCenter
                 text_value: qsTr("Fetching transactions") + "..."
