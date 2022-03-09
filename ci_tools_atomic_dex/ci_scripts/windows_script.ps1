@@ -1,11 +1,11 @@
 Set-ExecutionPolicy RemoteSigned -scope CurrentUser
 
-Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-scoop install llvm --global --RunAsAdmin
-scoop install ninja --global --RunAsAdmin
-scoop install cmake@3.22.0 --global --RunAsAdmin
-scoop install git --global --RunAsAdmin
-scoop install 7zip  --global --RunAsAdmin
+Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh') -RunAsAdmin
+scoop install llvm --global
+scoop install ninja --global
+scoop install cmake@3.22.0
+scoop install git --global
+scoop install 7zip  --global
 scoop cache rm 7zip
 scoop cache rm git
 scoop cache rm cmake
