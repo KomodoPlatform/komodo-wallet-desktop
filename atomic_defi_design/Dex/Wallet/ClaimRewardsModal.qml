@@ -42,7 +42,8 @@ BasicModal {
          },
          "withdraw_answer": {
              "fee_details": {
-                 "amount": "0.00001"
+                 "amount": "0.00001",
+                 "amount_fiat": "0.00001"
              },
              "date": "7 Aug 2020, 08:33",
              "my_balance_change": "0",
@@ -119,10 +120,20 @@ BasicModal {
             Layout.fillWidth: true
             DexLabel {
                 Layout.fillWidth: true
-                text_value: !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
-                            !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
-
-                            qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, api_wallet_page.ticker))
+                text_value:
+                {
+                    let amount = prepare_claim_rewards_result.withdraw_answer.my_balance_change
+                    !amount ? "" :
+                    !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
+                    !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
+                    qsTr("You will receive ") + General.formatCrypto(
+                        '',
+                        amount,
+                        api_wallet_page.ticker,
+                        API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                        API.app.settings_pg.current_fiat
+                    )
+                }
             }
 
             PrimaryButton {
