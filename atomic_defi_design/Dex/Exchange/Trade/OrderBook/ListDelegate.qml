@@ -206,10 +206,6 @@ Item
             {
                 if (!is_mine) return
 
-            onClicked:
-            {
-                if(!is_mine) return
-
                 cancel_button_text.requested_cancel = true
                 cancelOrder(uuid)
             }
