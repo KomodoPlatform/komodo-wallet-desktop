@@ -32,7 +32,6 @@ Item
         }
     }
 
-    width: visible? list.width : 0
     height: 36
 
     AnimatedRectangle

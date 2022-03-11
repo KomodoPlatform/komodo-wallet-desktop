@@ -33,10 +33,15 @@ Rectangle
         ListView
         {
             id: list
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
             clip: true
             reuseItems: true
-            delegate: ListDelegate {}
+            delegate: ListDelegate
+            {
+                width: list.width
+            }
         }
     }
 }
