@@ -14,32 +14,6 @@ Item
 {
     property bool isAsk
 
-    DefaultTooltip
-    {
-        visible: warningNoticeMouseArea.containsMouse && !enough_funds_to_pay_min_volume
-        width: 300
-        contentItem: DefaultText
-        {
-            text_value:
-            {
-                let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
-                let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
-
-                qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
-                    .arg(parseFloat(min_volume).toFixed(8))
-                    .arg(isAsk ?
-                        API.app.trading_pg.market_pairs_mdl.right_selected_coin :
-                        API.app.trading_pg.market_pairs_mdl.left_selected_coin)
-                    .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ?
-                        "Your max balance after fees is: %1".arg(isAsk ?
-                        relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
-            }
-            width: 300
-        }
-        delay: 200
-    }
-
-
     DefaultMouseArea
     {
         id: mouse_area
@@ -115,19 +89,21 @@ Item
             anchors.horizontalCenter: parent.horizontalCenter
             onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
 
-            Qaterial.ColorIcon
+            // error icon
+            DefaultAlertIcon
             {
-                visible: mouse_area.containsMouse && !enough_funds_to_pay_min_volume
-                source: Qaterial.Icons.alert
-                Layout.alignment: Qt.AlignVCenter
+                visible: !enough_funds_to_pay_min_volume
                 iconSize: 12
-                color: Qaterial.Colors.amber
-
-                DefaultMouseArea
+                
+                tooltipText:
                 {
-                    id: warningNoticeMouseArea
-                    anchors.fill: parent
-                    hoverEnabled: true
+                    let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
+                    let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
+
+                    qsTr("This order requires a minimum amount of %1 %2. %3")
+                        .arg(parseFloat(min_volume).toFixed(8))
+                        .arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin)
+                        .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ? "Your max balance after fees is: %1".arg(isAsk ? relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
                 }
             }
 

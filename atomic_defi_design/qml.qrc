@@ -379,6 +379,7 @@
         <file>Dex/Components/ComponentWithTitle.qml</file>
         <file>Dex/Components/CopyFieldButton.qml</file>
         <file>Dex/Components/DangerButton.qml</file>
+        <file>Dex/Components/DefaultAlertIcon.qml</file>
         <file>Dex/Components/DefaultAnimatedImage.qml</file>
         <file>Dex/Components/DefaultBusyIndicator.qml</file>
         <file>Dex/Components/DefaultButton.qml</file>

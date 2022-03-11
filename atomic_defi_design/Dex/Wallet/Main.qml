@@ -417,33 +417,10 @@ Item
                 }
 
                 // Send button error icon
-                DefaultImage
+                DefaultAlertIcon
                 {
                     visible: API.app.wallet_pg.send_availability_state !== ""
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: 14
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: Qaterial.Icons.alert
-
-                    DefaultColorOverlay
-                    {
-                        anchors.fill: parent
-                        source: parent
-                        color: "yellow"
-                    }
-                    MouseArea
-                    {
-                        id: send_alert_mouse_area
-                        anchors.fill: parent
-                        hoverEnabled: true
-                    }
-
-                    DefaultTooltip
-                    {
-                        visible: send_alert_mouse_area.containsMouse
-                        text: API.app.wallet_pg.send_availability_state
-                    }
+                    tooltipText: API.app.wallet_pg.send_availability_state
                 }
             }
 
@@ -574,34 +551,11 @@ Item
                     }
                 }
 
-                // Send button error icon
-                DefaultImage
+                // Swap button error icon
+                DefaultAlertIcon
                 {
                     visible: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: 14
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: Qaterial.Icons.alert
-
-                    DefaultColorOverlay
-                    {
-                        anchors.fill: parent
-                        source: parent
-                        color: "yellow"
-                    }
-                    MouseArea
-                    {
-                        id: swap_alert_mouse_area
-                        anchors.fill: parent
-                        hoverEnabled: true
-                    }
-
-                    DefaultTooltip
-                    {
-                        visible: swap_alert_mouse_area.containsMouse
-                        text: api_wallet_page.ticker + qsTr(" is wallet only")
-                    }
+                    tooltipText: api_wallet_page.ticker + qsTr(" is wallet only")
                 }
             }
 

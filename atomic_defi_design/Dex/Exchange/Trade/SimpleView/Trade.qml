@@ -694,7 +694,9 @@ ClipRRect // Trade Card
                     }
                 }
 
-                DefaultImage // Alert
+
+                // Send button error icon
+                DefaultAlertIcon
                 {
                     id: _swapAlert
 
@@ -731,36 +733,8 @@ ClipRRect // Trade Card
                         return ""
                     }
 
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    source: Qaterial.Icons.alert
-                    visible: _swapAlert.getAlert() !== ""
-
-                    DexTooltip
-                    {
-                        contentItem: DefaultText
-                        {
-                           text: _swapAlert.getAlert()
-                           font: DexTypo.caption
-                           padding: 5
-                        }
-                        visible: _alertMouseArea.containsMouse
-                    }
-
-                    DefaultColorOverlay
-                    {
-                        anchors.fill: parent
-                        source: parent
-                        color: "yellow"
-                    }
-                    MouseArea
-                    {
-                        id: _alertMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                    }
+                    tooltipText: _swapAlert.getAlert()
+                    visible: tooltipText !== ""
                 }
             }
         }
