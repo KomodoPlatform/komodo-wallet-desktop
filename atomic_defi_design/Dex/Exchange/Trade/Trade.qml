@@ -166,7 +166,6 @@ Item
 
         ProView
         {
-            anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width
             height: parent.height * 0.90
             visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro

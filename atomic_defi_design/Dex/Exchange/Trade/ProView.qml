@@ -35,9 +35,11 @@ import Dex.Themes 1.0 as Dex
 
 import "../ProView"
 
-GridLayout
+RowLayout
 {
     id: form
+
+    spacing: 16
 
     function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
     {
@@ -62,17 +64,6 @@ GridLayout
         }
         form_base.focusVolumeField()
     }
-
-    function prefWidth(item) { return (width / columns) * item.Layout.columnSpan; }
-    function prefHeight(item) { return (height / rows) * item.Layout.rowSpan; }
-
-    flow: GridLayout.TopToBottom
-
-    rows: 12
-    columns: 12
-
-    columnSpacing: 20
-    rowSpacing: 20
 
     Connections
     {
@@ -107,162 +98,164 @@ GridLayout
         }
     }
 
-    // Chart
     ColumnLayout
     {
-        Layout.columnSpan: 6
-        Layout.rowSpan: 4
-
+        Layout.minimumWidth: 480
+        Layout.maximumWidth: 735
         Layout.fillWidth: true
+
         Layout.fillHeight: true
 
-        spacing: 10
+        spacing: 20
 
-        DefaultText { font: DexTypo.subtitle1; text: qsTr("Chart") }
-
-        Chart
+        // Chart
+        ColumnLayout
         {
-            id: chartView
-
             Layout.fillWidth: true
+
+            Layout.minimumHeight: 190
+            Layout.maximumHeight: 360
             Layout.fillHeight: true
-        }
-    }
 
-    // Ticker selectors.
-    TickerSelectors
-    {
-        id: selectors
+            spacing: 10
 
-        Layout.columnSpan: 6
-        Layout.rowSpan: 1
+            DefaultText { font: DexTypo.subtitle1; text: qsTr("Chart") }
 
-        Layout.fillWidth: true
-
-        Layout.minimumHeight: 60
-        Layout.maximumHeight: 70
-        Layout.fillHeight: true
-    }
-
-    // Trading Informations
-    ColumnLayout
-    {
-        Layout.columnSpan: 6
-        Layout.rowSpan: 7
-
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-
-        spacing: 10
-
-        DefaultText { font: DexTypo.subtitle1; text: qsTr("Trading Information") }
-
-        Qaterial.LatoTabBar
-        {
-            id: tabView
-            property int taux_exchange: 0
-            property int order_idx: 1
-            property int history_idx: 2
-
-            Material.foreground: Dex.CurrentTheme.foregroundColor
-            background: null
-            Layout.leftMargin: 6
-
-            Qaterial.LatoTabButton
+            Chart
             {
-                text: qsTr("Exchange Rates")
-                font.pixelSize: 14
-                textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
-                indicatorColor: Dex.CurrentTheme.foregroundColor
-                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-            }
-            Qaterial.LatoTabButton
-            {
-                text: qsTr("Orders")
-                font.pixelSize: 14
-                textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
-                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-                indicatorColor: Dex.CurrentTheme.foregroundColor
-            }
-            Qaterial.LatoTabButton
-            {
-                text: qsTr("History")
-                font.pixelSize: 14
-                textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
-                textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-                indicatorColor: Dex.CurrentTheme.foregroundColor
+                id: chartView
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
             }
         }
 
-        Rectangle
+        // Ticker selectors.
+        TickerSelectors
+        {
+            id: selectors
+
+            Layout.fillWidth: true
+            Layout.preferredHeight: 70
+        }
+
+        // Trading Informations
+        ColumnLayout
         {
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            color: Dex.CurrentTheme.floatingBackgroundColor
-            radius: 10
 
-            Qaterial.SwipeView
+            Layout.minimumHeight: 380
+            Layout.maximumHeight: 500
+            Layout.fillHeight: true
+
+            spacing: 10
+
+            DefaultText { font: DexTypo.subtitle1; text: qsTr("Trading Information") }
+
+            Qaterial.LatoTabBar
             {
-                id: swipeView
-                clip: true
-                interactive: false
-                currentIndex: tabView.currentIndex
-                anchors.fill: parent
-                onCurrentIndexChanged:
+                id: tabView
+                property int taux_exchange: 0
+                property int order_idx: 1
+                property int history_idx: 2
+
+                Material.foreground: Dex.CurrentTheme.foregroundColor
+                background: null
+                Layout.leftMargin: 6
+
+                Qaterial.LatoTabButton
                 {
-                    swipeView.currentItem.update();
-                    if (currentIndex === 2) history_component.list_model_proxy.is_history = true;
-                    else history_component.list_model_proxy.is_history = false;
+                    text: qsTr("Exchange Rates")
+                    font.pixelSize: 14
+                    textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+                    indicatorColor: Dex.CurrentTheme.foregroundColor
+                    textSecondaryColor: Dex.CurrentTheme.foregroundColor2
                 }
-
-                PriceLine { id: price_line_obj }
-
-                OrdersView.OrdersPage { id: order_component; clip: true }
-                OrdersView.OrdersPage
+                Qaterial.LatoTabButton
                 {
-                    id: history_component
-                    is_history: true
+                    text: qsTr("Orders")
+                    font.pixelSize: 14
+                    textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+                    textSecondaryColor: Dex.CurrentTheme.foregroundColor2
+                    indicatorColor: Dex.CurrentTheme.foregroundColor
+                }
+                Qaterial.LatoTabButton
+                {
+                    text: qsTr("History")
+                    font.pixelSize: 14
+                    textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+                    textSecondaryColor: Dex.CurrentTheme.foregroundColor2
+                    indicatorColor: Dex.CurrentTheme.foregroundColor
+                }
+            }
+
+            Rectangle
+            {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                color: Dex.CurrentTheme.floatingBackgroundColor
+                radius: 10
+
+                Qaterial.SwipeView
+                {
+                    id: swipeView
                     clip: true
+                    interactive: false
+                    currentIndex: tabView.currentIndex
+                    anchors.fill: parent
+                    onCurrentIndexChanged:
+                    {
+                        swipeView.currentItem.update();
+                        if (currentIndex === 2) history_component.list_model_proxy.is_history = true;
+                        else history_component.list_model_proxy.is_history = false;
+                    }
+
+                    PriceLine { id: price_line_obj }
+
+                    OrdersView.OrdersPage { id: order_component; clip: true }
+                    OrdersView.OrdersPage
+                    {
+                        id: history_component
+                        is_history: true
+                        clip: true
+                    }
                 }
             }
         }
     }
 
-    OrderBook.Vertical
+    ColumnLayout
     {
-        Layout.columnSpan: 4
-        Layout.rowSpan: 7
-
-        Layout.minimumWidth: 340
+        Layout.minimumWidth: 353
         Layout.fillWidth: true
 
-        Layout.maximumHeight: 536
-        Layout.fillHeight: true
-    }
+        OrderBook.Vertical
+        {
+            Layout.fillWidth: true
 
-    // Best Orders
-    BestOrder.List
-    {
-        Layout.columnSpan: 4
-        Layout.rowSpan: 5
+            Layout.minimumHeight: 365
+            Layout.maximumHeight: 536
+            Layout.fillHeight: true
+        }
 
-        Layout.minimumWidth: 340
-        Layout.fillWidth: true
+        // Best Orders
+        BestOrder.List
+        {
+            Layout.fillWidth: true
 
-        Layout.fillHeight: true
+            Layout.minimumHeight: 196
+            Layout.fillHeight: true
+        }
     }
 
     // Place order form.
     Rectangle
     {
-        Layout.columnSpan: 2
-        Layout.rowSpan: 8
-
-        Layout.minimumWidth: 280
-        Layout.maximumWidth: 315
+        Layout.minimumWidth: 302
+        Layout.maximumWidth: 350
         Layout.fillWidth: true
 
-        Layout.minimumHeight: 589
+        Layout.minimumHeight: 571
         Layout.fillHeight: true
 
         radius: 10
