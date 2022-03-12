@@ -330,6 +330,7 @@ QtObject {
                                           "ETHR": "#627EEA",
                                           "KMD": "#7490AA",
                                           "KCS": "#25AF90",
+                                          "KSM": "#595959",
                                           "MORTY": "#A4764D",
                                           "RICK": "#A5CBDD",
                                           "EMC2": "#00CCFF",
