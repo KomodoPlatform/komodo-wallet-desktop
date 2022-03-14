@@ -322,14 +322,14 @@ namespace atomic_dex
                 else if (reason.contains("Invalid address checksum"))
                 {
                     reason =
-                        tr("Invalid checksum for %1. Click on the convert button to turn it into a mixed case address").arg(json_result["ticker"].toString());
+                        tr("Invalid checksum for %1. Click the button to convert to mixed case address.").arg(json_result["ticker"].toString());
                     json_result["convertible"]       = true;
                     json_result["to_address_format"] = QJsonObject{{"format", "mixedcase"}};
                 }
                 else if (reason.contains("Cashaddress address format activated for BCH, but legacy format used instead. Try to call 'convertaddress'"))
                 {
                     reason =
-                        tr("Legacy address used for %1, click on the convert button to convert it to a Cashaddress.").arg(json_result["ticker"].toString());
+                        tr("Legacy address used for %1. Click the button to convert to a Cashaddress.").arg(json_result["ticker"].toString());
                     json_result["to_address_format"] = QJsonObject{{"format", "cashaddress"}, {"network", "bitcoincash"}};
                     json_result["convertible"]       = true;
                 }

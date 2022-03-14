@@ -66,19 +66,8 @@ GradientRectangle {
             Layout.preferredWidth: 80
             font: DexTypo.caption
             wrapMode: DexLabel.WordWrap
-            text_value: ticker
+            text_value: mouse_area.containsMouse ? name.replace(" (TESTCOIN)", "") : ticker
             color: DexTheme.foregroundColor
-        }
-
-        DefaultTooltip {
-            visible: mouse_area.containsMouse
-
-            contentItem: ColumnLayout {
-                DefaultText {
-                    text_value: name.replace(" (TESTCOIN)", "")
-                    font.pixelSize: Constants.Style.textSizeSmall4
-                }
-            }
         }
     }
 }

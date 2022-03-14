@@ -6,7 +6,8 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-ModalContent {
+ModalContent
+{
     property var result: ({ balance_change:"", fees: "", date: "", explorer_url: "" })
     property alias address: address.text
     property string custom_amount
@@ -17,22 +18,45 @@ ModalContent {
     title: qsTr("Transaction Complete!")
 
     // Address
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         id: address
         title: qsTr("Recipient's address")
         visible: text !== ""
     }
 
     // Amount
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         title: qsTr("Amount")
-        text: General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker)
+        text:
+        {
+            let amount = custom_amount !== "" ? custom_amount : result.balance_change
+            !amount ? "" : General.formatCrypto(
+                '',
+                amount,
+                api_wallet_page.ticker,
+                API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                API.app.settings_pg.current_fiat
+            )
+        }
     }
 
     // Fees
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         title: qsTr("Fees")
-        text: General.formatCrypto("", result.fees, current_ticker_infos.fee_ticker)
+        text:
+        {
+            let amount = result.fees
+            !amount ? "" : General.formatCrypto(
+                '',
+                amount,
+                current_ticker_infos.fee_ticker,
+                API.app.get_fiat_from_amount(current_ticker_infos.fee_ticker, amount),
+                API.app.settings_pg.current_fiat
+            )
+        }
     }
 
     // Date

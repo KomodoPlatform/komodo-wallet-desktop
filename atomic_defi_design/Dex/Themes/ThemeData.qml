@@ -64,6 +64,7 @@ QtObject
     property color  textSelectedColor
 
     property color  textFieldBackgroundColor
+    property color  textFieldActiveBackgroundColor
     property color  textFieldPrefixColor
     property color  textFieldSuffixColor
 
@@ -79,12 +80,17 @@ QtObject
     property color  rangeSliderIndicatorBackgroundStartColor
     property color  rangeSliderIndicatorBackgroundEndColor
 
+    // Login page related
+    property color  loginWalletIconColorStart
+    property color  loginWalletIconColorEnd     // Property not yet used.
+
     // Sidebar related
     property color  sidebarBgColor
     property color  sidebarVersionTextColor
     property color  sidebarCursorStartColor
     property color  sidebarCursorEndColor
     property color  sidebarLineTextHovered
+    property color  sidebarLineTextSelected
 
     // Trading page related
     property color  tradeBuyModeSelectorBackgroundColorStart

@@ -68,4 +68,5 @@ cd tar-1.32
 export FORCE_UNSAFE_CONFIGURE=1
 ./configure
 sudo make -j install
+sudo ln -s /bin/tar /usr/local/bin/tar
 sudo update-alternatives --install /usr/bin/tar tar /usr/local/bin/tar 777

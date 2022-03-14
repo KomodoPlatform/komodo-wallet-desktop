@@ -162,9 +162,19 @@ Popup
                         field.leftPadding: dialog.isPassword ? 70 : 20
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
 
+                        field.onTextChanged:
+                        {
+                            if (validator(field.text))
+                            {
+                                dialog.enableAcceptButton = true
+                            }
+                            else {
+                                dialog.enableAcceptButton = false
+                            }
+                        }
                         field.onAccepted:
                         {
-                            if(dialog.enableAcceptButton)
+                            if (dialog.enableAcceptButton)
                             {
                                 dialog.accepted(field.text)
                             }
@@ -262,6 +272,7 @@ Popup
                         leftPadding: 20
                         rightPadding: 20
                         radius: 18
+                        enabled: dialog.enableAcceptButton
                         onClicked:
                         {
                             if (dialog.getText)

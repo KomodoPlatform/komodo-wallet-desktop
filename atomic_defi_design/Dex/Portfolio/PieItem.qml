@@ -10,27 +10,31 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-PieSlice {
+PieSlice
+{
     label: "XRP"; value: 10; color: Qaterial.Colors.yellow500;
     borderColor: DexTheme.backgroundColor
-     labelColor: 'white'; labelFont: DexTypo.head5
-     borderWidth: 3
-     Behavior on explodeDistanceFactor {
-         NumberAnimation  {
-             duration: 150
-         }
-     }
+    labelColor: 'white'; labelFont: DexTypo.head5
+    borderWidth: 3
+    Behavior on explodeDistanceFactor
+    {
+        NumberAnimation
+        {
+            duration: 150
+        }
+    }
 
-  onHovered: {
-      if(state){
-          exploded = true
-          explodeDistanceFactor = 0.13
-          labelVisible= true;
-      }else {
-          exploded = false
-          labelVisible= false
-          explodeDistanceFactor = 0.0
-          borderWidth = 1
-      }
-  }
+    onHovered:
+    {
+        if (state) {
+            exploded = true
+            explodeDistanceFactor = 0.13
+            labelVisible = true;
+        } else {
+            exploded = false
+            labelVisible = false
+            explodeDistanceFactor = 0.0
+            borderWidth = 1
+        }
+    }
 }

@@ -44,6 +44,7 @@ ColumnLayout {
                         source: General.image_path + "lang/" + model.modelData + ".png"
                         width: 40
                         height: 40
+                        opacity: model.modelData === API.app.settings_pg.lang ? 1 : mouse_area.containsMouse ? 0.85 : 0.7
                         // Click area
                         DefaultMouseArea {
                             id: mouse_area

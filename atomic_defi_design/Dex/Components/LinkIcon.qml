@@ -9,7 +9,7 @@ Circle
     property alias source: icon.source
     property alias text: tooltip_text.text
 
-    Layout.preferredWidth: 60
+    Layout.preferredWidth: 50
     Layout.preferredHeight: Layout.preferredWidth
 
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme4)
