@@ -518,8 +518,6 @@
         <file>Dex/Dashboard/UpdateInvalidChecksum.qml</file>
         <file>Dex/Dashboard/NotificationsModal.qml</file>
         <file>Dex/Exchange/Exchange.qml</file>
-        <file>Dex/Exchange/History/History.qml</file>
-        <file>Dex/Exchange/Orders/Orders.qml</file>
         <file>Dex/Exchange/ProView/Chart.qml</file>
         <file>Dex/Exchange/ProView/DexComboBoxLine.qml</file>
         <file>Dex/Exchange/ProView/MarketModeSelector.qml</file>
