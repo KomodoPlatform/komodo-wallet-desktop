@@ -13,76 +13,80 @@ import Qaterial 1.0 as Qaterial
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-BasicModal {
+MultipageModal
+{
     id: root
 
     property var contactModel
 
-    function trySend(wallet_type, address) {
+    function trySend(wallet_type, address)
+    {
         // Checks if the selected wallet type is a coin type instead of a coin.
-        if (API.app.portfolio_pg.global_cfg_mdl.is_coin_type(wallet_type)) {
+        if (API.app.portfolio_pg.global_cfg_mdl.is_coin_type(wallet_type))
+        {
             send_selector.coin_type = wallet_type
             send_selector.address = address
             send_selector.open()
         }
 
         // Checks if the coin is currently enabled.
-        else if (!API.app.portfolio_pg.is_coin_enabled(wallet_type)) {
+        else if (!API.app.portfolio_pg.is_coin_enabled(wallet_type))
+        {
             enable_coin_modal.coin_name = wallet_type
             enable_coin_modal.open()
         }
 
         // Checks if the coin has balance.
-        else if (parseFloat(API.app.get_balance(wallet_type)) === 0) {
-            cannot_send_modal.open()
-        }
+        else if (parseFloat(API.app.get_balance(wallet_type)) === 0) cannot_send_modal.open()
 
         // If the coin has balance and is enabled, opens the send modal.
-        else {
+        else
+        {
             API.app.wallet_pg.ticker = wallet_type
             send_modal.address = address
             send_modal.open()
         }
     }
 
-    width: 700
+    width: 760
 
     onClosed: contactModel.reload()
 
-    ModalContent {
-        Layout.topMargin: 5
-        Layout.fillWidth: true
-
-        title: qsTr("Edit contact")
+    MultipageModalContent
+    {
+        titleText: qsTr("Edit contact")
 
         // Contact name section
-        TextFieldWithTitle {
+        TextFieldWithTitle
+        {
             id: name_input
-            width: 30
+            Layout.fillWidth: true
             title: qsTr("Contact Name")
             field.placeholderText: qsTr("Enter a contact name")
             field.text: contactModel.name
-            field.onTextChanged: {
+            field.onTextChanged:
+            {
                 const max_length = 50
                 if (field.text.length > max_length)
                     field.text = field.text.substring(0, max_length)
             }
         }
 
-        HorizontalLine {
-            Layout.fillWidth: true
-            color: Style.colorWhite8
-        }
+        HorizontalLine { Layout.fillWidth: true }
 
         // Wallets Information
-        ColumnLayout {
+        ColumnLayout
+        {
+            Layout.topMargin: 10
             Layout.fillWidth: true
 
             // Title
             TitleText { text: qsTr("Address List") }
 
-            DefaultTextField {
+            DefaultTextField
+            {
                 Layout.topMargin: 10
                 Layout.fillWidth: true
 
@@ -98,9 +102,9 @@ BasicModal {
                 id: walletInfoTable
 
                 property int _typeColWidth: 90
-                property int _keyColWidth: 100
+                property int _keyColWidth: 70
                 property int _addressColWidth: 320
-                property int _actionsColWidth: 60
+                property int _actionsColWidth: 100
 
                 model: contactModel.proxy_filter
 
@@ -122,8 +126,6 @@ BasicModal {
                         Layout.fillWidth: true
                         height: 20
 
-                        
-
                         DefaultText
                         {
                             anchors.verticalCenter: parent.verticalCenter
@@ -142,7 +144,7 @@ BasicModal {
                 rowDelegate: DefaultRectangle
                 {
                     height: 37; radius: 0
-                    color: styleData.selected ? DexTheme.accentLightColor4: styleData.alternate ? DexTheme.accentDarkColor4 : 'transparent'
+                    color: styleData.selected ? Dex.CurrentTheme.accentColor: styleData.alternate ? Dex.CurrentTheme.backgroundColor : Dex.CurrentTheme.backgroundColorDeep
                 }
 
                 TableViewColumn // Type Column
@@ -157,6 +159,7 @@ BasicModal {
 
                     delegate: RowLayout
                     {
+                        width: walletInfoTable._typeColWidth
                         DexLabel
                         {
                             Layout.preferredWidth: parent.width - 10
@@ -186,6 +189,7 @@ BasicModal {
 
                     delegate: RowLayout
                     {
+                        width: walletInfoTable._keyColWidth
                         DefaultText
                         {
                             Layout.preferredWidth: parent.width - 10
@@ -215,6 +219,7 @@ BasicModal {
 
                     delegate: RowLayout
                     {
+                        width: walletInfoTable._addressColWidth
                         DexLabel
                         {
                             Layout.preferredWidth: parent.width - 10
@@ -240,23 +245,24 @@ BasicModal {
                     resizable: false
                     movable: false
 
-                    delegate: Row
+                    delegate: RowLayout
                     {
-                        spacing: 0
+                        spacing: 4
+                        width: walletInfoTable._actionsColWidth
 
                         Qaterial.OutlineButton // Edit Address Button
                         {
-                            implicitHeight: 35
-                            implicitWidth: 35
-
+                            Layout.leftMargin: 2
+                            implicitHeight: 20
+                            implicitWidth: 20
                             outlined: false
 
                             Qaterial.ColorIcon
                             {
                                 anchors.centerIn: parent
+                                iconSize: 20
                                 source:  Qaterial.Icons.leadPencil
-                                color: DexTheme.foregroundColor
-                                opacity: .8
+                                color: Dex.CurrentTheme.foregroundColor
                             }
 
                             onClicked:
@@ -270,17 +276,10 @@ BasicModal {
 
                         Qaterial.OutlineButton // Delete Button
                         {
-                            implicitHeight: 35
-                            implicitWidth: 35 
+                            implicitHeight: 20
+                            implicitWidth: 20
                             outlined: false
 
-                            Qaterial.ColorIcon
-                            {
-                                anchors.centerIn: parent
-                                source:  Qaterial.Icons.trashCan
-                                color: DexTheme.redColor
-                                opacity: .8
-                            }
                             onClicked:
                             {
                                 removeAddressEntryModal.addressKey = model.address_key;
@@ -288,51 +287,59 @@ BasicModal {
                                 removeAddressEntryModal.contactModel = contactModel;
                                 removeAddressEntryModal.open();
                             }
+
+                            Qaterial.ColorIcon
+                            {
+                                anchors.centerIn: parent
+                                iconSize: 20
+                                source:  Qaterial.Icons.trashCan
+                                color: Dex.CurrentTheme.noColor
+                            }
                         }
 
                         Qaterial.OutlineButton // Copy Clipboard Button
                         {
-                            implicitHeight: 35
-                            implicitWidth: 35
-
+                            implicitHeight: 20
+                            implicitWidth: 20
                             outlined: false
+
+                            onClicked: API.qt_utilities.copy_text_to_clipboard(model.address_value)
+
                             Qaterial.ColorIcon
                             {
                                 anchors.centerIn: parent
+                                iconSize: 20
                                 source:  Qaterial.Icons.contentCopy
-                                color: DexTheme.foregroundColor
-                                opacity: .8
+                                color: Dex.CurrentTheme.foregroundColor
                             }
-
-                            onClicked: API.qt_utilities.copy_text_to_clipboard(model.address_value)
                         }
 
                         Qaterial.OutlineButton // Send Button
                         {
-                            implicitHeight: 35
-                            implicitWidth: 35
-
+                            implicitHeight: 20
+                            implicitWidth: 20
                             outlined: false
+
+                            onClicked: trySend(model.address_type, model.address_value)
+
                             Qaterial.ColorIcon
                             {
                                 anchors.centerIn: parent
+                                iconSize: 20
                                 source:  Qaterial.Icons.send
-                                color: DexTheme.foregroundColor
-                                opacity: .8
+                                color: Dex.CurrentTheme.foregroundColor
                             }
-
-                            onClicked: trySend(model.address_type, model.address_value)
                         }
                     }
                 }
             }
 
-            RowLayout {
-                PrimaryButton { // New Address Button
-                    text: qsTr("New Address")
-
-                    onClicked: address_creation_modal.open();
-                }
+            // New Address Button
+            DefaultButton
+            {
+                Layout.preferredWidth: 140
+                text: qsTr("Add Address")
+                onClicked: address_creation_modal.open();
             }
 
             ModalLoader {
@@ -367,28 +374,33 @@ BasicModal {
             }
         }
 
-        HorizontalLine {
+        HorizontalLine
+        {
             Layout.fillWidth: true
-            color: Style.colorWhite8
         }
 
         // Categories Section Title
-        TitleText {
+        TitleText
+        {
+            Layout.topMargin: 10
             text: qsTr("Tags")
         }
 
         // Categories (Tags) List
-        Flow {
+        Flow
+        {
             Layout.fillWidth: true
             spacing: 10
-            Repeater {
+            Repeater
+            {
                 id: category_repeater
                 model: contactModel.categories
 
-                DexAppButton {
+                DexAppButton
+                {
                     Layout.alignment: Qt.AlignLeft
                     Layout.leftMargin: 4
-                    border.color: backgroundColor
+                    border.width: 0
                     iconSource: Qaterial.Icons.closeOctagon
                     text: modelData
                     onClicked: contactModel.remove_category(modelData);
@@ -396,7 +408,8 @@ BasicModal {
             }
 
             // Category adding form opening button
-            DexAppButton {
+            DexAppButton
+            {
                 Layout.leftMargin: 10
                 width: height
                 text: qsTr("+")
@@ -405,70 +418,83 @@ BasicModal {
             }
         }
 
-        HorizontalLine {
-            Layout.fillWidth: true
-            color: Style.colorWhite8
-        }
+        HorizontalLine { Layout.fillWidth: true }
 
         // Actions on current contact
-        RowLayout {
+        RowLayout
+        {
             Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Layout.rightMargin: 15
 
-            PrimaryButton { // Validate (Save) Changes
+            // Validate (Save) Changes
+            DefaultButton
+            {
                 text: qsTr("Confirm")
-                onClicked: {
+                onClicked:
+                {
                     contactModel.name = name_input.field.text
                     contactModel.save()
                     root.close();
                 }
             }
 
-            DefaultButton { // Cancel Changes
+            // Cancel Changes
+            DefaultButton
+            {
                 text: qsTr("Cancel")
                 onClicked: root.close()
             }
         }
 
         // Wallet Type List Modal
-        ModalLoader {
+        ModalLoader
+        {
             id: wallet_type_list_modal
 
             property string selected_wallet_type: ""
 
-            sourceComponent: AddressBookWalletTypeListModal {
+            sourceComponent: AddressBookWalletTypeListModal
+            {
                 onSelected_wallet_typeChanged: wallet_type_list_modal.selected_wallet_type = selected_wallet_type
             }
         }
 
         // Enable Coin Modal
-        ModalLoader {
+        ModalLoader
+        {
             property string coin_name
 
             id: enable_coin_modal
 
-            sourceComponent: BasicModal {
-                ModalContent {
+            sourceComponent: MultipageModal
+            {
+                MultipageModalContent
+                {
                     Layout.fillWidth: true
-                    title: qsTr("Enable " + coin_name)
+                    titleText: qsTr("Enable " + coin_name)
 
-                    DefaultText {
+                    DefaultText
+                    {
                         text: qsTr("The selected address belongs to a disabled coin, you need to enabled it before sending.")
                     }
 
-                    Row {
+                    Row
+                    {
                         // Enable button
-                        PrimaryButton {
+                        PrimaryButton
+                        {
                             text: qsTr("Enable")
 
-                            onClicked: {
+                            onClicked:
+                            {
                                 API.app.enable_coin(coin_name)
                                 enable_coin_modal.close()
                             }
                         }
 
                         // Cancel button
-                        DefaultButton {
+                        DefaultButton
+                        {
                             Layout.rightMargin: 5
                             text: qsTr("Cancel")
 
@@ -480,13 +506,15 @@ BasicModal {
         }
 
         // Send Selector modal
-        ModalLoader {
+        ModalLoader
+        {
             id: send_selector
 
             property string coin_type
             property string address
 
-            onLoaded: {
+            onLoaded:
+            {
                 item.coin_type = coin_type
                 item.address = address
             }
@@ -495,31 +523,38 @@ BasicModal {
         }
 
         // Send Modal
-        ModalLoader {
+        ModalLoader
+        {
             property string address
 
             id: send_modal
 
             onLoaded: item.address_field.text = address
 
-            sourceComponent: SendModal {
+            sourceComponent: SendModal
+            {
                 address_field.enabled: false
             }
         }
 
         // Cannot Send Modal
-        ModalLoader {
+        ModalLoader
+        {
             id: cannot_send_modal
 
-            sourceComponent: BasicModal {
-                ModalContent {
-                    title: qsTr("Cannot send to this address")
+            sourceComponent: MultipageModal
+            {
+                MultipageModalContent
+                {
+                    titleText: qsTr("Cannot send to this address")
 
-                    DefaultText {
+                    DefaultText
+                    {
                         text: qsTr("Your balance is empty")
                     }
 
-                    DefaultButton {
+                    DefaultButton
+                    {
                         text: qsTr("Ok")
 
                         onClicked: cannot_send_modal.close()
@@ -537,12 +572,12 @@ BasicModal {
             property string addressKey
             property string addressType
 
-            sourceComponent: BasicModal
+            sourceComponent: MultipageModal
             {
                 width: 250
-                ModalContent
+                MultipageModalContent
                 {
-                    title: qsTr("Remove address ?")
+                    titleText: qsTr("Remove address ?")
 
                     RowLayout
                     {
@@ -554,7 +589,8 @@ BasicModal {
         }
 
         // Category (Tag) Adding Modal
-        ModalLoader {
+        ModalLoader
+        {
             id: add_category_modal
 
             onLoaded: item.contactModel = root.contactModel

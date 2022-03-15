@@ -28,14 +28,16 @@ Qaterial.Expandable
         id: _header
 
         icon.source: General.image_path + "arrow_down.svg"
-        DexLabel {
-            anchors.verticalCenter: parent.verticalCenter
-            text: title
-            leftPadding: 60
-            font.bold: true
-        }
 
         onClicked: () => _root.expanded = !_root.expanded
+
+        TitleText
+        {
+            anchors.verticalCenter: parent.verticalCenter
+            leftPadding: 75
+            text: title
+            font.bold: true
+        }
     }
 
     delegate: Column

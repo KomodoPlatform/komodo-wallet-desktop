@@ -366,7 +366,6 @@
         <file>Dex/Components/AmountIntField.qml</file>
         <file>Dex/Components/AnimatedRectangle.qml</file>
         <file>Dex/Components/Arrow.qml</file>
-        <file>Dex/Components/BasicModal.qml</file>
         <file>Dex/Components/Blank.qml</file>
         <file>Dex/Components/CannotEnableCoinModal.qml</file>
         <file>Dex/Components/CexInfoModal.qml</file>
@@ -398,6 +397,7 @@
         <file>Dex/Components/DefaultRangeSlider.qml</file>
         <file>Dex/Components/DefaultRectangle.qml</file>
         <file>Dex/Components/DefaultScrollBar.qml</file>
+        <file>Dex/Components/DefaultScrollView.qml</file>
         <file>Dex/Components/DefaultSlider.qml</file>
         <file>Dex/Components/DefaultSplitView.qml</file>
         <file>Dex/Components/DefaultSubstractRectangle.qml</file>
@@ -480,10 +480,10 @@
         <file>Dex/Components/LoaderBusyIndicator.qml</file>
         <file>Dex/Components/LogModal.qml</file>
         <file>Dex/Components/MinTradeModal.qml</file>
-        <file>Dex/Components/ModalContent.qml</file>
-        <file>Dex/Components/ModalContent2.qml</file>
         <file>Dex/Components/ModalHeader.qml</file>
         <file>Dex/Components/ModalLoader.qml</file>
+        <file>Dex/Components/MultipageModal.qml</file>
+        <file>Dex/Components/MultipageModalContent.qml</file>
         <file>Dex/Components/OutlineButton.qml</file>
         <file>Dex/Components/Pagination.qml</file>
         <file>Dex/Components/PaginationButton.qml</file>
@@ -632,7 +632,5 @@
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Dex/Components/PopupManager.qml</file>
-        <file>bignumberjs/qmldir</file>
-        <file>bignumberjs/bignumber.js/bignumber.js</file>
     </qresource>
 </RCC>

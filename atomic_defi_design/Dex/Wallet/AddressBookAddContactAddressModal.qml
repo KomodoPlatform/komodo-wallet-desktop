@@ -7,9 +7,10 @@ import QtQuick.Controls 2.15 //> ToolTip
 import "../Constants"
 import App 1.0
 import "../Components"
+import Dex.Themes 1.0 as Dex
 
 // Contact address entry creation/edition modal
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -49,21 +50,18 @@ BasicModal
     Component.onCompleted:   API.app.wallet_pg.validate_address_data = {}
     Component.onDestruction: API.app.wallet_pg.validate_address_data = {}
 
-    ModalContent
+    MultipageModalContent
     {
         Layout.topMargin: 5
         Layout.fillWidth: true
 
-        title: isEdition ? qsTr("Edit address entry") : qsTr("Create a new address")
+        titleText: isEdition ? qsTr("Edit address entry") : qsTr("Create a new address")
 
         // Wallet Type Selector
-        DexButton
+        DefaultButton
         {
-            Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-
             text: qsTr("Selected wallet: %1").arg(walletType !== "" ? walletType : qsTr("NONE"))
-
             onClicked: wallet_type_list_modal.open()
         }
 
@@ -73,7 +71,7 @@ BasicModal
             id: contact_new_address_key
 
             Layout.topMargin: 5
-            implicitWidth: parent.width
+            Layout.fillWidth: true
 
             placeholderText: qsTr("Enter a name")
 
@@ -109,51 +107,42 @@ BasicModal
                 if (text.length > max_length)
                     text = text.substring(0, max_length)
             }
+        }
 
-            DexLabel
-            {
-                id: invalidAddressMsgLabel
-                anchors.top: parent.bottom
-                anchors.topMargin: 3
-                anchors.horizontalCenter: parent.horizontalCenter
-                color: DexTheme.redColor
-                wrapMode: DexLabel.Wrap
-                width: 550
-            }
+        DefaultText
+        {
+            id: invalidAddressMsgLabel
+            Layout.fillWidth: true
+            color: Dex.CurrentTheme.noColor
+            wrapMode: DexLabel.Wrap
         }
 
         HorizontalLine { Layout.fillWidth: true; Layout.topMargin: 32 }
 
-        Item
-        {
-            width: root.width - 50
-            height: 40
-
-            DexButton
+        footer:
+        [
+            DefaultButton
             {
-                id: validateButton
-                anchors.left: parent.left
-                enabled: key.length > 0 && value.length > 0 && walletType !== "" && !API.app.wallet_pg.validate_address_busy
-                text: qsTr("Validate")
-                onClicked: API.app.wallet_pg.validate_address(contact_new_address_value.text, retrieveWalletTypeTicker())
-            }
-
-            DexButton
-            {
-                anchors.right: parent.right
-                text: qsTr("Cancel")
-                onClicked: root.close()
-            }
-
-            DexButton
-            {
-                anchors.left: validateButton.right
-                anchors.leftMargin: 10
+                Layout.preferredWidth: 120
                 visible: !API.app.wallet_pg.convert_address_busy && API.app.wallet_pg.validate_address_data.convertible ? API.app.wallet_pg.validate_address_data.convertible : false
                 text: qsTr("Convert")
                 onClicked: API.app.wallet_pg.convert_address(contact_new_address_value.text, retrieveWalletTypeTicker(), API.app.wallet_pg.validate_address_data.to_address_format);
+            },
+
+            DefaultButton
+            {
+                id: validateButton
+                enabled: key.length > 0 && value.length > 0 && walletType !== "" && !API.app.wallet_pg.validate_address_busy
+                text: qsTr("Validate")
+                onClicked: API.app.wallet_pg.validate_address(contact_new_address_value.text, retrieveWalletTypeTicker())
+            },
+
+            DefaultButton
+            {
+                text: qsTr("Cancel")
+                onClicked: root.close()
             }
-        }
+        ]
 
         Connections
         {

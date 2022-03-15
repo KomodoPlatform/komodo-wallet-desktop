@@ -433,13 +433,13 @@ Item
             Component
             {
                 id: enable_fees_coin_comp
-                BasicModal
+                MultipageModal
                 {
                     id: root
                     width: 300
-                    ModalContent
+                    MultipageModalContent
                     {
-                        title: qsTr("Enable %1 ?").arg(coin_to_enable_ticker)
+                        titleText: qsTr("Enable %1 ?").arg(coin_to_enable_ticker)
                         RowLayout
                         {
                             Layout.fillWidth: true
@@ -616,6 +616,89 @@ Item
             {
                 id: claimFaucetResultModal
                 sourceComponent: ClaimFaucetResultModal {}
+            }
+
+            // Public Key button
+            Item
+            {
+                Layout.minimumWidth: 160
+                Layout.maximumWidth: 180
+                Layout.fillWidth: true
+                Layout.preferredHeight: 48
+
+                visible: current_ticker_infos.name === "Tokel"
+
+                DexAppButton
+                {
+                    text: qsTr("Public Key")
+                    radius: 18
+                    font.pixelSize: 16
+                    anchors.fill: parent
+                    onClicked:
+                    {
+                        API.app.settings_pg.fetchPublicKey()
+                        publicKeyModal.open()
+                    }
+                }
+
+                ModalLoader
+                {
+                    id: publicKeyModal
+                    sourceComponent: MultipageModal
+                    {
+                        MultipageModalContent
+                        {
+                            titleText: qsTr("Public Key")
+
+                            DefaultBusyIndicator
+                            {
+                                Layout.alignment: Qt.AlignCenter
+
+                                visible: API.app.settings_pg.fetchingPublicKey
+                                enabled: visible
+                            }
+
+                            RowLayout
+                            {
+                                Layout.fillWidth: true
+
+                                DefaultText
+                                {
+                                    Layout.fillWidth: true
+                                    visible: !API.app.settings_pg.fetchingPublicKey
+                                    text: API.app.settings_pg.publicKey
+                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                }
+
+                                Qaterial.RawMaterialButton
+                                {
+                                    backgroundImplicitWidth: 40
+                                    backgroundImplicitHeight: 30
+                                    backgroundColor: "transparent"
+                                    icon.source: Qaterial.Icons.contentCopy
+                                    icon.color: Dex.CurrentTheme.foregroundColor
+                                    onClicked:
+                                    {
+                                        API.qt_utilities.copy_text_to_clipboard(API.app.settings_pg.publicKey)
+                                        app.notifyCopy(qsTr("Public Key"), qsTr("Copied to Clipboard"))
+                                    }
+                                }
+                            }
+
+                            Image
+                            {
+                                visible: !API.app.settings_pg.fetchingPublicKey
+
+                                Layout.topMargin: 20
+                                Layout.alignment: Qt.AlignHCenter
+
+                                sourceSize.width: 300
+                                sourceSize.height: 300
+                                source: API.qt_utilities.get_qrcode_svg_from_string(API.app.settings_pg.publicKey)
+                            }
+                        }
+                    }
+                }
             }
         }
 

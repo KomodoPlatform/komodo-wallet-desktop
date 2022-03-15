@@ -4,11 +4,11 @@ import QtQuick.Layouts 1.15  //> Layout.fillWidth
 import QtQuick.Controls 2.15 //> ProgressBar
 
 // Project imports
-import "../Components" //> BasicModal
+import "../Components" //> MultipageModal
 import "../Constants"
 import App 1.0  //> API.app.self_update_service
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -67,9 +67,9 @@ BasicModal
     onInvalid_update_filesChanged: select_index()
 
     // Section when fetching update
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Searching new updates...")
+        titleText: qsTr("Searching new updates...")
         titleAlignment: Label.AlignHCenter
 
         DefaultText
@@ -80,9 +80,9 @@ BasicModal
     }
 
     // Section when no new update is found.
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Already updated")
+        titleText: qsTr("Already updated")
         titleAlignment: Label.AlignHCenter
 
 
@@ -104,9 +104,9 @@ BasicModal
     }
 
     // Second section. Asks user to update its client.
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("New update detected !")
+        titleText: qsTr("New update detected !")
 
         DefaultText
         {
@@ -134,9 +134,9 @@ BasicModal
     }
 
     // Download progress bar
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Download in progress...")
+        titleText: qsTr("Download in progress...")
 
         RowLayout
         {
@@ -157,9 +157,9 @@ BasicModal
     }
 
     // Update download finished... Asks for restart
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Update downloaded")
+        titleText: qsTr("Update downloaded")
 
         DefaultText
         {

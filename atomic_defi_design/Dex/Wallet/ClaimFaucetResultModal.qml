@@ -6,16 +6,16 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     readonly property var claiming_faucet_rpc_result: api_wallet_page.claiming_faucet_rpc_data
 
     id: root
     width: 1200
 
-    ModalContent {
+    MultipageModalContent {
         id: status
 
-        title: claiming_faucet_rpc_result && claiming_faucet_rpc_result.status ?
+        titleText: claiming_faucet_rpc_result && claiming_faucet_rpc_result.status ?
                    claiming_faucet_rpc_result.status : ""
 
         DefaultText {

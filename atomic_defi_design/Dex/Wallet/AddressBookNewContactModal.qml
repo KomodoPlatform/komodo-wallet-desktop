@@ -6,15 +6,14 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
     width: 500
 
-    ModalContent {
+    MultipageModalContent {
         Layout.topMargin: 5
-        Layout.fillWidth: true
 
-        title: qsTr("Create a new contact")
+        titleText: qsTr("Create a new contact")
 
         // Contact name input.
         DefaultTextField {
