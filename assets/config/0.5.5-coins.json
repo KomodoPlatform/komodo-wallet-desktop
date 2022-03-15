@@ -6729,10 +6729,16 @@
     "nomics_id": "SPACE7",
     "electrum": [
       {
-        "url": "electrum1.spaceworks.co:50001"
+        "url": "electrum3.cipig.net:10011",
+        "ws_url": "electrum3.cipig.net:30011"
       },
       {
-        "url": "electrum2.spaceworks.co:50001"
+        "url": "electrum2.cipig.net:10011",
+        "ws_url": "electrum2.cipig.net:30011"
+      },
+      {
+        "url": "electrum1.cipig.net:10011",
+        "ws_url": "electrum1.cipig.net:30011"
       }
     ],
     "explorer_url": [
@@ -7403,6 +7409,7 @@
     "active": false,
     "coinpaprika_id": "xrg-ergon",
     "coingecko_id": "test-coin",
+    "nomics_id": "XRG",
     "currently_enabled": false,
     "electrum": [
       {
