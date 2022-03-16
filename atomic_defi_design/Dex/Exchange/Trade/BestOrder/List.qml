@@ -11,6 +11,11 @@ import "../../../Components"
 Rectangle
 {
     id: _control
+
+    property real youGetColumnWidth: 0.5
+    property real fiatPriceColumnWidth: 0.22
+    property real cexRateColumnWidth: 0.22
+
     color: Dex.CurrentTheme.floatingBackgroundColor
     radius: 10
 
@@ -21,7 +26,7 @@ Rectangle
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 20
-        spacing: 20
+        spacing: 10
 
         DefaultText
         {
@@ -29,19 +34,25 @@ Rectangle
             font: DexTypo.subtitle1
         }
 
-        Header {}
+        Header
+        {
+            Layout.topMargin: 10
+            Layout.fillWidth: true
+        }
 
-        ListView
+        DefaultListView
         {
             id: list
-            Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.fillHeight: true
             model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
+            spacing: 6
             clip: true
-            reuseItems: true
+
             delegate: ListDelegate
             {
                 width: list.width
+                height: 36
             }
         }
     }

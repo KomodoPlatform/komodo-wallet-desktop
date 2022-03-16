@@ -2,11 +2,10 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
-
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
-import "../../../Constants" as Constants
+import "../../../Constants"
 import Dex.Themes 1.0 as Dex
 
 import App 1.0 as App
@@ -15,7 +14,7 @@ Item
 {
     id: _control
 
-    property bool coinEnable: Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
+    property bool coinEnable: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
     property var isAsk:
     {
         if (parseInt(cex_rates) > 0)
@@ -32,8 +31,6 @@ Item
         }
     }
 
-    height: 36
-
     AnimatedRectangle
     {
         visible: mouse_are.containsMouse
@@ -43,45 +40,54 @@ Item
         opacity: 0.1
     }
 
-    RowLayout
+    Row
     {
         id: row
-        width:  parent.width - 30
+        width: parent.width
         height: parent.height
-        anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 10
+        spacing: 0
 
-        Image
+        Row
         {
-            Layout.preferredWidth: 20
-            Layout.preferredHeight: 20
-            Layout.alignment: Qt.AlignVCenter
-            source: Constants.General.coinIcon(coin)
-            smooth: true
-            antialiasing: true
-            opacity: !_control.coinEnable? .1 : 1
+            width: parent.width * youGetColumnWidth
+            height: parent.height
+            spacing: 8
+
+            DefaultImage
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                width: 20
+                height: 20
+                Layout.alignment: Qt.AlignVCenter
+                source: General.coinIcon(coin)
+                smooth: true
+                antialiasing: true
+                opacity: !_control.coinEnable? .1 : 1
+            }
+
+            DefaultText
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.8
+                text: send + " " + atomic_qt_utilities.retrieve_main_ticker(coin)
+                font.family: App.DexTypo.fontFamily
+                font.pixelSize: 12
+            }
         }
+
         DefaultText
         {
-            Layout.preferredWidth: 100
-            Layout.alignment: Qt.AlignVCenter
-            text: send + " " + atomic_qt_utilities.retrieve_main_ticker(coin)
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width * fiatPriceColumnWidth
+            text: price_fiat + API.app.settings_pg.current_fiat_sign
             font.family: App.DexTypo.fontFamily
             font.pixelSize: 12
         }
 
         DefaultText
         {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 60
-            text: price_fiat + Constants.API.app.settings_pg.current_fiat_sign
-            font.family: App.DexTypo.fontFamily
-            font.pixelSize: 12
-        }
-
-        DefaultText
-        {
-            Layout.alignment: Qt.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width * cexRateColumnWidth
             
             text: cex_rates === "0" ? "N/A" :
                                       parseFloat(cex_rates) > 0 ? "+" + parseFloat(cex_rates).toFixed(2) + "%" :
@@ -124,7 +130,7 @@ Item
                 }
                 else
                 {
-                    if (Constants.API.app.enable_coins([coin]) === true)
+                    if (API.app.enable_coins([coin]) === true)
                     {
                         _control.coinEnable = true;
                         _tooltip.close();
@@ -151,22 +157,15 @@ Item
         hoverEnabled: true
         onClicked:
         {
-            if (!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
+            if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
             {
                 _tooltip.open()
             }
             else
             {
                 app.pairChanged(base_ticker, coin)
-                Constants.API.app.trading_pg.orderbook.select_best_order(uuid)
+                API.app.trading_pg.orderbook.select_best_order(uuid)
             }
         }
     }
-
-    HorizontalLine
-    {
-        width: parent.width
-        opacity: .4
-    }
-
 }
