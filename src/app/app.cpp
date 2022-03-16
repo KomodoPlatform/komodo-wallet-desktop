@@ -151,7 +151,7 @@ namespace atomic_dex
         return true;
     }
 
-    bool               
+    bool
     application::disable_no_balance_coins()
     {
         auto* portfolio_page = get_portfolio_page();
@@ -167,6 +167,23 @@ namespace atomic_dex
             }
         }
         return disable_coins(coins_to_disable);
+    }
+
+    bool
+    application::has_coins_with_balance()
+    {
+        auto* portfolio_page = get_portfolio_page();
+        auto* portfolio_mdl = portfolio_page->get_portfolio();
+        auto portfolio_data = portfolio_mdl->get_underlying_data();
+
+        for (auto& coin : portfolio_data)
+        {
+            if (coin.balance.toFloat() != 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     bool

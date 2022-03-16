@@ -17,7 +17,6 @@ import Dex.Themes 1.0 as Dex
 Item
 {
     id: root
-
     readonly property var subPages: Main.getSubPages()
 
     // Variable which holds the current sub-page of the SimpleView.
@@ -77,6 +76,7 @@ Item
 
                 Behavior on x { NumberAnimation { duration: 150 } }
             }
+
             RowLayout
             {
                 anchors.fill: parent
@@ -144,6 +144,7 @@ Item
                     }
                 }
             }
+
             Item
             {
                 FloatingBackground
@@ -159,6 +160,7 @@ Item
                     SubOrders { id: orders_view }
                 }
             }
+
             Item
             {
                 FloatingBackground
