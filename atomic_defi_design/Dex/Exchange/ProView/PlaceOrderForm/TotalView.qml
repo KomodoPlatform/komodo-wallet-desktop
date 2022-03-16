@@ -6,8 +6,8 @@ import QtQuick.Controls.Material 2.15
 import Qaterial 1.0 as Qaterial
 import Qt.labs.settings 1.0
 
-import "../../../../Components"
-import "../../../../Constants"
+import "../../../Components"
+import "../../../Constants"
 import Dex.Themes 1.0 as Dex
 
 ColumnLayout

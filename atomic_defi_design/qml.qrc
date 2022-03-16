@@ -523,7 +523,10 @@
         <file>Dex/Exchange/Exchange.qml</file>
         <file>Dex/Exchange/ProView/Chart.qml</file>
         <file>Dex/Exchange/ProView/DexComboBoxLine.qml</file>
-        <file>Dex/Exchange/ProView/MarketModeSelector.qml</file>
+        <file>Dex/Exchange/ProView/PlaceOrderForm/Main.qml</file>
+        <file>Dex/Exchange/ProView/PlaceOrderForm/MarketModeSelector.qml</file>
+        <file>Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml</file>
+        <file>Dex/Exchange/ProView/PlaceOrderForm/TotalView.qml</file>
         <file>Dex/Exchange/ProView/SweetDexComboBox.qml</file>
         <file>Dex/Exchange/ProView/TickerSelector.qml</file>
         <file>Dex/Exchange/ProView/TickerSelectors.qml</file>
@@ -559,11 +562,7 @@
         <file>Dex/Exchange/Trade/SimpleView/SubOrders.qml</file>
         <file>Dex/Exchange/Trade/SimpleView/SubHistory.qml</file>
         <file>Dex/Exchange/Trade/Trade.qml</file>
-        <file>Dex/Exchange/Trade/TradeBox/BuyBox.qml</file>
-        <file>Dex/Exchange/Trade/TradeBox/OrderForm.qml</file>
-        <file>Dex/Exchange/Trade/TradeBox/SellBox.qml</file>
         <file>Dex/Exchange/Trade/Trading/Items/FeeInfo.qml</file>
-        <file>Dex/Exchange/Trade/Trading/Items/TotalView.qml</file>
         <file>Dex/Exchange/Trade/Trading/TradeViewHeader.qml</file>
         <file>Dex/Fiat/FiatRamp.qml</file>
         <file>Dex/Graphics/Color.js</file>
