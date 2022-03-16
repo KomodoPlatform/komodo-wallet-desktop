@@ -9,7 +9,7 @@ import Qaterial 1.0 as Qaterial
 import App 1.0
 
 //! Project Imports
-import "../../../Components" //> BasicModal
+import "../../../Components" //> MultipageModal
 import "../../../Constants" as Constants //> API
 import Dex.Themes 1.0 as Dex
 

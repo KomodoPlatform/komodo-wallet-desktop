@@ -55,6 +55,7 @@
         <file>assets/images/coins/btc.png</file>
         <file>assets/images/coins/btcz.png</file>
         <file>assets/images/coins/btt.png</file>
+        <file>assets/images/coins/bttc.png</file>
         <file>assets/images/coins/btu.png</file>
         <file>assets/images/coins/btx.png</file>
         <file>assets/images/coins/busd.png</file>
@@ -153,6 +154,7 @@
         <file>assets/images/coins/kmd.png</file>
         <file>assets/images/coins/knc.png</file>
         <file>assets/images/coins/koin.png</file>
+        <file>assets/images/coins/ksm.png</file>
         <file>assets/images/coins/labs.png</file>
         <file>assets/images/coins/lbc.png</file>
         <file>assets/images/coins/lcc.png</file>
@@ -364,7 +366,6 @@
         <file>Dex/Components/AmountIntField.qml</file>
         <file>Dex/Components/AnimatedRectangle.qml</file>
         <file>Dex/Components/Arrow.qml</file>
-        <file>Dex/Components/BasicModal.qml</file>
         <file>Dex/Components/Blank.qml</file>
         <file>Dex/Components/CannotEnableCoinModal.qml</file>
         <file>Dex/Components/CexInfoModal.qml</file>
@@ -379,6 +380,7 @@
         <file>Dex/Components/ComponentWithTitle.qml</file>
         <file>Dex/Components/CopyFieldButton.qml</file>
         <file>Dex/Components/DangerButton.qml</file>
+        <file>Dex/Components/DefaultAlertIcon.qml</file>
         <file>Dex/Components/DefaultAnimatedImage.qml</file>
         <file>Dex/Components/DefaultBusyIndicator.qml</file>
         <file>Dex/Components/DefaultButton.qml</file>
@@ -395,6 +397,7 @@
         <file>Dex/Components/DefaultRangeSlider.qml</file>
         <file>Dex/Components/DefaultRectangle.qml</file>
         <file>Dex/Components/DefaultScrollBar.qml</file>
+        <file>Dex/Components/DefaultScrollView.qml</file>
         <file>Dex/Components/DefaultSlider.qml</file>
         <file>Dex/Components/DefaultSplitView.qml</file>
         <file>Dex/Components/DefaultSubstractRectangle.qml</file>
@@ -477,10 +480,10 @@
         <file>Dex/Components/LoaderBusyIndicator.qml</file>
         <file>Dex/Components/LogModal.qml</file>
         <file>Dex/Components/MinTradeModal.qml</file>
-        <file>Dex/Components/ModalContent.qml</file>
-        <file>Dex/Components/ModalContent2.qml</file>
         <file>Dex/Components/ModalHeader.qml</file>
         <file>Dex/Components/ModalLoader.qml</file>
+        <file>Dex/Components/MultipageModal.qml</file>
+        <file>Dex/Components/MultipageModalContent.qml</file>
         <file>Dex/Components/OutlineButton.qml</file>
         <file>Dex/Components/Pagination.qml</file>
         <file>Dex/Components/PaginationButton.qml</file>
@@ -628,7 +631,5 @@
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Dex/Components/PopupManager.qml</file>
-        <file>bignumberjs/qmldir</file>
-        <file>bignumberjs/bignumber.js/bignumber.js</file>
     </qresource>
 </RCC>

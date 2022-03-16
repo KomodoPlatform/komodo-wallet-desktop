@@ -1292,6 +1292,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "BTTC-BEP20": {
+    "coin": "BTTC-BEP20",
+    "name": "BitTorrent",
+    "coinpaprika_id": "bttc-bittorrent-chain",
+    "coingecko_id": "bittorrent",
+    "nomics_id": "BTT2",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "BTU-ERC20": {
     "coin": "BTU-ERC20",
     "name": "BTU Protocol",
@@ -4999,6 +5017,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "KSM-BEP20": {
+    "coin": "KSM-BEP20",
+    "name": "Kusama",
+    "coinpaprika_id": "ksm-kusama",
+    "coingecko_id": "kusama",
+    "nomics_id": "KSM",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "LABS": {
     "coin": "LABS",
     "name": "Labs",
@@ -6693,10 +6729,16 @@
     "nomics_id": "SPACE7",
     "electrum": [
       {
-        "url": "electrum1.spaceworks.co:50001"
+        "url": "electrum3.cipig.net:10011",
+        "ws_url": "electrum3.cipig.net:30011"
       },
       {
-        "url": "electrum2.spaceworks.co:50001"
+        "url": "electrum2.cipig.net:10011",
+        "ws_url": "electrum2.cipig.net:30011"
+      },
+      {
+        "url": "electrum1.cipig.net:10011",
+        "ws_url": "electrum1.cipig.net:30011"
       }
     ],
     "explorer_url": [
@@ -7367,6 +7409,7 @@
     "active": false,
     "coinpaprika_id": "xrg-ergon",
     "coingecko_id": "test-coin",
+    "nomics_id": "XRG",
     "currently_enabled": false,
     "electrum": [
       {

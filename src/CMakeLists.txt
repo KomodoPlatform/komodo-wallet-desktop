@@ -74,6 +74,7 @@ add_executable(${PROJECT_NAME}
 
         ##! QRC
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml.qrc
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/imports/qml.qrc
 
         ##! Linguistic
         ${QM_FILES}

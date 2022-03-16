@@ -6,12 +6,12 @@ import QtQuick.Layouts 1.15
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     // Inside modal
-    ModalContent {
-        title: General.cex_icon + " " + qsTr("Minimum Trading Amount")
+    MultipageModalContent {
+        titleText: General.cex_icon + " " + qsTr("Minimum Trading Amount")
 
         DefaultText {
             //Layout.preferredHeight: 200

@@ -10,7 +10,7 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -263,7 +263,7 @@ BasicModal
     }
 
     // Prepare Page
-    ModalContent2
+    MultipageModalContent
     {
         id: _preparePage
 
@@ -280,7 +280,6 @@ BasicModal
             Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 18
 
             color: input_address.background.color
             radius: input_address.background.radius
@@ -341,14 +340,16 @@ BasicModal
         {
             visible: errorView && input_address.text !== ""
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
 
             DefaultText
             {
                 id: reason
 
                 Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
 
-                wrapMode: Label.Wrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 color: Dex.CurrentTheme.noColor
                 text_value: qsTr("The address has to be mixed case.")
             }
@@ -454,6 +455,8 @@ BasicModal
                 property string value: "0"
 
                 enabled: !(new BigNumber(current_ticker_infos.current_currency_ticker_price).isLessThanOrEqualTo(0))
+                visible: enabled
+
                 text:
                 {
                     if (!enabled)
@@ -497,6 +500,8 @@ BasicModal
             Rectangle
             {
                 enabled: equivalentAmount.enabled
+                visible: equivalentAmount.visible
+
                 Layout.alignment: Qt.AlignRight
                 Layout.preferredWidth: cryptoFiatSwitchText.width + cryptoFiatSwitchIcon.width + 20
                 Layout.preferredHeight: 32
@@ -568,13 +573,9 @@ BasicModal
         DexSwitch
         {
             id: custom_fees_switch
-
             enabled: !root.is_send_busy
-
             Layout.topMargin: 32
-
             text: qsTr("Enable Custom Fees")
-
             onCheckedChanged: input_custom_fees.text = ""
         }
 
@@ -582,7 +583,6 @@ BasicModal
         DefaultText
         {
             visible: custom_fees_switch.checked
-
             font.pixelSize: 14
             color: Dex.CurrentTheme.noColor
             text_value: qsTr("Only use custom fees if you know what you are doing!")
@@ -684,7 +684,7 @@ BasicModal
                 text: qsTr("Close")
 
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: 199
+                Layout.preferredWidth: parent.width / 100 * 48
                 Layout.preferredHeight: 48
 
                 label.font.pixelSize: 16
@@ -693,11 +693,14 @@ BasicModal
                 onClicked: root.close()
             }
 
+            Item { Layout.fillWidth: true }
+
             OutlineButton
             {
                 enabled: fieldAreFilled() && hasFunds() && !errorView && !root.is_send_busy
 
                 Layout.alignment: Qt.AlignRight
+                Layout.preferredWidth: parent.width / 100 * 48
 
                 text: qsTr("Prepare")
 
@@ -725,9 +728,9 @@ BasicModal
     }
 
     // Send Page
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Send")
+        titleText: qsTr("Send")
 
         // Address
         TextEditWithTitle
@@ -785,11 +788,14 @@ BasicModal
         }
 
         // Buttons
-        footer: [
-        Item {
+        footer:
+        [
+            Item
+            {
                 Layout.fillWidth: true
             },
-            DexAppButton {
+            DexAppButton
+            {
                 text: qsTr("Back")
                 leftPadding: 40
                 rightPadding: 40
@@ -797,10 +803,12 @@ BasicModal
                 onClicked: root.currentIndex = 0
                 enabled: !root.is_broadcast_busy
             },
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
             },
-            DexAppOutlineButton {
+            DexAppOutlineButton
+            {
                 text: qsTr("Send")
                 onClicked: sendCoin()
                 leftPadding: 40
@@ -808,27 +816,24 @@ BasicModal
                 radius: 18
                 enabled: !root.is_broadcast_busy
             },
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
             }
         ]
     }
 
     // Result Page
-    SendResult {
-        result: ({
-            balance_change: empty_data ? "" : send_result.withdraw_answer.my_balance_change,
-            fees: empty_data ? "" : send_result.withdraw_answer.fee_details.amount,
-            date: empty_data ? "" : send_result.withdraw_answer.date
-        })
+    SendResult
+    {
+        result: send_result
         address: input_address.text
         tx_hash: broadcast_result
         custom_amount: getCryptoAmount()
 
-        function onClose() {
-            if(root.segwit) {
-                root.segwit_success = true
-            }
+        function onClose()
+        {
+            if (root.segwit) root.segwit_success = true
             root.close()
         }
     }
