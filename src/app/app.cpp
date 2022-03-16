@@ -17,6 +17,7 @@
 //! Deps
 #include <boost/random/random_device.hpp>
 #include <wally_bip39.h>
+#include <range/v3/algorithm/any_of.hpp>
 
 //! QT
 #include <QDebug>
@@ -176,7 +177,8 @@ namespace atomic_dex
         auto* portfolio_mdl = portfolio_page->get_portfolio();
         auto portfolio_data = portfolio_mdl->get_underlying_data();
 
-        return (std::any_of(std::begin(portfolio_data), std::end(portfolio_data), [](const auto& item) -> bool { return item.balance.toFloat() != 0; } ));
+        auto functor = [](const auto& coin) { return coin.balance.toFloat() > 0; }; 
+        return ranges::any_of(portfolio_data, functor);
     }
 
     bool
