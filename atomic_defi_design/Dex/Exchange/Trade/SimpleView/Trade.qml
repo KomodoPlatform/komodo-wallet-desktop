@@ -19,14 +19,14 @@ ClipRRect // Trade Card
 {
     id: _tradeCard
 
-    property string selectedTicker: !Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(left_ticker).is_testnet &&
-                                    left_ticker !== "RICK" && left_ticker !== "MORTY" ?
-                                        left_ticker : ""
+    property string selectedTicker: API.app.get_balance(left_ticker) > 0 ? left_ticker : ""
     property var    selectedOrder:  undefined
     property bool   best: false
     property bool   coinSelection: false
+    property bool   has_coins_with_balance: API.app.has_coins_with_balance()
 
     onSelectedTickerChanged: { selectedOrder = undefined; setPair(true, selectedTicker); _fromValue.text = "" }
+
     onSelectedOrderChanged:
     {
         if (typeof selectedOrder !== 'undefined' && selectedOrder.from_best_order) Constants.API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
@@ -35,6 +35,7 @@ ClipRRect // Trade Card
 
         Constants.API.app.trading_pg.determine_fees()
     }
+
     onEnabledChanged: selectedOrder = undefined
     Component.onDestruction: selectedOrder = undefined
     Component.onCompleted: _fromValue.forceActiveFocus()
@@ -142,6 +143,7 @@ ClipRRect // Trade Card
             leftPadding: 20
             topPadding: 20
             spacing: 15
+
             DexLabel // Title
             {
                 text: qsTr("Swap")
@@ -189,12 +191,13 @@ ClipRRect // Trade Card
                     }
                 }
             }
+
             DexLabel // Title
             {
                 text: qsTr("You have no tradable assets.")
                 font: DexTypo.head6
                 opacity: .85
-                visible: parseFloat(API.app.portfolio_pg.balance_fiat_all) == 0
+                visible: !has_coins_with_balance
             }
         }
 
@@ -217,7 +220,7 @@ ClipRRect // Trade Card
                 Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
                 radius: 20
-                visible: !coinSelectorSimplified.visible && parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+                visible: !coinSelectorSimplified.visible && has_coins_with_balance
 
                 DefaultText // From Text
                 {
@@ -229,7 +232,6 @@ ClipRRect // Trade Card
                     text: qsTr("From")
                     font.pixelSize: Constants.Style.textSizeSmall4
                 }
-
 
                 Text // Tradable Balance
                 {
@@ -285,6 +287,7 @@ ClipRRect // Trade Card
                 {
                     id: _fromValue
                     enabled: selectedTicker !== ""
+                    visible: enabled
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
@@ -304,6 +307,7 @@ ClipRRect // Trade Card
                         }
                         else Constants.API.app.trading_pg.volume = text
                     }
+
                     onFocusChanged:
                     {
                         if (!focus && parseFloat(text) < parseFloat(Constants.API.app.trading_pg.min_trade_vol))
@@ -317,6 +321,7 @@ ClipRRect // Trade Card
                 Text    // Amount In Fiat
                 {
                     enabled: _fromValue.text
+                    visible: enabled
                     anchors.top: _fromValue.bottom
                     anchors.topMargin: -3
                     anchors.left: _fromValue.left
@@ -433,7 +438,7 @@ ClipRRect // Trade Card
                 DefaultBusyIndicator
                 {
                     anchors.centerIn: parent
-                    visible: Constants.API.app.trading_pg.max_volume == 0
+                    visible: selectedTicker !== "" && Constants.API.app.trading_pg.max_volume == 0
                 }
             }
 
@@ -447,7 +452,7 @@ ClipRRect // Trade Card
                 color: DexTheme.tradeFieldBoxBackgroundColor
                 visible: !bestOrderSimplified.visible
                     && !coinSelectorSimplified.visible
-                    && parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+                    && has_coins_with_balance
 
                 DefaultText
                 {
@@ -563,14 +568,11 @@ ClipRRect // Trade Card
                         anchors.verticalCenterOffset: -5
                         anchors.left: _bestOrderIcon.right
                         anchors.leftMargin: 10
-
                         width: 60
 
                         text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin) : ""
                         font.pixelSize: Constants.Style.textSizeSmall2
-
                         wrapMode: Text.NoWrap
-
 
                         DefaultText
                         {
@@ -611,7 +613,7 @@ ClipRRect // Trade Card
                 visible: enabled
                         && !bestOrderSimplified.visible
                         && !coinSelectorSimplified.visible
-                        && parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+                        && has_coins_with_balance
 
                 DefaultText
                 {
@@ -619,6 +621,7 @@ ClipRRect // Trade Card
                     font.pixelSize: Constants.Style.textSizeSmall3
                     text: qsTr("Price")
                 }
+
                 DefaultText
                 {
                     Layout.alignment: Qt.AlignRight
@@ -639,7 +642,7 @@ ClipRRect // Trade Card
                 Layout.preferredHeight: 50
                 visible: !bestOrderSimplified.visible
                     && !coinSelectorSimplified.visible
-                    && parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+                    && has_coins_with_balance
 
                 DexGradientAppButton
                 {
@@ -694,7 +697,6 @@ ClipRRect // Trade Card
                     }
                 }
 
-
                 // Send button error icon
                 DefaultAlertIcon
                 {
@@ -738,16 +740,19 @@ ClipRRect // Trade Card
                 }
             }
         }
+
         Item
         {
             id: coinSelectorSimplified
             width: parent.width
             height: 300
-            visible: _tradeCard.coinSelection && parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+            visible: _tradeCard.coinSelection && has_coins_with_balance
+
             Item
             {
                 width: parent.width
                 height: 50
+
                 Qaterial.ColorIcon
                 {
                     anchors.verticalCenter: parent.verticalCenter
@@ -756,6 +761,7 @@ ClipRRect // Trade Card
                     x: 25
                     opacity: .7
                 }
+
                 DexTextField
                 {
                     id: _coinSearchField
@@ -764,17 +770,20 @@ ClipRRect // Trade Card
                     font.pixelSize: 16
                     x: 45
                     placeholderText: qsTr("Search")
+
                     background: DexRectangle
                     {
                         border.width: 0
                         color: 'transparent'
                     }
+
                     onTextChanged:
                     {
                       _coinList.model.setFilterFixedString(text)
                     }
                 }
             }
+
             Connections {
                 target: _tradeCard
                 function onCoinSelectionChanged() {
@@ -799,18 +808,20 @@ ClipRRect // Trade Card
                 anchors.bottomMargin: 10
                 anchors.topMargin: 50
             }
-
         }
+
         Item
         {
             id: bestOrderSimplified
             width: parent.width
             height: 300
-            visible: _tradeCard.best && parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+            visible: _tradeCard.best && has_coins_with_balance
+
             Item
             {
                 width: parent.width
                 height: 50
+
                 Qaterial.ColorIcon
                 {
                     anchors.verticalCenter: parent.verticalCenter
@@ -819,6 +830,7 @@ ClipRRect // Trade Card
                     opacity: .7
                     color: Dex.CurrentTheme.textPlaceholderColor
                 }
+
                 DexTextField
                 {
                     id: _bestOrderSearchField
@@ -827,33 +839,39 @@ ClipRRect // Trade Card
                     font.pixelSize: 16
                     x: 45
                     placeholderText: qsTr("Search")
+
                     background: DexRectangle
                     {
                         border.width: 0
                         color: 'transparent'
                     }
+
                     onTextChanged:
                     {
                         Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
                     }
                 }
             }
+
             Connections {
                 target: _tradeCard
                 function onBestChanged() {
                     _bestOrderSearchField.text = ""
                 }
             }
+
             SubBestOrder
             {
                 id: _bestOrderList
                 tradeCard: _tradeCard
+
                 onSelectedOrderChanged:
                 {
                     _tradeCard.selectedOrder = selectedOrder
                     _bestOrderSearchField.text = ""
                     _fromValue.forceActiveFocus()
                 }
+
                 onBestChanged:
                 {
                     if(!best)
@@ -861,6 +879,7 @@ ClipRRect // Trade Card
                         _tradeCard.best = false
                     }
                 }
+
                 anchors.fill: parent
                 anchors.rightMargin: 10
                 anchors.leftMargin: 20
@@ -868,6 +887,7 @@ ClipRRect // Trade Card
                 anchors.topMargin: 50
                 visible: _tradeCard.width == 600
             }
+
             DefaultBusyIndicator
             {
                 id: bestOrdersLoading
@@ -907,7 +927,7 @@ ClipRRect // Trade Card
                     && parseFloat(_fromValue.text) > 0
                     && !bestOrderSimplified.visible
                     && !coinSelectorSimplified.visible
-                    && parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+                    && has_coins_with_balance
                     && !_swapAlert.visible
 
             DexRectangle {
@@ -932,8 +952,10 @@ ClipRRect // Trade Card
                 visible: {
                     return !Constants.API.app.trading_pg.preimage_rpc_busy
                 }
+
                 enabled: parent.enabled
                 model: Constants.API.app.trading_pg.fees.total_fees
+
                 delegate: RowLayout
                 {
                     width: _feesCard.width
@@ -947,6 +969,7 @@ ClipRRect // Trade Card
                         text: qsTr("Total %1 fees: ").arg(modelData.coin)
                         font.pixelSize: Constants.Style.textSizeSmall3
                     }
+
                     DefaultText
                     {
                         Layout.alignment: Qt.AlignRight
@@ -970,6 +993,7 @@ ClipRRect // Trade Card
             }
         }
     }
+
     Row
     {
         anchors.rightMargin: 15
@@ -977,7 +1001,8 @@ ClipRRect // Trade Card
         height: 50
         spacing: 5
         y: 12
-        visible: parseFloat(API.app.portfolio_pg.balance_fiat_all) > 0
+        visible: has_coins_with_balance
+
         DexAppButton
         {
             visible: _tradeCard.best
@@ -993,6 +1018,7 @@ ClipRRect // Trade Card
                 Constants.API.app.trading_pg.orderbook.refresh_best_orders()
             }
         }
+
         DexAppButton
         {
             visible: _tradeCard.best || _tradeCard.coinSelection
@@ -1002,6 +1028,7 @@ ClipRRect // Trade Card
             anchors.verticalCenter: parent.verticalCenter
             width: 35
             height: 25
+
             onClicked:
             {
                 _tradeCard.best = false

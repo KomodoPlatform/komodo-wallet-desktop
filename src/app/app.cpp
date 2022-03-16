@@ -17,6 +17,7 @@
 //! Deps
 #include <boost/random/random_device.hpp>
 #include <wally_bip39.h>
+#include <range/v3/algorithm/any_of.hpp>
 
 //! QT
 #include <QDebug>
@@ -151,7 +152,7 @@ namespace atomic_dex
         return true;
     }
 
-    bool               
+    bool
     application::disable_no_balance_coins()
     {
         auto* portfolio_page = get_portfolio_page();
@@ -167,6 +168,17 @@ namespace atomic_dex
             }
         }
         return disable_coins(coins_to_disable);
+    }
+
+    bool
+    application::has_coins_with_balance()
+    {
+        auto* portfolio_page = get_portfolio_page();
+        auto* portfolio_mdl = portfolio_page->get_portfolio();
+        auto portfolio_data = portfolio_mdl->get_underlying_data();
+
+        auto functor = [](const auto& coin) { return coin.balance.toFloat() > 0; }; 
+        return ranges::any_of(portfolio_data, functor);
     }
 
     bool
