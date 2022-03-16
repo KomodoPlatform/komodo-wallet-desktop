@@ -19,6 +19,7 @@ Rectangle
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.bottom: parent.bottom
         anchors.margins: 20
         spacing: 20
 
