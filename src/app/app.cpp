@@ -176,14 +176,7 @@ namespace atomic_dex
         auto* portfolio_mdl = portfolio_page->get_portfolio();
         auto portfolio_data = portfolio_mdl->get_underlying_data();
 
-        for (auto& coin : portfolio_data)
-        {
-            if (coin.balance.toFloat() != 0)
-            {
-                return true;
-            }
-        }
-        return false;
+        return (std::any_of(std::begin(portfolio_data), std::end(portfolio_data), [](const auto& item) -> bool { return item.balance.toFloat() != 0; } ));
     }
 
     bool
