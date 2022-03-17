@@ -6603,6 +6603,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "SAND-ERC20": {
+    "coin": "SAND-ERC20",
+    "name": "The Sandbox",
+    "coinpaprika_id": "sand-the-sandbox",
+    "coingecko_id": "the-sandbox",
+    "nomics_id": "SAND2",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "SAND-PLG20": {
+    "coin": "SAND-PLG20",
+    "name": "The Sandbox",
+    "coinpaprika_id": "sand-the-sandbox",
+    "coingecko_id": "the-sandbox",
+    "nomics_id": "SAND2",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "SNX-AVX20": {
     "coin": "SNX-AVX20",
     "name": "Synthetix",

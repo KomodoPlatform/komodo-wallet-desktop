@@ -338,6 +338,7 @@ QtObject {
                                           "JPYC": "#16449A",
                                           "DASH": "#008CE7",
                                           "RVN": "#384182",
+                                          "SAND": "#05C1F4",
                                           "CADC": "#FF6666",
                                           "DGB": "#006AD2",
                                           "DIA": "#B94897",
