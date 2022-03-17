@@ -171,6 +171,7 @@ namespace atomic_dex
         Q_INVOKABLE [[nodiscard]] bool do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool               disable_coins(const QStringList& coins);
         Q_INVOKABLE bool               disable_no_balance_coins();
+        Q_INVOKABLE bool               has_coins_with_balance();
         Q_INVOKABLE QString            get_fiat_from_amount(const QString& ticker, const QString& amount);
 
       signals:

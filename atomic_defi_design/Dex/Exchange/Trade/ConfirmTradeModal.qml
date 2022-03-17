@@ -1,93 +1,69 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-import AtomicDEX.TradingError 1.0
 
+import AtomicDEX.TradingError 1.0
 import "../../Components"
 import "../../Constants"
 import ".."
-
 import "Orders/"
-
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-BasicModal
+MultipageModal
 {
     id: root
 
     width: 650
+
     readonly property var fees: API.app.trading_pg.fees
 
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Confirm Exchange Details")
+        titleText: qsTr("Confirm Exchange Details")
 
         OrderContent
         {
-            Layout.topMargin: 10
             Layout.fillWidth: true
-            Layout.leftMargin: 20
-            Layout.rightMargin: Layout.leftMargin
-            height: 50
-            Layout.alignment: Qt.AlignHCenter
-
-            details: ({
-                    base_coin: base_ticker,
-                    rel_coin: rel_ticker,
-                    base_amount: base_amount,
-                    rel_amount: rel_amount,
-
-                    order_id: '',
-                    date: '',
-                   })
-            in_modal: true
+            details:
+            ({
+                base_coin: base_ticker,
+                rel_coin: rel_ticker,
+                base_amount: base_amount,
+                rel_amount: rel_amount,
+                order_id: '',
+                date: '',
+            })
         }
 
-        Column
-        {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 500
-            PriceLineSimplified {
-                width: 500
-            }
-        }
+        PriceLineSimplified { Layout.fillWidth: true }
         
         HorizontalLine
         {
-            Layout.topMargin: 5
-            Layout.bottomMargin: 5
             Layout.fillWidth: true
         }
 
-        Column
+        ColumnLayout
         {
-            Layout.preferredWidth: 500
-            Layout.alignment: Qt.AlignHCenter
-            Layout.bottomMargin: 5
+            Layout.fillWidth: true
 
-            ColumnLayout
+            DefaultText
             {
-                id: warning_texts
-                width: 500
+                Layout.alignment: Qt.AlignLeft
+                text_value: qsTr("This swap request can not be undone and is a final event!")
+            }
 
-                DexLabel
-                {
-                    Layout.alignment: Qt.AlignLeft
-                    text_value: qsTr("This swap request can not be undone and is a final event!")
-                }
-
-                DexLabel
-                {
-                    Layout.alignment: Qt.AlignLeft
-                    text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
-                    font.pixelSize: Style.textSizeSmall4
-                }
+            DefaultText
+            {
+                Layout.alignment: Qt.AlignLeft
+                text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
+                font.pixelSize: Style.textSizeSmall4
             }
         }
 
         Item
         {
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredHeight: fees_detail.height + 10
             opacity: .7
@@ -100,31 +76,27 @@ BasicModal
                 Repeater
                 {
                     model: fees.base_transaction_fees_ticker && !API.app.trading_pg.preimage_rpc_busy ? General.getFeesDetail(fees) : []
-                    delegate: DefaultText {
-                        visible: true
+                    delegate: DefaultText
+                    {
                         font.pixelSize: Style.textSizeSmall1
                         text: General.getFeesDetailText(modelData.label, modelData.fee, modelData.ticker)
                     }
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
-
                 Item {width: 1; height: 10}
                 Repeater
                 {
                     model: fees.base_transaction_fees_ticker ? fees.total_fees : []
-                    delegate: DefaultText {
-                        visible: true
+                    delegate: DefaultText
+                    {
                         text: General.getFeesDetailText(
-                            qsTr("<b>Total %1 fees:</b>").arg(modelData.coin),
-                            modelData.required_balance,
-                            modelData.coin
-                        )
+                                qsTr("<b>Total %1 fees:</b>").arg(modelData.coin),
+                                modelData.required_balance,
+                                modelData.coin)
                     }
-                  anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
-
                 Item {width: 1; height: 10}
-
             }
             DefaultText
             {
@@ -133,7 +105,7 @@ BasicModal
                 width: parent.width
                 horizontalAlignment: DefaultText.AlignHCenter
                 font: DexTypo.caption
-                color: DexTheme.redColor
+                color: Dex.CurrentTheme.noColor
                 text_value: General.getTradingError(
                                 last_trading_error,
                                 curr_fee_info,
@@ -142,32 +114,38 @@ BasicModal
             }
         }
 
-        ColumnLayout {
+        ColumnLayout
+        {
             id: config_section
 
             readonly property var default_config: API.app.trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
 
             readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization || false
+
             Layout.bottomMargin: 10
             Layout.alignment: Qt.AlignHCenter
 
-            ColumnLayout {
+            ColumnLayout
+            {
                 Layout.alignment: Qt.AlignHCenter
                 visible: !enable_custom_config.checked
 
-                DefaultText {
+                DefaultText
+                {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: qsTr("Security configuration")
                     font.weight: Font.Medium
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: "✅ " + (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
                                 qsTr("%1 confirmations for incoming %2 transactions").arg(config_section.default_config.required_confirmations || 1).arg(rel_ticker))
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     visible: config_section.is_dpow_configurable
                     Layout.alignment: Qt.AlignHCenter
                     text_value: General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>'
@@ -176,22 +154,32 @@ BasicModal
             }
 
             // Enable custom config
-            DexCheckBox {
+            DexCheckBox
+            {
                 Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                Layout.maximumWidth: config_section.width
+
                 id: enable_custom_config
 
+                spacing: 2
                 text: qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker)
+                boxWidth: 24
+                boxHeight: 24
+                label.horizontalAlignment: Text.AlignHCenter
             }
 
             // Configuration settings
-            ColumnLayout {
+            ColumnLayout
+            {
                 id: custom_config
                 visible: enable_custom_config.checked
 
                 Layout.alignment: Qt.AlignHCenter
 
                 // dPoW configuration switch
-                DefaultSwitch {
+                DefaultSwitch
+                {
                     id: enable_dpow_confs
                     Layout.alignment: Qt.AlignHCenter
 
@@ -200,7 +188,8 @@ BasicModal
                     text: qsTr("Enable Komodo dPoW security")
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     visible: enable_dpow_confs.visible && enable_dpow_confs.enabled
                     Layout.alignment: Qt.AlignHCenter
                     text_value: General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>'
@@ -208,18 +197,21 @@ BasicModal
                 }
 
                 // Normal configuration settings
-                ColumnLayout {
+                ColumnLayout
+                {
                     Layout.alignment: Qt.AlignHCenter
                     visible: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
                     enabled: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
 
-                    HorizontalLine {
+                    HorizontalLine
+                    {
                         Layout.topMargin: 10
                         Layout.bottomMargin: 10
                         Layout.fillWidth: true
                     }
 
-                    DefaultText {
+                    DefaultText
+                    {
                         Layout.preferredHeight: 10
                         Layout.alignment: Qt.AlignHCenter
                         text_value: qsTr("Required Confirmations") + ": " + required_confirmation_count.value
@@ -227,7 +219,8 @@ BasicModal
                         opacity: parent.enabled ? 1 : .6
                     }
 
-                    DexSlider {
+                    DexSlider
+                    {
                         id: required_confirmation_count
                         readonly property int default_confirmation_count: 3
                         Layout.alignment: Qt.AlignHCenter
@@ -241,7 +234,8 @@ BasicModal
                 }
             }
 
-            FloatingBackground {
+            FloatingBackground
+            {
                 visible: enable_custom_config.visible && enable_custom_config.enabled && enable_custom_config.checked &&
                           (config_section.is_dpow_configurable && !enable_dpow_confs.checked)
                 Layout.alignment: Qt.AlignHCenter
@@ -252,64 +246,58 @@ BasicModal
                 width: dpow_off_warning.width + 20
                 height: dpow_off_warning.height + 20
 
-                ColumnLayout {
+                ColumnLayout
+                {
                     id: dpow_off_warning
                     anchors.centerIn: parent
 
-                    DefaultText {
+                    DefaultText
+                    {
                         Layout.alignment: Qt.AlignHCenter
-                        color: Style.colorWhite0
                         text_value: Style.warningCharacter + " " + qsTr("Warning, this atomic swap is not dPoW protected!")
                     }
                 }
             }
-            DefaultBusyIndicator {
+            DefaultBusyIndicator
+            {
                 visible: buy_sell_rpc_busy
                 Layout.alignment: Qt.AlignCenter
             }
         }
-        HorizontalLine {
-            Layout.fillWidth: true
-        }
-        // Buttons
-        footer: [
-            Item {
-                Layout.fillWidth: true
-            },
-            DexAppButton {
+
+        HorizontalLine { Layout.fillWidth: true }
+
+        footer:
+        [
+            Item { Layout.fillWidth: true },
+            DexAppButton
+            {
                 text: qsTr("Cancel")
                 padding: 10
                 leftPadding: 45
                 rightPadding: 45
                 radius: 10
-                onClicked: {
-                    //fees = []
-                    root.close()
-                }
+                onClicked: root.close()
             },
-            Item {
-                Layout.fillWidth: true
-            },
-            DexGradientAppButton {
+            Item { Layout.fillWidth: true },
+            DexGradientAppButton
+            {
                 text: qsTr("Confirm")
                 padding: 10
                 leftPadding: 45
                 rightPadding: 45
-
                 radius: 10
                 enabled: !buy_sell_rpc_busy && last_trading_error === TradingError.None
-                onClicked: {
-                    trade({
-                            enable_custom_config: enable_custom_config.checked,
+                onClicked:
+                {
+                    trade({ enable_custom_config: enable_custom_config.checked,
                             is_dpow_configurable: config_section.is_dpow_configurable,
                             enable_dpow_confs: enable_dpow_confs.checked,
-                            required_confirmation_count: required_confirmation_count.value,
-                          }, config_section.default_config)
+                            required_confirmation_count: required_confirmation_count.value, },
+                          config_section.default_config)
                 }
             },
-            Item {
-                Layout.fillWidth: true
-            }
+            Item { Layout.fillWidth: true }
         ]
     }
 }

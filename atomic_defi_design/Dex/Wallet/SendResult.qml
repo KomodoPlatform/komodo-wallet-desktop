@@ -6,16 +6,16 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-ModalContent
+MultipageModalContent
 {
-    property var result: ({ balance_change:"", fees: "", date: "", explorer_url: "" })
-    property alias address: address.text
+    id: root
+
+    property var    result
+    property alias  address: address.text
     property string custom_amount
-    property alias tx_hash: tx_hash.text
+    property alias  tx_hash: tx_hash.text
 
-    function onClose() {}
-
-    title: qsTr("Transaction Complete!")
+    titleText: qsTr("Transaction Complete!")
 
     // Address
     TextEditWithTitle
@@ -29,9 +29,10 @@ ModalContent
     TextEditWithTitle
     {
         title: qsTr("Amount")
+
         text:
         {
-            let amount = custom_amount !== "" ? custom_amount : result.balance_change
+            let amount = custom_amount !== "" ? custom_amount : result.withdraw_answer.my_balance_change
             !amount ? "" : General.formatCrypto(
                 '',
                 amount,
@@ -46,9 +47,10 @@ ModalContent
     TextEditWithTitle
     {
         title: qsTr("Fees")
+
         text:
         {
-            let amount = result.fees
+            let amount = result.withdraw_answer.fee_details.amount
             !amount ? "" : General.formatCrypto(
                 '',
                 amount,
@@ -60,42 +62,36 @@ ModalContent
     }
 
     // Date
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         title: qsTr("Date")
-        text: result.date
+        text: result.withdraw_answer.date
     }
 
     // Transaction Hash
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         id: tx_hash
+        Layout.fillWidth: true
         title: qsTr("Transaction Hash")
     }
 
     // Buttons
-    footer: [
-        Item {
+    footer:
+    [
+        DexButton
+        {
             Layout.fillWidth: true
-        },
-        DexButton {
             text: qsTr("Close")
-            leftPadding: 40
-            rightPadding: 40
             radius: 18
-            onClicked: onClose()
+            onClicked: close()
         },
-        Item {
+        DexAppOutlineButton
+        {
             Layout.fillWidth: true
-        },
-        DexAppOutlineButton {
             text: qsTr("View on Explorer")
-            leftPadding: 40
-            rightPadding: 40
             radius: 18
             onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
-        },
-        Item {
-            Layout.fillWidth: true
         }
-
     ]
 }

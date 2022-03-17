@@ -262,12 +262,12 @@ ColumnLayout {
 
             id: remove_contact_modal
 
-            sourceComponent: BasicModal {
+            sourceComponent: MultipageModal {
                 width: 500
 
-                ModalContent {
+                MultipageModalContent {
                     Layout.fillWidth: true
-                    title: qsTr("Do you want to remove this contact ?")
+                    titleText: qsTr("Do you want to remove this contact ?")
 
                     RowLayout {
                         DangerButton {
