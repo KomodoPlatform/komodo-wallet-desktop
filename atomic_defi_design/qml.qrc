@@ -510,6 +510,7 @@
         <file>Dex/Components/VerticalLine.qml</file>
         <file>Dex/Components/VerticalLineBasic.qml</file>
         <file>Dex/Components/WalletNameField.qml</file>
+        <file>Dex/Components/Widget.qml</file>
         <file>Dex/Constants</file>
         <file>Dex/Constants/API.qml</file>
         <file>Dex/Constants/DexTheme.qml</file>
