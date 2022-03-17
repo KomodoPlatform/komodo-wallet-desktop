@@ -5466,6 +5466,40 @@
       "active": false,
       "currently_enabled": false
   },
+  "PPC-ERC20": {
+    "coin": "PPC-ERC20",
+    "name": "Peercoin",
+    "coinpaprika_id": "ppc-peercoin",
+    "coingecko_id": "peercoin",
+    "nomics_id": "PPC",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "PPC-PLG20": {
+    "coin": "PPC-PLG20",
+    "name": "Peercoin",
+    "coinpaprika_id": "ppc-peercoin",
+    "coingecko_id": "peercoin",
+    "nomics_id": "PPC",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "PRUX": {
       "coin": "PRUX",
       "name": "PRUX",
