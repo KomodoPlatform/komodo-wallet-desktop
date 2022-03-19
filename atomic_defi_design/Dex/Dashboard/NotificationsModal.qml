@@ -242,7 +242,7 @@ DexPopup
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp)
     {
-        const change = General.formatCrypto("", amount, ticker)
+        const change = General.formatFullCrypto("", amount, ticker, "", "", true)
         if (!app.segwit_on)
         {
             newNotification("onBalanceUpdateStatus",
@@ -268,12 +268,19 @@ DexPopup
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp)
     {
+        // Ignore if coin already enabled (e.g. parent chain in batch)
+        if (error.search("already initialized") > -1)
+        {
+            console.trace()
+            return
+        }
+
         // Check if there is mismatch error, ignore this one
         for (let n of notifications_list)
         {
             if (n.event_name === "onMismatchCustomCoinConfiguration" && n.params.asset === coin)
             {
-                console.log("Ignoring onEnablingCoinFailedStatus event because onMismatchCustomCoinConfiguration exists for", coin)
+                console.trace()
                 return
             }
         }

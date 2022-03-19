@@ -9,6 +9,7 @@
         <file>assets/fonts/Ubuntu-R.ttf</file>
         <file>assets/fonts/Ubuntu-RI.ttf</file>
         <file>assets/fonts/Ubuntu-Th.ttf</file>
+        <file>assets/images/addressbook.png</file>
         <file>assets/images/arrow-down.svg</file>
         <file>assets/images/arrow-up.svg</file>
         <file>assets/images/arrow_down.svg</file>
@@ -54,6 +55,7 @@
         <file>assets/images/coins/btc.png</file>
         <file>assets/images/coins/btcz.png</file>
         <file>assets/images/coins/btt.png</file>
+        <file>assets/images/coins/bttc.png</file>
         <file>assets/images/coins/btu.png</file>
         <file>assets/images/coins/btx.png</file>
         <file>assets/images/coins/busd.png</file>
@@ -89,6 +91,7 @@
         <file>assets/images/coins/doge.png</file>
         <file>assets/images/coins/dogedash.png</file>
         <file>assets/images/coins/doggy.png</file>
+        <file>assets/images/coins/doi.png</file>
         <file>assets/images/coins/dot.png</file>
         <file>assets/images/coins/dp.png</file>
         <file>assets/images/coins/dust.png</file>
@@ -113,10 +116,13 @@
         <file>assets/images/coins/firo.png</file>
         <file>assets/images/coins/fjc.png</file>
         <file>assets/images/coins/fjcb.png</file>
+        <file>assets/images/coins/flow.png</file>
         <file>assets/images/coins/ftc.png</file>
         <file>assets/images/coins/ftm.png</file>
         <file>assets/images/coins/ftmt.png</file>
+        <file>assets/images/coins/gala.png</file>
         <file>assets/images/coins/gleec.png</file>
+        <file>assets/images/coins/glmr.png</file>
         <file>assets/images/coins/gno.png</file>
         <file>assets/images/coins/grms.png</file>
         <file>assets/images/coins/gm.png</file>
@@ -130,6 +136,7 @@
         <file>assets/images/coins/hpy.png</file>
         <file>assets/images/coins/ht.png</file>
         <file>assets/images/coins/husd.png</file>
+        <file>assets/images/coins/ic.png</file>
         <file>assets/images/coins/il8p.png</file>
         <file>assets/images/coins/iln.png</file>
         <file>assets/images/coins/inj.png</file>
@@ -147,6 +154,7 @@
         <file>assets/images/coins/kmd.png</file>
         <file>assets/images/coins/knc.png</file>
         <file>assets/images/coins/koin.png</file>
+        <file>assets/images/coins/ksm.png</file>
         <file>assets/images/coins/labs.png</file>
         <file>assets/images/coins/lbc.png</file>
         <file>assets/images/coins/lcc.png</file>
@@ -195,6 +203,7 @@
         <file>assets/images/coins/powr.png</file>
         <file>assets/images/coins/ppc.png</file>
         <file>assets/images/coins/prcy.png</file>
+        <file>assets/images/coins/pgx.png</file>
         <file>assets/images/coins/prux.png</file>
         <file>assets/images/coins/put.png</file>
         <file>assets/images/coins/qbt.png</file>
@@ -217,6 +226,7 @@
         <file>assets/images/coins/rtm.png</file>
         <file>assets/images/coins/rvn.png</file>
         <file>assets/images/coins/s4f.png</file>
+        <file>assets/images/coins/sand.png</file>
         <file>assets/images/coins/sbch.png</file>
         <file>assets/images/coins/sfusd.png</file>
         <file>assets/images/coins/shr.png</file>
@@ -227,6 +237,7 @@
         <file>assets/images/coins/smtf.png</file>
         <file>assets/images/coins/snt.png</file>
         <file>assets/images/coins/snx.png</file>
+        <file>assets/images/coins/sol.png</file>
         <file>assets/images/coins/soulja.png</file>
         <file>assets/images/coins/sca.png</file>
         <file>assets/images/coins/space.png</file>
@@ -241,7 +252,9 @@
         <file>assets/images/coins/tblk.png</file>
         <file>assets/images/coins/tbtc.png</file>
         <file>assets/images/coins/tel.png</file>
+        <file>assets/images/coins/tft.png</file>
         <file>assets/images/coins/thc.png</file>
+        <file>assets/images/coins/thc_bep20.png</file>
         <file>assets/images/coins/thx.png</file>
         <file>assets/images/coins/tkl.png</file>
         <file>assets/images/coins/tmtg.png</file>
@@ -263,6 +276,7 @@
         <file>assets/images/coins/uqc.png</file>
         <file>assets/images/coins/usbl.png</file>
         <file>assets/images/coins/usdc.png</file>
+        <file>assets/images/coins/usdi.png</file>
         <file>assets/images/coins/usdt.png</file>
         <file>assets/images/coins/ust.png</file>
         <file>assets/images/coins/utk.png</file>
@@ -274,6 +288,7 @@
         <file>assets/images/coins/vrsc.png</file>
         <file>assets/images/coins/wbtc.png</file>
         <file>assets/images/coins/wcn.png</file>
+        <file>assets/images/coins/whive.png</file>
         <file>assets/images/coins/wsb.png</file>
         <file>assets/images/coins/wwcn.png</file>
         <file>assets/images/coins/xec.png</file>
@@ -352,7 +367,6 @@
         <file>Dex/Components/AmountIntField.qml</file>
         <file>Dex/Components/AnimatedRectangle.qml</file>
         <file>Dex/Components/Arrow.qml</file>
-        <file>Dex/Components/BasicModal.qml</file>
         <file>Dex/Components/Blank.qml</file>
         <file>Dex/Components/CannotEnableCoinModal.qml</file>
         <file>Dex/Components/CexInfoModal.qml</file>
@@ -367,6 +381,7 @@
         <file>Dex/Components/ComponentWithTitle.qml</file>
         <file>Dex/Components/CopyFieldButton.qml</file>
         <file>Dex/Components/DangerButton.qml</file>
+        <file>Dex/Components/DefaultAlertIcon.qml</file>
         <file>Dex/Components/DefaultAnimatedImage.qml</file>
         <file>Dex/Components/DefaultBusyIndicator.qml</file>
         <file>Dex/Components/DefaultButton.qml</file>
@@ -383,6 +398,7 @@
         <file>Dex/Components/DefaultRangeSlider.qml</file>
         <file>Dex/Components/DefaultRectangle.qml</file>
         <file>Dex/Components/DefaultScrollBar.qml</file>
+        <file>Dex/Components/DefaultScrollView.qml</file>
         <file>Dex/Components/DefaultSlider.qml</file>
         <file>Dex/Components/DefaultSplitView.qml</file>
         <file>Dex/Components/DefaultSubstractRectangle.qml</file>
@@ -402,7 +418,6 @@
         <file>Dex/Components/DexAppPasswordField.qml</file>
         <file>Dex/Components/DexBox.qml</file>
         <file>Dex/Components/DexBoxManager.qml</file>
-        <file>Dex/Components/DexBusyIndicator.qml</file>
         <file>Dex/Components/DexButton.qml</file>
         <file>Dex/Components/DexCheckBox.qml</file>
         <file>Dex/Components/DexCheckEye.qml</file>
@@ -466,9 +481,10 @@
         <file>Dex/Components/LoaderBusyIndicator.qml</file>
         <file>Dex/Components/LogModal.qml</file>
         <file>Dex/Components/MinTradeModal.qml</file>
-        <file>Dex/Components/ModalContent.qml</file>
         <file>Dex/Components/ModalHeader.qml</file>
         <file>Dex/Components/ModalLoader.qml</file>
+        <file>Dex/Components/MultipageModal.qml</file>
+        <file>Dex/Components/MultipageModalContent.qml</file>
         <file>Dex/Components/OutlineButton.qml</file>
         <file>Dex/Components/Pagination.qml</file>
         <file>Dex/Components/PaginationButton.qml</file>
@@ -617,7 +633,5 @@
         <file>Dex/main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Dex/Components/PopupManager.qml</file>
-        <file>imports/bignumberjs/qmldir</file>
-        <file>imports/bignumberjs/bignumber.js/bignumber.js</file>
     </qresource>
 </RCC>

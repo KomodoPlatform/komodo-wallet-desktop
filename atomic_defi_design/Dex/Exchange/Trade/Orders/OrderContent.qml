@@ -4,89 +4,133 @@ import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 
-import App 1.0
-
 import Qaterial 1.0 as Qaterial
 
+import App 1.0
 import "../../../Components"
+import "../../../Constants"
+import Dex.Themes 1.0 as Dex
 
-// Content
-Item {
-    property
-    var details
-    property bool in_modal: false
+RowLayout
+{
+    property var details
 
-    readonly property bool is_placed_order: !details ? false :
-        details.order_id !== ''
+    DefaultRectangle
+    {
+        Layout.preferredWidth: 226
+        Layout.preferredHeight: 66
+        radius: 10
 
-    RowLayout {
-        width: 500
-        height: 66
-        anchors.centerIn: parent
-        spacing: 23
-        DexRectangle {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            color: DexTheme.contentColorTop
-            RowLayout {
-                width: parent.width - 40
-                height: 50
-                anchors.centerIn: parent
-                spacing: 23
-                DefaultImage {
-                    id: base_icon
-                    source: General.coinIcon(!details ? atomic_app_primary_coin :
-                        details.base_coin)
-                    Layout.preferredWidth: 35
-                    Layout.preferredHeight: 35
-                    Layout.alignment: Qt.AlignVCenter
-                }
-                DexLabel {
-                    id: base_amount
-                    text_value: !details ? "" :
-                                           "<b><font color='" +DexTheme.getCoinColor(details.base_coin) + "'>" + details.base_coin + "</font></b>" + "    %1".arg(General.coinName(details.base_coin))+ "<br>" + General.formatCrypto("", details.base_amount, details.base_coin).split(" ")[1]
-                    font: DexTypo.body2
+        RowLayout
+        {
+            anchors.fill: parent
+            anchors.margins: 14
+            spacing: 23
 
+            DefaultImage
+            {
+                Layout.preferredWidth: 35
+                Layout.preferredHeight: 35
+                Layout.alignment: Qt.AlignVCenter
+
+                source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin)
+            }
+
+            ColumnLayout
+            {
+                Layout.fillWidth: true
+                RowLayout
+                {
                     Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignVCenter
-                    privacy: is_placed_order
-                    opacity: .9
+                    spacing: 5
+                    DefaultText
+                    {
+                        Layout.fillWidth: true
+                        text: details ? details.base_coin : ""
+                    }
+
+                    DefaultText
+                    {
+                        Layout.fillWidth: true
+                        text: details ? General.coinName(details.base_coin) : ""
+                        wrapMode: Text.NoWrap
+                        elide: Text.ElideRight
+                        font.pixelSize: 11
+                    }
+                }
+
+                DefaultText
+                {
+                    Layout.fillWidth: true
+                    text: details ? details.base_amount : ""
+                    font.pixelSize: 11
+                    wrapMode: Text.NoWrap
+                    elide: Text.ElideRight
                 }
             }
         }
+    }
 
-        Qaterial.Icon {
-            color: DexTheme.foregroundColor
-            icon: Qaterial.Icons.swapHorizontal
-            Layout.alignment: Qt.AlignVCenter
-        }
+    Qaterial.Icon
+    {
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignVCenter
 
-        DexRectangle {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            color: DexTheme.contentColorTop
-            RowLayout {
-                width: parent.width - 40
-                height: 50
-                anchors.centerIn: parent
-                spacing: 23
-                DefaultImage {
-                    id: rel_icon
-                    source: General.coinIcon(!details ? atomic_app_primary_coin :
-                        details.rel_coin)
-                    Layout.preferredWidth: 35
-                    Layout.preferredHeight: 35
-                    Layout.alignment: Qt.AlignVCenter
-                }
-                DexLabel {
-                    id: rel_amount
-                    text_value: !details ? "" : "<b><font color='" + DexTheme.getCoinColor(details.rel_coin)+"'>" + details.rel_coin + "</font></b>     %1 <br>".arg(General.coinName(details.rel_coin)) + General.formatCrypto("", details.rel_amount, details.rel_coin).split(" ")[1]
-                    font: DexTypo.body2
+        color: Dex.CurrentTheme.foregroundColor
+        icon: Qaterial.Icons.swapHorizontal
+    }
 
+    DefaultRectangle
+    {
+        Layout.preferredWidth: 226
+        Layout.preferredHeight: 66
+        radius: 10
+
+        RowLayout
+        {
+            anchors.fill: parent
+            anchors.margins: 14
+            spacing: 23
+
+            DefaultImage
+            {
+                Layout.preferredWidth: 35
+                Layout.preferredHeight: 35
+                Layout.alignment: Qt.AlignVCenter
+
+                source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin)
+            }
+
+            ColumnLayout
+            {
+                Layout.fillWidth: true
+                RowLayout
+                {
                     Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignVCenter
-                    privacy: is_placed_order
-                    opacity: .9
+                    spacing: 5
+                    DefaultText
+                    {
+                        Layout.fillWidth: true
+                        text: details ? details.rel_coin : ""
+                    }
+
+                    DefaultText
+                    {
+                        Layout.fillWidth: true
+                        text: details ? General.coinName(details.rel_coin) : ""
+                        wrapMode: Text.NoWrap
+                        elide: Text.ElideRight
+                        font.pixelSize: 11
+                    }
+                }
+
+                DefaultText
+                {
+                    Layout.fillWidth: true
+                    text: details ? details.rel_amount : ""
+                    font.pixelSize: 11
+                    wrapMode: Text.NoWrap
+                    elide: Text.ElideRight
                 }
             }
         }

@@ -51,6 +51,10 @@ namespace mm2::api
         const std::string        movr_erc_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        movr_erc_testnet_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        movr_erc_testnet_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
+        const std::string        glmr_erc_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
+        const std::string        glmr_erc_fallback_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
+        const std::string        glmr_erc_testnet_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
+        const std::string        glmr_erc_testnet_fallback_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
         const std::string        hco_erc_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        hco_erc_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        hco_erc_testnet_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};

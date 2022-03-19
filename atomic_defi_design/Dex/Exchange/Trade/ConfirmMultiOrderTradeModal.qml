@@ -9,7 +9,7 @@ import ".."
 import "Orders/"
 
 
-BasicModal {
+MultipageModal {
     id: root
 
     width: 1100
@@ -20,8 +20,8 @@ BasicModal {
 
     }
 
-    ModalContent {
-        title: qsTr("Confirm Multi Order Details")
+    MultipageModalContent {
+        titleText: qsTr("Confirm Multi Order Details")
 
         DefaultListView {
             id: list

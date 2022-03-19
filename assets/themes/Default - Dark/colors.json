@@ -59,6 +59,7 @@
     "textSelectedColor": "#0e1021",
   
     "textFieldBackgroundColor": "#262525FF",
+    "textFieldActiveBackgroundColor": "#313555CC",
     "textFieldPrefixColor": "#A9A9A9FF",
     "textFieldSuffixColor": "#FFFFFFFF",
   

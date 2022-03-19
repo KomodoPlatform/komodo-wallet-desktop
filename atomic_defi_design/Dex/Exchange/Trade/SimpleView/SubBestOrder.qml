@@ -6,7 +6,7 @@ import QtQuick.Controls 2.15 //> ItemDelegate
 import App 1.0
 
 //! Project Imports
-import "../../../Components" //> BasicModal
+import "../../../Components" //> MultipageModal
 import "../../../Constants" as Constants  //> API
 import Dex.Themes 1.0 as Dex
 

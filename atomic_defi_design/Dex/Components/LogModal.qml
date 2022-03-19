@@ -1,13 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
-BasicModal {
+MultipageModal {
     id: root
 
-    property alias header: modal_content.title
+    property alias header: modal_content.titleText
     property alias field: text_area.field
 
-    ModalContent {
+    MultipageModalContent {
         id: modal_content
 
         TextAreaWithTitle {

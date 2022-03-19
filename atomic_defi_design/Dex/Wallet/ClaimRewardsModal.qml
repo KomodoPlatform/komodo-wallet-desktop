@@ -6,7 +6,8 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal
+{
     id: root
 
     readonly property bool empty_data: !prepare_claim_rewards_result || !prepare_claim_rewards_result.withdraw_answer
@@ -42,7 +43,8 @@ BasicModal {
          },
          "withdraw_answer": {
              "fee_details": {
-                 "amount": "0.00001"
+                 "amount": "0.00001",
+                 "amount_fiat": "0.00001"
              },
              "date": "7 Aug 2020, 08:33",
              "my_balance_change": "0",
@@ -105,8 +107,8 @@ BasicModal {
 
     // Inside modal
     width: 1200
-    ModalContent {
-        title: qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker)
+    MultipageModalContent {
+        titleText: qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker)
 
         DefaultBusyIndicator {
             visible: !can_claim || is_broadcast_busy
@@ -119,10 +121,20 @@ BasicModal {
             Layout.fillWidth: true
             DexLabel {
                 Layout.fillWidth: true
-                text_value: !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
-                            !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
-
-                            qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, api_wallet_page.ticker))
+                text_value:
+                {
+                    let amount = prepare_claim_rewards_result.withdraw_answer.my_balance_change
+                    !amount ? "" :
+                    !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
+                    !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
+                    qsTr("You will receive ") + General.formatCrypto(
+                        '',
+                        amount,
+                        api_wallet_page.ticker,
+                        API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                        API.app.settings_pg.current_fiat
+                    )
+                }
             }
 
             PrimaryButton {
@@ -417,8 +429,10 @@ BasicModal {
         }
 
         // Buttons
-        footer: [
-            DexAppButton {
+        footer:
+        [
+            DexAppButton
+            {
                 text: qsTr("Cancel")
                 leftPadding: 40
                 rightPadding: 40
@@ -426,11 +440,13 @@ BasicModal {
                 onClicked: root.close()
             },
 
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
             },
 
-            DexAppOutlineButton {
+            DexAppOutlineButton
+            {
                 text: qsTr("Confirm")
                 leftPadding: 40
                 rightPadding: 40
@@ -443,12 +459,9 @@ BasicModal {
     }
 
     // Result Page
-    SendResult {
-        result: ({
-            balance_change: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.my_balance_change,
-            fees: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
-            date: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.date
-        })
+    SendResult
+    {
+        result: prepare_claim_rewards_result
         tx_hash: broadcast_result
 
         function onClose() { root.close() }
