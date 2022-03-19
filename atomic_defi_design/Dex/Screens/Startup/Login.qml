@@ -76,6 +76,7 @@ SetupPage
             height: 50
             width: 300
             background.color: Dex.CurrentTheme.floatingBackgroundColor
+            forceFocus: true
             field.onAccepted:
             {
                 if (_keyChecker.isValid())
@@ -118,8 +119,8 @@ SetupPage
         {
             Layout.alignment: Qt.AlignHCenter
             radius: width
-            width: 300
-            text: qsTr("Connect")
+            width: 200
+            text: qsTr("Log In")
             enabled: _passwordChecker.isValid()
             onClicked: _inputPassword.field.accepted()
         }

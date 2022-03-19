@@ -22,7 +22,7 @@ ScrollBar
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
 
-            color: Dex.CurrentTheme.scrollBarBackgroundColor
+            color: Dex.CurrentTheme.scrollBarIndicatorColor
         }
     }
 
@@ -36,7 +36,7 @@ ScrollBar
             width: parent.width
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
-            color: Dex.CurrentTheme.scrollBarIndicatorColor
+            color: Dex.CurrentTheme.scrollBarBackgroundColor
         }
     }
 }

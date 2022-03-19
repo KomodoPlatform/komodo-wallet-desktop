@@ -9,6 +9,7 @@ import Qaterial 1.0 as Qaterial
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 Qaterial.Expandable
 {
@@ -27,14 +28,16 @@ Qaterial.Expandable
         id: _header
 
         icon.source: General.image_path + "arrow_down.svg"
-        DexLabel {
-            anchors.verticalCenter: parent.verticalCenter
-            text: title
-            leftPadding: 60
-            font.bold: true
-        }
 
         onClicked: () => _root.expanded = !_root.expanded
+
+        TitleText
+        {
+            anchors.verticalCenter: parent.verticalCenter
+            leftPadding: 75
+            text: title
+            font.bold: true
+        }
     }
 
     delegate: Column
@@ -65,7 +68,75 @@ Qaterial.Expandable
                 name: model.name
                 ticker: model.ticker
 
-                onClicked: onTypeSelect(ticker)
+                onClicked:
+                {
+                    if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_enabled)
+                        _tooltip.open()
+                    else
+                        onTypeSelect(ticker)
+                }
+
+                DefaultTooltip
+                {
+                    id: _tooltip
+
+                    width: 250
+                    anchors.centerIn: parent
+
+                    dim: true
+                    modal: true
+                    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+                    contentItem: DexLabelUnlinked
+                    {
+                        text_value: qsTr("%1 is not enabled - You need to enable it before adding an address. Enable it ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(model.ticker)
+                        wrapMode: DefaultText.Wrap
+                        width: 350
+                        onLinkActivated:
+                        {
+                            if (link === "#no") _tooltip.close()
+                            else
+                            {
+                                if (API.app.enable_coins([model.ticker]) === false)
+                                    cannot_enable_coin_modal.open()
+                                else
+                                {
+                                    color = Dex.CurrentTheme.buttonTextDisabledColor
+                                    opacity = 0.8
+                                    _coinIsEnabling.visible = true
+                                 }
+                            }
+                        }
+                    }
+
+                    BusyIndicator
+                    {
+                        id: _coinIsEnabling
+
+                        visible: false
+                        enabled: visible
+                        anchors.fill: parent
+
+                        Connections
+                        {
+                            target: API.app.portfolio_pg.global_cfg_mdl.all_disabled_proxy
+
+                            function onLengthChanged()
+                            {
+                                _tooltip.close()
+                            }
+                         }
+                    }
+
+                    ModalLoader
+                    {
+                        property string coin_to_enable_ticker: model.ticker
+                        id: cannot_enable_coin_modal
+                        sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: cannot_enable_coin_modal.coin_to_enable_ticker }
+                    }
+
+                    delay: 200
+                }
             }
         }
     }

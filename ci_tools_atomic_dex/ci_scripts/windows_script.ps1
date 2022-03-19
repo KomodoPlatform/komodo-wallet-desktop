@@ -1,6 +1,9 @@
 Set-ExecutionPolicy RemoteSigned -scope CurrentUser
 
-Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+iwr -useb 'https://raw.githubusercontent.com/scoopinstaller/install/master/install.ps1' -outfile 'install.ps1'
+.\install.ps1 -RunAsAdmin
+
+#Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh') -RunAsAdmin
 scoop install llvm --global
 scoop install ninja --global
 scoop install cmake@3.22.0 --global

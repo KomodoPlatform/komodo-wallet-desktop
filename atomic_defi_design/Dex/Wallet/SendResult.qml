@@ -6,72 +6,92 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-ModalContent {
-    property var result: ({ balance_change:"", fees: "", date: "", explorer_url: "" })
-    property alias address: address.text
+MultipageModalContent
+{
+    id: root
+
+    property var    result
+    property alias  address: address.text
     property string custom_amount
-    property alias tx_hash: tx_hash.text
+    property alias  tx_hash: tx_hash.text
 
-    function onClose() {}
-
-    title: qsTr("Transaction Complete!")
+    titleText: qsTr("Transaction Complete!")
 
     // Address
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         id: address
         title: qsTr("Recipient's address")
         visible: text !== ""
     }
 
     // Amount
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         title: qsTr("Amount")
-        text: General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker)
+
+        text:
+        {
+            let amount = custom_amount !== "" ? custom_amount : result.withdraw_answer.my_balance_change
+            !amount ? "" : General.formatCrypto(
+                '',
+                amount,
+                api_wallet_page.ticker,
+                API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                API.app.settings_pg.current_fiat
+            )
+        }
     }
 
     // Fees
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         title: qsTr("Fees")
-        text: General.formatCrypto("", result.fees, current_ticker_infos.fee_ticker)
+
+        text:
+        {
+            let amount = result.withdraw_answer.fee_details.amount
+            !amount ? "" : General.formatCrypto(
+                '',
+                amount,
+                current_ticker_infos.fee_ticker,
+                API.app.get_fiat_from_amount(current_ticker_infos.fee_ticker, amount),
+                API.app.settings_pg.current_fiat
+            )
+        }
     }
 
     // Date
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         title: qsTr("Date")
-        text: result.date
+        text: result.withdraw_answer.date
     }
 
     // Transaction Hash
-    TextEditWithTitle {
+    TextEditWithTitle
+    {
         id: tx_hash
+        Layout.fillWidth: true
         title: qsTr("Transaction Hash")
     }
 
     // Buttons
-    footer: [
-        Item {
+    footer:
+    [
+        DexButton
+        {
             Layout.fillWidth: true
-        },
-        DexButton {
             text: qsTr("Close")
-            leftPadding: 40
-            rightPadding: 40
             radius: 18
-            onClicked: onClose()
+            onClicked: close()
         },
-        Item {
+        DexAppOutlineButton
+        {
             Layout.fillWidth: true
-        },
-        DexAppOutlineButton {
             text: qsTr("View on Explorer")
-            leftPadding: 40
-            rightPadding: 40
             radius: 18
             onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
-        },
-        Item {
-            Layout.fillWidth: true
         }
-
     ]
 }

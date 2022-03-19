@@ -11,8 +11,11 @@ import Dex.Themes 1.0 as Dex
 Dex.DefaultListView
 {
     id: list
+    interactive: false
+    scrollbar_visible: false
+    model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
-    property real _assetRowHeight: 65
+    property real _assetRowHeight: 46
     property real _assetNameColumnWidth: 160
     property real _assetNameColumnLeftMargin: 15
     property real _assetBalanceColumnWidth: 380
@@ -20,18 +23,13 @@ Dex.DefaultListView
     property real _assetPriceColumWidth: 140
     property real _assetProviderColumnWidth: 42
 
-    model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
-
     width: _assetNameColumnWidth + _assetNameColumnLeftMargin + _assetBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
-    height: (count * _assetRowHeight) + 30
-    interactive: false
-    scrollbar_visible: false
+    height: (count * _assetRowHeight) + 46
 
     // Header
     header: RowLayout
     {
         id: columnsHeader
-
         width: list.width
         height: 40
 
@@ -43,6 +41,7 @@ Dex.DefaultListView
             sort_type: sort_by_name
             text: qsTr("Asset")
         }
+
         Dex.ColumnHeader
         {
             Layout.preferredWidth: _assetBalanceColumnWidth
@@ -50,6 +49,7 @@ Dex.DefaultListView
             sort_type: sort_by_value
             text: qsTr("Balance")
         }
+
         Dex.ColumnHeader
         {
             Layout.preferredWidth: _assetChange24hColumnWidth
@@ -57,6 +57,7 @@ Dex.DefaultListView
             sort_type: sort_by_change
             text: qsTr("Change 24h")
         }
+
         Dex.ColumnHeader
         {
             Layout.preferredWidth: _assetPriceColumWidth
@@ -64,6 +65,7 @@ Dex.DefaultListView
             sort_type: sort_by_price
             text: qsTr("Price")
         }
+
         Dex.DexLabel
         {
             Layout.preferredWidth: _assetProviderColumnWidth
@@ -98,6 +100,7 @@ Dex.DefaultListView
                     dashboard.switchPage(Dashboard.PageType.Wallet)
                 }
             }
+
             onPressAndHold:
             {
                 if (!can_change_ticker)
@@ -122,24 +125,23 @@ Dex.DefaultListView
                     anchors.left: parent.left
                     anchors.leftMargin: 15
                     source: Dex.General.coinIcon(ticker)
-                    width: 26
-                    height: 26
+                    width: 30
+                    height: 30
                 }
 
                 Dex.DexLabel
                 {
                     id: assetNameLabel
-                    anchors.verticalCenter: assetImage.top
+                    anchors.top: assetImage.top
                     anchors.left: assetImage.right
                     anchors.leftMargin: _assetNameColumnLeftMargin
                     text: model.ticker
-
                 }
 
                 Dex.DexLabel
                 {
                     id: typeTag
-                    anchors.verticalCenter: assetImage.bottom
+                    anchors.bottom: assetImage.bottom
                     anchors.left: assetImage.right
                     anchors.leftMargin: 15
 
@@ -167,9 +169,7 @@ Dex.DefaultListView
             Dex.DexLabel // Balance Column.
             {
                 id: assetBalanceLabel
-
                 Layout.preferredWidth: _assetBalanceColumnWidth
-
                 font: Dex.DexTypo.body2
                 text_value: Dex.General.formatCrypto("", balance, ticker, main_currency_balance,
                                                      Dex.API.app.settings_pg.current_currency)

@@ -6,7 +6,7 @@ import "../Constants"
 import App 1.0
 import "../Components"
 
-BasicModal {
+MultipageModal {
     id: root
 
     property string message
@@ -23,8 +23,8 @@ BasicModal {
 
     width: 900
 
-    ModalContent {
-        title: qsTr("Fatal Error")
+    MultipageModalContent {
+        titleText: qsTr("Fatal Error")
 
         DefaultText {
             text: message === "connection dropped" ? qsTr("Connection has been lost. You have been disconnected.") :

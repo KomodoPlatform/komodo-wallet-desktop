@@ -34,10 +34,16 @@ import Dex.Themes 1.0 as Dex
 
 import "../ProView"
 
-ColumnLayout {
+ColumnLayout
+{
     id: form
     property alias dexConfig: dex_config_popup
-    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid) {
+    function selectOrder(is_asks, coin, price, quantity, price_denom,
+                        price_numer, quantity_denom, quantity_numer,
+                        min_volume, base_min_volume, base_max_volume,
+                        rel_min_volume, rel_max_volume, base_max_volume_denom,
+                        base_max_volume_numer, uuid)
+    {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         API.app.trading_pg.preffered_order = {
@@ -60,15 +66,19 @@ ColumnLayout {
 
         form_base.focusVolumeField()
     }
-    Connections {
+
+    Connections
+    {
         target: exchange_trade
-        function onBuy_sell_rpc_busyChanged() {
+        function onBuy_sell_rpc_busyChanged()
+        {
             if (buy_sell_rpc_busy)
                 return
 
             const response = General.clone(buy_sell_last_rpc_data)
 
-            if (response.error_code) {
+            if (response.error_code)
+            {
                 confirm_trade_modal.close()
 
                 toast.show(qsTr("Failed to place the order"),
@@ -76,7 +86,9 @@ ColumnLayout {
                            response.error_message)
 
                 return
-            } else if (response.result && response.result.uuid) {
+            }
+            else if (response.result && response.result.uuid)
+            {
                 // Make sure there is information
                 confirm_trade_modal.close()
 
@@ -88,27 +100,35 @@ ColumnLayout {
             }
         }
     }
-    spacing: 10
-    anchors.topMargin: 20
-    anchors.leftMargin: 10
-    anchors.fill: parent
-    Connections {
+
+    Connections
+    {
         target: app
-        function onPairChanged(base, rel) {
+        function onPairChanged(base, rel)
+        {
             dex_chart.visible = true
         }
     }
 
-    DexBoxManager {
+    spacing: 10
+    anchors.topMargin: 20
+    anchors.leftMargin: 10
+    anchors.fill: parent
+
+    DexBoxManager
+    {
         id: splitView
         Layout.fillWidth: true
         Layout.fillHeight: true
         itemLists: [left_section, order_form]
         spacing: 15
+
         handle: Item {
             implicitWidth: 2
             implicitHeight: 4
-            Rectangle {
+
+            Rectangle
+            {
                 implicitWidth: 2
                 implicitHeight: 4
                 anchors.centerIn: parent
@@ -117,7 +137,8 @@ ColumnLayout {
             }
         }
 
-        DexTradeBox {
+        DexTradeBox
+        {
             id: left_section
             minimumWidth: 500
             defaultWidth: 520
@@ -125,7 +146,9 @@ ColumnLayout {
             hideHeader: true
             SplitView.fillHeight: true
             color: 'transparent'
-            DexBoxManager {
+
+            DexBoxManager
+            {
                 anchors.fill: parent
                 anchors.margins: 0
                 anchors.rightMargin: 0
@@ -140,35 +163,48 @@ ColumnLayout {
                         opacity: 0.4
                     }
                 }
+
                 itemLists: [dex_chart, optionBox]
-                DexTradeBox {
+
+                DexTradeBox
+                {
                     id: dex_chart
                     title: qsTr("Chart")
                     expandedVert: dex_chart.visible? true : false
-                    onVisibleChanged: {
-                        if(visible) {
+                    onVisibleChanged:
+                    {
+                        if(visible)
+                        {
                             expandedVert = true
                         }
                     }
                     canBeFull: true
-                    onFullScreenChanged: {
-                        if(fullScreen){
+                    onFullScreenChanged:
+                    {
+                        if(fullScreen)
+                        {
                             _best_order_box.visible = false 
                             _orderbook_box.visible = false
                             optionBox.visible = false
                             order_form.visible = false
-                        } else {
+                        }
+                        else
+                        {
                             _best_order_box.visible = true 
                             _orderbook_box.visible = true
                             optionBox.visible = true
                             order_form.visible = true
                         }
                     }
-                    Item {
+
+                    Item
+                    {
                         id: chart_view
                         anchors.fill: parent
                         anchors.topMargin: 40
-                        CandleStickChart {
+
+                        CandleStickChart
+                        {
                             id: candleChart
                             color: 'transparent'
                             anchors.fill: parent
@@ -179,6 +215,7 @@ ColumnLayout {
                             dashboard.webEngineView.parent = chart_view;
                             dashboard.webEngineView.anchors.fill = chart_view;
                         }
+
                         Component.onDestruction:
                         {
                             dashboard.webEngineView.visible = false;
@@ -186,6 +223,7 @@ ColumnLayout {
                         }
                     }
                 }
+
                 DexTradeBox
                 {
                     canBeFull: true
@@ -193,6 +231,7 @@ ColumnLayout {
                     maximumHeight: 80
                     minimumHeight: 75
                     color: 'transparent'
+
                     RowLayout
                     {
                         id: selectors
@@ -200,6 +239,7 @@ ColumnLayout {
                         anchors.fill: parent
                         anchors.rightMargin: 10
                         anchors.leftMargin: 10
+
                         TickerSelector
                         {
                             id: selector_left
@@ -274,6 +314,7 @@ ColumnLayout {
                         height: parent.height
                         clip: !parent.contentVisible
                         anchors.horizontalCenter: parent.horizontalCenter
+
                         Qaterial.LatoTabBar
                         {
                             property int taux_exchange: 0
@@ -300,6 +341,7 @@ ColumnLayout {
                                 indicatorColor: Dex.CurrentTheme.tabSelectedColor
                                 opacity: checked ? 1 : .6
                             }
+
                             Qaterial.LatoTabButton
                             {
                                 width: 120
@@ -310,6 +352,7 @@ ColumnLayout {
                                 indicatorColor: Dex.CurrentTheme.tabSelectedColor
                                 opacity: checked ? 1 : .6
                             }
+
                             Qaterial.LatoTabButton
                             {
                                 width: 120
@@ -321,12 +364,14 @@ ColumnLayout {
                                 opacity: checked ? 1 : .6
                             }
                         }
+
                         Item
                         {
                             id: swipeContainer
                             anchors.horizontalCenter: parent.horizontalCenter
                             width: parent.width
                             height: optionBox.height - (tabView.height + 40)
+
                             SwipeView
                             {
                                 id: swipeView
@@ -334,6 +379,7 @@ ColumnLayout {
                                 interactive: false
                                 currentIndex: tabView.currentIndex
                                 anchors.fill: parent
+
                                 onCurrentIndexChanged:
                                 {
                                     swipeView.currentItem.update();
@@ -349,6 +395,7 @@ ColumnLayout {
                                 }
 
                                 OrdersView.OrdersPage { id: order_component; clip: true }
+
                                 OrdersView.OrdersPage
                                 {
                                     id: history_component
@@ -362,17 +409,21 @@ ColumnLayout {
                 Item { SplitView.maximumHeight: 1 }
             }
         }
-        Item {
+
+        Item
+        {
             id: _book_and_best
             property bool showing: (_best_order_box.visible || _orderbook_box.visible)
             SplitView.minimumWidth: showing ? 390 : 0
             SplitView.maximumWidth: showing ? 430 : 0
             SplitView.preferredWidth: showing ? 390 : 0
             clip: true
-            DexBoxManager {
+            DexBoxManager
+            {
                 anchors.fill: parent
                 orientation: Qt.Vertical
-                handle: Item {
+                handle: Item
+                {
                     implicitWidth: 40
                     implicitHeight: 6
                     InnerBackground {
@@ -382,7 +433,9 @@ ColumnLayout {
                         opacity: 0.4
                     }
                 }
+
                 itemLists: [_orderbook_box, _best_order_box]
+
                 DexTradeBox
                 {
                     id: _orderbook_box
@@ -390,6 +443,7 @@ ColumnLayout {
                     closable: true
                     title: qsTr("Order Book")
                     expandedVert: true
+
                     Behavior on SplitView.preferredWidth
                     {
                         NumberAnimation
@@ -397,6 +451,7 @@ ColumnLayout {
                             duration: 100
                         }
                     }
+
                     OrderBook.Vertical
                     {
                         clip: !parent.contentVisible
@@ -405,7 +460,9 @@ ColumnLayout {
                         anchors.fill: parent
                     }
                 }
-                DexTradeBox {
+
+                DexTradeBox
+                {
                     id: _best_order_box
 
                     defaultHeight: 250
@@ -446,41 +503,49 @@ ColumnLayout {
             minimumWidth: isBigScreen ? 290 : 280
             expandable: false
             SplitView.fillHeight: true
+
             ColumnLayout
             {
                 visible: parent.contentVisible
                 anchors.topMargin: 60
                 anchors.fill: parent
+
                 Row
                 {
                     width: parent.width
                     spacing: 10
                     Layout.alignment: Qt.AlignHCenter
+
                     MarketModeSelector
                     {
                         marketMode: MarketMode.Buy
                         ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                     }
+
                     MarketModeSelector
                     {
                         ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
                     }
                 }
+
                 Item
                 {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+
                     ColumnLayout
                     {
                         property int space: 10
                         anchors.fill: parent
                         anchors.topMargin: 5
                         spacing: 10
+
                         Item
                         {
                             Layout.fillWidth: true
                             Layout.preferredHeight: 40
                             visible: API.app.trading_pg.preffered_order.price !== undefined
+
                             Rectangle
                             {
                                 width: parent.width - 20
@@ -600,10 +665,12 @@ ColumnLayout {
         }
     }
 
-    ModalLoader {
+    ModalLoader
+    {
         id: confirm_trade_modal
         sourceComponent: ConfirmTradeModal {}
     }
+
     DexPopup
     {
         id: dex_config_popup
@@ -626,6 +693,7 @@ ColumnLayout {
         {
             implicitWidth: 320
             implicitHeight: 190
+
             Column
             {
                 anchors.fill: parent
@@ -637,42 +705,56 @@ ColumnLayout {
                     text: "Display Settings"
                     font: DexTypo.body2
                 }
+
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+
                 DexCheckEye
                 {
                     text: "Trading Information"
                     targetProperty: "visible"
                     target: optionBox
                 }
+
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
+
                 DexCheckEye
                 {
                     text: "Order Book"
                     targetProperty: "visible"
                     target: _orderbook_box
                 }
+
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
-                DexCheckEye {
+
+                DexCheckEye
+                {
                     text: "Best Order"
                     targetProperty: "visible"
                     target: _best_order_box
                 }
+
                 HorizontalLine { width: parent.width-20;anchors.horizontalCenter: parent.horizontalCenter;opacity: .4 }
-                DexCheckEye {
+
+                DexCheckEye
+                {
                     id: place_visibility
                     text: "Place Order"
                     targetProperty: "visible"
                     target: order_form
                 }
             }
-            Component.onCompleted: {
+
+            Component.onCompleted:
+            {
                 dex_chart.visible = proview_settings.chart_visibility
                 optionBox.visible = proview_settings.option_visibility
                 _orderbook_box.visible = proview_settings.orderbook_visibility
                 _best_order_box.visible = proview_settings.best_order_visibility
                 order_form.visible = proview_settings.form_visibility
             }
-            Component.onDestruction: {
+
+            Component.onDestruction:
+            {
                 proview_settings.form_visibility = order_form.visible
                 proview_settings.chart_visibility = dex_chart.visible
                 proview_settings.option_visibility = optionBox.visible
@@ -681,6 +763,4 @@ ColumnLayout {
             }
         }
     }
-
-
 }
