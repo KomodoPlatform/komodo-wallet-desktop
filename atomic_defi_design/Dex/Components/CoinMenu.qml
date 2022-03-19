@@ -53,4 +53,11 @@ Menu {
         text: qsTr("Disable all assets")
         onTriggered: API.app.disable_coins(API.app.portfolio_pg.get_all_enabled_coins())
     }
+
+    MenuItem
+    {
+        enabled: !General.prevent_coin_disabling.running
+        text: qsTr("Disable 0 balance assets")
+        onTriggered: API.app.disable_no_balance_coins()
+    }
 }

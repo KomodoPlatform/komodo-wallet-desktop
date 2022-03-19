@@ -5,19 +5,23 @@ import QtQuick.Controls 2.15
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-ColumnLayout {
+ColumnLayout
+{
+    id: root
     property alias title: title.text
     property alias model: list.model
+    property real  addressFontSize: DefaultText.font.pixelSize
 
-    Layout.fillWidth: true
-
-    TitleText {
+    TitleText
+    {
         id: title
-        opacity: .6
+        color: Dex.CurrentTheme.foregroundColor2
     }
 
-    ListView {
+    ListView
+    {
         id: list
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -25,11 +29,11 @@ ColumnLayout {
 
         clip: true
 
-        // Row
-        delegate: DefaultTextEdit {
+        delegate: DefaultText
+        {
             text_value: model.modelData
-            color: DexTheme.foregroundColor
             privacy: true
+            font.pixelSize: root.addressFontSize
         }
     }
 }

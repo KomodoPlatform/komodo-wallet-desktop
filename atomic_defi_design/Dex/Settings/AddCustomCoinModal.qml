@@ -9,7 +9,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     width: 700
@@ -114,8 +114,8 @@ BasicModal {
     property var currentType: type_model.get(input_type.currentIndex)
 
     // Type page
-    ModalContent {
-        title: qsTr("Choose the asset type")
+    MultipageModalContent {
+        titleText: qsTr("Choose the asset type")
 
         ComboBoxWithTitle {
             id: input_type
@@ -146,8 +146,8 @@ BasicModal {
     }
 
     // Ticker page
-    ModalContent {
-        title: has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the asset ticker")
+    MultipageModalContent {
+        titleText: has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the asset ticker")
 
         TextFieldWithTitle {
             id: input_ticker
@@ -203,8 +203,8 @@ BasicModal {
     }
 
     // Logo page
-    ModalContent {
-        title: qsTr("Choose the asset logo")
+    MultipageModalContent {
+        titleText: qsTr("Choose the asset logo")
 
         DefaultButton {
             Layout.fillWidth: true
@@ -261,8 +261,8 @@ BasicModal {
     }
 
     // Configuration
-    ModalContent {
-        title: qsTr("Configuration")
+    MultipageModalContent {
+        titleText: qsTr("Configuration")
 
         DefaultText {
             visible: has_contract_address
@@ -338,8 +338,8 @@ BasicModal {
     }
 
     // Preview
-    ModalContent {
-        title: qsTr("Preview")
+    MultipageModalContent {
+        titleText: qsTr("Preview")
 
         DefaultText {
             id: warning_message

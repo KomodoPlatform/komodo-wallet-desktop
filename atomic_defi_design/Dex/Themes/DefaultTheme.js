@@ -65,6 +65,7 @@ function getHardcoded()
         textSelectedColor: "#f9f9fb",
 
         textFieldBackgroundColor: "#F3F5F6FF",
+        textFieldActiveBackgroundColor: "#F3F5F6CC",
         textFieldPrefixColor: "#45607894",
         textFieldSuffixColor: "#456078FF",
 
@@ -80,11 +81,15 @@ function getHardcoded()
         rangeSliderIndicatorBackgroundStartColor: "#5A68E6FF",
         rangeSliderIndicatorBackgroundEndColor: "#4986EAAD",
 
+        loginWalletIconColorStart: "#5A68E6FF",
+        loginWalletIconColorEnd: "#4986EAAD",
+
         sidebarBgColor: "#FCFCFC",
         sidebarVersionTextColor: "#456078",
         sidebarCursorStartColor: "#5A68E6",
         sidebarCursorEndColor: "#2CB9F000",
         sidebarLineTextHovered: "#2C87B9",
+        sidebarLineTextSelected: "#FFFFFFFF",
 
         tradeBuyModeSelectorBackgroundColorStart: "#6A4DE3FF",
         tradeBuyModeSelectorBackgroundColorEnd: "#2279F1FF",

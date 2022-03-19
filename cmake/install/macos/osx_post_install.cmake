@@ -98,7 +98,7 @@ endif ()
 file(COPY ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg DESTINATION ${TARGET_APP_PATH})
 
 get_filename_component(QT_ROOT_DIR  $ENV{QT_ROOT} DIRECTORY)
-set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.2/bin)
+set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.3/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
     message(STATUS "Generating ${DEX_PROJECT_NAME}.7z with [${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")

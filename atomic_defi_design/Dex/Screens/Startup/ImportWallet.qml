@@ -58,7 +58,7 @@ SetupPage
         {
             if (!submit_button.enabled) return;
 
-            text_error = General.checkIfWalletExists(input_wallet_name.field.text);
+            text_error = General.validateWallet(input_wallet_name.field.text);
             if (text_error !== "") return;
 
             eula_modal.open();
@@ -66,25 +66,20 @@ SetupPage
 
         function tryPassLevel1()
         {
-            if (input_wallet_name.field.text == "") input_wallet_name.error = true;
+            text_error = General.validateWallet(input_wallet_name.field.text)
 
-            if (_seedField.isValid() && input_wallet_name.field.text !== "")
+            if (text_error === "" && input_wallet_name.field.text !== "")
             {
-                let checkWalletName = General.checkIfWalletExists(input_wallet_name.field.text)
-                if (checkWalletName === "")
+                if (_seedField.isValid())
                 {
                     _seedField.error = false;
                     _inputPassword.field.text = "";
                     _inputPasswordConfirm.field.text = "";
                     currentStep++;
                 }
-                else
-                {
-                    input_wallet_name.error = true;
-                    text_error = checkWalletName;
-                }
+                else _seedField.error = true;
             }
-            else _seedField.error = true;
+            else input_wallet_name.error = true;
         }
 
         ColumnLayout
@@ -162,7 +157,7 @@ SetupPage
                     field.leftPadding: 75
                     field.placeholderText: qsTr("Wallet Name")
                     field.onAccepted: tryPassLevel1()
-                    field.onTextChanged: text_error = ""
+                    field.onTextChanged: text_error = General.validateWallet(input_wallet_name.field.text)
                     DefaultRectangle
                     {
                         x: 5
@@ -198,20 +193,17 @@ SetupPage
 
                     function isValid()
                     {
-                        if (!allow_custom_seed.checked) _seedField.field.text = _seedField.field.text.trim().toLowerCase();
-                        _seedField.field.text = _seedField.field.text.replace(/[^\w\s]/gi, '');
                         return allow_custom_seed.checked || API.app.wallet_mgr.mnemonic_validate(_seedField.field.text);
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: _seedError
                     visible: _seedField.error
-                    text: qsTr("BIP39 seed validation failed, try again or select 'Allow custom seed'")
+                    text: qsTr("Your seed is not BIP39 compliant.\nTry again or select 'Allow custom seed' to continue.")
                     color: Dex.CurrentTheme.noColor
                     Layout.preferredWidth: parent.width - 40
-                    wrapMode: DexLabel.Wrap
                     font: DexTypo.body2
                 }
 
@@ -227,26 +219,25 @@ SetupPage
                             let dialog = app.getText(
                             {
                                 title: qsTr("<strong>Allow custom seed</strong>"),
+                                closePolicy: Popup.NoAutoClose,
                                 text: qsTr("Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).<br><br>To confirm you understand the risk and know what you are doing, type <strong>'I understand'</strong> in the box below."),
                                 placeholderText: qsTr("I understand"),
                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                 validator: (text) =>
                                 {
-                                    return text === qsTr("I understand")
+                                    if (text.toLowerCase() === qsTr("i understand"))
+                                    {
+                                        allow_custom_seed.checked = true;
+                                    }
+                                    else
+                                    {
+                                        allow_custom_seed.checked = false;
+                                    }
+                                    return text.toLowerCase() === qsTr("i understand")
                                 },
-                                yesButtonText: qsTr("Enable"),
-                                onAccepted: function()
-                                {
-                                    allow_custom_seed.checked = true;
-                                    dialog.close()
-                                },
-                                onRejected: function()
-                                {
-                                    allow_custom_seed.checked = false;
-                                }
+                                yesButtonText: qsTr("Ok")
                             })
                         }
-                        else allow_custom_seed.checked = false;
                     }
                 }
 
@@ -261,17 +252,23 @@ SetupPage
                     Layout.preferredWidth: 400
                     spacing: Style.buttonSpacing
 
+                    DefaultText
+                    {
+                        text_value: text_error
+                        color: Dex.CurrentTheme.noColor
+                        visible: text !== ''
+                    }
+
                     Item
                     {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 10
                     }
 
-
                     DexGradientAppButton
                     {
                         id: nextButton
-                        enabled: input_wallet_name.field.text !== "" && _seedField.field.text !== ""
+                        enabled: input_wallet_name.field.text !== "" && _seedField.field.text !== "" && text_error == ""
                         onClicked: tryPassLevel1()
                         radius: 20
 
@@ -283,13 +280,6 @@ SetupPage
                         Layout.preferredHeight: 45
                         iconSourceRight: Qaterial.Icons.arrowRight
                     }
-                }
-
-                DefaultText
-                {
-                    text_value: text_error
-                    color: Dex.CurrentTheme.noColor
-                    visible: text !== ''
                 }
             }
 

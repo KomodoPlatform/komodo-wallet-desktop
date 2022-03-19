@@ -6,7 +6,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     property string coin_type
@@ -14,9 +14,9 @@ BasicModal {
 
     width: 400
 
-    ModalContent {
+    MultipageModalContent {
         Layout.fillWidth: true
-        title: qsTr("Choose a valid ") + coin_type + qsTr(" coin")
+        titleText: qsTr("Choose a valid ") + coin_type + qsTr(" coin")
 
         Repeater {
             model: coin_type == "QRC-20" ? API.app.portfolio_pg.global_cfg_mdl.all_qrc20_proxy :

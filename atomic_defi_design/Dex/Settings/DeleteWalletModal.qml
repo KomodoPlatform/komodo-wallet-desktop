@@ -6,7 +6,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     property bool wrong_password: false
@@ -18,8 +18,8 @@ BasicModal {
         input_password.reset()
     }
 
-    ModalContent {
-        title: qsTr("Delete Wallet")
+    MultipageModalContent {
+        titleText: qsTr("Delete Wallet")
 
         FloatingBackground {
             Layout.alignment: Qt.AlignHCenter

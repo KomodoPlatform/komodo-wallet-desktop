@@ -374,7 +374,11 @@ DexWindow
                         return Qaterial.Icons.whiteBalanceSunny;
                 }
 
-                onClicked: Dex.CurrentTheme.switchColorMode()
+                onClicked: {
+                    let new_theme = Dex.CurrentTheme.switchColorMode()
+                    atomic_settings0.setValue("CurrentTheme", new_theme);
+                    atomic_settings0.sync();
+                }
             }
         }
     }

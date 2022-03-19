@@ -12,14 +12,17 @@ Popup
     property int radius: 18
 
     anchors.centerIn: Overlay.overlay
+    horizontalPadding: 88
+    verticalPadding: 52
+
     modal: true
     focus: true
+
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-    Overlay.modal: Rectangle
-    {
-        color: "#AA000000"
-    }
+    background: DefaultRectangle { radius: root.radius; color: Dex.CurrentTheme.floatingBackgroundColor }
+
+    Overlay.modal: Rectangle { color: "#AA000000" }
 
     // Fade in animation
     onVisibleChanged:
@@ -27,20 +30,16 @@ Popup
         if (visible)
         {
             opacity = 0
-            fade_animation.start()
+            fadeAnimation.start()
         }
     }
 
     NumberAnimation
     {
-        id: fade_animation
+        id: fadeAnimation
         target: root
         property: "opacity"
         duration: Style.animationDuration
         to: 1
-    }
-
-    background: DexRectangle {
-        radius: 18
     }
 }

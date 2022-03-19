@@ -1,17 +1,23 @@
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+
 import "../../../Components"
 import "../../../Constants"
 
-BasicModal
+MultipageModal
 {
     id: root
     width: 1000
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Selected Order Removed")
+        titleText: qsTr("Selected Order Removed")
 
         DefaultText
         {
-            text: qsTr("The selected order does not exist anymore, it might have been matched or canceled, and no order with a better price is available. Please select a new order.")
+            Layout.fillWidth: true
+
+            wrapMode: Text.WordWrap
+            text: qsTr("The selected order does not exist anymore, it might have been matched or canceled, and no order with a better price is available.\nPlease select a new order.")
         }
 
         footer:

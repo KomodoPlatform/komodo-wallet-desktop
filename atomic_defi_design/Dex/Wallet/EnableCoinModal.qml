@@ -12,7 +12,7 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -46,9 +46,9 @@ BasicModal
         coin_cfg_model.checked_nb = 0;
     }
 
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Enable assets")
+        titleText: qsTr("Enable assets")
         titleAlignment: Qt.AlignHCenter
 
         // Search input
@@ -59,7 +59,7 @@ BasicModal
             searchIconLeftMargin: 20
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 10
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.preferredHeight: 44
             textField.placeholderText: qsTr("Search asset")
 
@@ -70,7 +70,7 @@ BasicModal
         {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 5
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.preferredHeight: 25
 
             DexCheckBox
@@ -100,7 +100,7 @@ BasicModal
             }
         }
 
-        HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.preferredWidth: 500 }
+        HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.fillWidth: true }
 
         DefaultListView
         {
@@ -111,7 +111,7 @@ BasicModal
             Layout.topMargin: -5
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredHeight: 300
-            Layout.preferredWidth: 515
+            Layout.fillWidth: true
 
             delegate: DexCheckBox
             {
@@ -135,42 +135,51 @@ BasicModal
                     }
                 }
 
-                // Icon
-                DefaultImage
-                {
-                    id: icon
-                    anchors.left: parent.right
-                    anchors.leftMargin: 8
+                RowLayout {
                     anchors.verticalCenter: parent.verticalCenter
-                    source: General.coinIcon(model.ticker)
-                    width: 18
-                    height: 18
+                    anchors.left: parent.right
+                    spacing:6
 
+                    // Icon
+                    DefaultImage
+                    {
+                        id: icon
+                        Layout.leftMargin: 8
+                        Layout.alignment: Qt.AlignVCenter
+                        source: General.coinIcon(model.ticker)
+                        Layout.preferredWidth: 18
+                        Layout.preferredHeight: 18
+                    }
                     DefaultText
                     {
-                        anchors.left: parent.right
-                        anchors.leftMargin: 4
-                        anchors.verticalCenter: parent.verticalCenter
+                        Layout.leftMargin: 4
+                        Layout.alignment: Qt.AlignVCenter
                         text: model.name + " (" + model.ticker + ")"
+                    }
+                    CoinTypeTag
+                    {
+                        id: typeTag
+                        Layout.leftMargin: 6
+                        Layout.alignment: Qt.AlignVCenter
+                        type: model.type
+                    }
 
-                        CoinTypeTag
-                        {
-                            id: typeTag
-                            anchors.left: parent.right
-                            anchors.leftMargin: 6
-                            anchors.verticalCenter: parent.verticalCenter
-                            type: model.type
-                        }
+                    CoinTypeTag
+                    {
+                        Layout.leftMargin: 6
+                        Layout.alignment: Qt.AlignVCenter
+                        enabled: General.isIDO(model.ticker)
+                        visible: enabled
+                        type: "IDO"
+                    }
 
-                        CoinTypeTag
-                        {
-                            anchors.left: typeTag.right
-                            anchors.leftMargin: 6
-                            anchors.verticalCenter: parent.verticalCenter
-                            enabled: General.isIDO(model.ticker)
-                            visible: enabled
-                            type: "IDO"
-                        }
+                    CoinTypeTag
+                    {
+                        Layout.leftMargin: 6
+                        Layout.alignment: Qt.AlignVCenter
+                        enabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_wallet_only
+                        visible: enabled
+                        type: "WALLET ONLY"
                     }
                 }
             }
@@ -179,7 +188,7 @@ BasicModal
         Item
         {
             Layout.topMargin: 6
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
 
             DexLabel
@@ -201,7 +210,7 @@ BasicModal
         Item
         {
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 500
+            Layout.fillWidth: true
             Layout.preferredHeight: 40
 
             DexTransparentButton
@@ -232,25 +241,20 @@ BasicModal
             }
         }
 
-        Item
+        RowLayout
         {
-            Layout.preferredWidth: 500
-            Layout.preferredHeight: 40
-            Layout.alignment: Qt.AlignHCenter
-
+            Layout.fillWidth: true
             DefaultButton
             {
-                anchors.left: parent.left
-                width: 199
+                Layout.preferredWidth: 199
                 text: qsTr("Close")
                 radius: 20
                 onClicked: root.close()
             }
-
+            Item { Layout.fillWidth: true }
             DexGradientAppButton
             {
-                anchors.right: parent.right
-                width: 199
+                Layout.preferredWidth: 199
                 visible: coin_cfg_model.length > 0
                 enabled: coin_cfg_model.checked_nb > 0
                 text: qsTr("Enable")
