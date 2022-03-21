@@ -160,12 +160,19 @@ Item
         TradeViewHeader
         {
             id: header
-            width: (parent.width / 100) * 10
+            width: parent.width
             height: parent.height * 0.06
+
+            proViewChart: proView.chart
+            proViewTrInfo: proView.trInfo
+            proViewOrderBook: proView.orderBook
+            proViewBestOrders: proView.bestOrders
+            proViewPlaceOrderForm: proView.placeOrderForm
         }
 
         ProView
         {
+            id: proView
             width: parent.width
             height: parent.height * 0.90
             visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro

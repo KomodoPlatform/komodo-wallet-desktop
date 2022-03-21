@@ -40,6 +40,12 @@ RowLayout
 {
     id: form
 
+    property alias chart: chart
+    property alias trInfo: tradingInfo
+    property alias orderBook: orderBook
+    property alias bestOrders: bestOrders
+    property alias placeOrderForm: placeOrderForm
+
     spacing: 16
 
     function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
@@ -178,6 +184,8 @@ RowLayout
     // Place order form.
     PlaceOrderForm.Main
     {
+        id: placeOrderForm
+
         Layout.minimumWidth: 302
         Layout.maximumWidth: 350
         Layout.fillWidth: true

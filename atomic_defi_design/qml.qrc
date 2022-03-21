@@ -370,6 +370,7 @@
         <file>Dex/Components/CannotEnableCoinModal.qml</file>
         <file>Dex/Components/CexInfoModal.qml</file>
         <file>Dex/Components/CexInfoTrigger.qml</file>
+        <file>Dex/Components/CheckEye.qml</file>
         <file>Dex/Components/Circle.qml</file>
         <file>Dex/Components/ClickableText.qml</file>
         <file>Dex/Components/ClipRRect.qml</file>
@@ -419,7 +420,6 @@
         <file>Dex/Components/DexBoxManager.qml</file>
         <file>Dex/Components/DexButton.qml</file>
         <file>Dex/Components/DexCheckBox.qml</file>
-        <file>Dex/Components/DexCheckEye.qml</file>
         <file>Dex/Components/DexColorOverlay.qml</file>
         <file>Dex/Components/DexCopyableLabel.qml</file>
         <file>Dex/Components/DexComboBox.qml</file>
