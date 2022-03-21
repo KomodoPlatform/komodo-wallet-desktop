@@ -11,6 +11,7 @@ DexAppTextField
 {
     id: _inputPassword
 
+    property bool forceFocus: false
     property string leftIcon: Qaterial.Icons.keyVariant
     property color leftIconColor: Dex.CurrentTheme.foregroundColor
     property alias hideFieldButton: _hideFieldButton
@@ -31,6 +32,10 @@ DexAppTextField
     field.leftPadding: 75
     field.rightPadding: 60
     field.placeholderText: qsTr("Type password")
+    Component.onCompleted:
+    {
+        if (forceFocus) field.forceActiveFocus()
+    }
 
     DefaultRectangle
     {

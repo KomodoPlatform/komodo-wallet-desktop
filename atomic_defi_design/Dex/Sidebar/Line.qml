@@ -35,10 +35,10 @@ Item
             weight: Font.Normal
         })
         style: Text.Normal
-        color: !enabled ?                                             Dex.CurrentTheme.textDisabledColor :
-               _mouseArea.containsMouse && currentLineType !== type ? Dex.CurrentTheme.sidebarLineTextHovered :
-               currentLineType === type ?                             Dex.CurrentTheme.sidebarLineTextSelected :
-                                                                      Dex.CurrentTheme.foregroundColor
+        color: !enabled                                                  ? Dex.CurrentTheme.textDisabledColor :
+               _mouseArea.containsMouse && currentLineType !== type      ? Dex.CurrentTheme.sidebarLineTextHovered :
+               currentLineType === type && type != Main.LineType.Support ? Dex.CurrentTheme.sidebarLineTextSelected :
+                                                                           Dex.CurrentTheme.foregroundColor
     }
 
     DexMouseArea

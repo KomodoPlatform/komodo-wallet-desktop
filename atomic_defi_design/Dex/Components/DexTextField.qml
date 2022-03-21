@@ -12,6 +12,7 @@ TextField
     property alias right_text: right_text.text_value
     property alias radius: background.radius
     property alias backgroundColor: background.color
+    property bool forceFocus: false
 
     font: DexTypo.body2
     placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
@@ -30,7 +31,7 @@ TextField
     background: DefaultRectangle
     {
         id: background
-        color: Dex.CurrentTheme.textFieldBackgroundColor
+        color: text_field.focus ? Dex.CurrentTheme.textFieldActiveBackgroundColor : Dex.CurrentTheme.textFieldBackgroundColor
         radius: 18
         anchors.fill: parent
     }
@@ -73,5 +74,10 @@ TextField
         anchors.verticalCenter: parent.verticalCenter
         color: Dex.CurrentTheme.textFieldSuffixColor
         font.pixelSize: text_field.font.pixelSize
+    }
+
+    Component.onCompleted:
+    {
+        if (forceFocus) text_field.forceActiveFocus()
     }
 }

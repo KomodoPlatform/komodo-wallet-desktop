@@ -23,7 +23,7 @@ DefaultModal
         else
         {
             targetPageIndex = currentIndex + 1
-            page_change_animation.start()
+            changePageAnim.start()
         }
     }
 
@@ -34,37 +34,33 @@ DefaultModal
         else
         {
             targetPageIndex = currentIndex - 1
-            page_change_animation.start()
+            changePageAnim.start()
         }
     }
 
     //! Appearance
-    padding: 20
-    leftPadding: 20
-    rightPadding: 20
-    bottomPadding: 15
     width: 676
-    height: column_layout.height + verticalPadding * 2
+    height: columnLayout.height + verticalPadding * 2
 
     onOpened: stack_layout.opacity = 1
 
-    SequentialAnimation {
-        id: page_change_animation
-        NumberAnimation { id: fade_out; target: root; property: "opacity"; to: 0; duration: Style.animationDuration }
+    SequentialAnimation
+    {
+        id: changePageAnim
+        NumberAnimation { id: fadeOut; target: root; property: "opacity"; to: 0; duration: Style.animationDuration }
         PropertyAction { target: root; property: "currentIndex"; value: targetPageIndex }
-        NumberAnimation { target: root; property: "opacity"; to: 1; duration: fade_out.duration }
+        NumberAnimation { target: root; property: "opacity"; to: 1; duration: fadeOut.duration }
     }
 
     Column
     {
-        id: column_layout
+        id: columnLayout
         spacing: Style.rowSpacing
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
 
         Row
         {
-            id: page_indicator
             visible: root.count > 1
             anchors.horizontalCenter: parent.horizontalCenter
 

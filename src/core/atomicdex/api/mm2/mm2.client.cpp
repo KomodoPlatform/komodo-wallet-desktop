@@ -1,27 +1,71 @@
-//
-// Created by Sztergbaum Roman on 27/03/2021.
-//
+/******************************************************************************
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
 
-//! Deps
+// Deps Headers
 #include <meta/detection/detection.hpp>
 
-//! Project Headers
+// Project Headers
 #include "atomicdex/api/mm2/mm2.client.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
+#include "rpc.get.public.key.hpp"
+#include "rpc.hpp"
 
 namespace
 {
     template <typename T>
     using have_error_field = decltype(std::declval<T&>().error.has_value());
 
-    t_http_client
-    generate_client()
+    t_http_client generate_client()
     {
         web::http::client::http_client_config cfg;
         using namespace std::chrono_literals;
         cfg.set_timeout(30s);
         return web::http::client::http_client(FROM_STD_STR(::mm2::api::g_endpoint), cfg);
+    }
+
+    template <mm2::api::rpc Rpc>
+    web::http::http_request make_request(typename Rpc::expected_request_type data_req = {})
+    {
+        web::http::http_request request;
+        nlohmann::json json_req = {{"method", Rpc::endpoint}, {"userpass", mm2::api::get_rpc_password()}};
+
+        request.set_method(web::http::methods::POST);
+        if (Rpc::is_v2)
+        {
+            json_req["mmrpc"] = "2.0";
+            json_req.push_back({"params", data_req});
+        }
+        else
+        {
+            json_req.insert(json_req.end(), nlohmann::json(data_req));
+        }
+        request.set_body(json_req.dump());
+        return request;
+    }
+
+    template <mm2::api::rpc Rpc>
+    typename Rpc::expected_answer_type make_answer(const web::http::http_response& answer)
+    {
+        auto json_answer = nlohmann::json::parse(TO_STD_STR(answer.extract_string(true).get()));
+        if (Rpc::is_v2)
+        {
+            return json_answer.at("result").get<typename Rpc::expected_answer_type>();
+        }
+        return json_answer.get<typename Rpc::expected_answer_type>();
     }
 } // namespace
 
@@ -90,6 +134,28 @@ namespace atomic_dex
         auto resp = generate_client().request(request, m_token_source.get_token());
         return resp;
     }
+
+    template <::mm2::api::rpc ApiCallType>
+    void mm2_client::process_rpc_async(const std::function<void(typename ApiCallType::expected_answer_type)>& on_rpc_processed)
+    {
+        auto request = make_request<ApiCallType>();
+        generate_client()
+            .request(request, m_token_source.get_token())
+            .template then([on_rpc_processed](const web::http::http_response& resp)
+                           {
+                               try
+                               {
+                                   auto answer = make_answer<ApiCallType>(resp);
+                                   on_rpc_processed(answer);
+                               }
+                               catch (const std::exception& ex)
+                               {
+                                   SPDLOG_ERROR(ex.what());
+                               }
+                           });
+    }
+
+    template void mm2_client::process_rpc_async<atomic_dex::mm2::get_public_key>(const std::function<void(mm2::get_public_key_answer)>&);
 
     void
     mm2_client::stop()

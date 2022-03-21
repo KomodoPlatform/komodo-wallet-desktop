@@ -6,51 +6,51 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal
+{
     id: root
 
-    function reset() {
+    function reset() { }
 
-    }
+    width: 600
 
-    width: 500
+    MultipageModalContent
+    {
+        titleText: qsTr("Receive")
 
-    ModalContent {
-        title: qsTr("Receive")
-
-        // Receive address
-        TextAreaWithTitle {
-            title: qsTr("Only send %1 to this address", "TICKER").arg(api_wallet_page.ticker)
-            field.text: current_ticker_infos.address
-            field.readOnly: true
-            field.wrapMode: TextEdit.NoWrap
-            copyable: true
-            onCopied: {
-                app.notifyCopy(qsTr("%1 address").arg(api_wallet_page.ticker), qsTr("copied to clipboard"))
-            }
+        TextEditWithTitle
+        {
+            title: qsTr("Only send %1 to this address:", "TICKER").arg(api_wallet_page.ticker)
+            text: current_ticker_infos.address
+            label.font.pixelSize: 13
+            copy: true
+            privacy: true
+            onCopyNotificationTitle: qsTr("%1 address".arg(api_wallet_page.ticker))
+            onCopyNotificationMsg: qsTr("copied to clipboard.")
         }
 
-        DefaultImage {
+        DefaultImage
+        {
+            Layout.topMargin: 20
             Layout.alignment: Qt.AlignHCenter
 
             source: current_ticker_infos.qrcode_address
 
-            sourceSize.width: 200
-            sourceSize.height: 200
+            sourceSize.width: 300
+            sourceSize.height: 300
         }
 
         // Buttons
-        footer: [
-            Item {
-                    Layout.fillWidth: true
-            },
-            DexAppButton {
+        footer:
+        [
+            Item { Layout.fillWidth: true },
+            DefaultButton
+            {
                 text: qsTr("Close")
-                leftPadding: 40
-                rightPadding: 40
-                radius: 18
+                Layout.fillWidth: true
                 onClicked: root.close()
-            }
+            },
+            Item { Layout.fillWidth: true }
         ]
     }
 }
