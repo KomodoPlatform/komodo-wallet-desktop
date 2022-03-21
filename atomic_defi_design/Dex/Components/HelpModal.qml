@@ -1,11 +1,11 @@
 import QtQuick 2.12
 
-BasicModal
+MultipageModal
 {
     property string helpSentence
-    property alias  title: _content.title
+    property alias  title: _content.titleText
 
     width: 500
 
-    ModalContent { id: _content; DexLabel { text: helpSentence } }
+    MultipageModalContent { id: _content; DexLabel { text: helpSentence } }
 }

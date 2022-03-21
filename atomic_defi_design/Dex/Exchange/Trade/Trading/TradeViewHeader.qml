@@ -72,6 +72,7 @@ Item
                 }
             }
         }
+
         Item
         {
             Layout.fillHeight: true
@@ -86,9 +87,10 @@ Item
         y: -10
         width: 40
         height: 25
-        visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
+        enabled: API.app.trading_pg.current_trading_mode == TradingMode.Pro
+        visible: enabled
         radius: height / 2
-        color: cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
+        color: !enabled ? 'transparent' : cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
                    Dex.CurrentTheme.floatingBackgroundColor : Dex.CurrentTheme.accentColor
 
         Behavior on color { ColorAnimation { duration: 150 } }
@@ -99,7 +101,7 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             iconSize: 15
-            color: cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
+            color: !parent.enabled ? 'transparent' : cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
                        Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
         }
 

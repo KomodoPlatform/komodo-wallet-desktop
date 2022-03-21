@@ -7,7 +7,7 @@ import QtQuick.Controls 2.15
 import "../Constants"
 import App 1.0
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -33,10 +33,10 @@ BasicModal
         }
     }
 
-    ModalContent
+    MultipageModalContent
     {
         Layout.fillWidth: true
-        title: qsTr("Applying the changes...")
+        titleText: qsTr("Applying the changes...")
 
         Timer
         {
@@ -56,7 +56,7 @@ BasicModal
             text_value: reasonMsg !== "" ? qsTr("Restarting the application. %1").arg(reasonMsg) : qsTr("Restarting the application...")
         }
 
-        DexBusyIndicator { Layout.alignment: Qt.AlignHCenter }
+        DefaultBusyIndicator { Layout.alignment: Qt.AlignHCenter }
 
         DexLabel
         {

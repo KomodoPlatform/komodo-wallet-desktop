@@ -43,21 +43,12 @@ ThemeData
     function switchColorMode()
     {
         let colorMode = getColorMode();
-        let colorModeStr = _themeName;
-
-        console.log(colorMode);
-        console.log(colorModeStr);
-        if (colorMode === CurrentTheme.ColorMode.Light)
-        {
-            colorModeStr = colorModeStr.replace(" - Light", " - Dark");
-        }
-        else if (colorMode === CurrentTheme.ColorMode.Dark)
-        {
-            colorModeStr = colorModeStr.replace(" - Dark", " - Light");
-        }
-        else return;
-        console.log(colorModeStr);
-        loadFromFilesystem(colorModeStr);
+        let current = _themeName
+        let currentLabel = current.replace(" - Light", "").replace(" - Dark", "")
+        let currentMode = current.replace(" - ", "").replace(currentLabel, "")
+        current = currentLabel + " - " + (currentMode === "Dark" ? "Light" : "Dark");
+        loadFromFilesystem(current);
+        return current
     }
 
     function loadFromFilesystem(themeName)
@@ -158,6 +149,7 @@ ThemeData
         textSelectedColor                   = Dex.Color.argbStrFromRgbaStr(themeData.textSelectedColor || defaultTheme.textSelectedColor);
 
         textFieldBackgroundColor            = Dex.Color.argbStrFromRgbaStr(themeData.textFieldBackgroundColor || defaultTheme.textFieldBackgroundColor);
+        textFieldActiveBackgroundColor      = Dex.Color.argbStrFromRgbaStr(themeData.textFieldActiveBackgroundColor || defaultTheme.textFieldActiveBackgroundColor);
         textFieldPrefixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldPrefixColor || defaultTheme.textFieldPrefixColor);
         textFieldSuffixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldSuffixColor || defaultTheme.textFieldSuffixColor);
 
@@ -269,6 +261,7 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.textPlaceholderColor : %1".arg(textPlaceholderColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textSelectedColor : %1".arg(textSelectedColor));
 
+        console.info("Dex.Themes.CurrentTheme.printValues.textFieldActiveBackgroundColor : %1".arg(textFieldActiveBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldBackgroundColor : %1".arg(textFieldBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldPrefixColor : %1".arg(textFieldPrefixColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldSuffixColor : %1".arg(textFieldSuffixColor));
