@@ -110,7 +110,7 @@ RowLayout
         Layout.alignment: Qt.AlignTop
 
         Layout.minimumWidth: 480
-        Layout.maximumWidth: 735
+        Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 735
         Layout.fillWidth: true
 
         Layout.fillHeight: true
