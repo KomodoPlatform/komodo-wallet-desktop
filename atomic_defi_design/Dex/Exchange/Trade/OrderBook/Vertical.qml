@@ -9,56 +9,43 @@ import "../../../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-FloatingBackground
+Widget
 {
-    Layout.fillWidth: true
-    Layout.fillHeight: true
-    radius: 10
+    title: qsTr("Order Book")
+    margins: 20
+    spacing: 20
 
-    ColumnLayout
+    Header
     {
-        anchors.fill: parent
-        anchors.margins: 20
-        spacing: 20
+        Layout.fillWidth: true
+        Layout.preferredHeight: 30
+    }
 
-        DefaultText
-        {
-            font: DexTypo.subtitle1
-            text: qsTr("Order Book")
-        }
+    List
+    {
+        isAsk: true
+        isVertical: true
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+    }
 
-        Header
+    Item
+    {
+        Layout.preferredHeight: 4
+        Layout.fillWidth: true
+        Rectangle
         {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 30
+            width: parent.width
+            height: parent.height
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: Dex.CurrentTheme.floatingBackgroundColor
         }
+    }
 
-        List
-        {
-            isAsk: true
-            isVertical: true
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
-
-        Item
-        {
-            Layout.preferredHeight: 4
-            Layout.fillWidth: true
-            Rectangle
-            {
-                width: parent.width
-                height: parent.height
-                anchors.horizontalCenter: parent.horizontalCenter
-                color: Dex.CurrentTheme.floatingBackgroundColor
-            }
-        }
-
-        List
-        {
-            isAsk: false
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
+    List
+    {
+        isAsk: false
+        Layout.fillHeight: true
+        Layout.fillWidth: true
     }
 }

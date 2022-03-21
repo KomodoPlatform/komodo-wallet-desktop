@@ -8,7 +8,7 @@ import Dex.Themes 1.0 as Dex
 import "../../../Constants"
 import "../../../Components"
 
-Rectangle
+Widget
 {
     id: _control
 
@@ -16,44 +16,30 @@ Rectangle
     property real fiatPriceColumnWidth: 0.22
     property real cexRateColumnWidth: 0.22
 
-    color: Dex.CurrentTheme.floatingBackgroundColor
-    radius: 10
+    title: qsTr("Best Orders")
 
-    ColumnLayout
+    margins: 20
+    spacing: 20
+
+    Header
     {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.margins: 20
-        spacing: 10
+        Layout.topMargin: 10
+        Layout.fillWidth: true
+    }
 
-        DefaultText
+    ListView
+    {
+        id: list
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
+        spacing: 6
+        clip: true
+
+        delegate: ListDelegate
         {
-            text: qsTr("Best Orders")
-            font: DexTypo.subtitle1
-        }
-
-        Header
-        {
-            Layout.topMargin: 10
-            Layout.fillWidth: true
-        }
-
-        DefaultListView
-        {
-            id: list
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
-            spacing: 6
-            clip: true
-
-            delegate: ListDelegate
-            {
-                width: list.width
-                height: 36
-            }
+            width: list.width
+            height: 36
         }
     }
 }

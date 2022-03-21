@@ -14,7 +14,6 @@ Item
     property string         title:                      "Widget"
 
     property bool           collapsable:                true
-    property bool           hideable:                   true
     property bool           collapsedAtConstruction:    false
 
     property alias          header:                     headerLoader.sourceComponent
@@ -27,6 +26,8 @@ Item
     default property alias  contentData:                content.data
 
     property bool           _collapsed:                 collapsable && collapsedAtConstruction
+
+    function isCollapsed() { return _collapsed }
 
     // Background
     Loader
@@ -88,22 +89,6 @@ Item
                     anchors.fill: parent
                     hoverEnabled: true
                     onClicked: root._collapsed = !root._collapsed
-                }
-            }
-            Qaterial.Icon
-            {
-                visible: root.hideable
-                width: 20
-                height: 20
-                color: hideButMouseArea.containsMouse ? Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
-                icon: Qaterial.Icons.eye
-
-                DefaultMouseArea
-                {
-                    id: hideButMouseArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: root.visible = !root.visible
                 }
             }
         }

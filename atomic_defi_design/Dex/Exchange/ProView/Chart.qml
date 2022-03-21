@@ -1,23 +1,27 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtWebEngine 1.8
 
 import "../../Components"
 import "../../Constants"
 import Dex.Themes 1.0 as Dex
 
-Item
+Widget
 {
     id: root
 
+    title: qsTr("Chart")
+    background: null
+    margins: 0
+
     property bool pair_supported: false
-    readonly property bool is_fetching: dashboard.webEngineView.loadProgress < 100
     readonly property string theme: Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark ? "dark" : "light"
     property string chart_base
     property string chart_rel
     property string loaded_symbol
 
-    function loadChart(base, rel, force=false)
+    function loadChart(base, rel, force = false)
     {
         const pair = atomic_qt_utilities.retrieve_main_ticker(base) + "/" + atomic_qt_utilities.retrieve_main_ticker(rel)
         const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(rel) + "/" + atomic_qt_utilities.retrieve_main_ticker(base)
@@ -66,25 +70,23 @@ Item
             <!-- TradingView Widget END -->`)
     }
 
-    onIs_fetchingChanged: dashboard.webEngineView.visible = !is_fetching && pair_supported
-    onPair_supportedChanged: if (!pair_supported) dashboard.webEngineView.visible = false;
+    onPair_supportedChanged: if (!pair_supported) webEngineViewPlaceHolder.visible = false
     Component.onCompleted:
     {
-        try { loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin) } catch (e) { console.error(e) }
-
-        dashboard.webEngineView.parent = chartView;
-        dashboard.webEngineView.anchors.fill = chartView;
-    }
-    Component.onDestruction:
-    {
-        dashboard.webEngineView.visible = false;
-        dashboard.webEngineView.stop();
+        try
+        {
+            loadChart(left_ticker?? atomic_app_primary_coin,
+                      right_ticker?? atomic_app_secondary_coin)
+        }
+        catch (e) { console.error(e) }
     }
 
     RowLayout
     {
-        visible: pair_supported && !dashboard.webEngineView.visible
-        anchors.centerIn: parent
+        visible: pair_supported && !webEngineViewPlaceHolder.visible
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        Layout.alignment: Qt.AlignCenter
 
         DefaultBusyIndicator
         {
@@ -104,7 +106,42 @@ Item
     {
         visible: !pair_supported
         text_value: qsTr("There is no chart data for this pair yet")
-        anchors.centerIn: parent
+        Layout.topMargin: 30
+        Layout.alignment: Qt.AlignCenter
+    }
+
+    Item
+    {
+        id: webEngineViewPlaceHolder
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        visible: false
+
+        Component.onCompleted:
+        {
+            dashboard.webEngineView.parent = webEngineViewPlaceHolder
+            dashboard.webEngineView.anchors.fill = webEngineViewPlaceHolder
+        }
+        Component.onDestruction:
+        {
+            dashboard.webEngineView.visible = false
+            dashboard.webEngineView.stop()
+        }
+        onVisibleChanged: dashboard.webEngineView.visible = visible
+
+        Connections
+        {
+            target: dashboard.webEngineView
+
+            function onLoadingChanged(webEngineLoadReq)
+            {
+                if (webEngineLoadReq.status === WebEngineView.LoadSucceededStatus)
+                {
+                    webEngineViewPlaceHolder.visible = true
+                }
+                else webEngineViewPlaceHolder.visible = false
+            }
+        }
     }
 
     Connections
@@ -121,7 +158,9 @@ Item
         target: Dex.CurrentTheme
         function onThemeChanged()
         {
-            loadChart(left_ticker?? atomic_app_primary_coin, right_ticker?? atomic_app_secondary_coin, true)
+            loadChart(left_ticker?? atomic_app_primary_coin,
+                      right_ticker?? atomic_app_secondary_coin,
+                      true)
         }
     }
 }

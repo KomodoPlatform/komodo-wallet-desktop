@@ -531,6 +531,13 @@
         <file>Dex/Exchange/ProView/SweetDexComboBox.qml</file>
         <file>Dex/Exchange/ProView/TickerSelector.qml</file>
         <file>Dex/Exchange/ProView/TickerSelectors.qml</file>
+        <file>Dex/Exchange/ProView/TradingInfo/Main.qml</file>
+        <file>Dex/Exchange/ProView/TradingInfo/OrderLine.qml</file>
+        <file>Dex/Exchange/ProView/TradingInfo/OrderList.qml</file>
+        <file>Dex/Exchange/ProView/TradingInfo/OrderModal.qml</file>
+        <file>Dex/Exchange/ProView/TradingInfo/OrdersPage.qml</file>
+        <file>Dex/Exchange/ProView/TradingInfo/PriceLine.qml</file>
+        <file>Dex/Exchange/ProView/TradingInfo/SwapProgress.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/Header.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/List.qml</file>
         <file>Dex/Exchange/Trade/BestOrder/ListDelegate.qml</file>
@@ -545,12 +552,6 @@
         <file>Dex/Exchange/Trade/OrderBook/ListDelegate.qml</file>
         <file>Dex/Exchange/Trade/OrderBook/Vertical.qml</file>
         <file>Dex/Exchange/Trade/Orders/OrderContent.qml</file>
-        <file>Dex/Exchange/Trade/Orders/OrderLine.qml</file>
-        <file>Dex/Exchange/Trade/Orders/OrderList.qml</file>
-        <file>Dex/Exchange/Trade/Orders/OrderModal.qml</file>
-        <file>Dex/Exchange/Trade/Orders/OrdersPage.qml</file>
-        <file>Dex/Exchange/Trade/Orders/SwapProgress.qml</file>
-        <file>Dex/Exchange/Trade/PriceLine.qml</file>
         <file>Dex/Exchange/Trade/PriceLineSimplified.qml</file>
         <file>Dex/Exchange/Trade/ProView.qml</file>
         <file>Dex/Exchange/Trade/SimpleView/List.qml</file>
