@@ -69,7 +69,7 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width * 0.8
-                text: send + " " + atomic_qt_utilities.retrieve_main_ticker(coin)
+                text: send + " " + coin
                 font.family: App.DexTypo.fontFamily
                 font.pixelSize: 12
             }
