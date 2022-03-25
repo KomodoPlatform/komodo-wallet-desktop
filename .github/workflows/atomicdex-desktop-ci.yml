@@ -37,7 +37,7 @@ jobs:
             type: 'release'
 
           - name: osx-qt-5-15-2
-            os: macos-10.15
+            os: macos-latest
             qt: '5.15.2'
             type: 'release'
 
@@ -58,15 +58,16 @@ jobs:
           submodules: 'true'
 
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
-          python-version: '3.8'
+          python-version: '3.10'
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
+          setup-python: 'false'
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
@@ -79,6 +80,7 @@ jobs:
         uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
+          setup-python: 'false'
           host: 'mac'
           target: 'desktop'
           dir: '${{ github.workspace }}'
