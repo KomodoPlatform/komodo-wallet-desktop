@@ -110,7 +110,7 @@ RowLayout
     {
         Layout.alignment: Qt.AlignTop
 
-        Layout.minimumWidth: 480
+        Layout.minimumWidth: chart.visible || selectors.visible || tradingInfo.visible ? 480 : -1
         Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 735
         Layout.fillWidth: true
 
@@ -154,7 +154,7 @@ RowLayout
 
     ColumnLayout
     {
-        Layout.minimumWidth: 353
+        Layout.minimumWidth: orderBook.visible || bestOrders.visible ? 353 : -1
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
@@ -187,7 +187,7 @@ RowLayout
     {
         id: placeOrderForm
 
-        Layout.minimumWidth: 302
+        Layout.minimumWidth: visible ? 302 : -1
         Layout.maximumWidth: 350
         Layout.fillWidth: true
 
