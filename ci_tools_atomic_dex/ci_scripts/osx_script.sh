@@ -19,7 +19,7 @@ brew install autoconf \
             coreutils \
             llvm \
             gnu-getopt
-            
+
 pip3 install yq
 export CC=clang
 export CXX=clang++
@@ -34,7 +34,7 @@ export MACOSX_DEPLOYMENT_TARGET=10.14
 #make -j3 install
 #cd ../
 
-git clone https://github.com/KomodoPlatform/libwally-core
+git clone https://github.com/KomodoPlatform/libwally-core.git
 cd libwally-core
 ./tools/autogen.sh
 ./configure --disable-shared
