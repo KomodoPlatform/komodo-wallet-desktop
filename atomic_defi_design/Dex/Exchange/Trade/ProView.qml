@@ -70,7 +70,9 @@ RowLayout
             "base_max_volume_numer": base_max_volume_numer,
             "uuid": uuid
         }
-        form_base.focusVolumeField()
+
+        // Shows place order form in case it has been hidden in the settings.
+        placeOrderForm.visible = true
     }
 
     Connections
