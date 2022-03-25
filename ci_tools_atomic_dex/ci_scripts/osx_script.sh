@@ -35,7 +35,6 @@ export MACOSX_DEPLOYMENT_TARGET=10.14
 #cd ../
 
 git clone https://github.com/KomodoPlatform/libwally-core
-#git clone --branch update https://github.com/KomodoPlatform/libwally-core --recursive
 cd libwally-core
 ./tools/autogen.sh
 ./configure --disable-shared
