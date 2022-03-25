@@ -20,7 +20,7 @@ brew install autoconf \
 pip3 install yq
 export CC=clang
 export CXX=clang++
-export MACOSX_DEPLOYMENT_TARGET=10.14
+export MACOSX_DEPLOYMENT_TARGET=10.15
 
 # get curl
 #git clone https://github.com/KomodoPlatform/curl.git
@@ -31,7 +31,7 @@ export MACOSX_DEPLOYMENT_TARGET=10.14
 #make -j3 install
 #cd ../
 
-git clone --branch test https://github.com/smk762/libwally-core.git --recursive
+git clone --branch update https://github.com/KomodoPlatform/libwally-core --recursive
 cd libwally-core
 ./tools/autogen.sh
 ./configure --disable-shared
