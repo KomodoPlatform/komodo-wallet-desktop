@@ -58,10 +58,9 @@ jobs:
           submodules: 'true'
 
       - name: Setup Python
-        if: runner.os != 'macOS'
         uses: actions/setup-python@v3
         with:
-          python-version: '3.8'
+          python-version: '3.9'
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
