@@ -41,6 +41,7 @@ RowLayout
     id: form
 
     property alias chart: chart
+    property alias tickerSelectors: selectors
     property alias trInfo: tradingInfo
     property alias orderBook: orderBook
     property alias bestOrders: bestOrders

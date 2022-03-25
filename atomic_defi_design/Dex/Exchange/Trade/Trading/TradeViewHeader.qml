@@ -19,6 +19,7 @@ import "../../../Constants"
 Item
 {
     property var proViewChart
+    property var proViewTickerSelectors
     property var proViewTrInfo
     property var proViewOrderBook
     property var proViewBestOrders
@@ -109,7 +110,7 @@ Item
             contentItem: Item
             {
                 implicitWidth: 200
-                implicitHeight: 180
+                implicitHeight: 240
 
                 Column
                 {
@@ -118,6 +119,14 @@ Item
                     spacing: 8
 
                     DefaultText { text: qsTr("Display Settings"); font: DexTypo.body2 }
+
+                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
+
+                    CheckEye { text: qsTr("Chart"); target: proViewChart }
+
+                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
+
+                    CheckEye { text: qsTr("Ticker Selectors"); target: proViewTickerSelectors }
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
 
