@@ -43,7 +43,6 @@ RowLayout
 
                 text_value: !details ? "" :
                             `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Dex.CurrentTheme.foregroundColor}">${details.name}</font>`
-                color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
                 elide: Text.ElideRight
                 wrapMode: Text.NoWrap
