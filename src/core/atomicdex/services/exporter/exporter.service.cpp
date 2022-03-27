@@ -90,7 +90,7 @@ namespace atomic_dex
                 ofs.setFileName(std_path_to_qstring(csv_path));
                 ofs.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate);
                 std::stringstream ss;
-                ss << "Date, BaseCoin, BaseAmount, Status, RelCoin, RelAmount, UUID, ErrorState" << std::endl;
+                ss << "Date,BaseCoin,BaseAmount,Status,RelCoin,RelAmount,UUID,ErrorState" << std::endl;
                 for (auto&& cur_swap: result.swaps)
                 {
                     ss << cur_swap.human_date.toStdString() << ",";
