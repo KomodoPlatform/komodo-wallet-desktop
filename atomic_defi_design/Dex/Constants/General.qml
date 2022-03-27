@@ -1346,7 +1346,7 @@ QtObject {
                                                 "FIL/EURS": "COINBASE:FILEUR",
                                                 "FIL/JEUR": "COINBASE:FILEUR",
                                                 "FIRO/BTC": "BINANCE:FIROBTC",
-                                                "FIRO/ETH": "BINANCE:FIROETH",
+                                                "FIRO/ETH": "HUOBI:FIROETH",
                                                 "FIRO/USDT": "BITTREX:FIROUSD",
                                                 "FIRO/BUSD": "BITTREX:FIROUSD",
                                                 "FIRO/USDC": "BITTREX:FIROUSD",
