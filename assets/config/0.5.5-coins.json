@@ -7445,8 +7445,8 @@
     "nomics_id": "XMY",
     "electrum": [
       {
-        "url": "lenoir.ecoincore.com:10892",
-        "protocol": "SSL"
+        "url": "lenoir.ecoincore.com:10891",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [
