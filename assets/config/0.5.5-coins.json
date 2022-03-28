@@ -274,6 +274,18 @@
         "protocol": "SSL",
         "disable_cert_verification": true,
         "ws_url": "elec-seeder-two.artbytecoin.org:50013"
+      },
+      {
+        "url": "electrumx-three.artbyte.live:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": false,
+        "ws_url": "electrumx-three.artbyte.live:50013"
+      },
+      {
+        "url": "electrumx-four.artbyte.live:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": false,
+        "ws_url": "electrumx-four.artbyte.live:50013"
       }
     ],
     "explorer_url": [
@@ -907,17 +919,17 @@
       {
         "url": "electrum1.blackcoin.nl:10002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       },
       {
         "url": "electrum2.blackcoin.nl:20002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       },
       {
         "url": "electrum3.blackcoin.nl:30002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       }
     ],
     "explorer_url": [
@@ -3898,11 +3910,8 @@
       {
         "url": "electrum.gmsmining.pw:17485"
       },
-	  {
-        "url": "electrum1.gmsmining.pw:17485"
-      },
       {
-        "url": "electrum2.gmsmining.pw:17485"
+        "url": "electrum1.gmsmining.pw:17485"
       }
     ],
     "explorer_url": [
@@ -5368,7 +5377,7 @@
   "NYAN": {
     "coin": "NYAN",
     "name": "Nyancoin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "nyan-nyancoin",
     "coingecko_id": "test-coin",
     "nomics_id": "NYAN",
     "electrum": [
@@ -7436,8 +7445,8 @@
     "nomics_id": "XMY",
     "electrum": [
       {
-        "url": "lenoir.ecoincore.com:10892",
-        "protocol": "SSL"
+        "url": "lenoir.ecoincore.com:10891",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [
