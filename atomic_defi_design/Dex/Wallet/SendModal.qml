@@ -429,11 +429,11 @@ MultipageModal
                     {
                         if (_preparePage.cryptoSendMode)
                         {
-                            input_amount.text = current_ticker_infos.balance;
+                            input_amount.text = API.app.get_balance(api_wallet_page.ticker);
                         }
                         else
                         {
-                            let cryptoBalance = new BigNumber(current_ticker_infos.balance);
+                            let cryptoBalance = new BigNumber(API.app.get_balance(api_wallet_page.ticker));
                             input_amount.text = cryptoBalance.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                         }
                     }
