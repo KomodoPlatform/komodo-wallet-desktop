@@ -4,9 +4,9 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
+import Dex.Themes 1.0 as Dex
 import "../../../Components"
 import "../../../Constants"
-import Dex.Themes 1.0 as Dex
 import App 1.0
 
 MultipageModal

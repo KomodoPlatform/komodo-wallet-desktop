@@ -48,8 +48,11 @@ ComboBox
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 13
+            width: parent.width - anchors.leftMargin
+
             font: DexTypo.subtitle2
             text_value: control.mainLineText
+            elide: Text.ElideRight
         }
     }
 
@@ -119,10 +122,12 @@ ComboBox
         width: control.width
         highlighted: control.highlightedIndex === index
 
-        contentItem: DexLabel
+        contentItem: DefaultText
         {
+            width: control.width
             font: DexTypo.subtitle2
             text_value: control.dropdownLineText(model)
+            elide: Text.ElideRight
         }
     }
 

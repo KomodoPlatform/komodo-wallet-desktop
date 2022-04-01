@@ -17,6 +17,8 @@ RowLayout
     property var pageSize: Constants.API.app.orders_mdl.nb_pages
     property var currentValue: Constants.API.app.orders_mdl.current_page
 
+    property alias itemsPerPageComboBox: itemsPerPageComboBox
+
     function refreshBtn()
     {
         currentValue = Constants.API.app.orders_mdl.current_page
@@ -70,11 +72,15 @@ RowLayout
 
     DefaultComboBox
     {
+        id: itemsPerPageComboBox
+
         readonly property int item_count: Constants.API.app.orders_mdl.limit_nb_elements
         readonly property
         var options: [5, 10, 25, 50, 100, 200]
 
         Layout.preferredWidth: (root.width / 100) * 14
+        Layout.maximumWidth: 62
+        Layout.preferredHeight: 35
         Layout.alignment: Qt.AlignLeft
 
         model: options
@@ -84,10 +90,12 @@ RowLayout
 
     DefaultText
     {
-        Layout.preferredWidth: (root.width / 100) * 10
+        Layout.preferredWidth: (root.width / 100) * 16
+        Layout.leftMargin: 20
         Layout.alignment: Qt.AlignLeft
-        font.pixelSize: 11
-        text_value: qsTr("items per page")
+        font.pixelSize: 12
+        text: qsTr("items per page")
+        color: Dex.CurrentTheme.foregroundColor2
     }
 
     Item

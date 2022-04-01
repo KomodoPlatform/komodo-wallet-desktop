@@ -4,20 +4,42 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
-import App 1.0
+import Dex.Themes 1.0 as Dex
+import "../../../Constants"
+import "../../../Components"
 
-
-Item {
+Widget
+{
     id: _control
-    Header {}
 
-    ListView {
+    property real youGetColumnWidth: 0.5
+    property real fiatPriceColumnWidth: 0.22
+    property real cexRateColumnWidth: 0.22
+
+    title: qsTr("Best Orders")
+
+    margins: 20
+    spacing: 20
+
+    Header
+    {
+        Layout.topMargin: 10
+        Layout.fillWidth: true
+    }
+
+    ListView
+    {
         id: list
-        anchors.topMargin: 40
-        anchors.fill: parent
+        Layout.fillWidth: true
+        Layout.fillHeight: true
         model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
+        spacing: 6
         clip: true
-        reuseItems: true
-        delegate: ListDelegate  {}
+
+        delegate: ListDelegate
+        {
+            width: list.width
+            height: 36
+        }
     }
 }

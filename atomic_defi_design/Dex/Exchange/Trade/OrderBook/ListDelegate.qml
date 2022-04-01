@@ -5,14 +5,54 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
-import "../../../Constants"
 import App 1.0
-import Dex.Themes 1.0 as Dex
 import bignumberjs 1.0
+import "../../../Constants"
+import Dex.Themes 1.0 as Dex
 
 Item
 {
     property bool isAsk
+
+    DefaultTooltip
+    {
+        visible:  mouse_area.containsMouse && !enough_funds_to_pay_min_volume
+        width: 300
+        contentItem: RowLayout
+        {
+            width: 290
+
+            Qaterial.ColorIcon
+            {
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignVCenter
+                source: Qaterial.Icons.alert
+                color: Qaterial.Colors.amber
+            }
+
+            DefaultText
+            {
+                Layout.fillWidth: true
+                text_value:
+                {
+                    let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
+                    let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
+
+                    qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
+                        .arg(parseFloat(min_volume).toFixed(8))
+                        .arg(isAsk ?
+                            API.app.trading_pg.market_pairs_mdl.right_selected_coin :
+                            API.app.trading_pg.market_pairs_mdl.left_selected_coin)
+                        .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ?
+                            "Your max balance after fees is: %1".arg(isAsk ?
+                            relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
+                }
+                wrapMode: Text.WordWrap
+            }
+        }
+        delay: 200
+    }
+
 
     DefaultMouseArea
     {
@@ -21,9 +61,9 @@ Item
         hoverEnabled: true
         onClicked:
         {
-            if(is_mine) return
+            if (is_mine) return
 
-            if(enough_funds_to_pay_min_volume)
+            if (enough_funds_to_pay_min_volume )
             {
                 exchange_trade.orderSelected = true
                 orderList.currentIndex = index
@@ -89,24 +129,6 @@ Item
             anchors.horizontalCenter: parent.horizontalCenter
             onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
 
-            // error icon
-            DefaultAlertIcon
-            {
-                visible: !enough_funds_to_pay_min_volume
-                iconSize: 12
-                
-                tooltipText:
-                {
-                    let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
-                    let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
-
-                    qsTr("This order requires a minimum amount of %1 %2. %3")
-                        .arg(parseFloat(min_volume).toFixed(8))
-                        .arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin)
-                        .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ? "Your max balance after fees is: %1".arg(isAsk ? relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
-                }
-            }
-
             // Price
             DefaultText
             {
@@ -151,9 +173,9 @@ Item
     {
         id: cancel_button_text
         property bool requested_cancel: false
+
         visible: is_mine && !requested_cancel
 
-        source: Qaterial.Icons.close
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: 1
         anchors.right: parent.right
@@ -178,10 +200,9 @@ Item
             anchors.fill: parent
             hoverEnabled: true
 
-
             onClicked:
             {
-                if(!is_mine) return
+                if (!is_mine) return
 
                 cancel_button_text.requested_cancel = true
                 cancelOrder(uuid)
