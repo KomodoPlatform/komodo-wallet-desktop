@@ -1135,7 +1135,6 @@ QtObject {
                                                 "DGB/UST": "BITTREX:DGBUSD",
                                                 "DGB/DAI": "BITTREX:DGBUSD",
                                                 "DGB/PAX": "BITTREX:DGBUSD",
-                                                "DGB/BNB": "BINANCE:DGBBNB",
                                                 "DGB/EURS": "BITTREX:DGBEUR",
                                                 "DGB/JEUR": "BITTREX:DGBEUR",
                                                 "DIA/BTC": "BINANCE:DIABTC",
