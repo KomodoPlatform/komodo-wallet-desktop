@@ -1576,8 +1576,6 @@ QtObject {
                                                 "KMD/UST": "BINANCE:KMDUSD",
                                                 "KMD/DAI": "BINANCE:KMDUSD",
                                                 "KMD/PAX": "BINANCE:KMDUSD",
-                                                "KMD/TRYB": "BITTREX:KMDTRY",
-                                                "KMD/BIDR": "BITTREX:KMDIDR",
                                                 "KNC/BTC": "BINANCE:KNCBTC",
                                                 "KNC/ETH": "BINANCE:KNCETH",
                                                 "KNC/USDT": "COINBASE:KNCUSD",
