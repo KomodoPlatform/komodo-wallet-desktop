@@ -7,7 +7,7 @@ import Qaterial 1.0 as Qaterial
 import "../../../Components"
 import "../../../Constants"
 import Dex.Themes 1.0 as Dex
-
+import AtomicDEX.MarketMode 1.0
 import App 1.0 as App
 
 Item
@@ -163,7 +163,18 @@ Item
             }
             else
             {
-                app.pairChanged(base_ticker, coin)
+                if (API.app.trading_pg.market_mode == MarketMode.Buy)
+                {
+                    console.log("Loading "+coin+"/"+API.app.trading_pg.market_pairs_mdl.rel_selected_coin+" chart")
+                    console.log("Loading "+coin+"/"+rel_ticker+" chart")
+                    app.pairChanged(rel_ticker, coin)
+                }
+                else
+                {
+                    console.log("Loading "+coin+"/"+API.app.trading_pg.market_pairs_mdl.base_selected_coin+" chart")
+                    console.log("Loading "+coin+"/"+base_ticker+" chart")
+                    app.pairChanged(base_ticker, coin)
+                }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
             }
         }
