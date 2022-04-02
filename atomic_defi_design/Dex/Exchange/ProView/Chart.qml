@@ -36,7 +36,8 @@ Widget
 
         pair_supported = true
 
-        if (symbol === loaded_symbol && !force) {
+        if (symbol === loaded_symbol && !force)
+        {
             webEngineViewPlaceHolder.visible = true
             return
         }
