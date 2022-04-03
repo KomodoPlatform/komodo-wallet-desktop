@@ -2756,6 +2756,10 @@
     "nomics_id": "FIRO",
     "electrum": [
       {
+        "url": "electrumx.firo.org:50001",
+        "protocol": "TCP"
+      },
+      {
         "url": "electrumx01.firo.org:50001"
       },
       {
