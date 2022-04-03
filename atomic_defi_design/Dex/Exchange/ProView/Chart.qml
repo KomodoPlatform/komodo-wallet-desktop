@@ -10,16 +10,14 @@ import Dex.Themes 1.0 as Dex
 Widget
 {
     id: root
-
     title: qsTr("Chart")
     background: null
     margins: 0
 
-    property bool pair_supported: false
     readonly property string theme: Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark ? "dark" : "light"
-    property string chart_base
-    property string chart_rel
     property string loaded_symbol
+    property bool pair_supported: false
+    onPair_supportedChanged: if (!pair_supported) webEngineViewPlaceHolder.visible = false
 
     function loadChart(base, rel, force = false)
     {
@@ -29,18 +27,22 @@ Widget
         // Try checking if pair/reversed-pair exists
         let symbol = General.supported_pairs[pair]
         if (!symbol) symbol = General.supported_pairs[pair_reversed]
+
         if (!symbol)
         {
             pair_supported = false
             return
         }
+
         pair_supported = true
 
-        if (!force && symbol === loaded_symbol) return
+        if (symbol === loaded_symbol && !force)
+        {
+            webEngineViewPlaceHolder.visible = true
+            return
+        }
 
         loaded_symbol = symbol
-        chart_base = atomic_qt_utilities.retrieve_main_ticker(base)
-        chart_rel = atomic_qt_utilities.retrieve_main_ticker(rel)
 
         dashboard.webEngineView.loadHtml(`
             <style>
@@ -70,7 +72,6 @@ Widget
             <!-- TradingView Widget END -->`)
     }
 
-    onPair_supportedChanged: if (!pair_supported) webEngineViewPlaceHolder.visible = false
     Component.onCompleted:
     {
         try
@@ -83,13 +84,14 @@ Widget
 
     RowLayout
     {
-        visible: pair_supported && !webEngineViewPlaceHolder.visible
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignCenter
+        visible: !webEngineViewPlaceHolder.visible
 
         DefaultBusyIndicator
         {
+            visible: pair_supported
             Layout.alignment: Qt.AlignHCenter
             Layout.leftMargin: -15
             Layout.rightMargin: Layout.leftMargin*0.75
@@ -98,16 +100,17 @@ Widget
 
         DefaultText
         {
+            visible: pair_supported
             text_value: qsTr("Loading market data") + "..."
         }
-    }
 
-    DefaultText
-    {
-        visible: !pair_supported
-        text_value: qsTr("There is no chart data for this pair yet")
-        Layout.topMargin: 30
-        Layout.alignment: Qt.AlignCenter
+        DefaultText
+        {
+            visible: !pair_supported
+            text_value: qsTr("There is no chart data for this pair yet")
+            Layout.topMargin: 30
+            Layout.alignment: Qt.AlignCenter
+        }
     }
 
     Item
