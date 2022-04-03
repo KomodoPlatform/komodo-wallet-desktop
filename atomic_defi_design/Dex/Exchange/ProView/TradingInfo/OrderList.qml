@@ -97,8 +97,8 @@ Item
             Layout.maximumHeight: 70
             Layout.preferredWidth: parent.width
             Layout.bottomMargin: 10
-            itemsPerPageComboBox.mainBackgroundColor: Dex.CurrentTheme.buttonColorEnabled
-            itemsPerPageComboBox.dropdownBackgroundColor: Dex.CurrentTheme.buttonColorEnabled
+            itemsPerPageComboBox.mainBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+            itemsPerPageComboBox.dropdownBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
         }
     }
 

@@ -250,6 +250,7 @@ Item {
             Layout.fillWidth: true
         }
     }
+
     ModalLoader
     {
         id: order_modal

@@ -233,9 +233,9 @@
     "active": false,
     "currently_enabled": false
   },
-  "ABY": {
-    "coin": "ABY",
-    "name": "ArtByte",
+  "ABY-OLD": {
+    "coin": "ABY-OLD",
+    "name": "ArtByte (OLD)",
     "coinpaprika_id": "aby-artbyte",
     "coingecko_id": "artbyte",
     "electrum": [
@@ -253,6 +253,46 @@
     "explorer_url": [
       "http://aby-explorer.ewmcx.info/"
     ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "ABY": {
+    "coin": "ABY",
+    "name": "ArtByte",
+    "coinpaprika_id": "aby-artbyte",
+    "coingecko_id": "artbyte",
+    "electrum": [
+      {
+        "url": "elec-seeder-one.artbytecoin.org:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": true,
+        "ws_url": "elec-seeder-one.artbytecoin.org:50013"
+      },
+      {
+        "url": "elec-seeder-two.artbytecoin.org:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": true,
+        "ws_url": "elec-seeder-two.artbytecoin.org:50013"
+      },
+      {
+        "url": "electrumx-three.artbyte.live:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": false,
+        "ws_url": "electrumx-three.artbyte.live:50013"
+      },
+      {
+        "url": "electrumx-four.artbyte.live:50012",
+        "protocol": "SSL",
+        "disable_cert_verification": false,
+        "ws_url": "electrumx-four.artbyte.live:50013"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/aby/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
@@ -879,17 +919,17 @@
       {
         "url": "electrum1.blackcoin.nl:10002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       },
       {
         "url": "electrum2.blackcoin.nl:20002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       },
       {
         "url": "electrum3.blackcoin.nl:30002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": false
       }
     ],
     "explorer_url": [
@@ -3527,12 +3567,6 @@
         "url": "spv1.lbry.com:50001"
       },
       {
-        "url": "spv13.lbry.com:50001"
-      },
-      {
-        "url": "spv15.lbry.com:50001"
-      },
-      {
         "url": "spv17.lbry.com:50001"
       },
       {
@@ -3876,11 +3910,8 @@
       {
         "url": "electrum.gmsmining.pw:17485"
       },
-	  {
-        "url": "electrum1.gmsmining.pw:17485"
-      },
       {
-        "url": "electrum2.gmsmining.pw:17485"
+        "url": "electrum1.gmsmining.pw:17485"
       }
     ],
     "explorer_url": [
@@ -5346,7 +5377,7 @@
   "NYAN": {
     "coin": "NYAN",
     "name": "Nyancoin",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "nyan-nyancoin",
     "coingecko_id": "test-coin",
     "nomics_id": "NYAN",
     "electrum": [
@@ -5465,6 +5496,40 @@
       "type": "UTXO",
       "active": false,
       "currently_enabled": false
+  },
+  "PPC-ERC20": {
+    "coin": "PPC-ERC20",
+    "name": "Peercoin",
+    "coinpaprika_id": "ppc-peercoin",
+    "coingecko_id": "peercoin",
+    "nomics_id": "PPC",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "PPC-PLG20": {
+    "coin": "PPC-PLG20",
+    "name": "Peercoin",
+    "coinpaprika_id": "ppc-peercoin",
+    "coingecko_id": "peercoin",
+    "nomics_id": "PPC",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
   },
   "PRUX": {
       "coin": "PRUX",
@@ -6603,6 +6668,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "SAND-ERC20": {
+    "coin": "SAND-ERC20",
+    "name": "The Sandbox",
+    "coinpaprika_id": "sand-the-sandbox",
+    "coingecko_id": "the-sandbox",
+    "nomics_id": "SAND2",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "SAND-PLG20": {
+    "coin": "SAND-PLG20",
+    "name": "The Sandbox",
+    "coinpaprika_id": "sand-the-sandbox",
+    "coingecko_id": "the-sandbox",
+    "nomics_id": "SAND2",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "SNX-AVX20": {
     "coin": "SNX-AVX20",
     "name": "Synthetix",
@@ -7346,8 +7445,8 @@
     "nomics_id": "XMY",
     "electrum": [
       {
-        "url": "lenoir.ecoincore.com:10892",
-        "protocol": "SSL"
+        "url": "lenoir.ecoincore.com:10891",
+        "protocol": "TCP"
       }
     ],
     "explorer_url": [

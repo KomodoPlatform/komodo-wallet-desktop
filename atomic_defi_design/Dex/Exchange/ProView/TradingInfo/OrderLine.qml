@@ -16,7 +16,10 @@ FloatingBackground
     property alias          clickable: mouse_area.enabled
     readonly property bool  is_placed_order: !details ? false : details.order_id !== ''
 
-    height: 30
+    height: 50
+
+    color: mouse_area.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.floatingBackgroundColor
+    radius: 0
 
     DefaultMouseArea
     {
@@ -30,172 +33,155 @@ FloatingBackground
         }
     }
 
-    RowLayout
+    ColumnLayout
     {
         anchors.fill: parent
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.margins: 4
+        spacing: 0
 
-        DefaultText
+        Item
         {
-            visible: clickable
-            Layout.preferredWidth: (parent.width / 100) * 18
-            font.pixelSize: 12
-            text_value: !details ? "" : details.date ?? ""
-            elide: Text.ElideRight
-            maximumLineCount: 1
-        }
+            Layout.fillWidth: true
+            Layout.preferredHeight: childrenRect.height
 
-        DefaultImage
-        {
-            id: base_icon
-            source: General.coinIcon(!details ? atomic_app_primary_coin :
-                details.base_coin ?? atomic_app_primary_coin)
-            Layout.preferredWidth: 15
-            Layout.preferredHeight: width
-            Layout.alignment: Qt.AlignVCenter
-            Layout.leftMargin: 5
-        }
+            clip: true
 
-        Row
-        {
-            Layout.preferredWidth: (parent.width / 100) * 30
-            spacing: 6
             DefaultText
             {
-                font.weight: Font.Bold
-                font.pixelSize: 12
-                text: !details ? "" : details.base_coin
-                privacy: is_placed_order
-                elide: Text.ElideRight
-                maximumLineCount: 1
-                width: implicitWidth > (parent.width / 100) * 30 ? (parent.width / 100) * 30 : implicitWidth
-            }
-            DefaultText
-            {
+                id: baseAmountLabel
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+
                 font.pixelSize: 12
                 text: !details ? "" : details.base_amount
                 privacy: is_placed_order
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                width: implicitWidth > (parent.width / 100) * 40 ? (parent.width / 100) * 40 : implicitWidth
             }
+
             DefaultText
             {
+                anchors.left: baseAmountLabel.right
+                anchors.leftMargin: 3
+                anchors.verticalCenter: parent.verticalCenter
+
                 font.pixelSize: 12
                 text: !details ? "" : "(%1 %2)".arg(details.base_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
                 privacy: is_placed_order
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                width: implicitWidth > (parent.width / 100) * 30 ? (parent.width / 100) * 30 : implicitWidth
+            }
+
+            Qaterial.ColorIcon
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                source: Qaterial.Icons.swapHorizontal
+                color: Dex.CurrentTheme.foregroundColor
+                iconSize: 18
+            }
+
+            DefaultText
+            {
+                anchors.right: relAmountInCurrCurrency.left
+                anchors.rightMargin: 3
+                anchors.verticalCenter: parent.verticalCenter
+
+                font.pixelSize: 12
+                text: !details ? "" : details.rel_amount
+                privacy: is_placed_order
+                elide: Text.ElideRight
+                maximumLineCount: 1
+            }
+
+            DefaultText
+            {
+                id: relAmountInCurrCurrency
+
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+
+                font.pixelSize: 12
+                text: !details ? "" : "(%1 %2)".arg(details.rel_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
+                privacy: is_placed_order
+                elide: Text.ElideRight
+                maximumLineCount: 1
             }
         }
 
         Item
         {
             Layout.fillWidth: true
-            SwapIcon
-            {
-                anchors.fill: parent
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                color: details.order_status === "failed" ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.foregroundColor
-                top_arrow_ticker: !details ? atomic_app_primary_coin : details.base_coin ?? ""
-                bottom_arrow_ticker: !details ? atomic_app_primary_coin : details.rel_coin ?? ""
-            }
-        }
+            Layout.preferredHeight: childrenRect.height
 
-        Row
-        {
-            layoutDirection: Qt.RightToLeft
-            Layout.preferredWidth: (parent.width / 100) * 30
-            spacing: 6
+            DefaultImage
+            {
+                id: baseIcon
+
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+
+                width: 15
+                height: 15
+
+                source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin ?? atomic_app_primary_coin)
+            }
+
             DefaultText
             {
+                anchors.left: baseIcon.right
+                anchors.leftMargin: 2
+                anchors.verticalCenter: parent.verticalCenter
+
+                font.weight: Font.Bold
                 font.pixelSize: 12
-                text: !details ? "" : "(%1 %2)".arg(details.rel_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
+                text: !details ? "" : details.base_coin
                 privacy: is_placed_order
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                width: implicitWidth > (parent.width / 100) * 30 ? (parent.width / 100) * 30 : implicitWidth
             }
+
             DefaultText
             {
-                font.pixelSize: 12
-                text: !details ? "" : details.rel_amount
-                privacy: is_placed_order
+                visible: clickable
+
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+
+                font.pixelSize: 11
+                text_value: !details ? "" : details.date ?? ""
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                width: implicitWidth > (parent.width / 100) * 40 ? (parent.width / 100) * 40 : implicitWidth
+                color: Dex.CurrentTheme.foregroundColor2
             }
+
             DefaultText
             {
+                anchors.right: relCoin.left
+                anchors.rightMargin: 2
+                anchors.verticalCenter: parent.verticalCenter
+
                 font.weight: Font.Bold
                 font.pixelSize: 12
                 text: !details ? "" : details.rel_coin
                 privacy: is_placed_order
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                width: implicitWidth > (parent.width / 100) * 30 ? (parent.width / 100) * 30 : implicitWidth
             }
-        }
 
-        DefaultImage
-        {
-            id: rel_icon
-            source: General.coinIcon(!details ? atomic_app_primary_coin :
-                details.rel_coin ?? atomic_app_secondary_coin)
-            Layout.preferredWidth: 15
-            Layout.preferredHeight: 15
-            Layout.alignment: Qt.AlignVCenter
-        }
-
-        DefaultText
-        {
-            font.pixelSize: 12
-            visible: !details || details.recoverable === undefined ? false :
-                details.recoverable && details.order_status !== "refunding"
-            Layout.preferredWidth: (parent.width / 100) * 2
-            Layout.preferredHeight: width
-            verticalAlignment: Label.AlignVCenter
-            horizontalAlignment: Label.AlignHCenter
-            text_value: Style.warningCharacter
-            color: Style.colorYellow
-
-            DefaultTooltip
+            DefaultImage
             {
-                contentItem: DefaultText
-                {
-                    text_value: qsTr("Funds are recoverable")
-                    font.pixelSize: Style.textSizeSmall4
-                }
+                id: relCoin
 
-                visible: (parent.visible && mouse_area.containsMouse) ?? false
-            }
-        }
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
 
-        MouseArea
-        {
-            id: cancel_button_text
+                width: 15
+                height: 15
 
-            visible: !is_history
-
-            Layout.preferredWidth: (parent.width / 100) * 2
-            Layout.preferredHeight: width
-
-            onClicked: if (details) cancelOrder(details.order_id)
-
-            Behavior on scale
-            {
-                NumberAnimation
-                {
-                    duration: 200
-                }
-            }
-            Qaterial.ColorIcon
-            {
-                anchors.fill: parent
-                iconSize: 14
-                color: Dex.CurrentTheme.noColor
-                source: Qaterial.Icons.close
+                source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin ?? atomic_app_secondary_coin)
             }
         }
     }
@@ -204,6 +190,7 @@ FloatingBackground
     HorizontalLine
     {
         width: parent.width
+        height: 2
         anchors.bottom: parent.bottom
     }
 }
