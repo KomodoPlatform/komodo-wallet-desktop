@@ -233,6 +233,7 @@ FloatingBackground
             DefaultText
             {
                 anchors.centerIn: parent
+                anchors.fill: parent
 
                 visible: !details || details.recoverable === undefined ? false : details.recoverable && details.order_status !== "refunding"
                 font.pixelSize: baseAmountLabel.font.pixelSize
@@ -255,6 +256,7 @@ FloatingBackground
             {
                 id: cancel_button_text
                 anchors.centerIn: parent
+                anchors.fill: parent
 
                 visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouse_area.containsMouse || hovered) ? true : false : false
 
