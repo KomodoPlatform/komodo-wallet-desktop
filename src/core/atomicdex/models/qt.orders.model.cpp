@@ -91,6 +91,9 @@ namespace atomic_dex
         case UnixTimestampRole:
             item.unix_timestamp = value.toULongLong();
             break;
+        case PaymentLockRole:
+            item.payment_lock = value.toULongLong();
+            break;
         case OrderIdRole:
             item.order_id = value.toString();
             break;
@@ -169,6 +172,8 @@ namespace atomic_dex
             return item.human_date;
         case UnixTimestampRole:
             return item.unix_timestamp;
+        case PaymentLockRole:
+            return item.payment_lock;
         case OrderIdRole:
             return item.order_id;
         case OrderStatusRole:
@@ -232,6 +237,7 @@ namespace atomic_dex
             {IsMakerRole, "is_maker"},
             {HumanDateRole, "date"},
             {UnixTimestampRole, "timestamp"},
+            {PaymentLockRole, "payment_lock"},
             {OrderIdRole, "order_id"},
             {OrderStatusRole, "order_status"},
             {MakerPaymentIdRole, "maker_payment_id"},
@@ -418,6 +424,7 @@ namespace atomic_dex
             auto&& [prev_value, new_value, is_change] = update_value(OrdersRoles::OrderStatusRole, contents.order_status, idx, *this);
 
             update_value(OrdersRoles::UnixTimestampRole, contents.unix_timestamp, idx, *this);
+            update_value(OrdersRoles::PaymentLockRole, contents.payment_lock, idx, *this);
             auto&& [prev_value_d, new_value_d, _] = update_value(OrdersRoles::HumanDateRole, contents.human_date, idx, *this);
             if (is_change)
             {

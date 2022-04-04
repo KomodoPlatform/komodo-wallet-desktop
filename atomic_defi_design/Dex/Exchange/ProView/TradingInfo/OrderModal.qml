@@ -201,6 +201,10 @@ MultipageModal
                     title: qsTr("Order Type")
                     text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
                     label.font.pixelSize: 13
+                    visible: { 
+                        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + details.payment_lock)
+                        return true
+                    }
                 }
 
                 // Refund state

@@ -473,6 +473,15 @@ namespace mm2::api
                     jf_evt["time_diff"]                           = res;
                     event_timestamp_registry["Started"]           = ts2; // Started finished at this time
                     total_time_in_ms += res;
+
+                    if (jf_evt.at("data").contains("taker_payment_lock"))
+                    {
+                        contents.payment_lock                     = jf_evt.at("data").at("taker_payment_lock").get<unsigned long long>() * 1000;
+                    }
+                    else if (jf_evt.at("data").contains("maker_payment_lock"))
+                    {
+                        contents.payment_lock                     = jf_evt.at("data").at("maker_payment_lock").get<unsigned long long>() * 1000;
+                    }
                 }
 
                 if (idx > 0)
