@@ -626,7 +626,7 @@ Item
                 Layout.fillWidth: true
                 Layout.preferredHeight: 48
 
-                visible: current_ticker_infos.name === "Tokel"
+                visible: current_ticker_infos.name === "Tokel" || current_ticker_infos.name === "Marmara Credit Loops"
 
                 DexAppButton
                 {
