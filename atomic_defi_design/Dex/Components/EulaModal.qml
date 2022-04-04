@@ -57,6 +57,7 @@ MultipageModal
         {
             id: accept_eula
             visible: !close_only
+            labelWidth: eula_rect.width - 80
             text: qsTr("Accept EULA")
         }
 
@@ -64,6 +65,7 @@ MultipageModal
         {
             id: accept_tac
             visible: !close_only
+            labelWidth: eula_rect.width - 80
             text: qsTr("Accept Terms and Conditions")
         }
 
