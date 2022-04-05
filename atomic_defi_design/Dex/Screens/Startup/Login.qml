@@ -73,7 +73,8 @@ SetupPage
             {
                 if (_keyChecker.isValid())
                 {
-                    if (!onClickedLogin(field.text)) {
+                    if (!onClickedLogin(field.text))
+                    {
                         _inputPassword.error = true;
                         _isPasswordWrong = true;
                     }
