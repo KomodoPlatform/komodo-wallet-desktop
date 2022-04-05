@@ -1,0 +1,3 @@
+module Dex.Components
+
+DefaultText 1.0 DefaultText.qml

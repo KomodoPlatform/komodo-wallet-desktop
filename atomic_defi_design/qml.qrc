@@ -492,6 +492,7 @@
         <file>Dex/Components/PasswordForm.qml</file>
         <file>Dex/Components/PlusButton.qml</file>
         <file>Dex/Components/PrimaryButton.qml</file>
+        <file>Dex/Components/qmldir</file>
         <file>Dex/Components/RestartModal.qml</file>
         <file>Dex/Components/RightClickMenu.qml</file>
         <file>Dex/Components/RoundComboBox.qml</file>
