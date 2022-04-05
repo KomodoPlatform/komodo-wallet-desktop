@@ -12,7 +12,6 @@ import Dex.Themes 1.0 as Dex
 
 FloatingBackground
 {
-    id: control
     Layout.fillWidth: true
 
     property var            details
@@ -50,7 +49,7 @@ FloatingBackground
 
             DefaultText
             {
-                id: status_text
+                id: statusText
                 anchors.centerIn: parent
 
                 visible: clickable ? ! details ? false : (details.is_swap || !details.is_maker) : false
@@ -63,7 +62,7 @@ FloatingBackground
             {
                 anchors.centerIn: parent
 
-                visible: !status_text.visible ? clickable ? true : false : false
+                visible: !statusText.visible ? clickable ? true : false : false
                 iconSize: 16
                 color: Dex.CurrentTheme.foregroundColor
                 source: Qaterial.Icons.clipboardTextSearchOutline
