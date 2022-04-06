@@ -23,7 +23,7 @@ ComponentWithTitle
     {
         Layout.fillWidth: true
 
-        DefaultText
+        DexLabel
         {
             id: text
 
@@ -32,7 +32,7 @@ ComponentWithTitle
             clip: true
             textFormat: TextEdit.AutoText
             opacity: show_content ? 1 : 0
-            wrapMode: Text.WrapAnywhere
+            wrapMode: Text.WordWrap
 
             Behavior on opacity { SmoothedAnimation { duration: expand_animation.duration; velocity: -1 } }
             Behavior on Layout.preferredHeight { SmoothedAnimation { id: expand_animation; duration: Constants.Style.animationDuration * 2; velocity: -1 } }

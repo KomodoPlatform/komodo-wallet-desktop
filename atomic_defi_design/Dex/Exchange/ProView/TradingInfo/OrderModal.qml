@@ -16,7 +16,11 @@ MultipageModal
     property var details
 
     onDetailsChanged: { if (!details) root.close() }
-    onOpened: swap_progress.updateSimulatedTime()
+    onOpened:
+    {
+        swapProgress.updateSimulatedTime()
+        swapProgress.updateCountdownTime()
+    }
     onClosed: details = undefined
 
     MultipageModalContent
@@ -44,14 +48,23 @@ MultipageModal
         }
 
         // Status Text
-        DefaultText
+        DexLabel
         {
+            id: statusText
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 5
             font.pixelSize: Style.textSize1
             font.bold: true 
             visible: !details ? false : details.is_swap || !details.is_maker
             text_value: !details ? "" : visible ? getStatusText(details.order_status) : ''
+        }
+
+        DexLabel
+        {
+            Layout.alignment: Qt.AlignHCenter
+            visible: text_value != ""
+            font.pixelSize: Style.textSizeSmall2
+            text_value: swapProgress.getRefundText(swapProgress.countdown_time)
         }
 
         RowLayout
@@ -86,13 +99,13 @@ MultipageModal
                         {
                             Layout.fillWidth: true
                             spacing: 5
-                            DefaultText
+                            DexLabel
                             {
                                 Layout.fillWidth: true
                                 text: details ? details.base_coin : ""
                             }
 
-                            DefaultText
+                            DexLabel
                             {
                                 Layout.fillWidth: true
                                 text: details ? General.coinName(details.base_coin) : ""
@@ -102,7 +115,7 @@ MultipageModal
                             }
                         }
 
-                        DefaultText
+                        DexLabel
                         {
                             Layout.fillWidth: true
                             text: details ? details.base_amount : ""
@@ -151,13 +164,13 @@ MultipageModal
                         {
                             Layout.fillWidth: true
                             spacing: 5
-                            DefaultText
+                            DexLabel
                             {
                                 Layout.fillWidth: true
                                 text: details ? details.rel_coin : ""
                             }
 
-                            DefaultText
+                            DexLabel
                             {
                                 Layout.fillWidth: true
                                 text: details ? General.coinName(details.rel_coin) : ""
@@ -167,7 +180,7 @@ MultipageModal
                             }
                         }
 
-                        DefaultText
+                        DexLabel
                         {
                             Layout.fillWidth: true
                             text: details ? details.rel_amount : ""
@@ -201,21 +214,16 @@ MultipageModal
                     title: qsTr("Order Type")
                     text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
                     label.font.pixelSize: 13
-                    visible: { 
-                        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + details.payment_lock)
-                        return true
-                    }
                 }
 
                 // Refund state
-                TextFieldWithTitle
+                TextEditWithTitle
                 {
                     Layout.fillWidth: true
                     title: qsTr("Refund State")
-                    field.text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
-                    field.readOnly: true
-                    field.font.pixelSize: 13
-                    visible: field.text !== ''
+                    text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
+                    label.font.pixelSize: 13
+                    visible: text !== ''
                 }
 
                 // Date
@@ -286,14 +294,14 @@ MultipageModal
 
                 HorizontalLine
                 {
-                    visible: swap_progress.visible
+                    visible: swapProgress.visible
                     Layout.fillWidth: true
                     Layout.topMargin: 10
                 }
 
                 SwapProgress
                 {
-                    id: swap_progress
+                    id: swapProgress
                     visible: General.exists(details) && details.order_status !== "matching"
                     Layout.fillWidth: true
                     details: root.details

@@ -9,6 +9,8 @@ import Dex.Themes 1.0 as Dex
 ColumnLayout
 {
     id: control
+    Layout.fillWidth: true
+    Layout.fillHeight: true
 
     property bool copyable: false
     property bool hidable: false
@@ -47,7 +49,7 @@ ColumnLayout
         }
     }
 
-    DefaultTextField
+    DexTextField
     {
         id: input_field
 
