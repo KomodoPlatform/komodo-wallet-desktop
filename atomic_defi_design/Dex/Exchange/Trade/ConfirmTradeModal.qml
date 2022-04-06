@@ -164,6 +164,7 @@ MultipageModal
 
                 spacing: 2
                 text: qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker)
+                labelWidth: 200
                 boxWidth: 24
                 boxHeight: 24
                 label.horizontalAlignment: Text.AlignHCenter

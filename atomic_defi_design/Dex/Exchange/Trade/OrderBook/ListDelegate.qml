@@ -9,6 +9,8 @@ import App 1.0
 import bignumberjs 1.0
 import "../../../Constants"
 import Dex.Themes 1.0 as Dex
+import AtomicDEX.MarketMode 1.0
+import AtomicDEX.TradingError 1.0
 
 Item
 {
@@ -16,7 +18,7 @@ Item
 
     DefaultTooltip
     {
-        visible:  mouse_area.containsMouse && !enough_funds_to_pay_min_volume
+        visible: mouse_area.containsMouse && (tooltip_text.text_value != "")
         width: 300
         contentItem: RowLayout
         {
@@ -32,27 +34,62 @@ Item
 
             DefaultText
             {
+                id: tooltip_text
                 Layout.fillWidth: true
                 text_value:
                 {
-                    let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
-                    let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
+                    if (mouse_area.containsMouse)
+                    {
+                        let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
+                        let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
 
-                    qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
-                        .arg(parseFloat(min_volume).toFixed(8))
-                        .arg(isAsk ?
-                            API.app.trading_pg.market_pairs_mdl.right_selected_coin :
-                            API.app.trading_pg.market_pairs_mdl.left_selected_coin)
-                        .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ?
-                            "Your max balance after fees is: %1".arg(isAsk ?
-                            relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
+                        if (!enough_funds_to_pay_min_volume)
+                        {
+                            return qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
+                                .arg(parseFloat(min_volume).toFixed(8))
+                                .arg(isAsk ? right_ticker : left_ticker)
+                                .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ?
+                                    "Your max balance after fees is: %1".arg(isAsk ?
+                                    relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
+                        }
+
+                        if ([TradingError.LeftParentChainNotEnoughBalance, TradingError.RightParentChainNotEnoughBalance,
+                             TradingError.LeftParentChainNotEnabled, TradingError.RightParentChainNotEnabled].includes(last_trading_error))
+                        {
+                            return General.getTradingError(
+                                last_trading_error, curr_fee_info,
+                                base_ticker, rel_ticker, left_ticker,
+                                right_ticker)
+                        }
+
+                        if (!([TradingError.None, TradingError.PriceFieldNotFilled, TradingError.VolumeFieldNotFilled].includes(last_trading_error)))
+                        {
+                            if (isAsk && API.app.trading_pg.market_mode == MarketMode.Buy)
+                            {
+                                return General.getTradingError(
+                                    last_trading_error, curr_fee_info,
+                                    base_ticker, rel_ticker, left_ticker,
+                                    right_ticker)
+                            }
+
+                            if (isBid && API.app.trading_pg.market_mode == MarketMode.Sell)
+                            {
+                                return General.getTradingError(
+                                    last_trading_error, curr_fee_info,
+                                    base_ticker, rel_ticker, left_ticker,
+                                    right_ticker)
+                            }
+                            return ""
+                        }
+                        return ""
+                    }
+                    return ""
                 }
                 wrapMode: Text.WordWrap
             }
         }
         delay: 200
     }
-
 
     DefaultMouseArea
     {
