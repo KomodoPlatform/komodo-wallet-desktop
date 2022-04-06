@@ -12,6 +12,8 @@ import Dex.Themes 1.0 as Dex
 
 FloatingBackground
 {
+    Layout.fillWidth: true
+
     property var            details
     property alias          clickable: mouse_area.enabled
     readonly property bool  is_placed_order: !details ? false : details.order_id !== ''
@@ -33,159 +35,252 @@ FloatingBackground
         }
     }
 
-    ColumnLayout
+    RowLayout
     {
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
-        anchors.margins: 4
-        spacing: 0
+        spacing: 4
 
         Item
         {
-            Layout.fillWidth: true
-            Layout.preferredHeight: childrenRect.height
-
-            clip: true
-
-            DefaultText
-            {
-                id: baseAmountLabel
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-
-                font.pixelSize: 12
-                text: !details ? "" : details.base_amount
-                privacy: is_placed_order
-                elide: Text.ElideRight
-                maximumLineCount: 1
-            }
+            Layout.fillHeight: true
+            Layout.preferredWidth: 24
+            Layout.alignment: Qt.AlignCenter
 
             DefaultText
             {
-                anchors.left: baseAmountLabel.right
-                anchors.leftMargin: 3
-                anchors.verticalCenter: parent.verticalCenter
+                id: statusText
+                anchors.centerIn: parent
 
-                font.pixelSize: 12
-                text: !details ? "" : "(%1 %2)".arg(details.base_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
-                privacy: is_placed_order
-                elide: Text.ElideRight
-                maximumLineCount: 1
+                visible: clickable ? ! details ? false : (details.is_swap || !details.is_maker) : false
+                font.pixelSize: getStatusFontSize(details.order_status)
+                color: !details ? Dex.CurrentTheme.foregroundColor : getStatusColor(details.order_status)
+                text_value: !details ? "" : visible ? getStatusStep(details.order_status) : ''
             }
 
             Qaterial.ColorIcon
             {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.centerIn: parent
 
-                source: Qaterial.Icons.swapHorizontal
+                visible: !statusText.visible ? clickable ? true : false : false
+                iconSize: 16
                 color: Dex.CurrentTheme.foregroundColor
-                iconSize: 18
+                source: Qaterial.Icons.clipboardTextSearchOutline
+            }
+        }
+
+
+        ColumnLayout
+        {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignCenter
+            spacing: 0
+
+            Item
+            {
+                Layout.fillWidth: true
+                Layout.preferredHeight: childrenRect.height
+
+                clip: true
+
+                DefaultText
+                {
+                    id: baseAmountLabel
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    font.pixelSize: 12
+                    text: !details ? "" : details.base_amount
+                    privacy: is_placed_order
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                }
+
+                DefaultText
+                {
+                    anchors.left: baseAmountLabel.right
+                    anchors.leftMargin: 3
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    font.pixelSize: 12
+                    text: !details ? "" : "(%1 %2)".arg(details.base_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
+                    privacy: is_placed_order
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                }
+
+                Qaterial.ColorIcon
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    source: Qaterial.Icons.swapHorizontal
+                    color: Dex.CurrentTheme.foregroundColor
+                    iconSize: 18
+                }
+
+                DefaultText
+                {
+                    anchors.right: relAmountInCurrCurrency.left
+                    anchors.rightMargin: 3
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    font.pixelSize: 12
+                    text: !details ? "" : details.rel_amount
+                    privacy: is_placed_order
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                }
+
+                DefaultText
+                {
+                    id: relAmountInCurrCurrency
+
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    font.pixelSize: 12
+                    text: !details ? "" : "(%1 %2)".arg(details.rel_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
+                    privacy: is_placed_order
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                }
             }
 
-            DefaultText
+            Item
             {
-                anchors.right: relAmountInCurrCurrency.left
-                anchors.rightMargin: 3
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.fillWidth: true
+                Layout.preferredHeight: childrenRect.height
 
-                font.pixelSize: 12
-                text: !details ? "" : details.rel_amount
-                privacy: is_placed_order
-                elide: Text.ElideRight
-                maximumLineCount: 1
-            }
+                DefaultImage
+                {
+                    id: baseIcon
 
-            DefaultText
-            {
-                id: relAmountInCurrCurrency
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
 
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
+                    width: 15
+                    height: 15
 
-                font.pixelSize: 12
-                text: !details ? "" : "(%1 %2)".arg(details.rel_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
-                privacy: is_placed_order
-                elide: Text.ElideRight
-                maximumLineCount: 1
+                    source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin ?? atomic_app_primary_coin)
+                }
+
+                DefaultText
+                {
+                    anchors.left: baseIcon.right
+                    anchors.leftMargin: 2
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    font.weight: Font.Bold
+                    font.pixelSize: 12
+                    text: !details ? "" : details.base_coin
+                    privacy: is_placed_order
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                }
+
+                DefaultText
+                {
+                    visible: clickable
+
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    font.pixelSize: 11
+                    text_value: !details ? "" : details.date ?? ""
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                    color: Dex.CurrentTheme.foregroundColor2
+                }
+
+                DefaultText
+                {
+                    anchors.right: relCoin.left
+                    anchors.rightMargin: 2
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    font.weight: Font.Bold
+                    font.pixelSize: 12
+                    text: !details ? "" : details.rel_coin
+                    privacy: is_placed_order
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                }
+
+                DefaultImage
+                {
+                    id: relCoin
+
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    width: 15
+                    height: 15
+
+                    source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin ?? atomic_app_secondary_coin)
+                }
             }
         }
 
         Item
         {
-            Layout.fillWidth: true
-            Layout.preferredHeight: childrenRect.height
-
-            DefaultImage
-            {
-                id: baseIcon
-
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-
-                width: 15
-                height: 15
-
-                source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin ?? atomic_app_primary_coin)
-            }
+            Layout.fillHeight: true
+            Layout.preferredWidth: 24
+            Layout.alignment: Qt.AlignCenter
 
             DefaultText
             {
-                anchors.left: baseIcon.right
-                anchors.leftMargin: 2
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.centerIn: parent
 
-                font.weight: Font.Bold
-                font.pixelSize: 12
-                text: !details ? "" : details.base_coin
-                privacy: is_placed_order
-                elide: Text.ElideRight
-                maximumLineCount: 1
+                visible: !details || details.recoverable === undefined ? false : details.recoverable && details.order_status !== "refunding"
+                font.pixelSize: baseAmountLabel.font.pixelSize
+                text_value: Style.warningCharacter
+                color: Style.colorYellow
+
+                DefaultTooltip
+                {
+                    contentItem: DefaultText
+                    {
+                        text_value: qsTr("Funds are recoverable")
+                        font.pixelSize: Style.textSizeSmall4
+                    }
+
+                    visible: (parent.visible && mouse_area.containsMouse) ?? false
+                }
             }
 
-            DefaultText
+            Qaterial.FlatButton
             {
-                visible: clickable
+                id: cancel_button_text
+                anchors.centerIn: parent
+                anchors.fill: parent
 
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
+                visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouse_area.containsMouse || hovered) ? true : false : false
 
-                font.pixelSize: 11
-                text_value: !details ? "" : details.date ?? ""
-                elide: Text.ElideRight
-                maximumLineCount: 1
-                color: Dex.CurrentTheme.foregroundColor2
-            }
+                outlinedColor: Dex.CurrentTheme.noColor
+                hoverEnabled: true
 
-            DefaultText
-            {
-                anchors.right: relCoin.left
-                anchors.rightMargin: 2
-                anchors.verticalCenter: parent.verticalCenter
+                onClicked: if (details) cancelOrder(details.order_id)
 
-                font.weight: Font.Bold
-                font.pixelSize: 12
-                text: !details ? "" : details.rel_coin
-                privacy: is_placed_order
-                elide: Text.ElideRight
-                maximumLineCount: 1
-            }
-
-            DefaultImage
-            {
-                id: relCoin
-
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-
-                width: 15
-                height: 15
-
-                source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin ?? atomic_app_secondary_coin)
+                Behavior on scale
+                {
+                    NumberAnimation
+                    {
+                        duration: 200
+                    }
+                }
+                Qaterial.ColorIcon
+                {
+                    anchors.centerIn: parent
+                    iconSize: 16
+                    color: Dex.CurrentTheme.noColor
+                    source: Qaterial.Icons.close
+                    scale: parent.visible ? 1 : 0
+                }
             }
         }
     }
-
     // Separator
     HorizontalLine
     {
