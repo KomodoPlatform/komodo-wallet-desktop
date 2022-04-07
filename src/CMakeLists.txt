@@ -1,4 +1,5 @@
 include(DEX_NEW_LIB)
+include(dex_generate_qrc)
 
 # Core target
 DEX_NEW_LIB(core INTERFACE
@@ -22,6 +23,7 @@ DEX_NEW_LIB(core INTERFACE
         INTERFACE_DEFS
             ENTT_API_EXPORT)
 target_precompile_headers(${PROJECT_NAME}_core INTERFACE core/atomicdex/pch.hpp)
+
 if (APPLE)
     set_source_files_properties(core/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
     macro(adex_add_framework fwname appname)
@@ -61,6 +63,10 @@ qt5_create_translation(QM_FILES
         OPTIONS -source-language en_US -no-obsolete)
 message(STATUS "QM FILES -> ${QM_FILES}")
 message(STATUS "TS FILES -> ${TS_FILES}")
+
+set(qml_qrc)
+dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex qml_qrc)
+message(STATUS ${qml_qrc})
 
 # Main executable
 add_executable(${PROJECT_NAME}
