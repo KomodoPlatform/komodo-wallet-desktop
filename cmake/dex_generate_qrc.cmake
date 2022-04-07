@@ -1,12 +1,4 @@
 function(dex_generate_qrc directory output)
-    cmake_parse_arguments(
-        GENERATE_QRC
-        ""
-        "OUTPUT"
-        ""
-        ${ARGN}
-    )
-
     set(resources)
     file(GLOB_RECURSE resources ${directory}/* ${directory}/*/*)
 
@@ -19,6 +11,6 @@ function(dex_generate_qrc directory output)
     file(APPEND ${directory}/qml.qrc "    </qresource>\n")
     file(APPEND ${directory}/qml.qrc "</RCC>\n")
 
-    set(output ${directory}/qml.qrc PARENT_SCOPE)
+    set(${output} ${directory}/qml.qrc PARENT_SCOPE)
 
 endfunction()

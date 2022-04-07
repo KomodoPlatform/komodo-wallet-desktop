@@ -65,8 +65,10 @@ message(STATUS "QM FILES -> ${QM_FILES}")
 message(STATUS "TS FILES -> ${TS_FILES}")
 
 set(qml_qrc)
+set(assets_qrc)
+set(imports_qrc ${CMAKE_SOURCE_DIR}/atomic_defi_design/imports/qml.qrc)
 dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex qml_qrc)
-message(STATUS ${qml_qrc})
+dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/assets assets_qrc)
 
 # Main executable
 add_executable(${PROJECT_NAME}
@@ -79,8 +81,9 @@ add_executable(${PROJECT_NAME}
         ${CMAKE_SOURCE_DIR}/cmake/install/windows/dex.rc
 
         ##! QRC
-        ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml.qrc
-        ${CMAKE_SOURCE_DIR}/atomic_defi_design/imports/qml.qrc
+        ${qml_qrc}
+        ${assets_qrc}
+        ${imports_qrc}
 
         ##! Linguistic
         ${QM_FILES}
