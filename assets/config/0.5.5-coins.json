@@ -238,6 +238,7 @@
     "name": "ArtByte (OLD)",
     "coinpaprika_id": "aby-artbyte",
     "coingecko_id": "artbyte",
+    "nomics_id": "ABY2",
     "electrum": [
       {
         "url": "electrumx.aby.ewmcx.biz:50002",
@@ -262,6 +263,7 @@
     "name": "ArtByte",
     "coinpaprika_id": "aby-artbyte",
     "coingecko_id": "artbyte",
+    "nomics_id": "ABY2",
     "electrum": [
       {
         "url": "elec-seeder-one.artbytecoin.org:50012",
