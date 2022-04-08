@@ -19,10 +19,9 @@ import "../Settings" as SettingsPage
 import "../Screens"
 import "../Addressbook" as Addressbook
 import Dex.Themes 1.0 as Dex
-//import Dex.Sidebar 1.0 as Dex
 
-
-Item {
+Item
+{
     id: dashboard
 
     enum PageType
@@ -146,7 +145,7 @@ Item {
         {
             id: addressbook
 
-            Addressbook.Main {}
+            Addressbook.Main { }
         }
 
         Component
