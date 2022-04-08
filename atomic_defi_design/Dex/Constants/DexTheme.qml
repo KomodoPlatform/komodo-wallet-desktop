@@ -354,14 +354,6 @@ QtObject {
     readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#DDDDDD"
     readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#EFEFEF"
 
-    readonly property string colorChartText:  dark_theme ? "#405366" : "#B5B9C1"
-    readonly property string colorChartLegendLine:  dark_theme ? "#3F5265" : "#BDC0C8"
-    readonly property string colorChartGrid:  dark_theme ? "#202333" : "#E6E8ED"
-    readonly property string colorChartLineText:  dark_theme ? "#405366" : "#FFFFFF"
-
-    readonly property string colorChartMA1:  dark_theme ? "#5BC6FA" : "#5BC6FA"
-    readonly property string colorChartMA2:  dark_theme ? "#F1D17F" : "#F1D17F"
-
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
 
     readonly property string colorBusyIndicator:  dark_theme ? "#405ff9" : "#405ff9"
@@ -369,44 +361,13 @@ QtObject {
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
     readonly property string colorTextDisabled: dark_theme ? Style.colorWhite8 : "#B5B9C1"
-    readonly property var colorButtonDisabled: ({
-          "default": Style.colorTheme9,
-          "primary": Style.colorGreen3,
-          "danger": Style.colorRed3
-        })
-    readonly property var colorButtonHovered: ({
-          "default": Style.colorTheme6,
-          "primary": Style.colorGreen,
-          "danger": Style.colorRed
-        })
-    readonly property var colorButtonEnabled: ({
-          "default": Style.colorRectangle,
-          "primary": Style.colorGreen2,
-          "danger": Style.colorRed2
-        })
-    readonly property var colorButtonTextDisabled: ({
-          "default": Style.colorWhite8,
-          "primary": Style.colorWhite13,
-          "danger": Style.colorWhite13
-        })
-    readonly property var colorButtonTextHovered: ({
-          "default": Style.colorText,
-          "primary": Style.colorWhite11,
-          "danger": Style.colorWhite11
-        })
-    readonly property var colorButtonTextEnabled: ({
-          "default": Style.colorText,
-          "primary": Style.colorWhite11,
-          "danger": Style.colorWhite11
-        })
+
     readonly property string colorPlaceholderText: Style.colorWhite9
     readonly property string colorSelectedText: Style.colorTheme9
     readonly property string colorSelection: Style.colorGreen2
 
     readonly property string colorTrendingLine: dark_theme ? Style.colorGreen : "#37a6ef"
     readonly property string colorTrendingUnderLine: dark_theme ? Style.colorGradient3 : "#e3f2fd"
-
-    readonly property string modalValueColor: colorWhite4
 
     function getValueColor(v) {
         v = parseFloat(v)
