@@ -103,8 +103,8 @@ QtObject
     property color  okColor
     property color  noColor
 
-    property color  arrowUpColor
-    property color  arrowDownColor
+    property color  senderColorStart
+    property color  receiverColorStart
 
     property color  lineSeparatorColor
 

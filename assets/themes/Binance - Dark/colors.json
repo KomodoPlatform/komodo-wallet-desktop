@@ -66,8 +66,8 @@
   "okColor": "#74fbee",
   "noColor": "#d13990",
 
-  "arrowUpColor": "#F85757",
-  "arrowDownColor": "#845FEF",
+  "senderColorStart": "#F85757",
+  "receiverColorStart": "#845FEF",
 
   "lineSeparatorColor": "#222"
 }

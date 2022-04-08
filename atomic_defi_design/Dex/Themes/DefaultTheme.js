@@ -100,8 +100,8 @@ function getHardcoded()
         okColor: "#00C058",
         noColor: "#E52167",
 
-        arrowUpColor: "#F85757",
-        arrowDownColor: "#845FEF",
+        senderColorStart: "#F85757",
+        receiverColorStart: "#845FEF",
 
         lineSeparatorColor: "#CDD3DC"
     }

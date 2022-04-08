@@ -184,8 +184,8 @@ ThemeData
         okColor                             = Dex.Color.argbStrFromRgbaStr(themeData.okColor || defaultTheme.okColor);
         noColor                             = Dex.Color.argbStrFromRgbaStr(themeData.noColor || defaultTheme.noColor);
 
-        arrowUpColor                        = Dex.Color.argbStrFromRgbaStr(themeData.arrowUpColor || defaultTheme.arrowUpColor);
-        arrowDownColor                      = Dex.Color.argbStrFromRgbaStr(themeData.arrowDownColor || defaultTheme.arrowDownColor);
+        senderColorStart                        = Dex.Color.argbStrFromRgbaStr(themeData.senderColorStart || defaultTheme.senderColorStart);
+        receiverColorStart                      = Dex.Color.argbStrFromRgbaStr(themeData.receiverColorStart || defaultTheme.receiverColorStart);
 
         lineSeparatorColor                  = Dex.Color.argbStrFromRgbaStr(themeData.lineSeparatorColor || defaultTheme.lineSeparatorColor);
     }
@@ -297,8 +297,8 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.okColor : %1".arg(okColor));
         console.info("Dex.Themes.CurrentTheme.printValues.noColor : %1".arg(noColor));
 
-        console.info("Dex.Themes.CurrentTheme.printValues.arrowUpColor : %1".arg(arrowUpColor));
-        console.info("Dex.Themes.CurrentTheme.printValues.arrowDownColor : %1".arg(arrowDownColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.senderColorStart : %1".arg(senderColorStart));
+        console.info("Dex.Themes.CurrentTheme.printValues.receiverColorStart : %1".arg(receiverColorStart));
 
         console.info("Dex.Themes.CurrentTheme.printValues.lineSeparatorColor : %1".arg(lineSeparatorColor));
 

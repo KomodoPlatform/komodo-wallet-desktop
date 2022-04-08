@@ -118,8 +118,8 @@ QtObject {
 
     property bool portfolioPieGradient: false
 
-    property color arrowUpColor: redColor
-    property color arrowDownColor: greenColor
+    property color senderColorStart: redColor
+    property color receiverColorStart: greenColor
 
 
 
