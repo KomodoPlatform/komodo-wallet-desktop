@@ -165,8 +165,8 @@ ThemeData
         rangeSliderIndicatorBackgroundStartColor    = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderIndicatorBackgroundStartColor || defaultTheme.rangeSliderIndicatorBackgroundStartColor);
         rangeSliderIndicatorBackgroundEndColor      = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderIndicatorBackgroundEndColor || defaultTheme.rangeSliderIndicatorBackgroundEndColor);
 
-        loginWalletIconColorStart                   = Dex.Color.argbStrFromRgbaStr(themeData.loginWalletIconColorStart || defaultTheme.loginWalletIconColorStart)
-        loginWalletIconColorEnd                     = Dex.Color.argbStrFromRgbaStr(themeData.loginWalletIconColorEnd || defaultTheme.loginWalletIconColorEnd)
+        userIconColorStart                   = Dex.Color.argbStrFromRgbaStr(themeData.userIconColorStart || defaultTheme.userIconColorStart)
+        userIconColorEnd                     = Dex.Color.argbStrFromRgbaStr(themeData.userIconColorEnd || defaultTheme.userIconColorEnd)
 
         sidebarBgColor                      = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgColor || defaultTheme.sidebarBgColor);
         sidebarVersionTextColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarVersionTextColor || defaultTheme.sidebarVersionTextColor);
@@ -278,8 +278,8 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderIndicatorBackgroundStartColor : %1".arg(rangeSliderIndicatorBackgroundStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderIndicatorBackgroundEndColor : %1".arg(rangeSliderIndicatorBackgroundEndColor));
 
-        console.info("Dex.Themes.CurrentTheme.printValues.loginWalletIconColorStart : %1".arg(loginWalletIconColorStart));
-        console.info("Dex.Themes.CurrentTheme.printValues.loginWalletIconColorEnd : %1".arg(loginWalletIconColorEnd));
+        console.info("Dex.Themes.CurrentTheme.printValues.userIconColorStart : %1".arg(userIconColorStart));
+        console.info("Dex.Themes.CurrentTheme.printValues.userIconColorEnd : %1".arg(userIconColorEnd));
 
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarBgColor : %1".arg(sidebarBgColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarVersionTextColor : %1".arg(sidebarVersionTextColor));

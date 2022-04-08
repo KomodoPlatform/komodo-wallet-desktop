@@ -81,8 +81,8 @@ function getHardcoded()
         rangeSliderIndicatorBackgroundStartColor: "#5A68E6FF",
         rangeSliderIndicatorBackgroundEndColor: "#4986EAAD",
 
-        loginWalletIconColorStart: "#5A68E6FF",
-        loginWalletIconColorEnd: "#4986EAAD",
+        userIconColorStart: "#5A68E6FF",
+        userIconColorEnd: "#4986EAAD",
 
         sidebarBgColor: "#FCFCFC",
         sidebarVersionTextColor: "#456078",
