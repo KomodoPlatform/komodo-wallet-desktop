@@ -67,8 +67,8 @@ message(STATUS "TS FILES -> ${TS_FILES}")
 set(qml_qrc)
 set(assets_qrc)
 set(imports_qrc ${CMAKE_SOURCE_DIR}/atomic_defi_design/imports/qml.qrc)
-dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex qml_qrc)
-dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/assets assets_qrc)
+dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex qml_qrc PATH_PREFIX "Dex")
+dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/assets assets_qrc PATH_PREFIX "assets")
 
 # Main executable
 add_executable(${PROJECT_NAME}
