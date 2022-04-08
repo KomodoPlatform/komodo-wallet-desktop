@@ -354,7 +354,6 @@ QtObject {
     readonly property string colorSelection: Style.colorGreen2
 
     readonly property string colorTrendingLine: dark_theme ? Style.colorGreen : "#37a6ef"
-    readonly property string colorTrendingUnderLine: dark_theme ? Style.colorGradient3 : "#e3f2fd"
 
     function getValueColor(v) {
         v = parseFloat(v)
