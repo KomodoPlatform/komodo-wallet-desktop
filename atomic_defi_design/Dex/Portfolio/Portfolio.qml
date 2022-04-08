@@ -246,6 +246,7 @@ Item {
                             text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))
                             textColor: Dex.CurrentTheme.foregroundColor2
                             label.font.pixelSize: 14
+                            labelWidth: 200
                             checked: portfolio_coins.with_balance
                             onCheckedChanged: portfolio_coins.with_balance = checked
                             Component.onDestruction: portfolio_coins.with_balance = false
