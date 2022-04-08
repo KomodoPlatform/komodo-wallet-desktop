@@ -216,15 +216,6 @@ QtObject {
 
     readonly property int animationDuration: 125
 
-    readonly property int textSizeVerySmall1: 1
-    readonly property int textSizeVerySmall2: 2
-    readonly property int textSizeVerySmall3: 3
-    readonly property int textSizeVerySmall4: 4
-    readonly property int textSizeVerySmall5: 5
-    readonly property int textSizeVerySmall6: 6
-    readonly property int textSizeVerySmall7: 7
-    readonly property int textSizeVerySmall8: 8
-    readonly property int textSizeVerySmall9: 9
     readonly property int textSizeSmall: 10
     readonly property int textSizeSmall1: 11
     readonly property int textSizeSmall2: 12
@@ -322,10 +313,6 @@ QtObject {
     readonly property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
     readonly property string colorInnerBackground:  dark_theme ? colorTheme7 : colorTheme7
 
-    readonly property string colorGradient1:  dark_theme ? colorTheme9 : colorTheme9
-    readonly property string colorGradient2:  dark_theme ? colorTheme5 : colorTheme5
-    readonly property string colorGradient3:  dark_theme ? "#24283D" : "#24283D"
-    readonly property string colorGradient4:  dark_theme ? "#0D0F21" : "#0D0F21"
     readonly property string colorDropShadowLight:  dark_theme ? "#216975a4" : "#21FFFFFF"
     readonly property string colorDropShadowLight2:  dark_theme ? "#606975a4" : "#60FFFFFF"
     readonly property string colorDropShadowDark:  dark_theme ? "#FF050615" : "#BECDE2"
