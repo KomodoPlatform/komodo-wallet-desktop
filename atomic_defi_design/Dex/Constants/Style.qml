@@ -462,6 +462,7 @@ QtObject {
                                           "OMG": "#595959",
                                           "ONE": "#00BEEE",
                                           "ONT": "#2692AF",
+                                          "PND": "#EBD430",
                                           "POWR": "#05BCAA",
                                           "PPC": "#46BC60",
                                           "PRUX": "#FF8000",
