@@ -1,3 +1,12 @@
 module Dex.Components
 
-DefaultText 1.0 DefaultText.qml
+Button 1.0 DefaultButton.qml
+GradientButton 1.0 GradientButton.qml
+Image 1.0 DefaultImage.qml
+Popup 1.0 DefaultPopup.qml
+Rectangle 1.0 DefaultRectangle.qml
+SearchField 1.0 SearchField.qml
+Text 1.0 DefaultText.qml
+TextField 1.0 DefaultTextField.qml
+ToolTip 1.0 DefaultTooltip.qml
+UserIcon 1.0 UserIcon.qml
