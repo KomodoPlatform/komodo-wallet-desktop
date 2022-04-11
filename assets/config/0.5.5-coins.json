@@ -5472,6 +5472,28 @@
     "active": false,
     "currently_enabled": false
   },
+  "PND": {
+    "coin": "PND",
+    "name": "Pandacoin",
+    "coinpaprika_id": "pnd-pandacoin",
+    "coingecko_id": "pandacoin",
+    "nomics_id": "PND",
+    "electrum": [
+      {
+        "url": "electrum.thepandacoin.net:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": false
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/pnd/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "PPC": {
       "coin": "PPC",
       "name": "Peercoin",
