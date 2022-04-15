@@ -496,6 +496,7 @@ QtObject {
                                           "UNO": "#2F87BB",
                                           "UST": "#5493F7",
                                           "VAL": "#1EEC84",
+                                          "VET": "#18C6FF",
                                           "VITE": "#007AFF",
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",

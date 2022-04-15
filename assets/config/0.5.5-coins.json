@@ -7324,6 +7324,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "VET-BEP20": {
+    "coin": "VET-BEP20",
+    "name": "VeChain",
+    "coinpaprika_id": "vet-vechain",
+    "coingecko_id": "vechain",
+    "nomics_id": "VET",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "VRA": {
     "coin": "VRA",
     "name": "Verasity",
