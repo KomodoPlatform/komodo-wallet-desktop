@@ -7380,6 +7380,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "WAVES-BEP20": {
+    "coin": "WAVES-BEP20",
+    "name": "Waves",
+    "coinpaprika_id": "waves-waves",
+    "coingecko_id": "waves",
+    "nomics_id": "WAVES",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "WBTC-ERC20": {
       "coin": "WBTC-ERC20",
       "name": "Wrapped Bitcoin",
