@@ -14,28 +14,16 @@ ComboBox
 {
     id: control
 
-    property alias radius: bg_rect.radius
-    property color lineHoverColor: DexTheme.hoverColor
-    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property int dropDownMaxHeight: 300
-    property color dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property
-    var dropdownLineText: m => textRole === "" ?
-        m.modelData :
-        !m.modelData ? m[textRole] : m.modelData[textRole]
+    property alias  radius: bg_rect.radius
+    property color  lineHoverColor: DexTheme.hoverColor
+    property color  mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property int    dropDownMaxHeight: 300
+    property color  dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property var    dropdownLineText: m => textRole === "" ? m.modelData :
+                                                !m.modelData ? m[textRole] : m.modelData[textRole]
     property string mainLineText: control.displayText
 
-    readonly property bool disabled: !enabled
-
     font.family: Style.font_family
-
-    Behavior on lineHoverColor
-    {
-        ColorAnimation
-        {
-            duration: Style.animationDuration
-        }
-    }
 
     hoverEnabled: true
 
@@ -55,7 +43,6 @@ ComboBox
             elide: Text.ElideRight
         }
     }
-
 
     // Main background
     background: FloatingBackground
@@ -116,8 +103,10 @@ ComboBox
     }
 
     // Each dropdown item
-    delegate: ItemDelegate
+    delegate: Qaterial.ItemDelegate
     {
+        id: _delegate
+
         Universal.accent: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
         width: control.width
         highlighted: control.highlightedIndex === index
@@ -153,6 +142,14 @@ ComboBox
             height: 20
             color: Dex.CurrentTheme.comboBoxArrowsColor
             icon: Qaterial.Icons.chevronDown
+        }
+    }
+
+    Behavior on lineHoverColor
+    {
+        ColorAnimation
+        {
+            duration: Style.animationDuration
         }
     }
 
