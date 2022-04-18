@@ -716,10 +716,15 @@ namespace atomic_dex
         ::mm2::api::to_json(json_data, req);
         batch.push_back(json_data);
 
+        SPDLOG_INFO("recover_funds_of_swap request: {}", json_data.dump(-1));
+
         auto answer_functor = [this](web::http::http_response resp)
         {
             nlohmann::json j_out = nlohmann::json::object();
             std::string    body  = TO_STD_STR(resp.extract_string(true).get());
+
+            SPDLOG_INFO("recover_funds_of_swap answer received: {}", body);
+
             if (resp.status_code() == web::http::status_codes::OK)
             {
                 auto answers        = nlohmann::json::parse(body);

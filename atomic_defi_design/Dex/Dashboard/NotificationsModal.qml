@@ -106,7 +106,7 @@ DexPopup
                 root.open()
                 break
             case "open_wallet_page":
-                api_wallet_page.ticker = notification.params.ticker
+                API.app.wallet_pg.ticker = notification.params.ticker
                 dashboard.switchPage(Dashboard.PageType.Wallet)
                 break
             case "open_swaps_page":

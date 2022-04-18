@@ -99,6 +99,7 @@ ColumnLayout
         {
             const diff = Date.now() - last_event.timestamp
             simulated_time = diff - (diff % 1000)
+
         } else simulated_time = 0
     }
 
@@ -111,27 +112,55 @@ ColumnLayout
     }
 
     // Simulated countdown time until refund unlocked
-    property double countdown_time: -1
+    property double payment_lock_countdown_time: -1
+    property double wait_until_countdown_time: -1
     function updateCountdownTime()
     {
-        if (!details.payment_lock)
+        if (!details) {
+            payment_lock_countdown_time = -1
+            return
+        }
+
+        if (payment_lock_countdown_time == 0)
         {
-            countdown_time = -1
+            console.log(">payment_lock_countdown_time at zero " + details.order_id)
+            if (wait_until_countdown_time < 0)
+            { 
+                if (details.events[current_event_idx - 1].hasOwnProperty('data'))
+                {
+                    if (details.events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
+                    {
+                        console.log(">Date.now(): " + Date.now())
+                        console.log(">wait_until: " + details.events[current_event_idx - 1]['data']['wait_until'] * 1000)
+                        const diff = details.events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
+                        wait_until_countdown_time = diff - (diff % 1000)
+                        console.log(">wait_until_countdown_time: " + wait_until_countdown_time)
+                        if (wait_until_countdown_time <= 0)
+                        {
+                            wait_until_countdown_time = 0
+                        }
+                    }
+                }
+            }
+        }
+        else if (details.hasOwnProperty('payment_lock'))
+        {
+            const diff = details.payment_lock - Date.now()
+            payment_lock_countdown_time = diff - (diff % 1000)
+            if (payment_lock_countdown_time <= 0)
+            {
+                payment_lock_countdown_time = 0
+            }
         }
         else
         {
-            const diff = details.payment_lock - Date.now()
-            countdown_time = diff - (diff % 1000)
-            if (countdown_time < 0)
-            {
-                countdown_time = 0
-            }
+            payment_lock_countdown_time = -1
         }
     }
 
     Timer
     {
-        running: countdown_time != 0
+        running: details.order_status
         interval: 1000
         repeat: true
         onTriggered: updateCountdownTime()
@@ -145,20 +174,26 @@ ColumnLayout
             General.durationTextShort(estimated) + `</font>`
     }
 
-    function getRefundText(countdown_time)
+    function getRefundText()
     {
-        if (countdown_time > 0)
-        {            
-            return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(countdown_time) + " until refund lock is released.") + `</font>`
+        console.log(".payment_lock_countdown_time: " + payment_lock_countdown_time)
+        console.log(".wait_until_countdown_time: " + wait_until_countdown_time)
+        if (payment_lock_countdown_time > 0)
+        {
+            return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(payment_lock_countdown_time) + " until refund lock is released.") + `</font>`
+        }
+        else if (event) {
+            if (wait_until_countdown_time > 0 && event.state !== "Finished") {
+                return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(wait_until_countdown_time) + " until refund completed.") + `</font>`
+            }
         }
         return ""
     }
 
-    onTotal_time_passedChanged: updateSimulatedTime()
-
     // Title
     DexLabel
     {
+        Layout.fillWidth: true
         text_value: `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr("Progress details") + `</font>` +
             `<font color="${DexTheme.foregroundColorLightColor2}"> | </font>` +
             getTimeText(total_time_passed + simulated_time, total_time_passed_estimated)
@@ -168,7 +203,6 @@ ColumnLayout
 
     Repeater
     {
-        Layout.fillWidth: true
         Layout.fillHeight: true
         model: all_events
 

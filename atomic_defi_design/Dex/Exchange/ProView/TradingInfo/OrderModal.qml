@@ -64,7 +64,7 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             visible: text_value != ""
             font.pixelSize: Style.textSizeSmall2
-            text_value: swapProgress.getRefundText(swapProgress.countdown_time)
+            text_value: !details ? "" : details.order_status === "refunding" ? swapProgress.getRefundText() : ""
         }
 
         RowLayout
@@ -203,7 +203,7 @@ MultipageModal
 
             ColumnLayout
             {
-                width: 400
+                Layout.fillWidth: true
                 height: parent.height - 30
                 spacing: 12
 
@@ -254,8 +254,9 @@ MultipageModal
                     Layout.fillWidth: true
                     title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
                     text: !details ? "" : details.maker_payment_id
-                    label.font.pixelSize: 13
+                    label.font.pixelSize: 12
                     visible: text !== ''
+                    copy: true
                     privacy: true
                 }
 
@@ -265,8 +266,9 @@ MultipageModal
                     Layout.fillWidth: true
                     title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
                     text: !details ? "" : details.taker_payment_id
-                    label.font.pixelSize: 13
+                    label.font.pixelSize: 12
                     visible: text !== ''
+                    copy: true
                     privacy: true
                 }
 
@@ -302,8 +304,8 @@ MultipageModal
                 SwapProgress
                 {
                     id: swapProgress
-                    visible: General.exists(details) && details.order_status !== "matching"
                     Layout.fillWidth: true
+                    visible: General.exists(details) && details.order_status !== "matching"
                     details: root.details
                 }
             }
