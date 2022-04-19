@@ -18,12 +18,13 @@ Dex.DefaultListView
     property real _assetRowHeight: 46
     property real _assetNameColumnWidth: 160
     property real _assetNameColumnLeftMargin: 15
-    property real _assetBalanceColumnWidth: 380
-    property real _assetChange24hColumnWidth: 120
+    property real _assetBalanceColumnWidth: 140
+    property real _fiatBalanceColumnWidth: 140
+    property real _assetChange24hColumnWidth: 140
     property real _assetPriceColumWidth: 140
     property real _assetProviderColumnWidth: 42
 
-    width: _assetNameColumnWidth + _assetNameColumnLeftMargin + _assetBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
+    width: _assetNameColumnWidth + _assetNameColumnLeftMargin + _assetBalanceColumnWidth + _fiatBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
     height: (count * _assetRowHeight) + 46
 
     // Header
@@ -37,6 +38,8 @@ Dex.DefaultListView
         {
             Layout.preferredWidth: _assetNameColumnWidth - _assetNameColumnLeftMargin
             Layout.leftMargin: _assetNameColumnLeftMargin
+            h_align: Text.AlignRight
+            Layout.alignment: Qt.AlignRight
             icon_at_left: true
             sort_type: sort_by_name
             text: qsTr("Asset")
@@ -45,6 +48,8 @@ Dex.DefaultListView
         Dex.ColumnHeader
         {
             Layout.preferredWidth: _assetBalanceColumnWidth
+            h_align: Text.AlignRight
+            Layout.alignment: Qt.AlignRight
             icon_at_left: true
             sort_type: sort_by_value
             text: qsTr("Balance")
@@ -52,7 +57,19 @@ Dex.DefaultListView
 
         Dex.ColumnHeader
         {
+            Layout.preferredWidth: _fiatBalanceColumnWidth
+            h_align: Text.AlignRight
+            Layout.alignment: Qt.AlignRight
+            icon_at_left: true
+            sort_type: sort_by_value
+            text: qsTr("Fiat Balance")
+        }
+
+        Dex.ColumnHeader
+        {
             Layout.preferredWidth: _assetChange24hColumnWidth
+            h_align: Text.AlignRight
+            Layout.alignment: Qt.AlignRight
             icon_at_left: true
             sort_type: sort_by_change
             text: qsTr("Change 24h")
@@ -61,6 +78,8 @@ Dex.DefaultListView
         Dex.ColumnHeader
         {
             Layout.preferredWidth: _assetPriceColumWidth
+            h_align: Text.AlignRight
+            Layout.alignment: Qt.AlignRight
             icon_at_left: true
             sort_type: sort_by_price
             text: qsTr("Price")
@@ -69,6 +88,7 @@ Dex.DefaultListView
         Dex.DexLabel
         {
             Layout.preferredWidth: _assetProviderColumnWidth
+            horizontalAlignment: Text.AlignRight
             text: qsTr("Source")
         }
     }
@@ -171,8 +191,19 @@ Dex.DefaultListView
                 id: assetBalanceLabel
                 Layout.preferredWidth: _assetBalanceColumnWidth
                 font: Dex.DexTypo.body2
-                text_value: Dex.General.formatCrypto("", balance, ticker, main_currency_balance,
-                                                     Dex.API.app.settings_pg.current_currency)
+                horizontalAlignment: Text.AlignRight
+                text_value: parseFloat(balance).toFixed(8)
+                color: Qt.darker(Dex.DexTheme.foregroundColor, 0.8)
+                privacy: true
+            }
+
+            Dex.DexLabel // Fiat Balance
+            {
+                id: fiatBalanceLabel
+                Layout.preferredWidth: _fiatBalanceColumnWidth
+                horizontalAlignment: Text.AlignRight
+                font: Dex.DexTypo.body2
+                text_value: Dex.General.formatFiat("", main_currency_balance, Dex.API.app.settings_pg.current_currency)
                 color: Qt.darker(Dex.DexTheme.foregroundColor, 0.8)
                 privacy: true
             }
@@ -181,6 +212,7 @@ Dex.DefaultListView
             {
                 Layout.preferredWidth: _assetChange24hColumnWidth
                 font: Dex.DexTypo.body2
+                horizontalAlignment: Text.AlignRight
                 text_value:
                 {
                     const v = parseFloat(change_24h)
@@ -192,9 +224,10 @@ Dex.DefaultListView
             Dex.DexLabel // Price Column.
             {
                 Layout.preferredWidth: _assetPriceColumWidth
+                horizontalAlignment: Text.AlignRight
                 font: Dex.DexTypo.body2
                 text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
-                                                   Dex.API.app.settings_pg.current_currency)
+                                                   Dex.API.app.settings_pg.current_currency, 6)
                 color: Dex.DexTheme.colorThemeDarkLight
             }
 

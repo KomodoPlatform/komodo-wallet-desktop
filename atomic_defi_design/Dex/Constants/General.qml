@@ -321,7 +321,7 @@ QtObject {
         { value: 1E15, symbol: "P" },
         { value: 1E18, symbol: "E" }
       ]
-      const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
+      const rx = /\.0+$|(\.[0-9]*[1-9])+$/
 
       let i
       for (i = si.length - 1; i > 0; --i)
@@ -330,10 +330,10 @@ QtObject {
       return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol
     }
 
-    function formatFiat(received, amount, fiat) {
+    function formatFiat(received, amount, fiat, precision=2) {
         return diffPrefix(received) +
                 (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
-                + " " + nFormatter(parseFloat(amount), 2)
+                + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), precision, true) : nFormatter(parseFloat(amount), 2))
     }
 
     function formatPercent(value, show_prefix=true) {
@@ -344,7 +344,7 @@ QtObject {
             value *= -1
         }
 
-        return (show_prefix ? prefix : '') + value + ' %'
+        return (show_prefix ? prefix : '') + value.toFixed(3) + ' %'
     }
 
     readonly property int amountPrecision: 8

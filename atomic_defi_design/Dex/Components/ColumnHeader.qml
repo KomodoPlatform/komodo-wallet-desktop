@@ -5,6 +5,7 @@ import App 1.0
 Item {
     property int sort_type
     property alias text: title.text_value
+    property alias h_align: title.horizontalAlignment
 
     property bool icon_at_left
 
