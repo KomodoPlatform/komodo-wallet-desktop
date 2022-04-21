@@ -16,9 +16,9 @@ ComboBox
 
     property alias radius: bg_rect.radius
     property color lineHoverColor: DexTheme.hoverColor
-    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property color mainBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
     property int dropDownMaxHeight: 300
-    property color dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property color dropdownBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
     property
     var dropdownLineText: m => textRole === "" ?
         m.modelData :
