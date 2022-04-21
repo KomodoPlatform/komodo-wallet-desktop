@@ -227,7 +227,7 @@ MultipageModal
         {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: 40
+            Layout.preferredHeight: 60
 
             DexTransparentButton
             {
@@ -257,17 +257,16 @@ MultipageModal
             }
         }
 
-        RowLayout
-        {
-            Layout.fillWidth: true
+        footer:
+        [
             DefaultButton
             {
                 Layout.preferredWidth: 199
                 text: qsTr("Close")
                 radius: 20
                 onClicked: root.close()
-            }
-            Item { Layout.fillWidth: true }
+            },
+            Item { Layout.fillWidth: true },
             DexGradientAppButton
             {
                 Layout.preferredWidth: 199
@@ -283,6 +282,6 @@ MultipageModal
                     root.close()
                 }
             }
-        }
+        ]
     }
 }
