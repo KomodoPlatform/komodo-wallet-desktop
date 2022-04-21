@@ -183,7 +183,6 @@ Dex.DefaultListView
                         color: Dex.DexTheme.redColor
                     }
                 }
-
             }
 
             Dex.DexLabel // Balance Column.

@@ -321,7 +321,7 @@ QtObject {
         { value: 1E15, symbol: "P" },
         { value: 1E18, symbol: "E" }
       ]
-      const rx = /\.0+$|(\.[0-9]*[1-9])+$/
+      const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
 
       let i
       for (i = si.length - 1; i > 0; --i)
@@ -344,7 +344,7 @@ QtObject {
             value *= -1
         }
 
-        return (show_prefix ? prefix : '') + value.toFixed(3) + ' %'
+        return (show_prefix ? prefix : '') + parseFloat(value).toFixed(3) + ' %'
     }
 
     readonly property int amountPrecision: 8
@@ -372,8 +372,8 @@ QtObject {
         return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
 
-    function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
-        return diffPrefix(received) + ticker + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
+    function formatCrypto(received, amount, ticker, fiat_amount, fiat, precision, trail_zeros) {
+        return diffPrefix(received) + ticker + " " + formatDouble(amount, precision, trail_zeros) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
     function formatFullCrypto(received, amount, ticker, fiat_amount, fiat, use_full_ticker) {

@@ -65,9 +65,10 @@ Item
                 opacity: !_control.coinEnable? .1 : 1
             }
 
-            DefaultText
+            DexLabel
             {
                 anchors.verticalCenter: parent.verticalCenter
+                horizontalAlignment: Text.AlignLeft
                 width: parent.width * 0.8
                 text: send + " " + coin
                 font.family: App.DexTypo.fontFamily
@@ -75,19 +76,21 @@ Item
             }
         }
 
-        DefaultText
+        DexLabel
         {
             anchors.verticalCenter: parent.verticalCenter
+            horizontalAlignment: Text.AlignRight
             width: parent.width * fiatPriceColumnWidth
             text: price_fiat + API.app.settings_pg.current_fiat_sign
             font.family: App.DexTypo.fontFamily
             font.pixelSize: 12
         }
 
-        DefaultText
+        DexLabel
         {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width * cexRateColumnWidth
+            horizontalAlignment: Text.AlignRight
             
             text: cex_rates === "0" ? "N/A" :
                                       parseFloat(cex_rates) > 0 ? "+" + parseFloat(cex_rates).toFixed(2) + "%" :

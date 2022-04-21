@@ -19,13 +19,13 @@ DefaultListView
     property bool best: true
     property string currentLeftToken // The token we wanna sell
 
-    property int    _rowWidth: width - 20
+    property int    _rowWidth: width
     property int    _rowHeight: 50
-    property int    _tokenColumnSize: 60
-    property int    _quantityColumnSize: 100
-    property int    _quantityInBaseColumnSize: 100
-    property int    _fiatVolumeColumnSize: 50
-    property int    _cexRateColumnSize: 50
+    property int    _tokenColumnSize: 90
+    property int    _quantityColumnSize: 90
+    property int    _quantityInBaseColumnSize: 120
+    property int    _fiatVolumeColumnSize: 80
+    property int    _cexRateColumnSize: 60
 
     enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
     model: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl
@@ -59,47 +59,53 @@ DefaultListView
             anchors.verticalCenter: parent.verticalCenter
             anchors.fill: parent
             spacing: 2
-            DefaultText             // "Token" Header
+            anchors.margins: 5
+            DexLabel             // "Token" Header
             {
                 Layout.preferredWidth: _tokenColumnSize
                 text: qsTr("Token")
                 font.family: Constants.Style.font_family
+                horizontalAlignment: Text.AlignLeft
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DefaultText             // "Available Quantity" Header
+            DexLabel             // "Available Quantity" Header
             {
                 Layout.preferredWidth: _quantityColumnSize
                 text: qsTr("Available Quantity")
                 font.family: Constants.Style.font_family
+                horizontalAlignment: Text.AlignRight
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DefaultText             // "Available Quantity (in BASE)" header
+            DexLabel             // "Available Quantity (in BASE)" header
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
                 text: qsTr("Available Quantity (in %1)").arg(currentLeftToken)
                 font.family: Constants.Style.font_family
+                horizontalAlignment: Text.AlignRight
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DefaultText             // "Fiat Volume" column header
+            DexLabel             // "Fiat Volume" column header
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 text: qsTr("Fiat Volume")
                 font.family: Constants.Style.font_family
+                horizontalAlignment: Text.AlignRight
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DefaultText             // "CEX Rate" column header
+            DexLabel             // "CEX Rate" column header
             {
                 Layout.preferredWidth: _cexRateColumnSize
                 text: qsTr("CEX Rate")
                 font.family: Constants.Style.font_family
+                horizontalAlignment: Text.AlignRight
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -118,7 +124,6 @@ DefaultListView
 
         RowLayout                   // Order Info
         {
-            anchors.verticalCenter: parent.verticalCenter
             anchors.fill: parent
             RowLayout                           // Order Token
             {
@@ -133,7 +138,7 @@ DefaultListView
                     source: General.coinIcon(coin)
                     opacity: !_isCoinEnabled? .1 : 1
                 }
-                DefaultText                          // Order Token Name
+                DexLabel                          // Order Token Name
                 {
                     id: _tokenName
                     Layout.preferredWidth: _tokenColumnSize - parent._iconWidth
@@ -142,29 +147,33 @@ DefaultListView
                 }
             }
 
-            DefaultText                         // Order Available Quantity
+            DexLabel                         // Order Available Quantity
             {
                 Layout.preferredWidth: _quantityColumnSize
+                horizontalAlignment: Text.AlignRight
                 text: parseFloat(General.formatDouble(quantity, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
 
-            DefaultText                         // Order Available Quantity In BASE
+            DexLabel                         // Order Available Quantity In BASE
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
+                horizontalAlignment: Text.AlignRight
                 text: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
 
-            DefaultText                         // Order Fiat Volume
+            DexLabel                         // Order Fiat Volume
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
-                text: price_fiat+Constants.API.app.settings_pg.current_fiat_sign
+                horizontalAlignment: Text.AlignRight
+                text: parseFloat(price_fiat).toFixed(2)+Constants.API.app.settings_pg.current_fiat_sign
             }
 
-            DefaultText
+            DexLabel
             {
                 Layout.preferredWidth: _cexRateColumnSize
+                horizontalAlignment: Text.AlignRight
                 color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.redColor : DexTheme.greenColor
                 text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             }
@@ -181,7 +190,7 @@ DefaultListView
                 contentItem: DexLabelUnlinked
                 {
                     text_value: qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin)
-                    wrapMode: DefaultText.Wrap
+                    wrapMode: DexLabel.Wrap
                     width: 250
                     onLinkActivated:
                     {
