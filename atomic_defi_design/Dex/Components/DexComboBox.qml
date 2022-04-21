@@ -118,7 +118,8 @@ ComboBox
     // Each dropdown item
     delegate: ItemDelegate
     {
-        Universal.accent: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+        id: delegate
+
         width: control.width
         highlighted: control.highlightedIndex === index
 
@@ -128,6 +129,12 @@ ComboBox
             font: DexTypo.subtitle2
             text_value: control.dropdownLineText(model)
             elide: Text.ElideRight
+        }
+
+        background: Rectangle
+        {
+            anchors.fill: delegate
+            color: delegate.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
         }
     }
 
