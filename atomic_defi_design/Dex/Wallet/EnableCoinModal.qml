@@ -113,74 +113,90 @@ MultipageModal
             Layout.preferredHeight: 300
             Layout.fillWidth: true
 
-            delegate: DexCheckBox
+            delegate: Item
             {
-                readonly property bool backend_checked: model.checked
+                height: 30
+                width: list.width
 
-                enabled: _selectAllCheckBox.checked ? checked : true
-                boxWidth: 20
-                boxHeight: 20
-                spacing: 0
-
-                onBackend_checkedChanged: if (checked !== backend_checked) checked = backend_checked
-                onCheckStateChanged:
+                Row
                 {
-                    if (checked !== backend_checked)
+                    DefaultCheckBox
                     {
-                        var data_index = coin_cfg_model.all_disabled_proxy.index(index, 0)
-                        if ((coin_cfg_model.all_disabled_proxy.setData(data_index, checked, Qt.UserRole + 11)) === false)
+                        id: listInnerRowCheckbox
+                        readonly property bool backend_checked: model.checked
+
+                        enabled: _selectAllCheckBox.checked ? checked : true
+                        boxWidth: 20
+                        boxHeight: 20
+                        spacing: 0
+
+                        onBackend_checkedChanged: if (checked !== backend_checked) checked = backend_checked
+                        onCheckStateChanged:
                         {
-                            checked = false
+                            if (checked !== backend_checked)
+                            {
+                                var data_index = coin_cfg_model.all_disabled_proxy.index(index, 0)
+                                if ((coin_cfg_model.all_disabled_proxy.setData(data_index, checked, Qt.UserRole + 11)) === false)
+                                {
+                                    checked = false
+                                }
+                            }
+                        }
+                    }
+
+                    RowLayout
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 6
+
+                        // Icon
+                        DefaultImage
+                        {
+                            id: icon
+                            Layout.leftMargin: 8
+                            Layout.alignment: Qt.AlignVCenter
+                            source: General.coinIcon(model.ticker)
+                            Layout.preferredWidth: 18
+                            Layout.preferredHeight: 18
+                        }
+                        DefaultText
+                        {
+                            Layout.leftMargin: 4
+                            Layout.alignment: Qt.AlignVCenter
+                            text: model.name + " (" + model.ticker + ")"
+                        }
+                        CoinTypeTag
+                        {
+                            id: typeTag
+                            Layout.leftMargin: 6
+                            Layout.alignment: Qt.AlignVCenter
+                            type: model.type
+                        }
+
+                        CoinTypeTag
+                        {
+                            Layout.leftMargin: 6
+                            Layout.alignment: Qt.AlignVCenter
+                            enabled: General.isIDO(model.ticker)
+                            visible: enabled
+                            type: "IDO"
+                        }
+
+                        CoinTypeTag
+                        {
+                            Layout.leftMargin: 6
+                            Layout.alignment: Qt.AlignVCenter
+                            enabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_wallet_only
+                            visible: enabled
+                            type: "WALLET ONLY"
                         }
                     }
                 }
 
-                RowLayout {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.right
-                    spacing:6
-
-                    // Icon
-                    DefaultImage
-                    {
-                        id: icon
-                        Layout.leftMargin: 8
-                        Layout.alignment: Qt.AlignVCenter
-                        source: General.coinIcon(model.ticker)
-                        Layout.preferredWidth: 18
-                        Layout.preferredHeight: 18
-                    }
-                    DefaultText
-                    {
-                        Layout.leftMargin: 4
-                        Layout.alignment: Qt.AlignVCenter
-                        text: model.name + " (" + model.ticker + ")"
-                    }
-                    CoinTypeTag
-                    {
-                        id: typeTag
-                        Layout.leftMargin: 6
-                        Layout.alignment: Qt.AlignVCenter
-                        type: model.type
-                    }
-
-                    CoinTypeTag
-                    {
-                        Layout.leftMargin: 6
-                        Layout.alignment: Qt.AlignVCenter
-                        enabled: General.isIDO(model.ticker)
-                        visible: enabled
-                        type: "IDO"
-                    }
-
-                    CoinTypeTag
-                    {
-                        Layout.leftMargin: 6
-                        Layout.alignment: Qt.AlignVCenter
-                        enabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_wallet_only
-                        visible: enabled
-                        type: "WALLET ONLY"
-                    }
+                DefaultMouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: listInnerRowCheckbox.checked = !listInnerRowCheckbox.checked
                 }
             }
         }
