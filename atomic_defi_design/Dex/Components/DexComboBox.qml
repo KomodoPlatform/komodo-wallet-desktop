@@ -17,7 +17,7 @@ ComboBox
     property alias radius: bg_rect.radius
     property color lineHoverColor: DexTheme.hoverColor
     property color mainBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
-    property int dropDownMaxHeight: 300
+    property int dropDownMaxHeight: 200
     property color dropdownBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
     property
     var dropdownLineText: m => textRole === "" ?
@@ -71,7 +71,6 @@ ComboBox
     popup: Popup
     {
         width: control.width
-        height: _list.contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : _list.contentHeight
         leftPadding: 0
         rightPadding: 0
         topPadding: 16
@@ -81,14 +80,15 @@ ComboBox
         {
             id: _list
             model: control.popup.visible ? control.delegateModel : null
+            implicitHeight: contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : contentHeight
             currentIndex: control.highlightedIndex
 
             ScrollBar.vertical: ScrollBar
             {
+                visible: _list.contentHeight > control.dropDownMaxHeight
                 anchors.right: _list.right
                 anchors.rightMargin: 2
                 width: 7
-                visible: true
                 background: DefaultRectangle
                 {
                     radius: 12
