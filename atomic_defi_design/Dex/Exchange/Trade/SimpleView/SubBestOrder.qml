@@ -3,6 +3,9 @@ import QtQuick 2.15          //> Item
 import QtQuick.Layouts 1.15  //> RowLayout
 import QtQuick.Controls 2.15 //> ItemDelegate
 
+// 3rdParty
+import Qaterial 1.0 as Qaterial
+
 import App 1.0
 
 //! Project Imports
@@ -10,9 +13,12 @@ import "../../../Components" //> MultipageModal
 import "../../../Constants" as Constants  //> API
 import Dex.Themes 1.0 as Dex
 
-DefaultListView
+DexListView
 {
     id: _listBestOrdersView
+    model: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl
+    enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
+    onVisibleChanged: currentLeftToken = _tradeCard.selectedTicker
 
     property var    tradeCard
     property var    selectedOrder
@@ -20,97 +26,104 @@ DefaultListView
     property string currentLeftToken // The token we wanna sell
 
     property int    _rowWidth: width
-    property int    _rowHeight: 50
+    property int    _rowHeight: 40
     property int    _tokenColumnSize: 90
     property int    _quantityColumnSize: 90
     property int    _quantityInBaseColumnSize: 120
     property int    _fiatVolumeColumnSize: 80
     property int    _cexRateColumnSize: 60
 
-    enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
-    model: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
     clip: true
 
-    Connections
+    header: DexRectangle // Best orders list header
     {
-        target: _tradeCard
-        function onBestChanged()
-        {
-            Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
-            positionViewAtBeginning()
-        }
-    }
-
-    onVisibleChanged: currentLeftToken = _tradeCard.selectedTicker
-
-    header: DefaultRectangle // Best orders list header
-    {
+        id: header_row
         width: _rowWidth
         height: _rowHeight
         z: 2
         color: Dex.CurrentTheme.floatingBackgroundColor
 
-        MouseArea { anchors.fill: parent }
         RowLayout                   // Order Columns Name
         {
-            anchors.verticalCenter: parent.verticalCenter
+            id: columnsHeader
             anchors.fill: parent
-            spacing: 2
             anchors.margins: 5
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 2
+
             DexLabel             // "Token" Header
             {
+                id: token_header
+
                 Layout.preferredWidth: _tokenColumnSize
-                text: qsTr("Token")
-                font.family: Constants.Style.font_family
                 horizontalAlignment: Text.AlignLeft
+
+                text_value: qsTr("Token")
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
+
             DexLabel             // "Available Quantity" Header
             {
+                id: qty_header
+
                 Layout.preferredWidth: _quantityColumnSize
-                text: qsTr("Available Quantity")
-                font.family: Constants.Style.font_family
                 horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("Available Quantity")
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
+
             DexLabel             // "Available Quantity (in BASE)" header
             {
+                id: base_qty_header
+
                 Layout.preferredWidth: _quantityInBaseColumnSize
-                text: qsTr("Available Quantity (in %1)").arg(currentLeftToken)
-                font.family: Constants.Style.font_family
                 horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("Available Quantity (in %1)").arg(currentLeftToken)
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
             DexLabel             // "Fiat Volume" column header
             {
+                id: fiat_volume_header
+
                 Layout.preferredWidth: _fiatVolumeColumnSize
-                text: qsTr("Fiat Volume")
-                font.family: Constants.Style.font_family
                 horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("Fiat Volume")
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
             DexLabel             // "CEX Rate" column header
             {
+                id: cex_rate_header
+
                 Layout.preferredWidth: _cexRateColumnSize
-                text: qsTr("CEX Rate")
-                font.family: Constants.Style.font_family
                 horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("CEX Rate")
+                font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
         }
+
+        MouseArea { anchors.fill: parent }
     }
 
     delegate: ItemDelegate // Order Line
@@ -239,6 +252,7 @@ DefaultListView
                 delay: 200
             }
         }
+
         onClicked:
         {
             if (!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
@@ -250,6 +264,16 @@ DefaultListView
                 _listBestOrdersView.tradeCard.best = false
                 _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
             }
+        }
+    }
+
+    Connections
+    {
+        target: _tradeCard
+        function onBestChanged()
+        {
+            Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
+            positionViewAtBeginning()
         }
     }
 }

@@ -8,7 +8,7 @@ import "../Screens"
 import App 1.0 as Dex
 import Dex.Themes 1.0 as Dex
 
-Dex.DefaultListView
+Dex.DexListView
 {
     id: list
     interactive: false
@@ -114,7 +114,7 @@ Dex.DefaultListView
                 Layout.preferredWidth: _assetNameColumnWidth
                 Layout.leftMargin: 15
 
-                Dex.DefaultImage {
+                Dex.DexImage {
                     id: assetImage
                     anchors.verticalCenter: parent.verticalCenter
                     source: Dex.General.coinIcon(ticker)
@@ -227,7 +227,7 @@ Dex.DefaultListView
                 Layout.fillHeight: true
                 Layout.preferredWidth: _assetProviderColumnWidth
 
-                Dex.DefaultImage {
+                Dex.DexImage {
                     id: priceProviderIcon
                     enabled: priceProvider !== "unknown"
                     visible: enabled
@@ -288,6 +288,5 @@ Dex.DefaultListView
                     contextMenu.popup()
             }
         }
-
     }
 }

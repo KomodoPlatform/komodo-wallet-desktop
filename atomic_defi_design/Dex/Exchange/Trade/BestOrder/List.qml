@@ -4,17 +4,21 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
-import Dex.Themes 1.0 as Dex
 import "../../../Constants"
 import "../../../Components"
+import App 1.0 as App
+import AtomicDEX.MarketMode 1.0
+import Dex.Themes 1.0 as Dex
+
 
 Widget
 {
     id: _control
 
-    property real youGetColumnWidth: 0.5
-    property real fiatPriceColumnWidth: 0.22
-    property real cexRateColumnWidth: 0.22
+    property real row_height: 36
+    property real youGetColumnWidth: 160
+    property real fiatPriceColumnWidth: 70
+    property real cexRateColumnWidth: 70
 
     title: qsTr("Best Orders")
 

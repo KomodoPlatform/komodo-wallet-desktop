@@ -8,13 +8,18 @@ import App 1.0
 
 import "../../../Components"
 
-Row
+RowLayout
 {
+    id: columnsHeader
+    width: youGetColumnWidth + fiatPriceColumnWidth + cexRateColumnWidth
+    height: 36
+
     spacing: 0
 
     DefaultText
     {
-        width: parent.width * youGetColumnWidth
+        Layout.preferredWidth: youGetColumnWidth
+        horizontalAlignment: Text.AlignLeft
         text: sell_mode ? qsTr("You get") : qsTr("You send")
         font.family: Style.font_family
         font.pixelSize: 12
@@ -22,7 +27,9 @@ Row
     }
     DefaultText
     {
-        width: parent.width * fiatPriceColumnWidth
+        Layout.preferredWidth: fiatPriceColumnWidth
+        width: fiatPriceColumnWidth
+        horizontalAlignment: Text.AlignRight
         text: qsTr("Fiat Price")
         font.family: Style.font_family
         font.pixelSize: 12
@@ -31,8 +38,9 @@ Row
     }
     DefaultText
     {
-        width: parent.width * cexRateColumnWidth
-        Layout.alignment: Qt.AlignVCenter
+        Layout.preferredWidth: cexRateColumnWidth
+        width: cexRateColumnWidth
+        horizontalAlignment: Text.AlignRight
         text: qsTr("CEX rate")
         font.family: Style.font_family
         font.pixelSize: 12

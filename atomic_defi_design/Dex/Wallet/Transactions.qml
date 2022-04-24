@@ -73,9 +73,9 @@ DefaultListView
                 // Description
                 DexLabel
                 {
+                    id: description
                     Layout.fillWidth: true
                     horizontalAlignment: Qt.AlignLeft
-                    id: description
                     text_value: am_i_sender ? qsTr("Sent") : qsTr("Received")
                     font.pixelSize: Style.textSizeSmall3
                 }

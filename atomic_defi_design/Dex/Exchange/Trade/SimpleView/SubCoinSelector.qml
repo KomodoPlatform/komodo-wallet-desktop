@@ -13,61 +13,74 @@ import "../../../Components" //> MultipageModal
 import "../../../Constants" as Constants //> API
 import Dex.Themes 1.0 as Dex
 
-DefaultListView
+DexListView
 {
     id: _listCoinView
-
-    property int    _rowWidth: width - 20
-    property int    _rowHeight: 50
-    property int    _tokenColumnSize: 160
-
-    signal          tickerSelected(var ticker)
-
     model: Constants.API.app.trading_pg.market_pairs_mdl.left_selection_box
+    signal tickerSelected(var ticker)
+
+    property real _rowWidth: width
+    property real _rowHeight: 40
+    property real _tokenColumnWidth: 120
+    property real _balanceColumnWidth: 90
+    property real _fiatColumnWidth: 90
+
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
     clip: true
 
-    header: DefaultRectangle
+    header: DexRectangle
     {
+        id: header_row
         width: _rowWidth
         height: _rowHeight
         z: 2
         color: Dex.CurrentTheme.floatingBackgroundColor
 
-        RowLayout                   // Coins Columns Name
+        RowLayout
         {
-            anchors.verticalCenter: parent.verticalCenter
+            id: columnsHeader
+            anchors.margins: 5
             anchors.fill: parent
+            anchors.verticalCenter: parent.verticalCenter
             spacing: 2
-            DefaultText             // "Token" Header
-            {
-            	property bool asc: true
 
-                Layout.preferredWidth: _tokenColumnSize
-                text: qsTr("Token")
+            DexLabel             // "Token" Header
+            {
+                id: token_header
+                property bool asc: true
+
+                Layout.preferredWidth: _tokenColumnWidth
+                horizontalAlignment: Text.AlignLeft
+
+                text_value: qsTr("Token")
                 font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
+
                 DexMouseArea
                 {
-                	anchors.fill: parent
-                	hoverEnabled: true 
+                    anchors.fill: parent
+                    hoverEnabled: true 
                     onClicked:
                     {
-                		parent.asc = !parent.asc 
-                		_listCoinView.model.sort_by_name(parent.asc)
-                	}
+                        parent.asc = !parent.asc 
+                        _listCoinView.model.sort_by_name(parent.asc)
+                    }
                 }
             }
-            DefaultText             // "Balance" Header
-            {
-            	property bool asc: true
 
-                Layout.fillWidth: true
-                text: qsTr("Balance")
+            DexLabel             // "Balance" Header
+            {
+                id: balance_header
+                property bool asc: true
+
+                Layout.preferredWidth: _balanceColumnWidth
+                horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("Balance")
                 font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
@@ -75,20 +88,25 @@ DefaultListView
 
                 DexMouseArea
                 {
-                	anchors.fill: parent
-                	hoverEnabled: true 
+                    anchors.fill: parent
+                    hoverEnabled: true 
                     onClicked:
                     {
-                		parent.asc = !parent.asc 
-                		_listCoinView.model.sort_by_currency_balance(parent.asc)
-                	}
+                        parent.asc = !parent.asc 
+                        _listCoinView.model.sort_by_currency_balance(parent.asc)
+                    }
                 }
             }
-            DefaultText             // Fiat Balance Header
-            {
-            	property bool asc: true
 
-                text: qsTr("Balance Fiat")
+            DexLabel             // Fiat Balance Header
+            {
+                id: fiat_balance_header
+                property bool asc: true
+
+                Layout.preferredWidth: _fiatColumnWidth
+                horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("Balance Fiat")
                 font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
@@ -96,88 +114,86 @@ DefaultListView
 
                 DexMouseArea
                 {
-                	anchors.fill: parent
-                	hoverEnabled: true 
+                    anchors.fill: parent
+                    hoverEnabled: true 
                     onClicked:
                     {
-                		parent.asc = !parent.asc 
-                		_listCoinView.model.sort_by_currency_balance(parent.asc)
-                	}
+                        parent.asc = !parent.asc 
+                        _listCoinView.model.sort_by_currency_balance(parent.asc)
+                    }
                 }
             }
         }
     }
 
-    delegate: ItemDelegate
+    delegate: DexRectangle
     {
-        width: _listCoinView._rowWidth
-        height: 40
+        id: coin_selection
+        width: _listCoinView.width
+        height: _rowHeight
+        radius: 0
+        border.width: 1
+
+        colorAnimation: false
+        color: mouse_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
+
+        DexMouseArea
+        {
+            id: mouse_area
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: tickerSelected(model.ticker)
+        }
+
         RowLayout
         {
-        	anchors.fill: parent
-        	spacing: 2
-            Item
-            {
-        		Layout.preferredWidth: _tokenColumnSize
-        		height: 40
-                Row
+            id: columnsContent
+            width: _listCoinView.width
+            height: _rowHeight
+
+            RowLayout {
+                Layout.fillHeight: true
+                Layout.preferredWidth: _tokenColumnWidth
+                spacing: 5
+
+                DexImage
                 {
-        			anchors.verticalCenter: parent.verticalCenter
-        			spacing: 10
-        			DefaultImage
-			        {
-			            id: _coinIcon
-			            width: 20
-				        height: 20
-			            source: General.coinIcon(model.ticker)
-			            anchors.verticalCenter: parent.verticalCenterv
-			        }
-			        DefaultText
-		            {
-		                anchors.verticalCenter: parent.verticalCenter
-		                text: model.ticker
-		                
-		            }
-        		}
-                Qaterial.DebugRectangle
-                {
-                	anchors.fill: parent
-                	visible: false
+                    id: _coinIcon
+                    Layout.preferredHeight: 20
+                    Layout.preferredWidth: 20
+                    source: General.coinIcon(model.ticker)
+                    Layout.alignment : Qt.AlignVCenter
                 }
-        	}
-            Item
-            {
-        		Layout.fillWidth: true
-        		height: 40
-        		DexLabel
-	            {
-	                anchors.verticalCenter: parent.verticalCenter
-	                text: model.balance.replace(" ","")
-	                horizontalAlignment: Label.AlignLeft
-	                
-	            }
-                Qaterial.DebugRectangle
+
+                DexLabel
                 {
-                	anchors.fill: parent
-                	visible: false
-                }
-        	}
-            DexLabel
-            {
-                Layout.alignment: Qt.AlignVCenter
-                text: "%1".arg(General.getFiatText(model.balance, model.ticker, false))
-                Qaterial.DebugRectangle
-                {
-                	anchors.fill: parent
-                	visible: false
+                    Layout.fillWidth: true
+                    horizontalAlignment: Qt.AlignLeft
+                    text_value: model.ticker
                 }
             }
-        }
-        
-        MouseArea
-        {
-            anchors.fill: parent
-            onClicked: tickerSelected(model.ticker)
+
+            DexLabel
+            {
+                Layout.fillHeight: true
+                Layout.preferredWidth: _balanceColumnWidth
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.NoWrap
+
+                text_value: model.balance.replace(" ","")
+            }
+
+            DexLabel
+            {
+                Layout.fillHeight: true
+                Layout.preferredWidth: _fiatColumnWidth
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.NoWrap
+
+                text_value: "%1".arg(General.getFiatText(model.balance, model.ticker, false))
+            }
         }
     }
 

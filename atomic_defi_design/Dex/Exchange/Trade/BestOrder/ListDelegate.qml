@@ -49,7 +49,7 @@ Item
 
         Row
         {
-            width: parent.width * youGetColumnWidth
+            width: youGetColumnWidth
             height: parent.height
             spacing: 8
 
@@ -80,7 +80,7 @@ Item
         {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Text.AlignRight
-            width: parent.width * fiatPriceColumnWidth
+            width: fiatPriceColumnWidth
             text: price_fiat + API.app.settings_pg.current_fiat_sign
             font.family: App.DexTypo.fontFamily
             font.pixelSize: 12
@@ -89,7 +89,7 @@ Item
         DexLabel
         {
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width * cexRateColumnWidth
+            width: cexRateColumnWidth
             horizontalAlignment: Text.AlignRight
             
             text: cex_rates === "0" ? "N/A" :
