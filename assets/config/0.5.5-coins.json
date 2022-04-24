@@ -3602,13 +3602,7 @@
     "nomics_id": "LBC",
     "electrum": [
       {
-        "url": "spv1.lbry.com:50001"
-      },
-      {
-        "url": "spv17.lbry.com:50001"
-      },
-      {
-        "url": "spv19.lbry.com:50001"
+        "url": "spv16.lbry.com:50001"
       }
     ],
     "explorer_url": [
