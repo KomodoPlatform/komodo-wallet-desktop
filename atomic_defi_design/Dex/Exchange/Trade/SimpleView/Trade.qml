@@ -153,7 +153,7 @@ ClipRRect // Trade Card
 
             DefaultText // Description
             {
-                anchors.topMargin: 12
+                anchors.topMargin: 10
                 font.pixelSize: Constants.Style.textSizeSmall4
                 text: qsTr("Instant trading with best orders")
 
@@ -447,7 +447,7 @@ ClipRRect // Trade Card
                 Layout.preferredWidth: _tradeCard.width - 20
                 Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 15
+                Layout.topMargin: 10
                 radius: 20
                 color: DexTheme.tradeFieldBoxBackgroundColor
                 visible: !bestOrderSimplified.visible
@@ -743,17 +743,16 @@ ClipRRect // Trade Card
 
         Item
         {
-            height: 45
-            width: parent.width - 40
-            anchors.horizontalCenter: parent.horizontalCenter
-            visible: _tradeCard.coinSelection && has_coins_with_balance
+            height: 35
+            width: 150
+            visible: coinSelectorSimplified.visible
 
             SearchField
             {
                 id: _coinSearchField
                 height: 35
                 anchors.fill: parent
-                anchors.topMargin: 10
+                anchors.leftMargin: 20
                 forceFocus: true
                 textField.onTextChanged: _coinList.model.setFilterFixedString(textField.text)
                 Component.onDestruction: _coinList.model.setFilterFixedString("")
@@ -772,7 +771,7 @@ ClipRRect // Trade Card
             {
                 id: _coinList
                 anchors.fill: parent
-                anchors.topMargin:20
+                anchors.topMargin: 10
                 onTickerSelected:
                 {
                     _tradeCard.selectedTicker = ticker
@@ -792,16 +791,16 @@ ClipRRect // Trade Card
         Item
         {
             height: 45
-            width: parent.width - 40
-            anchors.horizontalCenter: parent.horizontalCenter
-            visible: _tradeCard.best && has_coins_with_balance && _bestOrderList.count > 0
+            width: 150
+            visible: bestOrderSimplified.visible && (_bestOrderList.count > 0 || _bestOrderSearchField.textField.text != "")
 
             SearchField
             {
                 id: _bestOrderSearchField
+                anchors.topMargin: 10
                 height: 35
                 anchors.fill: parent
-                anchors.topMargin: 10
+                anchors.leftMargin: 20
                 forceFocus: true
                 textField.onTextChanged: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(textField.text)
                 Component.onDestruction: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
@@ -821,7 +820,7 @@ ClipRRect // Trade Card
                 id: _bestOrderList
                 tradeCard: _tradeCard
                 anchors.fill: parent
-                anchors.topMargin:20
+                anchors.topMargin: 10
                 visible: _tradeCard.width == 600
 
                 onSelectedOrderChanged:
@@ -877,6 +876,7 @@ ClipRRect // Trade Card
         Item // Swap Info - Details
         {
             id: _feesCard
+            anchors.topMargin: 10
             anchors.horizontalCenter: parent.horizontalCenter
             width: 350
             height: 50

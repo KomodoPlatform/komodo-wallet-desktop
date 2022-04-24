@@ -5,8 +5,7 @@ import App 1.0
 
 Item
 {
-    property int current_sort
-    property int sort_type: -99
+    property int sort_type
     property alias header_font: title.font
     property alias text: title.text_value
     property alias h_align: title.horizontalAlignment
@@ -17,23 +16,21 @@ Item
     {
         id: click_area
         anchors.fill: parent
-        hoverEnabled: sort_type == -99 ? false : true
+        hoverEnabled: true
         cursorShape:  Qt.PointingHandCursor
 
-        onClicked: 
-        {   if (sort_type != -99)
+        onClicked:
+        {
+            if(current_sort === sort_type)
             {
-                if(current_sort === sort_type)
-                {
-                    ascending = !ascending
-                }
-                else
-                {
-                    current_sort = sort_type
-                    ascending = false
-                }
-                applyCurrentSort()
+                ascending = !ascending
             }
+            else
+            {
+                current_sort = sort_type
+                ascending = false
+            }
+            applyCurrentSort()
         }
 
         RowLayout

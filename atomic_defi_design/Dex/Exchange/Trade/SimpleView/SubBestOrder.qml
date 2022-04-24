@@ -44,20 +44,18 @@ DexListView
         width: _rowWidth
         height: _rowHeight
         z: 2
+        radius: 0
+        border.width: 0
         color: Dex.CurrentTheme.floatingBackgroundColor
 
         RowLayout                   // Order Columns Name
         {
-            id: columnsHeader
             anchors.fill: parent
             anchors.margins: 5
             anchors.verticalCenter: parent.verticalCenter
-            spacing: 2
 
             DexLabel             // "Token" Header
             {
-                id: token_header
-
                 Layout.preferredWidth: _tokenColumnSize
                 horizontalAlignment: Text.AlignLeft
 
@@ -95,10 +93,9 @@ DexListView
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
+
             DexLabel             // "Fiat Volume" column header
             {
-                id: fiat_volume_header
-
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 horizontalAlignment: Text.AlignRight
 
@@ -108,10 +105,9 @@ DexListView
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
+
             DexLabel             // "CEX Rate" column header
             {
-                id: cex_rate_header
-
                 Layout.preferredWidth: _cexRateColumnSize
                 horizontalAlignment: Text.AlignRight
 
@@ -126,36 +122,59 @@ DexListView
         MouseArea { anchors.fill: parent }
     }
 
-    delegate: ItemDelegate // Order Line
+    delegate: DexRectangle // Order Line
     {
         property bool _isCoinEnabled: Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
 
         width: _rowWidth
         height: _rowHeight
+        radius: 0
+        border.width: 0
+        colorAnimation: false
+        color: mouse_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
+
+        DexMouseArea
+        {
+            id: mouse_area
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked:
+            {
+                if (!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
+                {
+                    _tooltip.open()
+                }
+                else
+                {
+                    _listBestOrdersView.tradeCard.best = false
+                    _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
+                }
+            }
+        }
 
         HorizontalLine { width: parent.width; opacity: .5 }
 
         RowLayout                   // Order Info
         {
             anchors.fill: parent
+
             RowLayout                           // Order Token
             {
                 property int _iconWidth: 24
-
                 Layout.preferredWidth: _tokenColumnSize
-                DefaultImage                         // Order Token Icon
+
+                DexImage                         // Order Token Icon
                 {
                     Layout.preferredWidth: parent._iconWidth
                     Layout.preferredHeight: 24
-
                     source: General.coinIcon(coin)
                     opacity: !_isCoinEnabled? .1 : 1
                 }
+
                 DexLabel                          // Order Token Name
                 {
-                    id: _tokenName
                     Layout.preferredWidth: _tokenColumnSize - parent._iconWidth
-                    text: coin
+                    text_value: coin
                     font.pixelSize: 14
                 }
             }
@@ -164,7 +183,7 @@ DexListView
             {
                 Layout.preferredWidth: _quantityColumnSize
                 horizontalAlignment: Text.AlignRight
-                text: parseFloat(General.formatDouble(quantity, General.amountPrecision, true)).toFixed(8)
+                text_value: parseFloat(General.formatDouble(quantity, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
 
@@ -172,7 +191,7 @@ DexListView
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
                 horizontalAlignment: Text.AlignRight
-                text: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
+                text_value: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
 
@@ -180,7 +199,7 @@ DexListView
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 horizontalAlignment: Text.AlignRight
-                text: parseFloat(price_fiat).toFixed(2)+Constants.API.app.settings_pg.current_fiat_sign
+                text_value: parseFloat(price_fiat).toFixed(2)+Constants.API.app.settings_pg.current_fiat_sign
             }
 
             DexLabel
@@ -188,9 +207,10 @@ DexListView
                 Layout.preferredWidth: _cexRateColumnSize
                 horizontalAlignment: Text.AlignRight
                 color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.redColor : DexTheme.greenColor
-                text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
+                text_value: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             }
-            DefaultTooltip
+
+            DexTooltip
             {
                 id: _tooltip
 
@@ -250,19 +270,6 @@ DexListView
                 }
 
                 delay: 200
-            }
-        }
-
-        onClicked:
-        {
-            if (!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
-            {
-                _tooltip.open()
-            }
-            else
-            {
-                _listBestOrdersView.tradeCard.best = false
-                _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
             }
         }
     }

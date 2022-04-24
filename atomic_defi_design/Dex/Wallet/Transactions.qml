@@ -74,7 +74,6 @@ DefaultListView
                 DexLabel
                 {
                     id: description
-                    Layout.fillWidth: true
                     horizontalAlignment: Qt.AlignLeft
                     text_value: am_i_sender ? qsTr("Sent") : qsTr("Received")
                     font.pixelSize: Style.textSizeSmall3
@@ -84,9 +83,9 @@ DefaultListView
             // Crypto
             DexLabel
             {
+                id: crypto_amount
                 Layout.preferredWidth: _cryptoColumnWidth
                 horizontalAlignment: Text.AlignRight
-                id: crypto_amount
                 text_value: General.formatCrypto(!am_i_sender, amount, api_wallet_page.ticker, false, false, 6, true)
                 font.pixelSize: description.font.pixelSize
                 color: am_i_sender ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor

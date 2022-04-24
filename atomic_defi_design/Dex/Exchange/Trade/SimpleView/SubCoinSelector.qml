@@ -21,9 +21,9 @@ DexListView
 
     property real _rowWidth: width
     property real _rowHeight: 40
-    property real _tokenColumnWidth: 120
-    property real _balanceColumnWidth: 90
-    property real _fiatColumnWidth: 90
+    property real _tokenColumnWidth: 150
+    property real _balanceColumnWidth: 120
+    property real _fiatColumnWidth: 120
 
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
@@ -36,19 +36,18 @@ DexListView
         width: _rowWidth
         height: _rowHeight
         z: 2
+        radius: 0
+        border.width: 0
         color: Dex.CurrentTheme.floatingBackgroundColor
 
         RowLayout
         {
-            id: columnsHeader
             anchors.margins: 5
             anchors.fill: parent
             anchors.verticalCenter: parent.verticalCenter
-            spacing: 2
 
             DexLabel             // "Token" Header
             {
-                id: token_header
                 property bool asc: true
 
                 Layout.preferredWidth: _tokenColumnWidth
@@ -74,7 +73,6 @@ DexListView
 
             DexLabel             // "Balance" Header
             {
-                id: balance_header
                 property bool asc: true
 
                 Layout.preferredWidth: _balanceColumnWidth
@@ -100,7 +98,6 @@ DexListView
 
             DexLabel             // Fiat Balance Header
             {
-                id: fiat_balance_header
                 property bool asc: true
 
                 Layout.preferredWidth: _fiatColumnWidth
@@ -128,12 +125,10 @@ DexListView
 
     delegate: DexRectangle
     {
-        id: coin_selection
-        width: _listCoinView.width
+        width: _rowWidth
         height: _rowHeight
         radius: 0
-        border.width: 1
-
+        border.width: 0
         colorAnimation: false
         color: mouse_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
 
@@ -145,54 +140,50 @@ DexListView
             onClicked: tickerSelected(model.ticker)
         }
 
+        HorizontalLine { width: parent.width; opacity: .5 }
+
         RowLayout
         {
-            id: columnsContent
-            width: _listCoinView.width
-            height: _rowHeight
+            anchors.fill: parent
 
             RowLayout {
-                Layout.fillHeight: true
+                property int _iconWidth: 24
                 Layout.preferredWidth: _tokenColumnWidth
-                spacing: 5
 
                 DexImage
                 {
                     id: _coinIcon
-                    Layout.preferredHeight: 20
-                    Layout.preferredWidth: 20
+                    Layout.preferredWidth: parent._iconWidth
+                    Layout.preferredHeight: 24
                     source: General.coinIcon(model.ticker)
-                    Layout.alignment : Qt.AlignVCenter
                 }
 
                 DexLabel
                 {
-                    Layout.fillWidth: true
-                    horizontalAlignment: Qt.AlignLeft
+                    Layout.preferredWidth: _tokenColumnWidth - parent._iconWidth
                     text_value: model.ticker
+                    font.pixelSize: 14
+                    wrapMode: Text.NoWrap
                 }
             }
 
             DexLabel
             {
-                Layout.fillHeight: true
                 Layout.preferredWidth: _balanceColumnWidth
                 horizontalAlignment: Text.AlignRight
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.NoWrap
-
                 text_value: model.balance.replace(" ","")
+                font.pixelSize: 14
+                wrapMode: Text.NoWrap
             }
 
             DexLabel
             {
-                Layout.fillHeight: true
                 Layout.preferredWidth: _fiatColumnWidth
+                Layout.rightMargin: 8
                 horizontalAlignment: Text.AlignRight
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.NoWrap
-
                 text_value: "%1".arg(General.getFiatText(model.balance, model.ticker, false))
+                font.pixelSize: 14
+                wrapMode: Text.NoWrap
             }
         }
     }

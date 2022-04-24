@@ -17,11 +17,11 @@ Dex.DexListView
 
     property real _assetRowHeight: 46
     property real _assetNameColumnWidth: 180
-    property real _assetBalanceColumnWidth: 200
+    property real _assetBalanceColumnWidth: 190
     property real _fiatBalanceColumnWidth: 180
     property real _assetChange24hColumnWidth: 160
-    property real _assetPriceColumWidth: 200
-    property real _assetProviderColumnWidth: 60
+    property real _assetPriceColumWidth: 180
+    property real _assetProviderColumnWidth: 90
 
     width: _assetNameColumnWidth + _assetBalanceColumnWidth + _fiatBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
     height: (count * _assetRowHeight) + 46

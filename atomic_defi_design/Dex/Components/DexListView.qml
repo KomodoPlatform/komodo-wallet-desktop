@@ -8,11 +8,9 @@ ListView
 {
     id: root
 
-    property bool scrollbar_visible: {
-        contentItem.childrenRect.height > height
-    }
     property alias position: scrollVert.position
     property alias scrollVert: scrollVert
+    property bool scrollbar_visible: contentItem.childrenRect.height > height
     readonly property double scrollbar_margin: scrollbar_visible ? 8 : 0
     property bool visibleBackground: false
 
