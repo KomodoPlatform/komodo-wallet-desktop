@@ -105,7 +105,6 @@ Dex.DexListView
 
         RowLayout
         {
-            id: columnsContent
             anchors.fill: parent
 
             Item // Asset Column.

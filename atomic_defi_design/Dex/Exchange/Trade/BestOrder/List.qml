@@ -14,22 +14,11 @@ import Dex.Themes 1.0 as Dex
 Widget
 {
     id: _control
-
-    property real row_height: 36
-    property real youGetColumnWidth: 0.35
-    property real fiatPriceColumnWidth: 0.32
-    property real cexRateColumnWidth: 0.32
-
     title: qsTr("Best Orders")
-
     margins: 20
     spacing: 20
 
-    Header
-    {
-        Layout.fillWidth: true
-        Layout.preferredHeight: 30
-    }
+    Header {}
 
     ListView
     {
@@ -45,7 +34,7 @@ Widget
         delegate: ListDelegate
         {
             width: bestorders_list.width
-            height: 36
+            height: 30
         }
     }
 }

@@ -12,16 +12,14 @@ import Dex.Themes 1.0 as Dex
 Widget
 {
     title: qsTr("Order Book")
+
     margins: 20
     spacing: 20
-    property real price_col_width: 0.35
-    property real qty_col_width: 0.32
-    property real total_col_width: 0.32
 
     Header
     {
-        Layout.fillWidth: true
         Layout.preferredHeight: 30
+        Layout.fillWidth: true
     }
 
     List
