@@ -16,9 +16,9 @@ Widget
     id: _control
 
     property real row_height: 36
-    property real youGetColumnWidth: 160
-    property real fiatPriceColumnWidth: 70
-    property real cexRateColumnWidth: 70
+    property real youGetColumnWidth: 0.35
+    property real fiatPriceColumnWidth: 0.32
+    property real cexRateColumnWidth: 0.32
 
     title: qsTr("Best Orders")
 
@@ -27,22 +27,24 @@ Widget
 
     Header
     {
-        Layout.topMargin: 10
         Layout.fillWidth: true
+        Layout.preferredHeight: 30
     }
 
     ListView
     {
-        id: list
+        id: bestorders_list
         Layout.fillWidth: true
         Layout.fillHeight: true
         model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
+
         spacing: 6
         clip: true
+        reuseItems: true
 
         delegate: ListDelegate
         {
-            width: list.width
+            width: bestorders_list.width
             height: 36
         }
     }

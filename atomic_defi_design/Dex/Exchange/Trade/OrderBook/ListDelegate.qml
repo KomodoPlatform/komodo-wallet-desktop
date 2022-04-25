@@ -32,7 +32,7 @@ Item
                 color: Qaterial.Colors.amber
             }
 
-            DefaultText
+            DexLabel
             {
                 id: tooltip_text
                 Layout.fillWidth: true
@@ -111,9 +111,7 @@ Item
                             rel_min_volume, rel_max_volume, base_max_volume_denom,
                             base_max_volume_numer, uuid)
 
-                order_form.visible = General.flipFalse(order_form.visible)
-                order_form.hidden = General.flipTrue(order_form.hidden)
-                if (!order_form.hidden) order_form.contentVisible = General.flipFalse(order_form.contentVisible)
+                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
             }
         }
 
@@ -167,39 +165,45 @@ Item
             onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
 
             // Price
-            DefaultText
+            RowLayout
             {
-                Layout.preferredWidth: (parent.width / 100) * 33
-                text: { new BigNumber(price).toFixed(8) }
-                font.family: DexTypo.fontFamily
-                font.pixelSize: 12
-                color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
-                elide: Text.ElideRight
-                horizontalAlignment: Text.AlignRight
+                Layout.preferredWidth: parent.width * price_col_width
+                height: parent.height
+                DexLabel
+                {
+                    text: { new BigNumber(price).toFixed(8) }
+                    font.family: DexTypo.fontFamily
+                    font.pixelSize: 12
+                    color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+                    horizontalAlignment: Text.AlignLeft
+                    wrapMode: Text.NoWrap
+                }
+
+                Item { Layout.fillWidth: true }
             }
 
             // Quantity
-            DefaultText
+            DexLabel
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
+                Layout.preferredWidth: parent.width * qty_col_width
                 text: { new BigNumber(quantity).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
                 onTextChanged: depth_bar.width = ((depth * 100) * (mouse_area.width + 40)) / 100
+                wrapMode: Text.NoWrap
             }
 
             // Total
-            DefaultText
+            DexLabel
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
+                Layout.preferredWidth: parent.width * total_col_width
                 rightPadding: (is_mine) && (mouse_area.containsMouse || cancel_button.containsMouse) ? 30 : 0
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 text: { new BigNumber(total).toFixed(6) }
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                wrapMode: Text.NoWrap
 
                 Behavior on rightPadding { NumberAnimation { duration: 150 } }
             }

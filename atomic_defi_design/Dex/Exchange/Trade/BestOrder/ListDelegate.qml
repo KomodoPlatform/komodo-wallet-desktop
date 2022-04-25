@@ -40,47 +40,48 @@ Item
         opacity: 0.1
     }
 
-    Row
+    RowLayout
     {
         id: row
         width: parent.width
         height: parent.height
         spacing: 0
 
-        Row
+        Item
         {
-            width: youGetColumnWidth
-            height: parent.height
-            spacing: 8
+            Layout.fillHeight: true
+            Layout.preferredWidth: parent.width * youGetColumnWidth
 
-            DefaultImage
+            DexImage
             {
-                anchors.verticalCenter: parent.verticalCenter
+                id: asset_image
                 width: 20
                 height: 20
-                Layout.alignment: Qt.AlignVCenter
+                anchors.verticalCenter: parent.verticalCenter
                 source: General.coinIcon(coin)
-                smooth: true
-                antialiasing: true
                 opacity: !_control.coinEnable? .1 : 1
             }
 
             DexLabel
             {
                 anchors.verticalCenter: parent.verticalCenter
+                anchors.left: asset_image.right
                 horizontalAlignment: Text.AlignLeft
-                width: parent.width * 0.8
+                anchors.leftMargin: 5
                 text: send + " " + coin
                 font.family: App.DexTypo.fontFamily
                 font.pixelSize: 12
             }
+
+            Item { Layout.fillWidth: true }
         }
 
         DexLabel
         {
-            anchors.verticalCenter: parent.verticalCenter
+            Layout.fillHeight: true
+            Layout.preferredWidth: parent.width * fiatPriceColumnWidth
             horizontalAlignment: Text.AlignRight
-            width: fiatPriceColumnWidth
+            verticalAlignment: Text.AlignVCenter
             text: price_fiat + API.app.settings_pg.current_fiat_sign
             font.family: App.DexTypo.fontFamily
             font.pixelSize: 12
@@ -88,9 +89,10 @@ Item
 
         DexLabel
         {
-            anchors.verticalCenter: parent.verticalCenter
-            width: cexRateColumnWidth
+            Layout.fillHeight: true
+            Layout.preferredWidth: parent.width * cexRateColumnWidth
             horizontalAlignment: Text.AlignRight
+            verticalAlignment: Text.AlignVCenter
             
             text: cex_rates === "0" ? "N/A" :
                                       parseFloat(cex_rates) > 0 ? "+" + parseFloat(cex_rates).toFixed(2) + "%" :
@@ -175,6 +177,7 @@ Item
                     app.pairChanged(base_ticker, coin)
                 }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
+                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
             }
         }
     }

@@ -9,34 +9,34 @@ import "../../../Constants"
 
 Row
 {
-    DefaultText
+    DexLabel
     {
-        width: (parent.width / 100) * 34
+        width: parent.width * price_col_width
+        horizontalAlignment: Text.AlignLeft
         text: qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
         font.family: DexTypo.fontFamily
         font.pixelSize: 12
         font.bold: true
         font.weight: Font.Black
-        horizontalAlignment: Text.AlignRight
     }
-    DefaultText
+    DexLabel
     {
-        width: (parent.width / 100) * 32
+        width: parent.width * qty_col_width
+        horizontalAlignment: Text.AlignRight
         text: qsTr("Quantity") + " (" +  atomic_qt_utilities.retrieve_main_ticker(left_ticker) + ")"
         font.family: DexTypo.fontFamily
         font.pixelSize: 12
         font.bold: true
         font.weight: Font.Black
-        horizontalAlignment: Text.AlignRight
     }
-    DefaultText
+    DexLabel
     {
-        width: (parent.width / 100) * 32
+        width: parent.width * total_col_width
+        horizontalAlignment: Text.AlignRight
         text: qsTr("Total") + " (" +  atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
         font.family: DexTypo.fontFamily
         font.pixelSize: 12
         font.bold: true
         font.weight: Font.Black
-        horizontalAlignment: Text.AlignRight
     }
 }

@@ -8,41 +8,38 @@ import App 1.0
 
 import "../../../Components"
 
-RowLayout
+Row
 {
-    id: columnsHeader
-    width: youGetColumnWidth + fiatPriceColumnWidth + cexRateColumnWidth
-    height: 36
-
-    spacing: 0
-
-    DefaultText
+    DexLabel
     {
-        Layout.preferredWidth: youGetColumnWidth
+        width: parent.width * youGetColumnWidth
         horizontalAlignment: Text.AlignLeft
-        text: sell_mode ? qsTr("You get") : qsTr("You send")
+        text_value: sell_mode ? qsTr("You get") : qsTr("You send")
         font.family: Style.font_family
+        font.bold: true
         font.pixelSize: 12
         font.weight: Font.Black
     }
-    DefaultText
+
+    DexLabel
     {
-        Layout.preferredWidth: fiatPriceColumnWidth
-        width: fiatPriceColumnWidth
+        width: parent.width * fiatPriceColumnWidth
         horizontalAlignment: Text.AlignRight
-        text: qsTr("Fiat Price")
+        text_value: qsTr("Fiat Price")
         font.family: Style.font_family
+        font.bold: true
         font.pixelSize: 12
         font.weight: Font.Black
 
     }
-    DefaultText
+
+    DexLabel
     {
-        Layout.preferredWidth: cexRateColumnWidth
-        width: cexRateColumnWidth
+        width: parent.width * cexRateColumnWidth
         horizontalAlignment: Text.AlignRight
-        text: qsTr("CEX rate")
+        text_value: qsTr("CEX rate")
         font.family: Style.font_family
+        font.bold: true
         font.pixelSize: 12
         font.weight: Font.Black
     }
