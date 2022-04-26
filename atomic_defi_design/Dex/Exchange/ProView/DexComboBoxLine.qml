@@ -18,8 +18,12 @@ RowLayout
     property alias bottom_text: bottom_line.text_value
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    visible: {
+        console.log("Highlighting " + details.ticker)
+        true
+    }
 
-    DefaultImage
+    DexImage
     {
         id: icon
         source: General.coinIcon(ticker)
@@ -37,7 +41,7 @@ RowLayout
             anchors.verticalCenter: parent.verticalCenter
             width: root.width - 40
 
-            DefaultText
+            DexText
             {
                 Layout.preferredWidth: parent.width - 15
 
@@ -48,7 +52,7 @@ RowLayout
                 wrapMode: Text.NoWrap
             }
 
-            DefaultText
+            DexText
             {
                 id: bottom_line
 
@@ -65,5 +69,11 @@ RowLayout
                 Component.onCompleted: font.pixelSize = 11.5
             }
         }
+    }
+
+    DexMouseArea
+    {
+        id: combo_line
+        anchors.fill: parent
     }
 }

@@ -57,16 +57,16 @@ ComboBox
 
     height: 80
 
-    background: DefaultRectangle
+    background: DexRectangle
     {
-        color: Dex.CurrentTheme.floatingBackgroundColor
+        color: mouse_area.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.floatingBackgroundColor
         radius: 10
     }
 
     // Each dropdown item
     delegate: ItemDelegate
     {
-        Universal.accent: control.lineHoverColor
+        Universal.accent: Dex.hoverColor
         width: control.width
         highlighted: control.highlightedIndex === index
         contentItem: DexComboBoxLine { details: model }
@@ -78,7 +78,7 @@ ComboBox
     {
         id: popup
 
-        readonly property double max_height: 450//control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y
+        readonly property double max_height: 450 //control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y
 
         width: control.width
         height: Math.min(contentItem.implicitHeight, popup.max_height)
@@ -93,12 +93,12 @@ ComboBox
             anchors.rightMargin: 5
 
             // Search input
-            DefaultTextField
+            DexTextField
             {
                 id: input_coin_filter
                 background: Item
                 {
-                    DefaultRectangle
+                    DexRectangle
                     {
                         anchors.fill: parent
                         anchors.rightMargin: 2
@@ -150,12 +150,14 @@ ComboBox
                     function onClosed() { input_coin_filter.reset() }
                 }
             }
+
             Item
             {
                 Layout.maximumHeight: popup.max_height - 100
                 Layout.fillWidth: true
                 implicitHeight: popup_list_view.contentHeight + 5
-                DefaultListView
+
+                DexListView
                 {
                     id: popup_list_view
                      // Scrollbar appears if this extra space is not added
@@ -164,7 +166,7 @@ ComboBox
                     anchors.fill: parent
                     anchors.rightMargin: 2
 
-                    DefaultMouseArea
+                    DexMouseArea
                     {
                         anchors.fill: parent
                         acceptedButtons: Qt.NoButton
@@ -173,7 +175,7 @@ ComboBox
             }
         }
 
-        background: DefaultRectangle
+        background: DexRectangle
         {
             width: parent.width
             y: -5
