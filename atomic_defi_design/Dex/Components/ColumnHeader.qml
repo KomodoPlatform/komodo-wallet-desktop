@@ -1,66 +1,82 @@
 import QtQuick 2.15
+import QtQuick.Layouts 1.12
 import "../Constants"
 import App 1.0
 
-Item {
+Item
+{
     property int sort_type
+    property alias header_font: title.font
     property alias text: title.text_value
-
-    property bool icon_at_left
-
-    width: text.length * title.font.pixelSize
-    height: title.height
+    property alias h_align: title.horizontalAlignment
 
     // Click area
     
-
-    DefaultText {
-        id: title
-        anchors.left: icon_at_left ? parent.left : undefined
-        anchors.right: icon_at_left ? undefined : parent.right
-
-        //color: Qt.lighter(DexTheme.accentColor, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
-    }
-
-
-    // Arrow icon
-    DefaultImage {
-        id: arrow_icon
-
-        source: General.image_path + "arrow-" + (ascending ? "down" : "up") + ".svg"
-
-        width: title.font.pixelSize * 0.5
-
-        anchors.left: icon_at_left ? title.right : undefined
-        anchors.leftMargin: icon_at_left ? 10 : undefined
-        anchors.right: icon_at_left ? undefined : title.left
-        anchors.rightMargin: icon_at_left ? undefined : 10
-        anchors.verticalCenter: title.verticalCenter
-
-        visible: false
-    }
-
-    DefaultColorOverlay {
-        visible: current_sort === sort_type
-        anchors.fill: arrow_icon
-        source: arrow_icon
-        color: title.color
-    }
-    DefaultMouseArea {
+    DexMouseArea
+    {
         id: click_area
         anchors.fill: parent
         hoverEnabled: true
         cursorShape:  Qt.PointingHandCursor
-        onClicked: {
-            if(current_sort === sort_type) {
+
+        onClicked:
+        {
+            if(current_sort === sort_type)
+            {
                 ascending = !ascending
             }
-            else {
+            else
+            {
                 current_sort = sort_type
                 ascending = false
             }
-
             applyCurrentSort()
+        }
+
+        RowLayout
+        {
+            width:  parent.width
+            height: parent.height
+
+            Item {
+                visible: title.horizontalAlignment != Text.AlignLeft
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+
+            DexLabel
+            {
+                id: title
+                verticalAlignment: Text.AlignVCenter
+                //color: Qt.lighter(DexTheme.accentColor, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+
+                // Arrow icon
+                DefaultImage
+                {
+                    id: arrow_icon
+                    anchors.left: parent.right
+                    anchors.leftMargin: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: General.image_path + "arrow-" + (ascending ? "down" : "up") + ".svg"
+                    width: title.font.pixelSize * 0.5
+                    visible: current_sort === sort_type
+
+                    DefaultColorOverlay
+                    {
+                        visible: current_sort === sort_type
+                        anchors.fill: parent
+                        source: arrow_icon
+                        color: title.color
+                    }
+                }
+            }
+
+
+            Item {
+                visible: title.horizontalAlignment != Text.AlignRight
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
         }
     }
 }

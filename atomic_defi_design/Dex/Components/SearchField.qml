@@ -6,7 +6,7 @@ import Dex.Themes 1.0 as Dex
 
 Rectangle
 {
-    property int   searchIconLeftMargin: 13
+    property int  searchIconLeftMargin: 13
     property bool forceFocus: false
 
     property alias searchIcon: _searchIcon

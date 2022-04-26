@@ -40,61 +40,78 @@ Item
         opacity: 0.1
     }
 
-    Row
+    RowLayout
     {
         id: row
         width: parent.width
         height: parent.height
         spacing: 0
 
-        Row
+        Item
         {
-            width: parent.width * youGetColumnWidth
-            height: parent.height
-            spacing: 8
+            Layout.fillHeight: true
+            Layout.preferredWidth: 140
 
-            DefaultImage
+            DexImage
             {
+                id: asset_image
+                width: 24
+                height: 24
                 anchors.verticalCenter: parent.verticalCenter
-                width: 20
-                height: 20
-                Layout.alignment: Qt.AlignVCenter
                 source: General.coinIcon(coin)
-                smooth: true
-                antialiasing: true
                 opacity: !_control.coinEnable? .1 : 1
             }
 
-            DefaultText
+            DexLabel
             {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width * 0.8
-                text: send + " " + coin
+                anchors.top: parent.top
+                anchors.left: asset_image.right
+                horizontalAlignment: Text.AlignLeft
+                anchors.leftMargin: 5
+                text: send
+                font.family: App.DexTypo.fontFamily
+                font.pixelSize: 12
+            }
+
+            DexLabel
+            {
+                anchors.bottom: parent.bottom
+                anchors.left: asset_image.right
+                horizontalAlignment: Text.AlignLeft
+                anchors.leftMargin: 5
+                text: coin
                 font.family: App.DexTypo.fontFamily
                 font.pixelSize: 12
             }
         }
 
-        DefaultText
+        Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+
+        DexLabel
         {
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width * fiatPriceColumnWidth
+            Layout.preferredWidth: 80
+            horizontalAlignment: Text.AlignRight
+            verticalAlignment: Text.AlignVCenter
             text: price_fiat + API.app.settings_pg.current_fiat_sign
             font.family: App.DexTypo.fontFamily
             font.pixelSize: 12
         }
 
-        DefaultText
+        Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+
+        DexLabel
         {
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width * cexRateColumnWidth
+            Layout.preferredWidth: 80
+            horizontalAlignment: Text.AlignRight
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.NoWrap
+            font.family: App.DexTypo.fontFamily
+            font.pixelSize: 12
+
             
             text: cex_rates === "0" ? "N/A" :
                                       parseFloat(cex_rates) > 0 ? "+" + parseFloat(cex_rates).toFixed(2) + "%" :
                                                                   parseFloat(cex_rates).toFixed(2) + "%"
-            font.family: App.DexTypo.fontFamily
-            font.pixelSize: 12
-
             color: cex_rates === "0" ? Qt.darker(Dex.CurrentTheme.foregroundColor) :
                                        parseFloat(cex_rates) < 0 ? Dex.CurrentTheme.okColor :
                                                                    Dex.CurrentTheme.noColor
@@ -115,8 +132,8 @@ Item
         dim: true
         modal: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-
         width: 250
+
         contentItem: DexLabelUnlinked
         {
             text_value: qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin)
@@ -155,6 +172,7 @@ Item
         id: mouse_are
         anchors.fill: parent
         hoverEnabled: true
+
         onClicked:
         {
             if (!API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
@@ -172,6 +190,7 @@ Item
                     app.pairChanged(base_ticker, coin)
                 }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
+                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
             }
         }
     }
