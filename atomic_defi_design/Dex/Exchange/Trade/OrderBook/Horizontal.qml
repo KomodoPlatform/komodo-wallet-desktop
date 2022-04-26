@@ -20,14 +20,17 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         radius: 6
         color: "transparent"
+
         RowLayout {
             anchors.fill: parent
             spacing: 0
+
             List {
                 isAsk: false
                 Layout.fillHeight: true
                 Layout.fillWidth: true
             }
+
             List {
                 isAsk: true
                 Layout.fillHeight: true
