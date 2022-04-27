@@ -7,36 +7,52 @@ import Qaterial 1.0 as Qaterial
 import "../../../Components"
 import "../../../Constants"
 
-Row
+RowLayout
 {
-    DefaultText
+    width: parent.width
+    height: 24
+    spacing: 0
+
+    DexLabel
     {
-        width: (parent.width / 100) * 34
+        Layout.preferredHeight: parent.height
+        Layout.preferredWidth: 100
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
         text: qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
         font.family: DexTypo.fontFamily
         font.pixelSize: 12
         font.bold: true
         font.weight: Font.Black
-        horizontalAlignment: Text.AlignRight
     }
-    DefaultText
+
+    Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+
+    DexLabel
     {
-        width: (parent.width / 100) * 32
+        Layout.preferredHeight: parent.height
+        Layout.preferredWidth: 120
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
         text: qsTr("Quantity") + " (" +  atomic_qt_utilities.retrieve_main_ticker(left_ticker) + ")"
         font.family: DexTypo.fontFamily
         font.pixelSize: 12
         font.bold: true
         font.weight: Font.Black
-        horizontalAlignment: Text.AlignRight
     }
-    DefaultText
+
+    Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+
+    DexLabel
     {
-        width: (parent.width / 100) * 32
+        Layout.preferredHeight: parent.height
+        Layout.preferredWidth: 80
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
         text: qsTr("Total") + " (" +  atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
         font.family: DexTypo.fontFamily
         font.pixelSize: 12
         font.bold: true
         font.weight: Font.Black
-        horizontalAlignment: Text.AlignRight
     }
 }
