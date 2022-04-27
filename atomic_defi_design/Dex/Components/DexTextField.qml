@@ -54,7 +54,7 @@ TextField
 
     RightClickMenu {}
 
-    DefaultText
+    DexLabel
     {
         id: left_text
         visible: text_value !== ""
@@ -65,7 +65,7 @@ TextField
         font.pixelSize: text_field.font.pixelSize
     }
 
-    DefaultText
+    DexLabel
     {
         id: right_text
         visible: text_value !== ""
