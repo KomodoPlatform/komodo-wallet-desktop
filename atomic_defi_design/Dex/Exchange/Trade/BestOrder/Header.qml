@@ -3,38 +3,52 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
-
 import App 1.0
-
 import "../../../Components"
 
-Row
+
+RowLayout
 {
+    height: 24
+    width: parent.width
     spacing: 0
 
-    DefaultText
+    DexLabel
     {
-        width: parent.width * youGetColumnWidth
-        text: sell_mode ? qsTr("You get") : qsTr("You send")
+        Layout.preferredWidth: 140
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        text_value: sell_mode ? qsTr("You get") : qsTr("You send")
         font.family: Style.font_family
+        font.bold: true
         font.pixelSize: 12
         font.weight: Font.Black
     }
-    DefaultText
-    {
-        width: parent.width * fiatPriceColumnWidth
-        text: qsTr("Fiat Price")
-        font.family: Style.font_family
-        font.pixelSize: 12
-        font.weight: Font.Black
 
-    }
-    DefaultText
+    Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+
+    DexLabel
     {
-        width: parent.width * cexRateColumnWidth
-        Layout.alignment: Qt.AlignVCenter
-        text: qsTr("CEX rate")
+        Layout.preferredWidth: 80
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+        text_value: qsTr("Fiat Price")
         font.family: Style.font_family
+        font.bold: true
+        font.pixelSize: 12
+        font.weight: Font.Black
+    }
+
+    Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+
+    DexLabel
+    {
+        Layout.preferredWidth: 80
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+        text_value: qsTr("CEX rate")
+        font.family: Style.font_family
+        font.bold: true
         font.pixelSize: 12
         font.weight: Font.Black
     }
