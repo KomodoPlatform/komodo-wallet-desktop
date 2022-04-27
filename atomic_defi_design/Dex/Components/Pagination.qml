@@ -8,6 +8,8 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
+// TODO: confirm this component no longer in use; delete.
+
 RowLayout
 {
     id: control

@@ -72,6 +72,7 @@ ComboBox
         highlighted: control.highlightedIndex === index
         contentItem: DexComboBoxLine { details: model }
         z: 5
+
         background: DexRectangle {
             anchors.fill: combo_item
             color: combo_item.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : "transparent"

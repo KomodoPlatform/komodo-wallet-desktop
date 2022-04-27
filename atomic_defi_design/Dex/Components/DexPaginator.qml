@@ -88,7 +88,7 @@ RowLayout
         onCurrentValueChanged: Constants.API.app.orders_mdl.limit_nb_elements = currentValue
     }
 
-    DefaultText
+    DexText
     {
         Layout.preferredWidth: (root.width / 100) * 16
         Layout.leftMargin: 20

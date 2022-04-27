@@ -15,7 +15,8 @@ import "../Constants"
 import App 1.0
 
 
-ComboBoxWithTitle {
+ComboBoxWithTitle
+{
     id: combo_fiat
     title: qsTr("Fiat")
     width: parent.width-30
@@ -24,30 +25,37 @@ ComboBoxWithTitle {
     model: fiats
 
     property bool initialized: false
-    onCurrentIndexChanged: {
-        if(initialized) {
+    onCurrentIndexChanged:
+    {
+        if(initialized)
+        {
             const new_fiat = fiats[currentIndex]
             API.app.settings_pg.current_fiat = new_fiat
             API.app.settings_pg.current_currency = new_fiat
         }
     }
-    Component.onCompleted: {
+
+    Component.onCompleted:
+    {
         currentIndex = model.indexOf(API.app.settings_pg.current_fiat)
         initialized = true
     }
 
-    RowLayout {
+    RowLayout
+    {
         Layout.topMargin: 5
         Layout.fillWidth: true
         Layout.leftMargin: 2
         Layout.rightMargin: Layout.leftMargin
 
-        DefaultText {
+        DexText
+        {
             text: qsTr("Recommended: ")
             font.pixelSize: Style.textSizeSmall4
         }
 
-        Grid {
+        Grid
+        {
             Layout.leftMargin: 30
             Layout.alignment: Qt.AlignVCenter
 
@@ -58,19 +66,24 @@ ComboBoxWithTitle {
 
             layoutDirection: Qt.LeftToRight
 
-            Repeater {
+            Repeater
+            {
                 model: recommended_fiats
 
-                delegate: DefaultText {
+                delegate: DexText
+                {
                     text: modelData
                     color: DexTheme.foregroundColor
                     opacity: fiats_mouse_area.containsMouse ? .7 : 1
 
-                    DefaultMouseArea {
+                    DexMouseArea
+                    {
                         id: fiats_mouse_area
                         anchors.fill: parent
                         hoverEnabled: true
-                        onClicked: {
+
+                        onClicked:
+                        {
                             API.app.settings_pg.current_fiat = modelData
                             API.app.settings_pg.current_currency = modelData
                             combo_fiat.currentIndex = combo_fiat.model.indexOf(API.app.settings_pg.current_fiat)
