@@ -49,7 +49,7 @@ ColumnLayout
             icon: Qaterial.Icons.contentCopy
             color: copyArea.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.foregroundColor
 
-            DefaultMouseArea
+            DexMouseArea
             {
                 id: copyArea
                 anchors.fill: parent
@@ -83,6 +83,7 @@ ColumnLayout
                 id: hide_button
             }
         }
+
         DexAppButton {
             anchors.verticalCenter: parent.verticalCenter
             id: save_button

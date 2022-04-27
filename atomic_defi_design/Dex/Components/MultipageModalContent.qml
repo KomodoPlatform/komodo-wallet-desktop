@@ -20,8 +20,9 @@ ColumnLayout
     property alias         footer:          _footer.data
 
     Layout.fillWidth: true
+    Layout.maximumHeight: window.height - 50
 
-    DefaultText
+    DexLabel
     {
         id: _title
         Layout.topMargin: root.titleTopMargin
@@ -29,21 +30,21 @@ ColumnLayout
         font: DexTypo.head6
     }
 
-    DefaultFlickable
+    DexFlickable
     {
         flickableDirection: Flickable.VerticalFlick
 
         Layout.topMargin: root.topMarginAfterTitle
         Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
-        Layout.maximumHeight: window.height - 200
+        Layout.maximumHeight: window.height - 330
 
         contentHeight: _innerLayout.height
 
         ColumnLayout
         {
             id: _innerLayout
-            anchors.centerIn: parent
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             width: parent.width
         }
     }

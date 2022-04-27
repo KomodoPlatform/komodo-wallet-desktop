@@ -66,35 +66,33 @@ MultipageModal
             textField.onTextChanged: filterCoins()
         }
 
-        Item
+        DexMouseArea
         {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 5
             Layout.fillWidth: true
             Layout.preferredHeight: 25
+            Layout.topMargin: 5
+            Layout.alignment: Qt.AlignHCenter
+            onClicked: setCheckState(!_selectAllCheckBox.checked)
 
-            DexCheckBox
+            RowLayout
             {
-                id: _selectAllCheckBox
-
-                visible: list.visible
-                checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
-                anchors.left: parent.left
-                boxWidth: 20
-                boxHeight: 20
-                width: 20
-
-                DefaultMouseArea
+                spacing: 0
+                DexCheckBox
                 {
-                    anchors.fill: parent
-                    onClicked: setCheckState(!parent.checked)
+                    Layout.leftMargin: 6
+                    id: _selectAllCheckBox
+
+                    visible: list.visible
+                    checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
+                    boxWidth: 20
+                    boxHeight: 20
+                    width: 20
                 }
 
-                DefaultText
+                DexLabel
                 {
-                    anchors.left: parent.right
-                    anchors.leftMargin: 5
-                    anchors.verticalCenter: parent.verticalCenter
+                    Layout.fillWidth: true
+                    verticalAlignment: Text.AlignLeft
                     text: qsTr("Select all assets")
                 }
             }
@@ -102,7 +100,7 @@ MultipageModal
 
         HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.fillWidth: true }
 
-        DefaultListView
+        DexListView
         {
             id: list
             visible: coin_cfg_model.all_disabled_proxy.length > 0
@@ -120,7 +118,7 @@ MultipageModal
 
                 Row
                 {
-                    DefaultCheckBox
+                    DexCheckBox
                     {
                         id: listInnerRowCheckbox
                         readonly property bool backend_checked: model.checked
@@ -147,10 +145,10 @@ MultipageModal
                     RowLayout
                     {
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: 6
+                        spacing: 0
 
                         // Icon
-                        DefaultImage
+                        DexImage
                         {
                             id: icon
                             Layout.leftMargin: 8
@@ -159,12 +157,14 @@ MultipageModal
                             Layout.preferredWidth: 18
                             Layout.preferredHeight: 18
                         }
-                        DefaultText
+
+                        DexLabel
                         {
                             Layout.leftMargin: 4
                             Layout.alignment: Qt.AlignVCenter
                             text: model.name + " (" + model.ticker + ")"
                         }
+
                         CoinTypeTag
                         {
                             id: typeTag
@@ -193,7 +193,7 @@ MultipageModal
                     }
                 }
 
-                DefaultMouseArea
+                DexMouseArea
                 {
                     anchors.fill: parent
                     onClicked: listInnerRowCheckbox.checked = !listInnerRowCheckbox.checked
@@ -227,6 +227,7 @@ MultipageModal
         {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
+            Layout.topMargin: 10
             Layout.preferredHeight: 60
 
             DexTransparentButton
@@ -242,10 +243,11 @@ MultipageModal
                     setting_modal.open()
                 }
             }
+
             DexTransparentButton
             {
                 anchors.right: parent.right
-                text: qsTr("Add a custom asset to the list")
+                text: qsTr("Add a custom asset")
                 topPadding: 5
                 bottomPadding: 5
                 Layout.preferredHeight: 35
@@ -259,7 +261,7 @@ MultipageModal
 
         footer:
         [
-            DefaultButton
+            DexAppButton
             {
                 Layout.preferredWidth: 199
                 text: qsTr("Close")
