@@ -5487,6 +5487,7 @@
     "name": "Picacoin",
     "coinpaprika_id": "pic-picacoin",
     "coingecko_id": "test-coin",
+    "nomics_id": "PIC3",
     "electrum": [
       {
         "url": "143.198.143.180:50001"
