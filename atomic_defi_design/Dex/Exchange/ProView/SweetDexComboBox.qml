@@ -59,18 +59,23 @@ ComboBox
 
     background: DexRectangle
     {
-        color: mouse_area.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.floatingBackgroundColor
+        color: Dex.CurrentTheme.floatingBackgroundColor
         radius: 10
     }
 
     // Each dropdown item
     delegate: ItemDelegate
     {
-        Universal.accent: Dex.hoverColor
+        id: combo_item
+        Universal.accent: control.lineHoverColor
         width: control.width
         highlighted: control.highlightedIndex === index
         contentItem: DexComboBoxLine { details: model }
         z: 5
+        background: DexRectangle {
+            anchors.fill: combo_item
+            color: combo_item.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : "transparent"
+        }
     }
 
     // Dropdown itself
@@ -150,13 +155,11 @@ ComboBox
                     function onClosed() { input_coin_filter.reset() }
                 }
             }
-
             Item
             {
                 Layout.maximumHeight: popup.max_height - 100
                 Layout.fillWidth: true
                 implicitHeight: popup_list_view.contentHeight + 5
-
                 DexListView
                 {
                     id: popup_list_view
@@ -165,7 +168,6 @@ ComboBox
                     currentIndex: control.highlightedIndex
                     anchors.fill: parent
                     anchors.rightMargin: 2
-
                     DexMouseArea
                     {
                         anchors.fill: parent

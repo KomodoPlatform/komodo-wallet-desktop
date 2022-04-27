@@ -18,10 +18,6 @@ RowLayout
     property alias bottom_text: bottom_line.text_value
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
-    visible: {
-        console.log("Highlighting " + details.ticker)
-        true
-    }
 
     DexImage
     {
@@ -69,11 +65,5 @@ RowLayout
                 Component.onCompleted: font.pixelSize = 11.5
             }
         }
-    }
-
-    DexMouseArea
-    {
-        id: combo_line
-        anchors.fill: parent
     }
 }

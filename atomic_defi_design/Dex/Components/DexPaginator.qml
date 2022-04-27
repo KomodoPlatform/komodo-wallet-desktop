@@ -70,7 +70,7 @@ RowLayout
         refreshBtn()
     }
 
-    DefaultComboBox
+    DexComboBox
     {
         id: itemsPerPageComboBox
 
