@@ -6741,6 +6741,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "SAND-BEP20": {
+    "coin": "SAND-BEP20",
+    "name": "The Sandbox",
+    "coinpaprika_id": "sand-the-sandbox",
+    "coingecko_id": "the-sandbox",
+    "nomics_id": "SAND2",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "SAND-PLG20": {
     "coin": "SAND-PLG20",
     "name": "The Sandbox",
