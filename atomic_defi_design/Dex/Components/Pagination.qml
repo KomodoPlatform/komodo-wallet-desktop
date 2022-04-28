@@ -69,7 +69,7 @@ RowLayout
         currentIndex: options.indexOf(item_count)
         onCurrentValueChanged: API.app.orders_mdl.limit_nb_elements = currentValue
         mainBackgroundColor: Dex.CurrentTheme.backgroundColor
-        dropdownBackgroundColor: Dex.CurrentTheme.backgroundColor
+        popupBackgroundColor: Dex.CurrentTheme.backgroundColor
     }
 
     DefaultText {

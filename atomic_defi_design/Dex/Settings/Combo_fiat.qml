@@ -19,7 +19,7 @@ ComboBoxWithTitle
 {
     id: combo_fiat
     title: qsTr("Fiat")
-    width: parent.width-30
+    width: parent.width - 30
     anchors.horizontalCenter: parent.horizontalCenter
 
     model: fiats
