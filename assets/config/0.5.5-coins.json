@@ -9035,6 +9035,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "MANA-BEP20": {
+    "coin": "MANA-BEP20",
+    "name": "Decentraland",
+    "coinpaprika_id": "mana-decentraland",
+    "coingecko_id": "decentraland",
+    "nomics_id": "MANA",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "MANA-KRC20": {
     "coin": "MANA-KRC20",
     "name": "Decentraland",
