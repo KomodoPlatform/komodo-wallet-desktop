@@ -10,33 +10,25 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
+// TODO: Confirm not in use; delete
+
 ComboBox
 {
     id: control
 
     property alias radius: bg_rect.radius
-    property color lineHoverColor: DexTheme.hoverColor
+    readonly property bool disabled: !enabled
+    property int dropDownMaxHeight: 450
     property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property int dropDownMaxHeight: 300
-    property color dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property color popupBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property color highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+    property string mainLineText: control.displayText
     property
     var dropdownLineText: m => textRole === "" ?
         m.modelData :
         !m.modelData ? m[textRole] : m.modelData[textRole]
-    property string mainLineText: control.displayText
-
-    readonly property bool disabled: !enabled
 
     font.family: Style.font_family
-
-    Behavior on lineHoverColor
-    {
-        ColorAnimation
-        {
-            duration: Style.animationDuration
-        }
-    }
-
     hoverEnabled: true
 
     // Main, selected text
@@ -52,7 +44,6 @@ ComboBox
             text_value: control.mainLineText
         }
     }
-
 
     // Main background
     background: FloatingBackground
@@ -108,7 +99,7 @@ ComboBox
         background: Rectangle
         {
             radius: control.radius
-            color: control.dropdownBackgroundColor
+            color: control.popupBackgroundColor
         }
     }
 
