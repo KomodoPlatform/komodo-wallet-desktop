@@ -8,6 +8,7 @@ import QtGraphicalEffects 1.0
 
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 DexComboBox
 {

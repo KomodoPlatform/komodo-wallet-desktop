@@ -11,7 +11,7 @@
     "buttonColorEnabled": "#293254FF",
     "buttonColorHovered": "#4068B929FF",
     "buttonColorPressed": "#2932546C",
-    "buttonTextDisabledColor": "#444444",
+    "buttonTextDisabledColor": "#444444FF",
     "buttonTextEnabledColor": "#ffffffFF",
     "buttonTextHoveredColor": "#ffffffFF",
     "buttonTextPressedColor": "#ffffffFF",
