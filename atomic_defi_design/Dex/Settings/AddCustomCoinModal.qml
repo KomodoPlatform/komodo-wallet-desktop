@@ -127,12 +127,13 @@ MultipageModal
             id: input_type
             Layout.fillWidth: true
             textRole: "text"
-            model: type_model //, "UTXO", "Smart Chain"]
+            valueRole: "text"
+            model: type_model
             currentIndex: 0
-            field.comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
-            field.mainBackgroundColor: Dex.CurrentTheme.innerBackgroundColor
-            field.popupBackgroundColor: Dex.CurrentTheme.innerBackgroundColor
-            field.highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+            comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+            mainBackgroundColor: Dex.CurrentTheme.innerBackgroundColor
+            popupBackgroundColor: Dex.CurrentTheme.innerBackgroundColor
+            highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
         }
 
         Item { Layout.preferredHeight: 50 }
