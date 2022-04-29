@@ -98,7 +98,7 @@ Item
             Layout.preferredWidth: parent.width
             Layout.bottomMargin: 10
             itemsPerPageComboBox.mainBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
-            itemsPerPageComboBox.dropdownBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+            itemsPerPageComboBox.popupBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
         }
     }
 

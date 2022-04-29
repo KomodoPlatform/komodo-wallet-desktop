@@ -330,10 +330,10 @@ QtObject {
       return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol
     }
 
-    function formatFiat(received, amount, fiat) {
+    function formatFiat(received, amount, fiat, precision=2) {
         return diffPrefix(received) +
                 (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
-                + " " + nFormatter(parseFloat(amount), 2)
+                + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), precision, true) : nFormatter(parseFloat(amount), 2))
     }
 
     function formatPercent(value, show_prefix=true) {
@@ -344,7 +344,7 @@ QtObject {
             value *= -1
         }
 
-        return (show_prefix ? prefix : '') + value + ' %'
+        return (show_prefix ? prefix : '') + parseFloat(value).toFixed(3) + ' %'
     }
 
     readonly property int amountPrecision: 8
@@ -372,8 +372,8 @@ QtObject {
         return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
 
-    function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
-        return diffPrefix(received) + ticker + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
+    function formatCrypto(received, amount, ticker, fiat_amount, fiat, precision, trail_zeros) {
+        return diffPrefix(received) + ticker + " " + formatDouble(amount, precision, trail_zeros) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
     function formatFullCrypto(received, amount, ticker, fiat_amount, fiat, use_full_ticker) {

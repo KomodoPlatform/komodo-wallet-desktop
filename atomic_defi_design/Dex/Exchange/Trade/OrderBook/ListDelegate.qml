@@ -12,14 +12,15 @@ import Dex.Themes 1.0 as Dex
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 
-Item
-{
+
+Item {
     property bool isAsk
 
     DefaultTooltip
     {
         visible: mouse_area.containsMouse && (tooltip_text.text_value != "")
         width: 300
+
         contentItem: RowLayout
         {
             width: 290
@@ -32,10 +33,11 @@ Item
                 color: Qaterial.Colors.amber
             }
 
-            DefaultText
+            DexLabel
             {
                 id: tooltip_text
                 Layout.fillWidth: true
+
                 text_value:
                 {
                     if (mouse_area.containsMouse)
@@ -96,6 +98,7 @@ Item
         id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
+
         onClicked:
         {
             if (is_mine) return
@@ -103,7 +106,7 @@ Item
             if (enough_funds_to_pay_min_volume )
             {
                 exchange_trade.orderSelected = true
-                orderList.currentIndex = index
+                orderbook_list.currentIndex = index
 
                 selectOrder(isAsk, coin, price, quantity, price_denom,
                             price_numer, quantity_denom, quantity_numer,
@@ -111,9 +114,7 @@ Item
                             rel_min_volume, rel_max_volume, base_max_volume_denom,
                             base_max_volume_numer, uuid)
 
-                order_form.visible = General.flipFalse(order_form.visible)
-                order_form.hidden = General.flipTrue(order_form.hidden)
-                if (!order_form.hidden) order_form.contentVisible = General.flipFalse(order_form.contentVisible)
+                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
             }
         }
 
@@ -165,41 +166,45 @@ Item
             anchors.fill: parent
             anchors.horizontalCenter: parent.horizontalCenter
             onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
+            spacing: 0
 
-            // Price
-            DefaultText
+            DexLabel
             {
-                Layout.preferredWidth: (parent.width / 100) * 33
+                Layout.preferredWidth: 120
                 text: { new BigNumber(price).toFixed(8) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                wrapMode: Text.NoWrap
             }
 
+            Item { Layout.preferredWidth: (parent.width - 320) / 2 }
+
             // Quantity
-            DefaultText
+            DexLabel
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
+                Layout.preferredWidth: 110
                 text: { new BigNumber(quantity).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
                 onTextChanged: depth_bar.width = ((depth * 100) * (mouse_area.width + 40)) / 100
+                wrapMode: Text.NoWrap
             }
 
+            Item { Layout.preferredWidth: (parent.width - 320) / 2 }
+
             // Total
-            DefaultText
+            DexLabel
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
+                Layout.preferredWidth: 90
                 rightPadding: (is_mine) && (mouse_area.containsMouse || cancel_button.containsMouse) ? 30 : 0
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 text: { new BigNumber(total).toFixed(6) }
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                wrapMode: Text.NoWrap
 
                 Behavior on rightPadding { NumberAnimation { duration: 150 } }
             }
@@ -217,6 +222,7 @@ Item
         anchors.verticalCenterOffset: 1
         anchors.right: parent.right
         anchors.rightMargin:  mouse_area.containsMouse || cancel_button.containsMouse ? 12 : 6
+
         Behavior on iconSize
         {
             NumberAnimation
