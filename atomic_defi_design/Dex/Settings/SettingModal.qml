@@ -14,9 +14,7 @@ import Qaterial 1.0 as Qaterial
 //! Project Imports
 import "../Components"
 import "../Constants"
-as Constants
 import App 1.0
-
 import Dex.Themes 1.0 as Dex
 
 
@@ -60,30 +58,34 @@ Qaterial.Dialog
     id: setting_modal
     width: 950
     height: 650
+    padding: 20
+    topPadding: 30
+    bottomPadding: 30
     anchors.centerIn: parent
     dim: true
     modal: true
     title: "Settings"
+
     header: Item
     {}
+
     Overlay.modal: Item
     {
-        Rectangle
+        DexRectangle
         {
             anchors.fill: parent
             color: 'black'
             opacity: .7
         }
     }
+
     background: DexRectangle
     {
         color: DexTheme.backgroundColor
         border.width: 0
         radius: 16
     }
-    padding: 20
-    topPadding: 30
-    bottomPadding: 30
+
     Item
     {
         width: parent.width
@@ -97,6 +99,7 @@ Qaterial.Dialog
             anchors.verticalCenter: parent.verticalCenter
             onClicked: setting_modal.close()
         }
+
         Row
         {
             anchors.verticalCenter: parent.verticalCenter
@@ -122,6 +125,7 @@ Qaterial.Dialog
             visible: false
         }
     }
+
     Item
     {
         width: parent.width
@@ -190,13 +194,15 @@ Qaterial.Dialog
                     }
                 }
             }
-            Rectangle
+
+            DexRectangle
             {
                 Layout.fillHeight: true
                 width: 1
                 color: DexTheme.foregroundColor
                 opacity: .10
             }
+
             Item
             {
                 Layout.fillHeight: true
@@ -225,7 +231,7 @@ Qaterial.Dialog
                                     font: DexTypo.subtitle1
                                     text: qsTr("Enable Desktop Notifications")
                                 }
-                                DefaultSwitch
+                                DexSwitch
                                 {
                                     Layout.alignment: Qt.AlignVCenter
                                     Component.onCompleted: checked = API.app.settings_pg.notification_enabled
@@ -244,7 +250,7 @@ Qaterial.Dialog
                                     font: DexTypo.subtitle1
                                     text: qsTr("Maximum number of enabled coins")
                                 }
-                                DefaultComboBox
+                                DexComboBox
                                 {
                                     id: enableable_coins_count_combo_box
                                     Layout.preferredWidth: 62
@@ -295,6 +301,7 @@ Qaterial.Dialog
                             }
                         }
                     }
+
                     Item
                     {
                         Column
@@ -327,7 +334,6 @@ Qaterial.Dialog
                         }
                     }
 
-
                     Item
                     {
                         Column
@@ -348,6 +354,7 @@ Qaterial.Dialog
                                     text: qsTr("Current Font")
                                 }
                             }
+
                             DexComboBox
                             {
                                 editable: true
@@ -408,6 +415,7 @@ Qaterial.Dialog
                             }
                         }
                     }
+
                     Item
                     {
                         Column
@@ -531,6 +539,7 @@ Qaterial.Dialog
                                     onCopyNotificationMsg: qsTr("copied to clipboard")
                                 }
                             }
+
                             RowLayout
                             {
                                 width: parent.width - 30
@@ -550,6 +559,7 @@ Qaterial.Dialog
                                     onCopyNotificationMsg: qsTr("MM2 Version copied to clipboard.")
                                 }
                             }
+
                             RowLayout
                             {
                                 width: parent.width - 30
@@ -575,6 +585,7 @@ Qaterial.Dialog
             }
         }
     }
+
     Item
     {
         width: parent.width
@@ -611,6 +622,7 @@ Qaterial.Dialog
                 color: containsMouse ? DexTheme.buttonColorHovered : 'transparent'
                 height: 48
                 radius: 20
+
                 font: Qt.font(
                 {
                     pixelSize: 19,
@@ -619,6 +631,7 @@ Qaterial.Dialog
                     weight: Font.Normal
                 })
                 iconSource: Qaterial.Icons.logout
+
                 onClicked:
                 {
                     disconnect()
