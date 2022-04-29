@@ -8,6 +8,7 @@ import AtomicDEX.CoinType 1.0
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 MultipageModal {
     id: root
@@ -124,6 +125,10 @@ MultipageModal {
             textRole: "text"
             model: type_model//, "UTXO", "Smart Chain"]
             currentIndex: 0
+            field.comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+            field.mainBackgroundColor: Dex.CurrentTheme.innerBackgroundColor
+            field.popupBackgroundColor: Dex.CurrentTheme.innerBackgroundColor
+            field.highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
         }
 
         // Buttons

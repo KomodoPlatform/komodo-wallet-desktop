@@ -225,7 +225,7 @@ Qaterial.Dialog
                                     font: DexTypo.subtitle1
                                     text: qsTr("Enable Desktop Notifications")
                                 }
-                                DefaultSwitch
+                                DexSwitch
                                 {
                                     Layout.alignment: Qt.AlignVCenter
                                     Component.onCompleted: checked = API.app.settings_pg.notification_enabled
@@ -244,7 +244,7 @@ Qaterial.Dialog
                                     font: DexTypo.subtitle1
                                     text: qsTr("Maximum number of enabled coins")
                                 }
-                                DefaultComboBox
+                                DexComboBox
                                 {
                                     id: enableable_coins_count_combo_box
                                     Layout.preferredWidth: 62
