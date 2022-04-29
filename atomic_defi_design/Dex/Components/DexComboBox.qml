@@ -34,7 +34,7 @@ ComboBox
     background: DexRectangle
     {
         id: bg_rect
-        implicitWidth: 120
+        implicitWidth: 140
         implicitHeight: 45
         color: comboBoxBackgroundColor
         radius: 20

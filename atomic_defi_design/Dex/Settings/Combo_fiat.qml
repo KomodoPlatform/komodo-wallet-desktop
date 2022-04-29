@@ -13,80 +13,130 @@ import Qaterial 1.0 as Qaterial
 import "../Components"
 import "../Constants"
 import App 1.0
-
-
-ComboBoxWithTitle
+Item
 {
-    id: combo_fiat
-    title: qsTr("Fiat")
-    width: parent.width - 30
-    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.margins: 10
 
-    model: fiats
-
-    property bool initialized: false
-    onCurrentIndexChanged:
+    Column
     {
-        if(initialized)
+        anchors.fill: parent
+        topPadding: 10
+        spacing: 15
+
+        RowLayout
         {
-            const new_fiat = fiats[currentIndex]
-            API.app.settings_pg.current_fiat = new_fiat
-            API.app.settings_pg.current_currency = new_fiat
-        }
-    }
+            width: parent.width - 30
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: 50
+            spacing: 10
 
-    Component.onCompleted:
-    {
-        currentIndex = model.indexOf(API.app.settings_pg.current_fiat)
-        initialized = true
-    }
-
-    RowLayout
-    {
-        Layout.topMargin: 5
-        Layout.fillWidth: true
-        Layout.leftMargin: 2
-        Layout.rightMargin: Layout.leftMargin
-
-        DexText
-        {
-            text: qsTr("Recommended: ")
-            font.pixelSize: Style.textSizeSmall4
-        }
-
-        Grid
-        {
-            Layout.leftMargin: 30
-            Layout.alignment: Qt.AlignVCenter
-
-            clip: true
-
-            columns: 6
-            spacing: 25
-
-            layoutDirection: Qt.LeftToRight
-
-            Repeater
+            DexLabel
             {
-                model: recommended_fiats
+                Layout.alignment: Qt.AlignVCenter
+                font: DexTypo.subtitle1
+                text: qsTr("Language") + ":"
+            }
 
-                delegate: DexText
+            Item { Layout.fillWidth: true }
+
+            Languages
+            {
+                Layout.alignment: Qt.AlignVCenter
+            }
+        }
+
+        RowLayout
+        {
+            Layout.topMargin: 10
+            width: parent.width - 30
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: 50
+
+            DexLabel
+            {
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+                font: DexTypo.subtitle1
+                text: qsTr("Fiat")
+            }
+
+            Item { Layout.fillWidth: true }
+
+            DexComboBox
+            {
+                id: combo_fiat
+                width: 100
+                height: 30
+                model: fiats
+                property bool initialized: false
+
+                onCurrentIndexChanged:
                 {
-                    text: modelData
-                    color: DexTheme.foregroundColor
-                    opacity: fiats_mouse_area.containsMouse ? .7 : 1
-
-                    DexMouseArea
+                    if(initialized)
                     {
-                        id: fiats_mouse_area
-                        anchors.fill: parent
-                        hoverEnabled: true
+                        const new_fiat = fiats[currentIndex]
+                        API.app.settings_pg.current_fiat = new_fiat
+                        API.app.settings_pg.current_currency = new_fiat
+                    }
+                }
 
-                        onClicked:
+                Component.onCompleted:
+                {
+                    currentIndex = model.indexOf(API.app.settings_pg.current_fiat)
+                    initialized = true
+                }
+            }
+        }
+
+        RowLayout
+        {
+            Layout.topMargin: 10
+            width: parent.width - 30
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: 50
+
+            DexText
+            {
+                text: qsTr("Recommended: ")
+                font.pixelSize: Style.textSizeSmall4
+            }
+
+            Item { Layout.fillWidth: true }
+
+            Grid
+            {
+                Layout.leftMargin: 30
+                Layout.alignment: Qt.AlignVCenter
+
+                clip: true
+
+                columns: 6
+                spacing: 25
+
+                layoutDirection: Qt.LeftToRight
+
+                Repeater
+                {
+                    model: recommended_fiats
+
+                    delegate: DexText
+                    {
+                        text: modelData
+                        color: DexTheme.foregroundColor
+                        opacity: fiats_mouse_area.containsMouse ? .7 : 1
+
+                        DexMouseArea
                         {
-                            API.app.settings_pg.current_fiat = modelData
-                            API.app.settings_pg.current_currency = modelData
-                            combo_fiat.currentIndex = combo_fiat.model.indexOf(API.app.settings_pg.current_fiat)
+                            id: fiats_mouse_area
+                            anchors.fill: parent
+                            hoverEnabled: true
+
+                            onClicked:
+                            {
+                                API.app.settings_pg.current_fiat = modelData
+                                API.app.settings_pg.current_currency = modelData
+                                combo_fiat.currentIndex = combo_fiat.model.indexOf(API.app.settings_pg.current_fiat)
+                            }
                         }
                     }
                 }
@@ -94,3 +144,4 @@ ComboBoxWithTitle
         }
     }
 }
+
