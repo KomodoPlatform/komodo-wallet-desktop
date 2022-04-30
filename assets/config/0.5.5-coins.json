@@ -3735,17 +3735,17 @@
       {
         "url": "electrum.getlynx.io:50002",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": true
       },
       {
         "url": "electrum.logware.us:50002",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": true
       },
       {
         "url": "electrum.logware.club:50002",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": true
       },
       {
         "url": "electrum.logware.io:50002",
