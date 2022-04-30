@@ -66,36 +66,46 @@ MultipageModal
             textField.onTextChanged: filterCoins()
         }
 
-        DexMouseArea
+
+        RowLayout
         {
+            spacing: 0
+            Layout.topMargin: 10
             Layout.fillWidth: true
-            Layout.preferredHeight: 25
-            Layout.topMargin: 5
-            Layout.alignment: Qt.AlignHCenter
-            onClicked: setCheckState(!_selectAllCheckBox.checked)
+            Layout.preferredHeight: 24
 
-            RowLayout
+            DexCheckBox
             {
-                spacing: 0
-                DexCheckBox
-                {
-                    Layout.leftMargin: 6
-                    id: _selectAllCheckBox
+                Layout.leftMargin: 6
+                id: _selectAllCheckBox
 
-                    visible: list.visible
-                    checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
-                    boxWidth: 20
-                    boxHeight: 20
-                    width: 20
-                }
+                visible: list.visible
+                checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
+                boxWidth: 20
+                boxHeight: 20
+                width: 20
 
-                DexLabel
+                DexMouseArea
                 {
-                    Layout.fillWidth: true
-                    verticalAlignment: Text.AlignLeft
-                    text: qsTr("Select all assets")
+                    anchors.fill: parent
+                    onClicked: setCheckState(!_selectAllCheckBox.checked)
                 }
             }
+
+            DexLabel
+            {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                text: qsTr("Select all assets")
+
+                DexMouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: setCheckState(!_selectAllCheckBox.checked)
+                }
+            }
+
         }
 
         HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.fillWidth: true }
@@ -269,6 +279,7 @@ MultipageModal
                 onClicked: root.close()
             },
             Item { Layout.fillWidth: true },
+
             DexGradientAppButton
             {
                 Layout.preferredWidth: 199
@@ -276,10 +287,11 @@ MultipageModal
                 enabled: coin_cfg_model.checked_nb > 0
                 text: qsTr("Enable")
                 radius: 20
+
                 onClicked:
                 {
-                    API.app.enable_coins(coin_cfg_model.get_checked_coins())
-                    setCheckState(false)
+                    API.app.enable_coins(coin_cfg_model.get_checked_coins());
+                    root.setCheckState(false);
                     coin_cfg_model.checked_nb = 0
                     root.close()
                 }
