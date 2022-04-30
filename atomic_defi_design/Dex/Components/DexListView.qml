@@ -15,6 +15,8 @@ ListView
     readonly property double scrollbar_margin: scrollbar_visible ? 8 : 0
 
     boundsBehavior: Flickable.StopAtBounds
+    implicitHeight: contentItem.childrenRect.height
+    implicitWidth: contentItem.childrenRect.width
     clip: true
 
     // Opacity animation
