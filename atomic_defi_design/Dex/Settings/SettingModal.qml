@@ -274,8 +274,9 @@ Qaterial.Dialog
                                 {
                                     id: enableable_coins_count_combo_box
                                     Layout.alignment: Qt.AlignVCenter
-                                    width: 100
-                                    height: 30
+                                    width: 140
+                                    height: 45
+                                    dropDownMaxHeight: 600
                                     model: [10, 20, 50, 75, 100, 150, 200]
                                     onCurrentIndexChanged: atomic_settings2.setValue("MaximumNbCoinsEnabled", model[currentIndex])
                                     Component.onCompleted:
@@ -358,24 +359,25 @@ Qaterial.Dialog
 
                                 Item { Layout.fillWidth: true }
 
-                                DexComboBox
-                                {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    editable: true
-                                    model: ["Ubuntu", "Montserrat", "Roboto"]
+                                Item {
                                     width: 150
-                                    height: 30
-
-                                    onCurrentTextChanged:
+                                    DexComboBox
                                     {
-                                        DexTypo.fontFamily = currentText
-                                        console.info(qsTr("Current font changed to %1.").arg(currentText))
-                                    }
+                                        Layout.alignment: Qt.AlignVCenter
+                                        editable: true
+                                        model: ["Ubuntu", "Montserrat", "Roboto"]
 
-                                    Component.onCompleted:
-                                    {
-                                        let current = DexTypo.fontFamily
-                                        currentIndex = model.indexOf(current)
+                                        onCurrentTextChanged:
+                                        {
+                                            DexTypo.fontFamily = currentText
+                                            console.info(qsTr("Current font changed to %1.").arg(currentText))
+                                        }
+
+                                        Component.onCompleted:
+                                        {
+                                            let current = DexTypo.fontFamily
+                                            currentIndex = model.indexOf(current)
+                                        }
                                     }
                                 }
                             }
@@ -397,28 +399,31 @@ Qaterial.Dialog
 
                                 Item { Layout.fillWidth: true }
 
-                                DexComboBox
+                                Item
                                 {
-                                    Layout.alignment: Qt.AlignVCenter
                                     width: 150
-                                    height: 30
-                                    model: API.qt_utilities.get_themes_list()
-                                    currentIndex: model.indexOf(atomic_settings2.value("CurrentTheme"))
 
-                                    onActivated:
+                                    DexComboBox
                                     {
-                                        let chosenTheme = model[index];
+                                        Layout.alignment: Qt.AlignVCenter
+                                        model: API.qt_utilities.get_themes_list()
+                                        currentIndex: model.indexOf(atomic_settings2.value("CurrentTheme"))
 
-                                        console.info(qsTr("Changing theme to %1").arg(chosenTheme));
-                                        atomic_settings2.setValue("CurrentTheme", chosenTheme);
-                                        atomic_settings2.sync();
-                                        Dex.CurrentTheme.loadFromFilesystem(chosenTheme);
-                                    }
+                                        onActivated:
+                                        {
+                                            let chosenTheme = model[index];
 
-                                    Component.onCompleted:
-                                    {
-                                        let current = atomic_settings2.value("CurrentTheme")
-                                        currentIndex = model.indexOf(current)
+                                            console.info(qsTr("Changing theme to %1").arg(chosenTheme));
+                                            atomic_settings2.setValue("CurrentTheme", chosenTheme);
+                                            atomic_settings2.sync();
+                                            Dex.CurrentTheme.loadFromFilesystem(chosenTheme);
+                                        }
+
+                                        Component.onCompleted:
+                                        {
+                                            let current = atomic_settings2.value("CurrentTheme")
+                                            currentIndex = model.indexOf(current)
+                                        }
                                     }
                                 }
                             }

@@ -34,7 +34,7 @@ ComboBox
     background: DexRectangle
     {
         id: bg_rect
-        implicitWidth: 140
+        implicitWidth: 150
         implicitHeight: 45
         color: comboBoxBackgroundColor
         radius: 20
@@ -49,8 +49,8 @@ ComboBox
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: 10
-            width: parent.width - anchors.leftMargin
+            anchors.leftMargin: 15
+            width: parent.width
 
             font: DexTypo.subtitle2
             text_value: control.mainLineText
@@ -112,8 +112,7 @@ ComboBox
         readonly property double max_height: 450
 
         width: control.width
-        height: Math.min(contentItem.implicitHeight, max_height) + 20
-        // height: _list.contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : _list.contentHeight
+        height: _list.contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : _list.contentHeight
         leftPadding: 0
         rightPadding: 0
         topPadding: 16
