@@ -21,7 +21,6 @@ ComboBox
     property color popupBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
     property color highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
     property string mainLineText: control.displayText
-
     property
     var dropdownLineText: m => textRole === "" ?
         m.modelData :
