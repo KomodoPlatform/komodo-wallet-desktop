@@ -389,6 +389,7 @@ QtObject {
                                           "JRT": "#5EFC84",
                                           "SUPERNET": "#F69B57",
                                           "REVS": "#F69B57",
+                                          "EILN": "#1ADEC9",
                                           "ILN": "#523170",
                                           "VRSC": "#3164D3",
                                           "WCN": "#E49F00",

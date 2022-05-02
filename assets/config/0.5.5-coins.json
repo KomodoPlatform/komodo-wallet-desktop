@@ -2513,6 +2513,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "EILN-ERC20": {
+    "coin": "EILN-ERC20",
+    "name": "Ilien",
+    "coinpaprika_id": "eiln-e-ilien",
+    "coingecko_id": "test-coin",
+    "nomics_id": "EILN",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "ELF-BEP20": {
     "coin": "ELF-BEP20",
     "name": "aelf",
@@ -6163,6 +6181,7 @@
     "name": "iLien",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
+    "nomics_id": "ILN",
     "electrum": [
       {
         "url": "electrum1.ilien.io:65011"
@@ -6174,6 +6193,24 @@
     "explorer_url": [
       "https://iln.explorer.dexstats.info/"
     ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "ILN-BEP20": {
+    "coin": "ILN-BEP20",
+    "name": "Ilien",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "ILN",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
     "active": false,
     "currently_enabled": false
   },
