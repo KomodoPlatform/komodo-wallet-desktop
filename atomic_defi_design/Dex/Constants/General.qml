@@ -2118,7 +2118,6 @@ QtObject {
                                                 "RVN/DAI": "BINANCE:RVNUSD",
                                                 "RVN/PAX": "BINANCE:RVNUSD",
                                                 "RVN/TRYB": "BINANCE:RVNTRY",
-                                                "RVN/BNB": "BINANCE:RVNBNB",
                                                 "RVN/HT": "HUOBI:RVNHT",
                                                 "SAND/BTC": "BINANCE:SANDBTC",
                                                 "SAND/ETH": "BINANCE:SANDETH",
