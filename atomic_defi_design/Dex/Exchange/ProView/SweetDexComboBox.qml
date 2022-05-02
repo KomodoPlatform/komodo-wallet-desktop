@@ -1,10 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.0
-import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
-import QtQuick.Controls.Universal 2.15
 
 import Qaterial 1.0 as Qaterial
 
@@ -16,6 +13,23 @@ ComboBox
 {
     id: control
 
+    property alias radius: bg_rect.radius
+    property color comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+    property color popupBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property color highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+
+    height: 80
+
+
+    // Combobox Dropdown Button Background
+    background: DexRectangle
+    {
+        id: bg_rect
+        color: comboBoxBackgroundColor
+        radius: 20
+    }
+
     contentItem: DexComboBoxLine
     {
         id: line
@@ -23,13 +37,14 @@ ComboBox
         property int update_count: 0
         property var prev_details
 
+        padding: 10
+
         function forceUpdateDetails()
         {
             console.log("Portfolio item data changed, force-updating the selected ticker details!")
             ++update_count
         }
 
-        padding: 10
         details:
         {
             const idx = combo.currentIndex
@@ -55,75 +70,89 @@ ComboBox
         Component.onDestruction: portfolio_mdl.portfolioItemDataChanged.disconnect(forceUpdateDetails)
     }
 
-    height: 80
-
-    background: DefaultRectangle
-    {
-        color: Dex.CurrentTheme.floatingBackgroundColor
-        radius: 10
-    }
-
     // Each dropdown item
     delegate: ItemDelegate
     {
-        Universal.accent: control.lineHoverColor
+        id: combo_item
         width: control.width
         highlighted: control.highlightedIndex === index
+
         contentItem: DexComboBoxLine { details: model }
         z: 5
+
+        // Dropdown Item background
+        background: DexRectangle {
+            anchors.fill: combo_item
+            color: combo_item.highlighted ? highlightedBackgroundColor : mainBackgroundColor
+        }
+    }
+
+    indicator: Column
+    {
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: 8
+        spacing: -12
+
+        Qaterial.Icon
+        {
+            width: 30
+            height: 30
+            color: Dex.CurrentTheme.comboBoxArrowsColor
+            icon: Qaterial.Icons.chevronDown
+        }
     }
 
     // Dropdown itself
     popup: Popup
     {
-        id: popup
-
-        readonly property double max_height: 450//control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y
+        id: combo_popup
+        readonly property double max_height: 450
 
         width: control.width
-        height: Math.min(contentItem.implicitHeight, popup.max_height)
+        height: Math.min(contentItem.implicitHeight, max_height) + 20
+
         z: 4
         y: control.height - 1
-        bottomMargin: 20
-        padding: 1
+        topMargin: 40
+        bottomMargin: 10
         rightMargin: 5
+        padding: 1
 
         contentItem: ColumnLayout
         {
             anchors.rightMargin: 5
 
             // Search input
-            DefaultTextField
+            DexTextField
             {
                 id: input_coin_filter
-                background: Item
+                placeholderText: qsTr("Search")
+
+                font.pixelSize: 16
+                Layout.fillWidth: true
+                Layout.leftMargin: 5
+                Layout.rightMargin: 5
+                Layout.preferredHeight: 40
+                Layout.topMargin: Layout.leftMargin
+
+                // Search Field Background
+                background: DexRectangle
                 {
-                    DefaultRectangle
-                    {
-                        anchors.fill: parent
-                        anchors.rightMargin: 2
-                    }
+                    color: control.comboBoxBackgroundColor
+                    anchors.fill: parent
+                    radius: control.radius
+                }
+
+                onTextChanged:
+                {
+                    ticker_list.setFilterFixedString(text)
+                    renewIndex()
                 }
 
                 function reset()
                 {
                     text = ""
-                    renewIndex()
-                }
-
-                placeholderText: qsTr("Search")
-
-                font.pixelSize: 16
-
-                Layout.fillWidth: true
-                Layout.leftMargin: 0
-                Layout.preferredHeight: 60
-                Layout.rightMargin: 2
-                Layout.topMargin: Layout.leftMargin
-
-                onTextChanged:
-                {
-                    ticker_list.setFilterFixedString(text)
                     renewIndex()
                 }
 
@@ -150,21 +179,22 @@ ComboBox
                     function onClosed() { input_coin_filter.reset() }
                 }
             }
+
             Item
             {
                 Layout.maximumHeight: popup.max_height - 100
                 Layout.fillWidth: true
                 implicitHeight: popup_list_view.contentHeight + 5
-                DefaultListView
+
+                DexListView
                 {
                     id: popup_list_view
                      // Scrollbar appears if this extra space is not added
                     model: control.popup.visible ? control.delegateModel : null
                     currentIndex: control.highlightedIndex
                     anchors.fill: parent
-                    anchors.rightMargin: 2
 
-                    DefaultMouseArea
+                    DexMouseArea
                     {
                         anchors.fill: parent
                         acceptedButtons: Qt.NoButton
@@ -173,28 +203,15 @@ ComboBox
             }
         }
 
-        background: DefaultRectangle
+        // Popup Background
+        background: DexRectangle
         {
             width: parent.width
-            y: -5
-            height: parent.height + 10
+            height: parent.height
+            radius: control.radius
+            color: control.popupBackgroundColor
+            colorAnimation: false
             border.width: 1
-        }
-    }
-
-    indicator: Column
-    {
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-        anchors.rightMargin: 8
-        spacing: -12
-
-        Qaterial.Icon
-        {
-            width: 30
-            height: 30
-            color: Dex.CurrentTheme.comboBoxArrowsColor
-            icon: Qaterial.Icons.chevronDown
         }
     }
 }
