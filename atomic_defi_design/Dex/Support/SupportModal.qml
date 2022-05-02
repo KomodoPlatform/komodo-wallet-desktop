@@ -23,8 +23,8 @@ Qaterial.Dialog
     id: support_modal
     readonly property bool update_needed: API.app.self_update_service.update_needed
 
-    width: 950
-    height: 500
+    width: 750
+    height: 650
     padding: 30
     anchors.centerIn: parent
     dim: true
@@ -55,45 +55,44 @@ Qaterial.Dialog
     ColumnLayout
     {
         id: support_layout
+        width: support_modal.width - 100
+        Layout.alignment: Qt.AlignHCenter
 
         RowLayout
         {
             id: faq_title
-            width: support_modal.width - 60
             height: 30
-            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: faq_column.width
+            Layout.topMargin: 30
             Layout.bottomMargin: 20
+            Layout.leftMargin: 25
 
             Item { Layout.fillWidth: true }
 
             DexLabel
             {
-                Layout.alignment: Qt.AlignHCenter
-                width: 80
-                height: 30
                 horizontalAlignment: Text.AlignHCenter
                 text_value: qsTr("Frequently Asked Questions")
                 font.pixelSize: Style.textSize2
             }
 
             Item { Layout.fillWidth: true }
-
         }
 
         DexFlickable
         {
             id: faq_flickable
 
-            width: support_modal.width - 60
-            height: support_modal.height - 170
-            contentWidth: width - 60
+            width: support_modal.width - 100
+            height: support_modal.height - 200
+            contentWidth: width - 25
             contentHeight: faq_column.height
-            Layout.leftMargin: 20
+            Layout.leftMargin: 25
 
             ColumnLayout
             {
                 id: faq_column
-                width: parent.width
+                width: parent.width - 5
                 spacing: 10
 
 
@@ -178,24 +177,23 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
 
         RowLayout
         {
+            id: bottom_row
             Layout.topMargin: parent.spacing
-            Layout.fillWidth: true
             Layout.preferredHeight: 70
+            Layout.preferredWidth: faq_title.width
+            Layout.leftMargin: 25
+            property var filler_width: (parent.width - links_row.width - changelog_button.width - logs_btn.width) / 2 - 13
 
-            LinksRow
-            {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.leftMargin: 50
-            }
+            LinksRow { id: links_row }
 
-            Item { Layout.fillWidth: true }
+            Item { Layout.preferredWidth: bottom_row.filler_width }
 
             DexMouseArea
             {
                 id: changelog_button
 
-                width: column_layout.width
-                height: column_layout.height
+                Layout.preferredWidth: column_layout.width
+                Layout.preferredHeight: column_layout.height
                 hoverEnabled: true
 
                 onClicked: update_modal.open()
@@ -239,12 +237,11 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
                 }
             }
 
-            Item { Layout.fillWidth: true }
+            Item { Layout.preferredWidth: bottom_row.filler_width }
 
             DexAppButton
             {
-                Layout.rightMargin: 50
-                Layout.alignment: Qt.AlignVCenter
+                id: logs_btn
                 text: qsTr("Open Logs Folder")
                 onClicked: openLogsFolder()
             }

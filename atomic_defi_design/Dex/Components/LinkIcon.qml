@@ -11,7 +11,10 @@ Circle
 
     Layout.preferredWidth: 50
     Layout.preferredHeight: Layout.preferredWidth
-    Layout.margins: 5
+    Layout.topMargin: 10
+    Layout.bottomMargin: 10
+    Layout.leftMargin: 5
+    Layout.rightMargin: 5
 
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme4)
 
