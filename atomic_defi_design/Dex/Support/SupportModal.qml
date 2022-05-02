@@ -66,17 +66,12 @@ Qaterial.Dialog
             Layout.topMargin: 30
             Layout.bottomMargin: 20
             Layout.leftMargin: 25
-
-            Item { Layout.fillWidth: true }
-
             DexLabel
             {
-                horizontalAlignment: Text.AlignHCenter
+                id: faq_label
                 text_value: qsTr("Frequently Asked Questions")
                 font.pixelSize: Style.textSize2
             }
-
-            Item { Layout.fillWidth: true }
         }
 
         DexFlickable
@@ -182,7 +177,7 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
             Layout.preferredHeight: 70
             Layout.preferredWidth: faq_title.width
             Layout.leftMargin: 25
-            property var filler_width: (parent.width - links_row.width - changelog_button.width - logs_btn.width) / 2 - 13
+            property var filler_width: (parent.width - links_row.width - changelog_button.width - logs_btn.width) / 2 - 14
 
             LinksRow { id: links_row }
 
