@@ -4,25 +4,28 @@ import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.3
 
 import AtomicDEX.CoinType 1.0
-
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-MultipageModal {
+MultipageModal
+{
     id: root
 
     width: 700
 
-    onClosed: {
-        // reset all
+    onClosed:
+    {
         currentIndex = 0
         reset()
     }
 
     property var config_fields: ({})
-    readonly property bool fetching_custom_token_data_busy: API.app.settings_pg.fetching_custom_token_data_busy
+    property var typeList: ["ERC-20", "QRC-20","BEP-20"]
     readonly property var custom_token_data: API.app.settings_pg.custom_token_data
+    readonly property string general_message: qsTr('Get the contract address from')
+    readonly property bool fetching_custom_token_data_busy: API.app.settings_pg.fetching_custom_token_data_busy
 
     function fetchAssetData() {
         const fields = General.clone(config_fields)
@@ -62,7 +65,7 @@ MultipageModal {
         addToConfig(input_ticker,           "ticker",           input_ticker.field.text.toUpperCase())
         addToConfig(input_logo,             "image_path",       input_logo.path.replace(General.os_file_prefix, ""))
         addToConfig(input_name,             "name",             input_name.field.text)
-        addToConfig(input_contract_address, "contract_address", input_contract_address.field.text)
+        addToConfig(input_contract_address, "contract_address", input_contract_address.text)
         addToConfig(input_active,           "active",           input_active.checked)
         addToConfig(input_coingecko_id,   "coingecko_id",   input_coingecko_id.field.text)
         fields['coinType'] = currentType.coinType
@@ -74,17 +77,16 @@ MultipageModal {
         input_ticker.field.text = ""
         input_logo.path = ""
         input_name.field.text = ""
-        input_contract_address.field.text = ""
+        input_contract_address.text = ""
         input_active.checked = false
         input_coingecko_id.field.text = "test-coin"
     }
-    property var typeList: ["ERC-20", "QRC-20","BEP-20"]
-    readonly property string general_message: qsTr('Get the contract address from')
 
-    ListModel {
+    ListModel
+    {
         id: type_model
-        dynamicRoles: true
-        ListElement {
+        ListElement
+        {
             text: "ERC-20"
             prefix: ""
             image: "erc"
@@ -92,7 +94,8 @@ MultipageModal {
             name: 'Etherscan'
             coinType: CoinType.ERC20
         }
-        ListElement {
+        ListElement
+        {
             text: "QRC-20"
             prefix: "0x"
             image: "qrc"
@@ -100,7 +103,8 @@ MultipageModal {
             name: 'QTUM Insight'
             coinType: CoinType.QRC20
         }
-        ListElement {
+        ListElement
+        {
             text: "BEP-20"
             prefix: ""
             url: "https://bscscan.com/tokens"
@@ -114,30 +118,46 @@ MultipageModal {
     property var currentType: type_model.get(input_type.currentIndex)
 
     // Type page
-    MultipageModalContent {
+    MultipageModalContent
+    {
         titleText: qsTr("Choose the asset type")
 
-        ComboBoxWithTitle {
+        DexComboBox
+        {
             id: input_type
             Layout.fillWidth: true
-            title: qsTr("Type")
             textRole: "text"
-            model: type_model//, "UTXO", "Smart Chain"]
+            valueRole: "text"
+            model: type_model
             currentIndex: 0
+            comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+            mainBackgroundColor: Dex.CurrentTheme.innerBackgroundColor
+            popupBackgroundColor: Dex.CurrentTheme.innerBackgroundColor
+            highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
         }
 
+        Item { Layout.preferredHeight: 50 }
+
         // Buttons
-        footer: [
-            DefaultButton {
+        footer:
+        [
+            DexAppButton
+            {
                 text: qsTr("Cancel")
-                Layout.fillWidth: true
+                Layout.preferredWidth: 220
+                radius: 18
                 onClicked: root.previousPage()
             },
 
-            PrimaryButton {
+            Item { Layout.fillWidth: true },
+
+            DexAppButton
+            {
                 text: qsTr("Next")
-                Layout.fillWidth: true
-                onClicked: {
+                Layout.preferredWidth: 220
+                radius: 18
+                onClicked:
+                {
                     root.reset()
                     root.nextPage()
                 }
@@ -146,10 +166,12 @@ MultipageModal {
     }
 
     // Ticker page
-    MultipageModalContent {
-        titleText: has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the asset ticker")
+    MultipageModalContent
+    {
+        titleText: has_contract_address ? qsTr("Contract address") : qsTr("Choose the asset ticker")
 
-        TextFieldWithTitle {
+        TextFieldWithTitle
+        {
             id: input_ticker
             enabled: !has_contract_address
             visible: enabled
@@ -158,26 +180,31 @@ MultipageModal {
             field.placeholderText: qsTr("Enter the ticker")
         }
 
-        AddressFieldWithTitle {
+        AddressField
+        {
             id: input_contract_address
             enabled: has_contract_address
             visible: enabled
             Layout.fillWidth: true
-            title: qsTr("Contract Address")
-            field.placeholderText: qsTr("Enter the contract address")
-            field.left_text: currentType.prefix
+            placeholderText: qsTr("Enter the contract address")
+            left_text: currentType.prefix
         }
 
-        DefaultText {
+        DexLabel
+        {
             visible: input_contract_address.visible
             Layout.fillWidth: true
             text_value: General.cex_icon + (' <a href="'+currentType.url+'">' + qsTr('Get the contract address from ') +currentType.name+ '</a>')
         }
 
-
-        InnerBackground {
+        InnerBackground
+        {
             Layout.alignment: Qt.AlignHCenter
-            content: DefaultAnimatedImage {
+            Layout.fillWidth: true
+            color: 'transparent'
+
+            content: DexAnimatedImage
+            {
                 visible: input_contract_address.visible
                 playing: root.visible && visible
                 source: General.image_path + "guide_contract_address_" + currentType.image + ".gif"
@@ -185,58 +212,64 @@ MultipageModal {
         }
 
         // Buttons
-        footer: [
-            DefaultButton {
+        footer:
+        [
+            DexAppButton
+            {
                 text: qsTr("Previous")
-                Layout.fillWidth: true
+                Layout.preferredWidth: 220
+                radius: 18
                 onClicked: root.previousPage()
             },
-
-            PrimaryButton {
+            Item { Layout.fillWidth: true },
+            DexAppButton
+            {
                 text: qsTr("Next")
-                Layout.fillWidth: true
+                Layout.preferredWidth: 220
+                radius: 18
                 enabled: (!input_ticker.enabled || input_ticker.field.text !== "") &&
-                         (!input_contract_address.enabled || input_contract_address.field.text !== "")
+                         (!input_contract_address.enabled || input_contract_address.text !== "")
                 onClicked: root.nextPage()
             }
         ]
     }
 
     // Logo page
-    MultipageModalContent {
+    MultipageModalContent
+    {
         titleText: qsTr("Choose the asset logo")
 
-        DefaultButton {
+        DexAppButton
+        {
             Layout.fillWidth: true
             text: qsTr("Browse") + "..."
             onClicked: input_logo.open()
         }
 
-        FileDialog {
+        FileDialog
+        {
             id: input_logo
 
             property string path
-            onFileUrlChanged: path = input_logo.fileUrl.toString()
 
             readonly property bool enabled: true // Config preparation function searches for this
 
             title: qsTr("Please choose the asset logo")
             folder: shortcuts.pictures
             selectMultiple: false
-            onAccepted: {
-                console.log("Image chosen: " + input_logo.path)
-            }
-            onRejected: {
-                console.log("Image choice canceled")
-            }
-
-            nameFilters: ["Image files (*.png)"]//["Image files (*.jpg *.png)"]
+            nameFilters: ["Image files (*.png)"]
+            onFileUrlChanged: path = input_logo.fileUrl.toString()
         }
 
 
-        InnerBackground {
+        InnerBackground
+        {
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
-            content: DefaultImage {
+            color: 'transparent'
+
+            content: DexImage
+            {
                 width: 300
                 height: width
                 source: input_logo.path
@@ -244,16 +277,21 @@ MultipageModal {
         }
 
         // Buttons
-        footer: [
-            DefaultButton {
+        footer:
+        [
+            DexAppButton
+            {
                 text: qsTr("Previous")
-                Layout.fillWidth: true
+                Layout.preferredWidth: 220
                 onClicked: root.previousPage()
             },
 
-            PrimaryButton {
+            Item { Layout.fillWidth: true },
+
+            PrimaryButton
+            {
                 text: qsTr("Next")
-                Layout.fillWidth: true
+                Layout.preferredWidth: 220
                 enabled: input_logo.path !== ""
                 onClicked: root.nextPage()
             }
@@ -261,16 +299,19 @@ MultipageModal {
     }
 
     // Configuration
-    MultipageModalContent {
+    MultipageModalContent
+    {
         titleText: qsTr("Configuration")
 
-        DefaultText {
+        DexLabel
+        {
             visible: has_contract_address
             Layout.fillWidth: true
             text_value: qsTr("All configuration fields will be fetched using the contract address you provided.")
         }
 
-        TextFieldWithTitle {
+        TextFieldWithTitle
+        {
             id: input_name
             enabled: !has_contract_address
             visible: enabled
@@ -279,22 +320,29 @@ MultipageModal {
             field.placeholderText: qsTr("Enter the name")
         }
 
-        TextFieldWithTitle {
+        TextFieldWithTitle
+        {
             id: input_coingecko_id
             Layout.fillWidth: true
             title: qsTr("Coingecko ID")
             field.placeholderText: qsTr("Enter the Coingecko ID")
         }
 
-        DefaultText {
+        DexLabel
+        {
             visible: input_coingecko_id.visible
             Layout.fillWidth: true
             text_value: General.cex_icon + ' <a href="https://coingecko.com/">' + qsTr('Get the Coingecko ID') + '</a>'
         }
 
-        InnerBackground {
+        InnerBackground
+        {
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
-            content: DefaultAnimatedImage {
+            color: 'transparent'
+
+            content: DexAnimatedImage
+            {
                 id: guide_coingecko_id
                 visible: input_coingecko_id.visible
                 playing: root.visible && visible
@@ -302,27 +350,33 @@ MultipageModal {
             }
         }
 
-        DefaultCheckBox {
+        DexCheckBox
+        {
             id: input_active
             enabled: !has_contract_address
             visible: enabled
             text: qsTr("Active")
         }
 
-        DefaultBusyIndicator {
+        DefaultBusyIndicator
+        {
             visible: root.fetching_custom_token_data_busy
             Layout.alignment: Qt.AlignCenter
         }
 
-        // Buttons
-        footer: [
-            DefaultButton {
+        footer:
+        [
+            DexAppButton
+            {
                 text: qsTr("Previous")
-                Layout.fillWidth: true
+                Layout.preferredWidth: 220
                 onClicked: root.previousPage()
             },
 
-            PrimaryButton {
+            Item { Layout.fillWidth: true },
+
+            PrimaryButton
+            {
                 text: qsTr("Preview")
                 Layout.fillWidth: true
                 enabled: !root.fetching_custom_token_data_busy &&
@@ -341,7 +395,7 @@ MultipageModal {
     MultipageModalContent {
         titleText: qsTr("Preview")
 
-        DefaultText {
+        DexLabel {
             id: warning_message
             visible: coin_name.visible
             Layout.fillWidth: true
@@ -355,7 +409,7 @@ MultipageModal {
             Layout.fillWidth: true
         }
 
-        DefaultImage {
+        DexImage {
             Layout.alignment: Qt.AlignHCenter
 
             Layout.preferredWidth: 64
@@ -363,7 +417,7 @@ MultipageModal {
             source: input_logo.path
         }
 
-        DefaultText {
+        DexLabel {
             id: error_text
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -374,7 +428,7 @@ MultipageModal {
             color: Style.colorRed
         }
 
-        DefaultText {
+        DexLabel {
             id: coin_name
             Layout.alignment: Qt.AlignHCenter
             visible: has_contract_address && !error_text.visible
@@ -411,15 +465,17 @@ MultipageModal {
 
         // Buttons
         footer: [
-            DefaultButton {
+            DexAppButton {
                 text: qsTr("Previous")
-                Layout.fillWidth: true
+                Layout.preferredWidth: 220
                 onClicked: root.previousPage()
             },
 
+            Item { Layout.fillWidth: true },
+
             PrimaryButton {
                 text: qsTr("Submit & Restart")
-                Layout.fillWidth: true
+                Layout.preferredWidth: 220
                 enabled: !error_text.visible
                 onClicked: {
                     API.app.settings_pg.submit()

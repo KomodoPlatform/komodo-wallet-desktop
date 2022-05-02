@@ -169,7 +169,7 @@ Item {
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     valueRole: "ticker"
                     textRole: 'ticker'
-                    backgroundColor: Dex.CurrentTheme.backgroundColor
+                    mainBackgroundColor: Dex.CurrentTheme.backgroundColor
                     popupBackgroundColor: Dex.CurrentTheme.backgroundColor
                     onCurrentTickerChanged: applyFilter()
                 }
@@ -200,7 +200,7 @@ Item {
                     model: API.app.portfolio_pg.global_cfg_mdl.all_proxy
                     valueRole: "ticker"
                     textRole: 'ticker'
-                    backgroundColor: Dex.CurrentTheme.backgroundColor
+                    mainBackgroundColor: Dex.CurrentTheme.backgroundColor
                     popupBackgroundColor: Dex.CurrentTheme.backgroundColor
                     onCurrentTickerChanged: applyFilter()
                 }

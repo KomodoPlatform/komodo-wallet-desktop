@@ -66,43 +66,51 @@ MultipageModal
             textField.onTextChanged: filterCoins()
         }
 
-        Item
+
+        RowLayout
         {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 5
+            spacing: 0
+            Layout.topMargin: 10
             Layout.fillWidth: true
-            Layout.preferredHeight: 25
+            Layout.preferredHeight: 24
 
             DexCheckBox
             {
+                Layout.leftMargin: 6
                 id: _selectAllCheckBox
 
                 visible: list.visible
                 checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
-                anchors.left: parent.left
                 boxWidth: 20
                 boxHeight: 20
                 width: 20
 
-                DefaultMouseArea
+                DexMouseArea
                 {
                     anchors.fill: parent
-                    onClicked: setCheckState(!parent.checked)
-                }
-
-                DefaultText
-                {
-                    anchors.left: parent.right
-                    anchors.leftMargin: 5
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Select all assets")
+                    onClicked: setCheckState(!_selectAllCheckBox.checked)
                 }
             }
+
+            DexLabel
+            {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                text: qsTr("Select all assets")
+
+                DexMouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: setCheckState(!_selectAllCheckBox.checked)
+                }
+            }
+
         }
 
         HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.fillWidth: true }
 
-        DefaultListView
+        DexListView
         {
             id: list
             visible: coin_cfg_model.all_disabled_proxy.length > 0
@@ -113,74 +121,92 @@ MultipageModal
             Layout.preferredHeight: 300
             Layout.fillWidth: true
 
-            delegate: DexCheckBox
+            delegate: Item
             {
-                readonly property bool backend_checked: model.checked
+                height: 30
+                width: list.width
 
-                enabled: _selectAllCheckBox.checked ? checked : true
-                boxWidth: 20
-                boxHeight: 20
-                spacing: 0
-
-                onBackend_checkedChanged: if (checked !== backend_checked) checked = backend_checked
-                onCheckStateChanged:
+                Row
                 {
-                    if (checked !== backend_checked)
+                    DexCheckBox
                     {
-                        var data_index = coin_cfg_model.all_disabled_proxy.index(index, 0)
-                        if ((coin_cfg_model.all_disabled_proxy.setData(data_index, checked, Qt.UserRole + 11)) === false)
+                        id: listInnerRowCheckbox
+                        readonly property bool backend_checked: model.checked
+
+                        enabled: _selectAllCheckBox.checked ? checked : true
+                        boxWidth: 20
+                        boxHeight: 20
+                        spacing: 0
+
+                        onBackend_checkedChanged: if (checked !== backend_checked) checked = backend_checked
+                        onCheckStateChanged:
                         {
-                            checked = false
+                            if (checked !== backend_checked)
+                            {
+                                var data_index = coin_cfg_model.all_disabled_proxy.index(index, 0)
+                                if ((coin_cfg_model.all_disabled_proxy.setData(data_index, checked, Qt.UserRole + 11)) === false)
+                                {
+                                    checked = false
+                                }
+                            }
+                        }
+                    }
+
+                    RowLayout
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 0
+
+                        // Icon
+                        DexImage
+                        {
+                            id: icon
+                            Layout.leftMargin: 8
+                            Layout.alignment: Qt.AlignVCenter
+                            source: General.coinIcon(model.ticker)
+                            Layout.preferredWidth: 18
+                            Layout.preferredHeight: 18
+                        }
+
+                        DexLabel
+                        {
+                            Layout.leftMargin: 4
+                            Layout.alignment: Qt.AlignVCenter
+                            text: model.name + " (" + model.ticker + ")"
+                        }
+
+                        CoinTypeTag
+                        {
+                            id: typeTag
+                            Layout.leftMargin: 6
+                            Layout.alignment: Qt.AlignVCenter
+                            type: model.type
+                        }
+
+                        CoinTypeTag
+                        {
+                            Layout.leftMargin: 6
+                            Layout.alignment: Qt.AlignVCenter
+                            enabled: General.isIDO(model.ticker)
+                            visible: enabled
+                            type: "IDO"
+                        }
+
+                        CoinTypeTag
+                        {
+                            Layout.leftMargin: 6
+                            Layout.alignment: Qt.AlignVCenter
+                            enabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_wallet_only
+                            visible: enabled
+                            type: "WALLET ONLY"
                         }
                     }
                 }
 
-                RowLayout {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.right
-                    spacing:6
-
-                    // Icon
-                    DefaultImage
-                    {
-                        id: icon
-                        Layout.leftMargin: 8
-                        Layout.alignment: Qt.AlignVCenter
-                        source: General.coinIcon(model.ticker)
-                        Layout.preferredWidth: 18
-                        Layout.preferredHeight: 18
-                    }
-                    DefaultText
-                    {
-                        Layout.leftMargin: 4
-                        Layout.alignment: Qt.AlignVCenter
-                        text: model.name + " (" + model.ticker + ")"
-                    }
-                    CoinTypeTag
-                    {
-                        id: typeTag
-                        Layout.leftMargin: 6
-                        Layout.alignment: Qt.AlignVCenter
-                        type: model.type
-                    }
-
-                    CoinTypeTag
-                    {
-                        Layout.leftMargin: 6
-                        Layout.alignment: Qt.AlignVCenter
-                        enabled: General.isIDO(model.ticker)
-                        visible: enabled
-                        type: "IDO"
-                    }
-
-                    CoinTypeTag
-                    {
-                        Layout.leftMargin: 6
-                        Layout.alignment: Qt.AlignVCenter
-                        enabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_wallet_only
-                        visible: enabled
-                        type: "WALLET ONLY"
-                    }
+                DexMouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: listInnerRowCheckbox.checked = !listInnerRowCheckbox.checked
                 }
             }
         }
@@ -211,7 +237,8 @@ MultipageModal
         {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: 40
+            Layout.topMargin: 10
+            Layout.preferredHeight: 60
 
             DexTransparentButton
             {
@@ -226,10 +253,11 @@ MultipageModal
                     setting_modal.open()
                 }
             }
+
             DexTransparentButton
             {
                 anchors.right: parent.right
-                text: qsTr("Add a custom asset to the list")
+                text: qsTr("Add a custom asset")
                 topPadding: 5
                 bottomPadding: 5
                 Layout.preferredHeight: 35
@@ -241,17 +269,17 @@ MultipageModal
             }
         }
 
-        RowLayout
-        {
-            Layout.fillWidth: true
-            DefaultButton
+        footer:
+        [
+            DexAppButton
             {
                 Layout.preferredWidth: 199
                 text: qsTr("Close")
                 radius: 20
                 onClicked: root.close()
-            }
-            Item { Layout.fillWidth: true }
+            },
+            Item { Layout.fillWidth: true },
+
             DexGradientAppButton
             {
                 Layout.preferredWidth: 199
@@ -259,14 +287,15 @@ MultipageModal
                 enabled: coin_cfg_model.checked_nb > 0
                 text: qsTr("Enable")
                 radius: 20
+
                 onClicked:
                 {
-                    API.app.enable_coins(coin_cfg_model.get_checked_coins())
-                    setCheckState(false)
+                    API.app.enable_coins(coin_cfg_model.get_checked_coins());
+                    root.setCheckState(false);
                     coin_cfg_model.checked_nb = 0
                     root.close()
                 }
             }
-        }
+        ]
     }
 }

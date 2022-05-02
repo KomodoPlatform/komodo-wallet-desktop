@@ -238,6 +238,7 @@
     "name": "ArtByte (OLD)",
     "coinpaprika_id": "aby-artbyte",
     "coingecko_id": "artbyte",
+    "nomics_id": "ABY2",
     "electrum": [
       {
         "url": "electrumx.aby.ewmcx.biz:50002",
@@ -262,6 +263,7 @@
     "name": "ArtByte",
     "coinpaprika_id": "aby-artbyte",
     "coingecko_id": "artbyte",
+    "nomics_id": "ABY2",
     "electrum": [
       {
         "url": "elec-seeder-one.artbytecoin.org:50012",
@@ -5466,6 +5468,28 @@
     "explorer_url": [
       "http://explorer.picacoin.org/"
     ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "PND": {
+    "coin": "PND",
+    "name": "Pandacoin",
+    "coinpaprika_id": "pnd-pandacoin",
+    "coingecko_id": "pandacoin",
+    "nomics_id": "PND",
+    "electrum": [
+      {
+        "url": "electrum.thepandacoin.net:50002",
+        "protocol": "SSL",
+        "disable_cert_verification": false
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/pnd/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
