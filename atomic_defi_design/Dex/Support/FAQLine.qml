@@ -12,5 +12,5 @@ TextWithTitle {
     Layout.fillWidth: true
     Layout.rightMargin: 10
     text_font.pixelSize: 14
-    title_font.pixelSize: 16
+    title_font.pixelSize: 18
 }

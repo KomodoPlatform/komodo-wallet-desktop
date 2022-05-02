@@ -39,7 +39,9 @@ Circle
 
     DexTooltip
     {
-        visible: mouse_area.containsMouse
         id: tooltip_text
+        visible: mouse_area.containsMouse
+        background_visible: false
+        font.pixelSize: 12
     }
 }

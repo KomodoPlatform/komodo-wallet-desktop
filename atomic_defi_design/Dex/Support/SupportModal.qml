@@ -23,13 +23,15 @@ Qaterial.Dialog
     id: support_modal
     readonly property bool update_needed: API.app.self_update_service.update_needed
 
-    width: 750
+    width: 950
     height: 650
-    padding: 30
+    padding: 20
+    topPadding: 30
+    bottomPadding: 30
     anchors.centerIn: parent
+
     dim: true
     modal: true
-
     title: "Support"
 
     header: Item
@@ -63,14 +65,16 @@ Qaterial.Dialog
             id: faq_title
             height: 30
             Layout.preferredWidth: faq_column.width
-            Layout.topMargin: 30
+            Layout.topMargin: 20
             Layout.bottomMargin: 20
-            Layout.leftMargin: 25
+            Layout.leftMargin: 42
             DexLabel
             {
                 id: faq_label
+                Layout.preferredWidth: faq_title.width
                 text_value: qsTr("Frequently Asked Questions")
                 font.pixelSize: Style.textSize2
+                horizontalAlignment: Text.AlignHCenter
             }
         }
 
@@ -79,16 +83,16 @@ Qaterial.Dialog
             id: faq_flickable
 
             width: support_modal.width - 100
-            height: support_modal.height - 200
-            contentWidth: width - 25
+            height: support_modal.height - 220
+            contentWidth: width - 20
             contentHeight: faq_column.height
-            Layout.leftMargin: 25
+            Layout.leftMargin: 32
 
             ColumnLayout
             {
                 id: faq_column
                 width: parent.width - 5
-                spacing: 10
+                spacing: 12
 
 
                 // FAQ Lines
@@ -173,10 +177,10 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
         RowLayout
         {
             id: bottom_row
-            Layout.topMargin: parent.spacing
+            Layout.topMargin: 20
             Layout.preferredHeight: 70
             Layout.preferredWidth: faq_title.width
-            Layout.leftMargin: 25
+            Layout.leftMargin: 32
             property var filler_width: (parent.width - links_row.width - changelog_button.width - logs_btn.width) / 2 - 14
 
             LinksRow { id: links_row }

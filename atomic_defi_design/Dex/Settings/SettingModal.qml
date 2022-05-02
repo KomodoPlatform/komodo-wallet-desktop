@@ -14,19 +14,29 @@ import Qaterial 1.0 as Qaterial
 //! Project Imports
 import "../Components"
 import "../Constants"
-as Constants
 import App 1.0
-
 import Dex.Themes 1.0 as Dex
 
 
 Qaterial.Dialog
 {
+    id: setting_modal
     property alias selectedMenuIndex: menu_list.currentIndex
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
     property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
+
+    width: 950
+    height: 650
+    padding: 20
+    topPadding: 30
+    bottomPadding: 30
+    anchors.centerIn: parent
+
+    dim: true
+    modal: true
+    title: "Settings"
 
     function disconnect()
     {
@@ -52,13 +62,6 @@ Qaterial.Dialog
 
     }
 
-    id: setting_modal
-    width: 950
-    height: 650
-    anchors.centerIn: parent
-    dim: true
-    modal: true
-    title: "Settings"
 
     header: Item
     {}
@@ -79,10 +82,6 @@ Qaterial.Dialog
         border.width: 0
         radius: 16
     }
-
-    padding: 20
-    topPadding: 30
-    bottomPadding: 30
 
     Item
     {
