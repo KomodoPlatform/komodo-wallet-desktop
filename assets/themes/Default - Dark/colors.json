@@ -7,6 +7,8 @@
     "secondBackgroundColor": "#24273DFF",
     "backgroundColorDeep": "#171a2cFF",
 
+    "busyIndicatorColor": "#4986EAFF",
+
     "buttonColorDisabled": "#28375AFF",
     "buttonColorEnabled": "#293254FF",
     "buttonColorHovered": "#4068B929FF",

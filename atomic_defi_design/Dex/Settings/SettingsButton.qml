@@ -1,9 +1,11 @@
 import QtQuick 2.15
 import "../Components/"
 import App 1.0
+import QtQuick.Layouts 1.15
 import Qaterial 1.0 as Qaterial 
 
-Item {
+RowLayout
+{
     id: control
     property bool noBackground: false
     
@@ -14,16 +16,19 @@ Item {
 
     anchors.horizontalCenter: parent.horizontalCenter
 
-    DexLabel {
-        anchors.verticalCenter: parent.verticalCenter
+    DexLabel
+    {
+        Layout.alignment: Qt.AlignVCenter
         font: DexTypo.subtitle1
         text: control.title // qsTr("Logs")
     }
 
-    DexAppButton {
+    Item { Layout.fillWidth: true }
+
+    DexAppButton
+    {
         visible: control.noBackground
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
+        Layout.alignment: Qt.AlignVCenter
         text: control.buttonText
         color: containsMouse ? DexTheme.buttonColorHovered : 'transparent'
         height: 48
@@ -39,9 +44,9 @@ Item {
         onClicked: control.clicked()
     }
 
-    DexAppOutlineButton {
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
+    DexAppOutlineButton
+    {
+        Layout.alignment: Qt.AlignVCenter
         leftPadding: 20 
         rightPadding: 20
         radius: 20

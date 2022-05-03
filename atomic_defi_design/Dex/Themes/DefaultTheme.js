@@ -10,6 +10,8 @@ function getHardcoded()
         backgroundColor: "#FCFCFCFF",
         backgroundColorDeep: "#FCFCFCFF",
 
+        busyIndicatorColor: "#4986EAFF",
+
         buttonColorDisabled: "#D8E3F8FF",
         buttonColorEnabled: "#F0F6FFFF",
         buttonColorHovered: "#D7E7FFFF",
