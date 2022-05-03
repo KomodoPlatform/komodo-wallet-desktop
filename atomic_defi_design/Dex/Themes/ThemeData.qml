@@ -9,6 +9,8 @@ QtObject
     property color  backgroundColor
     property color  backgroundColorDeep
 
+    property color  busyIndicatorColor
+
     property color  buttonColorDisabled
     property color  buttonColorEnabled
     property color  buttonColorHovered

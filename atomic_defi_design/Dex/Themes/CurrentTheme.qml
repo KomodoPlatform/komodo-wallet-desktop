@@ -94,6 +94,8 @@ ThemeData
         backgroundColor                     = Dex.Color.argbStrFromRgbaStr(themeData.backgroundColor || defaultTheme.backgroundColor);
         backgroundColorDeep                 = Dex.Color.argbStrFromRgbaStr(themeData.backgroundColorDeep || defaultTheme.backgroundColorDeep);
 
+        busyIndicatorColor                  = Dex.Color.argbStrFromRgbaStr(themeData.busyIndicatorColor || defaultTheme.busyIndicatorColor);
+
         buttonColorDisabled                 = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorDisabled || defaultTheme.buttonColorDisabled);
         buttonColorEnabled                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorEnabled || defaultTheme.buttonColorEnabled);
         buttonColorHovered                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorHovered || defaultTheme.buttonColorHovered);
@@ -207,6 +209,8 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.foregroundColor : %1".arg(foregroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.backgroundColor : %1".arg(backgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.backgroundColorDeep : %1".arg(backgroundColorDeep));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.busyIndicatorColor : %1".arg(busyIndicatorColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.buttonColorDisabled : %1".arg(buttonColorDisabled));
         console.info("Dex.Themes.CurrentTheme.printValues.buttonColorEnabled : %1".arg(buttonColorEnabled));
