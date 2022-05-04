@@ -17,6 +17,7 @@ ColumnLayout
     readonly property
     var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
 
+    // Is there error in swap json?
     readonly property bool has_error_event:
     {
         if (!details) return false
@@ -30,7 +31,7 @@ ColumnLayout
         return false
     }
 
-
+    // Total swaptime from sum of events duration
     readonly property double total_time_passed:
     {
         if (!details) return 0
@@ -44,6 +45,8 @@ ColumnLayout
         return sum
     }
 
+
+    // Total swap duration estimate
     readonly property double total_time_passed_estimated:
     {
         const events = all_events
@@ -55,6 +58,7 @@ ColumnLayout
         return sum
     }
 
+    // Current Event index
     readonly property int current_event_idx:
     {
         if (!details) return -1
@@ -112,27 +116,37 @@ ColumnLayout
     }
 
     // Simulated countdown time until refund unlocked
-    property double payment_lock_countdown_time: -1
-    property double wait_until_countdown_time: -1
+    property double payment_lock_countdown_time: -1    // First we wait for locktime expiry
+    property double wait_until_countdown_time: -1      // Then we count down to 'wait_until' time
     function updateCountdownTime()
     {
-        if (!details) {
+        console.log("current_event_idx: " + current_event_idx)
+        console.log("details: ")
+        console.log(details)
+
+        if (current_event_idx !== -1 || !details) {
             payment_lock_countdown_time = -1
             return
         }
 
+        const events = details.events
+
         if (payment_lock_countdown_time == 0)
         {
             console.log(">payment_lock_countdown_time at zero " + details.order_id)
-            if (wait_until_countdown_time < 0)
-            { 
-                if (details.events[current_event_idx - 1].hasOwnProperty('data'))
+            if (wait_until_countdown_time > 0)
+            {
+                console.log("current_event_idx: " + current_event_idx)
+                console.log("events: " + events)
+                if (events[current_event_idx - 1].hasOwnProperty('data'))
                 {
-                    if (details.events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
+                    console.log("event: " + events[current_event_idx - 1])
+                    console.log("event data: " + events[current_event_idx - 1]['data'])
+                    if (events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
                     {
                         console.log(">Date.now(): " + Date.now())
-                        console.log(">wait_until: " + details.events[current_event_idx - 1]['data']['wait_until'] * 1000)
-                        const diff = details.events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
+                        console.log(">wait_until: " + events[current_event_idx - 1]['data']['wait_until'] * 1000)
+                        const diff = events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
                         wait_until_countdown_time = diff - (diff % 1000)
                         console.log(">wait_until_countdown_time: " + wait_until_countdown_time)
                         if (wait_until_countdown_time <= 0)
@@ -143,6 +157,7 @@ ColumnLayout
                 }
             }
         }
+
         else if (details.hasOwnProperty('payment_lock'))
         {
             const diff = details.payment_lock - Date.now()
@@ -152,6 +167,7 @@ ColumnLayout
                 payment_lock_countdown_time = 0
             }
         }
+
         else
         {
             payment_lock_countdown_time = -1
@@ -160,7 +176,7 @@ ColumnLayout
 
     Timer
     {
-        running: details.order_status
+        running: current_event_idx !== -1
         interval: 1000
         repeat: true
         onTriggered: updateCountdownTime()

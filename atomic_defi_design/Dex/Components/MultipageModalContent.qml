@@ -18,6 +18,8 @@ ColumnLayout
 
     default property alias content:         _innerLayout.data
     property alias         footer:          _footer.data
+    property alias         header:          _header.data
+    property var scrollable_height: window.height - _title.height - _header.height - _footer.height - titleTopMargin * 2 - topMarginAfterTitle - 180
 
     Layout.fillWidth: true
     Layout.maximumHeight: window.height - 50
@@ -28,7 +30,17 @@ ColumnLayout
         Layout.topMargin: root.titleTopMargin
         Layout.alignment: root.titleAlignment
         font: DexTypo.head6
+        visible: text != ''
     }
+
+    // Header
+    ColumnLayout
+    {
+        id: _header
+        Layout.topMargin: root.titleTopMargin
+        visible: childrenRect.height > 0
+    }
+
 
     DexFlickable
     {
@@ -37,7 +49,7 @@ ColumnLayout
         Layout.topMargin: root.topMarginAfterTitle
         Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
-        Layout.maximumHeight: window.height - 330
+        Layout.maximumHeight: scrollable_height
 
         contentHeight: _innerLayout.height
 
@@ -55,5 +67,6 @@ ColumnLayout
         id: _footer
         Layout.topMargin: Style.rowSpacing
         spacing: Style.buttonSpacing
+        visible: childrenRect.height > 0
     }
 }

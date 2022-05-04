@@ -17,6 +17,7 @@ Popup {
         color: DexTheme.dexBoxBackgroundColor
         opacity: .3
     }
+
     background: ClipRRect {
         radius: 8
         DexRectangle {

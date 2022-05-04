@@ -27,6 +27,7 @@ MultipageModal
     MultipageModalContent
     {
         titleText: qsTr("Transaction Details")
+        Layout.preferredHeight: window.height - 50
 
         // Amount
         TextEditWithTitle

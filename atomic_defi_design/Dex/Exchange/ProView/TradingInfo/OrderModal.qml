@@ -14,6 +14,8 @@ MultipageModal
     id: root
 
     property var details
+    horizontalPadding: 60
+    verticalPadding: 40
 
     onDetailsChanged: { if (!details) root.close() }
     onOpened:
@@ -26,288 +28,193 @@ MultipageModal
     MultipageModalContent
     {
         titleText: !details ? "" : details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
+        title.font.pixelSize: Style.textSize2
         titleAlignment: Qt.AlignHCenter
+        titleTopMargin: 15
+        topMarginAfterTitle: 15
+        Layout.preferredHeight: window.height - 50
 
-        // Complete image
-        DefaultImage
-        {
-            visible: !details ? false : details.is_swap && details.order_status === "successful"
-            Layout.alignment: Qt.AlignHCenter
-            source: General.image_path + "exchange-trade-complete.png"
-        }
-
-        // Loading symbol
-        DefaultBusyIndicator
-        {
-            visible: !details ? false : details.is_swap && details.order_status !== "successful"
-            running: (!details ? false :
-                details.is_swap &&
-                details.order_status !== "successful" &&
-                details.order_status !== "failed") && Qt.platform.os != "osx"
-            Layout.alignment: Qt.AlignHCenter
-        }
-
-        // Status Text
-        DexLabel
-        {
-            id: statusText
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 5
-            font.pixelSize: Style.textSize1
-            font.bold: true 
-            visible: !details ? false : details.is_swap || !details.is_maker
-            text_value: !details ? "" : visible ? getStatusText(details.order_status) : ''
-        }
-
-        DexLabel
-        {
-            Layout.alignment: Qt.AlignHCenter
-            visible: text_value != ""
-            font.pixelSize: Style.textSizeSmall2
-            text_value: !details ? "" : details.order_status === "refunding" ? swapProgress.getRefundText() : ""
-        }
-
-        RowLayout
-        {
-            Layout.topMargin: 22
-
-            DefaultRectangle
+        header: [
+            // Complete image
+            DexImage
             {
-                Layout.preferredWidth: 226
-                Layout.preferredHeight: 66
-                radius: 10
+                visible: !details ? false : details.is_swap && details.order_status === "successful"
+                Layout.alignment: Qt.AlignHCenter
+                source: General.image_path + "exchange-trade-complete.png"
+                Layout.preferredHeight: 100
+            },
 
-                RowLayout
+            // Loading symbol
+            DexBusyIndicator
+            {
+                visible: !details ? false :
+                            details.is_swap && !["successful", "failed"].includes(details.order_status)
+                running: visible && Qt.platform.os != "osx"
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredHeight: 100
+            },
+
+            RowLayout
+            {
+                Layout.topMargin: 15
+                Layout.preferredHeight: 230
+
+                DexPairItemBadge
                 {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 23
-
-                    DefaultImage
-                    {
-                        Layout.preferredWidth: 35
-                        Layout.preferredHeight: 35
-                        Layout.alignment: Qt.AlignVCenter
-
-                        source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin)
-                    }
-
-                    ColumnLayout
-                    {
-                        Layout.fillWidth: true
-                        RowLayout
-                        {
-                            Layout.fillWidth: true
-                            spacing: 5
-                            DexLabel
-                            {
-                                Layout.fillWidth: true
-                                text: details ? details.base_coin : ""
-                            }
-
-                            DexLabel
-                            {
-                                Layout.fillWidth: true
-                                text: details ? General.coinName(details.base_coin) : ""
-                                wrapMode: Text.NoWrap
-                                elide: Text.ElideRight
-                                font.pixelSize: 11
-                            }
-                        }
-
-                        DexLabel
-                        {
-                            Layout.fillWidth: true
-                            text: details ? details.base_amount : ""
-                            font.pixelSize: 11
-                            wrapMode: Text.NoWrap
-                            elide: Text.ElideRight
-                        }
-                    }
+                    source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin)
+                    ticker: details ? details.base_coin : ""
+                    fullname: details ? General.coinName(details.base_coin) : ""
+                    amount: details ? details.base_amount : ""
                 }
-            }
 
-            Qaterial.Icon
-            {
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-
-                color: Dex.CurrentTheme.foregroundColor
-                icon: Qaterial.Icons.swapHorizontal
-            }
-
-            DefaultRectangle
-            {
-                Layout.preferredWidth: 226
-                Layout.preferredHeight: 66
-                radius: 10
-
-                RowLayout
+                Qaterial.Icon
                 {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 23
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
 
-                    DefaultImage
-                    {
-                        Layout.preferredWidth: 35
-                        Layout.preferredHeight: 35
-                        Layout.alignment: Qt.AlignVCenter
-
-                        source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin)
-                    }
-
-                    ColumnLayout
-                    {
-                        Layout.fillWidth: true
-                        RowLayout
-                        {
-                            Layout.fillWidth: true
-                            spacing: 5
-                            DexLabel
-                            {
-                                Layout.fillWidth: true
-                                text: details ? details.rel_coin : ""
-                            }
-
-                            DexLabel
-                            {
-                                Layout.fillWidth: true
-                                text: details ? General.coinName(details.rel_coin) : ""
-                                wrapMode: Text.NoWrap
-                                elide: Text.ElideRight
-                                font.pixelSize: 11
-                            }
-                        }
-
-                        DexLabel
-                        {
-                            Layout.fillWidth: true
-                            text: details ? details.rel_amount : ""
-                            font.pixelSize: 11
-                            wrapMode: Text.NoWrap
-                            elide: Text.ElideRight
-                        }
-                    }
+                    color: Dex.CurrentTheme.foregroundColor
+                    icon: Qaterial.Icons.swapHorizontal
                 }
-            }
-        }
 
-        DefaultScrollView
+                DexPairItemBadge
+                {
+                    source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin)
+                    ticker: details ? details.rel_coin : ""
+                    fullname: details ? General.coinName(details.rel_coin) : ""
+                    amount: details ? details.rel_amount : ""
+                }
+
+            },
+
+            // Status Text
+            DexLabel
+            {
+                id: statusText
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 5
+                font.pixelSize: Style.textSizeMid1
+                font.bold: true
+                visible: !details ? false : details.is_swap || !details.is_maker
+                text_value: !details ? "" : visible ? getStatusText(details.order_status) : ''
+                Layout.preferredHeight: 25
+            },
+
+            DexLabel
+            {
+                Layout.alignment: Qt.AlignHCenter
+                visible: text_value != ""
+                font.pixelSize: Style.textSizeSmall2
+                text_value: !details ? "" : details.order_status === "refunding" ? swapProgress.getRefundText() : ""
+                Layout.preferredHeight: 25
+            }
+        ]
+
+        ColumnLayout
         {
-            Layout.topMargin: 20
+            id: details_column
             Layout.fillWidth: true
-            Layout.preferredHeight: 300
+            spacing: 12
 
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-            ColumnLayout
+            // Maker/Taker
+            TextEditWithTitle
             {
                 Layout.fillWidth: true
-                height: parent.height - 30
-                spacing: 12
+                title: qsTr("Order Type")
+                text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
+                label.font.pixelSize: 13
+            }
 
-                // Maker/Taker
-                TextEditWithTitle
-                {
-                    Layout.fillWidth: true
-                    title: qsTr("Order Type")
-                    text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
-                    label.font.pixelSize: 13
-                }
+            // Refund state
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("Refund State")
+                text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
+                label.font.pixelSize: 13
+                visible: text !== ''
+            }
 
-                // Refund state
-                TextEditWithTitle
-                {
-                    Layout.fillWidth: true
-                    title: qsTr("Refund State")
-                    text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
-                    label.font.pixelSize: 13
-                    visible: text !== ''
-                }
+            // Date
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("Date")
+                text: !details ? "" : details.date
+                label.font.pixelSize: 13
+                visible: text !== ''
+            }
 
-                // Date
-                TextEditWithTitle
-                {
-                    Layout.fillWidth: true
-                    title: qsTr("Date")
-                    text: !details ? "" : details.date
-                    label.font.pixelSize: 13
-                    visible: text !== ''
-                }
+            // ID
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("ID")
+                text: !details ? "" : details.order_id
+                label.font.pixelSize: 13
+                visible: text !== ''
+                copy: true
+                privacy: true
+            }
 
-                // ID
-                TextEditWithTitle
-                {
-                    Layout.fillWidth: true
-                    title: qsTr("ID")
-                    text: !details ? "" : details.order_id
-                    label.font.pixelSize: 13
-                    visible: text !== ''
-                    copy: true
-                    privacy: true
-                }
+            // Payment ID
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
+                text: !details ? "" : details.maker_payment_id
+                label.font.pixelSize: 12
+                visible: text !== ''
+                copy: true
+                privacy: true
+            }
 
-                // Payment ID
-                TextEditWithTitle
-                {
-                    Layout.fillWidth: true
-                    title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
-                    text: !details ? "" : details.maker_payment_id
-                    label.font.pixelSize: 12
-                    visible: text !== ''
-                    copy: true
-                    privacy: true
-                }
+            // Payment ID
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
+                text: !details ? "" : details.taker_payment_id
+                label.font.pixelSize: 12
+                visible: text !== ''
+                copy: true
+                privacy: true
+            }
 
-                // Payment ID
-                TextEditWithTitle
-                {
-                    Layout.fillWidth: true
-                    title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
-                    text: !details ? "" : details.taker_payment_id
-                    label.font.pixelSize: 12
-                    visible: text !== ''
-                    copy: true
-                    privacy: true
-                }
+            // Error ID
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("Error ID")
+                text: !details ? "" : details.order_error_state
+                label.font.pixelSize: 13
+                visible: text !== ''
+            }
 
-                // Error ID
-                TextEditWithTitle
-                {
-                    Layout.fillWidth: true
-                    title: qsTr("Error ID")
-                    text: !details ? "" : details.order_error_state
-                    label.font.pixelSize: 13
-                    visible: text !== ''
-                }
+            // Error Details
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("Error Log")
+                text: !details ? "" : details.order_error_message
+                label.font.pixelSize: 13
+                visible: text !== ''
+                copy: true
+                onCopyNotificationTitle: qsTr("Error Log")
+            }
 
-                // Error Details
-                TextEditWithTitle
-                {
-                    Layout.fillWidth: true
-                    title: qsTr("Error Log")
-                    text: !details ? "" : details.order_error_message
-                    label.font.pixelSize: 13
-                    visible: text !== ''
-                    copy: true
-                    onCopyNotificationTitle: qsTr("Error Log")
-                }
+            HorizontalLine
+            {
+                visible: swapProgress.visible
+                Layout.fillWidth: true
+                Layout.topMargin: 10
+            }
 
-                HorizontalLine
-                {
-                    visible: swapProgress.visible
-                    Layout.fillWidth: true
-                    Layout.topMargin: 10
-                }
-
-                SwapProgress
-                {
-                    id: swapProgress
-                    Layout.fillWidth: true
-                    visible: General.exists(details) && details.order_status !== "matching"
-                    details: root.details
-                }
+            SwapProgress
+            {
+                id: swapProgress
+                Layout.fillWidth: true
+                visible: General.exists(details) && details.order_status !== "matching"
+                details: root.details
             }
         }
 
@@ -321,6 +228,8 @@ MultipageModal
                 rightPadding: 20
                 radius: 18
                 onClicked: root.close()
+                Layout.preferredHeight: 50
+
             },
 
             // Cancel button
@@ -333,6 +242,7 @@ MultipageModal
                 radius: 18
                 text: qsTr("Cancel Order")
                 onClicked: cancelOrder(details.order_id)
+                Layout.preferredHeight: 50
             },
 
             Item
@@ -353,6 +263,7 @@ MultipageModal
                     details.recoverable && details.order_status !== "refunding"
                 text: enabled ? qsTr("Recover Funds") : qsTr("Refunding...")
                 onClicked: API.app.orders_mdl.recover_fund(details.order_id)
+                Layout.preferredHeight: 50
             },
 
             Item
@@ -364,6 +275,7 @@ MultipageModal
             DexAppOutlineButton
             {
                 text: qsTr("View on Explorer")
+                Layout.preferredHeight: 50
                 leftPadding: 20
                 rightPadding: 20
                 radius: 18

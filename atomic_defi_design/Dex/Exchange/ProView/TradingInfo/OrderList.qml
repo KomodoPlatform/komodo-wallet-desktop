@@ -27,7 +27,7 @@ Item
             Layout.maximumWidth: 511
         }
 
-        DefaultListView
+        DexListView
         {
             id: list
 
@@ -102,7 +102,7 @@ Item
         }
     }
 
-    DefaultText
+    DexLabel
     {
         visible: list.count === 0
         anchors.centerIn: parent

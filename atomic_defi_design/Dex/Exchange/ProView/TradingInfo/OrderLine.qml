@@ -23,7 +23,7 @@ FloatingBackground
     color: mouse_area.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.floatingBackgroundColor
     radius: 0
 
-    DefaultMouseArea
+    DexMouseArea
     {
         id: mouse_area
         anchors.fill: parent
@@ -47,7 +47,7 @@ FloatingBackground
             Layout.preferredWidth: 24
             Layout.alignment: Qt.AlignCenter
 
-            DefaultText
+            DexLabel
             {
                 id: statusText
                 anchors.centerIn: parent
@@ -84,7 +84,7 @@ FloatingBackground
 
                 clip: true
 
-                DefaultText
+                DexLabel
                 {
                     id: baseAmountLabel
                     anchors.left: parent.left
@@ -97,7 +97,7 @@ FloatingBackground
                     maximumLineCount: 1
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.left: baseAmountLabel.right
                     anchors.leftMargin: 3
@@ -120,7 +120,7 @@ FloatingBackground
                     iconSize: 18
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.right: relAmountInCurrCurrency.left
                     anchors.rightMargin: 3
@@ -133,7 +133,7 @@ FloatingBackground
                     maximumLineCount: 1
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: relAmountInCurrCurrency
 
@@ -153,7 +153,7 @@ FloatingBackground
                 Layout.fillWidth: true
                 Layout.preferredHeight: childrenRect.height
 
-                DefaultImage
+                DexImage
                 {
                     id: baseIcon
 
@@ -166,7 +166,7 @@ FloatingBackground
                     source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin ?? atomic_app_primary_coin)
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.left: baseIcon.right
                     anchors.leftMargin: 2
@@ -180,7 +180,7 @@ FloatingBackground
                     maximumLineCount: 1
                 }
 
-                DefaultText
+                DexLabel
                 {
                     visible: clickable
 
@@ -194,7 +194,7 @@ FloatingBackground
                     color: Dex.CurrentTheme.foregroundColor2
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.right: relCoin.left
                     anchors.rightMargin: 2
@@ -208,7 +208,7 @@ FloatingBackground
                     maximumLineCount: 1
                 }
 
-                DefaultImage
+                DexImage
                 {
                     id: relCoin
 
@@ -229,7 +229,7 @@ FloatingBackground
             Layout.preferredWidth: 24
             Layout.alignment: Qt.AlignCenter
 
-            DefaultText
+            DexLabel
             {
                 anchors.centerIn: parent
 
@@ -238,9 +238,9 @@ FloatingBackground
                 text_value: Style.warningCharacter
                 color: Style.colorYellow
 
-                DefaultTooltip
+                DexTooltip
                 {
-                    contentItem: DefaultText
+                    contentItem: DexLabel
                     {
                         text_value: qsTr("Funds are recoverable")
                         font.pixelSize: Style.textSizeSmall4

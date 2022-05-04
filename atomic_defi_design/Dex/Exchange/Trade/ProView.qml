@@ -150,7 +150,7 @@ RowLayout
 
             Layout.minimumHeight: isCollapsed() ? 60 : 380
             Layout.maximumHeight: chart.isCollapsed() ? -1 : 500
-            Layout.fillHeight: !isCollapsed()
+            Layout.fillHeight: !isCollapsed() || !chart.pair_supported
         }
     }
 
