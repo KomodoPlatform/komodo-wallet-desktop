@@ -8122,13 +8122,16 @@
         "protocol": "TCP"
       },
       {
-        "url": "electrum1.cipig.net:10068"
+        "url": "electrum1.cipig.net:10068",
+        "ws_url": "electrum1.cipig.net:30068"
       },
       {
-        "url": "electrum2.cipig.net:10068"
+        "url": "electrum2.cipig.net:10068",
+        "ws_url": "electrum2.cipig.net:30068"
       },
       {
-        "url": "electrum3.cipig.net:10068"
+        "url": "electrum3.cipig.net:10068",
+        "ws_url": "electrum3.cipig.net:30068"
       }
     ],
     "explorer_url": [
@@ -8160,13 +8163,16 @@
     "coinpaprika_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10071"
+        "url": "electrum1.cipig.net:10071",
+        "ws_url": "electrum1.cipig.net:30071"
       },
       {
-        "url": "electrum2.cipig.net:10071"
+        "url": "electrum2.cipig.net:10071",
+        "ws_url": "electrum2.cipig.net:30071"
       },
       {
-        "url": "electrum3.cipig.net:10071"
+        "url": "electrum3.cipig.net:10071",
+        "ws_url": "electrum3.cipig.net:30071"
       }
     ],
     "explorer_url": [
