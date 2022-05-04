@@ -11,6 +11,8 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
+// TODO: confirm deprecated; delete.
+
 Item {
     id: root
     function disconnect() {

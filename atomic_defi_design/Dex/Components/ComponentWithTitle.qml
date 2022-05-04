@@ -8,6 +8,7 @@ import Dex.Themes 1.0 as Dex
 ColumnLayout
 {
     property alias          title: title.text
+    property alias          title_font: title.font
     property bool           expandable: false
     property bool           expanded: false
     readonly property bool  show_content: !expandable || expanded

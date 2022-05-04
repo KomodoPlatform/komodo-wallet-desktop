@@ -7,11 +7,12 @@ import "../Constants"
 import App 1.0 //> API
 
 RowLayout {
-    spacing: 10
+    spacing: 0
 
     LinkIcon {
         enabled: API.app_discord_url !== ""
         visible: enabled
+        Layout.leftMargin: 0
 
         id: discord_icon
         link: API.app_discord_url
@@ -31,6 +32,7 @@ RowLayout {
     LinkIcon {
         enabled: API.app_support_url !== ""
         visible: enabled
+        Layout.rightMargin: 0
 
         link: API.app_support_url
         source: General.image_path + "icon-support.png"
