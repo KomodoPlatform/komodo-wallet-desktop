@@ -121,8 +121,6 @@ ColumnLayout
     function updateCountdownTime()
     {
         console.log("current_event_idx: " + current_event_idx)
-        console.log("details: ")
-        console.log(details)
 
         if (current_event_idx !== -1 || !details) {
             payment_lock_countdown_time = -1
@@ -130,6 +128,9 @@ ColumnLayout
         }
 
         const events = details.events
+        console.log("events: ")
+        console.log(events)
+        console.log(JSON.parse(events))
 
         if (payment_lock_countdown_time == 0)
         {

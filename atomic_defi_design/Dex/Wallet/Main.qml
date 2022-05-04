@@ -876,8 +876,33 @@ Item
                 {
                     anchors.centerIn: parent
                     visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
-                    text_value: api_wallet_page.tx_fetching_busy ? (qsTr("Refreshing") + "...") : qsTr("No transactions")
+                    text_value: api_wallet_page.tx_fetching_busy ? '' : qsTr("No transactions")
                     font.pixelSize: Style.textSize
+                }
+
+                ColumnLayout
+                {
+                    id: fetching_text_row
+                    anchors.centerIn: parent
+                    visible: api_wallet_page.tx_fetching_busy
+
+                    spacing: 20
+                    DefaultBusyIndicator
+                    {
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                        Layout.preferredWidth: Style.textSizeSmall3
+                        Layout.preferredHeight: Layout.preferredWidth
+                        indicator_size: 32
+                        indicator_dot_size: 5
+                    }
+
+                    DefaultText
+                    {
+                        id: fetching_text
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                        text_value: qsTr("Fetching transactions") + "..."
+                        font.pixelSize: Style.textSize
+                    }
                 }
 
                 Transactions
@@ -888,34 +913,5 @@ Item
                 }
             }
         }
-
-        RowLayout
-        {
-            id: fetching_text_row
-            visible: api_wallet_page.tx_fetching_busy
-            Layout.preferredHeight: fetching_text.font.pixelSize * 1.5
-
-            Layout.topMargin: -layout_margin*0.5
-            Layout.bottomMargin: layout_margin*0.5
-
-            Layout.alignment: Qt.AlignHCenter
-            spacing: 10
-            DefaultBusyIndicator
-            {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.preferredWidth: Style.textSizeSmall3
-                Layout.preferredHeight: Layout.preferredWidth
-            }
-
-            DefaultText
-            {
-                id: fetching_text
-                Layout.alignment: Qt.AlignVCenter
-                text_value: qsTr("Fetching transactions") + "..."
-                font.pixelSize: Style.textSizeSmall3
-            }
-        }
-
-        implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
     }
 }

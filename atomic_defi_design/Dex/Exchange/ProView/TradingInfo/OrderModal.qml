@@ -221,40 +221,16 @@ MultipageModal
         // Buttons
         footer:
         [
-            DexAppButton
-            {
-                text: qsTr("Close")
-                leftPadding: 20
-                rightPadding: 20
-                radius: 18
-                onClicked: root.close()
-                Layout.preferredHeight: 50
-
-            },
-
-            // Cancel button
-            DexAppOutlineButton
-            {
-                id: cancelOrderButton
-                visible: !details ? false : details.cancellable
-                leftPadding: 20
-                rightPadding: 20
-                radius: 18
-                text: qsTr("Cancel Order")
-                onClicked: cancelOrder(details.order_id)
-                Layout.preferredHeight: 50
-            },
-
             Item
             {
-                visible: !cancelOrderButton.visible
+                visible: refund_button.visible || cancel_order_button.visible
                 Layout.fillWidth: true
             },
 
             // Recover Funds button
             DexAppButton
             {
-                id: refundButton
+                id: refund_button
                 leftPadding: 20
                 rightPadding: 20
                 radius: 18
@@ -266,14 +242,24 @@ MultipageModal
                 Layout.preferredHeight: 50
             },
 
-            Item
+            // Cancel button
+            DexAppOutlineButton
             {
-                visible: !refundButton.visible & !cancelOrderButton.visible
-                Layout.fillWidth: true
+                id: cancel_order_button
+                visible: !details ? false : details.cancellable
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
+                text: qsTr("Cancel Order")
+                onClicked: cancelOrder(details.order_id)
+                Layout.preferredHeight: 50
             },
+
+            Item { Layout.fillWidth: true },
 
             DexAppOutlineButton
             {
+                id: explorer_button
                 text: qsTr("View on Explorer")
                 Layout.preferredHeight: 50
                 leftPadding: 20
@@ -290,6 +276,29 @@ MultipageModal
                     if (maker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.base_coin : details.rel_coin, maker_id)
                     if (taker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.rel_coin : details.base_coin, taker_id)
                 }
+            },
+
+            Item
+            {
+                visible: close_order_button.visible && explorer_button.visible
+                Layout.fillWidth: true
+            },
+
+            DexAppButton
+            {
+                id: close_order_button
+                text: qsTr("Close")
+                leftPadding: 20
+                rightPadding: 20
+                radius: 18
+                onClicked: root.close()
+                Layout.preferredHeight: 50
+            },
+
+            Item
+            {
+                visible: close_order_button.visible || explorer_button.visible
+                Layout.fillWidth: true
             }
         ]
     }
