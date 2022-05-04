@@ -499,6 +499,7 @@ QtObject {
                                           "VAL": "#1EEC84",
                                           "VET": "#18C6FF",
                                           "VITE": "#007AFF",
+                                          "VOTE2022": "#41EAD4",
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WAVES": "#016BFF",
