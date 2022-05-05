@@ -272,7 +272,7 @@ MultipageModal
 
         property bool cryptoSendMode: true
 
-        DefaultRectangle
+        DexRectangle
         {
 
             enabled: !root.segwit && !root.is_send_busy
@@ -284,7 +284,7 @@ MultipageModal
             color: input_address.background.color
             radius: input_address.background.radius
 
-            DefaultTextField
+            DexTextField
             {
                 id: input_address
 
@@ -307,7 +307,7 @@ MultipageModal
 
                 color: addrbookIconMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : "transparent"
 
-                DefaultMouseArea
+                DexMouseArea
                 {
                     id: addrbookIconMouseArea
                     anchors.fill: parent
@@ -316,7 +316,7 @@ MultipageModal
                 }
             }
 
-            DefaultImage
+            DexImage
             {
                 id: addrbookIcon
                 anchors.right: parent.right
@@ -342,7 +342,7 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
 
-            DefaultText
+            DexLabel
             {
                 id: reason
 
@@ -354,7 +354,7 @@ MultipageModal
                 text_value: qsTr("The address has to be mixed case.")
             }
 
-            DefaultButton
+            DexButton
             {
                 enabled: !root.is_send_busy
                 visible: needFix
@@ -393,7 +393,7 @@ MultipageModal
                 }
             }
 
-            DefaultText
+            DexLabel
             {
                 anchors.right: maxBut.left
                 anchors.rightMargin: 10
@@ -414,13 +414,13 @@ MultipageModal
                 radius: 7
                 color: maxButMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
 
-                DefaultText
+                DexLabel
                 {
                     anchors.centerIn: parent
                     text: qsTr("MAX")
                 }
 
-                DefaultMouseArea
+                DexMouseArea
                 {
                     id: maxButMouseArea
                     anchors.fill: parent
@@ -448,7 +448,7 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: 380
 
-            DefaultText
+            DexLabel
             {
                 id: equivalentAmount
 
@@ -520,7 +520,7 @@ MultipageModal
                     anchors.verticalCenter: parent.verticalCenter
                     color: Dex.CurrentTheme.backgroundColor
 
-                    DefaultText
+                    DexLabel
                     {
                         id: fiat_symbol
                         visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD"
@@ -529,7 +529,7 @@ MultipageModal
                         text: API.app.settings_pg.current_currency_sign
                     }
 
-                    DefaultImage
+                    DexImage
                     {
                         visible: !fiat_symbol.visible
                         anchors.centerIn: parent
@@ -539,7 +539,7 @@ MultipageModal
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: cryptoFiatSwitchText
                     anchors.left: cryptoFiatSwitchIcon.right
@@ -553,7 +553,7 @@ MultipageModal
                     }
                 }
 
-                DefaultMouseArea
+                DexMouseArea
                 {
                     id: cryptoFiatSwitchMouseArea
                     anchors.fill: parent
@@ -580,7 +580,7 @@ MultipageModal
         }
 
         // Custom fees warning
-        DefaultText
+        DexLabel
         {
             visible: custom_fees_switch.checked
             font.pixelSize: 14
@@ -646,7 +646,7 @@ MultipageModal
             }
 
             // Fee is higher than amount error
-            DefaultText
+            DexLabel
             {
                 id: fee_error
                 visible: feeIsHigherThanAmount()
@@ -660,7 +660,7 @@ MultipageModal
         }
 
         // Not enough funds error
-        DefaultText
+        DexLabel
         {
             Layout.topMargin: 16
             wrapMode: Text.Wrap
@@ -671,7 +671,7 @@ MultipageModal
             text_value: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
         }
 
-        DefaultBusyIndicator { visible: root.is_send_busy }
+        DexBusyIndicator { visible: root.is_send_busy }
 
         // Footer
         RowLayout
@@ -679,7 +679,7 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
 
-            DefaultButton
+            DexButton
             {
                 text: qsTr("Close")
 
@@ -782,7 +782,7 @@ MultipageModal
                   send_result.withdraw_answer.date
         }
 
-        DefaultBusyIndicator
+        DexBusyIndicator
         {
             visible: root.is_broadcast_busy
         }

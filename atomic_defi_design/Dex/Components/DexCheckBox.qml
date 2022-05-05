@@ -1,5 +1,6 @@
 //! Qt Imports.
 import QtQuick 2.15
+import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Universal 2.15
 
@@ -12,39 +13,23 @@ CheckBox
     id: control
 
     property alias label: _label
-    property color textColor: Dex.CurrentTheme.foregroundColor
-
     property alias boxWidth: _indicator.implicitWidth
     property alias boxHeight: _indicator.implicitHeight
-    property int labelWidth: control.width - boxWidth
-
-    Universal.accent: Dex.CurrentTheme.accentColor
-    Universal.foreground: Dex.CurrentTheme.foregroundColor
-    Universal.background: Dex.CurrentTheme.backgroundColor
+    property alias mouseArea: mouse_area
+    property color textColor: Dex.CurrentTheme.foregroundColor
+    property int labelWidth: 120
 
     font.family: Style.font_family
-
-    contentItem: DefaultText
-    {
-        id: _label
-        width: labelWidth
-        text: control.text
-        font: control.font
-        color: control.textColor
-        horizontalAlignment: DexLabel.AlignLeft
-        verticalAlignment: DexLabel.AlignVCenter
-        leftPadding: control.indicator.width + control.spacing
-        wrapMode: Label.Wrap
-    }
+    Layout.preferredWidth: childrenRect.width
+    Layout.preferredHeight: childrenRect.height
 
     indicator: DexRectangle
     {
         id: _indicator
+        anchors.verticalCenter: control.verticalCenter
 
         implicitWidth: 26
         implicitHeight: 26
-        x: control.leftPadding - control.spacing
-        anchors.verticalCenter: control.verticalCenter
         radius: 20
 
         gradient: Gradient
@@ -58,16 +43,38 @@ CheckBox
         {
             visible: !control.checked
             anchors.centerIn: parent
-            implicitWidth: parent.width - 6
-            implicitHeight: parent.height - 6
+            width: parent.width - 6
+            height: parent.height - 6
             radius: parent.radius
         }
 
         opacity: enabled ? 1 : 0.5
     }
 
-    DefaultMouseArea
+    contentItem: RowLayout
     {
+        id: _content
+        Layout.alignment: Qt.AlignVCenter
+        Layout.preferredWidth: labelWidth
+        height: _label.height
+        spacing: 0
+
+        DexLabel
+        {
+            id: _label
+            text: control.text
+            font: control.font
+            color: control.textColor
+            Layout.alignment: Qt.AlignVCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: control.indicator.width + control.spacing
+            wrapMode: Label.Wrap
+        }
+    }
+
+    DexMouseArea
+    {
+        id: mouse_area
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
     }

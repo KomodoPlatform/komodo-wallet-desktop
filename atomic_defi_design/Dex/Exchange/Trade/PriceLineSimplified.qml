@@ -33,7 +33,7 @@ ColumnLayout
 
     spacing: 35
 
-    DefaultText
+    DexLabel
     {
         visible: !price_entered && invalid_cex_price
         Layout.alignment: Qt.AlignHCenter
@@ -48,14 +48,14 @@ ColumnLayout
         ColumnLayout
         {
             visible: price_entered
-            DefaultText
+            DexLabel
             {
                 text_value: qsTr("Exchange rate") + (preffered_order.price !== undefined ? (" (" + qsTr("Selected") + ")") : "")
                 font.pixelSize: fontSize
             }
 
             // Price reversed
-            DefaultText
+            DexLabel
             {
                 text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", price_reversed, left_ticker)
                 font.pixelSize: fontSizeBigger
@@ -63,7 +63,7 @@ ColumnLayout
             }
 
             // Price
-            DefaultText
+            DexLabel
             {
                 text_value: General.formatCrypto("", price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
                 font.pixelSize: fontSize
@@ -76,7 +76,7 @@ ColumnLayout
         {
             visible: !invalid_cex_price
 
-            DefaultText
+            DexLabel
             {
                 Layout.alignment: Qt.AlignRight
                 text_value: General.cex_icon + " " + qsTr("CEXchange rate")
@@ -86,7 +86,7 @@ ColumnLayout
             }
 
             // Price reversed
-            DefaultText
+            DexLabel
             {
                 Layout.alignment: Qt.AlignRight
                 text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", cex_price_reversed, left_ticker)
@@ -95,7 +95,7 @@ ColumnLayout
             }
 
             // Price
-            DefaultText
+            DexLabel
             {
                 Layout.alignment: Qt.AlignRight
                 text_value: General.formatCrypto("", cex_price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
@@ -103,7 +103,6 @@ ColumnLayout
             }
         }
     }
-    
 
     // Price Comparison
     ColumnLayout
@@ -132,7 +131,7 @@ ColumnLayout
                     anchors.horizontalCenterOffset: 0.5 * parent.width * Math.min(Math.max(parseFloat(cex_price_diff) / line_scale, -1), 1)
                 }
 
-                DefaultText
+                DexLabel
                 {
                     text_value: General.formatPercent(line_scale)
                     font.pixelSize: fontSize
@@ -140,7 +139,7 @@ ColumnLayout
                     anchors.topMargin: -15
                 }
 
-                DefaultText
+                DexLabel
                 {
                     text_value: General.formatPercent(-line_scale)
                     font.pixelSize: fontSize
@@ -151,7 +150,7 @@ ColumnLayout
             }
         }
 
-        DefaultText
+        DexLabel
         {
             id: price_diff_text
             Layout.topMargin: 10

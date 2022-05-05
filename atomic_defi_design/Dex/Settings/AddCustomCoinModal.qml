@@ -121,11 +121,13 @@ MultipageModal
     MultipageModalContent
     {
         titleText: qsTr("Choose the asset type")
+        height: 450
 
         DexComboBox
         {
             id: input_type
             Layout.fillWidth: true
+            Layout.preferredHeight: 50
             textRole: "text"
             valueRole: "text"
             model: type_model
@@ -145,6 +147,7 @@ MultipageModal
             {
                 text: qsTr("Cancel")
                 Layout.preferredWidth: 220
+                Layout.preferredHeight: 50
                 radius: 18
                 onClicked: root.previousPage()
             },
@@ -155,6 +158,7 @@ MultipageModal
             {
                 text: qsTr("Next")
                 Layout.preferredWidth: 220
+                Layout.preferredHeight: 50
                 radius: 18
                 onClicked:
                 {

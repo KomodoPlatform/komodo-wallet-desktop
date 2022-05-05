@@ -56,6 +56,7 @@ MultipageModal
         DexCheckBox
         {
             id: accept_eula
+            Layout.preferredWidth: parent.width
             visible: !close_only
             labelWidth: eula_rect.width - 80
             text: qsTr("Accept EULA")
@@ -64,6 +65,7 @@ MultipageModal
         DexCheckBox
         {
             id: accept_tac
+            Layout.preferredWidth: parent.width
             visible: !close_only
             labelWidth: eula_rect.width - 80
             text: qsTr("Accept Terms and Conditions")

@@ -226,6 +226,7 @@ Item {
 
                         SearchField
                         {
+                            id: coin_search_field
                             Layout.alignment: Qt.AlignVCenter
                             Layout.preferredWidth: 206
                             Layout.preferredHeight: 42
@@ -242,11 +243,20 @@ Item {
 
                         DexCheckBox
                         {
-                            Layout.alignment: Qt.AlignVCenter
+                            id: hide_zero_balance_checkbox
+
+                            Layout.preferredWidth: 280
+                            Layout.alignment: Qt.AlignRight
+
+                            spacing: 2
+                            boxWidth: 24
+                            boxHeight: 24
+
+                            label.wrapMode: Label.NoWrap
+                            label.font.pixelSize: 14
                             text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))
                             textColor: Dex.CurrentTheme.foregroundColor2
-                            label.font.pixelSize: 14
-                            labelWidth: 200
+
                             checked: portfolio_coins.with_balance
                             onCheckedChanged: portfolio_coins.with_balance = checked
                             Component.onDestruction: portfolio_coins.with_balance = false

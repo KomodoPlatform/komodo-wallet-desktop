@@ -83,7 +83,6 @@ MultipageModal
                     fullname: details ? General.coinName(details.rel_coin) : ""
                     amount: details ? details.rel_amount : ""
                 }
-
             },
 
             // Status Text

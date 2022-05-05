@@ -195,14 +195,16 @@ ColumnLayout
 
         Layout.topMargin: 15
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: parent.width
+        Layout.fillWidth: true
+        label.horizontalAlignment: Text.AlignLeft
+        label.verticalAlignment: Text.AlignVCenter
 
-        boxWidth: 20.76
-        boxHeight: 20.76
-        labelWidth: parent.width - 40
+        boxWidth: 20
+        boxHeight: 20
+        labelWidth: 120
+        label.wrapMode: Label.NoWrap
         text: qsTr("Use custom minimum trade amount")
         textColor: Dex.CurrentTheme.foregroundColor3
         font.pixelSize: 13
-        spacing: 3
     }
 }

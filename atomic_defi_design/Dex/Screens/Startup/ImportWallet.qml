@@ -207,11 +207,19 @@ SetupPage
                     font: DexTypo.body2
                 }
 
-                DefaultCheckBox
+                DexCheckBox
                 {
                     id: allow_custom_seed
+                    Layout.fillWidth: true
+
+                    boxWidth: 20
+                    boxHeight: 20
+                    leftPadding: 6
+                    labelWidth: 120
+                    label.wrapMode: Label.NoWrap
+
                     text: qsTr("Allow custom seed")
-                    leftPadding: 15
+
                     onToggled:
                     {
                         if (allow_custom_seed.checked)
