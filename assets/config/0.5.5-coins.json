@@ -6181,7 +6181,7 @@
     "name": "iLien",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "nomics_id": "ILN",
+    "nomics_id": "ILNPOS",
     "electrum": [
       {
         "url": "electrum1.ilien.io:65011"
@@ -6201,7 +6201,7 @@
     "name": "Ilien",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
-    "nomics_id": "ILN",
+    "nomics_id": "ILNPOS",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -6211,6 +6211,22 @@
       "https://bscscan.com/"
     ],
     "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "ILN-PLG20": {
+    "coin": "ILN-PLG20",
+    "name": "Ilien",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "ILNPOS",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
     "active": false,
     "currently_enabled": false
   },
