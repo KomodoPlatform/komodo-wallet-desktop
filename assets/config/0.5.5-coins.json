@@ -3246,6 +3246,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "GST-BEP20": {
+    "coin": "GST-BEP20",
+    "name": "Green Satoshi Token",
+    "coinpaprika_id": "gst-gst",
+    "coingecko_id": "green-satoshi-token",
+    "nomics_id": "GST7",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "HODL": {
     "coin": "HODL",
     "name": "HODL",

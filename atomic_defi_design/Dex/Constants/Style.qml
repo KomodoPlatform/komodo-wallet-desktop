@@ -323,6 +323,7 @@ QtObject {
                                           "GMT": "#E9CB7B",
                                           "GRS": "#377E96",
                                           "GRT": "#6E54DB",
+                                          "GST": "#D7D7D7",
                                           "IOTA": "#404040",
                                           "IC": "#72009D",
                                           "JSTR": "#627EEA",
