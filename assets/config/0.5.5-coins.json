@@ -3112,6 +3112,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "GMT-BEP20": {
+    "coin": "GMT-BEP20",
+    "name": "STEPN",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "stepn",
+    "nomics_id": "GMT7",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "GRMS": {
     "coin": "GRMS",
     "type": "Smart Chain",
