@@ -2515,7 +2515,7 @@
   },
   "EILN-ERC20": {
     "coin": "EILN-ERC20",
-    "name": "Ilien",
+    "name": "ilien",
     "coinpaprika_id": "eiln-e-ilien",
     "coingecko_id": "test-coin",
     "nomics_id": "EILN",
@@ -6214,7 +6214,7 @@
   "ILN": {
     "coin": "ILN",
     "type": "Smart Chain",
-    "name": "iLien",
+    "name": "ilien",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
     "nomics_id": "ILNPOS",
@@ -6234,7 +6234,7 @@
   },
   "ILN-BEP20": {
     "coin": "ILN-BEP20",
-    "name": "Ilien",
+    "name": "ilien",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "nomics_id": "ILNPOS",
@@ -6252,7 +6252,7 @@
   },
   "ILN-PLG20": {
     "coin": "ILN-PLG20",
-    "name": "Ilien",
+    "name": "ilien",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "nomics_id": "ILNPOS",
