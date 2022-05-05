@@ -19,11 +19,10 @@ Switch
     property alias switchButtonRadius: _indicator.radius
     property alias mouseArea: _mouseArea
     property color textColor: Dex.CurrentTheme.foregroundColor
-    property int labelWidth: 120
+    property int labelWidth: label.text == '' ? 0 : 120
 
-    Layout.alignment: Qt.AlignVCenter
-    Layout.preferredWidth: childrenRect.width
-    Layout.preferredHeight: childrenRect.height
+    width: labelWidth + 60
+    height: 30
 
     font.family: DexTypo.fontFamily
     indicator: DexRectangle
@@ -32,24 +31,25 @@ Switch
         width: 52
         height: 28
         radius: 13
-        Layout.alignment: Qt.AlignVCenter
+        anchors.verticalCenter: control.verticalCenter
 
         gradient: Gradient
         {
             orientation: Gradient.Horizontal
             GradientStop
             {
-                position: 0;color: Dex.CurrentTheme.switchGradientStartColor
+                position: 0
+                color: Dex.CurrentTheme.switchGradientStartColor
             }
             GradientStop
             {
-                position: 0.9311;color: Dex.CurrentTheme.switchGradientEndColor
+                position: 0.9311
+                color: Dex.CurrentTheme.switchGradientEndColor
             }
         }
 
         Rectangle
         {
-            Layout.alignment: Qt.AlignVCenter
             visible: !control.checked
             width: parent.width - 4
             height: parent.height - 4
@@ -75,7 +75,6 @@ Switch
 
         Rectangle
         {
-            Layout.alignment: Qt.AlignVCenter
             x: control.checked ? parent.width - width - 4 : 4
             y: 3
             width: parent.width / 2 - 2
@@ -99,28 +98,31 @@ Switch
         }
     }
 
-    contentItem: DexRectangle
+    Item
     {
-        width: labelWidth
-        height: _indicator.height
+        Layout.preferredWidth: labelWidth
+        Layout.preferredHeight: _indicator.height
         Layout.alignment: Qt.AlignVCenter
+        anchors.verticalCenter: control.verticalCenter
+
         visible: {
-            console.log(control.text)
-            control.text != ''
+            console.log(_label.text)
+            _label.text != ''
         }
 
         DexLabel
         {
             id: _label
-            visible:  control.text != ''
-            text_value: control.text
+            Layout.fillHeight: true
+
             font: control.font
             color: control.textColor
             leftPadding: _indicator.width + control.spacing 
-            horizontalAlignment: DexLabel.AlignLeft
-            verticalAlignment: DexLabel.AlignVCenter
-            Layout.alignment: Qt.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
             wrapMode: Label.Wrap
+
         }
     }
 
@@ -130,5 +132,4 @@ Switch
         anchors.fill: control
         acceptedButtons: Qt.NoButton
     }
-
 }

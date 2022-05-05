@@ -569,23 +569,27 @@ MultipageModal
             }
         }
 
-        // Custom fees switch
-        DexSwitch
+        ColumnLayout
         {
-            id: custom_fees_switch
-            enabled: !root.is_send_busy
-            Layout.topMargin: 32
-            text: qsTr("Enable Custom Fees")
-            onCheckedChanged: input_custom_fees.text = ""
-        }
-
-        // Custom fees warning
-        DexLabel
-        {
-            visible: custom_fees_switch.checked
-            font.pixelSize: 14
-            color: Dex.CurrentTheme.noColor
-            text_value: qsTr("Only use custom fees if you know what you are doing!")
+            Layout.preferredWidth: 380
+            Layout.alignment: Qt.AlignHCenter
+            // Custom fees switch
+            DexSwitch
+            {
+                id: custom_fees_switch
+                enabled: !root.is_send_busy
+                Layout.topMargin: 32
+                label.text: qsTr("Enable Custom Fees")
+                onCheckedChanged: input_custom_fees.text = ""
+            }
+            // Custom fees warning
+            DexLabel
+            {
+                visible: custom_fees_switch.checked
+                font.pixelSize: 14
+                color: Dex.CurrentTheme.noColor
+                text_value: qsTr("Only use custom fees if you know what you are doing!")
+            }
         }
 
         // Custom Fees section

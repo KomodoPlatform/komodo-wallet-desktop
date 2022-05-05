@@ -80,6 +80,7 @@ MouseArea
             id: privacyLine
 
             Layout.fillWidth: true
+            Layout.preferredHeight: privacySwitch.height
             label.text: qsTr("Privacy")
             label.visible: isExpanded
 
@@ -89,14 +90,14 @@ MouseArea
                 privacySwitch.checked = General.privacy_mode;
             }
 
-            DefaultSwitch
+            DexSwitch
             {
                 id: privacySwitch
 
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
-                scale: 0.75
+                scale: 0.60
                 mouseArea.hoverEnabled: true
 
                 onClicked: parent.clicked()
