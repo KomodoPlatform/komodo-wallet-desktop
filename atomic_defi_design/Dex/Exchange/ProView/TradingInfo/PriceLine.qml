@@ -18,15 +18,7 @@ ColumnLayout
 
     readonly property int fontSize: Style.textSizeSmall1
     readonly property int fontSizeBigger: Style.textSizeSmall2
-    readonly property int line_scale: getComparisonScale(cex_price_diff)
-
-    function getComparisonScale(value) {
-        return Math.min(Math.pow(10, General.getDigitCount(parseFloat(value))), 1000000000)
-    }
-
-    function limitDigits(value) {
-        return parseFloat(General.formatDouble(value, 2))
-    }
+    readonly property int line_scale: General.getComparisonScale(cex_price_diff)
 
     spacing: 20
 
@@ -81,7 +73,7 @@ ColumnLayout
             Layout.bottomMargin: Layout.topMargin
             Layout.alignment: Qt.AlignHCenter
             color: parseFloat(cex_price_diff) <= 0 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.noColor
-            text_value: (parseFloat(cex_price_diff) > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(limitDigits(cex_price_diff)) + "</b>")
+            text_value: (parseFloat(cex_price_diff) > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(General.limitDigits(cex_price_diff)) + "</b>")
             font.pixelSize: fontSize
         }
 

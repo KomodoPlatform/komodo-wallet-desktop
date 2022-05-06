@@ -192,20 +192,24 @@ ColumnLayout
     RowLayout
     {
         Layout.topMargin: 15
+        Layout.rightMargin: 2
+        Layout.leftMargin: 2
         Layout.fillWidth: true
+        spacing: 5
+
         DexCheckBox
         {
             id: _useCustomMinTradeAmountCheckbox
             boxWidth: 20
             boxHeight: 20
             labelWidth: 0
-            anchors.verticalCenter: parent.verticalCenter
         }
 
         DexLabel {
             Layout.fillWidth: true
+            height: _useCustomMinTradeAmountCheckbox.height
             horizontalAlignment: Text.AlignLeft
-            anchors.verticalCenter: parent.verticalCenter
+            verticalAlignment: Text.AlignVCenter
             wrapMode: Label.WordWrap
             text: qsTr("Use custom minimum trade amount")
             color: Dex.CurrentTheme.foregroundColor3

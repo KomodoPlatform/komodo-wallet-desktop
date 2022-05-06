@@ -17,7 +17,7 @@ CheckBox
     property alias boxHeight: _indicator.implicitHeight
     property alias mouseArea: mouse_area
     property color textColor: Dex.CurrentTheme.foregroundColor
-    property int labelWidth: 120
+    property int labelWidth: 0
 
     font.family: Style.font_family
     Layout.preferredWidth: childrenRect.width

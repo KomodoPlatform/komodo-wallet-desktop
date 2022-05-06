@@ -16,7 +16,6 @@ MultipageModal
     property var details
     horizontalPadding: 60
     verticalPadding: 40
-    width: 650
 
     onDetailsChanged: { if (!details) root.close() }
     onOpened:

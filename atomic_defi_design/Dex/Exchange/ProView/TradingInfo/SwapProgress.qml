@@ -128,14 +128,13 @@ ColumnLayout
 
         const events = details.events
 
-        console.log(">Date.now(): " + Date.now())
         if (events[current_event_idx - 1].hasOwnProperty('data'))
         {
             if (events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
             {
                 const diff = events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
                 wait_until_countdown_time = diff - (diff % 1000)
-                console.log(">wait_until_countdown_time: " + wait_until_countdown_time)
+
                 if (wait_until_countdown_time <= 0)
                 {
                     wait_until_countdown_time = 0
@@ -152,7 +151,7 @@ ColumnLayout
         {
             const lock_diff = details.payment_lock - Date.now()
             payment_lock_countdown_time = lock_diff - (lock_diff % 1000)
-            console.log(">payment_lock_countdown_time: " + payment_lock_countdown_time)
+
             if (payment_lock_countdown_time <= 0)
             {
                 payment_lock_countdown_time = 0
@@ -183,8 +182,9 @@ ColumnLayout
 
     function getRefundText()
     {
-        console.log(".payment_lock_countdown_time: " + payment_lock_countdown_time)
-        console.log(".wait_until_countdown_time: " + wait_until_countdown_time)
+        // console.log("payment_lock_countdown_time: " + payment_lock_countdown_time)
+        // console.log("wait_until_countdown_time: " + wait_until_countdown_time)
+
         if ((payment_lock_countdown_time > 0) && (wait_until_countdown_time == -1))
         {
             return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(payment_lock_countdown_time) + " until refund lock is released.") + `</font>`
@@ -285,7 +285,7 @@ ColumnLayout
                 {
                     id: bar
                     visible: is_active
-                    width: root.width - 40
+                    width: parent.width
                     height: 2
 
                     color: DexTheme.foregroundColorDarkColor3 

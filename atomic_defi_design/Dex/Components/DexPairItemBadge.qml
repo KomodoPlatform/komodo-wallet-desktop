@@ -55,7 +55,7 @@ DexRectangle
                 Layout.fillWidth: true
                 font.pixelSize: 11
                 horizontalAlignment: Text.AlignLeft
-                wrapMode: Text.WordWrap
+                wrapMode: Text.NoWrap
             }
         }
 
