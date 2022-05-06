@@ -16,6 +16,7 @@ MultipageModal
     property var details
     horizontalPadding: 60
     verticalPadding: 40
+    width: 650
 
     onDetailsChanged: { if (!details) root.close() }
     onOpened:
@@ -32,6 +33,7 @@ MultipageModal
         titleAlignment: Qt.AlignHCenter
         titleTopMargin: 15
         topMarginAfterTitle: 15
+
         Layout.preferredHeight: window.height - 50
 
         header: [
@@ -41,7 +43,7 @@ MultipageModal
                 visible: !details ? false : details.is_swap && details.order_status === "successful"
                 Layout.alignment: Qt.AlignHCenter
                 source: General.image_path + "exchange-trade-complete.png"
-                Layout.preferredHeight: 100
+                height: 100
             },
 
             // Loading symbol
@@ -51,13 +53,13 @@ MultipageModal
                             details.is_swap && !["successful", "failed"].includes(details.order_status)
                 running: visible && Qt.platform.os != "osx"
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredHeight: 100
+                height: 100
             },
 
             RowLayout
             {
                 Layout.topMargin: 15
-                Layout.preferredHeight: 230
+                height: 70
 
                 DexPairItemBadge
                 {
@@ -230,13 +232,14 @@ MultipageModal
             DexAppButton
             {
                 id: refund_button
-                leftPadding: 20
-                rightPadding: 20
+                leftPadding: 15
+                rightPadding: 15
                 radius: 18
                 enabled: !API.app.orders_mdl.recover_fund_busy
                 visible: !details ? false :
                     details.recoverable && details.order_status !== "refunding"
                 text: enabled ? qsTr("Recover Funds") : qsTr("Refunding...")
+                font: DexTypo.body2
                 onClicked: API.app.orders_mdl.recover_fund(details.order_id)
                 Layout.preferredHeight: 50
             },
@@ -246,10 +249,11 @@ MultipageModal
             {
                 id: cancel_order_button
                 visible: !details ? false : details.cancellable
-                leftPadding: 20
-                rightPadding: 20
+                leftPadding: 15
+                rightPadding: 15
                 radius: 18
                 text: qsTr("Cancel Order")
+                font: DexTypo.body2
                 onClicked: cancelOrder(details.order_id)
                 Layout.preferredHeight: 50
             },
@@ -260,9 +264,10 @@ MultipageModal
             {
                 id: explorer_button
                 text: qsTr("View on Explorer")
+                font: DexTypo.body2
                 Layout.preferredHeight: 50
-                leftPadding: 20
-                rightPadding: 20
+                leftPadding: 15
+                rightPadding: 15
                 radius: 18
                 visible: !details ? false : details.maker_payment_id !== '' || details.taker_payment_id !== ''
                 onClicked:
@@ -287,8 +292,9 @@ MultipageModal
             {
                 id: close_order_button
                 text: qsTr("Close")
-                leftPadding: 20
-                rightPadding: 20
+                font: DexTypo.body2
+                leftPadding: 15
+                rightPadding: 15
                 radius: 18
                 onClicked: root.close()
                 Layout.preferredHeight: 50

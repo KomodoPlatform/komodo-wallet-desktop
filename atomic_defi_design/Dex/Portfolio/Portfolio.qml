@@ -211,14 +211,13 @@ Item {
 
             // Filters (search and balance)
             Item {
-                width: parent.width
+                width: parent.parent.width - 80
+                anchors.horizontalCenter: parent.horizontalCenter
                 height: 30
                 visible: true
 
                 Item {
                     anchors.fill: parent
-                    anchors.leftMargin: 40
-                    anchors.rightMargin: 40
                     anchors.topMargin: 5
 
                     RowLayout {
@@ -244,9 +243,6 @@ Item {
                         DexCheckBox
                         {
                             id: hide_zero_balance_checkbox
-
-                            Layout.preferredWidth: 280
-                            Layout.alignment: Qt.AlignRight
 
                             spacing: 2
                             boxWidth: 24

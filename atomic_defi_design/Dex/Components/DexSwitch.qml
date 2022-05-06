@@ -105,10 +105,7 @@ Switch
         Layout.alignment: Qt.AlignVCenter
         anchors.verticalCenter: control.verticalCenter
 
-        visible: {
-            console.log(_label.text)
-            _label.text != ''
-        }
+        visible: _label.text != ''
 
         DexLabel
         {

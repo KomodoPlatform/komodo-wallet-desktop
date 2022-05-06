@@ -9,15 +9,19 @@ DexRectangle
     property alias fullname: fullname.text
     property alias amount: amount.text
 
-    Layout.preferredWidth: 226
+    Layout.preferredWidth: 260
     Layout.preferredHeight: 66
     radius: 10
 
     RowLayout
     {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
         anchors.fill: parent
-        anchors.margins: 14
-        spacing: 23
+        anchors.margins: 15
+        spacing: 8
+
+        Item { Layout.fillWidth: true }
 
         DexImage
         {
@@ -27,28 +31,22 @@ DexRectangle
             Layout.alignment: Qt.AlignVCenter
         }
 
+        Item { Layout.fillWidth: true }
+
         ColumnLayout
         {
             Layout.fillWidth: true
-            RowLayout
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignVCenter
+            spacing: 5
+
+            DexLabel
             {
+                id: ticker
                 Layout.fillWidth: true
-                spacing: 5
-
-                DexLabel
-                {
-                    id: ticker
-                    Layout.fillWidth: true
-                }
-
-                DexLabel
-                {
-                    id: fullname
-                    Layout.fillWidth: true
-                    wrapMode: Text.NoWrap
-                    elide: Text.ElideRight
-                    font.pixelSize: 11
-                }
+                font.pixelSize: 11
+                horizontalAlignment: Text.AlignLeft
+                wrapMode: Text.NoWrap
             }
 
             DexLabel
@@ -56,18 +54,41 @@ DexRectangle
                 id: amount
                 Layout.fillWidth: true
                 font.pixelSize: 11
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignLeft
+                wrapMode: Text.WordWrap
+            }
+        }
+
+        Item { Layout.fillWidth: true }
+
+        ColumnLayout
+        {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignVCenter
+            spacing: 5
+
+            DexLabel
+            {
+                id: fullname
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignLeft
+                font.pixelSize: 11
             }
 
             DexLabel
             {
                 id: amount_fiat
+                visible: text != ''
                 Layout.fillWidth: true
                 font.pixelSize: 11
                 wrapMode: Text.NoWrap
+                horizontalAlignment: Text.AlignLeft
                 elide: Text.ElideRight
             }
         }
+        
+        Item { Layout.fillWidth: true }
     }
 }

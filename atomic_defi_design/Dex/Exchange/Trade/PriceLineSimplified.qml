@@ -47,6 +47,7 @@ ColumnLayout
         Layout.alignment: Qt.AlignHCenter
         ColumnLayout
         {
+            Layout.fillWidth: true
             visible: price_entered
             DexLabel
             {
@@ -57,6 +58,7 @@ ColumnLayout
             // Price reversed
             DexLabel
             {
+                horizontalAlignment: !invalid_cex_price ? Text.AlignHCenter : Text.AlignLeft
                 text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", price_reversed, left_ticker)
                 font.pixelSize: fontSizeBigger
                 font.weight: Font.Medium
@@ -65,20 +67,25 @@ ColumnLayout
             // Price
             DexLabel
             {
+                horizontalAlignment: !invalid_cex_price ? Text.AlignHCenter : Text.AlignLeft
                 text_value: General.formatCrypto("", price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
                 font.pixelSize: fontSize
             }
         }
 
-        Item { Layout.fillWidth: true }
+        Item
+        {
+            Layout.fillWidth: true
+            visible: !invalid_cex_price
+        }
 
         ColumnLayout
         {
             visible: !invalid_cex_price
+            Layout.fillWidth: true
 
             DexLabel
             {
-                Layout.alignment: Qt.AlignRight
                 text_value: General.cex_icon + " " + qsTr("CEXchange rate")
                 font.pixelSize: fontSize
 
@@ -88,7 +95,6 @@ ColumnLayout
             // Price reversed
             DexLabel
             {
-                Layout.alignment: Qt.AlignRight
                 text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", cex_price_reversed, left_ticker)
                 font.pixelSize: fontSizeBigger
                 font.weight: Font.Medium
@@ -97,7 +103,6 @@ ColumnLayout
             // Price
             DexLabel
             {
-                Layout.alignment: Qt.AlignRight
                 text_value: General.formatCrypto("", cex_price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
                 font.pixelSize: fontSize
             }

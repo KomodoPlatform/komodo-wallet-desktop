@@ -11,8 +11,8 @@ ColumnLayout
 {
     id: root
 
-    property
-    var details
+    property var details
+    property var last_event
 
     readonly property
     var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
@@ -92,7 +92,7 @@ ColumnLayout
             return
         }
 
-        const last_event = events[events.length - 1]
+        last_event = events[events.length - 1]
         if (!last_event.timestamp)
         {
             simulated_time = 0
@@ -120,17 +120,12 @@ ColumnLayout
     property double wait_until_countdown_time: -1      // Then we count down to 'wait_until' time
     function updateCountdownTime()
     {
-        console.log("current_event_idx: " + current_event_idx)
-
-        if (current_event_idx !== -1 || !details) {
+        if (current_event_idx == -1 || !details) {
             payment_lock_countdown_time = -1
             return
         }
 
         const events = details.events
-        console.log("events: ")
-        console.log(events)
-        console.log(JSON.parse(events))
 
         if (payment_lock_countdown_time == 0)
         {
@@ -138,11 +133,8 @@ ColumnLayout
             if (wait_until_countdown_time > 0)
             {
                 console.log("current_event_idx: " + current_event_idx)
-                console.log("events: " + events)
                 if (events[current_event_idx - 1].hasOwnProperty('data'))
                 {
-                    console.log("event: " + events[current_event_idx - 1])
-                    console.log("event data: " + events[current_event_idx - 1]['data'])
                     if (events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
                     {
                         console.log(">Date.now(): " + Date.now())
@@ -166,6 +158,8 @@ ColumnLayout
             if (payment_lock_countdown_time <= 0)
             {
                 payment_lock_countdown_time = 0
+                const diff = events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
+                wait_until_countdown_time = diff - (diff % 1000)
             }
         }
 
@@ -199,8 +193,8 @@ ColumnLayout
         {
             return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(payment_lock_countdown_time) + " until refund lock is released.") + `</font>`
         }
-        else if (event) {
-            if (wait_until_countdown_time > 0 && event.state !== "Finished") {
+        else if (wait_until_countdown_time > 0) {
+            if (last_event.state !== "Finished") {
                 return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(wait_until_countdown_time) + " until refund completed.") + `</font>`
             }
         }
@@ -295,7 +289,7 @@ ColumnLayout
                 {
                     id: bar
                     visible: is_active
-                    width: 300
+                    width: root.width - 40
                     height: 2
 
                     color: DexTheme.foregroundColorDarkColor3 

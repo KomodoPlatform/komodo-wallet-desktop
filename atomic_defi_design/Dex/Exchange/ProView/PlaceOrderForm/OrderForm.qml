@@ -189,22 +189,27 @@ ColumnLayout
         second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
     }
 
-    DexCheckBox
+    RowLayout
     {
-        id: _useCustomMinTradeAmountCheckbox
-
         Layout.topMargin: 15
-        Layout.alignment: Qt.AlignHCenter
         Layout.fillWidth: true
-        label.horizontalAlignment: Text.AlignLeft
-        label.verticalAlignment: Text.AlignVCenter
+        DexCheckBox
+        {
+            id: _useCustomMinTradeAmountCheckbox
+            boxWidth: 20
+            boxHeight: 20
+            labelWidth: 0
+            anchors.verticalCenter: parent.verticalCenter
+        }
 
-        boxWidth: 20
-        boxHeight: 20
-        labelWidth: 120
-        label.wrapMode: Label.NoWrap
-        text: qsTr("Use custom minimum trade amount")
-        textColor: Dex.CurrentTheme.foregroundColor3
-        font.pixelSize: 13
+        DexLabel {
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignLeft
+            anchors.verticalCenter: parent.verticalCenter
+            wrapMode: Label.WordWrap
+            text: qsTr("Use custom minimum trade amount")
+            color: Dex.CurrentTheme.foregroundColor3
+            font.pixelSize: 13
+        }
     }
 }

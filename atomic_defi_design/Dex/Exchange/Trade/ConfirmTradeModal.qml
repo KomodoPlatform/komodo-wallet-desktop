@@ -106,11 +106,7 @@ MultipageModal
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredHeight: fees_detail.height
                 Layout.preferredWidth: parent.width - 80
-                visible: {
-                    console.log(API.app.trading_pg.preimage_rpc_busy)
-                    console.log(root.fees.hasOwnProperty('base_transaction_fees_ticker'))
-                    root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy
-                }
+                visible: root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy
 
                 ColumnLayout
                 {
