@@ -513,6 +513,7 @@ QtObject {
                                           "ZIL": "#42BBB9",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A",
+                                          "VOTE2022": "#7490AA",
                                           "USBL": "#279553"
                                       })
 }

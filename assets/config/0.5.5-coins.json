@@ -9645,6 +9645,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "VOTE2022": {
+    "coin": "VOTE2022",
+    "name": "Vote 2022",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10002"
+      },
+      {
+        "url": "electrum2.cipig.net:10002"
+      },
+      {
+        "url": "electrum3.cipig.net:10002"
+      }
+    ],
+    "explorer_url": [
+      "https://vote.kmdexplorer.io/"
+    ],
+    "type": "Smart Chain",
+    "active": false,
+    "wallet_only": true,
+    "currently_enabled": false
+  },
   "ZINU-BEP20": {
     "coin": "ZINU-BEP20",
     "name": "Zombie Inu",
