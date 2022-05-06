@@ -120,46 +120,42 @@ ColumnLayout
     property double wait_until_countdown_time: -1      // Then we count down to 'wait_until' time
     function updateCountdownTime()
     {
-        if (current_event_idx == -1 || !details) {
+        if (current_event_idx == -1 || !details)
+        {
             payment_lock_countdown_time = -1
             return
         }
 
         const events = details.events
 
-        if (payment_lock_countdown_time == 0)
+        console.log(">Date.now(): " + Date.now())
+        if (events[current_event_idx - 1].hasOwnProperty('data'))
         {
-            console.log(">payment_lock_countdown_time at zero " + details.order_id)
-            if (wait_until_countdown_time > 0)
+            if (events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
             {
-                console.log("current_event_idx: " + current_event_idx)
-                if (events[current_event_idx - 1].hasOwnProperty('data'))
+                const diff = events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
+                wait_until_countdown_time = diff - (diff % 1000)
+                console.log(">wait_until_countdown_time: " + wait_until_countdown_time)
+                if (wait_until_countdown_time <= 0)
                 {
-                    if (events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
-                    {
-                        console.log(">Date.now(): " + Date.now())
-                        console.log(">wait_until: " + events[current_event_idx - 1]['data']['wait_until'] * 1000)
-                        const diff = events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
-                        wait_until_countdown_time = diff - (diff % 1000)
-                        console.log(">wait_until_countdown_time: " + wait_until_countdown_time)
-                        if (wait_until_countdown_time <= 0)
-                        {
-                            wait_until_countdown_time = 0
-                        }
-                    }
+                    wait_until_countdown_time = 0
                 }
             }
         }
 
-        else if (details.hasOwnProperty('payment_lock'))
+        else
         {
-            const diff = details.payment_lock - Date.now()
-            payment_lock_countdown_time = diff - (diff % 1000)
+            wait_until_countdown_time = -1
+        }
+
+        if (details.hasOwnProperty('payment_lock'))
+        {
+            const lock_diff = details.payment_lock - Date.now()
+            payment_lock_countdown_time = lock_diff - (lock_diff % 1000)
+            console.log(">payment_lock_countdown_time: " + payment_lock_countdown_time)
             if (payment_lock_countdown_time <= 0)
             {
                 payment_lock_countdown_time = 0
-                const diff = events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
-                wait_until_countdown_time = diff - (diff % 1000)
             }
         }
 
@@ -189,7 +185,7 @@ ColumnLayout
     {
         console.log(".payment_lock_countdown_time: " + payment_lock_countdown_time)
         console.log(".wait_until_countdown_time: " + wait_until_countdown_time)
-        if (payment_lock_countdown_time > 0)
+        if ((payment_lock_countdown_time > 0) && (wait_until_countdown_time == -1))
         {
             return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(payment_lock_countdown_time) + " until refund lock is released.") + `</font>`
         }

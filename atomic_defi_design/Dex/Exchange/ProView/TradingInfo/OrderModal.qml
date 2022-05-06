@@ -97,7 +97,7 @@ MultipageModal
                 font.bold: true
                 visible: !details ? false : details.is_swap || !details.is_maker
                 text_value: !details ? "" : visible ? getStatusText(details.order_status) : ''
-                Layout.preferredHeight: 25
+                height: 25
             },
 
             DexLabel
@@ -106,7 +106,7 @@ MultipageModal
                 visible: text_value != ""
                 font.pixelSize: Style.textSizeSmall2
                 text_value: !details ? "" : details.order_status === "refunding" ? swapProgress.getRefundText() : ""
-                Layout.preferredHeight: 25
+                height: 25
             }
         ]
 

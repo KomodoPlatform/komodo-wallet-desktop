@@ -100,17 +100,19 @@ MultipageModal
 
             spacing: 10
 
-            // Fees Info
-            Item
-            {
+
+            DexRectangle {
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredHeight: fees_detail.height
-                Layout.preferredWidth: parent.width - 80
+                Layout.preferredHeight: fees_detail.height + 20
+                Layout.preferredWidth: parent.width - 60
+                color: DexTheme.contentColorTop
                 visible: root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy
 
                 ColumnLayout
                 {
                     id: fees_detail
+                    width: parent.width - 20
+                    anchors.centerIn: parent
                     spacing: 8
 
                     Repeater
@@ -151,6 +153,7 @@ MultipageModal
                                         base_ticker,
                                         rel_ticker, left_ticker, right_ticker)
                     }
+
                 }
             }
 

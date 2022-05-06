@@ -43,7 +43,7 @@ ColumnLayout
         id: _header
         spacing: 10
         Layout.topMargin: root.titleTopMargin
-        height: childrenRect.height
+        Layout.preferredHeight: childrenRect.height
         visible: childrenRect.height > 0
     }
 
