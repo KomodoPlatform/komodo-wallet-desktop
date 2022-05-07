@@ -166,7 +166,7 @@ ColumnLayout
 
     Timer
     {
-        running: current_event_idx !== -1
+        running: has_error_event && last_event.state !== "Finished"
         interval: 1000
         repeat: true
         onTriggered: updateCountdownTime()
@@ -182,9 +182,6 @@ ColumnLayout
 
     function getRefundText()
     {
-        // console.log("payment_lock_countdown_time: " + payment_lock_countdown_time)
-        // console.log("wait_until_countdown_time: " + wait_until_countdown_time)
-
         if ((payment_lock_countdown_time > 0) && (wait_until_countdown_time == -1))
         {
             return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(payment_lock_countdown_time) + " until refund lock is released.") + `</font>`

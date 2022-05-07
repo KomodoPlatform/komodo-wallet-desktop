@@ -53,6 +53,7 @@ ColumnLayout
             // Price
             DexLabel
             {
+                visible: price != 1
                 Layout.fillWidth: true
                 horizontalAlignment: invalid_cex_price ? Text.AlignHCenter : Text.AlignLeft
                 text_value: General.formatCrypto("", price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
