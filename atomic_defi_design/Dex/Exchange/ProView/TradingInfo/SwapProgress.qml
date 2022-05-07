@@ -166,7 +166,7 @@ ColumnLayout
 
     Timer
     {
-        running: has_error_event && last_event.state !== "Finished"
+        running: !has_error_event ? false : details.events[details.events.length - 1].state == "Finished" ? false : true
         interval: 1000
         repeat: true
         onTriggered: updateCountdownTime()
