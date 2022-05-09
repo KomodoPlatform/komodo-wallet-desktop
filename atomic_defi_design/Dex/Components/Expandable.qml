@@ -10,7 +10,7 @@ Rectangle
     property alias  header: headerLoader.sourceComponent
     property alias  content: contentLoader.sourceComponent
 
-    implicitHeight: padding + headerLoader.implicitHeight + contentLoader.implicitHeight
+    implicitHeight: padding + headerLoader.implicitHeight + (isExpanded ? contentLoader.implicitHeight + padding * 2 : 0)
     clip: true
 
     Loader
@@ -29,7 +29,6 @@ Rectangle
         visible: root.isExpanded
 
         anchors.top: headerLoader.bottom
-        anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.margins: root.padding
     }
