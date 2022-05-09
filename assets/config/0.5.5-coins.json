@@ -3801,6 +3801,10 @@
       {
         "url": "electrum8.getlynx.io:50002",
         "protocol": "SSL"
+      },
+      {
+        "url": "electrum9.getlynx.io:50002",
+        "protocol": "SSL"
       }
     ],
     "explorer_url": [
