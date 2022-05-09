@@ -3787,24 +3787,20 @@
     "nomics_id": "LYNX",
     "electrum": [
       {
-        "url": "electrum.getlynx.io:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
+        "url": "electrum5.getlynx.io:50002",
+        "protocol": "SSL"
       },
       {
-        "url": "electrum.logware.us:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
+        "url": "electrum6.getlynx.io:50002",
+        "protocol": "SSL"
       },
       {
-        "url": "electrum.logware.club:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
+        "url": "electrum7.getlynx.io:50002",
+        "protocol": "SSL"
       },
       {
-        "url": "electrum.logware.io:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
+        "url": "electrum8.getlynx.io:50002",
+        "protocol": "SSL"
       }
     ],
     "explorer_url": [
