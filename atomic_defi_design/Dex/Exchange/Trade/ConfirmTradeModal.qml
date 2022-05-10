@@ -33,7 +33,7 @@ MultipageModal
             {
                 id: dex_pair_badges
 
-                DexPairItemBadge
+                DefaultPairItemBadge
                 {
                     source: General.coinIcon(!base_ticker ? atomic_app_primary_coin : base_ticker)
                     ticker: base_ticker
@@ -50,7 +50,7 @@ MultipageModal
                     icon: Qaterial.Icons.swapHorizontal
                 }
 
-                DexPairItemBadge
+                DefaultPairItemBadge
                 {
                     source: General.coinIcon(!rel_ticker ? atomic_app_primary_coin : rel_ticker)
                     ticker: rel_ticker
@@ -71,13 +71,13 @@ MultipageModal
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
 
-                DexLabel
+                DefaultText
                 {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: qsTr("This swap request can not be undone and is a final event!")
                 }
 
-                DexLabel
+                DefaultText
                 {
                     id: warnings_tx_time_text
                     Layout.alignment: Qt.AlignHCenter
@@ -118,7 +118,7 @@ MultipageModal
                     Repeater
                     {
                         model: root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy ? General.getFeesDetail(root.fees) : []
-                        delegate: DexLabel
+                        delegate: DefaultText
                         {
                             font.pixelSize: Style.textSizeSmall1
                             text: General.getFeesDetailText(modelData.label, modelData.fee, modelData.ticker)
@@ -128,7 +128,7 @@ MultipageModal
                     Repeater
                     {
                         model: root.fees.hasOwnProperty('base_transaction_fees_ticker') ? root.fees.total_fees : []
-                        delegate: DexLabel
+                        delegate: DefaultText
                         {
                             text: General.getFeesDetailText(
                                     qsTr("<b>Total %1 fees:</b>").arg(modelData.coin),
@@ -138,13 +138,13 @@ MultipageModal
                         Layout.alignment: Qt.AlignHCenter
                     }
 
-                    DexLabel
+                    DefaultText
                     {
                         id: errors
                         visible: text_value != ''
                         Layout.alignment: Qt.AlignHCenter
                         width: parent.width
-                        horizontalAlignment: DexLabel.AlignHCenter
+                        horizontalAlignment: DefaultText.AlignHCenter
                         font: DexTypo.caption
                         color: Dex.CurrentTheme.noColor
                         text_value: General.getTradingError(
@@ -168,7 +168,7 @@ MultipageModal
                     id: use_custom
                     spacing: 8
 
-                    DexCheckBox
+                    DefaultCheckBox
                     {
                         id: enable_custom_config
                         Layout.alignment: Qt.AlignCenter
@@ -189,7 +189,7 @@ MultipageModal
                         Layout.alignment: Qt.AlignCenter
                         visible: enable_custom_config.checked && config_section.is_dpow_configurable
 
-                        DexSwitch
+                        DefaultSwitch
                         {
                             id: enable_dpow_confs
                             labelWidth: 220
@@ -227,7 +227,7 @@ MultipageModal
                         spacing: 8
 
 
-                        DexLabel
+                        DefaultText
                         {
                             Layout.preferredHeight: 10
                             Layout.alignment: Qt.AlignHCenter
@@ -236,7 +236,7 @@ MultipageModal
                             opacity: parent.enabled ? 1 : .6
                         }
 
-                        DexSlider
+                        DefaultSlider
                         {
                             id: required_confirmation_count
                             readonly property int default_confirmation_count: 3
@@ -265,7 +265,7 @@ MultipageModal
                             id: dpow_off_warning
                             anchors.centerIn: parent
 
-                            DexLabel
+                            DefaultText
                             {
                                 Layout.alignment: Qt.AlignHCenter
                                 text_value: Style.warningCharacter + " " + qsTr("Warning, this atomic swap is not dPoW protected!")
@@ -287,7 +287,7 @@ MultipageModal
                     id: security_config
                     spacing: 8
 
-                    DexLabel
+                    DefaultText
                     {
                         Layout.alignment: Qt.AlignCenter
                         visible: !enable_custom_config.checked
@@ -295,7 +295,7 @@ MultipageModal
                         font.weight: Font.Medium
                     }
 
-                    DexLabel
+                    DefaultText
                     {
                         Layout.alignment: Qt.AlignCenter
                         horizontalAlignment: Text.AlignHCenter
@@ -303,7 +303,7 @@ MultipageModal
                         text_value: "✅ " + (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
                                     qsTr("%1 confirmations for incoming %2 transactions").arg(config_section.default_config.required_confirmations || 1).arg(rel_ticker))
                     }
-                    DexLabel
+                    DefaultText
                     {
                         visible: config_section.is_dpow_configurable && enable_dpow_confs.enabled
                         Layout.alignment: Qt.AlignHCenter
@@ -313,7 +313,7 @@ MultipageModal
                 }
             }
 
-            DexBusyIndicator
+            DefaultBusyIndicator
             {
                 visible: buy_sell_rpc_busy
                 Layout.alignment: Qt.AlignCenter
@@ -324,7 +324,7 @@ MultipageModal
         [
             Item { Layout.fillWidth: true },
 
-            DexAppButton
+            DefaultButton
             {
                 text: qsTr("Cancel")
                 padding: 10

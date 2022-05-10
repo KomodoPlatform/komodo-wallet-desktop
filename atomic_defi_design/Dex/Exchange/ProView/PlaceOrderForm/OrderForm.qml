@@ -205,7 +205,7 @@ ColumnLayout
             labelWidth: 0
         }
 
-        DexLabel {
+        DefaultText {
             Layout.fillWidth: true
             height: _useCustomMinTradeAmountCheckbox.height
             horizontalAlignment: Text.AlignLeft

@@ -27,7 +27,6 @@ MultipageModal
     MultipageModalContent
     {
         titleText: qsTr("Transaction Details")
-        Layout.preferredHeight: window.height - 50
 
         // Amount
         TextEditWithTitle
@@ -139,7 +138,7 @@ MultipageModal
         // Buttons
         footer:
         [
-            DexButton
+            DefaultButton
             {
                 Layout.fillWidth: true
                 text: qsTr("Close")
@@ -148,6 +147,7 @@ MultipageModal
                 radius: 18
                 onClicked: root.close()
             },
+
             DexAppOutlineButton
             {
                 Layout.fillWidth: true

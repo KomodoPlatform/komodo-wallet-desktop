@@ -37,7 +37,7 @@ MultipageModal
 
         header: [
             // Complete image
-            DexImage
+            DefaultImage
             {
                 visible: !details ? false : details.is_swap && details.order_status === "successful"
                 Layout.alignment: Qt.AlignHCenter
@@ -46,7 +46,7 @@ MultipageModal
             },
 
             // Loading symbol
-            DexBusyIndicator
+            DefaultBusyIndicator
             {
                 visible: !details ? false :
                             details.is_swap && !["successful", "failed"].includes(details.order_status)
@@ -60,7 +60,7 @@ MultipageModal
                 Layout.topMargin: 15
                 height: 70
 
-                DexPairItemBadge
+                DefaultPairItemBadge
                 {
                     source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin)
                     ticker: details ? details.base_coin : ""
@@ -77,7 +77,7 @@ MultipageModal
                     icon: Qaterial.Icons.swapHorizontal
                 }
 
-                DexPairItemBadge
+                DefaultPairItemBadge
                 {
                     source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin)
                     ticker: details ? details.rel_coin : ""
@@ -87,7 +87,7 @@ MultipageModal
             },
 
             // Status Text
-            DexLabel
+            DefaultText
             {
                 id: statusText
                 Layout.alignment: Qt.AlignHCenter
@@ -99,7 +99,7 @@ MultipageModal
                 height: 25
             },
 
-            DexLabel
+            DefaultText
             {
                 Layout.alignment: Qt.AlignHCenter
                 visible: text_value != ""
@@ -228,7 +228,7 @@ MultipageModal
             },
 
             // Recover Funds button
-            DexAppButton
+            DefaultButton
             {
                 id: refund_button
                 leftPadding: 15
@@ -287,7 +287,7 @@ MultipageModal
                 Layout.fillWidth: true
             },
 
-            DexAppButton
+            DefaultButton
             {
                 id: close_order_button
                 text: qsTr("Close")

@@ -47,7 +47,7 @@ FloatingBackground
             Layout.preferredWidth: 24
             Layout.alignment: Qt.AlignCenter
 
-            DexLabel
+            DefaultText
             {
                 id: statusText
                 anchors.centerIn: parent
@@ -84,7 +84,7 @@ FloatingBackground
 
                 clip: true
 
-                DexLabel
+                DefaultText
                 {
                     id: baseAmountLabel
                     anchors.left: parent.left
@@ -97,7 +97,7 @@ FloatingBackground
                     maximumLineCount: 1
                 }
 
-                DexLabel
+                DefaultText
                 {
                     anchors.left: baseAmountLabel.right
                     anchors.leftMargin: 3
@@ -120,7 +120,7 @@ FloatingBackground
                     iconSize: 18
                 }
 
-                DexLabel
+                DefaultText
                 {
                     anchors.right: relAmountInCurrCurrency.left
                     anchors.rightMargin: 3
@@ -133,7 +133,7 @@ FloatingBackground
                     maximumLineCount: 1
                 }
 
-                DexLabel
+                DefaultText
                 {
                     id: relAmountInCurrCurrency
 
@@ -166,7 +166,7 @@ FloatingBackground
                     source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin ?? atomic_app_primary_coin)
                 }
 
-                DexLabel
+                DefaultText
                 {
                     anchors.left: baseIcon.right
                     anchors.leftMargin: 2
@@ -180,7 +180,7 @@ FloatingBackground
                     maximumLineCount: 1
                 }
 
-                DexLabel
+                DefaultText
                 {
                     visible: clickable
 
@@ -194,7 +194,7 @@ FloatingBackground
                     color: Dex.CurrentTheme.foregroundColor2
                 }
 
-                DexLabel
+                DefaultText
                 {
                     anchors.right: relCoin.left
                     anchors.rightMargin: 2
@@ -229,7 +229,7 @@ FloatingBackground
             Layout.preferredWidth: 24
             Layout.alignment: Qt.AlignCenter
 
-            DexLabel
+            DefaultText
             {
                 anchors.centerIn: parent
 
@@ -240,7 +240,7 @@ FloatingBackground
 
                 DexTooltip
                 {
-                    contentItem: DexLabel
+                    contentItem: DefaultText
                     {
                         text_value: qsTr("Funds are recoverable")
                         font.pixelSize: Style.textSizeSmall4

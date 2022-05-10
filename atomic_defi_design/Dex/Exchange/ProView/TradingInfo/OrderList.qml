@@ -102,7 +102,7 @@ Item
         }
     }
 
-    DexLabel
+    DefaultText
     {
         visible: list.count === 0
         anchors.centerIn: parent

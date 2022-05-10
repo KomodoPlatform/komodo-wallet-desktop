@@ -122,7 +122,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                DexLabel
+                DefaultText
                 {
                     font: DexTypo.head6
                     anchors.verticalCenter: parent.verticalCenter

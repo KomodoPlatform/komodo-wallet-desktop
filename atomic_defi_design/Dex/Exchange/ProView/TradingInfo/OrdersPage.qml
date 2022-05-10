@@ -90,7 +90,7 @@ Item {
         RowLayout
         {
             spacing: 10
-            DexButton
+            DefaultButton
             {
                 Layout.preferredWidth: 86
                 Layout.preferredHeight: 29
@@ -101,7 +101,7 @@ Item {
                 onClicked: settings.visible = !settings.visible
             }
 
-            DexButton
+            DefaultButton
             {
                 visible: root.is_history
                 Layout.preferredWidth: 86
@@ -116,7 +116,7 @@ Item {
                 }
             }
 
-            DexLabel
+            DefaultText
             {
                 color: Dex.CurrentTheme.foregroundColor2
                 visible: !settings.visible
@@ -133,7 +133,7 @@ Item {
             RowLayout
             {
                 spacing: 10
-                DexButton
+                DefaultButton
                 {
                     visible: root.is_history
                     enabled: list_model_proxy.can_i_apply_filtering
@@ -144,7 +144,8 @@ Item {
                     text: qsTr("Apply Filter")
                     onClicked: list_model_proxy.apply_all_filtering()
                 }
-                DexButton
+
+                DefaultButton
                 {
                     visible: !root.is_history
                     enabled: API.app.orders_mdl.length > 0
@@ -162,7 +163,7 @@ Item {
             {
                 Layout.alignment: Qt.AlignHCenter
 
-                DexSweetComboBox
+                DefaultSweetComboBox
                 {
                     id: combo_base
                     Layout.preferredWidth: parent.width / 2 - swapCoinFilterIcon.width
@@ -179,7 +180,8 @@ Item {
                     id: swapCoinFilterIcon
                     source: Qaterial.Icons.swapHorizontal
                     color: Dex.CurrentTheme.foregroundColor
-                    DexMouseArea
+
+                    DefaultMouseArea
                     {
                         id: swap_button
                         anchors.fill: parent
@@ -193,7 +195,7 @@ Item {
                     }
                 }
 
-                DexSweetComboBox
+                DefaultSweetComboBox
                 {
                     id: combo_rel
                     Layout.fillWidth: true

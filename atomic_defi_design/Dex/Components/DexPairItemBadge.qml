@@ -23,7 +23,7 @@ DexRectangle
 
         Item { Layout.fillWidth: true }
 
-        DexImage
+        DefaultImage
         {
             id: icon
             Layout.preferredWidth: 35
@@ -40,7 +40,7 @@ DexRectangle
             Layout.alignment: Qt.AlignVCenter
             spacing: 5
 
-            DexLabel
+            DefaultText
             {
                 id: ticker
                 Layout.fillWidth: true
@@ -49,7 +49,7 @@ DexRectangle
                 wrapMode: Text.NoWrap
             }
 
-            DexLabel
+            DefaultText
             {
                 id: amount
                 Layout.fillWidth: true
@@ -68,7 +68,7 @@ DexRectangle
             Layout.alignment: Qt.AlignVCenter
             spacing: 5
 
-            DexLabel
+            DefaultText
             {
                 id: fullname
                 Layout.fillWidth: true
@@ -77,7 +77,7 @@ DexRectangle
                 font.pixelSize: 11
             }
 
-            DexLabel
+            DefaultText
             {
                 id: amount_fiat
                 visible: text != ''
