@@ -105,6 +105,8 @@ Item
             {
                 id: expandable
 
+                property color _tagBgColor: index % 2 !== 0 ? Dex.CurrentTheme.innerBackgroundColor : Dex.CurrentTheme.backgroundColor
+
                 padding: 12
                 color: index % 2 === 0 ? Dex.CurrentTheme.innerBackgroundColor : Dex.CurrentTheme.backgroundColor
                 width: contactTable.width
@@ -155,8 +157,10 @@ Item
 
                     Flow
                     {
+                        anchors.verticalCenter: parent.verticalCenter
                         x: parent.width * 0.3
                         width: parent.width * 0.57
+                        spacing: 17
 
                         Repeater
                         {
@@ -164,8 +168,26 @@ Item
 
                             delegate: Dex.Rectangle
                             {
-                                width: 83
+                                width: tagLabel.width > 73 ? 83 : tagLabel.width + 10
                                 height: 21
+                                radius: 20
+                                color: expandable._tagBgColor
+
+                                Dex.MouseArea
+                                {
+                                    anchors.fill: parent
+                                    onClicked: searchbar.textField.text = modelData
+                                }
+
+                                Dex.Text
+                                {
+                                    id: tagLabel
+                                    width: 70
+                                    anchors.centerIn: parent
+                                    text: modelData
+                                    horizontalAlignment: Text.AlignHCenter
+                                    elide: Text.ElideRight
+                                }
                             }
                         }
                     }
