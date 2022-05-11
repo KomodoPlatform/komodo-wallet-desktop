@@ -173,20 +173,23 @@ MultipageModal
     }
 
     onSend_rpc_resultChanged: {
-        if (is_send_busy === false) {
+        if (is_send_busy === false)
+        {
             return
         }
 
         // Local var, faster
         const result = General.clone(send_rpc_result)
 
-        if(result.error_code) {
+        if (result.error_code)
+        {
             root.close()
-            console.log("Send Error:", result.error_code, " Message:", result.error_message)
             toast.show(qsTr("Failed to send"), General.time_toast_important_error, result.error_message)
         }
-        else {
-            if(!result || !result.withdraw_answer) {
+        else
+        {
+            if (!result || !result.withdraw_answer)
+            {
                 reset()
                 return
             }
@@ -201,15 +204,6 @@ MultipageModal
         }
 
         send_result = result
-    }
-
-    onAuth_succeededChanged: {
-        if (!auth_succeeded) {
-            console.log("Double verification failed, cannot confirm sending.")
-        }
-        else {
-            console.log("Double verification succeeded, validate sending.");
-        }
     }
 
     onBroadcast_resultChanged: {
