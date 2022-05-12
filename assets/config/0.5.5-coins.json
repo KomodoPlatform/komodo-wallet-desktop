@@ -9816,7 +9816,7 @@
     "name": "Runebase",
     "coinpaprika_id": "runes-runebase",
     "coingecko_id": "runebase",
-    "nomics_id": "runes-runebase",
+    "nomics_id": "RUNES",
     "electrum": [
       {
         "url": "electrum1.runebase.io:50002",
