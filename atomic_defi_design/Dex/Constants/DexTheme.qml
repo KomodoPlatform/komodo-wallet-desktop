@@ -531,6 +531,7 @@ QtObject {
                                           "WBTC": "#CCCCCC",
                                           "YFI": "#006BE6",
                                           "ZRX": "#302C2C",
-                                          "UNI": "#FF007A"
+                                          "UNI": "#FF007A",
+                                          "RUNES": "#336699"
                                       })
 }

@@ -9810,5 +9810,59 @@
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
+  },
+  "RUNES": {
+    "coin": "RUNES",
+    "name": "Runebase",
+    "coinpaprika_id": "runes-runebase",
+    "coingecko_id": "runebase",
+    "nomics_id": "runes-runebase",
+    "electrum": [
+      {
+        "url": "electrum1.runebase.io:50002",
+        "ws_url": "electrum1.runebase.io:50004",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrum2.runebase.io:50002",
+        "ws_url": "electrum2.runebase.io:50004",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrum3.runebase.io:50002",
+        "ws_url": "electrum3.runebase.io:50004",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrum4.runebase.io:50002",
+        "ws_url": "electrum4.runebase.io:50004",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrum1.runebase.io:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrum2.runebase.io:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrum3.runebase.io:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrum4.runebase.io:50001",
+        "protocol": "TCP"
+      }      
+    ],
+    "explorer_url": [
+      "https://explorer.runebase.io/"
+    ],
+    "explorer_tx_url": "tx/",
+    "explorer_address_url": "address/",
+    "type": "UTXO",
+    "active": false,
+    "is_segwit_on": false,
+    "currently_enabled": false
   }
 }
