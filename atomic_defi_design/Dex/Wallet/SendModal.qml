@@ -172,7 +172,8 @@ MultipageModal
         reset()
     }
 
-    onSend_rpc_resultChanged: {
+    onSend_rpc_resultChanged:
+    {
         if (is_send_busy === false)
         {
             return
@@ -261,14 +262,13 @@ MultipageModal
     {
         id: _preparePage
 
+        property bool cryptoSendMode: true
+
         titleText: qsTr("Prepare to send ") + current_ticker_infos.name
         titleAlignment: Qt.AlignHCenter
 
-        property bool cryptoSendMode: true
-
         DefaultRectangle
         {
-
             enabled: !root.segwit && !root.is_send_busy
 
             Layout.preferredWidth: 420
@@ -284,10 +284,9 @@ MultipageModal
 
                 width: 390
                 height: 44
-
                 placeholderText: qsTr("Address of the recipient")
-                onTextChanged: api_wallet_page.validate_address(text)
                 forceFocus: true
+                onTextChanged: api_wallet_page.validate_address(text)
             }
 
             Rectangle
