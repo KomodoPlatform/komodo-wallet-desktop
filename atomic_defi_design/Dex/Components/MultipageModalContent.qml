@@ -20,6 +20,7 @@ ColumnLayout
     property alias         footer:          _footer.data
 
     Layout.fillWidth: true
+    Layout.fillHeight: false
     Layout.maximumHeight: window.height - 50
 
     DexLabel
