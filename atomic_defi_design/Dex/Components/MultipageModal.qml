@@ -63,7 +63,6 @@ DefaultModal
         {
             visible: root.count > 1
             Layout.alignment: Qt.AlignHCenter
-
             layoutDirection: Qt.RightToLeft
 
             Repeater
