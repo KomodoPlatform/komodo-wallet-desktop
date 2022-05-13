@@ -52,7 +52,7 @@ DefaultModal
         NumberAnimation { target: root; property: "opacity"; to: 1; duration: fadeOut.duration }
     }
 
-    Column
+    ColumnLayout
     {
         id: columnLayout
         spacing: Style.rowSpacing
@@ -62,7 +62,7 @@ DefaultModal
         Row
         {
             visible: root.count > 1
-            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.alignment: Qt.AlignHCenter
 
             layoutDirection: Qt.RightToLeft
 
@@ -114,8 +114,8 @@ DefaultModal
         StackLayout
         {
             id: stackLayout
-            width: parent.width
-            height: children[currentIndex].height
+            Layout.fillWidth: true
+            Layout.preferredHeight: children[currentIndex].height
         }
     }
 }
