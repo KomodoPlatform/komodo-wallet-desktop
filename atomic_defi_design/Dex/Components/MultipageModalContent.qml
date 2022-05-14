@@ -1,8 +1,6 @@
-//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
-//! Project Imports
 import "../Constants"
 import App 1.0
 
@@ -23,11 +21,11 @@ ColumnLayout
     property var scrollable_height: window.height - _title.height - _header.height - _footer.height - titleTopMargin * 2 - topMarginAfterTitle - scrollable_shrink - 150
 
     Layout.fillWidth: true
-    Layout.maximumHeight: window.height - 150
-
     visible: true
+    Layout.fillHeight: false
+    Layout.maximumHeight: window.height - 50
 
-    DexLabel
+    DefaultText
     {
         id: _title
         Layout.topMargin: root.titleTopMargin
@@ -47,17 +45,19 @@ ColumnLayout
         visible: childrenRect.height > 0
     }
 
-    DexFlickable
+    DefaultFlickable
     {
         id: modal_flickable
         flickableDirection: Flickable.VerticalFlick
+        property int _maxHeight: window.height - 50 - _title.height - _footer.height - root.topMarginAfterTitle - root.spacing
 
         Layout.topMargin: root.topMarginAfterTitle
         Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
-        Layout.maximumHeight: scrollable_height
-
+        Layout.maximumHeight: _maxHeight
         contentHeight: _innerLayout.height
+
+        flickableDirection: Flickable.VerticalFlick
 
         ColumnLayout
         {
