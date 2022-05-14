@@ -57,8 +57,6 @@ ColumnLayout
         Layout.maximumHeight: _maxHeight
         contentHeight: _innerLayout.height
 
-        flickableDirection: Flickable.VerticalFlick
-
         ColumnLayout
         {
             id: _innerLayout
