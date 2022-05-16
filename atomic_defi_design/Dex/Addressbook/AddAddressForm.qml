@@ -1,11 +1,12 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.15
-import QtQuick.Controls.Universal 2.15 //> Universal.accent
+import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
 import Dex.Themes 1.0 as Dex
 import Dex.Components 1.0 as Dex
+import "../Components" as Dex
 import "../Constants" as Dex
 
 Dex.Rectangle
@@ -57,7 +58,7 @@ Dex.Rectangle
         anchors.margins: 21
         spacing: 17
 
-        Dex.ComboBox
+        Dex.ComboBoxWithSearchBar
         {
             id: addressTypeComboBox
 
@@ -66,20 +67,21 @@ Dex.Rectangle
             Layout.preferredWidth: 458
             Layout.preferredHeight: 44
             model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
-            dropDownMaxHeight: 150
+            popupForceMaxHeight: true
+            popupMaxHeight: 265
             textRole: "ticker"
+            searchBarPlaceholderText: qsTr("Search asset")
 
-            delegate: Qaterial.ItemDelegate
+            delegate: ItemDelegate
             {
                 id: _delegate
 
-                Universal.accent: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
                 width: addressTypeComboBox.width
+                height: 40
                 highlighted: addressTypeComboBox.highlightedIndex === index
 
                 contentItem: Row
                 {
-                    height: 36
                     spacing: 10
 
                     Dex.Image
@@ -103,6 +105,12 @@ Dex.Rectangle
                         color: Dex.Style.getCoinTypeColor(model.type)
                         font: Dex.DexTypo.overLine
                     }
+                }
+
+                background: Dex.Rectangle
+                {
+                    anchors.fill: _delegate
+                    color: _delegate.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
                 }
             }
 
@@ -138,6 +146,9 @@ Dex.Rectangle
                     }
                 }
             }
+
+            onSearchBarTextChanged: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString(patternStr)
+            Component.onDestruction: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString("")
         }
 
         Dex.TextField

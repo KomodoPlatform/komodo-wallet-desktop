@@ -2,6 +2,7 @@ module Dex.Components
 
 Button 1.0 DefaultButton.qml
 ComboBox 1.0 DefaultComboBox.qml
+ComboBoxWithSearchBar 1.0 ComboBoxWithSearchBar.qml
 ClickableText 1.0 ClickableText.qml
 GradientButton 1.0 GradientButton.qml
 Image 1.0 DefaultImage.qml

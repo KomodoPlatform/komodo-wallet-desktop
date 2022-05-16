@@ -216,7 +216,7 @@ Item
                     height: noAddressLabel.visible ? 50 : addressList.height
                     width: contactTable.width
 
-                    Dex.DexListView
+                    Dex.ListView
                     {
                         id: addressList
 
