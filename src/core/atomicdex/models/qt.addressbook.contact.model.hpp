@@ -56,12 +56,12 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
         
         // Getters/Setters
-        [[nodiscard]] const QString&                          get_name() const ;
-        void                                                  set_name(const QString& name) ;
-        [[nodiscard]] const QStringList&                      get_categories() const ;
-        void                                                  set_categories(QStringList categories) ;
-        [[nodiscard]] addressbook_contact_proxy_filter_model* get_proxy_filter() const ;
-        [[nodiscard]] const QVector<address_entry>&           get_address_entries() const ; // Returns contact's current addresses.
+        [[nodiscard]] const QString&                          get_name() const;
+        void                                                  set_name(const QString& name);
+        [[nodiscard]] const QStringList&                      get_categories() const;
+        void                                                  set_categories(QStringList categories);
+        [[nodiscard]] addressbook_contact_proxy_filter_model* get_proxy_filter() const;
+        [[nodiscard]] const QVector<address_entry>&           get_address_entries() const; // Returns contact's current addresses.
     
         // Loads this model data from the persistent data.
         void populate();
