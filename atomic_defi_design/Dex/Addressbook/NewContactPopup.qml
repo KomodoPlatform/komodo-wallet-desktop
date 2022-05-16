@@ -13,6 +13,7 @@ Dex.Popup
     width: 250
     height: 55
 
+    onOpened: nameField.forceActiveFocus()
     onClosed: nameField.text = ""
 
     contentItem: Row
