@@ -97,13 +97,13 @@ namespace atomic_dex
         
         if (name != m_name)
         {
-            if (!m_name.isEmpty())
+            if (!name.isEmpty())
             {
                 addrbook_manager.change_contact_name(m_name.toStdString(), name.toStdString());
                 addrbook_manager.save_configuration();
+                m_name = name;
+                emit nameChanged();
             }
-            m_name = name;
-            emit nameChanged();
         }
     }
     
