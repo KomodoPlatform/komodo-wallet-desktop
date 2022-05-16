@@ -213,7 +213,7 @@ Item
 
                 content: Item
                 {
-                    height: noAddressLabel.visible ? 80 : addressList.height
+                    height: noAddressLabel.visible ? 50 : addressList.height
                     width: contactTable.width
 
                     Dex.DexListView
