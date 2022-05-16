@@ -59,8 +59,8 @@ Dex.Popup
                     root.close()
 
                     let contactModelIndex = API.app.addressbookPg.model.index(API.app.addressbookPg.model.rowCount() - 1, 0)
-                    editContactLoader.item.contactModel = API.app.addressbookPg.model.data(contactModelIndex, Qt.UserRole + 1)
-                    editContactLoader.item.open()
+                    editContactLoader.contactModel = API.app.addressbookPg.model.data(contactModelIndex, Qt.UserRole + 1)
+                    editContactLoader.open()
                 }
             }
         }

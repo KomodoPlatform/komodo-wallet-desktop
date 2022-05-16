@@ -205,8 +205,8 @@ Item
                             text: qsTr("Edit")
                             onClicked:
                             {
-                                editContactLoader.item.contactModel = modelData
-                                editContactLoader.item.open()
+                                editContactLoader.contactModel = modelData
+                                editContactLoader.open()
                             }
                         }
                         Dex.ClickableText
@@ -322,19 +322,24 @@ Item
                 }
             }
         }
-
-        Loader
-        {
-            id: editContactLoader
-            sourceComponent: EditContactModal { }
-        }
     }
 
     Dex.ModalLoader
     {
-        property string address
+        id: editContactLoader
 
+        property var contactModel
+
+        onLoaded: item.contactModel = contactModel
+
+        sourceComponent: EditContactModal { }
+    }
+
+    Dex.ModalLoader
+    {
         id: sendModalLoader
+
+        property string address
 
         onLoaded: item.address_field.text = address
 
