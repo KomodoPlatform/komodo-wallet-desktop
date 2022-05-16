@@ -107,13 +107,13 @@ Item
 
                 property color _tagBgColor: index % 2 !== 0 ? Dex.CurrentTheme.innerBackgroundColor : Dex.CurrentTheme.backgroundColor
 
-                padding: 12
+                padding: 10
                 color: index % 2 === 0 ? Dex.CurrentTheme.innerBackgroundColor : Dex.CurrentTheme.backgroundColor
                 width: contactTable.width
 
                 header: Item
                 {
-                    height: 66
+                    height: 56
                     width: expandable.width
 
                     Dex.DefaultMouseArea
@@ -144,15 +144,6 @@ Item
                             anchors.verticalCenter: parent.verticalCenter
                             up: expandable.isExpanded
                         }
-                    }
-
-                    Dex.Text
-                    {
-                        x: parent.width * 0.305
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: parent.width * 0.57
-                        visible: modelData.categories.length === 0
-                        text: qsTr("No tags")
                     }
 
                     Flow
@@ -201,6 +192,7 @@ Item
                         anchors.rightMargin: 2
                         Dex.ClickableText
                         {
+                            anchors.verticalCenter: parent.verticalCenter
                             font: Dex.DexTypo.body2
                             text: qsTr("Edit")
                             onClicked:
@@ -211,6 +203,7 @@ Item
                         }
                         Dex.ClickableText
                         {
+                            anchors.verticalCenter: parent.verticalCenter
                             font: Dex.DexTypo.body2
                             text: qsTr("Delete")
                             onClicked: Dex.API.app.addressbookPg.model.removeContact(modelData.name)
