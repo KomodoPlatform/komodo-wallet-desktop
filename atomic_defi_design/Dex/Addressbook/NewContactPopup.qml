@@ -53,7 +53,14 @@ Dex.Popup
                 var createContactResult = API.app.addressbookPg.model.addContact(nameField.text)
 
                 if (createContactResult === false) nameAlreadyTakenToolTip.visible = true
-                else root.close()
+                else
+                {
+                    root.close()
+
+                    let contactModelIndex = API.app.addressbookPg.model.index(API.app.addressbookPg.model.rowCount() - 1, 0)
+                    editContactLoader.item.contactModel = API.app.addressbookPg.model.data(contactModelIndex, Qt.UserRole + 1)
+                    editContactLoader.item.open()
+                }
             }
         }
     }
