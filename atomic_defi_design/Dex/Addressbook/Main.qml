@@ -231,7 +231,7 @@ Item
                         x: 30
                         model: modelData.proxyFilter
                         width: parent.width - 40
-                        implicitHeight: childrenRect.height > 240 ? 240 : childrenRect.height
+                        implicitHeight: contentHeight > 240 ? 240 : contentHeight
                         spacing: 18
 
                         delegate: Item
