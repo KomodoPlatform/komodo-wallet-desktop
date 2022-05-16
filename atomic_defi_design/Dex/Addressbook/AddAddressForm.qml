@@ -145,7 +145,7 @@ Dex.Rectangle
             id: addressKeyField
             Layout.preferredWidth: 458
             Layout.preferredHeight: 44
-            placeholderText: qsTr("Address key")
+            placeholderText: qsTr("Label")
 
             Dex.ToolTip
             {
@@ -159,7 +159,7 @@ Dex.Rectangle
             id: addressValueField
             Layout.preferredWidth: 458
             Layout.preferredHeight: 44
-            placeholderText: qsTr("Address field")
+            placeholderText: qsTr("Address")
         }
 
         Dex.Text
