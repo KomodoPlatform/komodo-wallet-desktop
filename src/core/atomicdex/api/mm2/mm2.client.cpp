@@ -156,7 +156,6 @@ namespace atomic_dex
     }
 
     template void mm2_client::process_rpc_async<atomic_dex::mm2::get_public_key>(const std::function<void(mm2::get_public_key_answer)>&);
-    template void mm2_client::process_rpc_async<atomic_dex::mm2::init_z_coin>(const std::function<void(mm2::init_z_coin_answer)>&);
 
     void
     mm2_client::stop()

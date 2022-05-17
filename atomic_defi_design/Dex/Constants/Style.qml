@@ -513,6 +513,7 @@ QtObject {
                                           "YFII": "#FF2A79",
                                           "ZET": "#155169",
                                           "ZIL": "#42BBB9",
+                                          "ZOMBIE": "#3F3F3F",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A",
                                           "USBL": "#279553",

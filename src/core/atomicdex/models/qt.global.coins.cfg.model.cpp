@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -43,6 +43,7 @@ namespace
             {"has_parent_fees_ticker", coin.has_parent_fees_ticker},
             {"is_testnet", coin.is_testnet.value_or(false)},
             {"is_erc_family", coin.is_erc_family},
+            {"is_zhtlc_family", coin.is_zhtlc_family},
             {"is_wallet_only", coin.wallet_only},
             {"fees_ticker", QString::fromStdString(coin.fees_ticker)}};
         return j;

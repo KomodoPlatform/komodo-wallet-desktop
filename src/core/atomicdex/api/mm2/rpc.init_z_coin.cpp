@@ -14,16 +14,28 @@
  *                                                                            *
  ******************************************************************************/
 
-// Deps Headers
+//! Deps
 #include <nlohmann/json.hpp>
 
-// Project Headers
-#include "rpc.init_z_coin.hpp"
+//! Project Headers
+#include "atomicdex/api/mm2/rpc.init_z_coin.hpp"
 
-namespace atomic_dex::mm2
+//! Implementation RPC [init_z_coin]
+namespace mm2::api
 {
-    void from_json(const nlohmann::json& json, init_z_coin_answer& in)
+    //! Serialization
+    void to_json(nlohmann::json& j, const init_z_coin_request& cfg)
     {
-        json.at("task_id").get_to(in.task_id);
+        j["params"]["ticker"]                                                          = cfg.coin_name;
+        j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
+        j["params"]["activation_params"]["mode"]["rpc_data"]["electrum_servers"]       = cfg.servers;
+        j["params"]["activation_params"]["mode"]["rpc_data"]["light_wallet_d_servers"] = cfg.z_urls;
+        j["params"]["tx_history"]                                                      = cfg.with_tx_history;
     }
-}
+
+    //! Deserialization
+    void from_json(const nlohmann::json& j, init_z_coin_answer& cfg)
+    {
+        j.at("task_id").get_to(cfg.task_id);
+    }
+} // namespace mm2::api

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -28,6 +28,7 @@
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
+#include "atomicdex/api/mm2/rpc.init_z_coin.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
@@ -627,7 +628,22 @@ namespace atomic_dex
                 continue;
             }
 
-            if (!coin_info.is_erc_family)
+            if (coin_info.is_zhtlc_family)
+            {
+                t_init_z_coin_request request{
+                    .coin_name            = coin_info.ticker,
+                    .servers              = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
+                    .z_urls               = coin_info.z_urls.value_or(std::vector<std::string>{}),
+                    .coin_type            = coin_info.coin_type,
+                    .is_testnet           = coin_info.is_testnet.value_or(false),
+                    .with_tx_history      = false}; // Tx history not yet ready for ZHTLC
+
+                nlohmann::json j = ::mm2::api::template_request("init_z_coin", true);
+                ::mm2::api::to_json(j, request);
+                batch_array.push_back(j);
+
+            }
+            else if (!coin_info.is_erc_family)
             {
                 t_electrum_request request{
                     .coin_name       = coin_info.ticker,

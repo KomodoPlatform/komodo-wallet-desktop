@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -40,6 +40,10 @@ namespace atomic_dex
         if (j.contains("nodes"))
         {
             cfg.urls = j.at("nodes").get<std::vector<std::string>>();
+        }
+        if (j.contains("light_wallet_d_servers"))
+        {
+            cfg.z_urls = j.at("light_wallet_d_servers").get<std::vector<std::string>>();
         }
         cfg.is_claimable         = j.count("is_claimable") > 0;
         cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
@@ -167,6 +171,10 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::RSK;
         }
+        else if (cfg.type == "ZHTLC")
+        {
+            cfg.coin_type = CoinType::ZHTLC;
+        }
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();
@@ -261,6 +269,11 @@ namespace atomic_dex
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = "BCH";
+            break;
+        case CoinType::ZHTLC:
+            cfg.has_parent_fees_ticker = false;
+            cfg.is_zhtlc_family        = true;
+            cfg.fees_ticker            = cfg.ticker;
             break;
         default:
             cfg.has_parent_fees_ticker = false;

@@ -39,12 +39,14 @@ namespace atomic_dex
         static constexpr const char* matic_gas_stations = "https://gasstation-mainnet.matic.network/";
         using electrum_servers                          = std::vector<electrum_server>;
         using nodes                                     = std::vector<std::string>;
+        using light_wallet_d_servers                    = std::vector<std::string>; ///< For ZHTLC
         std::string                     ticker;
         std::optional<std::string>      alias_ticker{std::nullopt};
         std::string                     gui_ticker; ///< Ticker displayed in the gui
         std::string                     name;       ///< nice name
         std::optional<electrum_servers> electrum_urls;
         std::optional<nodes>            urls;
+        std::optional<light_wallet_d_servers>  z_urls; 
         bool                            is_claimable{false};
         std::string                     minimal_claim_amount{"0"};
         bool                            currently_enabled{false};
@@ -66,6 +68,7 @@ namespace atomic_dex
         bool                            segwit{false};
         bool                            is_segwit_on{false};
         bool                            is_erc_family{false};
+        bool                            is_zhtlc_family{false};
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);

@@ -9786,6 +9786,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "ZOMBIE": {
+    "coin": "ZOMBIE",
+    "name": "Zombie",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "is_testnet": true,
+    "light_wallet_d_servers": [
+      "http://zombie.sirseven.me:443"
+    ],
+    "electrum": [
+      {"url":"zombie.sirseven.me:10033"}
+    ],
+    "explorer_url": [
+    ],
+    "type": "ZHTLC",
+    "active": false,
+    "currently_enabled": false
+  },
     "IC": {
     "coin": "IC",
     "name": "Ignition",

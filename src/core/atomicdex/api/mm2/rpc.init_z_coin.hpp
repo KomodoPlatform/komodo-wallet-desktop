@@ -22,24 +22,33 @@
 // Deps Headers
 #include <nlohmann/json_fwd.hpp>
 
-namespace atomic_dex::mm2
+//! Project Headers
+#include "atomicdex/config/electrum.cfg.hpp"
+#include "atomicdex/constants/qt.coins.enums.hpp"
+
+namespace mm2::api
 {
-    struct init_z_coin
+    struct init_z_coin_request
     {
-        static constexpr auto endpoint = "init_z_coin";
-        static constexpr bool is_v2    = true;
-        struct expected_request_type
-        {
-
-        } request;
-        struct expected_answer_type
-        {
-            std::string task_id;
-        } answer;
+        std::string                               coin_name;
+        std::vector<atomic_dex::electrum_server>  servers;
+        std::vector<std::string>                  z_urls;
+        CoinType                                  coin_type;
+        bool                                      is_testnet{false};
+        bool                                      with_tx_history{false};  // Not yet in API
     };
-    using init_z_coin_request = init_z_coin::expected_request_type;
-    using init_z_coin_answer = init_z_coin::expected_answer_type;
 
-    inline void to_json([[maybe_unused]] nlohmann::json& j, const init_z_coin_request&) { }
-    void from_json(const nlohmann::json& json, init_z_coin_answer& in);
+    struct init_z_coin_answer
+    {
+        int         task_id;
+    };
+
+    void to_json(nlohmann::json& j, const init_z_coin_request& cfg);
+    void from_json(const nlohmann::json& j, init_z_coin_answer& answer);
 }
+
+namespace atomic_dex
+{
+    using t_init_z_coin_request = ::mm2::api::init_z_coin_request;
+    using t_init_z_coin_answer = ::mm2::api::init_z_coin_answer;
+} // namespace atomic_dex
