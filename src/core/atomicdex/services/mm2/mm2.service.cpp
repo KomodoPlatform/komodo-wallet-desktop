@@ -1236,6 +1236,9 @@ namespace atomic_dex
             case CoinTypeGadget::Moonriver:
                 out = construct_url_functor("MOVR", "MOVRT", "moonriver_tx_history", "moonriver_tx_history", ticker, address);
                 break;
+            case CoinTypeGadget::Moonbeam:
+                out = construct_url_functor("GLMR", "GLMRT", "moonbeam_tx_history", "moonbeam_tx_history", ticker, address);
+                break;
             case CoinTypeGadget::FTM20:
                 out = construct_url_functor("FTM", "FTMT", "ftm_tx_history", "ftm_tx_history", ticker, address);
                 break;

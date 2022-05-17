@@ -6,7 +6,7 @@ import Dex.Themes 1.0 as Dex
 
 Rectangle
 {
-    property int   searchIconLeftMargin: 13
+    property int  searchIconLeftMargin: 13
     property bool forceFocus: false
 
     property alias searchIcon: _searchIcon
@@ -15,7 +15,7 @@ Rectangle
     color: Dex.CurrentTheme.accentColor
     radius: 18
 
-    DefaultImage
+    DexImage
     {
         id: _searchIcon
         anchors.left: parent.left
@@ -27,7 +27,7 @@ Rectangle
 
         source: General.image_path + "exchange-search.svg"
 
-        DefaultColorOverlay
+        DexColorOverlay
         {
             anchors.fill: parent
             source: parent
@@ -35,13 +35,12 @@ Rectangle
         }
     }
 
-    TextField
+    DexTextField
     {
         id: _textField
 
         anchors.left: _searchIcon.right
-        anchors.verticalCenter: _searchIcon.verticalCenter
-        anchors.verticalCenterOffset: 1
+        anchors.verticalCenter: parent.verticalCenter
         width: parent.width - x - 5
         height: parent.height
 

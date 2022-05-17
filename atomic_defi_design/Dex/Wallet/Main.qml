@@ -417,33 +417,10 @@ Item
                 }
 
                 // Send button error icon
-                DefaultImage
+                DefaultAlertIcon
                 {
                     visible: API.app.wallet_pg.send_availability_state !== ""
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: 14
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: Qaterial.Icons.alert
-
-                    DefaultColorOverlay
-                    {
-                        anchors.fill: parent
-                        source: parent
-                        color: "yellow"
-                    }
-                    MouseArea
-                    {
-                        id: send_alert_mouse_area
-                        anchors.fill: parent
-                        hoverEnabled: true
-                    }
-
-                    DefaultTooltip
-                    {
-                        visible: send_alert_mouse_area.containsMouse
-                        text: API.app.wallet_pg.send_availability_state
-                    }
+                    tooltipText: API.app.wallet_pg.send_availability_state
                 }
             }
 
@@ -456,13 +433,13 @@ Item
             Component
             {
                 id: enable_fees_coin_comp
-                BasicModal
+                MultipageModal
                 {
                     id: root
                     width: 300
-                    ModalContent
+                    MultipageModalContent
                     {
-                        title: qsTr("Enable %1 ?").arg(coin_to_enable_ticker)
+                        titleText: qsTr("Enable %1 ?").arg(coin_to_enable_ticker)
                         RowLayout
                         {
                             Layout.fillWidth: true
@@ -574,34 +551,11 @@ Item
                     }
                 }
 
-                // Send button error icon
-                DefaultImage
+                // Swap button error icon
+                DefaultAlertIcon
                 {
                     visible: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: 14
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: Qaterial.Icons.alert
-
-                    DefaultColorOverlay
-                    {
-                        anchors.fill: parent
-                        source: parent
-                        color: "yellow"
-                    }
-                    MouseArea
-                    {
-                        id: swap_alert_mouse_area
-                        anchors.fill: parent
-                        hoverEnabled: true
-                    }
-
-                    DefaultTooltip
-                    {
-                        visible: swap_alert_mouse_area.containsMouse
-                        text: api_wallet_page.ticker + qsTr(" is wallet only")
-                    }
+                    tooltipText: api_wallet_page.ticker + qsTr(" is wallet only")
                 }
             }
 
@@ -662,6 +616,89 @@ Item
             {
                 id: claimFaucetResultModal
                 sourceComponent: ClaimFaucetResultModal {}
+            }
+
+            // Public Key button
+            Item
+            {
+                Layout.minimumWidth: 160
+                Layout.maximumWidth: 180
+                Layout.fillWidth: true
+                Layout.preferredHeight: 48
+
+                visible: current_ticker_infos.name === "Tokel" || current_ticker_infos.name === "Marmara Credit Loops"
+
+                DexAppButton
+                {
+                    text: qsTr("Public Key")
+                    radius: 18
+                    font.pixelSize: 16
+                    anchors.fill: parent
+                    onClicked:
+                    {
+                        API.app.settings_pg.fetchPublicKey()
+                        publicKeyModal.open()
+                    }
+                }
+
+                ModalLoader
+                {
+                    id: publicKeyModal
+                    sourceComponent: MultipageModal
+                    {
+                        MultipageModalContent
+                        {
+                            titleText: qsTr("Public Key")
+
+                            DefaultBusyIndicator
+                            {
+                                Layout.alignment: Qt.AlignCenter
+
+                                visible: API.app.settings_pg.fetchingPublicKey
+                                enabled: visible
+                            }
+
+                            RowLayout
+                            {
+                                Layout.fillWidth: true
+
+                                DefaultText
+                                {
+                                    Layout.fillWidth: true
+                                    visible: !API.app.settings_pg.fetchingPublicKey
+                                    text: API.app.settings_pg.publicKey
+                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                }
+
+                                Qaterial.RawMaterialButton
+                                {
+                                    backgroundImplicitWidth: 40
+                                    backgroundImplicitHeight: 30
+                                    backgroundColor: "transparent"
+                                    icon.source: Qaterial.Icons.contentCopy
+                                    icon.color: Dex.CurrentTheme.foregroundColor
+                                    onClicked:
+                                    {
+                                        API.qt_utilities.copy_text_to_clipboard(API.app.settings_pg.publicKey)
+                                        app.notifyCopy(qsTr("Public Key"), qsTr("Copied to Clipboard"))
+                                    }
+                                }
+                            }
+
+                            Image
+                            {
+                                visible: !API.app.settings_pg.fetchingPublicKey
+
+                                Layout.topMargin: 20
+                                Layout.alignment: Qt.AlignHCenter
+
+                                sourceSize.width: 300
+                                sourceSize.height: 300
+                                source: API.qt_utilities.get_qrcode_svg_from_string(API.app.settings_pg.publicKey)
+                            }
+                        }
+                    }
+                }
             }
         }
 

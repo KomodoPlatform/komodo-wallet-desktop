@@ -16,6 +16,7 @@ import "../Support"
 import "../Sidebar" as Sidebar
 import "../Fiat"
 import "../Settings" as SettingsPage
+import "../Support" as SupportPage
 import "../Screens"
 import Dex.Themes 1.0 as Dex
 //import Dex.Sidebar 1.0 as Dex
@@ -85,6 +86,8 @@ Item {
     Layout.fillWidth: true
 
     onCurrentPageChanged: sidebar.currentLineType = currentPage
+
+    SupportPage.SupportModal { id: support_modal }
 
     // Al settings depends this modal
     SettingsPage.SettingModal { id: setting_modal }
@@ -208,6 +211,7 @@ Item {
 
         onLineSelected: currentPage = lineType;
         onSettingsClicked: setting_modal.open()
+        onSupportClicked: support_modal.open()
     }
 
     ModalLoader

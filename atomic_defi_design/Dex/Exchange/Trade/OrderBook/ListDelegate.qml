@@ -6,77 +6,121 @@ import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
 import App 1.0
-import Dex.Themes 1.0 as Dex
 import bignumberjs 1.0
+import "../../../Constants"
+import Dex.Themes 1.0 as Dex
+import AtomicDEX.MarketMode 1.0
+import AtomicDEX.TradingError 1.0
 
-Item
-{
+
+Item {
     property bool isAsk
 
     DefaultTooltip
     {
-        visible: warningNoticeMouseArea.containsMouse && !enough_funds_to_pay_min_volume
+        visible: mouse_area.containsMouse && (tooltip_text.text_value != "")
         width: 300
-        contentItem: DefaultText
-        {
-            text_value:
-            {
-                let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
-                let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
 
-                qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
-                    .arg(parseFloat(min_volume).toFixed(8))
-                    .arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin)
-                    .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ? "Your max balance after fees is: %1".arg(isAsk ? relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
+        contentItem: RowLayout
+        {
+            width: 290
+
+            Qaterial.ColorIcon
+            {
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignVCenter
+                source: Qaterial.Icons.alert
+                color: Qaterial.Colors.amber
             }
-            width: 300
+
+            DexLabel
+            {
+                id: tooltip_text
+                Layout.fillWidth: true
+
+                text_value:
+                {
+                    if (mouse_area.containsMouse)
+                    {
+                        let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
+                        let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
+
+                        if (!enough_funds_to_pay_min_volume)
+                        {
+                            return qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
+                                .arg(parseFloat(min_volume).toFixed(8))
+                                .arg(isAsk ? right_ticker : left_ticker)
+                                .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ?
+                                    "Your max balance after fees is: %1".arg(isAsk ?
+                                    relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
+                        }
+
+                        if ([TradingError.LeftParentChainNotEnoughBalance, TradingError.RightParentChainNotEnoughBalance,
+                             TradingError.LeftParentChainNotEnabled, TradingError.RightParentChainNotEnabled].includes(last_trading_error))
+                        {
+                            return General.getTradingError(
+                                last_trading_error, curr_fee_info,
+                                base_ticker, rel_ticker, left_ticker,
+                                right_ticker)
+                        }
+
+                        if (!([TradingError.None, TradingError.PriceFieldNotFilled, TradingError.VolumeFieldNotFilled].includes(last_trading_error)))
+                        {
+                            if (isAsk && API.app.trading_pg.market_mode == MarketMode.Buy)
+                            {
+                                return General.getTradingError(
+                                    last_trading_error, curr_fee_info,
+                                    base_ticker, rel_ticker, left_ticker,
+                                    right_ticker)
+                            }
+
+                            if (isBid && API.app.trading_pg.market_mode == MarketMode.Sell)
+                            {
+                                return General.getTradingError(
+                                    last_trading_error, curr_fee_info,
+                                    base_ticker, rel_ticker, left_ticker,
+                                    right_ticker)
+                            }
+                            return ""
+                        }
+                        return ""
+                    }
+                    return ""
+                }
+                wrapMode: Text.WordWrap
+            }
         }
         delay: 200
     }
 
-
     DefaultMouseArea
     {
-        id: mouse_are
+        id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
+
         onClicked:
         {
-            if(is_mine) return
+            if (is_mine) return
 
-            if(!enough_funds_to_pay_min_volume);
-            else
+            if (enough_funds_to_pay_min_volume )
             {
                 exchange_trade.orderSelected = true
-                orderList.currentIndex = index
-                if (isAsk)
-                {
-                    selectOrder(true, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
-                }
-                else
-                {
-                    selectOrder(false, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
-                }
+                orderbook_list.currentIndex = index
 
-                if (order_form.visible === false)
-                {
-                    order_form.visible = true
-                }
+                selectOrder(isAsk, coin, price, quantity, price_denom,
+                            price_numer, quantity_denom, quantity_numer,
+                            min_volume, base_min_volume, base_max_volume,
+                            rel_min_volume, rel_max_volume, base_max_volume_denom,
+                            base_max_volume_numer, uuid)
 
-                if (order_form.hidden === true)
-                {
-                    order_form.hidden = false
-                    if (order_form.contentVisible === false)
-                    {
-                        order_form.contentVisible = true
-                    }
-                }
+                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
             }
         }
 
         AnimatedRectangle
         {
-            visible: mouse_are.containsMouse
+            visible: mouse_area.containsMouse
             width: parent.width
             height: parent.height
             color: Dex.CurrentTheme.foregroundColor
@@ -98,20 +142,21 @@ Item
         {
             anchors.bottom: parent.bottom
             height: 2
+            width: parent.width
             radius: 3
             color: Dex.CurrentTheme.backgroundColor
-            width: parent.width
 
             Rectangle
             {
+                id: depth_bar
                 anchors.top: parent.top
                 height: 2
-                radius: 3
-                color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
                 width: 0
-                Component.onCompleted: width = ((depth * 100) * (parent.parent.width + 40)) / 100
-                opacity: 0.8
                 Behavior on width { NumberAnimation { duration: 1000 } }
+                radius: 3
+                opacity: 0.8
+                color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+                Component.onCompleted: width = ((depth * 100) * (mouse_area.width + 40)) / 100
             }
         }
 
@@ -121,90 +166,86 @@ Item
             anchors.fill: parent
             anchors.horizontalCenter: parent.horizontalCenter
             onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
+            spacing: 0
 
-            Qaterial.ColorIcon
+            DexLabel
             {
-                visible: mouse_are.containsMouse && !enough_funds_to_pay_min_volume
-                source: Qaterial.Icons.alert
-                Layout.alignment: Qt.AlignVCenter
-                iconSize: 12
-                color: Qaterial.Colors.amber
-
-                DefaultMouseArea
-                {
-                    id: warningNoticeMouseArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                }
-            }
-
-            // Price
-            DefaultText
-            {
-                Layout.preferredWidth: (parent.width / 100) * 33
+                Layout.preferredWidth: 120
                 text: { new BigNumber(price).toFixed(8) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                wrapMode: Text.NoWrap
             }
 
+            Item { Layout.preferredWidth: (parent.width - 320) / 2 }
+
             // Quantity
-            DefaultText
+            DexLabel
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
+                Layout.preferredWidth: 110
                 text: { new BigNumber(quantity).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                onTextChanged: depth_bar.width = ((depth * 100) * (mouse_area.width + 40)) / 100
+                wrapMode: Text.NoWrap
             }
 
+            Item { Layout.preferredWidth: (parent.width - 320) / 2 }
+
             // Total
-            DefaultText
+            DexLabel
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
-                rightPadding: (is_mine) && (mouse_are.containsMouse || cancel_button.containsMouse) ? 30 : 0
+                Layout.preferredWidth: 90
+                rightPadding: (is_mine) && (mouse_area.containsMouse || cancel_button.containsMouse) ? 30 : 0
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 text: { new BigNumber(total).toFixed(6) }
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                wrapMode: Text.NoWrap
 
                 Behavior on rightPadding { NumberAnimation { duration: 150 } }
             }
         }
     }
 
-    Qaterial.ColorIcon {
+    Qaterial.ColorIcon
+    {
         id: cancel_button_text
         property bool requested_cancel: false
+
         visible: is_mine && !requested_cancel
 
-        source: Qaterial.Icons.close
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: 1
         anchors.right: parent.right
-        anchors.rightMargin:  mouse_are.containsMouse || cancel_button.containsMouse? 12 : 6
-        Behavior on iconSize {
-            NumberAnimation {
+        anchors.rightMargin:  mouse_area.containsMouse || cancel_button.containsMouse ? 12 : 6
+
+        Behavior on iconSize
+        {
+            NumberAnimation
+            {
                 duration: 200
             }
         }
 
-        iconSize: mouse_are.containsMouse || cancel_button.containsMouse? 16 : 0
+        iconSize: mouse_area.containsMouse || cancel_button.containsMouse? 16 : 0
 
-        color: cancel_button.containsMouse ? Qaterial.Colors.red : mouse_are.containsMouse? DexTheme.foregroundColor: Qaterial.Colors.red
+        color: cancel_button.containsMouse ?
+            Qaterial.Colors.red : mouse_area.containsMouse ?
+            DexTheme.foregroundColor: Qaterial.Colors.red
 
-        DefaultMouseArea {
+        DefaultMouseArea
+        {
             id: cancel_button
             anchors.fill: parent
             hoverEnabled: true
 
-
-            onClicked: {
-                if(!is_mine) return
+            onClicked:
+            {
+                if (!is_mine) return
 
                 cancel_button_text.requested_cancel = true
                 cancelOrder(uuid)
@@ -214,7 +255,7 @@ Item
 
     AnimatedRectangle
     {
-        visible: !enough_funds_to_pay_min_volume && mouse_are.containsMouse
+        visible: !enough_funds_to_pay_min_volume && mouse_area.containsMouse
         color: Dex.CurrentTheme.backgroundColor
         anchors.fill: parent
         opacity: .3

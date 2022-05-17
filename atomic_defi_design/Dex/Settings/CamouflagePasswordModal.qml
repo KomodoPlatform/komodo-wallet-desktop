@@ -6,7 +6,7 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-BasicModal {
+MultipageModal {
     id: root
 
     width: 800
@@ -15,8 +15,8 @@ BasicModal {
         input_password_suffix.reset()
     }
 
-    ModalContent {
-        title: qsTr("Setup Camouflage Password")
+    MultipageModalContent {
+        titleText: qsTr("Setup Camouflage Password")
 
         FloatingBackground {
             id: warning_bg

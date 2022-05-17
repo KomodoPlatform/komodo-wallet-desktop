@@ -1,36 +1,48 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
+
 import App 1.0
+import "../Constants"
+import Dex.Themes 1.0 as Dex
 
-ColumnLayout {
-    property alias title: title.text
-    property bool expandable: false
-    property bool expanded: false
-    readonly property bool show_content: !expandable || expanded
+ColumnLayout
+{
+    property alias          title: title.text
+    property alias          title_font: title.font
+    property bool           expandable: false
+    property bool           expanded: false
+    readonly property bool  show_content: !expandable || expanded
 
-    RowLayout {
-        id: row_layout
+    RowLayout
+    {
+        id: rowLayout
         Layout.fillWidth: true
 
-        Arrow {
-            id: arrow_icon
+        Arrow
+        {
+            id: arrowIco
+
             visible: expandable
-            up: expanded
-            color: mouse_area.containsMouse ? Style.colorOrange : expanded ? DexTheme.redColor : DexTheme.greenColor
+
             Layout.alignment: Qt.AlignVCenter
+
+            up: expanded
+            color: mouseArea.containsMouse ? Dex.CurrentTheme.foregroundColor3 : Dex.CurrentTheme.foregroundColor2
         }
 
-        TitleText {
+        TitleText
+        {
             id: title
             Layout.fillWidth: true
-            color: !expandable ? DexTheme.foregroundColorDarkColor4 : DexTheme.foregroundColorLightColor2
-            font: DexTypo.body2
-            opacity: .6
-            DefaultMouseArea {
-                id: mouse_area
+
+            color: Dex.CurrentTheme.foregroundColor2
+
+            DefaultMouseArea
+            {
+                id: mouseArea
                 enabled: expandable
                 anchors.fill: parent
-                anchors.leftMargin: -arrow_icon.width - row_layout.spacing
+                anchors.leftMargin: -arrowIco.width - rowLayout.spacing
                 hoverEnabled: true
                 onClicked: expanded = !expanded
             }

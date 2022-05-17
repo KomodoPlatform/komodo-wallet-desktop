@@ -8,8 +8,12 @@ import "../Constants"
 
 import App 1.0
 
+// TODO: confirm deprecated; delete.
+
 Item {
     id: root
+
+    readonly property bool update_needed: API.app.self_update_service.update_needed
 
     DexFlickable {
         id: layout_background

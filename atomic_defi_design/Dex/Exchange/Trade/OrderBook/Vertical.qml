@@ -5,46 +5,48 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
+import "../../../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-FloatingBackground
+Widget
 {
-    visible: isUltraLarge
-    Layout.fillWidth: true
-    Layout.fillHeight: true
-    radius: 10
+    title: qsTr("Order Book")
 
-    ColumnLayout
+    margins: 20
+    spacing: 20
+
+    Header
     {
-        anchors.fill: parent
-        anchors.margins: 20
-        spacing: 12
+        Layout.preferredHeight: 30
+        Layout.fillWidth: true
+    }
 
-        Header
-        {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 30
-        }
+    List
+    {
+        isAsk: true
+        isVertical: true
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+    }
 
-        List
+    Item
+    {
+        Layout.preferredHeight: 4
+        Layout.fillWidth: true
+        Rectangle
         {
-            isAsk: true
-            isVertical: true
-            Layout.fillHeight: true
-            Layout.fillWidth: true
+            width: parent.width
+            height: parent.height
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: Dex.CurrentTheme.floatingBackgroundColor
         }
-        Item
-        {
-            Layout.preferredHeight: 8
-            Layout.fillWidth: true
-        }
+    }
 
-        List
-        {
-            isAsk: false
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
+    List
+    {
+        isAsk: false
+        Layout.fillHeight: true
+        Layout.fillWidth: true
     }
 }

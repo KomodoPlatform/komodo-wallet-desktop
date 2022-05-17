@@ -10,7 +10,7 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -158,7 +158,7 @@ BasicModal
         input_amount.text = current_ticker_infos.balance
     }
 
-    width: 563
+    width: 650
 
     closePolicy: Popup.NoAutoClose
 
@@ -172,21 +172,25 @@ BasicModal
         reset()
     }
 
-    onSend_rpc_resultChanged: {
-        if (is_send_busy === false) {
+    onSend_rpc_resultChanged:
+    {
+        if (is_send_busy === false)
+        {
             return
         }
 
         // Local var, faster
         const result = General.clone(send_rpc_result)
 
-        if(result.error_code) {
+        if (result.error_code)
+        {
             root.close()
-            console.log("Send Error:", result.error_code, " Message:", result.error_message)
             toast.show(qsTr("Failed to send"), General.time_toast_important_error, result.error_message)
         }
-        else {
-            if(!result || !result.withdraw_answer) {
+        else
+        {
+            if (!result || !result.withdraw_answer)
+            {
                 reset()
                 return
             }
@@ -201,15 +205,6 @@ BasicModal
         }
 
         send_result = result
-    }
-
-    onAuth_succeededChanged: {
-        if (!auth_succeeded) {
-            console.log("Double verification failed, cannot confirm sending.")
-        }
-        else {
-            console.log("Double verification succeeded, validate sending.");
-        }
     }
 
     onBroadcast_resultChanged: {
@@ -263,28 +258,36 @@ BasicModal
     }
 
     // Prepare Page
-    ModalContent2
+    MultipageModalContent
     {
         id: _preparePage
+
+        property bool cryptoSendMode: true
 
         titleText: qsTr("Prepare to send ") + current_ticker_infos.name
         titleAlignment: Qt.AlignHCenter
 
-        property bool cryptoSendMode: true
-
-        // Send address
-        DefaultTextField
+        DefaultRectangle
         {
-            id: input_address
             enabled: !root.segwit && !root.is_send_busy
 
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 18
 
-            placeholderText: qsTr("Address of the recipient")
-            onTextChanged: api_wallet_page.validate_address(text)
+            color: input_address.background.color
+            radius: input_address.background.radius
+
+            DefaultTextField
+            {
+                id: input_address
+
+                width: 390
+                height: 44
+                placeholderText: qsTr("Address of the recipient")
+                forceFocus: true
+                onTextChanged: api_wallet_page.validate_address(text)
+            }
 
             Rectangle
             {
@@ -330,14 +333,16 @@ BasicModal
         {
             visible: errorView && input_address.text !== ""
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
 
             DefaultText
             {
                 id: reason
 
                 Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
 
-                wrapMode: Label.Wrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 color: Dex.CurrentTheme.noColor
                 text_value: qsTr("The address has to be mixed case.")
             }
@@ -366,7 +371,7 @@ BasicModal
             enabled: !root.is_send_busy
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 420
             Layout.preferredHeight: 44
             Layout.topMargin: 32
 
@@ -443,6 +448,8 @@ BasicModal
                 property string value: "0"
 
                 enabled: !(new BigNumber(current_ticker_infos.current_currency_ticker_price).isLessThanOrEqualTo(0))
+                visible: enabled
+
                 text:
                 {
                     if (!enabled)
@@ -451,7 +458,7 @@ BasicModal
                     }
                     else if (_preparePage.cryptoSendMode)
                     {
-                        return qsTr("Fiat amount: %1%2").arg(API.app.settings_pg.current_fiat_sign).arg(value);
+                        return qsTr("Fiat amount: %1").arg(General.formatFiat('', value, API.app.settings_pg.current_fiat_sign));
                     }
                     else
                     {
@@ -486,6 +493,8 @@ BasicModal
             Rectangle
             {
                 enabled: equivalentAmount.enabled
+                visible: equivalentAmount.visible
+
                 Layout.alignment: Qt.AlignRight
                 Layout.preferredWidth: cryptoFiatSwitchText.width + cryptoFiatSwitchIcon.width + 20
                 Layout.preferredHeight: 32
@@ -506,15 +515,16 @@ BasicModal
 
                     DefaultText
                     {
-                        visible: _preparePage.cryptoSendMode
+                        id: fiat_symbol
+                        visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD"
                         font.pixelSize: 18
                         anchors.centerIn: parent
-                        text: API.app.settings_pg.current_fiat_sign
+                        text: API.app.settings_pg.current_currency_sign
                     }
 
                     DefaultImage
                     {
-                        visible: !_preparePage.cryptoSendMode
+                        visible: !fiat_symbol.visible
                         anchors.centerIn: parent
                         width: 18
                         height: 18
@@ -556,13 +566,9 @@ BasicModal
         DexSwitch
         {
             id: custom_fees_switch
-
             enabled: !root.is_send_busy
-
             Layout.topMargin: 32
-
             text: qsTr("Enable Custom Fees")
-
             onCheckedChanged: input_custom_fees.text = ""
         }
 
@@ -570,7 +576,6 @@ BasicModal
         DefaultText
         {
             visible: custom_fees_switch.checked
-
             font.pixelSize: 14
             color: Dex.CurrentTheme.noColor
             text_value: qsTr("Only use custom fees if you know what you are doing!")
@@ -672,7 +677,7 @@ BasicModal
                 text: qsTr("Close")
 
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: 199
+                Layout.preferredWidth: parent.width / 100 * 48
                 Layout.preferredHeight: 48
 
                 label.font.pixelSize: 16
@@ -681,11 +686,14 @@ BasicModal
                 onClicked: root.close()
             }
 
+            Item { Layout.fillWidth: true }
+
             OutlineButton
             {
                 enabled: fieldAreFilled() && hasFunds() && !errorView && !root.is_send_busy
 
                 Layout.alignment: Qt.AlignRight
+                Layout.preferredWidth: parent.width / 100 * 48
 
                 text: qsTr("Prepare")
 
@@ -713,9 +721,9 @@ BasicModal
     }
 
     // Send Page
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Send")
+        titleText: qsTr("Send")
 
         // Address
         TextEditWithTitle
@@ -728,22 +736,35 @@ BasicModal
         TextEditWithTitle
         {
             title: qsTr("Amount")
-            text: empty_data ? "" : "%1 %2 (%3 %4)"
-                .arg(api_wallet_page.ticker)
-                .arg(getCryptoAmount() !== "" ? getCryptoAmount() : result.balance_change)
-                .arg(API.app.settings_pg.current_fiat_sign)
-                .arg(send_result.withdraw_answer.total_amount_fiat)
+
+            text:
+            {
+                let amount = getCryptoAmount()
+                !amount ? "" : General.formatCrypto(
+                    '',
+                    amount,
+                    api_wallet_page.ticker,
+                    API.app.get_fiat_from_amount(api_wallet_page.ticker, amount),
+                    API.app.settings_pg.current_fiat
+                )
+            }
         }
 
         // Fees
         TextEditWithTitle
         {
             title: qsTr("Fees")
-            text: empty_data ? "" : "%1 %2 (%3 %4)"
-                .arg(current_ticker_infos.fee_ticker)
-                .arg(send_result.withdraw_answer.fee_details.amount)
-                .arg(API.app.settings_pg.current_fiat_sign)
-                .arg(send_result.withdraw_answer.fee_details.amount_fiat)
+            text:
+            {
+                let amount = send_result.withdraw_answer.fee_details.amount
+                !amount ? "" : General.formatCrypto(
+                    '',
+                    amount,
+                    current_ticker_infos.fee_ticker,
+                    API.app.get_fiat_from_amount(current_ticker_infos.fee_ticker, amount),
+                    API.app.settings_pg.current_fiat
+                )
+            }
         }
 
         // Date
@@ -760,11 +781,14 @@ BasicModal
         }
 
         // Buttons
-        footer: [
-        Item {
+        footer:
+        [
+            Item
+            {
                 Layout.fillWidth: true
             },
-            DexAppButton {
+            DexAppButton
+            {
                 text: qsTr("Back")
                 leftPadding: 40
                 rightPadding: 40
@@ -772,10 +796,12 @@ BasicModal
                 onClicked: root.currentIndex = 0
                 enabled: !root.is_broadcast_busy
             },
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
             },
-            DexAppOutlineButton {
+            DexAppOutlineButton
+            {
                 text: qsTr("Send")
                 onClicked: sendCoin()
                 leftPadding: 40
@@ -783,27 +809,24 @@ BasicModal
                 radius: 18
                 enabled: !root.is_broadcast_busy
             },
-            Item {
+            Item
+            {
                 Layout.fillWidth: true
             }
         ]
     }
 
     // Result Page
-    SendResult {
-        result: ({
-            balance_change: empty_data ? "" : send_result.withdraw_answer.my_balance_change,
-            fees: empty_data ? "" : send_result.withdraw_answer.fee_details.amount,
-            date: empty_data ? "" : send_result.withdraw_answer.date
-        })
+    SendResult
+    {
+        result: send_result
         address: input_address.text
         tx_hash: broadcast_result
         custom_amount: getCryptoAmount()
 
-        function onClose() {
-            if(root.segwit) {
-                root.segwit_success = true
-            }
+        function onClose()
+        {
+            if (root.segwit) root.segwit_success = true
             root.close()
         }
     }

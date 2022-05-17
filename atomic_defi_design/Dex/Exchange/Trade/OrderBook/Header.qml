@@ -4,46 +4,55 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
-import App 1.0
-
 import "../../../Components"
+import "../../../Constants"
 
-Item
+RowLayout
 {
-    property bool is_ask: false
-    RowLayout
+    width: parent.width
+    height: 24
+    spacing: 0
+
+    DexLabel
     {
-        anchors.fill: parent
-        DefaultText
-        {
-            Layout.preferredWidth: (parent.width / 100) * 33
-            text: is_ask ? qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")" :
-                           qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
-            font.family: DexTypo.fontFamily
-            font.pixelSize: 12
-            font.bold: true
-            font.weight: Font.Black
-            horizontalAlignment: Text.AlignRight
-        }
-        DefaultText
-        {
-            Layout.preferredWidth: (parent.width / 100) * 30
-            text: qsTr("Quantity") + " (" +  atomic_qt_utilities.retrieve_main_ticker(left_ticker) + ")"
-            font.family: DexTypo.fontFamily
-            font.pixelSize: 12
-            font.bold: true
-            font.weight: Font.Black
-            horizontalAlignment: Text.AlignRight
-        }
-        DefaultText
-        {
-            Layout.preferredWidth: (parent.width / 100) * 30
-            text: qsTr("Total") + " (" +  atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
-            font.family: DexTypo.fontFamily
-            font.pixelSize: 12
-            font.bold: true
-            font.weight: Font.Black
-            horizontalAlignment: Text.AlignRight
-        }
+        Layout.preferredHeight: parent.height
+        Layout.preferredWidth: 100
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+        text: qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
+        font.family: DexTypo.fontFamily
+        font.pixelSize: 12
+        font.bold: true
+        font.weight: Font.Black
+    }
+
+    Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+
+    DexLabel
+    {
+        Layout.preferredHeight: parent.height
+        Layout.preferredWidth: 120
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+        text: qsTr("Quantity") + " (" +  atomic_qt_utilities.retrieve_main_ticker(left_ticker) + ")"
+        font.family: DexTypo.fontFamily
+        font.pixelSize: 12
+        font.bold: true
+        font.weight: Font.Black
+    }
+
+    Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+
+    DexLabel
+    {
+        Layout.preferredHeight: parent.height
+        Layout.preferredWidth: 80
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+        text: qsTr("Total") + " (" +  atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
+        font.family: DexTypo.fontFamily
+        font.pixelSize: 12
+        font.bold: true
+        font.weight: Font.Black
     }
 }

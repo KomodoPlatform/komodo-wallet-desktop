@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.15
 import "../Constants"
 import App 1.0 //> API.app_name
 
-BasicModal
+MultipageModal
 {
     id: root
 
@@ -21,9 +21,9 @@ BasicModal
     {}
     property bool close_only: false
 
-    ModalContent
+    MultipageModalContent
     {
-        title: qsTr("Disclaimer & Terms of Service")
+        titleText: qsTr("Disclaimer & Terms of Service")
 
         InnerBackground
         {
@@ -57,6 +57,7 @@ BasicModal
         {
             id: accept_eula
             visible: !close_only
+            labelWidth: eula_rect.width - 80
             text: qsTr("Accept EULA")
         }
 
@@ -64,6 +65,7 @@ BasicModal
         {
             id: accept_tac
             visible: !close_only
+            labelWidth: eula_rect.width - 80
             text: qsTr("Accept Terms and Conditions")
         }
 

@@ -86,20 +86,20 @@ Check out AtomicDEX mobile, available for [Android and iOS](https://atomicdex.io
 
 ## Self-Hosted Dependencies
 
-| Dependencies  | Version       | Description                                                                                                                                     | Categories          |
-|---------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
-| boost         | 1.77          | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
-| doctest       | 2.3.8         | The fastest feature-rich C++11/14/17/20 single-header testing framework                                                                         | Testing             |
-| fmt           | 7.1.0         | A modern formatting library                                                                                                                     | Formatting          |
-| nlohmann_json | 3.9.1         | JSON for Modern C++                                                                                                                             | Parsing             |
-| range-v3      | 0.11.0        | Range library for C++14/17/20, basis for C++20's std::ranges                                                                                    | Algorithm           |
-| date          | 2019-11-08         | A date and time library based on the C++11/14/17 <chrono> header                                                                                | Timezone/Calendar   |
-| spdlog        | 1.8.0         | Fast C++ logging library.                                                                                                                       | Logging             |
-| openssl       | 1.1.1h        | TLS/SSL and crypto library                                                                                                                      | Network/Crypto      |
-| entt          | 3.5.1         | Gaming meets modern C++ - a fast and reliable entity component system (ECS) and much more                                                       | Architecture        |
-| cpprestsdk    | 2.10.15-1       | The C++ REST SDK is a Microsoft project for cloud-based client-server  communication in native code using a modern asynchronous C++ API design. | HTTP                |
-| taskflow      | 2.2.0         | Parallel and Heterogeneous Task Programming in Modern C++                                                                                       | Threading           |
-| qt            | 5.15.2        | Qt is a cross-platform application development framework for desktop, embedded and mobile.                                                      | GUI                 |
+| Dependencies  | Version    | Description                                                                                                                                     | Categories          |
+|---------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| boost         | 1.78       | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
+| doctest       | 2.3.8      | The fastest feature-rich C++11/14/17/20 single-header testing framework                                                                         | Testing             |
+| fmt           | 7.1.0      | A modern formatting library                                                                                                                     | Formatting          |
+| nlohmann_json | 3.9.1      | JSON for Modern C++                                                                                                                             | Parsing             |
+| range-v3      | 0.11.0     | Range library for C++14/17/20, basis for C++20's std::ranges                                                                                    | Algorithm           |
+| date          | 2019-11-08 | A date and time library based on the C++11/14/17 <chrono> header                                                                                | Timezone/Calendar   |
+| spdlog        | 1.8.5      | Fast C++ logging library.                                                                                                                       | Logging             |
+| openssl       | 1.1.1h     | TLS/SSL and crypto library                                                                                                                      | Network/Crypto      |
+| entt          | 3.5.1      | Gaming meets modern C++ - a fast and reliable entity component system (ECS) and much more                                                       | Architecture        |
+| cpprestsdk    | 2.10.15-1  | The C++ REST SDK is a Microsoft project for cloud-based client-server  communication in native code using a modern asynchronous C++ API design. | HTTP                |
+| taskflow      | 2.2.0      | Parallel and Heterogeneous Task Programming in Modern C++                                                                                       | Threading           |
+| qt            | 5.15.2     | Qt is a cross-platform application development framework for desktop, embedded and mobile.                                                      | GUI                 |
 
 
 ## Contributors / Thanks

@@ -14,6 +14,7 @@ ScrollBar
     policy: scrollbar_visible ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     property bool visibleBackground: true
     width: 6
+
     contentItem: Item
     {
         DexRectangle
@@ -22,7 +23,7 @@ ScrollBar
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
 
-            color: Dex.CurrentTheme.scrollBarBackgroundColor
+            color: Dex.CurrentTheme.scrollBarIndicatorColor
         }
     }
 
@@ -36,7 +37,7 @@ ScrollBar
             width: parent.width
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
-            color: Dex.CurrentTheme.scrollBarIndicatorColor
+            color: Dex.CurrentTheme.scrollBarBackgroundColor
         }
     }
 }
