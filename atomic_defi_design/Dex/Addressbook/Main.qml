@@ -13,6 +13,34 @@ import "../Wallet" as Wallet
 
 Item
 {
+    function trySend(address, type)
+    {
+        // Checks if the selected address type represents an asset standard instead of an asset.
+        if (Dex.API.app.portfolio_pg.global_cfg_mdl.is_coin_type(type))
+        {
+            assetFromStandardSelectorLoader.address = address
+            assetFromStandardSelectorLoader.standard = type
+            assetFromStandardSelectorLoader.open()
+        }
+
+        // Checks if the asset is currently enabled.
+        else if (!Dex.API.app.portfolio_pg.is_coin_enabled(type))
+        {
+            enabledAssetModalLoader.assetTicker = type;
+            enabledAssetModalLoader.open()
+        }
+
+        // If the coin is enabled, opens the send modal.
+        else
+        {
+            if (assetFromStandardSelectorLoader.visible)
+                assetFromStandardSelectorLoader.close()
+            Dex.API.app.wallet_pg.ticker = type
+            sendModalLoader.address = address
+            sendModalLoader.open()
+        }
+    }
+
     ColumnLayout
     {
         anchors.fill: parent
@@ -292,12 +320,7 @@ Item
                                     height: 25
                                     iconSource: Qaterial.Icons.sendOutline
                                     color: "transparent"
-                                    onClicked:
-                                    {
-                                        Dex.API.app.wallet_pg.ticker = address_type
-                                        sendModalLoader.address = address_value
-                                        sendModalLoader.open()
-                                    }
+                                    onClicked: trySend(address_value, address_type)
                                 }
                             }
                         }
@@ -340,5 +363,34 @@ Item
         {
             address_field.enabled: false
         }
+    }
+
+    Dex.ModalLoader
+    {
+        id: assetFromStandardSelectorLoader
+
+        property string standard
+        property string address
+
+        onLoaded: item.standard = standard
+
+        sourceComponent: AssetFromStandardSelector
+        {
+            onSelected:
+            {
+                trySend(assetFromStandardSelectorLoader.address, assetTicker)
+            }
+        }
+    }
+
+    Dex.ModalLoader
+    {
+        id: enabledAssetModalLoader
+
+        property string assetTicker
+
+        onLoaded: item.assetTicker = assetTicker
+
+        sourceComponent: EnableAssetModal { }
     }
 }
