@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,22 +14,32 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #pragma once
 
-//! STD
-#include <optional>
+// Std Headers
 #include <string>
 
-namespace atomic_dex
-{
-    struct electrum_server
-    {
-        std::string                url;
-        std::optional<std::string> protocol{"TCP"};
-        std::optional<bool>        disable_cert_verification{false};
-    };
+// Deps Headers
+#include <nlohmann/json_fwd.hpp>
 
-    void to_json(nlohmann::json& j, const electrum_server& cfg);
-    void from_json(const nlohmann::json& j, electrum_server& cfg);
+namespace atomic_dex::mm2
+{
+    struct init_z_coin
+    {
+        static constexpr auto endpoint = "init_z_coin";
+        static constexpr bool is_v2    = true;
+        struct expected_request_type
+        {
+
+        } request;
+        struct expected_answer_type
+        {
+            std::string task_id;
+        } answer;
+    };
+    using init_z_coin_request = init_z_coin::expected_request_type;
+    using init_z_coin_answer = init_z_coin::expected_answer_type;
+
+    inline void to_json([[maybe_unused]] nlohmann::json& j, const init_z_coin_request&) { }
+    void from_json(const nlohmann::json& json, init_z_coin_answer& in);
 }
