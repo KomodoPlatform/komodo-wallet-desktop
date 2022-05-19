@@ -11,6 +11,8 @@ import "../Constants" as Dex
 
 Dex.Rectangle
 {
+    id: root
+
     property var     contactModel
 
     // Edition mode variables
@@ -18,6 +20,24 @@ Dex.Rectangle
     property string  addressType
     property string  addressKey
     property string  addressValue
+
+    // Return the asset type that will be used in the backend to validate the address
+    function getTypeForAddressChecker(addressType)
+    {
+        switch (addressType)
+        {
+            case "QRC-20":      return "QTUM";
+            case "BEP-20":      return "BNB";
+            case "ERC-20":      return "ETH";
+            case "Smart Chain": return "KMD";
+            case "SLP":         return "BCH";
+        }
+
+        let coinInfo = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(addressType);
+        if (coinInfo.has_parent_fees_ticker)
+            return coinInfo.fees_ticker;
+        return walletType
+    }
 
     signal cancel()
     signal addressCreated()
@@ -45,10 +65,10 @@ Dex.Rectangle
             var indexLis =
                     Dex.API.app.portfolio_pg.portfolio_mdl.match(
                         Dex.API.app.portfolio_pg.portfolio_mdl.index(0, 0),
-                        33, addressType)
+                        Qt.UserRole + 1, addressType)
+            //addres
             addressKeyField.text = addressKey
             addressValueField.text = addressValue
-            console.log(indexLis)
         }
     }
 
@@ -58,97 +78,18 @@ Dex.Rectangle
         anchors.margins: 21
         spacing: 17
 
-        Dex.ComboBoxWithSearchBar
+        Dex.DefaultCheckBox
+        {
+            id: useStandardsCheckBox
+            text: qsTr("Use asset standard as address type")
+        }
+
+        AddressTypeSelector
         {
             id: addressTypeComboBox
-
-            property var currentItem: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.get(currentIndex)
-
             Layout.preferredWidth: 458
             Layout.preferredHeight: 44
-            model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
-            popupForceMaxHeight: true
-            popupMaxHeight: 265
-            textRole: "ticker"
-            searchBarPlaceholderText: qsTr("Search asset")
-
-            delegate: ItemDelegate
-            {
-                id: _delegate
-
-                width: addressTypeComboBox.width
-                height: 40
-                highlighted: addressTypeComboBox.highlightedIndex === index
-
-                contentItem: Row
-                {
-                    spacing: 10
-
-                    Dex.Image
-                    {
-                        width: 25
-                        height: 25
-                        anchors.verticalCenter: parent.verticalCenter
-                        source: Dex.General.coinIcon(ticker)
-                    }
-
-                    Dex.Text
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: name
-                    }
-
-                    Dex.Text
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: model.type
-                        color: Dex.Style.getCoinTypeColor(model.type)
-                        font: Dex.DexTypo.overLine
-                    }
-                }
-
-                background: Dex.Rectangle
-                {
-                    anchors.fill: _delegate
-                    color: _delegate.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
-                }
-            }
-
-            contentItem: Item
-            {
-                Row
-                {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 13
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: 10
-
-                    Dex.Image
-                    {
-                        width: 25
-                        height: 25
-                        anchors.verticalCenter: parent.verticalCenter
-                        source: Dex.General.coinIcon(addressTypeComboBox.currentItem.ticker)
-                    }
-
-                    Dex.Text
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: addressTypeComboBox.currentItem.name
-                    }
-
-                    Dex.Text
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: addressTypeComboBox.currentItem.type
-                        color: Dex.Style.getCoinTypeColor(addressTypeComboBox.currentItem.type)
-                        font: Dex.DexTypo.overLine
-                    }
-                }
-            }
-
-            onSearchBarTextChanged: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString(patternStr)
-            Component.onDestruction: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString("")
+            showAssetStandards: useStandardsCheckBox.checked
         }
 
         Dex.TextField
@@ -208,9 +149,9 @@ Dex.Rectangle
                 onClicked:
                 {
                     if (isConvertMode)
-                        Dex.API.app.wallet_pg.convert_address(addressValueField.text, addressTypeComboBox.currentText, API.app.wallet_pg.validate_address_data.to_address_format);
+                        Dex.API.app.wallet_pg.convert_address(addressValueField.text, root.getTypeForAddressChecker(addressTypeComboBox.currentText), API.app.wallet_pg.validate_address_data.to_address_format);
                     else
-                        Dex.API.app.wallet_pg.validate_address(addressValueField.text, addressTypeComboBox.currentText)
+                        Dex.API.app.wallet_pg.validate_address(addressValueField.text, root.getTypeForAddressChecker(addressTypeComboBox.currentText))
                 }
             }
         }
