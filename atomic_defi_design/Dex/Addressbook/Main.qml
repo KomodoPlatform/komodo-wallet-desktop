@@ -246,7 +246,14 @@ Item
                             font.underline: true
                             font.pixelSize: 15
                             text: qsTr("Delete")
-                            onClicked: Dex.API.app.addressbookPg.model.removeContact(modelData.name)
+                            onClicked: removeContactPopup.open()
+
+                            RemoveContactPopup
+                            {
+                                id: removeContactPopup
+
+                                contactName: modelData.name
+                            }
                         }
                     }
                 }
