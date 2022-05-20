@@ -99,6 +99,9 @@ QtObject
     property color  tradeSellModeSelectorBackgroundColorEnd
     property color  tradeMarketModeSelectorNotSelectedBackgroundColor
 
+    // Address book page related
+    property var    addressBookTagColors
+
     // Colors used to tell when something is good or wrong.
     property color  okColor
     property color  noColor

@@ -181,6 +181,12 @@ ThemeData
         tradeSellModeSelectorBackgroundColorEnd             = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorEnd || defaultTheme.tradeSellModeSelectorBackgroundColorEnd);
         tradeMarketModeSelectorNotSelectedBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.tradeMarketModeSelectorNotSelectedBackgroundColor || defaultTheme.tradeMarketModeSelectorNotSelectedBackgroundColor);
 
+        addressBookTagColors = themeData.addressBookTagColors || defaultTheme.addressBookTagColors
+        for (var i = 0; i < addressBookTagColors.length; i++)
+        {
+            addressBookTagColors[i] = Dex.Color.argbStrFromRgbaStr(addressBookTagColors[i])
+        }
+
         okColor                             = Dex.Color.argbStrFromRgbaStr(themeData.okColor || defaultTheme.okColor);
         noColor                             = Dex.Color.argbStrFromRgbaStr(themeData.noColor || defaultTheme.noColor);
 
@@ -293,6 +299,8 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.tradeSellModeSelectorBackgroundColorStart : %1".arg(tradeSellModeSelectorBackgroundColorStart));
         console.info("Dex.Themes.CurrentTheme.printValues.tradeSellModeSelectorBackgroundColorEnd : %1".arg(tradeSellModeSelectorBackgroundColorEnd));
         console.info("Dex.Themes.CurrentTheme.printValues.tradeMarketModeSelectorNotSelectedBackgroundColor : %1".arg(tradeMarketModeSelectorNotSelectedBackgroundColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.addressBookTagColors : %1".arg(addressBookTagColors));
 
         console.info("Dex.Themes.CurrentTheme.printValues.okColor : %1".arg(okColor));
         console.info("Dex.Themes.CurrentTheme.printValues.noColor : %1".arg(noColor));

@@ -124,6 +124,16 @@ Item
         {
             id: contactTable
 
+            function _getCurrentTagColorId()
+            {
+                if (typeof _getCurrentTagColorId.counter == 'undefined')
+                    _getCurrentTagColorId.counter = 0
+                if (_getCurrentTagColorId.counter >= Dex.CurrentTheme.addressBookTagColors.length)
+                    _getCurrentTagColorId.counter = 0
+
+                return _getCurrentTagColorId.counter++
+            }
+
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -132,8 +142,6 @@ Item
             delegate: Dex.Expandable
             {
                 id: expandable
-
-                property color _tagBgColor: index % 2 !== 0 ? Dex.CurrentTheme.innerBackgroundColor : Dex.CurrentTheme.backgroundColor
 
                 padding: 10
                 color: index % 2 === 0 ? Dex.CurrentTheme.innerBackgroundColor : Dex.CurrentTheme.backgroundColor
@@ -187,10 +195,12 @@ Item
 
                             delegate: Dex.Rectangle
                             {
+                                property int _currentColorIndex: contactTable._getCurrentTagColorId()
+
                                 width: tagLabel.width > 73 ? 83 : tagLabel.width + 10
                                 height: 21
                                 radius: 20
-                                color: expandable._tagBgColor
+                                color: Dex.CurrentTheme.addressBookTagColors[_currentColorIndex]
 
                                 Dex.MouseArea
                                 {

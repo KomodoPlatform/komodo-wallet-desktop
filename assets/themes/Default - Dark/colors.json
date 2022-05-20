@@ -94,6 +94,8 @@
     "tradeSellModeSelectorBackgroundColorEnd": "#E216A9FF",
     "tradeMarketModeSelectorNotSelectedBackgroundColor": "#89B6FF21",
 
+    "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
+
     "okColor": "#00C058FF",
     "noColor": "#E52167FF",
 
