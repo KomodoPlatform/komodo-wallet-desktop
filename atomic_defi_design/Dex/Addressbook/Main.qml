@@ -231,7 +231,8 @@ Item
                         Dex.ClickableText
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            font: Dex.DexTypo.body2
+                            font.underline: true
+                            font.pixelSize: 15
                             text: qsTr("Edit")
                             onClicked:
                             {
@@ -242,7 +243,8 @@ Item
                         Dex.ClickableText
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            font: Dex.DexTypo.body2
+                            font.underline: true
+                            font.pixelSize: 15
                             text: qsTr("Delete")
                             onClicked: Dex.API.app.addressbookPg.model.removeContact(modelData.name)
                         }
