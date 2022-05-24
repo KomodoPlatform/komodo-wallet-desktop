@@ -9799,12 +9799,32 @@
       {"url":"zombie.sirseven.me:10033"}
     ],
     "explorer_url": [
+      "https://zombie.explorer.lordofthechains.com/"
     ],
     "type": "ZHTLC",
     "active": false,
     "currently_enabled": false
   },
-    "IC": {
+  "ARRR": {
+    "coin": "ARRR",
+    "name": "Pirate",
+    "coinpaprika_id": "arrr-coin",
+    "coingecko_id": "pirate-chain",
+    "light_wallet_d_servers": [
+      "http://pirate.sirseven.me:443"
+    ],
+    "electrum": [
+      {"url":"pirate.sirseven.me:10032"}
+    ],
+    "explorer_url": [
+      "https://pirate.explorer.dexstats.info/"
+    ],
+    "type": "ZHTLC",
+    "active": false,
+    "currently_enabled": false,
+    "wallet_only": true
+  },
+  "IC": {
     "coin": "IC",
     "name": "Ignition",
     "coingecko_id": "ignition",

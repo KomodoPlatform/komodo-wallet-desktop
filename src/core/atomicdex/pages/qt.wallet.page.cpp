@@ -110,12 +110,16 @@ namespace atomic_dex
     wallet_page::set_current_ticker(const QString& ticker)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        auto  coin_info  = mm2_system.get_coin_info(ticker.toStdString());
         if (mm2_system.set_current_ticker(ticker.toStdString()))
         {
             SPDLOG_INFO("new ticker: {}", ticker.toStdString());
-            this->set_tx_fetching_busy(true);
             m_transactions_mdl->reset();
-            mm2_system.fetch_infos_thread(true, true);
+            if (coin_info.coin_type == CoinType::ZHTLC)
+            {
+                this->set_tx_fetching_busy(true);
+                mm2_system.fetch_infos_thread(true, true);
+            }
             emit currentTickerChanged();
             refresh_ticker_infos();
             check_send_availability();

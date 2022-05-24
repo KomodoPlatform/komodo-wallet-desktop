@@ -16,6 +16,8 @@
 
 //! STD
 #include <unordered_set>
+#include <iostream>
+#include <boost/thread/thread.hpp>
 
 ///! Qt
 #include <QException>
@@ -29,6 +31,7 @@
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
 #include "atomicdex/api/mm2/rpc.init_z_coin.hpp"
+#include "atomicdex/api/mm2/rpc.init_z_coin_status.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
@@ -473,7 +476,6 @@ namespace atomic_dex
     auto
     mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
-        // SPDLOG_INFO("batch_balance_and_tx");
         (void)tickers;
         (void)is_during_enabling;
         auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
@@ -531,16 +533,19 @@ namespace atomic_dex
         std::vector<std::string> tokens_to_fetch;
         const auto&              ticker    = get_current_ticker();
         auto                     coin_info = get_coin_info(ticker);
-        if (!coin_info.is_erc_family)
+        if (!coin_info.is_zhtlc_family)
         {
-            t_tx_history_request request{.coin = ticker, .limit = 5000};
-            nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
-            ::mm2::api::to_json(j, request);
-            batch_array.push_back(j);
-        }
-        else
-        {
-            tokens_to_fetch.push_back(ticker);
+            if (!coin_info.is_erc_family)
+            {
+                t_tx_history_request request{.coin = ticker, .limit = 5000};
+                nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
+                ::mm2::api::to_json(j, request);
+                batch_array.push_back(j);
+            }
+            else
+            {
+                tokens_to_fetch.push_back(ticker);
+            }
         }
         if (not only_tx)
         {
@@ -554,6 +559,7 @@ namespace atomic_dex
                         continue;
                     }
                 }
+                SPDLOG_WARN("Getting balance for {} ", coin.ticker);
                 t_balance_request balance_request{.coin = coin.ticker};
                 nlohmann::json    j = ::mm2::api::template_request("my_balance");
                 ::mm2::api::to_json(j, balance_request);
@@ -571,7 +577,7 @@ namespace atomic_dex
 
         if (answer.contains("error") || answer.contains("Error") || error.find("error") != std::string::npos || error.find("Error") != std::string::npos)
         {
-            SPDLOG_DEBUG("bad answer json for enable/electrum details: {}", error);
+            SPDLOG_DEBUG("error: bad answer json for enable/electrum details: {}", error);
             return {false, error};
         }
 
@@ -585,7 +591,15 @@ namespace atomic_dex
             return {true, ""};
         }
 
+        if (answer.contains("result"))
+        {
+            if (answer["result"].contains("task_id"))
+            {
+                return {true, ""};
+            }
+        }
         SPDLOG_DEBUG("bad answer json for enable/electrum details: {}", error);
+
         return {false, error};
     }
 
@@ -706,6 +720,7 @@ namespace atomic_dex
                                 for (auto&& answer: answers)
                                 {
                                     auto [res, error] = this->process_batch_enable_answer(answer);
+
                                     if (!res)
                                     {
                                         SPDLOG_DEBUG(
@@ -721,7 +736,61 @@ namespace atomic_dex
                                     idx += 1;
                                     if (res)
                                     {
-                                        this->process_balance_answer(answer);
+                                        if (answer.contains("result"))
+                                        {
+                                            if (answer["result"].contains("task_id"))
+                                            {
+                                                auto task_id = answer.at("result").at("task_id").get<std::int8_t>();
+                                                {
+                                                    using namespace std::chrono_literals;
+
+                                                    static std::size_t z_nb_try      = 0;
+                                                    static std::string z_error       = "";
+                                                    SPDLOG_DEBUG("Task ID: {}", task_id);
+
+                                                    nlohmann::json z_batch_array = nlohmann::json::array();
+                                                    t_init_z_coin_status_request z_request{
+                                                        .task_id              = task_id};
+
+                                                    nlohmann::json j = ::mm2::api::template_request("init_z_coin_status", true);
+                                                    ::mm2::api::to_json(j, z_request);
+                                                    z_batch_array.push_back(j);
+
+                                                    do {
+                                                        pplx::task<web::http::http_response> z_resp_task = m_mm2_client.async_rpc_batch_standalone(z_batch_array);
+                                                        web::http::http_response             z_resp      = z_resp_task.get();
+
+                                                        auto z_answers = ::mm2::api::basic_batch_answer(z_resp);
+                                                        SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
+                                                        if (z_answers[0].at("result").at("status") == "Ready")
+                                                        {
+                                                            SPDLOG_DEBUG("Z Ready!");
+                                                            break;
+                                                        }
+                                                        std::this_thread::sleep_for(1s);
+                                                        z_error = z_answers[0].dump(4);
+                                                        z_nb_try += 1;
+
+                                                    } while (z_nb_try < 50);
+
+                                                    if (z_nb_try == 50) {
+                                                        SPDLOG_DEBUG(
+                                                            "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
+                                                            tickers.size(), answers.size());
+                                                        this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], error);
+                                                        to_remove.emplace(tickers[idx]);
+
+                                                        if (error.find("already initialized") == std::string::npos)
+                                                        {
+                                                            SPDLOG_WARN("Should set to false the active field in cfg for: {} - reason: {}", tickers[idx], error);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            this->process_balance_answer(answer);
+                                        }
                                     }
                                 }
 
@@ -729,9 +798,9 @@ namespace atomic_dex
 
                                 if (!tickers.empty())
                                 {
+
                                     if (tickers == g_default_coins)
                                     {
-                                        SPDLOG_INFO("Trigger default_coins_enabled");
                                         this->dispatcher_.trigger<default_coins_enabled>();
                                         batch_balance_and_tx(false, tickers, true);
                                     }
