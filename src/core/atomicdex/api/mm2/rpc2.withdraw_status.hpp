@@ -14,28 +14,34 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
+#pragma once
+
+// Std Headers
+#include <optional>
+
+// Deps Headers
 #include <nlohmann/json.hpp>
 
-//! Project Headers
-#include "atomicdex/api/mm2/rpc.init_z_coin.hpp"
-
-//! Implementation RPC [init_z_coin]
 namespace mm2::api
 {
-    //! Serialization
-    void to_json(nlohmann::json& j, const init_z_coin_request& cfg)
+    struct withdraw_status_request
     {
-        j["params"]["ticker"]                                                          = cfg.coin_name;
-        j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
-        j["params"]["activation_params"]["mode"]["rpc_data"]["electrum_servers"]       = cfg.servers;
-        j["params"]["activation_params"]["mode"]["rpc_data"]["light_wallet_d_servers"] = cfg.z_urls;
-        j["params"]["tx_history"]                                                      = cfg.with_tx_history;
-    }
+        int         task_id;
+    };
 
-    //! Deserialization
-    void from_json(const nlohmann::json& j, init_z_coin_answer& cfg)
+    struct withdraw_status_answer
     {
-        j.at("task_id").get_to(cfg.task_id);
-    }
-} // namespace mm2::api
+        std::string status;
+        std::string details;
+        std::optional<std::string> tx_hex;
+    };
+
+    void to_json(nlohmann::json& j, const withdraw_status_request& request);
+    void from_json(const nlohmann::json& j, withdraw_status_answer& answer);
+}
+
+namespace atomic_dex
+{
+    using t_withdraw_status_request = ::mm2::api::withdraw_status_request;
+    using t_withdraw_status_answer = ::mm2::api::withdraw_status_answer;
+} // namespace atomic_dex

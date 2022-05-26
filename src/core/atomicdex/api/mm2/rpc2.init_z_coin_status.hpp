@@ -38,8 +38,8 @@ namespace mm2::api
         std::optional<std::string> balance;
     };
 
-    void to_json(nlohmann::json& j, const init_z_coin_status_request& cfg);
-    void from_json(const nlohmann::json& j, init_z_coin_status_answer& z_answer);
+    void to_json(nlohmann::json& j, const init_z_coin_status_request& request);
+    void from_json(const nlohmann::json& j, init_z_coin_status_answer& answer);
 }
 
 namespace atomic_dex
