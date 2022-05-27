@@ -161,16 +161,6 @@ Item {
             }
         }
 
-        Component
-        {
-            id: support
-
-            Support
-            {
-                Layout.alignment: Qt.AlignCenter
-            }
-        }
-
         WebEngineView
         {
             id: webEngineView
