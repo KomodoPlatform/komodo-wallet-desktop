@@ -32,12 +32,17 @@ namespace mm2::api
     //! Deserialization
     void from_json(const nlohmann::json& j, withdraw_status_answer& answer)
     {
-
-        j.at("result").at("status").get_to(answer.status);
-        j.at("result").at("details").get_to(answer.details);
-        if (j.at("result").at("details").at("result").contains("tx_hex"))
+        if (j.count("error") >= 1)
         {
-            answer.tx_hex = j.at("result").at("details").at("result").at("tx_hex").get<std::string>();
+            answer.error = j;
+        }
+        else
+        {
+            answer.result = j.at("result").get<transaction_data>();
+            // j.at("result").at("status").get_to(answer.status);
+            // j.at("result").at("details").get_to(answer.details);
+            // if (j.at("result").at("details").at("result").contains("tx_hex"))
+            // {answer.tx_hex = j.at("result").at("details").at("result").at("tx_hex").get<std::string>();}
         }
 
     }

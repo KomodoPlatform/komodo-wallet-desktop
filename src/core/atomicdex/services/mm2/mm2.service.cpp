@@ -398,6 +398,7 @@ namespace atomic_dex
         coin_config coin_info = get_coin_info(ticker);
         if (not coin_info.currently_enabled)
         {
+            SPDLOG_INFO("[disable_coin] not coin_info.currently_enabled");
             return true;
         }
 
@@ -424,10 +425,12 @@ namespace atomic_dex
             }
         }
 
+        SPDLOG_INFO("[disable_coin] setting coin_info.currently_enabled to false");
         coin_info.currently_enabled = false;
 
         {
             std::unique_lock lock(m_coin_cfg_mutex);
+            SPDLOG_INFO("[disable_coin] setting m_coins_informations[ticker].currently_enabled to false");
             m_coins_informations[ticker].currently_enabled = false;
         }
 
@@ -733,7 +736,6 @@ namespace atomic_dex
                                             SPDLOG_WARN("Should set to false the active field in cfg for: {} - reason: {}", tickers[idx], error);
                                         }
                                     }
-                                    idx += 1;
                                     if (res)
                                     {
                                         if (answer.contains("result"))
@@ -745,7 +747,7 @@ namespace atomic_dex
                                                     using namespace std::chrono_literals;
 
                                                     static std::size_t z_nb_try      = 0;
-                                                    static std::string z_error       = "";
+                                                    nlohmann::json z_error    = nlohmann::json::array();;
                                                     SPDLOG_DEBUG("Task ID: {}", task_id);
 
                                                     nlohmann::json z_batch_array = nlohmann::json::array();
@@ -756,34 +758,60 @@ namespace atomic_dex
                                                     ::mm2::api::to_json(j, z_request);
                                                     z_batch_array.push_back(j);
 
+
                                                     do {
                                                         pplx::task<web::http::http_response> z_resp_task = m_mm2_client.async_rpc_batch_standalone(z_batch_array);
                                                         web::http::http_response             z_resp      = z_resp_task.get();
 
                                                         auto z_answers = ::mm2::api::basic_batch_answer(z_resp);
-                                                        SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
+                                                        z_error = z_answers;
+                                                        // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
                                                         if (z_answers[0].at("result").at("status") == "Ready")
                                                         {
                                                             SPDLOG_DEBUG("Z Ready!");
                                                             break;
                                                         }
                                                         std::this_thread::sleep_for(1s);
-                                                        z_error = z_answers[0].dump(4);
                                                         z_nb_try += 1;
 
                                                     } while (z_nb_try < 50);
 
-                                                    if (z_nb_try == 50) {
-                                                        SPDLOG_DEBUG(
-                                                            "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
-                                                            tickers.size(), answers.size());
-                                                        this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], error);
-                                                        to_remove.emplace(tickers[idx]);
-
-                                                        if (error.find("already initialized") == std::string::npos)
+                                                    try {
+                                                        if (z_error[0].at("result").at("details").contains("error"))
                                                         {
-                                                            SPDLOG_WARN("Should set to false the active field in cfg for: {} - reason: {}", tickers[idx], error);
+                                                            std::string zhtlc_error   = z_error[0].at("result").at("details").at("error").get<std::string>();
+                                                            SPDLOG_DEBUG("Error enabling {}: {} ", tickers[idx], zhtlc_error);
+                                                            SPDLOG_DEBUG(
+                                                                "Removing zhtlc from enabling, idx: {}, tickers size: {}, answers size: {}",
+                                                                tickers[idx], idx, tickers.size(), answers.size()
+                                                            );
+                                                            this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], z_error[0].dump(4));
+                                                            to_remove.emplace(tickers[idx]);
+
+                                                            if (error.find("already initialized") == std::string::npos)
+                                                            {
+                                                                SPDLOG_WARN("Should set to false the active field in cfg for: {} - reason: {}", tickers[idx], zhtlc_error);
+                                                            }
                                                         }
+                                                        else if (z_nb_try == 50)
+                                                        {
+                                                            // TODO: Handle this case.
+                                                            // There could be no error message if scanning takes too long.
+                                                            // Either we force disable here, or schedule to check on it later
+                                                            SPDLOG_DEBUG("Exited zhtlc enable loop after 50 tries");
+                                                            SPDLOG_DEBUG(
+                                                                "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
+                                                                tickers.size(), answers.size());
+                                                        }
+                                                        else
+                                                        {
+                                                            std::unique_lock lock(m_coin_cfg_mutex);
+                                                            m_coins_informations[tickers[idx]].currently_enabled = true;
+                                                        }
+                                                    }
+                                                    catch (const std::exception& error)
+                                                    {
+                                                        SPDLOG_ERROR("exception caught in zhtlc batch_enable_coins: {}", error.what());
                                                     }
                                                 }
                                             }
@@ -792,6 +820,7 @@ namespace atomic_dex
                                             this->process_balance_answer(answer);
                                         }
                                     }
+                                    idx += 1;
                                 }
 
                                 for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }

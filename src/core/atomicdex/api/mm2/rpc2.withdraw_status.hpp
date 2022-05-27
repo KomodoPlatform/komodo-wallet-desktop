@@ -16,11 +16,15 @@
 
 #pragma once
 
-// Std Headers
 #include <optional>
+#include <string>
 
-// Deps Headers
-#include <nlohmann/json.hpp>
+//! Deps
+#include <nlohmann/json_fwd.hpp>
+
+//! Our Headers
+#include "atomicdex/api/mm2/generic.error.hpp"
+#include "atomicdex/api/mm2/transaction.data.hpp"
 
 namespace mm2::api
 {
@@ -31,9 +35,10 @@ namespace mm2::api
 
     struct withdraw_status_answer
     {
-        std::string status;
-        std::string details;
-        std::optional<std::string> tx_hex;
+        std::optional<transaction_data>     result;
+        std::optional<generic_answer_error> error;
+        std::string                         raw_result;      ///< internal
+        int                                 rpc_result_code; ///< internal
     };
 
     void to_json(nlohmann::json& j, const withdraw_status_request& request);

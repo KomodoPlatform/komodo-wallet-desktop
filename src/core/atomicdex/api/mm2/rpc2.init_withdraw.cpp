@@ -23,12 +23,30 @@
 //! Implementation 2.0 RPC [init_withdraw]
 namespace mm2::api
 {
+    void
+    to_json(nlohmann::json& j, const init_withdraw_fees& request)
+    {
+        j["type"] = request.type;
+        j["amount"] = request.amount.value();
+    }
+
     //! Serialization
     void to_json(nlohmann::json& j, const init_withdraw_request& request)
     {
-        j["params"]["coin"]        = request.coin;
-        j["params"]["address"]     = request.address;
-        j["params"]["amount"]      = request.amount;
+        nlohmann::json obj = nlohmann::json::object();
+
+        obj["params"]["coin"]        = request.coin;
+        obj["params"]["to"]          = request.to;
+        obj["params"]["amount"]      = request.amount;
+        obj["params"]["max"]         = request.max;
+
+        if (request.fees.has_value())
+        {
+            obj["fee"] = request.fees.value();
+        }
+
+        j.update(obj);
+
     }
 
     //! Deserialization

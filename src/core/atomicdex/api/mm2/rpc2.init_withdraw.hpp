@@ -16,19 +16,27 @@
 
 #pragma once
 
-// Std Headers
+#include <optional>
 #include <string>
 
-// Deps Headers
+//! Deps
 #include <nlohmann/json_fwd.hpp>
 
 namespace mm2::api
 {
+    struct init_withdraw_fees
+    {
+        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
+        std::optional<std::string> amount;    ///< Utxo only
+    };
+
     struct init_withdraw_request
     {
         std::string                               coin;
-        std::vector<std::string>                  address;
+        std::vector<std::string>                  to;
         std::vector<std::string>                  amount;
+        std::optional<init_withdraw_fees> fees{std::nullopt}; ///< ignored if std::nullopt
+        bool                         max{false};
     };
 
     struct init_withdraw_answer
@@ -43,5 +51,6 @@ namespace mm2::api
 namespace atomic_dex
 {
     using t_init_withdraw_request = ::mm2::api::init_withdraw_request;
-    using t_init_withdraw_answer = ::mm2::api::init_withdraw_answer;
+    using t_init_withdraw_fees    = ::mm2::api::init_withdraw_fees;
+    using t_init_withdraw_answer  = ::mm2::api::init_withdraw_answer;
 } // namespace atomic_dex
