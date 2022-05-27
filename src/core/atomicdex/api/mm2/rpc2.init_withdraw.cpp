@@ -26,7 +26,7 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const init_withdraw_fees& request)
     {
-        j["type"] = request.type;
+        j["type"]   = request.type;
         j["amount"] = request.amount.value();
     }
 

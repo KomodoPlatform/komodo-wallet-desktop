@@ -398,7 +398,6 @@ namespace atomic_dex
         coin_config coin_info = get_coin_info(ticker);
         if (not coin_info.currently_enabled)
         {
-            SPDLOG_INFO("[disable_coin] not coin_info.currently_enabled");
             return true;
         }
 
@@ -425,12 +424,10 @@ namespace atomic_dex
             }
         }
 
-        SPDLOG_INFO("[disable_coin] setting coin_info.currently_enabled to false");
         coin_info.currently_enabled = false;
 
         {
             std::unique_lock lock(m_coin_cfg_mutex);
-            SPDLOG_INFO("[disable_coin] setting m_coins_informations[ticker].currently_enabled to false");
             m_coins_informations[ticker].currently_enabled = false;
         }
 
