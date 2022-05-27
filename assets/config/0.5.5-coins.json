@@ -979,6 +979,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "BLK-BEP20": {
+    "coin": "BLK-BEP20",
+    "name": "BlackCoin",
+    "coinpaprika_id": "blk-blackcoin",
+    "coingecko_id": "blackcoin",
+    "nomics_id": "BLK",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "tBLK": {
     "coin": "tBLK",
     "name": "BlackCoin (testnet)",
