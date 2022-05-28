@@ -3747,7 +3747,8 @@
     ],
     "type": "ERC-20",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "LUNA-BEP20": {
     "coin": "LUNA-BEP20",
@@ -3764,7 +3765,8 @@
     ],
     "type": "BEP-20",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "LUNA-HRC20": {
     "coin": "LUNA-HRC20",
@@ -3780,7 +3782,8 @@
     ],
     "type": "HRC-20",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "LUNA-PLG20": {
     "coin": "LUNA-PLG20",
@@ -3795,7 +3798,8 @@
     ],
     "type": "Matic",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "LYNX": {
     "coin": "LYNX",
@@ -7364,7 +7368,8 @@
     ],
     "type": "ERC-20",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "UST-BEP20": {
     "coin": "UST-BEP20",
@@ -7381,7 +7386,8 @@
     ],
     "type": "BEP-20",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "UST-HRC20": {
     "coin": "UST-HRC20",
@@ -7397,7 +7403,8 @@
     ],
     "type": "HRC-20",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "UST-PLG20": {
     "coin": "UST-PLG20",
@@ -7412,7 +7419,8 @@
     ],
     "type": "Matic",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "VAL": {
     "coin": "VAL",
