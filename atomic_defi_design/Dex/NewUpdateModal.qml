@@ -23,6 +23,7 @@ Dex.MultipageModal
     {
         titleText: qsTr("Searching new updates")
         titleAlignment: Qt.AlignHCenter
+        spacing: 16
 
         Dex.DefaultText
         {
@@ -51,6 +52,7 @@ Dex.MultipageModal
     {
         titleText: qsTr("Searching new updates")
         titleAlignment: Qt.AlignHCenter
+        spacing: 16
 
         Dex.DefaultText
         {
@@ -72,10 +74,12 @@ Dex.MultipageModal
     {
         titleText: qsTr("New version found")
         titleAlignment: Qt.AlignHCenter
+        spacing: 16
 
         Dex.DefaultText
         {
-            text: "%1 %2".arg(Dex.API.app_name).arg(Dex.API.app.updateCheckerService.updateInfo.newVersion)
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("%1 %2 is available !").arg(Dex.API.app_name).arg(Dex.API.app.updateCheckerService.updateInfo.newVersion)
         }
 
         footer:
@@ -98,6 +102,7 @@ Dex.MultipageModal
     {
         titleText: qsTr("Searching new updates")
         titleAlignment: Qt.AlignHCenter
+        spacing: 16
 
         Dex.DefaultText
         {
