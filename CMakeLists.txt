@@ -61,13 +61,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.5182/mm2-0fea16d6b-Darwin-Release.zip)
+            URL http://195.201.0.6/arrr-light-mode-swap/mm2-f689b4ceb-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.5182/mm2-0fea16d6b-Linux-Release.zip)
+            URL http://195.201.0.6/arrr-light-mode-swap/mm2-f689b4ceb-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.1.5182/mm2-0fea16d6b-Windows_NT-Release.zip)
+            URL http://195.201.0.6/arrr-light-mode-swap/mm2-f689b4ceb-Windows_NT-Release.zip)
 endif ()
 
 #FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
@@ -79,10 +79,10 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(jl777-coins
-        URL https://github.com/KomodoPlatform/coins/archive/master.zip)
+        URL https://github.com/smk762/coins/archive/zombie.zip)
 
 #FetchContent_Declare(adex-generics-coins
-#        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
+#       URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
 
 FetchContent_MakeAvailable(mm2 jl777-coins qmaterial)
 
