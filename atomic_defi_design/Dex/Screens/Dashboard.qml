@@ -30,12 +30,11 @@ Item {
         Portfolio,
         Wallet,
         DEX,            // DEX == Trading page
-        Addressbook,
-        Support
+        Addressbook
     }
 
     property var currentPage: Dashboard.PageType.Portfolio
-    property var availablePages: [portfolio, wallet, exchange, addressbook, support]
+    property var availablePages: [portfolio, wallet, exchange, addressbook]
 
     property alias webEngineView: webEngineView
 
