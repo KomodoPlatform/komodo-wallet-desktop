@@ -17,6 +17,7 @@
 #include "atomicdex/pch.hpp"
 
 #include <QJsonDocument>
+#include <QTranslator>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <nlohmann/json.hpp>
@@ -41,16 +42,17 @@ namespace
     {
         using namespace std::string_literals;
         nlohmann::json resp;
+        nlohmann::json result;
         if (resp_http.status_code() != 200)
         {
-            resp["status"] = "cannot reach the endpoint: "s + g_komodolive_endpoint;
+            result["status"] = (QObject::tr("Cannot reach the endpoint: ") + g_komodolive_endpoint).toStdString();
         }
         else
         {
             resp = nlohmann::json::parse(TO_STD_STR(resp_http.extract_string(true).get()));
         }
-        resp["rpcCode"]        = resp_http.status_code();
-        resp["currentVersion"] = atomic_dex::get_raw_version();
+        result["rpcCode"]        = resp_http.status_code();
+        result["currentVersion"] = atomic_dex::get_raw_version();
         if (resp_http.status_code() == 200)
         {
             bool        update_needed       = false;
@@ -61,9 +63,12 @@ namespace
             boost::algorithm::trim_left_if(current_version_str, boost::is_any_of("0"));
             boost::algorithm::trim_left_if(endpoint_version, boost::is_any_of("0"));
             update_needed         = std::stoi(current_version_str) < std::stoi(endpoint_version);
-            resp["updateNeeded"] = update_needed;
+            result["updateNeeded"] = update_needed;
+            result["newVersion"] = resp["new_version"];
+            result["downloadUrl"] = resp["download_url"];
+            result["changelog"] = resp["changelog"];
         }
-        return resp;
+        return result;
     }
 }
 
@@ -91,9 +96,15 @@ namespace atomic_dex
 
     void update_checker_service::fetch_update_info() 
     {
+        if (is_fetching)
+            return;
+        is_fetching = true;
+        emit isFetchingChanged();
         async_check_retrieve()
             .then([this](web::http::http_response resp) {
                 this->m_update_info = get_update_info_rpc(resp);
+                is_fetching = false;
+                emit isFetchingChanged();
                 emit updateInfoChanged();
             })
             .then(&handle_exception_pplx_task);

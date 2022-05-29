@@ -31,12 +31,14 @@ namespace atomic_dex
         Q_OBJECT
 
         Q_PROPERTY(QVariant updateInfo READ get_update_info NOTIFY updateInfoChanged)
+        Q_PROPERTY(bool isFetching READ get_is_fetching NOTIFY isFetchingChanged)
 
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
         using t_json_synchronized = boost::synchronized_value<nlohmann::json>;
 
-        t_json_synchronized m_update_info;
-        t_update_time_point m_update_clock;
+        t_json_synchronized             m_update_info;
+        t_update_time_point             m_update_clock;
+        boost::synchronized_value<bool> is_fetching;
 
         void fetch_update_info();
 
@@ -47,9 +49,11 @@ namespace atomic_dex
         void update() final;
 
         [[nodiscard]] QVariant get_update_info() const;
+        [[nodiscard]] bool     get_is_fetching() const noexcept { return *is_fetching; }
 
       signals:
         void updateInfoChanged();
+        void isFetchingChanged();
     };
 } // namespace atomic_dex
 

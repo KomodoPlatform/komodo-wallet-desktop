@@ -357,8 +357,7 @@ namespace atomic_dex
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         //system_manager_.create_system<coingecko_provider>(system_manager_);
         system_manager_.create_system<komodo_prices_provider>();
-        //auto& sys = system_manager_.create_system<update_checker_service>();
-        //sys.disable();
+        system_manager_.create_system<update_checker_service>();
         system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
@@ -732,13 +731,12 @@ namespace atomic_dex
 //! update checker
 namespace atomic_dex
 {
-    // update_checker_service* application::get_update_checker_service() const
-    // {
-    //     return nullptr;
-    //     auto ptr = const_cast<update_checker_service*>(std::addressof(system_manager_.get_system<update_checker_service>()));
-    //     assert(ptr != nullptr);
-    //     return ptr;
-    // }
+    update_checker_service* application::get_update_checker_service() const
+    {
+        auto ptr = const_cast<update_checker_service*>(std::addressof(system_manager_.get_system<update_checker_service>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
 } // namespace atomic_dex
 
 //! IP checker

@@ -73,7 +73,7 @@ namespace atomic_dex
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
         Q_PROPERTY(qt_wallet_manager* wallet_mgr READ get_wallet_mgr NOTIFY walletMgrChanged)
-        //Q_PROPERTY(update_checker_service* updateCheckerService READ get_update_checker_service NOTIFY updateCheckerServiceChanged)
+        Q_PROPERTY(update_checker_service* updateCheckerService READ get_update_checker_service NOTIFY updateCheckerServiceChanged)
 
         //! Private function
         void connect_signals();
@@ -133,7 +133,7 @@ namespace atomic_dex
         qt_wallet_manager*               get_wallet_mgr() const;
         internet_service_checker*        get_internet_checker() const;
         ip_service_checker*              get_ip_checker() const;
-        //update_checker_service*          get_update_checker_service() const;
+        update_checker_service*          get_update_checker_service() const;
         exporter_service*                get_exporter_service() const;
 
         void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine);
