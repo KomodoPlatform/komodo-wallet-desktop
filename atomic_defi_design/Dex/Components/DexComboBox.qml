@@ -46,7 +46,7 @@ ComboBox
     background: FloatingBackground
     {
         id: bg_rect
-        implicitWidth: 120
+        implicitWidth: 150
         implicitHeight: 45
         color: control.mainBackgroundColor
         radius: 20

@@ -4,6 +4,8 @@
     "backgroundColor": "#FCFCFCFF",
     "backgroundColorDeep": "#FCFCFCFF",
 
+    "busyIndicatorColor": "#5A68E6FF",
+
     "buttonColorDisabled": "#D8E3F8FF",
     "buttonColorEnabled": "#F0F6FFFF",
     "buttonColorHovered": "#D7E7FFFF",

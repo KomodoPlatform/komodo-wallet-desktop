@@ -1,8 +1,6 @@
-//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
-//! Project Imports
 import "../Constants"
 import App 1.0
 
@@ -21,6 +19,8 @@ ColumnLayout
     property alias         footer:          _footer.data
 
     Layout.fillWidth: true
+    Layout.fillHeight: false
+    Layout.maximumHeight: window.height - 50
 
     DefaultText
     {
@@ -32,19 +32,20 @@ ColumnLayout
 
     DefaultFlickable
     {
-        flickableDirection: Flickable.VerticalFlick
+        property int _maxHeight: window.height - 50 - _title.height - _footer.height - root.topMarginAfterTitle - root.spacing
 
         Layout.topMargin: root.topMarginAfterTitle
         Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
-        Layout.maximumHeight: window.height - 200
-
+        Layout.maximumHeight: _maxHeight
         contentHeight: _innerLayout.height
+
+        flickableDirection: Flickable.VerticalFlick
 
         ColumnLayout
         {
             id: _innerLayout
-            anchors.centerIn: parent
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             width: parent.width
         }
     }

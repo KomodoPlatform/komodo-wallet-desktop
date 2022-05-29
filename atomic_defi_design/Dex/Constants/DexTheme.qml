@@ -143,6 +143,8 @@ QtObject {
     property color lineChartColor: accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
 
+    property color busyIndicatorColor: Dex.CurrentTheme.busyIndicatorColor
+
     // Button
     property color buttonColorDisabled: Dex.CurrentTheme.buttonColorDisabled
     property color buttonColorHovered: Dex.CurrentTheme.buttonColorHovered
@@ -343,7 +345,6 @@ QtObject {
 
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
 
-    readonly property string colorBusyIndicator:  dark_theme ? "#405ff9" : "#405ff9"
 
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
@@ -477,6 +478,7 @@ QtObject {
                                           "WBTC": "#CCCCCC",
                                           "YFI": "#006BE6",
                                           "ZRX": "#302C2C",
-                                          "UNI": "#FF007A"
+                                          "UNI": "#FF007A",
+                                          "RUNES": "#336699"
                                       })
 }

@@ -8,7 +8,7 @@ MouseArea
 {
     id: root
 
-    signal supportLineSelected(var lineType)
+    signal supportClicked()
     signal settingsClicked()
 
     height: lineHeight * 3
@@ -72,8 +72,7 @@ MouseArea
             Layout.fillWidth: true
             label.text: isExpanded ? qsTr("Support") : ""
             icon.source: General.image_path + "menu-support-white.png"
-            type: Main.LineType.Support
-            onClicked: supportLineSelected(type)
+            onClicked: supportClicked(type)
         }
 
         Line

@@ -11,4 +11,6 @@ TextWithTitle {
     expandable: true
     Layout.fillWidth: true
     Layout.rightMargin: 10
+    text_font.pixelSize: 14
+    title_font.pixelSize: 18
 }

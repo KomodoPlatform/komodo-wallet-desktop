@@ -25,6 +25,7 @@ Item
 
     signal lineSelected(var lineType)
     signal settingsClicked()
+    signal supportClicked()
     signal privacySwitched(var checked)
     signal expanded(var isExpanded)
     signal expandStarted(var isExpanding)
@@ -114,14 +115,8 @@ Item
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 62
 
-            onSupportLineSelected:
-            {
-                if (currentLineType === lineType)
-                    return;
-                currentLineType = lineType;
-                root.lineSelected(lineType);
-            }
             onSettingsClicked: root.settingsClicked()
+            onSupportClicked: root.supportClicked()
         }
 
         VerticalLine
