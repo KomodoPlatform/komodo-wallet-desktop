@@ -38,7 +38,7 @@ namespace mm2::api
         }
         else
         {
-            answer.result = j.at("result").get<transaction_data>();
+            answer.result = j.at("result").at("details").at("result").get<transaction_data>();
             // j.at("result").at("status").get_to(answer.status);
             // j.at("result").at("details").get_to(answer.details);
             // if (j.at("result").at("details").at("result").contains("tx_hex"))

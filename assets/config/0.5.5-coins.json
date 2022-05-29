@@ -9803,7 +9803,8 @@
     ],
     "type": "ZHTLC",
     "active": false,
-    "currently_enabled": false
+    "currently_enabled": false,
+    "wallet_only": true
   },
   "ARRR": {
     "coin": "ARRR",

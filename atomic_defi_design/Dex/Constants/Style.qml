@@ -238,6 +238,7 @@ QtObject {
         switch (type)
         {
             case 'ERC-20':      return getCoinColor("ETH")
+            case 'ZHTLC':       return getCoinColor("ARRR")
             case 'QRC-20':      return getCoinColor("QTUM")
             case 'Smart Chain': return getCoinColor("KMD")
             case 'WALLET ONLY': return "#4D4D4D"

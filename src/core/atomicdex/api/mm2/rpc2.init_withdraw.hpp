@@ -33,8 +33,8 @@ namespace mm2::api
     struct init_withdraw_request
     {
         std::string                               coin;
-        std::vector<std::string>                  to;
-        std::vector<std::string>                  amount;
+        std::string                               to;
+        std::string                               amount;
         std::optional<init_withdraw_fees>         fees{std::nullopt}; ///< ignored if std::nullopt
         bool                                      max{false};
     };

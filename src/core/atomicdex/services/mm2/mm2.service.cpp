@@ -744,12 +744,11 @@ namespace atomic_dex
                                                     using namespace std::chrono_literals;
 
                                                     static std::size_t z_nb_try      = 0;
-                                                    nlohmann::json z_error    = nlohmann::json::array();;
-                                                    SPDLOG_DEBUG("Task ID: {}", task_id);
+                                                    nlohmann::json     z_error       = nlohmann::json::array();
+                                                    nlohmann::json     z_batch_array = nlohmann::json::array();
+                                                    t_init_z_coin_status_request z_request{.task_id = task_id};
 
-                                                    nlohmann::json z_batch_array = nlohmann::json::array();
-                                                    t_init_z_coin_status_request z_request{
-                                                        .task_id              = task_id};
+                                                    SPDLOG_DEBUG("Task ID: {}", task_id);
 
                                                     nlohmann::json j = ::mm2::api::template_request("init_z_coin_status", true);
                                                     ::mm2::api::to_json(j, z_request);
@@ -759,13 +758,12 @@ namespace atomic_dex
                                                     do {
                                                         pplx::task<web::http::http_response> z_resp_task = m_mm2_client.async_rpc_batch_standalone(z_batch_array);
                                                         web::http::http_response             z_resp      = z_resp_task.get();
-
-                                                        auto z_answers = ::mm2::api::basic_batch_answer(z_resp);
+                                                        auto                                 z_answers   = ::mm2::api::basic_batch_answer(z_resp);
                                                         z_error = z_answers;
                                                         // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
+                                                        SPDLOG_DEBUG("Waiting for {} to enable [{}]...", tickers[idx], z_answers[0].at("result").at("status").get<std::string>());
                                                         if (z_answers[0].at("result").at("status") == "Ready")
                                                         {
-                                                            SPDLOG_DEBUG("Z Ready!");
                                                             break;
                                                         }
                                                         std::this_thread::sleep_for(1s);

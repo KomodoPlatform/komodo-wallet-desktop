@@ -119,12 +119,12 @@ namespace atomic_dex
             m_transactions_mdl->reset();
             if (coin_info.coin_type != CoinType::ZHTLC)
             {
-                SPDLOG_INFO("new ticker is not HTLC");
+                SPDLOG_INFO("new ticker is not ZHTLC");
                 this->set_tx_fetching_busy(true);
             }
             else
             {
-                SPDLOG_INFO("new ticker is HTLC");
+                SPDLOG_INFO("new ticker is ZHTLC");
                 this->set_tx_fetching_busy(false);
             }
             mm2_system.fetch_infos_thread(true, true);
@@ -489,112 +489,276 @@ namespace atomic_dex
         nlohmann::json     batch      = nlohmann::json::array();
         auto&              mm2_system = m_system_manager.get_system<mm2_service>();
         const auto&        ticker     = mm2_system.get_current_ticker();
-        t_withdraw_request withdraw_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .max = max};
         auto               coin_info = mm2_system.get_coin_info(ticker);
-        if (with_fees)
-        {
-            qDebug() << fees_data;
-            auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
-            withdraw_req.fees = t_withdraw_fees{
-                .type      = "UtxoFixed",
-                .amount    = json_fees.at("fees_amount").get<std::string>(),
-                .gas_price = json_fees.at("gas_price").get<std::string>(),
-                .gas_limit = json_fees.at("gas_limit").get<int>()};
-            if (coin_info.coin_type == CoinType::ERC20)
-            {
-                withdraw_req.fees->type = "EthGas";
-            }
-            else if (coin_info.coin_type == CoinType::QRC20)
-            {
-                withdraw_req.fees->type = "Qrc20Gas";
-            }
-        }
-        nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
-        ::mm2::api::to_json(json_data, withdraw_req);
-        // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
-        batch.push_back(json_data);
-        std::string amount_std = amount.toStdString();
-        if (max)
-        {
-            std::error_code ec;
-            amount_std = mm2_system.my_balance(ticker, ec);
-        }
 
-        //! Answer
-        auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
+        if (coin_info.is_zhtlc_family)
         {
-            const auto& settings_system     = m_system_manager.get_system<settings_page>();
-            const auto& global_price_system = m_system_manager.get_system<global_price_service>();
-            const auto& current_fiat        = settings_system.get_current_fiat().toStdString();
-            std::string body                = TO_STD_STR(resp.extract_string(true).get());
-            SPDLOG_DEBUG("resp: {}", body);
-            if (resp.status_code() == 200 && body.find("error") == std::string::npos)
-            {
-                auto           answers              = nlohmann::json::parse(body);
-                auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
-                nlohmann::json j_out                = nlohmann::json::object();
-                j_out["withdraw_answer"]            = answers[0]["result"];
-                j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
+            t_init_withdraw_request init_withdraw_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .max = max};
 
-                // Add total amount in fiat currency.
-                if (coin_info.coinpaprika_id == "test-coin")
+            if (with_fees)
+            {
+                qDebug() << fees_data;
+                auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
+                init_withdraw_req.fees = t_init_withdraw_fees{
+                    .type      = "UtxoFixed",
+                    .amount    = json_fees.at("fees_amount").get<std::string>()
+                };
+            }
+            nlohmann::json json_data = ::mm2::api::template_request("init_withdraw", true);
+
+            ::mm2::api::to_json(json_data, init_withdraw_req);
+
+            batch.push_back(json_data);
+            std::string amount_std = amount.toStdString();
+
+            if (max)
+            {
+                std::error_code ec;
+                amount_std = mm2_system.my_balance(ticker, ec);
+            }
+
+            auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
+            {
+                const auto& settings_system     = m_system_manager.get_system<settings_page>();
+                const auto& global_price_system = m_system_manager.get_system<global_price_service>();
+                const auto& current_fiat        = settings_system.get_current_fiat().toStdString();
+                auto            answers        = ::mm2::api::basic_batch_answer(resp);
+
+                if (answers[0].contains("result"))
                 {
-                    j_out["withdraw_answer"]["total_amount_fiat"] = "0";
+                    if (answers[0]["result"].contains("task_id"))
+                    {
+                        auto task_id = answers[0].at("result").at("task_id").get<std::int8_t>();
+                        {
+                            SPDLOG_DEBUG("Task ID: {}", task_id);
+                            using namespace std::chrono_literals;
+                            auto&              mm2_system = m_system_manager.get_system<mm2_service>();
+                            static std::size_t z_nb_try      = 0;
+                            nlohmann::json     z_error       = nlohmann::json::array();
+                            nlohmann::json     z_batch_array = nlohmann::json::array();
+                            t_withdraw_status_request z_request{.task_id = task_id};
+
+                            nlohmann::json j = ::mm2::api::template_request("withdraw_status", true);
+                            ::mm2::api::to_json(j, z_request);
+                            z_batch_array.push_back(j);
+
+                            do {
+
+                                pplx::task<web::http::http_response> z_resp_task = mm2_system.get_mm2_client().async_rpc_batch_standalone(z_batch_array);
+                                web::http::http_response             z_resp      = z_resp_task.get();
+                                auto                                 z_answers   = ::mm2::api::basic_batch_answer(z_resp);
+                                z_error = z_answers;
+
+                                SPDLOG_DEBUG("Waiting for {} withdraw status [{}]...", ticker, z_answers[0].at("result").at("status").get<std::string>());
+                                if (z_answers[0].at("result").at("status") == "Ready")
+                                {
+                                    break;
+                                }
+                                std::this_thread::sleep_for(1s);
+                                z_nb_try += 1;
+
+                            } while (z_nb_try < 50);
+
+                            try {
+                                if (z_error[0].at("result").at("details").contains("error"))
+                                {
+                                    std::string zhtlc_error   = z_error[0].at("result").at("details").at("error").get<std::string>();
+                                    SPDLOG_DEBUG("Error zhtlc withdraw_status {}: {} ", ticker, zhtlc_error);
+                                }
+                                else if (z_nb_try == 50)
+                                {
+                                    // TODO: Handle this case.
+                                    // There could be no error message if scanning takes too long.
+                                    // Either we force disable here, or schedule to check on it later
+                                    SPDLOG_DEBUG("Exited zhtlc enable loop after 50 tries");
+                                    SPDLOG_DEBUG("Bad answer for [{}] zhtlc withdraw_status: {}", ticker, z_error[0].dump(4));
+                                }
+                                else
+                                {
+                                    auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_status_answer>(z_error[0], "withdraw_status");
+                                    nlohmann::json j_out                = nlohmann::json::object();
+                                    j_out["withdraw_answer"]            = z_error[0]["result"]["details"]["result"];
+                                    j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
+
+                                    // Add total amount in fiat currency.
+                                    if (coin_info.coinpaprika_id == "test-coin")
+                                    {
+                                        j_out["withdraw_answer"]["total_amount_fiat"] = "0";
+                                    }
+                                    else
+                                    {
+                                        j_out["withdraw_answer"]["total_amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, amount_std);
+                                    }
+
+                                    // Add fees amount.
+                                    if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
+                                    {
+                                        j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
+                                    }
+                                    if (j_out.at("withdraw_answer").at("fee_details").contains("miner_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
+                                    {
+                                        j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["miner_fee"];
+                                    }
+
+                                    // Add fees amount in fiat currency.
+                                    auto fee = j_out["withdraw_answer"]["fee_details"]["amount"].get<std::string>();
+                                    if (coin_info.coinpaprika_id == "test-coin")
+                                    {
+                                        j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = "0";
+                                    }
+                                    else
+                                    {
+                                        j_out["withdraw_answer"]["fee_details"]["amount_fiat"] =
+                                            global_price_system.get_price_as_currency_from_amount(current_fiat, coin_info.fees_ticker, fee);
+                                    }
+                                    this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
+                                }
+                            }
+                            catch (const std::exception& error)
+                            {
+                                SPDLOG_ERROR("exception caught in zhtlc withdraw_status: {}", error.what());
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    j_out["withdraw_answer"]["total_amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, amount_std);
+                    std::string body                = TO_STD_STR(resp.extract_string(true).get());
+                    auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                    this->set_rpc_send_data(error_json);
                 }
-
-                // Add fees amount.
-                if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
-                {
-                    j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
-                }
-                if (j_out.at("withdraw_answer").at("fee_details").contains("miner_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
-                {
-                    j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["miner_fee"];
-                }
-
-                // Add fees amount in fiat currency.
-                auto fee = j_out["withdraw_answer"]["fee_details"]["amount"].get<std::string>();
-                if (coin_info.coinpaprika_id == "test-coin")
-                {
-                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = "0";
-                }
-                else
-                {
-                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] =
-                        global_price_system.get_price_as_currency_from_amount(current_fiat, coin_info.fees_ticker, fee);
-                }
-
-                this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
-            }
-            else
-            {
-                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
-                this->set_rpc_send_data(error_json);
-            }
-            this->set_send_busy(false);
-        };
-
-        auto error_functor = [this](pplx::task<void> previous_task)
-        {
-            try
-            {
-                previous_task.wait();
-            }
-            catch (const std::exception& e)
-            {
-                SPDLOG_ERROR("error caught in send: {}", e.what());
-                auto error_json = QJsonObject({{"error_code", 500}, {"error_message", QString::fromStdString(e.what())}});
-                this->set_rpc_send_data(error_json);
                 this->set_send_busy(false);
-            }
-        };
+            };
 
-        //! Process
-        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
+            auto error_functor = [this](pplx::task<void> previous_task)
+            {
+                try
+                {
+                    previous_task.wait();
+                }
+                catch (const std::exception& e)
+                {
+                    SPDLOG_ERROR("error caught in send: {}", e.what());
+                    auto error_json = QJsonObject({{"error_code", 500}, {"error_message", QString::fromStdString(e.what())}});
+                    this->set_rpc_send_data(error_json);
+                    this->set_send_busy(false);
+                }
+            };
+
+            //! Process
+            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
+
+        }
+        else
+        {
+            t_withdraw_request withdraw_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .max = max};
+
+            if (with_fees)
+            {
+                qDebug() << fees_data;
+                auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
+                withdraw_req.fees = t_withdraw_fees{
+                    .type      = "UtxoFixed",
+                    .amount    = json_fees.at("fees_amount").get<std::string>(),
+                    .gas_price = json_fees.at("gas_price").get<std::string>(),
+                    .gas_limit = json_fees.at("gas_limit").get<int>()};
+                if (coin_info.coin_type == CoinType::ERC20)
+                {
+                    withdraw_req.fees->type = "EthGas";
+                }
+                else if (coin_info.coin_type == CoinType::QRC20)
+                {
+                    withdraw_req.fees->type = "Qrc20Gas";
+                }
+            }
+            nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
+            ::mm2::api::to_json(json_data, withdraw_req);
+            // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
+            batch.push_back(json_data);
+
+            std::string amount_std = amount.toStdString();
+            if (max)
+            {
+                std::error_code ec;
+                amount_std = mm2_system.my_balance(ticker, ec);
+            }
+
+            //! Answer
+            auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
+            {
+                const auto& settings_system     = m_system_manager.get_system<settings_page>();
+                const auto& global_price_system = m_system_manager.get_system<global_price_service>();
+                const auto& current_fiat        = settings_system.get_current_fiat().toStdString();
+                std::string body                = TO_STD_STR(resp.extract_string(true).get());
+
+                if (resp.status_code() == 200 && body.find("error") == std::string::npos)
+                {
+                    auto           answers              = nlohmann::json::parse(body);
+                    auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
+                    nlohmann::json j_out                = nlohmann::json::object();
+                    j_out["withdraw_answer"]            = answers[0]["result"];
+                    j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
+
+                    // Add total amount in fiat currency.
+                    if (coin_info.coinpaprika_id == "test-coin")
+                    {
+                        j_out["withdraw_answer"]["total_amount_fiat"] = "0";
+                    }
+                    else
+                    {
+                        j_out["withdraw_answer"]["total_amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, amount_std);
+                    }
+
+                    // Add fees amount.
+                    if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
+                    {
+                        j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
+                    }
+                    if (j_out.at("withdraw_answer").at("fee_details").contains("miner_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
+                    {
+                        j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["miner_fee"];
+                    }
+
+                    // Add fees amount in fiat currency.
+                    auto fee = j_out["withdraw_answer"]["fee_details"]["amount"].get<std::string>();
+                    if (coin_info.coinpaprika_id == "test-coin")
+                    {
+                        j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = "0";
+                    }
+                    else
+                    {
+                        j_out["withdraw_answer"]["fee_details"]["amount_fiat"] =
+                            global_price_system.get_price_as_currency_from_amount(current_fiat, coin_info.fees_ticker, fee);
+                    }
+
+                    this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
+                }
+                else
+                {
+                    auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                    this->set_rpc_send_data(error_json);
+                }
+                this->set_send_busy(false);
+            };
+
+            auto error_functor = [this](pplx::task<void> previous_task)
+            {
+                try
+                {
+                    previous_task.wait();
+                }
+                catch (const std::exception& e)
+                {
+                    SPDLOG_ERROR("error caught in send: {}", e.what());
+                    auto error_json = QJsonObject({{"error_code", 500}, {"error_message", QString::fromStdString(e.what())}});
+                    this->set_rpc_send_data(error_json);
+                    this->set_send_busy(false);
+                }
+            };
+
+            //! Process
+            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
+        }
     }
 
     void
