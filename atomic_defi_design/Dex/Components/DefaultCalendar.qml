@@ -23,14 +23,14 @@ Calendar
 
         navigationBar: DefaultRectangle
         {
-            height: 40
+            height: 50
             color: Dex.CurrentTheme.floatingBackgroundColor
             radius: 18
 
             Qaterial.Button
             {
                 id: previousYear
-                width: previousMonth.width + 10
+                width: previousMonth.width
                 height: width
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
@@ -39,6 +39,7 @@ Calendar
                 outlinedColor: "transparent"
                 outlined: false
                 backgroundColor: "transparent"
+                foregroundColor: Dex.CurrentTheme.foregroundColor
             }
 
             Qaterial.Button
@@ -54,6 +55,7 @@ Calendar
                 outlinedColor: "transparent"
                 outlined: false
                 backgroundColor: "transparent"
+                foregroundColor: Dex.CurrentTheme.foregroundColor
             }
 
             DefaultText
@@ -72,7 +74,7 @@ Calendar
             Qaterial.Button
             {
                 id: nextYear
-                width: nextMonth.width + 10
+                width: nextMonth.width
                 height: width
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -81,6 +83,7 @@ Calendar
                 outlinedColor: "transparent"
                 outlined: false
                 backgroundColor: "transparent"
+                foregroundColor: Dex.CurrentTheme.foregroundColor
             }
 
             Qaterial.Button
@@ -96,6 +99,19 @@ Calendar
                 outlinedColor: "transparent"
                 outlined: false
                 backgroundColor: "transparent"
+                foregroundColor: Dex.CurrentTheme.foregroundColor
+            }
+        }
+
+        dayOfWeekDelegate: DefaultRectangle
+        {
+            color: "transparent"
+            implicitHeight: 20
+            Label
+            {
+                text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
+                anchors.centerIn: parent
+                color: Dex.CurrentTheme.foregroundColor
             }
         }
 
