@@ -27,17 +27,16 @@ namespace mm2::api
     from_json(const nlohmann::json& j, orderbook_answer& answer)
     {
         using namespace date;
+        SPDLOG_INFO("got orderbook data...");
 
-        j.at("base").get_to(answer.base);
-        j.at("rel").get_to(answer.rel);
-        j.at("askdepth").get_to(answer.askdepth);
-        j.at("biddepth").get_to(answer.biddepth);
-        j.at("bids").get_to(answer.bids);
-        j.at("asks").get_to(answer.asks);
-        j.at("numasks").get_to(answer.numasks);
-        j.at("numbids").get_to(answer.numbids);
-        j.at("netid").get_to(answer.netid);
-        j.at("timestamp").get_to(answer.timestamp);
+        j.at("result").at("base").get_to(answer.base);
+        j.at("result").at("rel").get_to(answer.rel);
+        j.at("result").at("num_asks").get_to(answer.numasks);
+        j.at("result").at("num_bids").get_to(answer.numbids);
+        j.at("result").at("net_id").get_to(answer.netid);
+        j.at("result").at("timestamp").get_to(answer.timestamp);
+        j.at("result").at("bids").get_to(answer.bids);
+        j.at("result").at("asks").get_to(answer.asks);
 
         answer.human_timestamp = atomic_dex::utils::to_human_date(answer.timestamp, "%Y-%m-%d %I:%M:%S");
 
@@ -60,21 +59,21 @@ namespace mm2::api
         {
             t_float_50 percent_f   = safe_float(cur_asks.maxvolume) / result_asks_f;
             cur_asks.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
-            //SPDLOG_INFO("cur_asks: {}", cur_asks.to_string());
+            // SPDLOG_INFO("cur_asks: {}", cur_asks.to_string());
         }
 
         for (auto&& cur_bids: answer.bids)
         {
             t_float_50 percent_f   = safe_float(cur_bids.maxvolume) / result_bids_f;
             cur_bids.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
-            //SPDLOG_INFO("cur_bids: {}", cur_bids.to_string());
+            // SPDLOG_INFO("cur_bids: {}", cur_bids.to_string());
         }
     }
 
     void
     to_json(nlohmann::json& j, const orderbook_request& request)
     {
-        j["base"] = request.base;
-        j["rel"]  = request.rel;
+        j["params"]["base"] = request.base;
+        j["params"]["rel"]  = request.rel;
     }
 } // namespace mm2::api

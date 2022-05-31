@@ -31,9 +31,10 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const best_orders_request& req)
     {
-        j["coin"]   = req.coin;
-        j["action"] = req.action;
-        j["volume"] = req.volume;
+        SPDLOG_INFO("getting bestorders data...");
+        j["params"]["coin"]   = req.coin;
+        j["params"]["action"] = req.action;
+        j["params"]["volume"] = req.volume;
     }
 
     void
@@ -45,15 +46,15 @@ namespace mm2::api
         }
         else
         {
-            for (auto&& [key, value]: j.items())
+            for (auto&& [key, value]: j["orders"].items())
             {
-                // SPDLOG_INFO("{} best orders size: {}", key, value.size());
                 //bool hit = false;
                 std::unordered_set<std::string> uuid_visited;
                 for (auto&& cur_order: value)
                 {
                     order_contents contents;
                     contents.rel_coin = key;
+
                     from_json(cur_order, contents);
                     if (uuid_visited.emplace(contents.uuid).second)
                     {
