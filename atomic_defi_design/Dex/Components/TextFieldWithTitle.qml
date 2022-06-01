@@ -40,7 +40,7 @@ ColumnLayout
             visible: text !== ''
         }
 
-        DexLabel
+        DefaultText
         {
             visible: required && input_field.text === ''
             font.pixelSize: Style.textSizeSmall2
@@ -49,7 +49,7 @@ ColumnLayout
         }
     }
 
-    DexTextField
+    DefaultTextField
     {
         id: input_field
 

@@ -40,7 +40,7 @@ SetupPage
         }
     }
 
-    content: DexRectangle
+    content: DefaultRectangle
     {
         color: Dex.CurrentTheme.floatingBackgroundColor
         width: column_layout.width + 50
@@ -198,7 +198,7 @@ SetupPage
                     }
                 }
 
-                DexLabel
+                DefaultText
                 {
                     id: _seedError
                     visible: _seedField.error

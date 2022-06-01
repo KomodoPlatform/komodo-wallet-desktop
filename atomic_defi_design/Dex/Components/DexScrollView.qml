@@ -9,13 +9,13 @@ ScrollView
     property bool h_scrollbar_visible: contentItem.childrenRect.width > width
     clip: true
 
-    ScrollBar.vertical: DexScrollBar
+    ScrollBar.vertical: DefaultScrollBar
     {
         property bool scrollbar_visible: contentItem.childrenRect.height > height
         anchors.rightMargin: 3
     }
 
-    ScrollBar.horizontal: DexScrollBar
+    ScrollBar.horizontal: DefaultScrollBar
     {
         property bool scrollbar_visible: h_scrollbar_visible
         anchors.bottomMargin: 3

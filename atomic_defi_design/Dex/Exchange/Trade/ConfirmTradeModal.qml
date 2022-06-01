@@ -101,7 +101,7 @@ MultipageModal
             spacing: 10
 
 
-            DexRectangle {
+            DefaultRectangle {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredHeight: fees_detail.height + 20
                 Layout.preferredWidth: parent.width - 60

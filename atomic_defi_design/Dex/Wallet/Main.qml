@@ -875,7 +875,7 @@ Item
                 width: transactions_bg.width
                 height: transactions_bg.height
 
-                DexRectangle
+                DefaultRectangle
                 {
                     anchors.fill: parent
                     gradient: Gradient

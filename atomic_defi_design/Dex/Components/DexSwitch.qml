@@ -25,7 +25,7 @@ Switch
     height: 30
 
     font.family: DexTypo.fontFamily
-    indicator: DexRectangle
+    indicator: DefaultRectangle
     {
         id: _indicator
         width: 52
@@ -107,7 +107,7 @@ Switch
 
         visible: _label.text != ''
 
-        DexLabel
+        DefaultText
         {
             id: _label
             Layout.fillHeight: true
@@ -123,7 +123,7 @@ Switch
         }
     }
 
-    DexMouseArea
+    DefaultMouseArea
     {
         id: _mouseArea
         anchors.fill: control

@@ -23,7 +23,7 @@ FloatingBackground
     color: mouse_area.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.floatingBackgroundColor
     radius: 0
 
-    DexMouseArea
+    DefaultMouseArea
     {
         id: mouse_area
         anchors.fill: parent
@@ -153,7 +153,7 @@ FloatingBackground
                 Layout.fillWidth: true
                 Layout.preferredHeight: childrenRect.height
 
-                DexImage
+                DefaultImage
                 {
                     id: baseIcon
 
@@ -208,7 +208,7 @@ FloatingBackground
                     maximumLineCount: 1
                 }
 
-                DexImage
+                DefaultImage
                 {
                     id: relCoin
 
@@ -238,7 +238,7 @@ FloatingBackground
                 text_value: Style.warningCharacter
                 color: Style.colorYellow
 
-                DexTooltip
+                DefaultTooltip
                 {
                     contentItem: DefaultText
                     {

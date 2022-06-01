@@ -358,7 +358,7 @@ MultipageModal
             }
         }
 
-        DexCheckBox
+        DefaultCheckBox
         {
             id: input_active
             enabled: !has_contract_address

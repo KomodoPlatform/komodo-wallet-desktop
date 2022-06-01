@@ -20,9 +20,9 @@ Popup
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-    background: DexRectangle { radius: root.radius; color: Dex.CurrentTheme.floatingBackgroundColor }
+    background: DefaultRectangle { radius: root.radius; color: Dex.CurrentTheme.floatingBackgroundColor }
 
-    Overlay.modal: DexRectangle { color: "#AA000000" }
+    Overlay.modal: DefaultRectangle { color: "#AA000000" }
 
     // Fade in animation
     onVisibleChanged:

@@ -31,7 +31,7 @@ ListView
         }
     }
 
-    ScrollBar.vertical: DexScrollBar
+    ScrollBar.vertical: DefaultScrollBar
     {
         id: scrollVert
         visibleBackground: root.visibleBackground

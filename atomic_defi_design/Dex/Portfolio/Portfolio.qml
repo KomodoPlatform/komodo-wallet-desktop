@@ -240,7 +240,7 @@ Item {
                             Layout.fillWidth: true
                         }
 
-                        DexCheckBox
+                        DefaultCheckBox
                         {
                             id: hide_zero_balance_checkbox
 

@@ -13,14 +13,14 @@ Popup {
     property alias footer: _footer.contentItem
     modal: true
     padding: 0
-    Overlay.modeless: DexRectangle {
+    Overlay.modeless: DefaultRectangle {
         color: DexTheme.dexBoxBackgroundColor
         opacity: .3
     }
 
     background: ClipRRect {
         radius: 8
-        DexRectangle {
+        DefaultRectangle {
             id: _backgroundColor
             anchors.fill: parent
             border.width: 2

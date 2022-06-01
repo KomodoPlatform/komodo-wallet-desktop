@@ -23,7 +23,7 @@ CheckBox
     Layout.preferredWidth: childrenRect.width
     Layout.preferredHeight: childrenRect.height
 
-    indicator: DexRectangle
+    indicator: DefaultRectangle
     {
         id: _indicator
         anchors.verticalCenter: control.verticalCenter
@@ -39,7 +39,7 @@ CheckBox
             GradientStop { position: 0.6; color: Dex.CurrentTheme.checkBoxGradientEndColor }
         }
 
-        DexRectangle
+        DefaultRectangle
         {
             visible: !control.checked
             anchors.centerIn: parent
@@ -59,7 +59,7 @@ CheckBox
         height: _label.height
         spacing: 0
 
-        DexLabel
+        DefaultText
         {
             id: _label
             text: control.text
@@ -72,7 +72,7 @@ CheckBox
         }
     }
 
-    DexMouseArea
+    DefaultMouseArea
     {
         id: mouse_area
         anchors.fill: parent

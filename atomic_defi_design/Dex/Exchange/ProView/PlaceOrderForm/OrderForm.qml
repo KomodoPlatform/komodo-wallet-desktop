@@ -197,7 +197,7 @@ ColumnLayout
         Layout.fillWidth: true
         spacing: 5
 
-        DexCheckBox
+        DefaultCheckBox
         {
             id: _useCustomMinTradeAmountCheckbox
             boxWidth: 20

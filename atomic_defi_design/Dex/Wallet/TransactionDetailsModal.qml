@@ -86,7 +86,7 @@ MultipageModal
             label.font.pixelSize: 13
         }
 
-        DexRectangle {
+        DefaultRectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: addressColumn.height + 10
             color: DexTheme.contentColorTop

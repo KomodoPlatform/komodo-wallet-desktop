@@ -389,6 +389,7 @@ DexPopup
         if (API.app.settings_pg.notification_enabled)
             tray.showMessage(title, message)
     }
+
     SystemTrayIcon
     {
         id: tray
@@ -396,12 +397,14 @@ DexPopup
         iconSource: General.image_path + "dex-tray-icon.png"
 
         tooltip: API.app_name
+
         onMessageClicked:
         {
             if (notifications_list.length > 0)
                 performNotificationAction(notifications_list[0])
             showApp()
         }
+
         menu: Menu
         {
             MenuItem
@@ -430,7 +433,8 @@ DexPopup
         anchors.margins: 30
         anchors.topMargin: 20
         spacing: 24
-        DexLabel
+
+        DefaultText
         {
             Layout.fillWidth: true
             font
@@ -460,7 +464,7 @@ DexPopup
             {
                 anchors.centerIn: parent
                 visible: !list.visible
-                text_value: qsTr("There isn't any notification")
+                text_value: qsTr("There aren't any notifications")
                 font.pixelSize: 14
             }
 
@@ -472,13 +476,17 @@ DexPopup
                 height: parent.height
                 anchors.horizontalCenter: parent.horizontalCenter
                 model: notifications_list
+
                 delegate: Item
                 {
+                    height: _column.height + 10
+                    width: list.width
 
                     Rectangle
                     {
                         anchors.fill: parent
                         opacity: 0.7
+
                         gradient: Gradient
                         {
                             orientation: Qt.Horizontal
@@ -500,8 +508,6 @@ DexPopup
                         notifications_list.splice(index, 1)
                         notifications_list = notifications_list
                     }
-                    height: _column.height + 10
-                    width: list.width
 
                     RowLayout
                     {
@@ -510,29 +516,31 @@ DexPopup
                         {
                             Layout.fillHeight: true
                             Layout.preferredWidth: 60
+
                             Rectangle
                             {
                                 width: 23
                                 height: 23
                                 radius: 12
                                 gradient: notification_map[modelData.kind].gradient
-
                                 anchors.right: parent.right
                                 anchors.rightMargin: -5
                                 y: 13
+                                
                                 Qaterial.Icon
                                 {
                                     anchors.centerIn: parent
                                     size: 16
                                     icon: notification_map[modelData.kind].icon
-
                                 }
                             }
                         }
+
                         Item
                         {
                             Layout.fillHeight: true
                             Layout.fillWidth: true
+
                             Column
                             {
                                 id: _column
@@ -541,28 +549,31 @@ DexPopup
                                 topPadding: 10
                                 bottomPadding: 5
                                 spacing: 5
-                                DexLabel
+
+                                DefaultText
                                 {
                                     text: modelData.title
                                     font: DexTypo.subtitle1
                                     width: parent.width
                                     wrapMode: Label.Wrap
                                 }
-                                DexLabel
+
+                                DefaultText
                                 {
                                     text: modelData.message
                                     font: DexTypo.subtitle2
                                     width: parent.width - 20
                                     wrapMode: Label.Wrap
                                 }
-                                DexLabel
+
+                                DefaultText
                                 {
                                     text: modelData.human_date
                                     font: DexTypo.caption
                                     opacity: 0.7
                                 }
-
                             }
+
                             Qaterial.AppBarButton
                             {
                                 id: action_button
@@ -573,6 +584,7 @@ DexPopup
                                 anchors.bottomMargin: -4
                                 foregroundColor: DexTheme.foregroundColor
                                 visible: modelData.event_name !== "check"
+
                                 icon.source:
                                 {
                                     let name
@@ -611,11 +623,13 @@ DexPopup
                                             console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
                                             API.app.enable_coins([event_before_removal.params.coin])
                                             break
+
                                         case "onMismatchCustomCoinConfiguration":
                                             console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
                                             root.close()
                                             restart_modal.open()
                                             break
+
                                         default:
                                             removeNotification()
                                             break
@@ -625,12 +639,13 @@ DexPopup
                         }
                     }
 
-                    DexMouseArea
+                    DefaultMouseArea
                     {
                         id: mouseArea
                         hoverEnabled: true
                         cursorShape: "PointingHandCursor"
                         anchors.fill: parent
+
                         onClicked:
                         {
                             performNotificationAction(notifications_list[index])
@@ -639,7 +654,6 @@ DexPopup
                     }
                 }
             }
-
         }
 
         OutlineButton

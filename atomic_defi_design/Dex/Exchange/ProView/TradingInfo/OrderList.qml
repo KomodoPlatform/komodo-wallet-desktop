@@ -27,7 +27,7 @@ Item
             Layout.maximumWidth: 511
         }
 
-        DexListView
+        DefaultListView
         {
             id: list
 
