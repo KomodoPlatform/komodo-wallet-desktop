@@ -9,8 +9,8 @@ DefaultRectangle
     property alias fullname: fullname.text
     property alias amount: amount.text
 
-    Layout.preferredWidth: 260
-    Layout.preferredHeight: 66
+    width: 260
+    height: 66
     radius: 10
 
     RowLayout

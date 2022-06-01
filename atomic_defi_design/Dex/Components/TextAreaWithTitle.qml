@@ -15,7 +15,7 @@ ColumnLayout
     property alias field: input_field
     property alias save_button: save_button
     property alias hide_button: hide_button
-    property alias hide_button_area: hide_button.mouse_area
+    property alias hide_button_area: hide_button.mouseArea
     property bool  copyable: false
     property bool  hidable: false
     property var   onReturn // function

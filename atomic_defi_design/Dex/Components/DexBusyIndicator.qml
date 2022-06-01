@@ -8,21 +8,21 @@ import App 1.0
 BusyIndicator
 {
     id: control
-    property int indicator_size: 64
-    property int indicator_dot_size: 10
+    property int indicatorSize: 64
+    property int indicatorDotSize: 10
 
     contentItem: Item
     {
-        implicitWidth: indicator_size
-        implicitHeight: indicator_size
+        implicitWidth: indicatorSize
+        implicitHeight: indicatorSize
 
         Item
         {
             id: item
-            x: (parent.width - indicator_size) / 2
-            y: (parent.height - indicator_size) / 2
-            width: indicator_size
-            height: indicator_size
+            x: (parent.width - indicatorSize) / 2
+            y: (parent.height - indicatorSize) / 2
+            width: indicatorSize
+            height: indicatorSize
             opacity: control.running ? 1 : 0
 
             Behavior on opacity
@@ -52,20 +52,20 @@ BusyIndicator
                 {
                     x: (item.width - width) / 2
                     y: (item.height - height) / 2
-                    implicitWidth: indicator_dot_size
-                    implicitHeight: indicator_dot_size
-                    radius: indicator_dot_size / 2
+                    implicitWidth: indicatorDotSize
+                    implicitHeight: indicatorDotSize
+                    radius: indicatorDotSize / 2
                     color: Dex.CurrentTheme.busyIndicatorColor
                     transform: [
                         Translate
                         {
-                            y: -Math.min(item.width, item.height) * 0.5 + indicator_dot_size / 2
+                            y: -Math.min(item.width, item.height) * 0.5 + indicatorDotSize / 2
                         },
                         Rotation
                         {
                             angle: index / repeater.count * 360
-                            origin.x: indicator_dot_size / 2
-                            origin.y: indicator_dot_size / 2
+                            origin.x: indicatorDotSize / 2
+                            origin.y: indicatorDotSize / 2
                         }
                     ]
                 }

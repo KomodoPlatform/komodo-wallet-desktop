@@ -15,13 +15,11 @@ CheckBox
     property alias label: _label
     property alias boxWidth: _indicator.implicitWidth
     property alias boxHeight: _indicator.implicitHeight
-    property alias mouseArea: mouse_area
+    property alias mouseArea: mouseArea
     property color textColor: Dex.CurrentTheme.foregroundColor
     property int labelWidth: 0
 
     font.family: Style.font_family
-    Layout.preferredWidth: childrenRect.width
-    Layout.preferredHeight: childrenRect.height
 
     indicator: DefaultRectangle
     {
@@ -74,7 +72,7 @@ CheckBox
 
     DefaultMouseArea
     {
-        id: mouse_area
+        id: mouseArea
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
     }

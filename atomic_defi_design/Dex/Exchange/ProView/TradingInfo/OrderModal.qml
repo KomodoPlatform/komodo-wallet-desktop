@@ -60,7 +60,7 @@ MultipageModal
                 Layout.topMargin: 15
                 height: 70
 
-                DefaultPairItemBadge
+                PairItemBadge
                 {
                     source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin)
                     ticker: details ? details.base_coin : ""
@@ -77,7 +77,7 @@ MultipageModal
                     icon: Qaterial.Icons.swapHorizontal
                 }
 
-                DefaultPairItemBadge
+                PairItemBadge
                 {
                     source: General.coinIcon(!details ? atomic_app_primary_coin : details.rel_coin)
                     ticker: details ? details.rel_coin : ""

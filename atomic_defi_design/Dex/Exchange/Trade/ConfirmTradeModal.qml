@@ -33,7 +33,7 @@ MultipageModal
             {
                 id: dex_pair_badges
 
-                DefaultPairItemBadge
+                PairItemBadge
                 {
                     source: General.coinIcon(!base_ticker ? atomic_app_primary_coin : base_ticker)
                     ticker: base_ticker
@@ -50,7 +50,7 @@ MultipageModal
                     icon: Qaterial.Icons.swapHorizontal
                 }
 
-                DefaultPairItemBadge
+                PairItemBadge
                 {
                     source: General.coinIcon(!rel_ticker ? atomic_app_primary_coin : rel_ticker)
                     ticker: rel_ticker

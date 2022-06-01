@@ -906,8 +906,8 @@ Item
                         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                         Layout.preferredWidth: Style.textSizeSmall3
                         Layout.preferredHeight: Layout.preferredWidth
-                        indicator_size: 32
-                        indicator_dot_size: 5
+                        indicatorSize: 32
+                        indicatorDotSize: 5
                     }
 
                     DefaultText

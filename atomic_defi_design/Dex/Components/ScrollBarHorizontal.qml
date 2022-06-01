@@ -4,7 +4,6 @@ import QtQuick.Controls 2.15
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-
 ScrollBar
 {
     id: control
