@@ -38,7 +38,7 @@ namespace mm2::api
         }
         else
         {
-            contents.address = "";
+            contents.address = "Shielded";
         }
 
         j.at("pubkey").get_to(contents.pubkey);
