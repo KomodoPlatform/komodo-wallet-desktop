@@ -957,17 +957,20 @@
       {
         "url": "electrum1.blackcoin.nl:10002",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": false,
+        "ws_url": "electrum1.blackcoin.nl:10004”
       },
       {
         "url": "electrum2.blackcoin.nl:20002",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": false,
+        "ws_url": "electrum2.blackcoin.nl:20004”
       },
       {
         "url": "electrum3.blackcoin.nl:30002",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": false,
+        "ws_url": "electrum3.blackcoin.nl:30004”
       }
     ],
     "explorer_url": [
@@ -1007,17 +1010,20 @@
       {
         "url": "electrum1.blackcoin.nl:10012",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "electrum1.blackcoin.nl:10014”
       },
       {
         "url": "electrum2.blackcoin.nl:20012",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "electrum2.blackcoin.nl:20014”
       },
       {
         "url": "electrum3.blackcoin.nl:30012",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "electrum3.blackcoin.nl:30014”
       }
     ],
     "explorer_url": [
