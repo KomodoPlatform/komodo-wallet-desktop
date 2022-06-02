@@ -4657,10 +4657,12 @@
       {
         "url": "failover.trc-uis.ewmcx.biz:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "failover.trc-uis.ewmcx.biz:50003"
       },
       {
-        "url": "electrumx.uis.ewmcx.info:50001"
+        "url": "electrumx.uis.ewmcx.info:50001",
+        "ws_url": "electrumx.uis.ewmcx.info:50004"
       }
     ],
     "explorer_url": [
@@ -6205,17 +6207,20 @@
       {
         "url": "el0.verus.io:17486",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": false,
+        "ws_url": "el0.verus.io:17488"
       },
       {
         "url": "el1.verus.io:17486",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": false,
+        "ws_url": "el1.verus.io:17488"
       },
       {
         "url": "el2.verus.io:17486",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": false,
+        "ws_url": "el2.verus.io:17488"
       }
     ],
     "explorer_url": [
@@ -7193,13 +7198,16 @@
       {
         "url": "failover.trc-uis.ewmcx.biz:50006",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "failover.trc-uis.ewmcx.biz:50007"
       },
       {
-        "url": "electrum.terracoin.io:50001"
+        "url": "electrum.terracoin.io:50001",
+        "ws_url": "electrum.terracoin.io:50004"
       },
       {
-        "url": "electrum.southofheaven.ca:50001"
+        "url": "electrum.southofheaven.ca:50001",
+        "ws_url": "electrum.southofheaven.ca:50004"
       }
     ],
     "explorer_url": [
@@ -7720,7 +7728,8 @@
     "electrum": [
       {
         "url": "lenoir.ecoincore.com:10891",
-        "protocol": "TCP"
+        "protocol": "TCP",
+        "ws_url": "lenoir.ecoincore.com:10894"
       }
     ],
     "explorer_url": [
