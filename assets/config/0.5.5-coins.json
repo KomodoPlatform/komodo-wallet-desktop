@@ -6242,10 +6242,12 @@
     "nomics_id": "ILNPOS",
     "electrum": [
       {
-        "url": "electrum1.ilien.io:65011"
+        "url": "electrum1.ilien.io:65011",
+        "ws_url": "electrum1.ilien.io:30069"
       },
       {
-        "url": "electrum2.ilien.io:65011"
+        "url": "electrum2.ilien.io:65011",
+        "ws_url": "electrum2.ilien.io:30069"
       }
     ],
     "explorer_url": [
