@@ -1666,27 +1666,32 @@
       {
         "url": "mumbai.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "mumbai.ecoincore.com:34335"
       },
       {
         "url": "holland.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "holland.ecoincore.com:34335"
       },
       {
         "url": "miami.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "miami.ecoincore.com:34335"
       },
       {
         "url": "woolloomooloo.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "woolloomooloo.ecoincore.com:34335"
       },
       {
         "url": "lenoir.ecoincore.com:34333",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "lenoir.ecoincore.com:34335"
       }
     ],
     "explorer_url": [
