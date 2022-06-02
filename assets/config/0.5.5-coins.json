@@ -7441,17 +7441,20 @@
       {
         "url": "e1.validitytech.com:11002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "e1.validitytech.com:11004"
       },
       {
         "url": "e2.validitytech.com:11002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "e2.validitytech.com:11004"
       },
       {
         "url": "e3.validitytech.com:11002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "e3.validitytech.com:11004"
       }
     ],
     "explorer_url": [
