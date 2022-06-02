@@ -3810,23 +3810,28 @@
     "electrum": [
       {
         "url": "electrum5.getlynx.io:50002",
-        "protocol": "SSL"
+        "protocol": "SSL",
+        "ws_url": "electrum5.getlynx.io:50004"
       },
       {
         "url": "electrum6.getlynx.io:50002",
-        "protocol": "SSL"
+        "protocol": "SSL",
+        "ws_url": "electrum6.getlynx.io:50004"
       },
       {
         "url": "electrum7.getlynx.io:50002",
-        "protocol": "SSL"
+        "protocol": "SSL",
+        "ws_url": "electrum7.getlynx.io:50004"
       },
       {
         "url": "electrum8.getlynx.io:50002",
-        "protocol": "SSL"
+        "protocol": "SSL",
+        "ws_url": "electrum8.getlynx.io:50004"
       },
       {
         "url": "electrum9.getlynx.io:50002",
-        "protocol": "SSL"
+        "protocol": "SSL",
+        "ws_url": "electrum9.getlynx.io:50004"
       }
     ],
     "explorer_url": [
