@@ -8060,13 +8060,16 @@
     "nomics_id": "ZER",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10065"
+        "url": "electrum1.cipig.net:10065",
+        "ws_url": "electrum1.cipig.net:30065"
       },
       {
-        "url": "electrum2.cipig.net:10065"
+        "url": "electrum2.cipig.net:10065",
+        "ws_url": "electrum2.cipig.net:30065"
       },
       {
-        "url": "electrum3.cipig.net:10065"
+        "url": "electrum3.cipig.net:10065",
+        "ws_url": "electrum3.cipig.net:30065"
       }
     ],
     "explorer_url": [
