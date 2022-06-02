@@ -1179,12 +1179,14 @@
       {
         "url": "bsty-main.coinmunity.gold:50012",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "bsty-main.coinmunity.gold:50013"
       },
       {
         "url": "bsty-bkp.coinmunity.gold:50012",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "bsty-bkp.coinmunity.gold:50013"
       }
     ],
     "explorer_url": [
@@ -1286,7 +1288,8 @@
       {
         "url": "btx-electrumx.coinsmunity.com:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "btx-electrumx.coinsmunity.com:50003"
       }
     ],
     "explorer_url": [
@@ -2121,12 +2124,14 @@
     "electrum": [
       {
         "url": "electrumx.dgc.ewmcx.org:50001",
-        "protocol": "TCP"
+        "protocol": "TCP",
+        "ws_url": "electrumx.dgc.ewmcx.org:50003"
       },
       {
         "url": "failover.dgc.ewmcx.biz:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "failover.dgc.ewmcx.biz:50003"
       }
     ],
     "explorer_url": [
@@ -2489,27 +2494,32 @@
       {
         "url": "holland.ecoincore.com:11017",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "holland.ecoincore.com:11019"
       },
       {
         "url": "lenoir.ecoincore.com:11017",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "lenoir.ecoincore.com:11019"
       },
       {
         "url": "electrum1.egulden.org:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "electrum1.egulden.org:50004"
       },
       {
         "url": "electrum2.egulden.org:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "electrum2.egulden.org:50004"
       },
       {
         "url": "electrum5.egulden.org:11017",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "electrum5.egulden.org:11019"
       }
     ],
     "explorer_url": [
