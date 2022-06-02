@@ -1271,10 +1271,12 @@
     "nomics_id": "BTCZ",
     "electrum": [
       {
-        "url": "electrum1.btcz.rocks:50001"
+        "url": "electrum1.btcz.rocks:50001",
+        "ws_url": "electrum1.btcz.rocks:50004"
       },
       {
-        "url": "electrum2.btcz.rocks:50001"
+        "url": "electrum2.btcz.rocks:50001",
+        "ws_url": "electrum2.btcz.rocks:50004"
       }
     ],
     "explorer_url": [
