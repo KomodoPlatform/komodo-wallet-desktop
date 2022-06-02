@@ -539,12 +539,14 @@
       {
         "url": "electrumx.aur.ewmcx.info:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "electrumx.aur.ewmcx.info:50003"
       },
       {
         "url": "failover.aur.ewmcx.biz:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "failover.aur.ewmcx.biz:50003"
       }
     ],
     "explorer_url": [
@@ -8164,7 +8166,8 @@
     "electrum": [
       {
         "url": "207.180.252.200:50011",
-        "protocol": "TCP"
+        "protocol": "TCP",
+        "ws_url": "207.180.252.200:50013"
       },
       {
         "url": "zeta-seed-c.zetacoin.tech:50012",
