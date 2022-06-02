@@ -4680,12 +4680,14 @@
       {
         "url": "uno-main.coinmunity.gold:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "uno-main.coinmunity.gold:50003"
       },
       {
         "url": "uno-bkp.coinmunity.gold:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "uno-bkp.coinmunity.gold:50003"
       }
     ],
     "explorer_url": [
@@ -5351,13 +5353,16 @@
     "coingecko_id": "test-coin",
     "electrum": [
       {
-        "url": "electrum1.cipig.net:10016"
+        "url": "electrum1.cipig.net:10016",
+        "ws_url": "electrum1.cipig.net:30016"
       },
       {
-        "url": "electrum2.cipig.net:10016"
+        "url": "electrum2.cipig.net:10016",
+        "ws_url": "electrum2.cipig.net:30016"
       },
       {
-        "url": "electrum3.cipig.net:10016"
+        "url": "electrum3.cipig.net:10016",
+        "ws_url": "electrum3.cipig.net:30016"
       }
     ],
     "explorer_url": [
@@ -5622,12 +5627,14 @@
       {
         "url": "electrum.peercoinexplorer.net:50002",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": false,
+        "ws_url": "electrum.peercoinexplorer.net:50004"
       },
       {
         "url": "allingas.peercoinexplorer.net:50002",
         "protocol": "SSL",
-        "disable_cert_verification": false
+        "disable_cert_verification": false,
+        "ws_url": "allingas.peercoinexplorer.net:50004"
       }
       ],
       "explorer_url": [
@@ -6227,12 +6234,14 @@
       {
         "url": "il8p.electrumx.transcenders.name:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "il8p.electrumx.transcenders.name:50003"
       },
       {
         "url": "il9p.electrumx.transcenders.name:50002",
         "protocol": "SSL",
-        "disable_cert_verification": true
+        "disable_cert_verification": true,
+        "ws_url": "il9p.electrumx.transcenders.name:50003"
       }
     ],
     "explorer_url": [
