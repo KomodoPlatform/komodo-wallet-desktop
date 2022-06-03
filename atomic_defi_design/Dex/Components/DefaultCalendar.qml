@@ -27,35 +27,28 @@ Calendar
             color: Dex.CurrentTheme.floatingBackgroundColor
             radius: 18
 
-            Qaterial.Button
+            DefaultButton
             {
                 id: previousYear
                 width: previousMonth.width
                 height: width
                 anchors.left: parent.left
+                anchors.leftMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
-                icon.source: Qaterial.Icons.arrowLeft
+                iconSource: Qaterial.Icons.arrowLeft
                 onClicked: control.showPreviousYear()
-                outlinedColor: "transparent"
-                outlined: false
-                backgroundColor: "transparent"
-                foregroundColor: Dex.CurrentTheme.foregroundColor
             }
 
-            Qaterial.Button
+            DefaultButton
             {
                 id: previousMonth
-                width: parent.height
+                width: parent.height - 14
                 height: width
                 anchors.left: previousYear.right
                 anchors.leftMargin: 2
                 anchors.verticalCenter: parent.verticalCenter
-                icon.source: Qaterial.Icons.arrowLeft
+                iconSource: Qaterial.Icons.arrowLeft
                 onClicked: control.showPreviousMonth()
-                outlinedColor: "transparent"
-                outlined: false
-                backgroundColor: "transparent"
-                foregroundColor: Dex.CurrentTheme.foregroundColor
             }
 
             DefaultText
@@ -71,35 +64,28 @@ Calendar
                 anchors.rightMargin: 2
             }
 
-            Qaterial.Button
+            DefaultButton
             {
                 id: nextYear
                 width: nextMonth.width
                 height: width
                 anchors.right: parent.right
+                anchors.rightMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
-                icon.source: Qaterial.Icons.arrowRight
+                iconSource: Qaterial.Icons.arrowRight
                 onClicked: control.showNextYear()
-                outlinedColor: "transparent"
-                outlined: false
-                backgroundColor: "transparent"
-                foregroundColor: Dex.CurrentTheme.foregroundColor
             }
 
-            Qaterial.Button
+            DefaultButton
             {
                 id: nextMonth
-                width: parent.height
+                width: parent.height - 14
                 height: width
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: nextYear.left
                 anchors.rightMargin: 2
-                icon.source: Qaterial.Icons.arrowRight
+                iconSource: Qaterial.Icons.arrowRight
                 onClicked: control.showNextMonth()
-                outlinedColor: "transparent"
-                outlined: false
-                backgroundColor: "transparent"
-                foregroundColor: Dex.CurrentTheme.foregroundColor
             }
         }
 
