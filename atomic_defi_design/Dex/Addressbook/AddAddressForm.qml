@@ -81,7 +81,7 @@ Dex.Rectangle
         Dex.DefaultCheckBox
         {
             id: useStandardsCheckBox
-            text: qsTr("Use asset standard as address type")
+            text: qsTr("Use standard network address")
         }
 
         AddressTypeSelector
