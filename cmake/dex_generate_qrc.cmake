@@ -3,7 +3,7 @@ function(dex_generate_qrc directory output)
         GENERATE_QRC
         ""
         "PATH_PREFIX"
-        "FILES_TO_EXCLUDE"
+        "FILES_TO_EXCLUDE;FILES"
         ${ARGN}
     )
 
@@ -25,6 +25,10 @@ function(dex_generate_qrc directory output)
         if (excluded)
             continue()
         endif ()
+        string(REPLACE ${directory}/ "" res ${res})
+        file(APPEND ${directory}/qml.qrc "        <file>${res}</file>\n")
+    endforeach()
+    foreach(res ${GENERATE_QRC_FILES})
         string(REPLACE ${directory}/ "" res ${res})
         file(APPEND ${directory}/qml.qrc "        <file>${res}</file>\n")
     endforeach()
