@@ -78,18 +78,25 @@ Dex.Rectangle
         anchors.margins: 21
         spacing: 17
 
-        Dex.DefaultCheckBox
+        RowLayout
         {
-            id: useStandardsCheckBox
-            text: qsTr("Use standard network address")
-        }
-
-        AddressTypeSelector
-        {
-            id: addressTypeComboBox
             Layout.preferredWidth: 458
             Layout.preferredHeight: 44
-            showAssetStandards: useStandardsCheckBox.checked
+
+            AddressTypeSelector
+            {
+                id: addressTypeComboBox
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                showAssetStandards: useStandardsCheckBox.checked
+            }
+
+            Dex.DefaultCheckBox
+            {
+                id: useStandardsCheckBox
+                Layout.preferredWidth: 150
+                text: qsTr("Use standard network address")
+            }
         }
 
         Dex.TextField
