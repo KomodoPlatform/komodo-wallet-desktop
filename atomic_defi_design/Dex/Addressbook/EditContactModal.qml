@@ -46,7 +46,7 @@ Dex.MultipageModal
             {
                 visible: !addressList.contactAddAddressMode
                 model: contactModel.proxyFilter
-                spacing: 20
+                spacing: 10
                 height: contentHeight > 190 ? 190 : contentHeight
                 width: parent.width
 
