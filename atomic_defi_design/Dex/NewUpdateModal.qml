@@ -1,5 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
+import QtQml 2.15               //> Qt.exit
+import QtQuick.Controls 2.15    //> Popup.NoAutoClose
 
 import "Components" as Dex
 import "Constants" as Dex
@@ -18,6 +20,17 @@ Dex.MultipageModal
             return 2
         return 3
     }
+
+    Component.onCompleted:
+    {
+        if (Dex.API.app.updateCheckerService.updateInfo.status === "recommended" ||
+            Dex.API.app.updateCheckerService.updateInfo.status === "required" )
+        {
+            root.open()
+        }
+    }
+
+    closePolicy: Popup.NoAutoClose
 
     Dex.MultipageModalContent
     {
@@ -72,7 +85,7 @@ Dex.MultipageModal
 
     Dex.MultipageModalContent
     {
-        titleText: qsTr("New version found")
+        titleText: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? qsTr("Mandatory version found") : qsTr("New version found")
         titleAlignment: Qt.AlignHCenter
         spacing: 16
 
@@ -80,6 +93,13 @@ Dex.MultipageModal
         {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("%1 %2 is available !").arg(Dex.API.app_name).arg(Dex.API.app.updateCheckerService.updateInfo.newVersion)
+        }
+
+        Dex.DefaultText
+        {
+            visible: Dex.API.app.updateCheckerService.updateInfo.status === "required"
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("This update is mandatory to continue using the application")
         }
 
         footer:
@@ -92,8 +112,8 @@ Dex.MultipageModal
             },
             Dex.DefaultButton
             {
-                text: qsTr("Close")
-                onClicked: close()
+                text: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? qsTr("Close Dex") : qsTr("Close")
+                onClicked: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? Qt.exit(0) : close()
             }
         ]
     }
@@ -128,7 +148,11 @@ Dex.MultipageModal
         {
             if (Dex.API.app.updateCheckerService.updateInfo)
             {
-                root.open()
+                if (Dex.API.app.updateCheckerService.updateInfo.status === "recommended" ||
+                    Dex.API.app.updateCheckerService.updateInfo.status === "required" )
+                {
+                    root.open()
+                }
             }
         }
     }
