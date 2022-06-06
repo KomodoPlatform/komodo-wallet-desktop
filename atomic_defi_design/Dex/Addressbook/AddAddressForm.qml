@@ -124,8 +124,10 @@ Dex.Rectangle
         Dex.Text
         {
             id: invalidAddressValueLabel
+            Layout.fillWidth: true
             color: Dex.CurrentTheme.noColor
             wrapMode: Dex.Text.Wrap
+            horizontalAlignment: Text.AlignHCenter
         }
 
         RowLayout
