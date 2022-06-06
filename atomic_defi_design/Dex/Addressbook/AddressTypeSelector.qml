@@ -19,7 +19,7 @@ Dex.ComboBoxWithSearchBar
     popupForceMaxHeight: true
     popupMaxHeight: 265
     model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
-    textRole: "ticker"
+    textRole: showAssetStandards ? "" : "ticker"
 
     delegate: ItemDelegate
     {
