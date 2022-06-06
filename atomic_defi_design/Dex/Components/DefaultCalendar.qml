@@ -104,10 +104,11 @@ Calendar
         dayDelegate: DefaultRectangle
         {
             anchors.fill: parent
-            color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "transparent"
+            color: styleData.date !== undefined && styleData.selected ? selectedDateColor : styleData.hovered ? hoveredDateColor : "transparent"
 
             readonly property bool addExtraMargin: control.frameVisible && styleData.selected
             readonly property color sameMonthDateTextColor: Dex.CurrentTheme.foregroundColor
+            readonly property color hoveredDateColor: Dex.CurrentTheme.buttonColorHovered
             readonly property color selectedDateColor: Dex.CurrentTheme.buttonColorPressed
             readonly property color selectedDateTextColor: Dex.CurrentTheme.foregroundColor
             readonly property color differentMonthDateTextColor: Dex.CurrentTheme.foregroundColor3
