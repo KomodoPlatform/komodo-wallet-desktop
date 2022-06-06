@@ -33,7 +33,7 @@ Dex.Rectangle
             case "SLP":         return "BCH";
         }
 
-        let coinInfo = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(addressType);
+        let coinInfo = Dex.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(addressType);
         if (coinInfo.has_parent_fees_ticker)
             return coinInfo.fees_ticker;
         return walletType
