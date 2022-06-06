@@ -220,7 +220,7 @@ Item {
                     font.pixelSize: 13
                     opacity: .8
                     color: Dex.CurrentTheme.foregroundColor
-                    backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
+                    backgroundColor: Dex.CurrentTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                     onAccepted: applyDateFilter()
                     Layout.fillWidth: true
                 }
@@ -236,7 +236,7 @@ Item {
                     font.pixelSize: 13
                     opacity: .8
                     color: Dex.CurrentTheme.foregroundColor
-                    backgroundColor: DexTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
+                    backgroundColor: Dex.CurrentTheme.portfolioPieGradient ? '#FFFFFF' : 'transparent'
                     onAccepted: applyDateFilter()
                     Layout.fillWidth: true
                 }

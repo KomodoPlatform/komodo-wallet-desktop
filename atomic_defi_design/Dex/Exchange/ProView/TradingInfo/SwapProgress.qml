@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Dex.Themes 1.0 as Dex
 import App 1.0
 
 import "../../../Components"
@@ -12,7 +13,7 @@ ColumnLayout
     id: root
 
     property var details
-    property var last_event
+    property var lastEvent
 
     readonly property
     var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
@@ -32,7 +33,7 @@ ColumnLayout
     }
 
     // Total swaptime from sum of events duration
-    readonly property double total_time_passed:
+    readonly property double totalTimePassed:
     {
         if (!details) return 0
 
@@ -47,7 +48,7 @@ ColumnLayout
 
 
     // Total swap duration estimate
-    readonly property double total_time_passed_estimated:
+    readonly property double totalTimePassedEstimated:
     {
         const events = all_events
 
@@ -76,35 +77,35 @@ ColumnLayout
     }
 
     // Simulated time of the running event
-    property double simulated_time: 0
+    property double simulatedTime: 0
     function updateSimulatedTime()
     {
         if (!details)
         {
-            simulated_time = 0
+            simulatedTime = 0
             return
         }
 
         const events = details.events
         if (!events || events.length === 0)
         {
-            simulated_time = 0
+            simulatedTime = 0
             return
         }
 
-        last_event = events[events.length - 1]
-        if (!last_event.timestamp)
+        lastEvent = events[events.length - 1]
+        if (!lastEvent.timestamp)
         {
-            simulated_time = 0
+            simulatedTime = 0
             return
         }
 
         if (current_event_idx !== -1)
         {
-            const diff = Date.now() - last_event.timestamp
-            simulated_time = diff - (diff % 1000)
+            const diff = Date.now() - lastEvent.timestamp
+            simulatedTime = diff - (diff % 1000)
 
-        } else simulated_time = 0
+        } else simulatedTime = 0
     }
 
     Timer
@@ -116,13 +117,13 @@ ColumnLayout
     }
 
     // Simulated countdown time until refund unlocked
-    property double payment_lock_countdown_time: -1    // First we wait for locktime expiry
-    property double wait_until_countdown_time: -1      // Then we count down to 'wait_until' time
+    property double paymentLockCountdownTime: -1    // First we wait for locktime expiry
+    property double waitUntilCountdownTime: -1      // Then we count down to 'wait_until' time
     function updateCountdownTime()
     {
         if (current_event_idx == -1 || !details)
         {
-            payment_lock_countdown_time = -1
+            paymentLockCountdownTime = -1
             return
         }
 
@@ -133,34 +134,34 @@ ColumnLayout
             if (events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
             {
                 const diff = events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
-                wait_until_countdown_time = diff - (diff % 1000)
+                waitUntilCountdownTime = diff - (diff % 1000)
 
-                if (wait_until_countdown_time <= 0)
+                if (waitUntilCountdownTime <= 0)
                 {
-                    wait_until_countdown_time = 0
+                    waitUntilCountdownTime = 0
                 }
             }
         }
 
         else
         {
-            wait_until_countdown_time = -1
+            waitUntilCountdownTime = -1
         }
 
-        if (details.hasOwnProperty('payment_lock'))
+        if (details.hasOwnProperty('paymentLock'))
         {
-            const lock_diff = details.payment_lock - Date.now()
-            payment_lock_countdown_time = lock_diff - (lock_diff % 1000)
+            const lock_diff = details.paymentLock - Date.now()
+            paymentLockCountdownTime = lock_diff - (lock_diff % 1000)
 
-            if (payment_lock_countdown_time <= 0)
+            if (paymentLockCountdownTime <= 0)
             {
-                payment_lock_countdown_time = 0
+                paymentLockCountdownTime = 0
             }
         }
 
         else
         {
-            payment_lock_countdown_time = -1
+            paymentLockCountdownTime = -1
         }
     }
 
@@ -174,21 +175,21 @@ ColumnLayout
 
     function getTimeText(duration, estimated)
     {
-        return `<font color="${DexTheme.greenColor}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
-            `<font color="${DexTheme.foregroundColorLightColor0}">` + General.durationTextShort(duration) + `</font>` +
-            `<font color="${DexTheme.foregroundColorLightColor2}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
+        return `<font color="${Dex.CurrentTheme.greenColor}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColorLightColor0}">` + General.durationTextShort(duration) + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColorLightColor2}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
             General.durationTextShort(estimated) + `</font>`
     }
 
     function getRefundText()
     {
-        if ((payment_lock_countdown_time > 0) && (wait_until_countdown_time == -1))
+        if ((paymentLockCountdownTime > 0) && (waitUntilCountdownTime == -1))
         {
-            return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(payment_lock_countdown_time) + " until refund lock is released.") + `</font>`
+            return `<font color="${Dex.CurrentTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(paymentLockCountdownTime) + " until refund lock is released.") + `</font>`
         }
-        else if (wait_until_countdown_time > 0) {
-            if (last_event.state !== "Finished") {
-                return `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(wait_until_countdown_time) + " until refund completed.") + `</font>`
+        else if (waitUntilCountdownTime > 0) {
+            if (lastEvent.state !== "Finished") {
+                return `<font color="${Dex.CurrentTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(waitUntilCountdownTime) + " until refund completed.") + `</font>`
             }
         }
         return ""
@@ -198,9 +199,9 @@ ColumnLayout
     DefaultText
     {
         Layout.fillWidth: true
-        text_value: `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr("Progress details") + `</font>` +
-            `<font color="${DexTheme.foregroundColorLightColor2}"> | </font>` +
-            getTimeText(total_time_passed + simulated_time, total_time_passed_estimated)
+        text_value: `<font color="${Dex.CurrentTheme.foregroundColorDarkColor4}">` + qsTr("Progress details") + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColorLightColor2}"> | </font>` +
+            getTimeText(totalTimePassed + simulatedTime, totalTimePassedEstimated)
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
     }
@@ -226,7 +227,7 @@ ColumnLayout
 
             readonly property bool is_active: General.exists(event) || is_current_event
 
-            readonly property double time_passed: event ? event.time_diff : is_current_event ? simulated_time : 0
+            readonly property double time_passed: event ? event.time_diff : is_current_event ? simulatedTime : 0
 
             width: root.width
             height: 50
@@ -244,10 +245,10 @@ ColumnLayout
                     if (event)
                     {
                         // Red for the Finished if swap failed
-                        if (event.state === "Finished" && details.order_status === "failed") return DexTheme.redColor
+                        if (event.state === "Finished" && details.order_status === "failed") return Dex.CurrentTheme.redColor
 
                         // Red for error event, green for the others
-                        return details.error_events.indexOf(event.state) === -1 ? DexTheme.greenColor : DexTheme.redColor
+                        return details.error_events.indexOf(event.state) === -1 ? Dex.CurrentTheme.greenColor : Dex.CurrentTheme.redColor
                     }
 
                     // In progress one is orange
@@ -255,7 +256,7 @@ ColumnLayout
                         return Style.colorOrange
 
                     // Passive color for the rest
-                    return DexTheme.foregroundColorLightColor2
+                    return Dex.CurrentTheme.foregroundColorLightColor2
                 }
             }
 
@@ -275,7 +276,7 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall4
 
                     text_value: getEventText(modelData)
-                    color: event ? DexTheme.foregroundColor : is_current_event ? DexTheme.foregroundColorLightColor0 : DexTheme.foregroundColorLightColor2 
+                    color: event ? Dex.CurrentTheme.foregroundColor : is_current_event ? Dex.CurrentTheme.foregroundColorLightColor0 : Dex.CurrentTheme.foregroundColorLightColor2 
                 }
 
                 AnimatedRectangle
@@ -285,13 +286,13 @@ ColumnLayout
                     width: parent.width
                     height: 2
 
-                    color: DexTheme.foregroundColorDarkColor3 
+                    color: Dex.CurrentTheme.foregroundColorDarkColor3 
 
                     AnimatedRectangle
                     {
-                        width: parent.width * (total_time_passed > 0 ? (time_passed / (total_time_passed + simulated_time)) : 0)
+                        width: parent.width * (totalTimePassed > 0 ? (time_passed / (totalTimePassed + simulatedTime)) : 0)
                         height: parent.height
-                        color: DexTheme.greenColor
+                        color: Dex.CurrentTheme.greenColor
                     }
                 }
 

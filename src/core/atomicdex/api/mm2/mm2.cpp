@@ -476,11 +476,11 @@ namespace mm2::api
 
                     if (jf_evt.at("data").contains("taker_payment_lock"))
                     {
-                        contents.payment_lock                     = jf_evt.at("data").at("taker_payment_lock").get<unsigned long long>() * 1000;
+                        contents.paymentLock                     = jf_evt.at("data").at("taker_payment_lock").get<unsigned long long>() * 1000;
                     }
                     else if (jf_evt.at("data").contains("maker_payment_lock"))
                     {
-                        contents.payment_lock                     = jf_evt.at("data").at("maker_payment_lock").get<unsigned long long>() * 1000;
+                        contents.paymentLock                     = jf_evt.at("data").at("maker_payment_lock").get<unsigned long long>() * 1000;
                     }
                 }
 

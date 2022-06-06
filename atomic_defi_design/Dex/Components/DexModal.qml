@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
+import Dex.Themes 1.0 as Dex
+
 Popup {
     id: control
     parent: Overlay.overlay
@@ -14,7 +16,7 @@ Popup {
     modal: true
     padding: 0
     Overlay.modeless: DefaultRectangle {
-        color: DexTheme.dexBoxBackgroundColor
+        color: Dex.CurrentTheme.dexBoxBackgroundColor
         opacity: .3
     }
 
@@ -25,7 +27,7 @@ Popup {
             anchors.fill: parent
             border.width: 2
             radius: parent.radius
-            color: DexTheme.dexBoxBackgroundColor
+            color: Dex.CurrentTheme.dexBoxBackgroundColor
             Container {
                 id: _header
                 width: parent.width

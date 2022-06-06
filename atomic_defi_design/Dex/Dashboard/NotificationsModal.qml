@@ -61,7 +61,7 @@ DexPopup
     },
     {
         icon: Qaterial.Icons.messageOutline,
-        color: DexTheme.foregroundColor,
+        color: Dex.CurrentTheme.foregroundColor,
         gradient: default_gradient
     }]
     backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
@@ -582,7 +582,7 @@ DexPopup
                                 anchors.right: parent.right
                                 anchors.rightMargin: 5
                                 anchors.bottomMargin: -4
-                                foregroundColor: DexTheme.foregroundColor
+                                foregroundColor: Dex.CurrentTheme.foregroundColor
                                 visible: modelData.event_name !== "check"
 
                                 icon.source:

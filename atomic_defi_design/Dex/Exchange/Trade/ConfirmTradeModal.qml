@@ -232,7 +232,7 @@ MultipageModal
                             Layout.preferredHeight: 10
                             Layout.alignment: Qt.AlignHCenter
                             text_value: qsTr("Required Confirmations") + ": " + required_confirmation_count.value
-                            color: DexTheme.foregroundColor
+                            color: Dex.CurrentTheme.foregroundColor
                             opacity: parent.enabled ? 1 : .6
                         }
 

@@ -225,7 +225,7 @@ Item {
 
                         SearchField
                         {
-                            id: coin_search_field
+                            id: coinSearchField
                             Layout.alignment: Qt.AlignVCenter
                             Layout.preferredWidth: 206
                             Layout.preferredHeight: 42
