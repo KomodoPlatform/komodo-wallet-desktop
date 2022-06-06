@@ -180,9 +180,7 @@ Dex.MultipageModal
                                 iconSource: Qaterial.Icons.sendOutline
                                 onClicked:
                                 {
-                                    Dex.API.app.wallet_pg.ticker = address_type
-                                    sendModalLoader.address = address_value
-                                    sendModalLoader.open()
+                                    trySend(address_value, address_type)
                                 }
                             }
                         }
