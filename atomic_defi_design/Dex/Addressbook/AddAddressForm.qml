@@ -95,7 +95,11 @@ Dex.Rectangle
             {
                 id: useStandardsCheckBox
                 Layout.preferredWidth: 150
+                Layout.leftMargin: 4
+                boxWidth: 22
+                boxHeight: 22
                 text: qsTr("Use standard network address")
+                font: DexTypo.overLine
             }
         }
 
