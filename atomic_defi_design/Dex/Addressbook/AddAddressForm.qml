@@ -43,7 +43,7 @@ Dex.Rectangle
     signal addressCreated()
 
     width: 500
-    height: 302
+    height: column.height + 26
     radius: 10
 
     onVisibleChanged:
@@ -74,14 +74,14 @@ Dex.Rectangle
 
     ColumnLayout
     {
-        anchors.fill: parent
-        anchors.margins: 21
+        id: column
+        anchors.centerIn: parent
         spacing: 17
 
         RowLayout
         {
             Layout.preferredWidth: 458
-            Layout.preferredHeight: 44
+            Layout.preferredHeight: 38
 
             AddressTypeSelector
             {
@@ -99,7 +99,7 @@ Dex.Rectangle
                 boxWidth: 22
                 boxHeight: 22
                 text: qsTr("Use standard network address")
-                font: DexTypo.overLine
+                font: Dex.DexTypo.caption
             }
         }
 
@@ -107,7 +107,7 @@ Dex.Rectangle
         {
             id: addressKeyField
             Layout.preferredWidth: 458
-            Layout.preferredHeight: 44
+            Layout.preferredHeight: 38
             placeholderText: qsTr("Label")
 
             Dex.ToolTip
@@ -121,7 +121,7 @@ Dex.Rectangle
         {
             id: addressValueField
             Layout.preferredWidth: 458
-            Layout.preferredHeight: 44
+            Layout.preferredHeight: 38
             placeholderText: qsTr("Address")
         }
 
@@ -129,6 +129,7 @@ Dex.Rectangle
         {
             id: invalidAddressValueLabel
             Layout.fillWidth: true
+            visible: text !== ""
             color: Dex.CurrentTheme.noColor
             wrapMode: Dex.Text.Wrap
             horizontalAlignment: Text.AlignHCenter
