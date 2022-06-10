@@ -175,9 +175,9 @@ ColumnLayout
 
     function getTimeText(duration, estimated)
     {
-        return `<font color="${Dex.CurrentTheme.greenColor}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
-            `<font color="${Dex.CurrentTheme.foregroundColorLightColor0}">` + General.durationTextShort(duration) + `</font>` +
-            `<font color="${Dex.CurrentTheme.foregroundColorLightColor2}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
+        return `<font color="${Dex.CurrentTheme.okColor}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColor}">` + General.durationTextShort(duration) + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColor3}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
             General.durationTextShort(estimated) + `</font>`
     }
 
@@ -185,11 +185,11 @@ ColumnLayout
     {
         if ((paymentLockCountdownTime > 0) && (waitUntilCountdownTime == -1))
         {
-            return `<font color="${Dex.CurrentTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(paymentLockCountdownTime) + " until refund lock is released.") + `</font>`
+            return `<font color="${Dex.CurrentTheme.foregroundColor}">` + qsTr(General.durationTextShort(paymentLockCountdownTime) + " until refund lock is released.") + `</font>`
         }
         else if (waitUntilCountdownTime > 0) {
             if (lastEvent.state !== "Finished") {
-                return `<font color="${Dex.CurrentTheme.foregroundColorDarkColor4}">` + qsTr(General.durationTextShort(waitUntilCountdownTime) + " until refund completed.") + `</font>`
+                return `<font color="${Dex.CurrentTheme.foregroundColor}">` + qsTr(General.durationTextShort(waitUntilCountdownTime) + " until refund completed.") + `</font>`
             }
         }
         return ""
@@ -199,8 +199,8 @@ ColumnLayout
     DefaultText
     {
         Layout.fillWidth: true
-        text_value: `<font color="${Dex.CurrentTheme.foregroundColorDarkColor4}">` + qsTr("Progress details") + `</font>` +
-            `<font color="${Dex.CurrentTheme.foregroundColorLightColor2}"> | </font>` +
+        text_value: `<font color="${Dex.CurrentTheme.foregroundColor}">` + qsTr("Progress details") + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColor}"> | </font>` +
             getTimeText(totalTimePassed + simulatedTime, totalTimePassedEstimated)
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
@@ -239,16 +239,17 @@ ColumnLayout
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: col_layout.verticalCenter
+
                 color:
                 {
                     // Already exists, completed event
                     if (event)
                     {
                         // Red for the Finished if swap failed
-                        if (event.state === "Finished" && details.order_status === "failed") return Dex.CurrentTheme.redColor
+                        if (event.state === "Finished" && details.order_status === "failed") return Dex.CurrentTheme.noColor
 
                         // Red for error event, green for the others
-                        return details.error_events.indexOf(event.state) === -1 ? Dex.CurrentTheme.greenColor : Dex.CurrentTheme.redColor
+                        return details.error_events.indexOf(event.state) === -1 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.noColor
                     }
 
                     // In progress one is orange
@@ -256,7 +257,7 @@ ColumnLayout
                         return Style.colorOrange
 
                     // Passive color for the rest
-                    return Dex.CurrentTheme.foregroundColorLightColor2
+                    return Dex.CurrentTheme.foregroundColor3
                 }
             }
 
@@ -276,7 +277,7 @@ ColumnLayout
                     font.pixelSize: Style.textSizeSmall4
 
                     text_value: getEventText(modelData)
-                    color: event ? Dex.CurrentTheme.foregroundColor : is_current_event ? Dex.CurrentTheme.foregroundColorLightColor0 : Dex.CurrentTheme.foregroundColorLightColor2 
+                    color: event ? Dex.CurrentTheme.foregroundColor : is_current_event ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor3
                 }
 
                 AnimatedRectangle
@@ -286,13 +287,13 @@ ColumnLayout
                     width: parent.width
                     height: 2
 
-                    color: Dex.CurrentTheme.foregroundColorDarkColor3 
+                    color: Dex.CurrentTheme.foregroundColor2
 
                     AnimatedRectangle
                     {
                         width: parent.width * (totalTimePassed > 0 ? (time_passed / (totalTimePassed + simulatedTime)) : 0)
                         height: parent.height
-                        color: Dex.CurrentTheme.greenColor
+                        color: Dex.CurrentTheme.okColor
                     }
                 }
 
