@@ -7,12 +7,9 @@ import "../../Components"
 import "../../Constants"
 import Dex.Themes 1.0 as Dex
 
-Widget
+Item
 {
     id: root
-    title: qsTr("Chart")
-    background: null
-    margins: 0
 
     readonly property string theme: Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark ? "dark" : "light"
     property string loaded_symbol
@@ -42,7 +39,7 @@ Widget
                 loaded_symbol = symbol
                 chart_html = `
                 <style>
-                body { margin: 0; background: ${Dex.CurrentTheme.backgroundColor} }
+                body { margin: 0; }
                 </style>
 
                 <!-- Nomics Widget BEGIN -->
@@ -75,11 +72,10 @@ Widget
             }
 
             loaded_symbol = symbol
-            console.log("Using Nomics "+ loaded_symbol)
 
             let chart_html = `
             <style>
-            body { margin: 0; background: ${Dex.CurrentTheme.backgroundColor} }
+            body { margin: 0; }
             </style>
 
             <!-- TradingView Widget BEGIN -->
@@ -104,7 +100,6 @@ Widget
             </div>
             <!-- TradingView Widget END -->`
         }
-
         dashboard.webEngineView.loadHtml(chart_html)
     }
 
@@ -120,9 +115,8 @@ Widget
 
     RowLayout
     {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        Layout.alignment: Qt.AlignCenter
+        anchors.fill: parent
+        anchors.margins: 28
         visible: !webEngineViewPlaceHolder.visible
 
         DefaultBusyIndicator
@@ -152,8 +146,8 @@ Widget
     Item
     {
         id: webEngineViewPlaceHolder
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+        anchors.fill: parent
+        anchors.margins: 28
         visible: false
 
         Component.onCompleted:

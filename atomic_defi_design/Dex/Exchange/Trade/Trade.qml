@@ -163,7 +163,6 @@ Item
             width: parent.width
             height: parent.height * 0.06
 
-            proViewChart: proView.chart
             proViewTickerSelectors: proView.tickerSelectors
             proViewTrInfo: proView.trInfo
             proViewOrderBook: proView.orderBook

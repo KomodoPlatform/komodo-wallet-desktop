@@ -18,7 +18,7 @@ import "../../../Constants"
 // Simple/Pro toggle group
 Item
 {
-    property var proViewChart
+    // property var proViewChart
     property var proViewTickerSelectors
     property var proViewTrInfo
     property var proViewOrderBook
@@ -121,11 +121,11 @@ Item
                     DefaultText { text: qsTr("Display Settings"); font: DexTypo.body2 }
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
-
+                    /*
                     CheckEye { text: qsTr("Chart"); target: proViewChart }
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
-
+                    */
                     CheckEye { text: qsTr("Ticker Selectors"); target: proViewTickerSelectors }
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }

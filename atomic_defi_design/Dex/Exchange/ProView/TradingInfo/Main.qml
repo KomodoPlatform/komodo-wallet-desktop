@@ -7,6 +7,7 @@ import Qaterial 1.0 as Qaterial
 import Dex.Themes 1.0 as Dex
 import "../../../Constants"
 import "../../../Components"
+import "../../ProView"
 
 Widget
 {
@@ -21,6 +22,7 @@ Widget
         property int taux_exchange: 0
         property int order_idx: 1
         property int history_idx: 2
+        property int pair_chart_idx: 3
 
         background: null
         Layout.leftMargin: 6
@@ -44,6 +46,14 @@ Widget
         Qaterial.LatoTabButton
         {
             text: qsTr("History")
+            font.pixelSize: 14
+            textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+            textSecondaryColor: Dex.CurrentTheme.foregroundColor2
+            indicatorColor: Dex.CurrentTheme.foregroundColor
+        }
+        Qaterial.LatoTabButton
+        {
+            text: qsTr("Chart")
             font.pixelSize: 14
             textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             textSecondaryColor: Dex.CurrentTheme.foregroundColor2
@@ -78,6 +88,12 @@ Widget
             {
                 is_history: true
                 clip: true
+            }
+
+            // Chart
+            Chart
+            {
+                id: chart
             }
         }
     }

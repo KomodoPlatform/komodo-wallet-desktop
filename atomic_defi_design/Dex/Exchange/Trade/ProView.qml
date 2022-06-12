@@ -40,7 +40,6 @@ RowLayout
 {
     id: form
 
-    property alias chart: chart
     property alias tickerSelectors: selectors
     property alias trInfo: tradingInfo
     property alias orderBook: orderBook
@@ -112,25 +111,13 @@ RowLayout
     {
         Layout.alignment: Qt.AlignTop
 
-        Layout.minimumWidth: chart.visible || selectors.visible || tradingInfo.visible ? 480 : -1
+        Layout.minimumWidth: selectors.visible || tradingInfo.visible ? 480 : -1
         Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 735
         Layout.fillWidth: true
 
         Layout.fillHeight: true
 
         spacing: 20
-
-        // Chart
-        Chart
-        {
-            id: chart
-
-            Layout.fillWidth: true
-
-            Layout.minimumHeight: isCollapsed() ? 60 : 190
-            Layout.maximumHeight: tradingInfo.isCollapsed() ? -1 : 360
-            Layout.fillHeight: !isCollapsed()
-        }
 
         // Ticker selectors.
         TickerSelectors
@@ -149,7 +136,7 @@ RowLayout
             Layout.fillWidth: true
 
             Layout.minimumHeight: isCollapsed() ? 60 : 380
-            Layout.maximumHeight: chart.isCollapsed() ? -1 : 500
+            Layout.maximumHeight: 600
             Layout.fillHeight: !isCollapsed()
         }
     }
