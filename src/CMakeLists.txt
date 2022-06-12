@@ -69,10 +69,11 @@ set(assets_qrc)
 set(imports_qrc ${CMAKE_SOURCE_DIR}/atomic_defi_design/imports/qml.qrc)
 dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex qml_qrc 
     PATH_PREFIX "Dex"
-    FILES_TO_EXCLUDE ".gitignore;.DS_Store")
+    FILES_TO_EXCLUDE ".gitignore;.DS_Store;.qrc")
 dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/assets assets_qrc 
     PATH_PREFIX "assets"
-    FILES_TO_EXCLUDE ".gitignore;.DS_Store;CONTRIBUTING.txt;FONTLOG.txt;LICENCE-FAQ.txt;LICENCE.txt;README.txt;TRADEMARKS.txt;.ts")
+    FILES_TO_EXCLUDE ".gitignore;.DS_Store;CONTRIBUTING.txt;FONTLOG.txt;LICENCE-FAQ.txt;LICENCE.txt;README.txt;TRADEMARKS.txt;.ts;.qm;.qrc"
+    FILES "languages/atomic_defi_en.qm;languages/atomic_defi_fr.qm;languages/atomic_defi_ru.qm;languages/atomic_defi_tr.qm")
 
 # Main executable
 add_executable(${PROJECT_NAME}
