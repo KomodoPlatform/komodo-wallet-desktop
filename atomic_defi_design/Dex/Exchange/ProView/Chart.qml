@@ -43,9 +43,10 @@ Item
                 </style>
 
                 <!-- Nomics Widget BEGIN -->
-                <div class="nomics-ticker-widget" data-name="${base_full}" data-base="${base}" data-quote="${rel}"></div>
+                <div class="nomics-ticker-widget" data-name="${base_full}" data-base="${base_id}" data-quote="${rel_id}"></div>
                 <script src="https://widget.nomics.com/embed.js"></script>
                 <!-- Nomics Widget END -->`
+                console.log(chart_html)
             }
         }
         if (chart_html == "")
