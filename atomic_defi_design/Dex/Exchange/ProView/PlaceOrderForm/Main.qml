@@ -12,25 +12,76 @@ import AtomicDEX.MarketMode 1.0
 Widget
 {
     title: qsTr("Place Order")
+    property string protocolIcon: General.platformIcon(General.coinPlatform(left_ticker))
 
-    margins: 20
+    margins: 15
     collapsable: false
+
+
+    // Order selected indicator
+    Item
+    {
+        Layout.topMargin: 5
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: 40
+        visible: API.app.trading_pg.preffered_order.price !== undefined
+
+        RowLayout
+        {
+            id: orderSelection
+            anchors.fill: parent
+            anchors.verticalCenter: parent.verticalCenter
+
+            DefaultText
+            {
+                Layout.leftMargin: 15
+                color: Dex.CurrentTheme.noColor
+                text: qsTr("Order Selected")
+            }
+
+            Item { Layout.fillWidth: true }
+
+            Qaterial.FlatButton
+            {
+                Layout.preferredHeight: parent.height
+                Layout.preferredWidth: 30
+                Layout.rightMargin: 5
+                foregroundColor: Dex.CurrentTheme.noColor
+                onClicked: API.app.trading_pg.reset_order()
+
+                Qaterial.ColorIcon
+                {
+                    anchors.centerIn: parent
+                    iconSize: 16
+                    color: Dex.CurrentTheme.noColor
+                    source: Qaterial.Icons.close
+                }
+            }
+        }
+
+        Rectangle
+        {
+            anchors.fill: parent
+            radius: 8
+            color: 'transparent'
+            border.color: Dex.CurrentTheme.noColor
+        }
+    }
 
     // Market mode selector
     RowLayout
     {
-        Layout.topMargin: 10
+        Layout.topMargin: 5
         Layout.alignment: Qt.AlignHCenter
-        Layout.minimumHeight: 40
-        Layout.maximumHeight: 48
-        Layout.fillWidth: true
+        Layout.preferredWidth: parent.width
         Layout.fillHeight: true
 
         MarketModeSelector
         {
             Layout.alignment: Qt.AlignLeft
             Layout.preferredWidth: (parent.width / 100) * 46
-            Layout.fillHeight: true
+            Layout.preferredHeight: 50
             marketMode: MarketMode.Buy
             ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
         }
@@ -41,47 +92,68 @@ Widget
         {
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: (parent.width / 100) * 46
-            Layout.fillHeight: true
+            Layout.preferredHeight: 50
             ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
         }
     }
 
-    // Order selected indicator
-    Rectangle
+    HorizontalLine
     {
-        visible: API.app.trading_pg.preffered_order.price !== undefined
-        Layout.preferredWidth: parent.width
-        Layout.preferredHeight: 40
         Layout.alignment: Qt.AlignHCenter
-        radius: 8
-        color: 'transparent'
-        border.color: Dex.CurrentTheme.noColor
+        Layout.preferredWidth: parent.width
+        visible: protocolIcon != ""
+        color: Dex.CurrentTheme.backgroundColorDeep
+    }
 
-        DefaultText
+    ColumnLayout
+    {
+        spacing: 3
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width
+        visible: protocolIcon != ""
+
+        DexLabel
         {
-            anchors.verticalCenter: parent.verticalCenter
-            leftPadding: 15
-            color: Dex.CurrentTheme.noColor
-            text: qsTr("Order Selected")
+            id: protocolTitle
+            Layout.preferredWidth: parent.width
+            text_value: "Protocol:"
+            font.pixelSize: Style.textSizeSmall1
+            horizontalAlignment: Text.AlignHCenter
+            color: Style.colorText2
         }
 
-        Qaterial.FlatButton
+        RowLayout
         {
-            anchors.right: parent.right
-            anchors.rightMargin: 15
-            anchors.verticalCenter: parent.verticalCenter
-            foregroundColor: Dex.CurrentTheme.noColor
-            icon.source: Qaterial.Icons.close
-            backgroundImplicitWidth: 40
-            backgroundImplicitHeight: 30
+            id: protocol
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: parent.width
 
-            onClicked: API.app.trading_pg.reset_order()
+            Item { Layout.fillWidth: true }
+
+            DefaultImage
+            {
+                id: protocolImg
+                source: protocolIcon
+                Layout.preferredHeight: 16
+                Layout.preferredWidth: Layout.preferredHeight
+            }
+
+            DexLabel
+            {
+                id: protocolText
+                text_value: General.getProtocolText(left_ticker)
+                wrapMode: DexLabel.NoWrap
+                font.pixelSize: Style.textSizeSmall1
+                color: Style.colorText2
+            }
+
+            Item { Layout.fillWidth: true }
         }
     }
 
     OrderForm
     {
-        id: form_base
+        id: formBase
         Layout.preferredWidth: parent.width
         Layout.alignment: Qt.AlignHCenter
     }
@@ -97,11 +169,11 @@ Widget
         Layout.preferredHeight: 40
         Layout.preferredWidth: parent.width - 20
         Layout.alignment: Qt.AlignHCenter
-        radius: 18
 
+        radius: 18
         text: qsTr("START SWAP")
         font.weight: Font.Medium
-        enabled: form_base.can_submit_trade
+        enabled: formBase.can_submit_trade
         onClicked: confirm_trade_modal.open()
     }
 

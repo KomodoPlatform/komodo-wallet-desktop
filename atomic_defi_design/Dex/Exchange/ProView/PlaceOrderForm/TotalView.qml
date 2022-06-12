@@ -30,11 +30,10 @@ ColumnLayout
             CexInfoTrigger {}
         }
 
-        Item { Layout.fillWidth: true }
-
         DefaultText
         {
-            Layout.alignment: Qt.AlignRight
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignRight
             font.weight: Font.DemiBold
             font.pixelSize: 16
             font.family: 'lato'
@@ -58,16 +57,17 @@ ColumnLayout
         DexLabel
         {
             color: Dex.CurrentTheme.foregroundColor3
+            Layout.preferredWidth: parent.width * 0.3
             text:  "Total " + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
             font.pixelSize:  14
             opacity: .6
             font.weight: Font.Normal
         }
 
-        Item { Layout.fillWidth: true }
-
         DefaultText
         {
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignRight
             font.weight: Font.DemiBold
             font.pixelSize: 16
             font.family: 'lato'
