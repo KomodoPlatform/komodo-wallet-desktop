@@ -15,7 +15,7 @@ Rectangle
     color: Dex.CurrentTheme.accentColor
     radius: 18
 
-    DexImage
+    DefaultImage
     {
         id: _searchIcon
         anchors.left: parent.left
@@ -35,7 +35,7 @@ Rectangle
         }
     }
 
-    DexTextField
+    DefaultTextField
     {
         id: _textField
 
