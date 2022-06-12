@@ -19,32 +19,65 @@ Widget
     property bool pair_supported: false
     onPair_supportedChanged: if (!pair_supported) webEngineViewPlaceHolder.visible = false
 
-    function loadChart(base, rel, force = false)
+    function loadChart(base, rel, force = false, source="nomics")
     {
-        const pair = atomic_qt_utilities.retrieve_main_ticker(base) + "/" + atomic_qt_utilities.retrieve_main_ticker(rel)
-        const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(rel) + "/" + atomic_qt_utilities.retrieve_main_ticker(base)
 
-        // Try checking if pair/reversed-pair exists
-        let symbol = General.supported_pairs[pair]
-        if (!symbol) symbol = General.supported_pairs[pair_reversed]
+        let chart_html = ""
+        let symbol = ""
 
-        if (!symbol)
+        if (source == "nomics")
         {
-            pair_supported = false
-            return
+            let base_full = General.coinName(base)
+            let base_id = General.getNomicsId(base)
+            let rel_id = General.getNomicsId(rel)
+            if (base_id != "" && rel_id != "")
+            {
+                symbol = base_id+"-"+rel_id
+                pair_supported = true
+                if (symbol === loaded_symbol && !force)
+                {
+                    webEngineViewPlaceHolder.visible = true
+                    return
+                }
+                loaded_symbol = symbol
+                chart_html = `
+                <style>
+                body { margin: 0; background: ${Dex.CurrentTheme.backgroundColor} }
+                </style>
+
+                <!-- Nomics Widget BEGIN -->
+                <div class="nomics-ticker-widget" data-name="${base_full}" data-base="${base}" data-quote="${rel}"></div>
+                <script src="https://widget.nomics.com/embed.js"></script>
+                <!-- Nomics Widget END -->`
+            }
         }
-
-        pair_supported = true
-
-        if (symbol === loaded_symbol && !force)
+        if (chart_html == "")
         {
-            webEngineViewPlaceHolder.visible = true
-            return
-        }
+            const pair = atomic_qt_utilities.retrieve_main_ticker(base) + "/" + atomic_qt_utilities.retrieve_main_ticker(rel)
+            const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(rel) + "/" + atomic_qt_utilities.retrieve_main_ticker(base)
 
-        loaded_symbol = symbol
+            // Try checking if pair/reversed-pair exists
+            symbol = General.supported_pairs[pair]
+            if (!symbol) symbol = General.supported_pairs[pair_reversed]
 
-        dashboard.webEngineView.loadHtml(`
+            if (!symbol)
+            {
+                pair_supported = false
+                return
+            }
+
+            pair_supported = true
+
+            if (symbol === loaded_symbol && !force)
+            {
+                webEngineViewPlaceHolder.visible = true
+                return
+            }
+
+            loaded_symbol = symbol
+            console.log("Using Nomics "+ loaded_symbol)
+
+            let chart_html = `
             <style>
             body { margin: 0; background: ${Dex.CurrentTheme.backgroundColor} }
             </style>
@@ -69,7 +102,10 @@ Widget
             );
             </script>
             </div>
-            <!-- TradingView Widget END -->`)
+            <!-- TradingView Widget END -->`
+        }
+
+        dashboard.webEngineView.loadHtml(chart_html)
     }
 
     Component.onCompleted:
