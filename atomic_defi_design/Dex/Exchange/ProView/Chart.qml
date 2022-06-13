@@ -117,7 +117,6 @@ Item
     RowLayout
     {
         anchors.fill: parent
-        anchors.margins: 28
         visible: !webEngineViewPlaceHolder.visible
 
         DefaultBusyIndicator
@@ -148,7 +147,6 @@ Item
     {
         id: webEngineViewPlaceHolder
         anchors.fill: parent
-        anchors.margins: 28
         visible: false
 
         Component.onCompleted:

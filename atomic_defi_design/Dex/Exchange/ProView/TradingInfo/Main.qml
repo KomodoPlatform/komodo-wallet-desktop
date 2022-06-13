@@ -7,6 +7,7 @@ import Qaterial 1.0 as Qaterial
 import Dex.Themes 1.0 as Dex
 import "../../../Constants"
 import "../../../Components"
+import "../../Trade"
 import "../../ProView"
 
 Widget
@@ -19,22 +20,13 @@ Widget
     Qaterial.LatoTabBar
     {
         id: tabView
-        property int taux_exchange: 0
-        property int order_idx: 1
-        property int history_idx: 2
-        property int pair_chart_idx: 3
+        property int order_idx: 0
+        property int history_idx: 1
+        property int pair_chart_idx: 2
 
         background: null
         Layout.leftMargin: 6
 
-        Qaterial.LatoTabButton
-        {
-            text: qsTr("Exchange Rates")
-            font.pixelSize: 14
-            textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
-            indicatorColor: Dex.CurrentTheme.foregroundColor
-            textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-        }
         Qaterial.LatoTabButton
         {
             text: qsTr("Orders")
@@ -80,8 +72,6 @@ Widget
                 swipeView.currentItem.update();
             }
 
-            PriceLine { }
-
             OrdersPage { clip: true }
 
             OrdersPage
@@ -90,10 +80,31 @@ Widget
                 clip: true
             }
 
-            // Chart
-            Chart
+            ColumnLayout
             {
-                id: chart
+                // Chart
+                Chart
+                {
+                    id: chart
+                    Layout.topMargin: 10
+                    Layout.bottomMargin: 10
+                    Layout.leftMargin: 28
+                    Layout.rightMargin: 28
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 310
+
+                }
+
+                PriceLineSimplified
+                {
+                    id: price_line2
+                    Layout.topMargin: 10
+                    Layout.bottomMargin: 10
+                    Layout.leftMargin: 28
+                    Layout.rightMargin: 28
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 120
+                }
             }
         }
     }
