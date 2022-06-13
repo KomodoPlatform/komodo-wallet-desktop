@@ -12,21 +12,26 @@ Dex.ComboBoxWithSearchBar
 {
     id: control
 
-    property var    currentItem: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.get(currentIndex)
+    property var    currentItem: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(currentIndex, 0)
     property bool   showAssetStandards: false
-    property var    assetStandards: ["QRC-20", "ERC-20", "BEP-20", "Smart Chain"]
+    property var    assetStandards: availableNetworkStandards
+    property string searchPattern
 
     popupForceMaxHeight: true
     popupMaxHeight: 265
-    model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
+    model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy
     textRole: showAssetStandards ? "" : "ticker"
+
+    onCurrentIndexChanged: currentItem = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(currentIndex, 0)
 
     delegate: ItemDelegate
     {
         id: _delegate
 
+        visible: model.ticker !== "All"
+
         width: control.width
-        height: 40
+        height: visible ? 40 : 0
         highlighted: control.highlightedIndex === index
 
         contentItem: AssetRow
@@ -50,12 +55,13 @@ Dex.ComboBoxWithSearchBar
             anchors.left: parent.left
             anchors.leftMargin: 13
             anchors.verticalCenter: parent.verticalCenter
-            ticker: showAssetStandards ? assetStandards[currentIndex] : control.currentItem.ticker
-            name: showAssetStandards ? assetStandards[currentIndex] : control.currentItem.name
-            type: showAssetStandards ? assetStandards[currentIndex] : control.currentItem.type
+            ticker: showAssetStandards ? assetStandards[currentIndex] : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 1)
+            name: showAssetStandards ? assetStandards[currentIndex] : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 3)
+            type: showAssetStandards ? assetStandards[currentIndex] : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 9)
         }
     }
 
-    onSearchBarTextChanged: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString(patternStr)
-    Component.onDestruction: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString("")
+    onSearchBarTextChanged: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(patternStr)
+    Component.onDestruction: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
+    onVisibleChanged: if (!visible) Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
 }

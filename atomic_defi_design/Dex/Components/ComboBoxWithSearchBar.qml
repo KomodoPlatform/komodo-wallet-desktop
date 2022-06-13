@@ -12,6 +12,7 @@ ComboBox
     id: control
 
     property int    radius: 20
+    property int    popupWidth: width
     property int    popupMaxHeight: 450
     property bool   popupForceMaxHeight: false
     property color  backgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
@@ -33,7 +34,7 @@ ComboBox
     popup: Popup
     {
         id: popup
-        width: control.width
+        width: control.popupWidth
         height: popupForceMaxHeight ? control.popupMaxHeight : Math.min(contentItem.implicitHeight, control.popupMaxHeight)
         leftPadding: 0
         rightPadding: 0

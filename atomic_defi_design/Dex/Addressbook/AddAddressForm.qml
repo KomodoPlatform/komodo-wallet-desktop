@@ -21,22 +21,38 @@ Dex.Rectangle
     property string  addressKey
     property string  addressValue
 
+    property var     availableNetworkStandards: ["QRC-20", "ERC-20", "BEP-20", "Smart Chain"]
+
     // Return the asset type that will be used in the backend to validate the address
     function getTypeForAddressChecker(addressType)
     {
         switch (addressType)
         {
-            case "QRC-20":      return "QTUM";
-            case "BEP-20":      return "BNB";
-            case "ERC-20":      return "ETH";
-            case "Smart Chain": return "KMD";
-            case "SLP":         return "BCH";
+            case "QRC-20":      return "QTUM"
+            case "BEP-20":      return "BNB"
+            case "ERC-20":      return "ETH"
+            case "Smart Chain": return "KMD"
+            case "SLP":         return "BCH"
         }
 
         let coinInfo = Dex.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(addressType);
         if (coinInfo.has_parent_fees_ticker)
             return coinInfo.fees_ticker;
         return addressType
+    }
+
+    // Tells if the given address type represents a network standard address (e.g. BEP-20)
+    function isNetworkStandard(addressType)
+    {
+        switch (addressType)
+        {
+        case "QRC-20":      return true
+        case "BEP-20":      return true
+        case "ERC-20":      return true
+        case "Smart Chain": return true
+        case "SLP":         return true
+        }
+        return false
     }
 
     signal cancel()
@@ -54,6 +70,7 @@ Dex.Rectangle
             addressTypeComboBox.currentIndex = 0
             addressKeyField.text = ""
             addressValueField.text = ""
+            invalidAddressValueLabel.text = ""
             editionMode = false
             addressType = ""
             addressKey = ""
@@ -62,11 +79,22 @@ Dex.Rectangle
         else if (editionMode)
         {
             // Feeds form with the data we are currently editing.
-            var indexLis =
-                    Dex.API.app.portfolio_pg.portfolio_mdl.match(
-                        Dex.API.app.portfolio_pg.portfolio_mdl.index(0, 0),
-                        Qt.UserRole + 1, addressType)
-            //addres
+
+            if (!isNetworkStandard(addressType))
+            {
+                useStandardsCheckBox.checked = false
+                let addressTypeIndex =
+                        Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.match(
+                        Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(0, 0),
+                        Qt.UserRole + 1, addressType, 1, Qt.MatchExactly)[0]
+                addressTypeComboBox.currentItem = addressTypeIndex
+            }
+            else
+            {
+                useStandardsCheckBox.checked = true
+                let addressTypeIndex = availableNetworkStandards.indexOf(addressType)
+                addressTypeComboBox.currentIndex = addressTypeIndex
+            }
             addressKeyField.text = addressKey
             addressValueField.text = addressValue
         }
@@ -162,10 +190,17 @@ Dex.Rectangle
                 text: isConvertMode ? qsTr("Convert") : editionMode ? qsTr("Edit") : qsTr("Add")
                 onClicked:
                 {
-                    if (isConvertMode)
-                        Dex.API.app.wallet_pg.convert_address(addressValueField.text, root.getTypeForAddressChecker(addressTypeComboBox.currentText), API.app.wallet_pg.validate_address_data.to_address_format);
+                    let addressType = getTypeForAddressChecker(addressTypeComboBox.currentText)
+
+                    if (!Dex.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(addressType).is_enabled)
+                    {
+                        enableAssetModal.assetTicker = addressType
+                        enableAssetModal.open()
+                    }
+                    else if (isConvertMode)
+                        Dex.API.app.wallet_pg.convert_address(addressValueField.text, addressType, API.app.wallet_pg.validate_address_data.to_address_format);
                     else
-                        Dex.API.app.wallet_pg.validate_address(addressValueField.text, root.getTypeForAddressChecker(addressTypeComboBox.currentText))
+                        Dex.API.app.wallet_pg.validate_address(addressValueField.text, addressType)
                 }
             }
         }
@@ -213,6 +248,55 @@ Dex.Rectangle
             else
             {
                 addressKeyAlreadyExistsToolTip.visible = true
+            }
+        }
+    }
+
+    Dex.ModalLoader
+    {
+        id: enableAssetModal
+
+        property string assetTicker
+
+        onLoaded: item.assetTicker = assetTicker
+
+        sourceComponent: Dex.MultipageModal
+        {
+            property string assetTicker
+            Dex.MultipageModalContent
+            {
+                Layout.fillWidth: true
+                titleText: qsTr("Enable " + assetTicker)
+
+                Dex.Text
+                {
+                    Layout.fillWidth: true
+                    text: qsTr("You need to enable %1 before adding this kind of address.").arg(assetTicker)
+                }
+
+                footer:
+                [
+                    // Enable button
+                    Dex.Button
+                    {
+                        text: qsTr("Enable")
+
+                        onClicked:
+                        {
+                            Dex.API.app.enable_coin(assetTicker)
+                            close()
+                        }
+                    },
+
+                    // Cancel button
+                    Dex.Button
+                    {
+                        Layout.rightMargin: 5
+                        text: qsTr("Cancel")
+
+                        onClicked: close()
+                    }
+                ]
             }
         }
     }
