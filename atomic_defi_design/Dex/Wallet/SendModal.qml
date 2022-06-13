@@ -714,7 +714,6 @@ MultipageModal
 
                     input_address.text = selected_address
                     selected_address = ""
-                    console.debug("SendModal: Selected %1 address from addressbook.".arg(input_address.text))
                 }
             }
         }
