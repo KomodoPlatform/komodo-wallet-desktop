@@ -21,6 +21,7 @@ ColumnLayout
 
         DefaultText
         {
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft
             color: Dex.CurrentTheme.foregroundColor3
             text: "Total " + API.app.settings_pg.current_fiat + " " + General.cex_icon
@@ -54,8 +55,9 @@ ColumnLayout
         Layout.preferredWidth: parent.width
         Layout.preferredHeight: 30
 
-        DexLabel
+        DefaultText
         {
+            Layout.fillWidth: true
             color: Dex.CurrentTheme.foregroundColor3
             Layout.preferredWidth: parent.width * 0.3
             text:  "Total " + right_ticker
