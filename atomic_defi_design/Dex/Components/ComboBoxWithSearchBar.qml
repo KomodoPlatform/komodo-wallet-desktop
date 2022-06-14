@@ -18,6 +18,7 @@ ComboBox
     property color  backgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
     property color  popupBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
     property color  highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+    property alias  searchBar: _searchBar
     property string searchBarPlaceholderText: qsTr("Search")
 
     signal searchBarTextChanged(var patternStr)
@@ -48,6 +49,7 @@ ComboBox
 
             DefaultTextField
             {
+                id: _searchBar
                 placeholderText: searchBarPlaceholderText
                 Layout.fillWidth: true
                 Layout.leftMargin: 5

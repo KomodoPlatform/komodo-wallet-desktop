@@ -64,7 +64,7 @@ Dex.ComboBoxWithSearchBar
                                  else {currentIndex = 1; _contentRow.ticker = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 1); _contentRow.name = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 3); _contentRow.type = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 9)}
     onCurrentIndexChanged: currentItem = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(currentIndex, 0)
     onSearchBarTextChanged: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(patternStr)
-    onVisibleChanged: if (!visible) Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
+    onVisibleChanged: if (!visible) { Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(""); searchBar.text = ""; }
     Component.onDestruction: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
     Component.onCompleted: if (showAssetStandards) currentIndex = 0; else currentIndex = 1
 }
