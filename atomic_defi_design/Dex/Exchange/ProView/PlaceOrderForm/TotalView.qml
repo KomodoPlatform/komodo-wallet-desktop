@@ -21,6 +21,7 @@ ColumnLayout
 
         DefaultText
         {
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft
             color: Dex.CurrentTheme.foregroundColor3
             text: "Total " + API.app.settings_pg.current_fiat + " " + General.cex_icon
@@ -30,11 +31,10 @@ ColumnLayout
             CexInfoTrigger {}
         }
 
-        Item { Layout.fillWidth: true }
-
         DefaultText
         {
-            Layout.alignment: Qt.AlignRight
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignRight
             font.weight: Font.DemiBold
             font.pixelSize: 16
             font.family: 'lato'
@@ -55,19 +55,21 @@ ColumnLayout
         Layout.preferredWidth: parent.width
         Layout.preferredHeight: 30
 
-        DexLabel
+        DefaultText
         {
+            Layout.fillWidth: true
             color: Dex.CurrentTheme.foregroundColor3
-            text:  "Total " + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+            Layout.preferredWidth: parent.width * 0.3
+            text:  "Total " + right_ticker
             font.pixelSize:  14
             opacity: .6
             font.weight: Font.Normal
         }
 
-        Item { Layout.fillWidth: true }
-
         DefaultText
         {
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignRight
             font.weight: Font.DemiBold
             font.pixelSize: 16
             font.family: 'lato'

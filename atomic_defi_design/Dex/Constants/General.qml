@@ -102,6 +102,39 @@ QtObject {
         }
     }
 
+
+    function getProtocolText(ticker) {
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        } else {
+            let token_platform = coinPlatform(ticker)
+            switch(token_platform) {
+                case "BNB":
+                    return "Binance Smart Chain (BEP20 token)"
+                case "FTM":
+                    return "Fantom (FTM20 token)"
+                case "ONE":
+                    return "Harmony (HRC20 token)"
+                case "ETH":
+                    return "Ethereum (ERC20 token)"
+                case "KCS":
+                    return "KuCoin (KRC20 token)"
+                case "MATIC":
+                    return "Polygon (PLG20 token)"
+                case "AVAX":
+                    return "Avalanche (AVX20 token)"
+                case "HT":
+                    return "Heco Chain (HCO20 token)"
+                case "MOVR":
+                    return "Moonriver (MVR20 token)"
+                case "QTUM":
+                    return "QTUM (QRC20 token)"
+                default:
+                    return ticker + " (" + token_platform + ")"
+            }
+        }
+    }
+
     function isIDO(ticker) {
         let IDO_chains = []
         return IDO_chains.includes(ticker)
