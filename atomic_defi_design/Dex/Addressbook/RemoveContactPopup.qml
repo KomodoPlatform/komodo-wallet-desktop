@@ -12,8 +12,8 @@ Dex.Popup
 
     property string contactName
 
-    width: 120
-    height: 100
+    width: 140
+    height: 120
 
     contentItem: ColumnLayout
     {
