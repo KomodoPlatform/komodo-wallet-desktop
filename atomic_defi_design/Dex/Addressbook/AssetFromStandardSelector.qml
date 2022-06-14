@@ -15,9 +15,39 @@ Dex.MultipageModal
 
     width: 560
 
+    Component.onDestruction:
+    {
+        Dex.API.app.portfolio_pg.global_cfg_mdl.all_qrc20_proxy.setFilterFixedString("")
+        Dex.API.app.portfolio_pg.global_cfg_mdl.all_erc20_proxy.setFilterFixedString("")
+        Dex.API.app.portfolio_pg.global_cfg_mdl.all_bep20_proxy.setFilterFixedString("")
+        Dex.API.app.portfolio_pg.global_cfg_mdl.all_smartchains_proxy.setFilterFixedString("")
+    }
+
     Dex.MultipageModalContent
     {
         titleText: qsTr("Choose a valid ") + standard + qsTr(" asset")
+        contentSpacing: 8
+
+        Dex.SearchField
+        {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+            textField.placeholderText: qsTr("Search an asset")
+            textField.onTextChanged:
+            {
+                switch (standard)
+                {
+                case "QRC-20": Dex.API.app.portfolio_pg.global_cfg_mdl.all_qrc20_proxy.setFilterFixedString(textField.text)
+                    break;
+                case "ERC-20": Dex.API.app.portfolio_pg.global_cfg_mdl.all_erc20_proxy.setFilterFixedString(textField.text)
+                    break;
+                case "BEP-20": Dex.API.app.portfolio_pg.global_cfg_mdl.all_bep20_proxy.setFilterFixedString(textField.text)
+                    break;
+                default: Dex.API.app.portfolio_pg.global_cfg_mdl.all_smartchains_proxy.setFilterFixedString(textField.text)
+                    break;
+                }
+            }
+        }
 
         Dex.ListView
         {
