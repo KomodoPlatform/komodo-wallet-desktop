@@ -58,7 +58,7 @@ ColumnLayout
         {
             color: Dex.CurrentTheme.foregroundColor3
             Layout.preferredWidth: parent.width * 0.3
-            text:  "Total " + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+            text:  "Total " + right_ticker
             font.pixelSize:  14
             opacity: .6
             font.weight: Font.Normal
