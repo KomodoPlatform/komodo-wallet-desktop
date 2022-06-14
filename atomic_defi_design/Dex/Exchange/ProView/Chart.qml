@@ -18,7 +18,6 @@ Item
 
     function loadChart(base, rel, force = false, source="nomics")
     {
-
         let chart_html = ""
         let symbol = ""
 
@@ -27,16 +26,20 @@ Item
             let base_full = General.coinName(base)
             let base_id = General.getNomicsId(base)
             let rel_id = General.getNomicsId(rel)
+
             if (base_id != "" && rel_id != "")
             {
                 symbol = base_id+"-"+rel_id
+
                 pair_supported = true
                 if (symbol === loaded_symbol && !force)
                 {
                     webEngineViewPlaceHolder.visible = true
                     return
                 }
+
                 loaded_symbol = symbol
+
                 chart_html = `
                 <style>
                 body { margin: 0; }
@@ -46,9 +49,9 @@ Item
                 <div class="nomics-ticker-widget" data-name="${base_full}" data-base="${base_id}" data-quote="${rel_id}"></div>
                 <script src="https://widget.nomics.com/embed.js"></script>
                 <!-- Nomics Widget END -->`
-                console.log(chart_html)
             }
         }
+
         if (chart_html == "")
         {
             const pair = atomic_qt_utilities.retrieve_main_ticker(base) + "/" + atomic_qt_utilities.retrieve_main_ticker(rel)

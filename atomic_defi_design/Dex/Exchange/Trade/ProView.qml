@@ -115,7 +115,7 @@ RowLayout
 
         Layout.fillHeight: true
 
-        spacing: 20
+        spacing: 10
 
         // Ticker selectors.
         TickerSelectors
@@ -133,8 +133,7 @@ RowLayout
 
             Layout.fillWidth: true
 
-            Layout.minimumHeight: isCollapsed() ? 60 : 380
-            Layout.maximumHeight: 600
+            Layout.minimumHeight: isCollapsed() ? 60 : 610
             Layout.fillHeight: !isCollapsed()
         }
     }

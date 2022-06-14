@@ -82,12 +82,13 @@ Widget
 
             ColumnLayout
             {
+                Layout.fillHeight: true
+                spacing: 10
                 // Chart
                 Chart
                 {
                     id: chart
-                    Layout.topMargin: 10
-                    Layout.bottomMargin: 10
+                    Layout.topMargin: 20
                     Layout.leftMargin: 28
                     Layout.rightMargin: 28
                     Layout.fillWidth: true
@@ -97,13 +98,12 @@ Widget
 
                 PriceLineSimplified
                 {
-                    id: price_line2
-                    Layout.topMargin: 10
-                    Layout.bottomMargin: 10
+                    id: price_line
+                    Layout.bottomMargin: 20
                     Layout.leftMargin: 28
                     Layout.rightMargin: 28
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 120
+                    Layout.fillHeight: true
                 }
             }
         }

@@ -153,7 +153,7 @@ Item
     Column
     {
         anchors.fill: parent
-        spacing: 20
+        spacing: 15
         anchors.leftMargin: 20
         anchors.rightMargin: 20
 
