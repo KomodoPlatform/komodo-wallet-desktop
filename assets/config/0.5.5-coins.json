@@ -3771,7 +3771,16 @@
     "nomics_id": "LBC",
     "electrum": [
       {
-        "url": "spv16.lbry.com:50001"
+        "url": "electrum1.cipig.net:10067",
+        "ws_url": "electrum1.cipig.net:30067"
+      },
+      {
+        "url": "electrum2.cipig.net:10067",
+        "ws_url": "electrum2.cipig.net:30067"
+      },
+      {
+        "url": "electrum3.cipig.net:10067",
+        "ws_url": "electrum3.cipig.net:30067"
       }
     ],
     "explorer_url": [
