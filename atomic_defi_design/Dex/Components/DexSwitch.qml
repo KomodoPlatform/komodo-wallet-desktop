@@ -21,7 +21,7 @@ Switch
     Universal.background: Dex.CurrentTheme.backgroundColor
 
     font.family: DexTypo.fontFamily
-    indicator: DexRectangle
+    indicator: DefaultRectangle
     {
         id: indicator
         anchors.verticalCenter: parent.verticalCenter
@@ -55,11 +55,11 @@ Switch
                 orientation: Gradient.Horizontal
                 GradientStop
                 {
-                    position: 0;color: control.checked ? Dex.CurrentTheme.switchGradientStartColor : Dex.CurrentTheme.switchGradientStartColor2
+                    position: 0; color: control.checked ? Dex.CurrentTheme.switchGradientStartColor : Dex.CurrentTheme.switchGradientStartColor2
                 }
                 GradientStop
                 {
-                    position: 0.9311;color: control.checked ? Dex.CurrentTheme.switchGradientEndColor : Dex.CurrentTheme.switchGradientEndColor2
+                    position: 0.9311; color: control.checked ? Dex.CurrentTheme.switchGradientEndColor : Dex.CurrentTheme.switchGradientEndColor2
                 }
             }
         }
@@ -77,11 +77,11 @@ Switch
                 orientation: Gradient.Horizontal
                 GradientStop
                 {
-                    position: 0;color: control.checked ? Dex.CurrentTheme.switchGradientStartColor2 : Dex.CurrentTheme.switchGradientStartColor
+                    position: 0; color: control.checked ? Dex.CurrentTheme.switchGradientStartColor2 : Dex.CurrentTheme.switchGradientStartColor
                 }
                 GradientStop
                 {
-                    position: 0.9311;color: control.checked ? Dex.CurrentTheme.switchGradientEndColor2 : Dex.CurrentTheme.switchGradientEndColor
+                    position: 0.9311; color: control.checked ? Dex.CurrentTheme.switchGradientEndColor2 : Dex.CurrentTheme.switchGradientEndColor
                 }
             }
         }
@@ -93,5 +93,4 @@ Switch
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
     }
-
 }

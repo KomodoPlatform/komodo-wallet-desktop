@@ -568,8 +568,14 @@ MultipageModal
             id: custom_fees_switch
             enabled: !root.is_send_busy
             Layout.topMargin: 32
-            text: qsTr("Enable Custom Fees")
             onCheckedChanged: input_custom_fees.text = ""
+
+            DefaultText
+            {
+                anchors.left: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                text: qsTr("Enable custom fees")
+            }
         }
 
         // Custom fees warning
