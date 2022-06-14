@@ -15,14 +15,11 @@ Dex.ComboBoxWithSearchBar
     property var    currentItem: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(currentIndex, 0)
     property bool   showAssetStandards: false
     property var    assetStandards: availableNetworkStandards
-    property string searchPattern
 
     popupForceMaxHeight: true
     popupMaxHeight: 265
     model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy
     textRole: showAssetStandards ? "" : "ticker"
-
-    onCurrentIndexChanged: currentItem = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(currentIndex, 0)
 
     delegate: ItemDelegate
     {
@@ -52,6 +49,8 @@ Dex.ComboBoxWithSearchBar
     {
         AssetRow
         {
+            id: _contentRow
+
             anchors.left: parent.left
             anchors.leftMargin: 13
             anchors.verticalCenter: parent.verticalCenter
@@ -61,7 +60,11 @@ Dex.ComboBoxWithSearchBar
         }
     }
 
+    onShowAssetStandardsChanged: if (showAssetStandards) {currentIndex = 0; _contentRow.ticker = assetStandards[currentIndex]; _contentRow.name = assetStandards[currentIndex]; _contentRow.type = assetStandards[currentIndex]}
+                                 else {currentIndex = 1; _contentRow.ticker = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 1); _contentRow.name = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 3); _contentRow.type = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 9)}
+    onCurrentIndexChanged: currentItem = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(currentIndex, 0)
     onSearchBarTextChanged: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(patternStr)
-    Component.onDestruction: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
     onVisibleChanged: if (!visible) Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
+    Component.onDestruction: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
+    Component.onCompleted: if (showAssetStandards) currentIndex = 0; else currentIndex = 1
 }

@@ -67,7 +67,6 @@ Dex.Rectangle
         if (!visible)
         {
             // Resets data when address is added/edited.
-            addressTypeComboBox.currentIndex = 0
             addressKeyField.text = ""
             addressValueField.text = ""
             invalidAddressValueLabel.text = ""
