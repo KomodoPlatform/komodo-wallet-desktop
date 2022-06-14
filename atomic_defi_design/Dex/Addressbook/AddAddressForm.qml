@@ -86,7 +86,7 @@ Dex.Rectangle
                         Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.match(
                         Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(0, 0),
                         Qt.UserRole + 1, addressType, 1, Qt.MatchExactly)[0]
-                addressTypeComboBox.currentItem = addressTypeIndex
+                addressTypeComboBox.currentIndex = addressTypeIndex.row
             }
             else
             {
@@ -197,7 +197,7 @@ Dex.Rectangle
                         enableAssetModal.open()
                     }
                     else if (isConvertMode)
-                        Dex.API.app.wallet_pg.convert_address(addressValueField.text, addressType, API.app.wallet_pg.validate_address_data.to_address_format);
+                        Dex.API.app.wallet_pg.convert_address(addressValueField.text, addressType, Dex.API.app.wallet_pg.validate_address_data.to_address_format);
                     else
                         Dex.API.app.wallet_pg.validate_address(addressValueField.text, addressType)
                 }
@@ -216,8 +216,8 @@ Dex.Rectangle
                 return
             }
 
-            addressValueField.text = API.app.wallet_pg.converted_address
-            API.app.wallet_pg.validate_address_data = {}
+            addressValueField.text = Dex.API.app.wallet_pg.converted_address
+            Dex.API.app.wallet_pg.validate_address_data = {}
             invalidAddressValueLabel.text = ""
         }
 

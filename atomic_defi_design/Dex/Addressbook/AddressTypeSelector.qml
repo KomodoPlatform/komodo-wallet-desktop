@@ -6,6 +6,7 @@ import Qaterial 1.0 as Qaterial
 
 import Dex.Themes 1.0 as Dex
 import Dex.Components 1.0 as Dex
+import "../Components" as Dex
 import "../Constants" as Dex
 
 Dex.ComboBoxWithSearchBar
@@ -17,9 +18,10 @@ Dex.ComboBoxWithSearchBar
     property var    assetStandards: availableNetworkStandards
 
     popupForceMaxHeight: true
-    popupMaxHeight: 265
+    popupMaxHeight: 220
     model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy
     textRole: showAssetStandards ? "" : "ticker"
+    searchBar.visible: !showAssetStandards
 
     delegate: ItemDelegate
     {
@@ -60,9 +62,8 @@ Dex.ComboBoxWithSearchBar
         }
     }
 
-    onShowAssetStandardsChanged: if (showAssetStandards) {currentIndex = 0; _contentRow.ticker = assetStandards[currentIndex]; _contentRow.name = assetStandards[currentIndex]; _contentRow.type = assetStandards[currentIndex]}
-                                 else {currentIndex = 1; _contentRow.ticker = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 1); _contentRow.name = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 3); _contentRow.type = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 9)}
-    onCurrentIndexChanged: currentItem = Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(currentIndex, 0)
+    onCurrentIndexChanged: if (!showAssetStandards && currentIndex === 0) currentIndex = 1
+    onShowAssetStandardsChanged: if (showAssetStandards) currentIndex = 0; else currentIndex = 1
     onSearchBarTextChanged: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(patternStr)
     onVisibleChanged: if (!visible) { Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(""); searchBar.text = ""; }
     Component.onDestruction: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
