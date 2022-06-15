@@ -448,7 +448,6 @@ QtObject {
                                           "VAL": "#1EEC84",
                                           "VET": "#18C6FF",
                                           "VITE": "#007AFF",
-                                          "VOTE2022": "#41EAD4",
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WAVES": "#016BFF",
@@ -470,6 +469,7 @@ QtObject {
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A",
                                           "VOTE2022": "#7490AA",
-                                          "USBL": "#279553"
+                                          "USBL": "#279553",
+                                          "RUNES": "#336699"
                                       })
 }
