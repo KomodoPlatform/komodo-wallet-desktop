@@ -1,8 +1,9 @@
+// Qt Imports
 import QtQuick 2.15
 
-import "../Constants"
-import "../Components"
-import Dex.Themes 1.0 as Dex
+// Project Imports
+import "../Constants"           //> General.image_path
+import Dex.Themes 1.0 as Dex    //> CurrentTheme
 
 Item {
     property bool   up: true
@@ -27,7 +28,7 @@ Item {
 
         anchors.fill: img
         source: img
-        color: up ? Dex.CurrentTheme.arrowUpColor : Dex.CurrentTheme.arrowDownColor
+        color: Dex.CurrentTheme.foregroundColor
     }
 }
 

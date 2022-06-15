@@ -422,11 +422,11 @@ MultipageModal
                     {
                         if (_preparePage.cryptoSendMode)
                         {
-                            input_amount.text = current_ticker_infos.balance;
+                            input_amount.text = API.app.get_balance(api_wallet_page.ticker);
                         }
                         else
                         {
-                            let cryptoBalance = new BigNumber(current_ticker_infos.balance);
+                            let cryptoBalance = new BigNumber(API.app.get_balance(api_wallet_page.ticker));
                             input_amount.text = cryptoBalance.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                         }
                     }
@@ -575,6 +575,13 @@ MultipageModal
                 Layout.topMargin: 32
                 label.text: qsTr("Enable Custom Fees")
                 onCheckedChanged: input_custom_fees.text = ""
+
+                DefaultText
+                {
+                    anchors.left: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Enable custom fees")
+                }
             }
 
             // Custom fees warning
@@ -720,7 +727,6 @@ MultipageModal
 
                     input_address.text = selected_address
                     selected_address = ""
-                    console.debug("SendModal: Selected %1 address from addressbook.".arg(input_address.text))
                 }
             }
         }

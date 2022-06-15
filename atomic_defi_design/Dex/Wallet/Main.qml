@@ -416,10 +416,10 @@ Item
                         else enable_fees_coin_modal.open()
                     }
 
-                    Arrow
+                    TransactionArrow
                     {
                         id: arrow_send
-                        up: true
+                        amISender: true
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 19
@@ -508,12 +508,12 @@ Item
 
                 onClicked: receive_modal.open()
 
-                Arrow
+                TransactionArrow
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: arrow_send.anchors.rightMargin
-                    up: false
+                    amISender: false
                 }
             }
 
@@ -551,15 +551,15 @@ Item
                         anchors.rightMargin: arrow_send.anchors.rightMargin
                         spacing: 2
 
-                        Arrow
+                        TransactionArrow
                         {
-                            up: true
+                            amISender: true
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
-                        Arrow
+                        TransactionArrow
                         {
-                            up: false
+                            amISender: false
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     }

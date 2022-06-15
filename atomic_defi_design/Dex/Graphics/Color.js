@@ -13,13 +13,14 @@
 // Returned ARGB string:    "#AARRGGBB"
 function argbStrFromRgbaStr(rgbaString)
 {
-    if (rgbaString.length === 7)
+    let tempRgbaString = rgbaString
+    if (tempRgbaString.length === 7)
     {
         console.warn("Dex.Graphics.Color.argbStrFromRgbaStr: %1 is not an RGBA color"
-                        .arg(rgbaString));
-        return rgbaString;
+                        .arg(tempRgbaString));
+        return tempRgbaString;
     }
 
     //   #                 A                       RGB
-    return "#" + rgbaString.substr(7, 2) + rgbaString.substr(1, 6);
+    return "#" + tempRgbaString.substr(7, 2) + tempRgbaString.substr(1, 6);
 }

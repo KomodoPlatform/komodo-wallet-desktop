@@ -20,6 +20,10 @@ ColumnLayout
     property alias         header:              _header.data
     property var scrollable_height: window.height - _title.height - _header.height - _footer.height - titleTopMargin * 2 - topMarginAfterTitle - scrollable_shrink - 150
 
+    default property alias content:         _innerLayout.data
+    property alias         contentSpacing:  _innerLayout.spacing
+    property alias         footer:          _footer.data
+
     Layout.fillWidth: true
     visible: true
     Layout.fillHeight: false

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -51,12 +51,12 @@ namespace atomic_dex
         void                         set_type_filter(QString value) ;
         
         // QML Properties
-        Q_PROPERTY(QString search_exp READ get_search_exp WRITE set_search_exp NOTIFY search_expChanged)
-        Q_PROPERTY(QString type_filter READ get_type_filter WRITE set_type_filter NOTIFY typeFilterChanged)
+        Q_PROPERTY(QString searchExp READ get_search_exp WRITE set_search_exp NOTIFY searchExpChanged)
+        Q_PROPERTY(QString typeFilter READ get_type_filter WRITE set_type_filter NOTIFY typeFilterChanged)
         
         // QML Properties Signals
     signals:
-        void search_expChanged();
+        void searchExpChanged();
         void typeFilterChanged();
     };
 } // namespace atomic_dex
