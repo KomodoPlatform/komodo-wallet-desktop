@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,13 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
-// STD
 #include <utility>
 
-// Qt
 #include <QJsonDocument>
 
-// Project
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "atomicdex/managers/addressbook.manager.hpp"    //> addressbook_manager
@@ -48,8 +45,7 @@ namespace atomic_dex
 // QAbstractListModel Functions
 namespace atomic_dex
 {
-    QVariant
-    addressbook_contact_model::data(const QModelIndex& index, int role) const
+    QVariant addressbook_contact_model::data(const QModelIndex& index, int role) const
     {
         if (!hasIndex(index.row(), index.column(), index.parent()))
         {
@@ -72,14 +68,12 @@ namespace atomic_dex
         }
     }
 
-    int
-    addressbook_contact_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
+    int addressbook_contact_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
         return m_address_entries.size();
     }
 
-    QHash<int, QByteArray>
-    addressbook_contact_model::roleNames() const
+    QHash<int, QByteArray> addressbook_contact_model::roleNames() const
     {
         return {
             {AddressTypeRole, "address_type"},
@@ -92,37 +86,33 @@ namespace atomic_dex
 // Getters/Setters
 namespace atomic_dex
 {
-    const QString&
-    addressbook_contact_model::get_name() const 
+    const QString& addressbook_contact_model::get_name() const 
     {
         return m_name;
     }
     
-    void
-    addressbook_contact_model::set_name(const QString& name) 
+    void addressbook_contact_model::set_name(const QString& name) 
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         
         if (name != m_name)
         {
-            if (!m_name.isEmpty())
+            if (!name.isEmpty())
             {
                 addrbook_manager.change_contact_name(m_name.toStdString(), name.toStdString());
                 addrbook_manager.save_configuration();
+                m_name = name;
+                emit nameChanged();
             }
-            m_name = name;
-            emit nameChanged();
         }
     }
     
-    const QStringList&
-    addressbook_contact_model::get_categories() const 
+    const QStringList& addressbook_contact_model::get_categories() const 
     {
         return m_categories;
     }
     
-    void
-    addressbook_contact_model::set_categories(QStringList categories) 
+    void addressbook_contact_model::set_categories(QStringList categories) 
     {
         m_categories = std::move(categories);
         emit categoriesChanged();
@@ -142,8 +132,7 @@ namespace atomic_dex
 // QML API
 namespace atomic_dex
 {
-    bool
-    addressbook_contact_model::add_category(const QString& category) 
+    bool addressbook_contact_model::addCategory(const QString& category) 
     {
         if (m_categories.contains(category))
         {
@@ -154,15 +143,13 @@ namespace atomic_dex
         return true;
     }
 
-    void
-    addressbook_contact_model::remove_category(const QString& category) 
+    void addressbook_contact_model::removeCategory(const QString& category) 
     {
         m_categories.removeOne(category);
         emit categoriesChanged();
     }
     
-    bool
-    addressbook_contact_model::add_address_entry(QString type, QString key, QString value) 
+    bool addressbook_contact_model::addAddressEntry(QString type, QString key, QString value) 
     {
         // Returns false if the given key already exists.
         auto res = match(index(0), AddressTypeAndKeyRole, type + key, 1, Qt::MatchFlag::MatchExactly);
@@ -182,8 +169,7 @@ namespace atomic_dex
         return true;
     }
     
-    void
-    addressbook_contact_model::remove_address_entry(const QString& type, const QString& key) 
+    void addressbook_contact_model::removeAddressEntry(const QString& type, const QString& key) 
     {
         auto res = match(index(0), AddressTypeAndKeyRole, type + key, 1, Qt::MatchFlag::MatchExactly);
     
@@ -195,8 +181,7 @@ namespace atomic_dex
         }
     }
 
-    void
-    addressbook_contact_model::reload()
+    void addressbook_contact_model::reload()
     {
         // Clears model
         clear();
@@ -205,8 +190,7 @@ namespace atomic_dex
         populate();
     }
 
-    void
-    addressbook_contact_model::save()
+    void addressbook_contact_model::save()
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
 

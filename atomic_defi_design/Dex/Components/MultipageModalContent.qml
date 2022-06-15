@@ -15,6 +15,7 @@ ColumnLayout
     property int           topMarginAfterTitle: 30
 
     default property alias content:         _innerLayout.data
+    property alias         contentSpacing:  _innerLayout.spacing
     property alias         footer:          _footer.data
 
     Layout.fillWidth: true

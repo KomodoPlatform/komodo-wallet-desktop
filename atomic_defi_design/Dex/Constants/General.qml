@@ -17,11 +17,16 @@ QtObject {
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
     readonly property string providerIconsPath: image_path + "providers/"
 
-    function coinIcon(ticker) {
-        if(ticker === "" || ticker === "All" || ticker===undefined) {
+    function coinIcon(ticker)
+    {
+        if (ticker === "" || ticker === "All" || ticker===undefined )
+        {
             return ""
-        } else {
-            if (['THC-BEP20'].indexOf(ticker) >= 0) {
+        }
+        else
+        {
+            if (['THC-BEP20'].indexOf(ticker) >= 0)
+            {
                 return coin_icons_path + ticker.toString().toLowerCase().replace('-', '_') + ".png"
             }
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)

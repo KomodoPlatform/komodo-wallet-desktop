@@ -191,7 +191,7 @@ SetupPage
                                 Qaterial.ColorIcon
                                 {
                                     anchors.fill: parent
-                                    color: Dex.CurrentTheme.loginWalletIconColorStart
+                                    color: Dex.CurrentTheme.userIconColorStart
                                     source: Qaterial.Icons.account
                                     iconSize: 28
                                 }

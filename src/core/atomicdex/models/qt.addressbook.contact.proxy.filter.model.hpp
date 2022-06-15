@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -49,8 +49,8 @@ namespace atomic_dex
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final; // Sorts address entries by type then by key.
     
         // QML API Properties
-        Q_PROPERTY(QString search_expression READ get_search_expression WRITE set_search_expression NOTIFY searchExpressionChanged)
-        Q_PROPERTY(QString filter_type READ get_filter_type WRITE set_filter_type NOTIFY filterTypeChanged)
+        Q_PROPERTY(QString searchExpression READ get_search_expression WRITE set_search_expression NOTIFY searchExpressionChanged)
+        Q_PROPERTY(QString filterType READ get_filter_type WRITE set_filter_type NOTIFY filterTypeChanged)
         
         // QML API Properties Signals
       signals:

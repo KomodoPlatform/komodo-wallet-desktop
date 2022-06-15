@@ -83,8 +83,8 @@ function getHardcoded()
         rangeSliderIndicatorBackgroundStartColor: "#5A68E6FF",
         rangeSliderIndicatorBackgroundEndColor: "#4986EAAD",
 
-        loginWalletIconColorStart: "#5A68E6FF",
-        loginWalletIconColorEnd: "#4986EAAD",
+        userIconColorStart: "#5A68E6FF",
+        userIconColorEnd: "#4986EAAD",
 
         sidebarBgColor: "#FCFCFCFF",
         sidebarVersionTextColor: "#456078FF",
@@ -99,8 +99,13 @@ function getHardcoded()
         tradeSellModeSelectorBackgroundColorEnd: "#E216A9FF",
         tradeMarketModeSelectorNotSelectedBackgroundColor: "#89B6FF21",
 
+        addressBookTagColors: ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
+
         okColor: "#00C058FF",
         noColor: "#E52167FF",
+      
+        senderColorStart: "#F85757FF",
+        receiverColorStart: "#845FEFFF",
 
         arrowUpColor: "#F85757FF",
         arrowDownColor: "#845FEFFF",

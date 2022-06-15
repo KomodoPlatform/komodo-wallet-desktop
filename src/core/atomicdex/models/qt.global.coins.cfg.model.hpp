@@ -94,7 +94,7 @@ namespace atomic_dex
         Q_INVOKABLE QStringList get_checked_coins() const;
         Q_INVOKABLE QVariant    get_coin_info(const QString& ticker) const;
         Q_INVOKABLE QString     get_parent_coin(const QString& ticker) const;
-        Q_INVOKABLE bool        is_coin_type(const QString& ticker) const; // Tells if the given string is a valid coin type (e.g. QRC-20)
+        Q_INVOKABLE bool        is_coin_type(const QString& ticker) const;      // Tells if the given string is a valid coin type (e.g. QRC-20)
 
         // QML API properties
         Q_PROPERTY(global_coins_cfg_proxy_model* all_disabled_proxy    READ get_all_disabled_proxy    NOTIFY all_disabled_proxyChanged)
