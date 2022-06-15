@@ -265,6 +265,33 @@ DexPopup
         }
     }
 
+    function onEnablingZCoinStatus(coin, msg, human_date, timestamp)
+    {
+        // Ignore if coin already enabled (e.g. parent chain in batch)
+        if (msg.search("already initialized") > -1)
+        {
+            console.trace()
+            return
+        }
+
+        // Display the notification
+        const title = qsTr(" %1 Enable status: %2", "TICKER").arg(coin).arg(msg)
+
+        newNotification("onEnablingZCoinStatus",
+            {
+                coin,
+                human_date,
+                timestamp
+            },
+            timestamp,
+            title,
+            msg,
+            human_date,
+            "open_log_modal",
+            msg)
+
+    }
+
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp)
     {
@@ -369,6 +396,7 @@ DexPopup
     {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingZCoinStatus.connect(onEnablingZCoinStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
@@ -378,6 +406,7 @@ DexPopup
     {
         API.app.notification_mgr.updateSwapStatus.disconnect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.disconnect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingZCoinStatus.disconnect(onEnablingZCoinStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)

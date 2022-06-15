@@ -48,6 +48,12 @@ namespace atomic_dex
         bool after_manual_reset{false};
     };
 
+    struct enabling_z_coin_status
+    {
+        std::string coin;
+        std::string reason;
+    };
+
     struct enabling_coin_failed
     {
         std::string coin;

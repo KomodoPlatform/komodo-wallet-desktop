@@ -32,18 +32,29 @@ namespace mm2::api
     //! Deserialization
     void from_json(const nlohmann::json& j, init_z_coin_status_answer& answer)
     {
-        j.at("result").at("status").get_to(answer.status);
+        j.at("result").at("status").get_to(answer.status);     // [InProgress, Ready]
         j.at("result").at("details").get_to(answer.details);
 
-        if (j.at("result").at("details").contains("ticker"))
+        if (j.at("result").at("details").contains("UpdatingBlocksCache"))
         {
-            answer.coin = j.at("result").at("details").at("ticker").get<std::string>();
+            answer.current_scanned_block = j.at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block").get<std::string>();
+            answer.latest_block = j.at("result").at("details").at("UpdatingBlocksCache").at("latest_block").get<std::string>();
         }
 
-        if (j.at("result").at("details").contains("wallet_balance"))
+        if (j.at("result").at("details").contains("result"))
         {
-            answer.address = j.at("result").at("details").at("wallet_balance").at("address").get<std::string>();
-            answer.balance = j.at("result").at("details").at("wallet_balance").at("balance").at("spendable").get<std::string>();
+            answer.coin = j.at("result").at("details").at("result").at("ticker").get<std::string>();
+            answer.current_block = j.at("result").at("details").at("result").at("current_block").get<std::string>();
+
+            if (j.at("result").at("details").at("result").contains("wallet_balance"))
+            {
+                answer.wallet_type = j.at("result").at("details").at("result").at("wallet_balance").at("wallet_type").get<std::string>();
+                answer.address = j.at("result").at("details").at("result").at("wallet_balance").at("address").get<std::string>();
+                answer.spendable_balance = j.at("result").at("details").at("result").at("wallet_balance").at("balance").at("spendable").get<std::string>();
+                answer.unspendable_balance = j.at("result").at("details").at("result").at("wallet_balance").at("balance").at("unspendable").get<std::string>();
+            }
         }
+
     }
 } // namespace mm2::api
+

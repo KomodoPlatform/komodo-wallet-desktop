@@ -35,7 +35,12 @@ namespace mm2::api
         std::string details;
         std::optional<std::string> coin;
         std::optional<std::string> address;
-        std::optional<std::string> balance;
+        std::optional<std::string> current_scanned_block;
+        std::optional<std::string> latest_block;
+        std::optional<std::string> current_block;
+        std::optional<std::string> wallet_type;
+        std::optional<std::string> spendable_balance;
+        std::optional<std::string> unspendable_balance;
     };
 
     void to_json(nlohmann::json& j, const init_z_coin_status_request& request);

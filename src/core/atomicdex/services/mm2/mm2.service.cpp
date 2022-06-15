@@ -762,8 +762,15 @@ namespace atomic_dex
                                                         z_error = z_answers;
                                                         // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
                                                         SPDLOG_DEBUG("Waiting for {} to enable [{}]...", tickers[idx], z_answers[0].at("result").at("status").get<std::string>());
+                                                        if (z_answers[0].at("result").contains("current_scanned_block"))
+                                                        {
+                                                            SPDLOG_DEBUG("Scanning...");
+                                                            SPDLOG_DEBUG("Scanning: {}/{}", z_answers[0].at("result").at("current_scanned_block"), z_answers[0].at("result").at("latest_block"));
+                                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], z_error[0].dump(4));
+                                                        }
                                                         if (z_answers[0].at("result").at("status") == "Ready")
                                                         {
+                                                            SPDLOG_DEBUG("Ready!");
                                                             break;
                                                         }
                                                         std::this_thread::sleep_for(1s);
@@ -796,11 +803,13 @@ namespace atomic_dex
                                                             SPDLOG_DEBUG("Exited zhtlc enable loop after 50 tries");
                                                             SPDLOG_DEBUG(
                                                                 "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
-                                                                tickers.size(), answers.size());
+                                                                tickers.size(), answers.size()
+                                                            );
                                                         }
                                                         else
                                                         {
                                                             std::unique_lock lock(m_coin_cfg_mutex);
+                                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "enabling complete!");
                                                             m_coins_informations[tickers[idx]].currently_enabled = true;
                                                         }
                                                     }
