@@ -17,11 +17,16 @@ QtObject {
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
     readonly property string providerIconsPath: image_path + "providers/"
 
-    function coinIcon(ticker) {
-        if(ticker === "" || ticker === "All" || ticker===undefined) {
+    function coinIcon(ticker)
+    {
+        if (ticker === "" || ticker === "All" || ticker===undefined )
+        {
             return ""
-        } else {
-            if (['THC-BEP20'].indexOf(ticker) >= 0) {
+        }
+        else
+        {
+            if (['THC-BEP20'].indexOf(ticker) >= 0)
+            {
                 return coin_icons_path + ticker.toString().toLowerCase().replace('-', '_') + ".png"
             }
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
@@ -108,6 +113,39 @@ QtObject {
                     return "https://moonriver.moonscan.io/token/" + coinContractAddress(ticker)
                 default:
                     return ""
+            }
+        }
+    }
+
+
+    function getProtocolText(ticker) {
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        } else {
+            let token_platform = coinPlatform(ticker)
+            switch(token_platform) {
+                case "BNB":
+                    return "Binance Smart Chain (BEP20 token)"
+                case "FTM":
+                    return "Fantom (FTM20 token)"
+                case "ONE":
+                    return "Harmony (HRC20 token)"
+                case "ETH":
+                    return "Ethereum (ERC20 token)"
+                case "KCS":
+                    return "KuCoin (KRC20 token)"
+                case "MATIC":
+                    return "Polygon (PLG20 token)"
+                case "AVAX":
+                    return "Avalanche (AVX20 token)"
+                case "HT":
+                    return "Heco Chain (HCO20 token)"
+                case "MOVR":
+                    return "Moonriver (MVR20 token)"
+                case "QTUM":
+                    return "QTUM (QRC20 token)"
+                default:
+                    return ticker + " (" + token_platform + ")"
             }
         }
     }

@@ -4,7 +4,7 @@ import Dex.Themes 1.0 as Dex
 
 Text
 {
-    id: root
+    id: control
 
     property alias hoverEnabled:  _mouseArea.hoverEnabled
     property alias containsMouse: _mouseArea.containsMouse
@@ -26,6 +26,6 @@ Text
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
-        onClicked: root.clicked();
+        onClicked: control.clicked()
     }
 }

@@ -413,7 +413,6 @@ ClipRRect // Trade Card
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 5
-                        color: DexTheme.foregroundColor
 
                         up: false
                     }
@@ -592,8 +591,6 @@ ClipRRect // Trade Card
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 5
-
-                        color: DexTheme.foregroundColor
 
                         up: false
                     }
