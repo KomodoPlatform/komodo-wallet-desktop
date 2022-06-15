@@ -107,12 +107,14 @@ Dex.MultipageModal
             Item { Layout.fillWidth: true },
             Dex.DefaultButton
             {
+                Layout.preferredWidth: 120
                 text: qsTr("Download")
                 onClicked: { Qt.openUrlExternally(Dex.API.app.updateCheckerService.updateInfo.downloadUrl); close() }
             },
             Dex.DefaultButton
             {
-                text: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? qsTr("Close Dex") : qsTr("Close")
+                Layout.preferredWidth: 120
+                text: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? qsTr("Close Dex") : qsTr("Close Dex")
                 onClicked: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? Qt.exit(0) : close()
             }
         ]
