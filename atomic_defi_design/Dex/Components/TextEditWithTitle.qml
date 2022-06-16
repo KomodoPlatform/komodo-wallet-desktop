@@ -48,7 +48,7 @@ ComponentWithTitle
             copyText: control.text
             notifyTitle: control.onCopyNotificationTitle
             notifyMsg: control.onCopyNotificationMsg
-            xPos: _text.width + 6
+            xPos: _text.width + 10
             iconSize: 14
         }
 
@@ -56,7 +56,7 @@ ComponentWithTitle
         {
             visible: control.linkURL !== ""
             linkURL: control.linkURL
-            xPos: copyIcon.visible ? _text.width + 6 : _text.width + 12
+            xPos: copyIcon.visible ? _text.width + 10 : _text.width + 16
             iconSize: 14
         }
 

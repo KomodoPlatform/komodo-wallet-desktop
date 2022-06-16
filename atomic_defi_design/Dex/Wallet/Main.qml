@@ -926,7 +926,7 @@ Item
                     height: parent.height
                     model: transactions_mdl.proxy_mdl
                 }
-                
+
                 ColumnLayout
                 {
                     visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
