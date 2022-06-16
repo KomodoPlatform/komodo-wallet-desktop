@@ -13,11 +13,12 @@ ColumnLayout
     property var           titleAlignment:      Qt.AlignLeft
     property int           titleTopMargin:      20
     property int           topMarginAfterTitle: 30
+    
     property alias         flickable:           modal_flickable
-    default property alias content:             _innerLayout.data
-    property alias         footer:              _footer.data
     property alias         header:              _header.data
+    default property alias content:             _innerLayout.data
     property alias         contentSpacing:      _innerLayout.spacing
+    property alias         footer:              _footer.data
 
     Layout.fillWidth: true
     visible: true
