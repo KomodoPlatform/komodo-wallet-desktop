@@ -132,7 +132,6 @@ RowLayout
             id: tradingInfo
 
             Layout.fillWidth: true
-
             Layout.minimumHeight: isCollapsed() ? 60 : 610
             Layout.fillHeight: !isCollapsed()
         }
