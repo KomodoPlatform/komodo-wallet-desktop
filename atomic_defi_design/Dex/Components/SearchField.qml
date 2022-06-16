@@ -14,9 +14,6 @@ Rectangle
 
     color: Dex.CurrentTheme.accentColor
     radius: 18
-    signal searchBarTextChanged(var patternStr)
-
-    onSearchBarTextChanged: searchModel.setFilterFixedString(_textField.text)
 
     DexImage
     {
@@ -51,7 +48,8 @@ Rectangle
 
         placeholderText: qsTr("Search")
         placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
-        onTextChanged: searchBarTextChanged(text)
+
+        onTextChanged:searchModel.setFilterFixedString(_textField.text)
         font.pixelSize: 14
         Component.onCompleted:
         {
