@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.2
 
+import Qaterial 1.0 as Qaterial
+
 import "../Constants"
 import Dex.Themes 1.0 as Dex
 
@@ -8,7 +10,7 @@ Rectangle
 {
     property int  searchIconLeftMargin: 13
     property bool forceFocus: false
-
+    property var searchModel: API.app.portfolio_pg.global_cfg_mdl.all_proxy
     property alias searchIcon: _searchIcon
     property alias textField: _textField
 
@@ -48,10 +50,42 @@ Rectangle
 
         placeholderText: qsTr("Search")
         placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
+
+        onTextChanged: searchModel.setFilterFixedString(_textField.text)
         font.pixelSize: 14
         Component.onCompleted:
         {
             if (forceFocus) _textField.forceActiveFocus()
         }
     }
+
+    DefaultRectangle
+    {
+        id: _clearIcon
+        visible: _textField.text != ""
+        anchors.right: parent.right
+        anchors.rightMargin: searchIconLeftMargin
+        anchors.verticalCenter: parent.verticalCenter
+        color: mouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : "transparent"
+
+        width: 20
+        height: 20
+
+        Qaterial.ColorIcon
+        {
+            anchors.centerIn: parent
+            iconSize: 12
+            color: Dex.CurrentTheme.textPlaceholderColor
+            source: Qaterial.Icons.close
+        }
+
+        DefaultMouseArea
+        {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: _textField.text = ""
+        }
+    }
+
 }

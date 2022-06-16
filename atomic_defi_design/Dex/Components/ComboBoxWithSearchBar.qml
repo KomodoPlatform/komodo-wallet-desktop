@@ -21,7 +21,6 @@ ComboBox
     property alias  searchBar: _searchBar
     property string searchBarPlaceholderText: qsTr("Search")
 
-    signal searchBarTextChanged(var patternStr)
 
     background: Rectangle
     {
@@ -47,16 +46,15 @@ ComboBox
             width: popup.width
             height: popup.height
 
-            DefaultTextField
+            SearchField
             {
                 id: _searchBar
-                placeholderText: searchBarPlaceholderText
+                textField.placeholderText: searchBarPlaceholderText
                 Layout.fillWidth: true
                 Layout.leftMargin: 5
                 Layout.rightMargin: 5
                 Layout.preferredHeight: 40
-                background: Rectangle { color: "transparent" }
-                onTextChanged: searchBarTextChanged(text)
+                searchModel: control.delegateModel
             }
 
             DefaultListView

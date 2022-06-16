@@ -73,8 +73,6 @@ Item
             console.warn("Tried to switch to page %1 when loader is not ready yet.".arg(page))
     }
 
-    function resetCoinFilter() { portfolio_coins.setFilterFixedString("") }
-
     function openTradeViewWithTicker()
     {
         dashboard.loader.onLoadComplete = () => {
