@@ -12,7 +12,7 @@ ColumnLayout
     id: root
     property alias title: title.text
     property alias model: list.model
-    property real  addressFontSize: DefaultText.font.pixelSize
+    property real  addressFontSize: address_text.font.pixelSize
 
     TitleText
     {
@@ -31,6 +31,7 @@ ColumnLayout
 
         delegate: DefaultText
         {
+            id: address_text
             text_value: model.modelData
             privacy: true
             font.pixelSize: root.addressFontSize

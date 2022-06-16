@@ -562,29 +562,29 @@ MultipageModal
             }
         }
 
-        // Custom fees switch
-        DexSwitch
+        ColumnLayout
         {
-            id: custom_fees_switch
-            enabled: !root.is_send_busy
-            Layout.topMargin: 32
-            onCheckedChanged: input_custom_fees.text = ""
+            Layout.preferredWidth: 380
+            Layout.alignment: Qt.AlignHCenter
 
+            // Custom fees switch
+            DefaultSwitch
+            {
+                id: custom_fees_switch
+                enabled: !root.is_send_busy
+                Layout.topMargin: 32
+                label.text: qsTr("Enable Custom Fees")
+                onCheckedChanged: input_custom_fees.text = ""
+            }
+
+            // Custom fees warning
             DefaultText
             {
-                anchors.left: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("Enable custom fees")
+                visible: custom_fees_switch.checked
+                font.pixelSize: 14
+                color: Dex.CurrentTheme.noColor
+                text_value: qsTr("Only use custom fees if you know what you are doing!")
             }
-        }
-
-        // Custom fees warning
-        DefaultText
-        {
-            visible: custom_fees_switch.checked
-            font.pixelSize: 14
-            color: Dex.CurrentTheme.noColor
-            text_value: qsTr("Only use custom fees if you know what you are doing!")
         }
 
         // Custom Fees section
@@ -670,7 +670,7 @@ MultipageModal
             text_value: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
         }
 
-        DefaultBusyIndicator { visible: root.is_send_busy }
+        DexBusyIndicator { visible: root.is_send_busy }
 
         // Footer
         RowLayout
@@ -788,11 +788,9 @@ MultipageModal
         // Buttons
         footer:
         [
-            Item
-            {
-                Layout.fillWidth: true
-            },
-            DexAppButton
+            Item { Layout.fillWidth: true },
+
+            DefaultButton
             {
                 text: qsTr("Back")
                 leftPadding: 40
@@ -801,10 +799,9 @@ MultipageModal
                 onClicked: root.currentIndex = 0
                 enabled: !root.is_broadcast_busy
             },
-            Item
-            {
-                Layout.fillWidth: true
-            },
+
+            Item { Layout.fillWidth: true },
+
             DexAppOutlineButton
             {
                 text: qsTr("Send")
@@ -814,10 +811,8 @@ MultipageModal
                 radius: 18
                 enabled: !root.is_broadcast_busy
             },
-            Item
-            {
-                Layout.fillWidth: true
-            }
+
+            Item { Layout.fillWidth: true }
         ]
     }
 

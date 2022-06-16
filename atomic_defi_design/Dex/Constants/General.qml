@@ -43,6 +43,16 @@ QtObject {
         }
     }
 
+    function getNomicsId(ticker) {
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        } else {
+            const nomics_id = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).nomics_id
+            if (nomics_id == 'test-coin') return ""
+            return nomics_id
+        }
+    }
+
     function coinContractAddress(ticker) {
         var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
         if (cfg.hasOwnProperty('protocol')) {
@@ -408,6 +418,14 @@ QtObject {
         const full_double = parseFloat(v).toFixed(precision || amountPrecision)
 
         return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
+    }
+
+    function getComparisonScale(value) {
+        return Math.min(Math.pow(10, getDigitCount(parseFloat(value))), 1000000000)
+    }
+
+    function limitDigits(value) {
+        return parseFloat(formatDouble(value, 2))
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat, precision, trail_zeros) {

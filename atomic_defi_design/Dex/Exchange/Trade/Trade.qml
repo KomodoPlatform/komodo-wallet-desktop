@@ -153,7 +153,7 @@ Item
     Column
     {
         anchors.fill: parent
-        spacing: 20
+        spacing: 15
         anchors.leftMargin: 20
         anchors.rightMargin: 20
 
@@ -163,7 +163,6 @@ Item
             width: parent.width
             height: parent.height * 0.06
 
-            proViewChart: proView.chart
             proViewTickerSelectors: proView.tickerSelectors
             proViewTrInfo: proView.trInfo
             proViewOrderBook: proView.orderBook
