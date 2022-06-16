@@ -39,16 +39,13 @@ Dex.ComboBoxWithSearchBar
     delegate: ItemDelegate
     {
         id: _delegate
-
+        z: 5
         visible: model.ticker !== "All" 
-
         width: control.width
         height: visible ? 60 : 0
         highlighted: control.highlightedIndex === index
 
         contentItem: DexComboBoxLine { details: model }
-        z: 5
-
         background: Dex.DexRectangle
         {
             anchors.fill: _delegate
@@ -76,8 +73,7 @@ Dex.ComboBoxWithSearchBar
             const idx = currentIndex
             if(idx === -1) return prev_details
 
-            const new_details =
-                              {
+            const new_details = {
                 update_count:           _contentRow.update_count,
                 ticker:                 model.data(model.index(idx, 0), 257),
                 name:                   model.data(model.index(idx, 0), 259),
@@ -92,13 +88,11 @@ Dex.ComboBoxWithSearchBar
         Component.onDestruction: portfolio_mdl.portfolioItemDataChanged.disconnect(forceUpdateDetails)
     }
 
-
     onTickerChanged: renewIndex()
     onCurrentIndexChanged: {
         control.index_changed = true
     }
     onVisibleChanged: if (!visible) { searchBar.textField.text = ""; }
-
     onCurrentValueChanged:
     {
         if(control.index_changed) {

@@ -49,7 +49,7 @@ Rectangle
         placeholderText: qsTr("Search")
         placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
 
-        onTextChanged:searchModel.setFilterFixedString(_textField.text)
+        onTextChanged: searchModel.setFilterFixedString(_textField.text)
         font.pixelSize: 14
         Component.onCompleted:
         {
