@@ -58,21 +58,9 @@ Item
                     Layout.preferredWidth: 150
                     Layout.preferredHeight: 38
 
-                    textField.placeholderText: qsTr("Search coin")
+                    textField.placeholderText: qsTr("Search")
                     forceFocus: true
-                    textField.onTextChanged: portfolio_coins.setFilterFixedString(textField.text)
-                    Component.onDestruction: portfolio_coins.setFilterFixedString("")
-
-                    Connections
-                    {
-                        target: root
-
-                        function onResetted()
-                        {
-                            if (searchCoinField.textField.text === "") resetCoinFilter()
-                            else searchCoinField.textField.text = ""
-                        }
-                    }
+                    searchModel: portfolio_coins
                 }
 
                 // Coins list

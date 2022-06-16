@@ -21,8 +21,7 @@ Dex.ComboBoxWithSearchBar
     height: 80
     enabled: !block_everything
 
-    popupMaxHeight: 250
-    popupForceMaxHeight: true
+    popupMaxHeight: 500
 
     model: control.ticker_list
     textRole: "ticker"

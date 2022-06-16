@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.2
 
+import Qaterial 1.0 as Qaterial
+
 import "../Constants"
 import Dex.Themes 1.0 as Dex
 
@@ -56,4 +58,34 @@ Rectangle
             if (forceFocus) _textField.forceActiveFocus()
         }
     }
+
+    DefaultRectangle
+    {
+        id: _clearIcon
+        visible: _textField.text != ""
+        anchors.right: parent.right
+        anchors.rightMargin: searchIconLeftMargin
+        anchors.verticalCenter: parent.verticalCenter
+        color: mouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : "transparent"
+
+        width: 20
+        height: 20
+
+        Qaterial.ColorIcon
+        {
+            anchors.centerIn: parent
+            iconSize: 12
+            color: Dex.CurrentTheme.textPlaceholderColor
+            source: Qaterial.Icons.close
+        }
+
+        DefaultMouseArea
+        {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: _textField.text = ""
+        }
+    }
+
 }
