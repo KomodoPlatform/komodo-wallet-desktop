@@ -10,7 +10,7 @@ Row
 {
     id: selectors
 
-    TickerSelector
+    SearchableTickerSelector
     {
         id: selectorLeft
 
@@ -43,7 +43,7 @@ Row
         }
     }
 
-    TickerSelector
+    SearchableTickerSelector
     {
         id: selectorRight
 

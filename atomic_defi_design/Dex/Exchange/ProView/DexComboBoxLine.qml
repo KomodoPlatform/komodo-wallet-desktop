@@ -22,7 +22,7 @@ RowLayout
     DexImage
     {
         id: icon
-        source: General.coinIcon(ticker)
+        source: General.coinIcon(details.ticker)
         Layout.preferredWidth: 32
         Layout.preferredHeight: 45
         Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft

@@ -110,7 +110,7 @@ Item
         swap_cooldown.restart()
 
         if (API.app.trading_pg.set_pair(is_left_side, changed_ticker))
-            pairChanged(base_ticker, rel_ticker)
+            app.pairChanged(base_ticker, rel_ticker)
     }
 
     function trade(options, default_config) {

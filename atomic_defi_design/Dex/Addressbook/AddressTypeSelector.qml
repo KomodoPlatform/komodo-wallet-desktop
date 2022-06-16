@@ -19,9 +19,12 @@ Dex.ComboBoxWithSearchBar
 
     popupForceMaxHeight: true
     popupMaxHeight: 220
+
     model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy
     textRole: showAssetStandards ? "" : "ticker"
+
     searchBar.visible: !showAssetStandards
+    searchBar.searchModel: model
 
     delegate: ItemDelegate
     {
@@ -64,8 +67,7 @@ Dex.ComboBoxWithSearchBar
 
     onCurrentIndexChanged: if (!showAssetStandards && currentIndex === 0) currentIndex = 1
     onShowAssetStandardsChanged: if (showAssetStandards) currentIndex = 0; else currentIndex = 1
-    onSearchBarTextChanged: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(patternStr)
-    onVisibleChanged: if (!visible) { Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(""); searchBar.text = ""; }
-    Component.onDestruction: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("")
+    onVisibleChanged: if (!visible) { Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(""); searchBar.textField.text = ""; }
+    Component.onDestruction: { Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(""); searchBar.textField.text = ""; }
     Component.onCompleted: if (showAssetStandards) currentIndex = 0; else currentIndex = 1
 }

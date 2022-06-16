@@ -8,12 +8,15 @@ Rectangle
 {
     property int  searchIconLeftMargin: 13
     property bool forceFocus: false
-
+    property var searchModel: API.app.portfolio_pg.global_cfg_mdl.all_proxy
     property alias searchIcon: _searchIcon
     property alias textField: _textField
 
     color: Dex.CurrentTheme.accentColor
     radius: 18
+    signal searchBarTextChanged(var patternStr)
+
+    onSearchBarTextChanged: searchModel.setFilterFixedString(_textField.text)
 
     DexImage
     {
@@ -35,7 +38,7 @@ Rectangle
         }
     }
 
-    DexTextField
+    DefaultTextField
     {
         id: _textField
 
@@ -48,6 +51,7 @@ Rectangle
 
         placeholderText: qsTr("Search")
         placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
+        onTextChanged: searchBarTextChanged(text)
         font.pixelSize: 14
         Component.onCompleted:
         {

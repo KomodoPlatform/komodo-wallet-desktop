@@ -1,0 +1,130 @@
+import QtQuick 2.12
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.3
+
+import Qaterial 1.0 as Qaterial
+
+import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
+import "../../Components" as Dex
+import "../../Constants" as Dex
+
+Dex.ComboBoxWithSearchBar
+{
+    id: control
+    property var    currentItem: model.index(currentIndex, 0)
+    property bool   left_side: false
+    property var    ticker_list
+    property string ticker
+    // Indicates user input, when list changes, index stays the same so we know it's not user input
+    property bool index_changed: false
+    
+    height: 80
+    enabled: !block_everything
+
+    popupMaxHeight: 250
+    popupForceMaxHeight: true
+
+    model: control.ticker_list
+    textRole: "ticker"
+    valueRole: "ticker"
+
+    searchBar.visible: true
+    searchBar.searchModel: control.ticker_list
+
+    function renewIndex()
+    {
+        control.currentIndex = control.indexOfValue(control.ticker)
+    }
+
+    delegate: ItemDelegate
+    {
+        id: _delegate
+
+        visible: model.ticker !== "All" 
+
+        width: control.width
+        height: visible ? 60 : 0
+        highlighted: control.highlightedIndex === index
+
+        contentItem: DexComboBoxLine { details: model }
+        z: 5
+
+        background: Dex.DexRectangle
+        {
+            anchors.fill: _delegate
+            color: _delegate.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
+        }
+    }
+
+    contentItem: DexComboBoxLine
+    {
+        id: _contentRow
+
+        property int update_count: 0
+        property var prev_details
+
+        padding: 10
+
+        function forceUpdateDetails()
+        {
+            console.log("Portfolio item data changed, force-updating the selected ticker details!")
+            ++update_count
+        }
+
+        details:
+        {
+            const idx = currentIndex
+            if(idx === -1) return prev_details
+
+            // Update count triggers the change for auto-update
+            const new_details =
+                              {
+                update_count:           _contentRow.update_count,
+                ticker:                 model.data(model.index(idx, 0), 257),
+                name:                   model.data(model.index(idx, 0), 259),
+                balance:                model.data(model.index(idx, 0), 260),
+                main_currency_balance:  model.data(model.index(idx, 0), 261)
+            }
+
+            prev_details = new_details
+            return new_details
+        }
+        Component.onCompleted: portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
+        Component.onDestruction: portfolio_mdl.portfolioItemDataChanged.disconnect(forceUpdateDetails)
+    }
+
+
+    onTickerChanged: renewIndex()
+    // onCurrentIndexChanged: if (currentIndex === 0) currentIndex = 1
+    onCurrentIndexChanged: {
+        control.index_changed = true
+    }
+    onVisibleChanged: if (!visible) { searchBar.textField.text = ""; }
+
+    onCurrentValueChanged:
+    {
+        // User input
+        if(control.index_changed) {
+            control.index_changed = false
+            // Set the ticker
+            if(currentValue !== undefined)
+                setPair(left_side, currentValue)
+        }
+        // List change
+        else {
+            // Correct the index
+            if(currentText.indexOf(ticker) === -1) {
+                const target_index = indexOfValue(ticker)
+                if(currentIndex !== target_index)
+                    currentIndex = target_index
+            }
+        }
+    }
+    searchBar.textField.onTextChanged: {
+        control.ticker_list.setFilterFixedString(searchBar.textField.text)
+        renewIndex()
+    }
+    Component.onCompleted: renewIndex()
+    Component.onDestruction: searchBar.textField.text = "";
+}
