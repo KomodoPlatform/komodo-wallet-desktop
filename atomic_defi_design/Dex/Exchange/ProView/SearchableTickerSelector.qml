@@ -16,7 +16,6 @@ Dex.ComboBoxWithSearchBar
     property bool   left_side: false
     property var    ticker_list
     property string ticker
-    // Indicates user input, when list changes, index stays the same so we know it's not user input
     property bool index_changed: false
     
     height: 80
@@ -77,7 +76,6 @@ Dex.ComboBoxWithSearchBar
             const idx = currentIndex
             if(idx === -1) return prev_details
 
-            // Update count triggers the change for auto-update
             const new_details =
                               {
                 update_count:           _contentRow.update_count,
@@ -96,7 +94,6 @@ Dex.ComboBoxWithSearchBar
 
 
     onTickerChanged: renewIndex()
-    // onCurrentIndexChanged: if (currentIndex === 0) currentIndex = 1
     onCurrentIndexChanged: {
         control.index_changed = true
     }
@@ -104,16 +101,12 @@ Dex.ComboBoxWithSearchBar
 
     onCurrentValueChanged:
     {
-        // User input
         if(control.index_changed) {
             control.index_changed = false
-            // Set the ticker
             if(currentValue !== undefined)
                 setPair(left_side, currentValue)
         }
-        // List change
         else {
-            // Correct the index
             if(currentText.indexOf(ticker) === -1) {
                 const target_index = indexOfValue(ticker)
                 if(currentIndex !== target_index)
