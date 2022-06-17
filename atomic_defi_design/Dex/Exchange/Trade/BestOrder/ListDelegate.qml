@@ -181,6 +181,7 @@ Item
             }
             else
             {
+                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
                 if (API.app.trading_pg.market_mode == MarketMode.Buy)
                 {
                     app.pairChanged(rel_ticker, coin)
@@ -190,7 +191,6 @@ Item
                     app.pairChanged(base_ticker, coin)
                 }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
-                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
             }
         }
     }
