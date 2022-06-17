@@ -30,10 +30,11 @@ MultipageModal
         titleText: !details ? "" : details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
         title.font.pixelSize: Style.textSize2
         titleAlignment: Qt.AlignHCenter
-        titleTopMargin: 15
-        topMarginAfterTitle: 15
+        titleTopMargin: 10
+        topMarginAfterTitle: 10
+        flickMax: window.height - 450
 
-        Layout.preferredHeight: window.height - 50
+        //Layout.preferredHeight: window.height - 100
 
         header: [
             // Complete image
@@ -57,7 +58,7 @@ MultipageModal
 
             RowLayout
             {
-                Layout.topMargin: 15
+                Layout.topMargin: 10
                 height: 70
 
                 PairItemBadge
