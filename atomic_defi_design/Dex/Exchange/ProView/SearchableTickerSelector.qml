@@ -18,14 +18,15 @@ Dex.ComboBoxWithSearchBar
     property string ticker
     property bool index_changed: false
     
-    height: 80
+    height: 60
     enabled: !block_everything
-
-    popupMaxHeight: 500
 
     model: control.ticker_list
     textRole: "ticker"
     valueRole: "ticker"
+
+    popupMaxHeight: Math.min(model.rowCount() * 70 + 70, 600)
+    popupForceMaxHeight: true
 
     searchBar.visible: true
     searchBar.searchModel: control.ticker_list
