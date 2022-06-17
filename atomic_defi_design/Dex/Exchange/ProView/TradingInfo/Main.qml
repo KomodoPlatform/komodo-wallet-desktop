@@ -17,16 +17,31 @@ Widget
     background: null
     margins: 0
 
+    Connections
+    {
+        target: exchange_trade
+        function onBackend_priceChanged() { tabView.currentIndex = 0; }
+        function onBackend_volumeChanged() { tabView.currentIndex = 0; }
+    }
+
     Qaterial.LatoTabBar
     {
         id: tabView
-        property int order_idx: 0
-        property int history_idx: 1
-        property int pair_chart_idx: 2
+        property int pair_chart_idx: 0
+        property int order_idx: 1
+        property int history_idx: 2
 
         background: null
         Layout.leftMargin: 6
 
+        Qaterial.LatoTabButton
+        {
+            text: qsTr("Chart")
+            font.pixelSize: 14
+            textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+            textSecondaryColor: Dex.CurrentTheme.foregroundColor2
+            indicatorColor: Dex.CurrentTheme.foregroundColor
+        }
         Qaterial.LatoTabButton
         {
             text: qsTr("Orders")
@@ -38,14 +53,6 @@ Widget
         Qaterial.LatoTabButton
         {
             text: qsTr("History")
-            font.pixelSize: 14
-            textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
-            textSecondaryColor: Dex.CurrentTheme.foregroundColor2
-            indicatorColor: Dex.CurrentTheme.foregroundColor
-        }
-        Qaterial.LatoTabButton
-        {
-            text: qsTr("Chart")
             font.pixelSize: 14
             textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             textSecondaryColor: Dex.CurrentTheme.foregroundColor2
@@ -67,18 +74,6 @@ Widget
             interactive: false
             currentIndex: tabView.currentIndex
             anchors.fill: parent
-            onCurrentIndexChanged:
-            {
-                swipeView.currentItem.update();
-            }
-
-            OrdersPage { clip: true }
-
-            OrdersPage
-            {
-                is_history: true
-                clip: true
-            }
 
             ColumnLayout
             {
@@ -105,6 +100,19 @@ Widget
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
+            }
+
+            onCurrentIndexChanged:
+            {
+                swipeView.currentItem.update();
+            }
+
+            OrdersPage { clip: true }
+
+            OrdersPage
+            {
+                is_history: true
+                clip: true
             }
         }
     }
