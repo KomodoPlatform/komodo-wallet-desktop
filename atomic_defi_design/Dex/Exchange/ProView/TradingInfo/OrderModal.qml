@@ -32,9 +32,9 @@ MultipageModal
         titleAlignment: Qt.AlignHCenter
         titleTopMargin: 10
         topMarginAfterTitle: 10
-        flickMax: 350
+        flickMax: window.height - 450
 
-        Layout.preferredHeight: window.height - 100
+        //Layout.preferredHeight: window.height - 100
 
         header: [
             // Complete image
