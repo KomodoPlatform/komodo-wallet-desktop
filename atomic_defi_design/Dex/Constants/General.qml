@@ -342,7 +342,7 @@ QtObject {
     }
 
     function viewTxAtExplorer(ticker, txid, add_0x=true) {
-        if(id !== '') {
+        if(txid !== '') {
             Qt.openUrlExternally(getTxExplorerURL(ticker, txid, add_0x))
         }
     }
