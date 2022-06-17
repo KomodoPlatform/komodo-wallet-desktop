@@ -112,7 +112,10 @@ MultipageModal
                     model: !details ?
                            [] : details.to.length > 1 ?
                            General.arrayExclude(details.to, details.from[0]) : details.to
-                    linkURL: !details ? "" :General.getAddressExplorerURL(api_wallet_page.ticker, details.to)
+                    linkURL: !details ? ""
+                            :  details.to.length > 1
+                            ? General.getAddressExplorerURL(api_wallet_page.ticker, General.arrayExclude(details.to, details.from[0]))
+                            : General.getAddressExplorerURL(api_wallet_page.ticker, details.to)
                     onCopyNotificationTitle: qsTr("To address")
                 }
             }

@@ -559,6 +559,7 @@ ClipRRect // Trade Card
                     DefaultText
                     {
                         id: _bestOrderTickerText
+                        enabled: typeof selectedOrder !== 'undefined'
 
                         enabled: _bestOrderIcon.enabled
                         visible: _bestOrderIcon.visible
