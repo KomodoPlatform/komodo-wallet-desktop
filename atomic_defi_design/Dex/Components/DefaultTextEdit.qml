@@ -40,7 +40,7 @@ TextEdit
         copyText: control.text_value
         notifyTitle: control.onCopyNotificationTitle
         notifyMsg: control.onCopyNotificationMsg
-        xPos: control.implicitWidth + 6
+        x: control.implicitWidth + 6
         iconSize: 14
     }
 
@@ -48,7 +48,7 @@ TextEdit
     {
         anchors.verticalCenter: parent.verticalCenter
         linkURL: control.linkURL
-        xPos: control.onCopyNotificationTitle == '' ? control.implicitWidth + 6 : control.implicitWidth + copy_icon.implicitWidth + 8
+        x: control.onCopyNotificationTitle == '' ? control.implicitWidth + 6 : control.implicitWidth + copy_icon.implicitWidth + 8
         iconSize: 14
     }
 }

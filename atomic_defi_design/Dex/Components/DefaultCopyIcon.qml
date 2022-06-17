@@ -5,8 +5,6 @@ import App 1.0
 
 Qaterial.Icon
 {
-
-    property int xPos: 0
     property int iconSize: 14
     property string copyText: ""
     property string notifyTitle: ""
@@ -14,7 +12,6 @@ Qaterial.Icon
 
     Layout.alignment: Qt.AlignVCenter
 
-    x: xPos
     size: iconSize
     icon: Qaterial.Icons.contentCopy
     color: copyArea.containsMouse ? Style.colorText2 : DexTheme.foregroundColor

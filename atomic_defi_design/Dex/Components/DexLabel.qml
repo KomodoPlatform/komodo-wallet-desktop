@@ -9,7 +9,6 @@ import Dex.Themes 1.0 as Dex
 Text
 {
     property string text_value
-    property bool   enabled: true
     property bool   privacy: false
     property bool   monospace: false
 
