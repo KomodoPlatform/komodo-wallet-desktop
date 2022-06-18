@@ -40,7 +40,7 @@ Qaterial.Dialog
 
     function disconnect()
     {
-        let dialog = app.showText(
+        let dialog = app.showDialog(
         {
             "title": qsTr("Confirm Logout"),
             text: qsTr("Are you sure you want to log out?"),
@@ -305,7 +305,7 @@ Qaterial.Dialog
 
                                 onClicked:
                                 {
-                                    dialog = app.showText(
+                                    dialog = app.showDialog(
                                     {
                                         title: qsTr("Reset wallet configuration"),
                                         text: qsTr("This will restart your wallet with default settings"),

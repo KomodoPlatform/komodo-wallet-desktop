@@ -69,6 +69,7 @@ Item
 
                     width: 206
                     height: 42
+                    textField.forceFocus: true
                     textField.placeholderText: qsTr("Search contact")
 
                     textField.onTextChanged: Dex.API.app.addressbookPg.model.proxy.searchExp = textField.text

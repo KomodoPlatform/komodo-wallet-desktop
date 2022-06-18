@@ -15,9 +15,8 @@ Item
     property int leftWidth: -1
     property int max_length: 180
 
-    property alias value: input_field.text
-
     property alias field: input_field
+    property alias value: input_field.text
     property alias background: _background
 
     property string leftText: ""
@@ -25,6 +24,7 @@ Item
     property string placeholderText: ""
 
     property bool error: false
+
     onErrorChanged:
     {
         if (error)
@@ -33,6 +33,7 @@ Item
             _animate.start()
         }
     }
+
     Timer
     {
         id: _animationTimer
@@ -43,11 +44,13 @@ Item
             _background.x = 0
         }
     }
+
     Timer
     {
         id: _animate
         interval: 30
         repeat: true
+
         onTriggered:
         {
             if (_background.x == -3)
@@ -65,6 +68,7 @@ Item
     {
         input_field.text = ""
     }
+
     Rectangle
     {
         id: _background
@@ -74,6 +78,7 @@ Item
         color: Dex.CurrentTheme.backgroundColor
         border.color: control.error ? Dex.CurrentTheme.noColor : input_field.focus ? Dex.CurrentTheme.accentColor : color
         border.width: input_field.focus ? 1 : 0
+
         Behavior on x
         {
             NumberAnimation
@@ -89,11 +94,13 @@ Item
         anchors.leftMargin: 5
         anchors.rightMargin: 5
         spacing: 2
+
         Item
         {
             visible: leftText !== ""
             Layout.preferredWidth: leftWidth !== -1 ? leftWidth : _title_label.implicitWidth + 2
             Layout.fillHeight: true
+
             DexLabel
             {
                 id: _title_label
@@ -107,10 +114,12 @@ Item
                 font.weight: Font.Medium
             }
         }
+
         Item
         {
             Layout.fillWidth: true
             Layout.fillHeight: true
+
             Rectangle
             {
                 anchors.fill: parent
@@ -118,9 +127,20 @@ Item
                 anchors.bottomMargin: 1
                 radius: _background.radius
                 color: background.color
+
                 DexTextField
                 {
                     id: input_field
+                    anchors.fill: parent
+                    horizontalAlignment: Qt.AlignLeft
+
+                    font.weight: Font.Medium
+                    font.family: 'Lato'
+                    font.pixelSize: 13
+                    echoMode: TextInput.Normal
+                    background: Item
+                    {}
+
                     onTextChanged:
                     {
                         if (text.length > control.max_length)
@@ -129,15 +149,9 @@ Item
                         }
                         control.error = false
                     }
-                    horizontalAlignment: Qt.AlignLeft
-                    echoMode: TextInput.Normal
-                    background: Item
-                    {}
-                    font.weight: Font.Medium
-                    font.family: 'Lato'
-                    font.pixelSize: 13
-                    anchors.fill: parent
+
                 }
+
                 DexLabel
                 {
                     text: control.placeholderText
@@ -153,11 +167,13 @@ Item
                 }
             }
         }
+
         Item
         {
             visible: rightText !== ""
             Layout.preferredWidth: _suffix_label.implicitWidth + 2
             Layout.fillHeight: true
+
             DexLabel
             {
                 id: _suffix_label

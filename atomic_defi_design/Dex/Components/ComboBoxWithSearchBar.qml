@@ -55,6 +55,7 @@ ComboBox
                 Layout.rightMargin: 5
                 Layout.preferredHeight: 40
                 searchModel: control.delegateModel
+                textField.forceFocus: true
             }
 
             DefaultListView
