@@ -709,7 +709,15 @@ namespace atomic_dex
                                     }
                                 }
 
-                                for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }
+                                if (!to_remove.empty())
+                                {
+                                    std::vector<std::string> disable_coins;
+                                    for (auto&& t: to_remove) {
+                                        tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end());
+                                        disable_coins.push_back(t);
+                                    }
+                                    update_coin_status(this->m_current_wallet_name, disable_coins, false, m_coins_informations, m_coin_cfg_mutex);
+                                }
 
                                 if (!tickers.empty())
                                 {
@@ -725,6 +733,7 @@ namespace atomic_dex
                                         fetch_single_balance(get_coin_info(tickers[0]));
                                     }
                                     // batch_balance_and_tx(false, tickers, true);
+                                    update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
                                 }
                             }
                         }
@@ -766,7 +775,6 @@ namespace atomic_dex
     mm2_service::enable_multiple_coins(const std::vector<std::string>& tickers)
     {
         batch_enable_coins(tickers);
-        update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
     }
 
     coin_config
