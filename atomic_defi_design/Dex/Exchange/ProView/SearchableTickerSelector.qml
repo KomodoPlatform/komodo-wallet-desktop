@@ -31,11 +31,6 @@ Dex.ComboBoxWithSearchBar
     searchBar.visible: true
     searchBar.searchModel: control.ticker_list
 
-    function renewIndex()
-    {
-        control.currentIndex = control.indexOfValue(control.ticker)
-    }
-
     delegate: ItemDelegate
     {
         id: _delegate
@@ -88,11 +83,9 @@ Dex.ComboBoxWithSearchBar
         Component.onDestruction: portfolio_mdl.portfolioItemDataChanged.disconnect(forceUpdateDetails)
     }
 
-    onTickerChanged: renewIndex()
     onCurrentIndexChanged: {
         control.index_changed = true
     }
-    onVisibleChanged: if (!visible) { searchBar.textField.text = ""; }
     onCurrentValueChanged:
     {
         if(control.index_changed) {
@@ -108,10 +101,8 @@ Dex.ComboBoxWithSearchBar
             }
         }
     }
+    searchBar.onVisibleChanged: if (!visible) { searchBar.textField.text = ""; }
     searchBar.textField.onTextChanged: {
         control.ticker_list.setFilterFixedString(searchBar.textField.text)
-        renewIndex()
     }
-    Component.onCompleted: renewIndex()
-    Component.onDestruction: searchBar.textField.text = "";
 }
