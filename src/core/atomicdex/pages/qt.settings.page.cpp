@@ -614,7 +614,10 @@ namespace atomic_dex
             //! set active coins again
             for (auto&& key: active_coins_registry)
             {
-                wallet_config_json_data[key]["active"] = true;
+                if (wallet_config_json_data.contains(key))
+                {
+                    wallet_config_json_data[key]["active"] = true;
+                }
             }
             
             //! Write
