@@ -36,7 +36,6 @@ MultipageModal
         filterCoins("");
         setCheckState(false);
         coin_cfg_model.checked_nb = 0;
-        input_coin_filter.forceActiveFocus();
     }
 
     onClosed: 
@@ -64,7 +63,7 @@ MultipageModal
             Layout.fillWidth: true
             Layout.preferredHeight: 44
             textField.placeholderText: qsTr("Search asset")
-
+            textField.forceFocus: true
             textField.onTextChanged: filterCoins()
         }
 

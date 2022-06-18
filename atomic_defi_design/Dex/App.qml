@@ -422,15 +422,10 @@ DexRectangle
         return dialog
     }
 
-    function showText(data)
-    {
-        return showDialog(data);
-    }
-
     function getText(data)
     {
         data['getText'] = true;
-        return showText(data);
+        return showDialog(data);
     }
 
     Component.onCompleted: 

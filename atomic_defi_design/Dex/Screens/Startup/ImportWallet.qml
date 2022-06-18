@@ -158,6 +158,7 @@ SetupPage
                     field.placeholderText: qsTr("Wallet Name")
                     field.onAccepted: tryPassLevel1()
                     field.onTextChanged: text_error = General.validateWallet(input_wallet_name.field.text)
+                    field.forceFocus: true
 
                     DefaultRectangle
                     {
@@ -231,6 +232,7 @@ SetupPage
                                 closePolicy: Popup.NoAutoClose,
                                 text: qsTr("Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).<br><br>To confirm you understand the risk and know what you are doing, type <strong>'I understand'</strong> in the box below."),
                                 placeholderText: qsTr("I understand"),
+                                forceFocus: true,
                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                 validator: (text) =>
                                 {

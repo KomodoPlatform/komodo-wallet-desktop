@@ -80,4 +80,8 @@ TextField
     {
         if (forceFocus) text_field.forceActiveFocus()
     }
+
+    onVisibleChanged: {
+        if (forceFocus && visible) text_field.forceActiveFocus()
+    }
 }

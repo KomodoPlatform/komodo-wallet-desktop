@@ -9,10 +9,10 @@ import Dex.Themes 1.0 as Dex
 Rectangle
 {
     property int  searchIconLeftMargin: 13
-    property bool forceFocus: false
     property var searchModel: API.app.portfolio_pg.global_cfg_mdl.all_proxy
     property alias searchIcon: _searchIcon
     property alias textField: _textField
+    property alias forceFocus: _textField.forceFocus
 
     color: Dex.CurrentTheme.accentColor
     radius: 18
@@ -45,7 +45,6 @@ Rectangle
         anchors.verticalCenter: parent.verticalCenter
         width: parent.width - x - 5
         height: parent.height
-
         background: null
 
         placeholderText: qsTr("Search")
@@ -53,10 +52,6 @@ Rectangle
 
         onTextChanged: searchModel.setFilterFixedString(_textField.text)
         font.pixelSize: 14
-        Component.onCompleted:
-        {
-            if (forceFocus) _textField.forceActiveFocus()
-        }
     }
 
     DefaultRectangle
