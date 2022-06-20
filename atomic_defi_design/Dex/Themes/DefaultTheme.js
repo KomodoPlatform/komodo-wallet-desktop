@@ -62,7 +62,7 @@ function getHardcoded()
         tabSelectedColor: "#DCE8FDFF",
 
         textDisabledColor: "#C5CFD8FF",
-        textSelectionColor: "#14BCA6FF",
+        textSelectionColor: "#4986EAFF",
         textPlaceholderColor: "#91A8E8FF",
         textSelectedColor: "#f9f9fbFF",
 

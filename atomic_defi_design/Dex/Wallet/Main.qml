@@ -27,6 +27,7 @@ Item
     readonly property string headerTextFont: Style.textSize
     readonly property string headerSmallTitleFont: Style.textSizeSmall4
     readonly property string headerSmallFont: Style.textSizeSmall2
+    readonly property string addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
 
     function loadingPercentage(remaining) {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
@@ -934,30 +935,34 @@ Item
                     height: parent.height
                     spacing: 12
 
-                    DefaultText {
+                    DefaultText
+                    {
                         Layout.topMargin: 24
                         Layout.alignment: Qt.AlignHCenter
-                        text_value: api_wallet_page.tx_fetching_busy
-                            ? (qsTr("Refreshing") + "...")
-                            : qsTr('No transactions available. Check the block explorer at:')
+                        text_value: api_wallet_page.tx_fetching_busy ? qsTr("Refreshing...") : qsTr('No transactions available.')
                         font.pixelSize: Style.textSize
                     }
 
                     DefaultText
                     {
-                        id: explorer_link
+                        id: explorerLink
                         Layout.alignment: Qt.AlignHCenter
-                        visible: !api_wallet_page.tx_fetching_busy
+                        visible: !api_wallet_page.tx_fetching_busy && addressURL != ""
                         font.pixelSize: Style.textSize
-                        text_value: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
+                        text_value:  qsTr("Check the block explorer at: ") + addressURL
                         enabled: !explorer_mouseArea.containsMouse
+                        color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
+                    }
 
-                        MouseArea {
-                            id: explorer_mouseArea
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            hoverEnabled: true
-                            onClicked: Qt.openUrlExternally(explorer_link.text_value)
+                    DefaultMouseArea
+                    {
+                        id: explorer_mouseArea
+                        anchors.fill: explorerLink
+                        cursorShape: Qt.PointingHandCursor
+                        hoverEnabled: true
+                        onClicked: {
+                            console.log(addressURL)
+                            Qt.openUrlExternally(addressURL)
                         }
                     }
 
