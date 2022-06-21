@@ -26,7 +26,7 @@ MultipageModal
         titleAlignment: Qt.AlignHCenter
         titleTopMargin: 10
         topMarginAfterTitle: 0
-        Layout.preferredHeight: window.height - 50
+        flickMax: window.height - 450
 
         header: [
             RowLayout
@@ -104,7 +104,7 @@ MultipageModal
             DefaultRectangle {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredHeight: fees_detail.height + 20
-                Layout.preferredWidth: parent.width - 60
+                Layout.preferredWidth: parent.width - 40
                 color: DexTheme.contentColorTop
                 visible: root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy
 
