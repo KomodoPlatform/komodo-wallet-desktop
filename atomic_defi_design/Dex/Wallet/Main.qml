@@ -27,6 +27,7 @@ Item
     readonly property string headerTextFont: Style.textSize
     readonly property string headerSmallTitleFont: Style.textSizeSmall4
     readonly property string headerSmallFont: Style.textSizeSmall2
+    readonly property string addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
 
     function loadingPercentage(remaining) {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
@@ -871,6 +872,7 @@ Item
 
             ClipRRect
             {
+                id: clip_rect
                 radius: parent.radius
                 width: transactions_bg.width
                 height: transactions_bg.height
@@ -886,21 +888,30 @@ Item
                     }
                 }
 
-                DefaultText
+                Transactions
                 {
-                    anchors.centerIn: parent
-                    visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
-                    text_value: api_wallet_page.tx_fetching_busy ? '' : qsTr("No transactions")
-                    font.pixelSize: Style.textSize
+                    width: parent.width
+                    height: parent.height
+                    model: transactions_mdl.proxy_mdl
                 }
 
                 ColumnLayout
                 {
-                    id: fetching_text_row
-                    anchors.centerIn: parent
-                    visible: api_wallet_page.tx_fetching_busy
 
-                    spacing: 20
+                    visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
+                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    spacing: 24
+
+                    DefaultText
+                    {
+                        id: fetching_text_row
+                        Layout.topMargin: 24
+                        Layout.alignment: Qt.AlignHCenter
+                        text_value: api_wallet_page.tx_fetching_busy ? qsTr("Fetching transactions...") : qsTr('No transactions available.')
+                        font.pixelSize: Style.textSize
+                    }
+
                     DefaultBusyIndicator
                     {
                         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
@@ -908,22 +919,35 @@ Item
                         Layout.preferredHeight: Layout.preferredWidth
                         indicatorSize: 32
                         indicatorDotSize: 5
+                        visible: api_wallet_page.tx_fetching_busy
                     }
 
-                    DefaultText
+                    DefaultMouseArea
                     {
-                        id: fetching_text
+                        id: explorer_mouseArea
+                        cursorShape: Qt.PointingHandCursor
                         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                        text_value: qsTr("Fetching transactions") + "..."
-                        font.pixelSize: Style.textSize
-                    }
-                }
+                        width:  childrenRect.width
+                        height: childrenRect.height
+                        hoverEnabled: true
+                        onClicked: {
+                            console.log(addressURL)
+                            Qt.openUrlExternally(addressURL)
+                        }
 
-                Transactions
-                {
-                    width: parent.width
-                    height: parent.height
-                    model: transactions_mdl.proxy_mdl
+                        DefaultText
+                        {
+                            id: explorerLink
+                            visible: !api_wallet_page.tx_fetching_busy && addressURL != ""
+                            font.pixelSize: Style.textSize
+                            text_value:  qsTr("View block explorer at ") + addressURL
+                            enabled: !explorer_mouseArea.containsMouse
+                            color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
+                        }
+
+                    }
+
+                    Item { Layout.fillHeight: true }
                 }
             }
         }

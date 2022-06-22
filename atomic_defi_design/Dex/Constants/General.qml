@@ -325,18 +325,31 @@ QtObject {
         return JSON.stringify(j_obj, null, 4)
     }
 
-    function viewTxAtExplorer(ticker, id, add_0x=true) {
-        if(id !== '') {
+    function getTxExplorerURL(ticker, txid, add_0x=true) {
+        if(txid !== '') {
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-            const id_prefix = (add_0x && coin_info.is_erc_family) ? '0x' : ''
-            Qt.openUrlExternally(coin_info.explorer_url + coin_info.tx_uri + id_prefix + id)
+            const txid_prefix = (add_0x && coin_info.is_erc_family) ? '0x' : ''
+            return coin_info.explorer_url + coin_info.tx_uri + txid_prefix + txid
+        }
+    }
+
+    function getAddressExplorerURL(ticker, address) {
+        if(address !== '') {
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+            return coin_info.explorer_url + coin_info.address_uri + address
+        }
+        return ""
+    }
+
+    function viewTxAtExplorer(ticker, txid, add_0x=true) {
+        if(txid !== '') {
+            Qt.openUrlExternally(getTxExplorerURL(ticker, txid, add_0x))
         }
     }
 
     function viewAddressAtExplorer(ticker, address) {
         if(address !== '') {
-            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-            Qt.openUrlExternally(coin_info.explorer_url + coin_info.address_uri + address)
+            Qt.openUrlExternally(getAddressExplorerURL(ticker, address))
         }
     }
 

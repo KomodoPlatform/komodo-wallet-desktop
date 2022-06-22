@@ -62,8 +62,9 @@ MultipageModal
             id: txHash
             title: qsTr("Transaction Hash")
             text: !details ? "" : details.tx_hash
-            label.font.pixelSize: 13
+            label.font.pixelSize: 11
             privacy: true
+            linkURL: !details ? "" :General.getTxExplorerURL(api_wallet_page.ticker, details.tx_hash, false)
             copy: true
 
             onCopyNotificationTitle: qsTr("Transactions")
@@ -101,6 +102,8 @@ MultipageModal
                     title: qsTr("From")
                     model: !details ? [] :
                             details.from
+                    linkURL: !details ? "" :General.getAddressExplorerURL(api_wallet_page.ticker, details.from)
+                    onCopyNotificationTitle: qsTr("From address")
                 }
 
                 AddressList {
@@ -109,6 +112,11 @@ MultipageModal
                     model: !details ?
                            [] : details.to.length > 1 ?
                            General.arrayExclude(details.to, details.from[0]) : details.to
+                    linkURL: !details ? ""
+                            :  details.to.length > 1
+                            ? General.getAddressExplorerURL(api_wallet_page.ticker, General.arrayExclude(details.to, details.from[0]))
+                            : General.getAddressExplorerURL(api_wallet_page.ticker, details.to)
+                    onCopyNotificationTitle: qsTr("To address")
                 }
             }
         }
