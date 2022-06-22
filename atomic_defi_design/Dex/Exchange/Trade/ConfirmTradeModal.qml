@@ -94,7 +94,7 @@ MultipageModal
             readonly property var default_config: API.app.trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
             readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization || false
 
-            width: parent.width - 60
+            width: dex_pair_badges.width - 20
             Layout.alignment: Qt.AlignCenter
             Layout.topMargin: 10
 
@@ -104,7 +104,7 @@ MultipageModal
             DefaultRectangle {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredHeight: fees_detail.height + 20
-                Layout.preferredWidth: parent.width - 40
+                Layout.preferredWidth: parent.width - 10
                 color: DexTheme.contentColorTop
                 visible: root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy
 
