@@ -3587,6 +3587,23 @@
     "active": false,
     "currently_enabled": false
   },
+  "JJPY-PLG20": {
+    "coin": "JJPY-PLG20",
+    "name": "Jarvis Japanese Yen",
+    "forex_id": "JPY",
+    "coinpaprika_id": "jarvis-synthetic-japanese-yen",
+    "coingecko_id": "test-coin",
+    "nomics_id": "JJPY",
+    "nodes": [
+      "https://polygon-rpc.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "JPYC-ERC20": {
     "coin": "JPYC-ERC20",
     "name": "JPY Coin",

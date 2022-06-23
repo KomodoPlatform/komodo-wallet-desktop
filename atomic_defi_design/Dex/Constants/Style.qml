@@ -335,6 +335,7 @@ QtObject {
                                           "JCHF": "#D80027",
                                           "JEUR": "#003399",
                                           "JGBP": "#C8102E",
+                                          "JJPY": "#BC002D",
                                           "JRT": "#5EFC84",
                                           "SUPERNET": "#F69B57",
                                           "REVS": "#F69B57",
