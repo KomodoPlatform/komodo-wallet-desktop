@@ -19,13 +19,6 @@ Widget
     background: null
     margins: 0
 
-    Connections
-    {
-        target: exchange_trade
-        function onBackend_priceChanged() { tabView.currentIndex = 0; }
-        function onBackend_volumeChanged() { tabView.currentIndex = 0; }
-    }
-
     Qaterial.LatoTabBar
     {
         id: tabView
