@@ -114,7 +114,7 @@ Dex.MultipageModal
             Dex.DefaultButton
             {
                 Layout.preferredWidth: 120
-                text: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? qsTr("Close Dex") : qsTr("Close Dex")
+                text: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? qsTr("Close Dex") : qsTr("Close")
                 onClicked: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? Qt.exit(0) : close()
             }
         ]
