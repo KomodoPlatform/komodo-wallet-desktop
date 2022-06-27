@@ -7327,10 +7327,12 @@
     "nomics_id": "TKL2",
     "electrum": [
       {
-        "url": "1.eu.tokel.electrum.dexstats.info:10077"
+        "url": "1.eu.tokel.electrum.dexstats.info:10077",
+        "ws_url": "1.eu.tokel.electrum.dexstats.info:9077"
       },
       {
-        "url": "2.eu.tokel.electrum.dexstats.info:10077"
+        "url": "2.eu.tokel.electrum.dexstats.info:10077",
+        "ws_url": "2.eu.tokel.electrum.dexstats.info:9077"
       }
     ],
     "explorer_url": [
