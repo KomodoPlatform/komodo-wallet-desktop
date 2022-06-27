@@ -8,8 +8,8 @@ import Dex.Themes 1.0 as Dex
 
 Rectangle
 {
-    property int  searchIconLeftMargin: 13
-    property var searchModel: API.app.portfolio_pg.global_cfg_mdl.all_proxy
+    property int   searchIconLeftMargin: 13
+    property var   searchModel: API.app.portfolio_pg.global_cfg_mdl.all_proxy
     property alias searchIcon: _searchIcon
     property alias textField: _textField
     property alias forceFocus: _textField.forceFocus
@@ -46,12 +46,13 @@ Rectangle
         width: parent.width - x - 5
         height: parent.height
         background: null
+        font.pixelSize: 14
 
         placeholderText: qsTr("Search")
         placeholderTextColor: Dex.CurrentTheme.textPlaceholderColor
 
         onTextChanged: searchModel.setFilterFixedString(_textField.text)
-        font.pixelSize: 14
+        Component.onDestruction: searchModel.setFilterFixedString("")
     }
 
     DefaultRectangle
@@ -82,5 +83,4 @@ Rectangle
             onClicked: _textField.text = ""
         }
     }
-
 }
