@@ -12,6 +12,8 @@ import "../../ProView"
 
 Widget
 {
+    property alias currentIndex: tabView.currentIndex
+
     title: qsTr("Trading Information")
 
     background: null
