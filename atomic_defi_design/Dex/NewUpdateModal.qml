@@ -155,6 +155,10 @@ Dex.MultipageModal
                 {
                     root.open()
                 }
+                else
+                {
+                    console.error(Dex.API.app.updateCheckerService.udpateInfo.status)
+                }
             }
         }
     }
