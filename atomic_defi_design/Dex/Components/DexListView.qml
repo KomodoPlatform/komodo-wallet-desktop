@@ -19,7 +19,6 @@ ListView
     implicitWidth: contentItem.childrenRect.width
     clip: true
 
-    // Opacity animation
     opacity: root.count === 0 ? 0 : enabled ? 1 : 0.2
 
     Behavior on opacity
