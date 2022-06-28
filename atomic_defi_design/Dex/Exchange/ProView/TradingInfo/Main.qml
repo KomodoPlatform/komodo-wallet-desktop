@@ -19,6 +19,12 @@ Widget
     background: null
     margins: 0
 
+    Connections
+    {
+        target: exchange_trade
+        function onOrderSelected() { tabView.currentIndex = 0; }
+    }
+
     Qaterial.LatoTabBar
     {
         id: tabView

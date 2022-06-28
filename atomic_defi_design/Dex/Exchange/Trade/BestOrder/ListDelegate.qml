@@ -191,6 +191,7 @@ Item
                     app.pairChanged(base_ticker, coin)
                 }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
+                orderSelected()
             }
         }
     }

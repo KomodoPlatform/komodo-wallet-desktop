@@ -114,6 +114,7 @@ Item {
                             base_max_volume_numer, uuid)
 
                 placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
+                orderSelected()
             }
         }
 

@@ -143,6 +143,7 @@ Item
         orderPlaced()
     }
 
+    signal orderSelected()
     signal orderPlaced()
 
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
