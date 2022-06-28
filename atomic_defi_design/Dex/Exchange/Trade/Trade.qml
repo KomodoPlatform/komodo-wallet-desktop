@@ -21,8 +21,6 @@ Item
     id: exchange_trade
 
     readonly property string total_amount: API.app.trading_pg.total_amount
-    property bool orderSelected: false
-    property bool isBigScreen: width > 1400
 
     Component.onCompleted:
     {
