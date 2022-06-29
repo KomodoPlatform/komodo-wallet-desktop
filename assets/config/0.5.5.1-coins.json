@@ -10345,7 +10345,7 @@
     "type": "Smart Chain",
     "coinpaprika_id": "actn-action-coin",
     "coingecko_id": "action-coin",
-    "nomics_id": "actn-action-coin",
+    "nomics_id": "ACTN",
     "electrum": [
       {
         "url": "electrumx1.actioncoin.com:30001",
@@ -10359,11 +10359,9 @@
       },	
       {
         "url": "electrumx1.actioncoin.com:10001"
-	"protocol": "TCP"
       },
       {
-        "url": "electrumx2.actioncoin.com:10001"
-	"protocol": "TCP"	      
+        "url": "electrumx2.actioncoin.com:10001"	      
       }
     ],
     "explorer_url": [
