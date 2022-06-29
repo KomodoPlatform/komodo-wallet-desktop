@@ -16,7 +16,7 @@ MultipageModal
     id: root
     readonly property var fees: API.app.trading_pg.fees
 
-    horizontalPadding: 60
+    horizontalPadding: 30
     verticalPadding: 40
 
     MultipageModalContent
@@ -96,24 +96,46 @@ MultipageModal
 
             width: dex_pair_badges.width - 20
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 10
+            Layout.topMargin: 8
 
-            spacing: 10
+            spacing: 5
 
-
+            // Fees Area
             DefaultRectangle {
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredHeight: fees_detail.height + 20
-                Layout.preferredWidth: parent.width - 10
+                Layout.preferredHeight: 150
+                Layout.preferredWidth: parent.width - 40
                 color: DexTheme.contentColorTop
-                visible: root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy
+
+                ColumnLayout
+                {
+                    anchors.centerIn: parent
+                    visible: !fees_detail.visible
+
+                    DefaultBusyIndicator
+                    {
+                        Layout.preferredHeight: 100
+                        Layout.preferredWidth: 100
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.leftMargin: -15
+                        Layout.rightMargin: Layout.leftMargin * 0.75
+                        scale: 0.8
+                    }
+
+                    DefaultText
+                    {
+                        text_value: qsTr("Loading fees...")
+                        Layout.bottomMargin: 8
+                    }
+                }
 
                 ColumnLayout
                 {
                     id: fees_detail
                     width: parent.width - 20
                     anchors.centerIn: parent
-                    spacing: 8
+                    spacing: 6
+                    visible: root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy
 
                     Repeater
                     {
@@ -158,79 +180,105 @@ MultipageModal
             }
 
             // Custom config checkbox
-            Item {
-                Layout.preferredHeight: use_custom.height
-                Layout.preferredWidth: use_custom.width
+            Item
+            {
                 Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: parent.width - 10
+                Layout.preferredHeight: 90
 
                 ColumnLayout
                 {
                     id: use_custom
-                    spacing: 8
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    
+                    spacing: 5
 
                     DefaultCheckBox
                     {
                         id: enable_custom_config
                         Layout.alignment: Qt.AlignCenter
-
                         spacing: 2
                         boxWidth: 20
                         boxHeight: 20
+                        height: 50
                         label.wrapMode: Label.NoWrap
 
                         text: qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker)
                     }
 
-                    // Custom config settings
-                    Item
+                    DefaultSwitch
                     {
-                        Layout.preferredHeight: 30
-                        Layout.preferredWidth: 280
-                        Layout.alignment: Qt.AlignCenter
+                        id: enable_dpow_confs
                         visible: enable_custom_config.checked && config_section.is_dpow_configurable
+                        checked: true
+                        Layout.preferredWidth: 260
+                        Layout.alignment: Qt.AlignCenter
+                        mouseArea.hoverEnabled: true
+                        labelWidth: 200
+                        label.wrapMode: Label.NoWrap
+                        label.text: qsTr("Enable Komodo dPoW security")
+                        label2.text: General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>'
+                    }
 
-                        DefaultSwitch
+                    ColumnLayout
+                    {
+                        height: 50
+                        Layout.alignment: Qt.AlignCenter
+                        spacing: 5
+
+                        DefaultText
                         {
-                            id: enable_dpow_confs
-                            labelWidth: 220
-                            anchors.verticalCenter: parent.verticalCenter
-                            label.wrapMode: Label.NoWrap
+                            height: 16
+                            Layout.alignment: Qt.AlignCenter
+                            visible: !enable_custom_config.checked
+                            text_value: qsTr("Security configuration")
+                            font.weight: Font.Medium
+                        }
 
-                            checked: true
-                            label.text: qsTr("Enable Komodo dPoW security")
-                            mouseArea.hoverEnabled: true
+                        DefaultText
+                        {
+                            height: 12
+                            font: DexTypo.caption
+                            Layout.alignment: Qt.AlignCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            visible: !enable_custom_config.checked
+                            text_value: "✅ " + (
+                                config_section.is_dpow_configurable
+                                ? '<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">'
+                                + qsTr("dPoW protected") + General.cex_icon +  '</a>'
+                                : qsTr("%1 confirmations for incoming %2 transactions")
+                                .arg(config_section.default_config.required_confirmations || 1).arg(rel_ticker)
+                            )
                         }
                     }
                 }
             }
 
-            // Custom Configuration settings
+            // Configuration settings
             Item
             {
-                Layout.preferredHeight: custom_config.height
-                Layout.preferredWidth: custom_config.width
                 Layout.alignment: Qt.AlignCenter
-                visible: enable_custom_config.checked
+                Layout.preferredWidth: parent.width - 10
+                Layout.preferredHeight: 90
 
                 ColumnLayout
                 {
-                    id: custom_config
-                    Layout.alignment: Qt.AlignCenter
+                    id: security_config
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: 60
+                    spacing: 3
 
-                    // Normal configuration settings
                     ColumnLayout
                     {
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignHCenter
-                        visible: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
-                        enabled: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
-                        spacing: 8
-
+                        Layout.alignment: Qt.AlignCenter
+                        spacing: 3
 
                         DefaultText
                         {
-                            Layout.preferredHeight: 10
-                            Layout.alignment: Qt.AlignHCenter
+                            height: 30
+                            Layout.alignment: Qt.AlignCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            visible: required_confirmation_count.visible
                             text_value: qsTr("Required Confirmations") + ": " + required_confirmation_count.value
                             color: Dex.CurrentTheme.foregroundColor
                             opacity: parent.enabled ? 1 : .6
@@ -239,8 +287,12 @@ MultipageModal
                         DefaultSlider
                         {
                             id: required_confirmation_count
+                            height: 30
+
+                            Layout.alignment: Qt.AlignCenter
+
+                            visible: enable_custom_config.checked && (!config_section.is_dpow_configurable || !enable_dpow_confs.checked)
                             readonly property int default_confirmation_count: 3
-                            Layout.alignment: Qt.AlignHCenter
                             stepSize: 1
                             from: 1
                             to: 5
@@ -250,65 +302,25 @@ MultipageModal
                         }
                     }
 
+                    // No dPoW Warning
                     FloatingBackground
                     {
-                        visible: enable_custom_config.visible && enable_custom_config.enabled && enable_custom_config.checked &&
-                                  (config_section.is_dpow_configurable && !enable_dpow_confs.checked)
-                        Layout.alignment: Qt.AlignHCenter
-
+                        Layout.alignment: Qt.AlignCenter
+                        width: 360
+                        height: 30
                         color: Style.colorRed2
-                        width: dpow_off_warning.width + 20
-                        height: dpow_off_warning.height + 20
+                        visible: {
+                            enable_custom_config.checked && (config_section.is_dpow_configurable && !enable_dpow_confs.checked)
+                        }
 
-                        ColumnLayout
+                        DefaultText
                         {
                             id: dpow_off_warning
-                            anchors.centerIn: parent
-
-                            DefaultText
-                            {
-                                Layout.alignment: Qt.AlignHCenter
-                                text_value: Style.warningCharacter + " " + qsTr("Warning, this atomic swap is not dPoW protected!")
-                            }
+                            anchors.fill: parent
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            text_value: Style.warningCharacter + " " + qsTr("Warning, this atomic swap is not dPoW protected!")
                         }
-                    }
-                }
-            }
-
-            // Custom config
-            Item {
-                Layout.preferredHeight: security_config.height
-                Layout.preferredWidth: security_config.width
-                Layout.alignment: Qt.AlignCenter
-                Layout.fillHeight: true
-
-                ColumnLayout
-                {
-                    id: security_config
-                    spacing: 8
-
-                    DefaultText
-                    {
-                        Layout.alignment: Qt.AlignCenter
-                        visible: !enable_custom_config.checked
-                        text_value: qsTr("Security configuration")
-                        font.weight: Font.Medium
-                    }
-
-                    DefaultText
-                    {
-                        Layout.alignment: Qt.AlignCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        visible: !enable_custom_config.checked
-                        text_value: "✅ " + (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
-                                    qsTr("%1 confirmations for incoming %2 transactions").arg(config_section.default_config.required_confirmations || 1).arg(rel_ticker))
-                    }
-                    DefaultText
-                    {
-                        visible: config_section.is_dpow_configurable && enable_dpow_confs.enabled
-                        Layout.alignment: Qt.AlignHCenter
-                        text_value: General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>'
-                        font.pixelSize: Style.textSizeSmall2
                     }
                 }
             }

@@ -70,11 +70,11 @@ QtObject {
         weight: Font.Medium
     })
     property font head8: Qt.font({
-                                     pixelSize: 16 * fontDensity,
-                                     letterSpacing: 0.15,
-                                     family: fontFamily,
-                                     weight: Font.Medium
-                                 })
+        pixelSize: 16 * fontDensity,
+        letterSpacing: 0.15,
+        family: fontFamily,
+        weight: Font.Medium
+    })
     property font subtitle1: Qt.font({
         pixelSize: 16 * fontDensity,
         letterSpacing: 0.15,

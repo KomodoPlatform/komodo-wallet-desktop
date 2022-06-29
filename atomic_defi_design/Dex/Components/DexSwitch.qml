@@ -14,6 +14,7 @@ Switch
     id: control
 
     property alias label: _label
+    property alias label2: _label2
     property alias switchButtonWidth: _indicator.width
     property alias switchButtonHeight: _indicator.height
     property alias switchButtonRadius: _indicator.radius
@@ -22,7 +23,7 @@ Switch
     property int labelWidth: label.text == '' ? 0 : 120
 
     width: labelWidth + 60
-    height: 30
+    height: 50
 
     font.family: DexTypo.fontFamily
     indicator: DefaultRectangle
@@ -98,10 +99,10 @@ Switch
         }
     }
 
-    Item
+    ColumnLayout
     {
         Layout.preferredWidth: labelWidth
-        Layout.preferredHeight: _indicator.height
+        Layout.preferredHeight: control.height
         Layout.alignment: Qt.AlignVCenter
         anchors.verticalCenter: control.verticalCenter
 
@@ -115,9 +116,22 @@ Switch
             font: control.font
             color: control.textColor
             leftPadding: _indicator.width + control.spacing 
-            horizontalAlignment: Text.AlignLeft
+            horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            anchors.verticalCenter: parent.verticalCenter
+            wrapMode: Label.Wrap
+
+        }
+
+        DefaultText
+        {
+            id: _label2
+            Layout.fillHeight: true
+
+            font: DexTypo.caption
+            color: control.textColor
+            leftPadding: _indicator.width + control.spacing 
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
             wrapMode: Label.Wrap
 
         }
