@@ -10374,6 +10374,7 @@
     "coin": "ACTN-BEP20",
     "name": "Action Coin",
     "type": "BEP-20",
+    "nomics_id": "ACTNBEP20",
     "coinpaprika_id": "actn-action-coin",
     "coingecko_id": "action-coin",
     "nodes": [
