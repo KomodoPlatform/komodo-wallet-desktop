@@ -106,6 +106,7 @@ MultipageModal
                 Layout.preferredHeight: 150
                 Layout.preferredWidth: parent.width - 40
                 color: DexTheme.contentColorTop
+                visible: !buy_sell_rpc_busy
 
                 ColumnLayout
                 {
@@ -184,7 +185,8 @@ MultipageModal
             {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: parent.width - 10
-                Layout.preferredHeight: 90
+                height: childrenRect.height
+                visible: !buy_sell_rpc_busy
 
                 ColumnLayout
                 {
@@ -260,6 +262,8 @@ MultipageModal
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: parent.width - 10
                 Layout.preferredHeight: 90
+                height: childrenRect.height
+                visible: !buy_sell_rpc_busy
 
                 ColumnLayout
                 {
@@ -325,10 +329,18 @@ MultipageModal
                 }
             }
 
-            DefaultBusyIndicator
+            Item
             {
                 visible: buy_sell_rpc_busy
-                Layout.alignment: Qt.AlignCenter
+                height: config_section.height
+                width: config_section.width
+
+                DefaultBusyIndicator
+                {
+                    id: rpcBusyIndicator
+                    anchors.fill: parent
+                    anchors.centerIn: parent
+                }
             }
         }
 
