@@ -12,6 +12,8 @@ import "../../ProView"
 
 Widget
 {
+    property alias currentIndex: tabView.currentIndex
+
     title: qsTr("Trading Information")
 
     background: null
@@ -20,8 +22,7 @@ Widget
     Connections
     {
         target: exchange_trade
-        function onBackend_priceChanged() { tabView.currentIndex = 0; }
-        function onBackend_volumeChanged() { tabView.currentIndex = 0; }
+        function onOrderSelected() { tabView.currentIndex = 0; }
     }
 
     Qaterial.LatoTabBar

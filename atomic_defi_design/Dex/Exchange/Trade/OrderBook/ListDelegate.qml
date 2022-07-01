@@ -105,7 +105,6 @@ Item {
 
             if (enough_funds_to_pay_min_volume )
             {
-                exchange_trade.orderSelected = true
                 orderbook_list.currentIndex = index
 
                 selectOrder(isAsk, coin, price, quantity, price_denom,
@@ -115,6 +114,7 @@ Item {
                             base_max_volume_numer, uuid)
 
                 placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
+                orderSelected()
             }
         }
 

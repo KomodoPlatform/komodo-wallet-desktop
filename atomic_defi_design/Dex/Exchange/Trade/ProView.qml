@@ -100,7 +100,7 @@ RowLayout
                            General.prettifyJSON(response.result), false)
 
                 General.prevent_coin_disabling.restart()
-                tabView.currentIndex = 1
+                tradingInfo.currentIndex = 1
             }
         }
     }
