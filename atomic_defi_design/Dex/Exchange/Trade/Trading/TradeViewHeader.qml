@@ -27,14 +27,14 @@ Item
 
     Item
     {
-        width: parent.width * 0.15
+        width: 350
         height: parent.height
 
         // Simple/Pro select cursor
         Rectangle
         {
             id: cursorRect
-            width: (parent.width / 100) * 48
+            width: _simpleLabel.width + 28
             height: _simpleLabel.height + 14
             radius: 16
             anchors.verticalCenter: parent.verticalCenter
