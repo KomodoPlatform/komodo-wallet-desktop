@@ -10338,5 +10338,54 @@
     "active": false,
     "is_segwit_on": false,
     "currently_enabled": false
+  },
+"ACTN": {
+    "coin": "ACTN",
+    "name": "Action Coin",
+    "type": "Smart Chain",
+    "coinpaprika_id": "actn-action-coin",
+    "coingecko_id": "action-coin",
+    "nomics_id": "ACTN",
+    "electrum": [
+      {
+        "url": "electrumx1.actioncoin.com:30001",
+        "ws_url": "electrumx1.actioncoin.com:20001",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electrumx2.actioncoin.com:30001",
+        "ws_url": "electrumx2.actioncoin.com:20001",
+        "protocol": "SSL"
+      },	
+      {
+        "url": "electrumx1.actioncoin.com:10001"
+      },
+      {
+        "url": "electrumx2.actioncoin.com:10001"	      
+      }
+    ],
+    "explorer_url": [
+      "https://exp.actioncoin.com/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "ACTN-BEP20": {
+    "coin": "ACTN-BEP20",
+    "name": "Action Coin",
+    "type": "BEP-20",
+    "nomics_id": "ACTNBEP20",
+    "coinpaprika_id": "actn-action-coin",
+    "coingecko_id": "action-coin",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "active": false,
+    "currently_enabled": false
   }
 }
