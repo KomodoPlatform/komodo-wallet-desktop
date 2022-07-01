@@ -34,8 +34,6 @@ MultipageModal
         topMarginAfterTitle: 10
         flickMax: window.height - 450
 
-        //Layout.preferredHeight: window.height - 100
-
         header: [
             // Complete image
             DefaultImage

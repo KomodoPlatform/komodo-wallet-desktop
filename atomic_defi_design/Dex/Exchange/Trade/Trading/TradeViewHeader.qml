@@ -27,7 +27,7 @@ Item
 
     Item
     {
-        width: parent.width * 0.10
+        width: parent.width * 0.15
         height: parent.height
 
         // Simple/Pro select cursor

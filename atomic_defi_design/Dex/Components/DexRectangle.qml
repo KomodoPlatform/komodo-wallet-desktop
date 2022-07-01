@@ -9,7 +9,7 @@ AnimatedRectangle {
     property int sizeAnimationDuration: 150
     radius: DexTheme.rectangleRadius
     color: Dex.CurrentTheme.backgroundColor
-    border.color: Dex.CurrentTheme.backgroundColor
+    border.color: color
     border.width: 1
 
     Behavior on width {
