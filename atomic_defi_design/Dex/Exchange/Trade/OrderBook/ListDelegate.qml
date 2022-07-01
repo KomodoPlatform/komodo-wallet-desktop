@@ -9,11 +9,13 @@ import App 1.0
 import bignumberjs 1.0
 import "../../../Constants"
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 
 
-Item {
+Item
+{
     property bool isAsk
 
     DefaultTooltip
@@ -160,7 +162,7 @@ Item {
             }
         }
 
-        RowLayout
+        Row
         {
             id: row
             anchors.fill: parent
@@ -168,9 +170,10 @@ Item {
             onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
             spacing: 0
 
-            DexLabel
+            Dex.ElidableText
             {
-                Layout.preferredWidth: 120
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.31
                 text: { new BigNumber(price).toFixed(8) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
@@ -179,12 +182,13 @@ Item {
                 wrapMode: Text.NoWrap
             }
 
-            Item { Layout.preferredWidth: (parent.width - 320) / 2 }
+            Item { width: parent.width * 0.01 }
 
             // Quantity
-            DexLabel
+            Dex.ElidableText
             {
-                Layout.preferredWidth: 110
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.37
                 text: { new BigNumber(quantity).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
@@ -193,12 +197,13 @@ Item {
                 wrapMode: Text.NoWrap
             }
 
-            Item { Layout.preferredWidth: (parent.width - 320) / 2 }
+            Item { width: parent.width * 0.01 }
 
             // Total
-            DexLabel
+            Dex.ElidableText
             {
-                Layout.preferredWidth: 90
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.30
                 rightPadding: (is_mine) && (mouse_area.containsMouse || cancel_button.containsMouse) ? 30 : 0
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
