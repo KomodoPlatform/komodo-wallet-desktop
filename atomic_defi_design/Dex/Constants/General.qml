@@ -526,15 +526,20 @@ QtObject {
     }
 
     function tokenUnitName(type) {
-        return type === "ERC-20" ? "Gwei" : "Satoshi"
+        return type === "QRC-20" ? "Satoshi" : "Gwei"
     }
 
     function isParentCoin(ticker) {
-        return ticker === "KMD" || ticker === "ETH" || ticker === "QTUM"
+        return ["KMD", "ETH", "MATIC", "AVAX", "FTM", "QTUM"].includes(ticker)
     }
 
     function isTokenType(type) {
-        return type === "ERC-20" || type === "QRC-20"
+        return ["ERC-20", "QRC-20", "PLG-20", "AVX-20", "FTM-20"].includes(type)
+    }
+
+    function getFeesTicker(coin_info) {
+        if (coin_info.has_parent_fees_ticker)
+            return coin_info.fees_ticker
     }
 
     function getParentCoin(type) {
