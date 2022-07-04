@@ -112,28 +112,28 @@ Switch
         {
             id: _label
             Layout.fillHeight: true
-
+            Layout.alignment: Qt.AlignVCenter
+            visible: _label.text != ''
             font: control.font
             color: control.textColor
             leftPadding: _indicator.width + control.spacing 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: _label2.text != '' ? control.verticalCenter : undefined
             wrapMode: Label.Wrap
-
         }
 
         DefaultText
         {
             id: _label2
             Layout.fillHeight: true
-
+            visible: _label2.text != ''
             font: DexTypo.caption
             color: control.textColor
             leftPadding: _indicator.width + control.spacing 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             wrapMode: Label.Wrap
-
         }
     }
 

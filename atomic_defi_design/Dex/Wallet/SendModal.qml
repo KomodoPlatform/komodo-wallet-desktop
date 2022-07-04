@@ -69,7 +69,9 @@ MultipageModal
     }
 
     function isSpecialToken() {
-        return General.isTokenType(current_ticker_infos.type)
+        if (current_ticker_infos.hasOwnProperty("has_parent_fees_ticker"))
+            return current_ticker_infos.has_parent_fees_ticker
+        return false
     }
 
     function isERC20() {
@@ -96,47 +98,41 @@ MultipageModal
     }
 
     function feeIsHigherThanAmount() {
+
         if(!custom_fees_switch.checked) return false
 
-        const amt = parseFloat(getCryptoAmount())
-        const fee_amt = parseFloat(input_custom_fees.text)
+        const amount = parseFloat(getCryptoAmount())
 
-        return amt < fee_amt
+        if(isSpecialToken()) {
+            const parent_ticker = General.getFeesTicker(current_ticker_infos)
+            const gas_limit = parseFloat(input_custom_fees_gas.text)
+            const gas_price = parseFloat(input_custom_fees_gas_price.text)
+            if (isNaN(gas_price) || isNaN(gas_limit)) return false
+
+            const unit = current_ticker_infos.type === "ERC-20" ? 1000000000 : 100000000
+            const fee_parent_token = (gas_limit * gas_price)/unit
+
+            if(api_wallet_page.ticker === parent_ticker) {
+                const total_needed = amount + fee_parent_token
+                if(General.hasEnoughFunds(true, parent_ticker, "", "", total_needed.toString()))
+                    return false
+            }
+            else {
+                if(General.hasEnoughFunds(true, parent_ticker, "", "", fee_parent_token.toString()))
+                    return false
+            }
+            return true
+        }
+        else {
+            const fee_amt = parseFloat(input_custom_fees.text)
+            return amount < fee_amt
+        }
     }
 
     function hasFunds() {
         if(!General.hasEnoughFunds(true, api_wallet_page.ticker, "", "", _preparePage.cryptoSendMode ? input_amount.text : equivalentAmount.value))
             return false
-
-        if(custom_fees_switch.checked) {
-            if(isSpecialToken()) {
-                const gas_limit = parseFloat(input_custom_fees_gas.text)
-                const gas_price = parseFloat(input_custom_fees_gas_price.text)
-
-                const unit = current_ticker_infos.type === "ERC-20" ? 1000000000 : 100000000
-                const fee_parent_token = (gas_limit * gas_price)/unit
-
-                const parent_ticker = current_ticker_infos.type === "ERC-20" ? "ETH" : "QTUM"
-                if(api_wallet_page.ticker === parent_ticker) {
-                    const amount = parseFloat(getCryptoAmount())
-                    const total_needed = amount + fee_parent_token
-                    if(!General.hasEnoughFunds(true, parent_ticker, "", "", total_needed.toString()))
-                        return false
-                }
-                else {
-                    if(!General.hasEnoughFunds(true, parent_ticker, "", "", fee_parent_token.toString()))
-                        return false
-                }
-            }
-            else {
-                if(feeIsHigherThanAmount()) return false
-
-                if(!General.hasEnoughFunds(true, api_wallet_page.ticker, "", "", input_custom_fees.text))
-                    return false
-            }
-        }
-
-        return true
+         return true
     }
 
     function feesAreFilled() {
@@ -334,13 +330,15 @@ MultipageModal
             visible: errorView && input_address.text !== ""
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
+            spacing: 4
+
+            Item { Layout.fillWidth: true }
 
             DefaultText
             {
                 id: reason
 
                 Layout.alignment: Qt.AlignVCenter
-                Layout.fillWidth: true
 
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 color: Dex.CurrentTheme.noColor
@@ -361,6 +359,8 @@ MultipageModal
 
                 onClicked: api_wallet_page.convert_address(input_address.text, address_data.to_address_format)
             }
+
+            Item { Layout.fillWidth: true }
         }
 
         // Amount to send
@@ -566,15 +566,18 @@ MultipageModal
         {
             Layout.preferredWidth: 380
             Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 32
 
             // Custom fees switch
             DefaultSwitch
             {
                 id: custom_fees_switch
                 enabled: !root.is_send_busy
-                Layout.topMargin: 32
-                label.text: qsTr("Enable Custom Fees")
+                Layout.preferredWidth: 260
                 onCheckedChanged: input_custom_fees.text = ""
+                labelWidth: 200
+                label.text: qsTr("Enable Custom Fees")
+                label.wrapMode: Label.NoWrap
             }
 
             // Custom fees warning
@@ -582,6 +585,8 @@ MultipageModal
             {
                 visible: custom_fees_switch.checked
                 font.pixelSize: 14
+                Layout.alignment: Qt.AlignHCenter
+                horizontalAlignment: DefaultText.AlignHCenter
                 color: Dex.CurrentTheme.noColor
                 text_value: qsTr("Only use custom fees if you know what you are doing!")
             }
@@ -593,12 +598,13 @@ MultipageModal
             visible: custom_fees_switch.checked
 
             Layout.preferredWidth: parent.width
+            Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 8
 
             // Normal coins, Custom fees input
             AmountField
             {
-                visible: !isSpecialToken()
+                visible: !isSpecialToken() && !isParentCoin(api_wallet_page.ticker)
 
                 id: input_custom_fees
 
@@ -651,10 +657,12 @@ MultipageModal
                 visible: feeIsHigherThanAmount()
 
                 Layout.alignment: Qt.AlignHCenter
+                horizontalAlignment: DefaultText.AlignHCenter
 
                 wrapMode: Text.Wrap
                 color: Style.colorRed
-                text_value: qsTr("Custom Fee can't be higher than the amount")
+                text_value: qsTr("Custom Fee can't be higher than the amount") + "\n"
+                          + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(General.getFeesTicker(current_ticker_infos)), General.getFeesTicker(current_ticker_infos)))
             }
         }
 
@@ -662,12 +670,15 @@ MultipageModal
         DefaultText
         {
             Layout.topMargin: 16
+            Layout.alignment: Qt.AlignHCenter
+            horizontalAlignment: DefaultText.AlignHCenter
             wrapMode: Text.Wrap
             visible: !fee_error.visible && !hasFunds()
 
             color: Dex.CurrentTheme.noColor
 
-            text_value: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
+            text_value: qsTr("Not enough funds.") + "\n"
+                      + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
         }
 
         DexBusyIndicator { visible: root.is_send_busy }
