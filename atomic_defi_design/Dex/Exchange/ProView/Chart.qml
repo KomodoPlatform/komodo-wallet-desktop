@@ -16,20 +16,20 @@ Item
     property bool pair_supported: false
     onPair_supportedChanged: if (!pair_supported) webEngineViewPlaceHolder.visible = false
 
-    function loadChart(base, rel, force = false, source="nomics")
+    function loadChart(right_ticker, left_ticker, force = false, source="nomics")
     {
         let chart_html = ""
         let symbol = ""
 
         if (source == "nomics")
         {
-            let base_full = General.coinName(base)
-            let base_id = General.getNomicsId(base)
-            let rel_id = General.getNomicsId(rel)
+            let right_ticker_full = General.coinName(right_ticker)
+            let right_ticker_id = General.getNomicsId(right_ticker)
+            let left_ticker_id = General.getNomicsId(left_ticker)
 
-            if (base_id != "" && rel_id != "")
+            if (right_ticker_id != "" && left_ticker_id != "")
             {
-                symbol = base_id+"-"+rel_id
+                symbol = right_ticker_id+"-"+left_ticker_id
 
                 pair_supported = true
                 if (symbol === loaded_symbol && !force)
@@ -46,7 +46,7 @@ Item
                 </style>
 
                 <!-- Nomics Widget BEGIN -->
-                <div class="nomics-ticker-widget" data-name="${base_full}" data-base="${base_id}" data-quote="${rel_id}"></div>
+                <div class="nomics-ticker-widget" data-name="${right_ticker_full}" data-base="${right_ticker_id}" data-quote="${left_ticker_id}"></div>
                 <script src="https://widget.nomics.com/embed.js"></script>
                 <!-- Nomics Widget END -->`
             }
@@ -54,8 +54,8 @@ Item
 
         if (chart_html == "")
         {
-            const pair = atomic_qt_utilities.retrieve_main_ticker(base) + "/" + atomic_qt_utilities.retrieve_main_ticker(rel)
-            const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(rel) + "/" + atomic_qt_utilities.retrieve_main_ticker(base)
+            const pair = atomic_qt_utilities.retrieve_main_ticker(left_ticker) + "/" + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+            const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(right_ticker) + "/" + atomic_qt_utilities.retrieve_main_ticker(left_ticker)
 
             // Try checking if pair/reversed-pair exists
             symbol = General.supported_pairs[pair]
@@ -182,9 +182,9 @@ Item
     Connections
     {
         target: app
-        function onPairChanged(base, rel)
+        function onPairChanged()
         {
-            root.loadChart(base, rel)
+            root.loadChart(left_ticker, right_ticker)
         }
     }
 
