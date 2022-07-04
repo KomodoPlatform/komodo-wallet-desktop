@@ -76,7 +76,7 @@ Item
                                     right_ticker)
                             }
 
-                            if (isBid && API.app.trading_pg.market_mode == MarketMode.Sell)
+                            if (!isAsk && API.app.trading_pg.market_mode == MarketMode.Sell)
                             {
                                 return General.getTradingError(
                                     last_trading_error, curr_fee_info,
