@@ -69,7 +69,9 @@ MultipageModal
     }
 
     function isSpecialToken() {
-        return current_ticker_infos.has_parent_fees_ticker
+        if (current_ticker_infos.hasOwnProperty("has_parent_fees_ticker"))
+            return current_ticker_infos.has_parent_fees_ticker
+        return false
     }
 
     function isERC20() {
@@ -602,7 +604,7 @@ MultipageModal
             // Normal coins, Custom fees input
             AmountField
             {
-                visible: !isSpecialToken()
+                visible: !isSpecialToken() && !isParentCoin(api_wallet_page.ticker)
 
                 id: input_custom_fees
 
