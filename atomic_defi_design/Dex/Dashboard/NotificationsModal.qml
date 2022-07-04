@@ -107,21 +107,16 @@ DexPopup
                 break
             case "open_wallet_page":
                 API.app.wallet_pg.ticker = notification.params.ticker
-                dashboard.switchPage(Dashboard.PageType.Wallet)
+                app.pageLoader.item.switchPage(Dashboard.PageType.Wallet)
                 break
             case "open_swaps_page":
-                dashboard.switchPage(Dashboard.PageType.DEX)
-
-                dashboard.loader.onLoadComplete = () =>
-                {
-                    dashboard.current_component.current_page = dashboard.isSwapDone(notification.params.new_swap_status) ? idx_exchange_history : idx_exchange_orders
-                }
+                app.pageLoader.item.switchPage(Dashboard.PageType.DEX)
                 break
             case "open_log_modal":
                 showError(notification.title, notification.long_message)
                 break
             default:
-                console.log("Unknown notification click action", notification.click_action)
+                console.warn("Unknown notification click action", notification.click_action)
                 break
         }
     }
