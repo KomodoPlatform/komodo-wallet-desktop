@@ -21,8 +21,6 @@ Item
     id: exchange_trade
 
     readonly property string total_amount: API.app.trading_pg.total_amount
-    property bool orderSelected: false
-    property bool isBigScreen: width > 1400
 
     Component.onCompleted:
     {
@@ -110,7 +108,7 @@ Item
         swap_cooldown.restart()
 
         if (API.app.trading_pg.set_pair(is_left_side, changed_ticker))
-            pairChanged(base_ticker, rel_ticker)
+            app.pairChanged(base_ticker, rel_ticker)
     }
 
     function trade(options, default_config) {
@@ -145,6 +143,7 @@ Item
         orderPlaced()
     }
 
+    signal orderSelected()
     signal orderPlaced()
 
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
@@ -153,7 +152,7 @@ Item
     Column
     {
         anchors.fill: parent
-        spacing: 20
+        spacing: 15
         anchors.leftMargin: 20
         anchors.rightMargin: 20
 
@@ -163,7 +162,6 @@ Item
             width: parent.width
             height: parent.height * 0.06
 
-            proViewChart: proView.chart
             proViewTickerSelectors: proView.tickerSelectors
             proViewTrInfo: proView.trInfo
             proViewOrderBook: proView.orderBook

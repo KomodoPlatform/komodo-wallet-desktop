@@ -63,11 +63,10 @@ DefaultListView
                     visible: transaction_note !== ""
                 }
 
-                Arrow
+                TransactionArrow
                 {
                     id: received_icon
-                    up: am_i_sender ? true : false
-                    color: !am_i_sender ? Dex.CurrentTheme.arrowUpColor : Dex.CurrentTheme.arrowDownColor
+                    amISender: am_i_sender ? true : false
                 }
 
                 // Description

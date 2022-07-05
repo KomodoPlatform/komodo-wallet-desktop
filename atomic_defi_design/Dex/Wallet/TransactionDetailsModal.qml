@@ -33,7 +33,7 @@ MultipageModal
         {
             title: qsTr("Amount")
             text: !details ? "" : General.formatCrypto(!details.am_i_sender, details.amount, api_wallet_page.ticker, details.amount_fiat, API.app.settings_pg.current_currency)
-            value_color: !details ? "white" : details.am_i_sender ?  DexTheme.redColor : DexTheme.greenColor
+            value_color: !details ? "white" : details.am_i_sender ?  Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
             privacy: true
             label.font.pixelSize: 13
         }
@@ -43,7 +43,7 @@ MultipageModal
         {
             title: qsTr("Fees")
             text: !details ? "" : General.formatCrypto(parseFloat(details.fees) < 0, Math.abs(parseFloat(details.fees)), current_ticker_infos.fee_ticker, details.fees_amount_fiat, API.app.settings_pg.current_currency)
-            value_color: !details ? "white" : parseFloat(details.fees) > 0 ? DexTheme.redColor : DexTheme.greenColor
+            value_color: !details ? "white" : parseFloat(details.fees) > 0 ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
             privacy: true
             label.font.pixelSize: 13
         }
@@ -62,8 +62,9 @@ MultipageModal
             id: txHash
             title: qsTr("Transaction Hash")
             text: !details ? "" : details.tx_hash
-            label.font.pixelSize: 13
+            label.font.pixelSize: 11
             privacy: true
+            linkURL: !details ? "" :General.getTxExplorerURL(api_wallet_page.ticker, details.tx_hash, false)
             copy: true
 
             onCopyNotificationTitle: qsTr("Transactions")
@@ -86,7 +87,7 @@ MultipageModal
             label.font.pixelSize: 13
         }
 
-        DexRectangle {
+        DefaultRectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: addressColumn.height + 10
             color: DexTheme.contentColorTop
@@ -101,6 +102,8 @@ MultipageModal
                     title: qsTr("From")
                     model: !details ? [] :
                             details.from
+                    linkURL: !details ? "" :General.getAddressExplorerURL(api_wallet_page.ticker, details.from)
+                    onCopyNotificationTitle: qsTr("From address")
                 }
 
                 AddressList {
@@ -109,6 +112,11 @@ MultipageModal
                     model: !details ?
                            [] : details.to.length > 1 ?
                            General.arrayExclude(details.to, details.from[0]) : details.to
+                    linkURL: !details ? ""
+                            :  details.to.length > 1
+                            ? General.getAddressExplorerURL(api_wallet_page.ticker, General.arrayExclude(details.to, details.from[0]))
+                            : General.getAddressExplorerURL(api_wallet_page.ticker, details.to)
+                    onCopyNotificationTitle: qsTr("To address")
                 }
             }
         }
@@ -138,7 +146,7 @@ MultipageModal
         // Buttons
         footer:
         [
-            DexButton
+            DefaultButton
             {
                 Layout.fillWidth: true
                 text: qsTr("Close")
@@ -147,6 +155,7 @@ MultipageModal
                 radius: 18
                 onClicked: root.close()
             },
+
             DexAppOutlineButton
             {
                 Layout.fillWidth: true

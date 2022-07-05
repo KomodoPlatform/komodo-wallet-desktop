@@ -17,11 +17,16 @@ QtObject {
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
     readonly property string providerIconsPath: image_path + "providers/"
 
-    function coinIcon(ticker) {
-        if(ticker === "" || ticker === "All" || ticker===undefined) {
+    function coinIcon(ticker)
+    {
+        if (ticker === "" || ticker === "All" || ticker===undefined )
+        {
             return ""
-        } else {
-            if (['THC-BEP20'].indexOf(ticker) >= 0) {
+        }
+        else
+        {
+            if (['THC-BEP20'].indexOf(ticker) >= 0)
+            {
                 return coin_icons_path + ticker.toString().toLowerCase().replace('-', '_') + ".png"
             }
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
@@ -35,6 +40,16 @@ QtObject {
         } else {
             const name = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).name
             return name
+        }
+    }
+
+    function getNomicsId(ticker) {
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        } else {
+            const nomics_id = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).nomics_id
+            if (nomics_id == 'test-coin') return ""
+            return nomics_id
         }
     }
 
@@ -98,6 +113,39 @@ QtObject {
                     return "https://moonriver.moonscan.io/token/" + coinContractAddress(ticker)
                 default:
                     return ""
+            }
+        }
+    }
+
+
+    function getProtocolText(ticker) {
+        if(ticker === "" || ticker === "All" || ticker===undefined) {
+            return ""
+        } else {
+            let token_platform = coinPlatform(ticker)
+            switch(token_platform) {
+                case "BNB":
+                    return "Binance Smart Chain (BEP20 token)"
+                case "FTM":
+                    return "Fantom (FTM20 token)"
+                case "ONE":
+                    return "Harmony (HRC20 token)"
+                case "ETH":
+                    return "Ethereum (ERC20 token)"
+                case "KCS":
+                    return "KuCoin (KRC20 token)"
+                case "MATIC":
+                    return "Polygon (PLG20 token)"
+                case "AVAX":
+                    return "Avalanche (AVX20 token)"
+                case "HT":
+                    return "Heco Chain (HCO20 token)"
+                case "MOVR":
+                    return "Moonriver (MVR20 token)"
+                case "QTUM":
+                    return "QTUM (QRC20 token)"
+                default:
+                    return ticker + " (" + token_platform + ")"
             }
         }
     }
@@ -277,18 +325,31 @@ QtObject {
         return JSON.stringify(j_obj, null, 4)
     }
 
-    function viewTxAtExplorer(ticker, id, add_0x=true) {
-        if(id !== '') {
+    function getTxExplorerURL(ticker, txid, add_0x=true) {
+        if(txid !== '') {
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-            const id_prefix = (add_0x && coin_info.is_erc_family) ? '0x' : ''
-            Qt.openUrlExternally(coin_info.explorer_url + coin_info.tx_uri + id_prefix + id)
+            const txid_prefix = (add_0x && coin_info.is_erc_family) ? '0x' : ''
+            return coin_info.explorer_url + coin_info.tx_uri + txid_prefix + txid
+        }
+    }
+
+    function getAddressExplorerURL(ticker, address) {
+        if(address !== '') {
+            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+            return coin_info.explorer_url + coin_info.address_uri + address
+        }
+        return ""
+    }
+
+    function viewTxAtExplorer(ticker, txid, add_0x=true) {
+        if(txid !== '') {
+            Qt.openUrlExternally(getTxExplorerURL(ticker, txid, add_0x))
         }
     }
 
     function viewAddressAtExplorer(ticker, address) {
         if(address !== '') {
-            const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-            Qt.openUrlExternally(coin_info.explorer_url + coin_info.address_uri + address)
+            Qt.openUrlExternally(getAddressExplorerURL(ticker, address))
         }
     }
 
@@ -370,6 +431,14 @@ QtObject {
         const full_double = parseFloat(v).toFixed(precision || amountPrecision)
 
         return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
+    }
+
+    function getComparisonScale(value) {
+        return Math.min(Math.pow(10, getDigitCount(parseFloat(value))), 1000000000)
+    }
+
+    function limitDigits(value) {
+        return parseFloat(formatDouble(value, 2))
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat, precision, trail_zeros) {
@@ -457,15 +526,20 @@ QtObject {
     }
 
     function tokenUnitName(type) {
-        return type === "ERC-20" ? "Gwei" : "Satoshi"
+        return type === "QRC-20" ? "Satoshi" : "Gwei"
     }
 
     function isParentCoin(ticker) {
-        return ticker === "KMD" || ticker === "ETH" || ticker === "QTUM"
+        return ["KMD", "ETH", "MATIC", "AVAX", "FTM", "QTUM"].includes(ticker)
     }
 
     function isTokenType(type) {
-        return type === "ERC-20" || type === "QRC-20"
+        return ["ERC-20", "QRC-20", "PLG-20", "AVX-20", "FTM-20"].includes(type)
+    }
+
+    function getFeesTicker(coin_info) {
+        if (coin_info.has_parent_fees_ticker)
+            return coin_info.fees_ticker
     }
 
     function getParentCoin(type) {

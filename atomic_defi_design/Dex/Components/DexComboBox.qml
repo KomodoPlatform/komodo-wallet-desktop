@@ -13,58 +13,102 @@ ComboBox
 {
     id: control
 
-    property alias radius: bg_rect.radius
-    readonly property bool disabled: !enabled
-    property int dropDownMaxHeight: 450
-    property color comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
-    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property color popupBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property color highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+    property alias  radius: bg_rect.radius
+    property int    dropDownMaxHeight: 450
+    property color  comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+    property color  mainBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+    property color  popupBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+    property color  highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
     property string mainLineText: control.displayText
-    property
-    var dropdownLineText: m => textRole === "" ?
-        m.modelData :
-        !m.modelData ? m[textRole] : m.modelData[textRole]
+    property var    dropdownLineText: m => textRole === "" ?
+                                        m.modelData :
+                                        !m.modelData ? m[textRole] : m.modelData[textRole]
 
     font.family: Style.font_family
     hoverEnabled: true
 
-    // Combobox Dropdown Button Background
-    background: DexRectangle
-    {
-        id: bg_rect
-        implicitWidth: 150
-        implicitHeight: 45
-        color: comboBoxBackgroundColor
-        radius: 20
-    }
-
     // Main, selected text
     contentItem: Item
     {
-        anchors.fill: parent
-
-        DexLabel
+        DefaultText
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: 15
-            width: parent.width
-
+            anchors.leftMargin: 13
+            width: parent.width - anchors.leftMargin
             font: DexTypo.subtitle2
             text_value: control.mainLineText
             elide: Text.ElideRight
         }
     }
 
+    // Main background
+    background: FloatingBackground
+    {
+        id: bg_rect
+        implicitWidth: 150
+        implicitHeight: 45
+        color: control.mainBackgroundColor
+        radius: 20
+    }
+
+    // Dropdown itself
+    popup: Popup
+    {
+        width: control.width
+        leftPadding: 0
+        rightPadding: 0
+        topPadding: 16
+        bottomPadding: 16
+
+        contentItem: DefaultListView
+        {
+            id: _list
+            model: control.popup.visible ? control.delegateModel : null
+            implicitHeight: contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : contentHeight
+            currentIndex: control.highlightedIndex
+
+            ScrollBar.vertical: ScrollBar
+            {
+                visible: _list.contentHeight > control.dropDownMaxHeight
+                anchors.right: _list.right
+                anchors.rightMargin: 2
+                width: 7
+                background: DefaultRectangle
+                {
+                    radius: 12
+                    color: Dex.CurrentTheme.scrollBarBackgroundColor
+                }
+                contentItem: DefaultRectangle
+                {
+                    radius: 12
+                    color: Dex.CurrentTheme.scrollBarIndicatorColor
+                }
+            }
+
+            DefaultMouseArea
+            {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+            }
+        }
+
+        background: Rectangle
+        {
+            radius: control.radius
+            color: control.popupBackgroundColor
+        }
+    }
+
     // Each dropdown item
     delegate: ItemDelegate
     {
-        id: combo_item
+        id: delegate
+
         width: control.width
         highlighted: control.highlightedIndex === index
 
-        contentItem: DexLabel
+        contentItem: DefaultText
         {
             width: control.width
             font: DexTypo.subtitle2
@@ -72,10 +116,10 @@ ComboBox
             elide: Text.ElideRight
         }
 
-        // Dropdown Item background
-        background: DexRectangle {
-            anchors.fill: combo_item
-            color: combo_item.highlighted ? highlightedBackgroundColor : mainBackgroundColor
+        background: Rectangle
+        {
+            anchors.fill: delegate
+            color: delegate.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
         }
     }
 
@@ -104,45 +148,7 @@ ComboBox
         }
     }
 
-    // Dropdown itself
-    popup: Popup
-    {
-        id: combo_popup
-        readonly property double max_height: 450
-
-        width: control.width
-        height: _list.contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : _list.contentHeight
-        leftPadding: 0
-        rightPadding: 0
-        topPadding: 16
-        bottomPadding: 16
-        padding: 1
-
-        contentItem: DexListView
-        {
-            id: _list
-            model: control.popup.visible ? control.delegateModel : null
-            currentIndex: control.highlightedIndex
-
-            DexMouseArea
-            {
-                anchors.fill: parent
-                acceptedButtons: Qt.NoButton
-            }
-        }
-
-        background: DexRectangle
-        {
-            width: parent.width
-            height: parent.height
-            radius: control.radius
-            color: control.popupBackgroundColor
-            colorAnimation: false
-            border.width: 1
-        }
-    }
-
-    DexMouseArea
+    DefaultMouseArea
     {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton

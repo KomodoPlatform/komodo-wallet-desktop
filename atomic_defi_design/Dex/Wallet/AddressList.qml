@@ -10,9 +10,11 @@ import Dex.Themes 1.0 as Dex
 ColumnLayout
 {
     id: root
+    property string linkURL: ""
+    property string onCopyNotificationTitle: ""
     property alias title: title.text
     property alias model: list.model
-    property real  addressFontSize: DefaultText.font.pixelSize
+    property real  addressFontSize: 12
 
     TitleText
     {
@@ -29,11 +31,14 @@ ColumnLayout
 
         clip: true
 
-        delegate: DefaultText
+        delegate: DefaultTextEdit
         {
+            id: address_text
             text_value: model.modelData
             privacy: true
             font.pixelSize: root.addressFontSize
+            linkURL: root.linkURL
+            onCopyNotificationTitle: root.onCopyNotificationTitle
         }
     }
 }

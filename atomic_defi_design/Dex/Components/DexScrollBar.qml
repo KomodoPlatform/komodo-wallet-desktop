@@ -30,7 +30,6 @@ ScrollBar
     background: Item
     {
         width: 6
-        x: 0
         DexRectangle
         {
             visible: control.visibleBackground

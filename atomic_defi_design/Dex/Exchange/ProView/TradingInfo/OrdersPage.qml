@@ -144,6 +144,7 @@ Item {
                     text: qsTr("Apply Filter")
                     onClicked: list_model_proxy.apply_all_filtering()
                 }
+
                 DefaultButton
                 {
                     visible: !root.is_history
@@ -179,6 +180,7 @@ Item {
                     id: swapCoinFilterIcon
                     source: Qaterial.Icons.swapHorizontal
                     color: Dex.CurrentTheme.foregroundColor
+
                     DefaultMouseArea
                     {
                         id: swap_button

@@ -5,7 +5,7 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 import App 1.0
 import "../../../Components"
-
+import Dex.Components 1.0 as Dex
 
 RowLayout
 {
@@ -13,7 +13,7 @@ RowLayout
     width: parent.width
     spacing: 0
 
-    DexLabel
+    Dex.Text
     {
         Layout.preferredWidth: 140
         verticalAlignment: Text.AlignVCenter
@@ -27,7 +27,7 @@ RowLayout
 
     Item { Layout.preferredWidth: (parent.width - 300) / 2 }
 
-    DexLabel
+    Dex.Text
     {
         Layout.preferredWidth: 80
         verticalAlignment: Text.AlignVCenter
@@ -41,7 +41,7 @@ RowLayout
 
     Item { Layout.preferredWidth: (parent.width - 300) / 2 }
 
-    DexLabel
+    Dex.Text
     {
         Layout.preferredWidth: 80
         verticalAlignment: Text.AlignVCenter

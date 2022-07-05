@@ -1,4 +1,3 @@
-//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
@@ -8,15 +7,13 @@ import QtQml 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls.Universal 2.12
 
-//! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
 
-//! Project Imports
 import "../Components"
 import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
-
+import Dex.Components 1.0 as Dex
 
 Qaterial.Dialog
 {
@@ -40,7 +37,7 @@ Qaterial.Dialog
 
     function disconnect()
     {
-        let dialog = app.showText(
+        let dialog = app.showDialog(
         {
             "title": qsTr("Confirm Logout"),
             text: qsTr("Are you sure you want to log out?"),
@@ -305,7 +302,7 @@ Qaterial.Dialog
 
                                 onClicked:
                                 {
-                                    dialog = app.showText(
+                                    dialog = app.showDialog(
                                     {
                                         title: qsTr("Reset wallet configuration"),
                                         text: qsTr("This will restart your wallet with default settings"),
@@ -349,7 +346,7 @@ Qaterial.Dialog
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 50
 
-                                DexLabel
+                                Dex.Text
                                 {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
@@ -359,25 +356,22 @@ Qaterial.Dialog
 
                                 Item { Layout.fillWidth: true }
 
-                                Item {
-                                    width: 150
-                                    DexComboBox
+                                Dex.ComboBox
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    editable: true
+                                    model: ["Ubuntu", "Montserrat", "Roboto"]
+
+                                    onCurrentTextChanged:
                                     {
-                                        Layout.alignment: Qt.AlignVCenter
-                                        editable: true
-                                        model: ["Ubuntu", "Montserrat", "Roboto"]
+                                        DexTypo.fontFamily = currentText
+                                        console.info(qsTr("Current font changed to %1.").arg(currentText))
+                                    }
 
-                                        onCurrentTextChanged:
-                                        {
-                                            DexTypo.fontFamily = currentText
-                                            console.info(qsTr("Current font changed to %1.").arg(currentText))
-                                        }
-
-                                        Component.onCompleted:
-                                        {
-                                            let current = DexTypo.fontFamily
-                                            currentIndex = model.indexOf(current)
-                                        }
+                                    Component.onCompleted:
+                                    {
+                                        let current = DexTypo.fontFamily
+                                        currentIndex = model.indexOf(current)
                                     }
                                 }
                             }
@@ -389,7 +383,7 @@ Qaterial.Dialog
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 50
 
-                                DexLabel
+                                Dex.Text
                                 {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
@@ -399,31 +393,26 @@ Qaterial.Dialog
 
                                 Item { Layout.fillWidth: true }
 
-                                Item
+                                Dex.ComboBox
                                 {
-                                    width: 150
+                                    Layout.alignment: Qt.AlignVCenter
+                                    model: API.qt_utilities.get_themes_list()
+                                    currentIndex: model.indexOf(atomic_settings2.value("CurrentTheme"))
 
-                                    DexComboBox
+                                    onActivated:
                                     {
-                                        Layout.alignment: Qt.AlignVCenter
-                                        model: API.qt_utilities.get_themes_list()
-                                        currentIndex: model.indexOf(atomic_settings2.value("CurrentTheme"))
+                                        let chosenTheme = model[index];
 
-                                        onActivated:
-                                        {
-                                            let chosenTheme = model[index];
+                                        console.info(qsTr("Changing theme to %1").arg(chosenTheme));
+                                        atomic_settings2.setValue("CurrentTheme", chosenTheme);
+                                        atomic_settings2.sync();
+                                        Dex.CurrentTheme.loadFromFilesystem(chosenTheme);
+                                    }
 
-                                            console.info(qsTr("Changing theme to %1").arg(chosenTheme));
-                                            atomic_settings2.setValue("CurrentTheme", chosenTheme);
-                                            atomic_settings2.sync();
-                                            Dex.CurrentTheme.loadFromFilesystem(chosenTheme);
-                                        }
-
-                                        Component.onCompleted:
-                                        {
-                                            let current = atomic_settings2.value("CurrentTheme")
-                                            currentIndex = model.indexOf(current)
-                                        }
+                                    Component.onCompleted:
+                                    {
+                                        let current = atomic_settings2.value("CurrentTheme")
+                                        currentIndex = model.indexOf(current)
                                     }
                                 }
                             }

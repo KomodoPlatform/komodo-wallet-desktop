@@ -7,46 +7,79 @@ import "../../Components"
 import "../../Constants"
 import Dex.Themes 1.0 as Dex
 
-Widget
+Item
 {
     id: root
-    title: qsTr("Chart")
-    background: null
-    margins: 0
 
     readonly property string theme: Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark ? "dark" : "light"
     property string loaded_symbol
     property bool pair_supported: false
     onPair_supportedChanged: if (!pair_supported) webEngineViewPlaceHolder.visible = false
 
-    function loadChart(base, rel, force = false)
+    function loadChart(right_ticker, left_ticker, force = false, source="nomics")
     {
-        const pair = atomic_qt_utilities.retrieve_main_ticker(base) + "/" + atomic_qt_utilities.retrieve_main_ticker(rel)
-        const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(rel) + "/" + atomic_qt_utilities.retrieve_main_ticker(base)
+        let chart_html = ""
+        let symbol = ""
 
-        // Try checking if pair/reversed-pair exists
-        let symbol = General.supported_pairs[pair]
-        if (!symbol) symbol = General.supported_pairs[pair_reversed]
-
-        if (!symbol)
+        if (source == "nomics")
         {
-            pair_supported = false
-            return
+            let right_ticker_full = General.coinName(right_ticker)
+            let right_ticker_id = General.getNomicsId(right_ticker)
+            let left_ticker_id = General.getNomicsId(left_ticker)
+
+            if (right_ticker_id != "" && left_ticker_id != "")
+            {
+                symbol = right_ticker_id+"-"+left_ticker_id
+
+                pair_supported = true
+                if (symbol === loaded_symbol && !force)
+                {
+                    webEngineViewPlaceHolder.visible = true
+                    return
+                }
+
+                loaded_symbol = symbol
+
+                chart_html = `
+                <style>
+                body { margin: 0; }
+                </style>
+
+                <!-- Nomics Widget BEGIN -->
+                <div class="nomics-ticker-widget" data-name="${right_ticker_full}" data-base="${right_ticker_id}" data-quote="${left_ticker_id}"></div>
+                <script src="https://widget.nomics.com/embed.js"></script>
+                <!-- Nomics Widget END -->`
+            }
         }
 
-        pair_supported = true
-
-        if (symbol === loaded_symbol && !force)
+        if (chart_html == "")
         {
-            webEngineViewPlaceHolder.visible = true
-            return
-        }
+            const pair = atomic_qt_utilities.retrieve_main_ticker(left_ticker) + "/" + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
+            const pair_reversed = atomic_qt_utilities.retrieve_main_ticker(right_ticker) + "/" + atomic_qt_utilities.retrieve_main_ticker(left_ticker)
 
-        loaded_symbol = symbol
+            // Try checking if pair/reversed-pair exists
+            symbol = General.supported_pairs[pair]
+            if (!symbol) symbol = General.supported_pairs[pair_reversed]
 
-        dashboard.webEngineView.loadHtml(`
+            if (!symbol)
+            {
+                pair_supported = false
+                return
+            }
+
+            pair_supported = true
+
+            if (symbol === loaded_symbol && !force)
+            {
+                webEngineViewPlaceHolder.visible = true
+                return
+            }
+
+            loaded_symbol = symbol
+
+            let chart_html = `
             <style>
-            body { margin: 0; background: ${Dex.CurrentTheme.backgroundColor} }
+            body { margin: 0; }
             </style>
 
             <!-- TradingView Widget BEGIN -->
@@ -69,7 +102,9 @@ Widget
             );
             </script>
             </div>
-            <!-- TradingView Widget END -->`)
+            <!-- TradingView Widget END -->`
+        }
+        dashboard.webEngineView.loadHtml(chart_html)
     }
 
     Component.onCompleted:
@@ -84,9 +119,7 @@ Widget
 
     RowLayout
     {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        Layout.alignment: Qt.AlignCenter
+        anchors.fill: parent
         visible: !webEngineViewPlaceHolder.visible
 
         DefaultBusyIndicator
@@ -116,8 +149,7 @@ Widget
     Item
     {
         id: webEngineViewPlaceHolder
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+        anchors.fill: parent
         visible: false
 
         Component.onCompleted:
@@ -150,9 +182,9 @@ Widget
     Connections
     {
         target: app
-        function onPairChanged(base, rel)
+        function onPairChanged()
         {
-            root.loadChart(base, rel)
+            root.loadChart(left_ticker, right_ticker)
         }
     }
 

@@ -18,11 +18,11 @@ import "../Fiat"
 import "../Settings" as SettingsPage
 import "../Support" as SupportPage
 import "../Screens"
+import "../Addressbook" as Addressbook
 import Dex.Themes 1.0 as Dex
-//import Dex.Sidebar 1.0 as Dex
 
-
-Item {
+Item
+{
     id: dashboard
 
     enum PageType
@@ -72,8 +72,6 @@ Item {
         else
             console.warn("Tried to switch to page %1 when loader is not ready yet.".arg(page))
     }
-
-    function resetCoinFilter() { portfolio_coins.setFilterFixedString("") }
 
     function openTradeViewWithTicker()
     {
@@ -147,7 +145,7 @@ Item {
         {
             id: addressbook
 
-            AddressBook {}
+            Addressbook.Main { }
         }
 
         Component

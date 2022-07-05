@@ -60,7 +60,7 @@ TEST_CASE("addressbook_contact_model")
 
     WHEN("A category is added")
     {
-        CHECK(contact_model.add_category("CEO") == true);
+        CHECK(contact_model.addCategory("CEO") == true);
 
         THEN("get_categories should return 5 categories")
         {
@@ -88,7 +88,7 @@ TEST_CASE("addressbook_contact_model")
 
     WHEN("A category is removed")
     {
-        contact_model.remove_category("Friend");
+        contact_model.removeCategory("Friend");
 
         THEN("get_categories should return 3 categories")
         {

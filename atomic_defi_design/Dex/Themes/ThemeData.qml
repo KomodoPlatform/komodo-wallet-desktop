@@ -83,8 +83,8 @@ QtObject
     property color  rangeSliderIndicatorBackgroundEndColor
 
     // Login page related
-    property color  loginWalletIconColorStart
-    property color  loginWalletIconColorEnd     // Property not yet used.
+    property color  userIconColorStart
+    property color  userIconColorEnd     // Property not yet used.
 
     // Sidebar related
     property color  sidebarBgColor
@@ -101,12 +101,15 @@ QtObject
     property color  tradeSellModeSelectorBackgroundColorEnd
     property color  tradeMarketModeSelectorNotSelectedBackgroundColor
 
+    // Address book page related
+    property var    addressBookTagColors
+
     // Colors used to tell when something is good or wrong.
     property color  okColor
     property color  noColor
 
-    property color  arrowUpColor
-    property color  arrowDownColor
+    property color  senderColorStart
+    property color  receiverColorStart
 
     property color  lineSeparatorColor
 

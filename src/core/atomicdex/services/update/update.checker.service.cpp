@@ -67,6 +67,7 @@ namespace
             result["newVersion"] = resp["new_version"];
             result["downloadUrl"] = resp["download_url"];
             result["changelog"] = resp["changelog"];
+            result["status"] = resp["status"];
         }
         return result;
     }

@@ -18,7 +18,7 @@ import "../../../Constants"
 // Simple/Pro toggle group
 Item
 {
-    property var proViewChart
+    // property var proViewChart
     property var proViewTickerSelectors
     property var proViewTrInfo
     property var proViewOrderBook
@@ -27,14 +27,14 @@ Item
 
     Item
     {
-        width: parent.width * 0.10
+        width: 350
         height: parent.height
 
         // Simple/Pro select cursor
         Rectangle
         {
             id: cursorRect
-            width: (parent.width / 100) * 48
+            width: _simpleLabel.width + 28
             height: _simpleLabel.height + 14
             radius: 16
             anchors.verticalCenter: parent.verticalCenter
@@ -119,10 +119,6 @@ Item
                     spacing: 8
 
                     DefaultText { text: qsTr("Display Settings"); font: DexTypo.body2 }
-
-                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
-
-                    CheckEye { text: qsTr("Chart"); target: proViewChart }
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
 
