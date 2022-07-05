@@ -8096,8 +8096,8 @@
     "active": false,
     "currently_enabled": false
   },
-  "XVC": {
-    "coin": "XVC",
+  "XVC-OLD": {
+    "coin": "XVC-OLD",
     "name": "Vanillacash",
     "coinpaprika_id": "xvc-vcash",
     "coingecko_id": "vcash",
@@ -8119,6 +8119,31 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": true
+  },
+  "XVC": {
+    "coin": "XVC",
+    "name": "Vanillacash",
+    "coinpaprika_id": "xvc-vcash",
+    "coingecko_id": "vcash",
+    "nomics_id": "XVC",
+    "electrum": [
+      {
+        "url": "electrumx1.vanillacash.info:50011",
+        "ws_url": "electrumx1.vanillacash.info:50013"
+      },
+      {
+        "url": "electrumx2.vanillacash.info:50011",
+        "ws_url": "electrumx2.vanillacash.info:50013"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/xvc/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
   },
   "XVC-BEP20": {
     "coin": "XVC-BEP20",
