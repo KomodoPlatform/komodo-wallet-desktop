@@ -113,8 +113,8 @@ Dex.Rectangle
             AddressTypeSelector
             {
                 id: addressTypeComboBox
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                width: 300
+                height: 38
                 showAssetStandards: useStandardsCheckBox.checked
             }
 
@@ -125,7 +125,7 @@ Dex.Rectangle
                 Layout.leftMargin: 4
                 boxWidth: 22
                 boxHeight: 22
-                text: qsTr("Use standard network address")
+                text: qsTr("Protocol standard")
                 font: Dex.DexTypo.caption
             }
         }
