@@ -64,6 +64,7 @@ CheckBox
             font: control.font
             color: control.textColor
             Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
             verticalAlignment: Text.AlignVCenter
             leftPadding: control.indicator.width + control.spacing
             wrapMode: Label.Wrap
