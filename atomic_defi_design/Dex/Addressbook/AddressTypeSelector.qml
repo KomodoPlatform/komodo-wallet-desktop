@@ -22,6 +22,7 @@ Dex.ComboBoxWithSearchBar
 
     model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy
     textRole: showAssetStandards ? "" : "ticker"
+    valueRole: showAssetStandards ? "" : "ticker"
 
     searchBar.visible: !showAssetStandards
     searchBar.searchModel: model
@@ -65,7 +66,15 @@ Dex.ComboBoxWithSearchBar
         }
     }
 
-    onCurrentIndexChanged: if (!showAssetStandards && currentIndex === 0) currentIndex = 1
+    onCurrentIndexChanged: {
+        if (!showAssetStandards && currentIndex === 0) {
+            console.log(currentItem)
+            if (!currentItem) {
+                currentIndex = 1
+                console.log("> "+currentItem)
+            }
+         }
+    }
     onShowAssetStandardsChanged: if (showAssetStandards) currentIndex = 0; else currentIndex = 1
     onVisibleChanged: if (!visible) { Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(""); searchBar.textField.text = ""; }
     Component.onDestruction: { Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString(""); searchBar.textField.text = ""; }
