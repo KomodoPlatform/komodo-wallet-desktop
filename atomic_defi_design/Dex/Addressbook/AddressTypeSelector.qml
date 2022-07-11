@@ -17,6 +17,17 @@ Dex.ComboBoxWithSearchBar
     property bool   showAssetStandards: false
     property var    assetStandards: availableNetworkStandards
 
+    function resetList()
+    {
+        if (showAssetStandards) currentIndex = 0; else { resetSearch(); currentIndex = 1 }
+    }
+
+    function resetSearch()
+    {
+        Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("");
+        searchBar.textField.text = "";
+    }
+
     popupForceMaxHeight: true
     popupMaxHeight: 220
 
@@ -66,21 +77,9 @@ Dex.ComboBoxWithSearchBar
         }
     }
 
-    onCurrentIndexChanged: {
-        if (!showAssetStandards && currentIndex === 0 && searchBar.textField.text == "") {
-                currentIndex = 1
-        }
-    }
-    function reset_list() {
-        if (showAssetStandards) currentIndex = 0; else { reset_search(); currentIndex = 1 }
-    }
-
-    function reset_search() {
-        Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.setFilterFixedString("");
-        searchBar.textField.text = "";
-    }
-    onShowAssetStandardsChanged:  reset_list()
-    onVisibleChanged: if (!visible) reset_list()
-    Component.onDestruction:  reset_list()
-    Component.onCompleted:  reset_list()
+    onCurrentIndexChanged: if (!showAssetStandards && currentIndex === 0 && searchBar.textField.text == "") currentIndex = 1
+    onShowAssetStandardsChanged: resetList()
+    onVisibleChanged: if (!visible) resetList()
+    Component.onDestruction: resetList()
+    Component.onCompleted: resetList()
 }
