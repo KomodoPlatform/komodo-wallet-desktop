@@ -13,13 +13,13 @@ Dex.ComboBoxWithSearchBar
 {
     id: control
 
-    property var    currentItem: Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.index(currentIndex, 0)
     property bool   showAssetStandards: false
     property var    assetStandards: availableNetworkStandards
 
     function resetList()
     {
         if (showAssetStandards) currentIndex = 0; else { resetSearch(); currentIndex = 1 }
+        setContentItem(currentIndex)
     }
 
     function resetSearch()
@@ -28,12 +28,26 @@ Dex.ComboBoxWithSearchBar
         searchBar.textField.text = "";
     }
 
+    function setContentItem(index)
+    {
+        if (showAssetStandards)
+        {
+            _contentRow.ticker = assetStandards[index]
+            _contentRow.name = assetStandards[index]
+            _contentRow.type = assetStandards[index]
+        }
+        else
+        {
+            _contentRow.ticker = model.data(model.index(index, 0), Qt.UserRole + 1)
+            _contentRow.name = model.data(model.index(index, 0), Qt.UserRole + 3)
+            _contentRow.type = model.data(model.index(index, 0), Qt.UserRole + 9)
+        }
+    }
+
     popupForceMaxHeight: true
     popupMaxHeight: 220
 
     model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy
-    textRole: showAssetStandards ? "" : "ticker"
-    valueRole: showAssetStandards ? "" : "ticker"
 
     searchBar.visible: !showAssetStandards
     searchBar.searchModel: model
@@ -71,13 +85,15 @@ Dex.ComboBoxWithSearchBar
             anchors.left: parent.left
             anchors.leftMargin: 13
             anchors.verticalCenter: parent.verticalCenter
-            ticker: showAssetStandards ? assetStandards[currentIndex] : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 1)
-            name: showAssetStandards ? assetStandards[currentIndex] : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 3)
-            type: showAssetStandards ? assetStandards[currentIndex] : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy.data(control.currentItem, Qt.UserRole + 9)
         }
     }
 
-    onCurrentIndexChanged: if (!showAssetStandards && currentIndex === 0 && searchBar.textField.text == "") currentIndex = 1
+    onCurrentIndexChanged:
+    {
+        if (!showAssetStandards && currentIndex === 0 && searchBar.textField.text == "") currentIndex = 1
+        setContentItem(currentIndex)
+    }
+    onActivated: setContentItem(index)
     onShowAssetStandardsChanged: resetList()
     onVisibleChanged: if (!visible) resetList()
     Component.onDestruction: resetList()
