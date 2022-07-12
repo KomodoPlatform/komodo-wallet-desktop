@@ -908,7 +908,7 @@ Item
                         id: fetching_text_row
                         Layout.topMargin: 24
                         Layout.alignment: Qt.AlignHCenter
-                        text_value: api_wallet_page.tx_fetching_busy ? qsTr("Fetching transactions...") : qsTr('No transactions available.')
+                        text_value: api_wallet_page.tx_fetching_busy ? qsTr("Fetching transactions...") : qsTr('No transactions available')
                         font.pixelSize: Style.textSize
                     }
 
@@ -922,30 +922,29 @@ Item
                         visible: api_wallet_page.tx_fetching_busy
                     }
 
-                    DefaultMouseArea
+                    DefaultText
                     {
-                        id: explorer_mouseArea
-                        cursorShape: Qt.PointingHandCursor
-                        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                        width:  childrenRect.width
-                        height: childrenRect.height
-                        hoverEnabled: true
-                        onClicked: {
-                            console.log(addressURL)
-                            Qt.openUrlExternally(addressURL)
-                        }
+                        id: explorerLink
+                        Layout.topMargin: 24
+                        Layout.alignment: Qt.AlignHCenter
+                        visible: !api_wallet_page.tx_fetching_busy && addressURL != ""
+                        text_value:  qsTr("Click to view your address on %1 block explorer").arg(api_wallet_page.ticker)
+                        font.pixelSize: Style.textSize
+                        color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
 
-                        DefaultText
+                        DefaultMouseArea
                         {
-                            id: explorerLink
-                            visible: !api_wallet_page.tx_fetching_busy && addressURL != ""
-                            font.pixelSize: Style.textSize
-                            text_value:  qsTr("View block explorer at ") + addressURL
-                            enabled: !explorer_mouseArea.containsMouse
-                            color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
+                            id: explorer_mouseArea
+                            cursorShape: Qt.PointingHandCursor
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                console.log(addressURL)
+                                Qt.openUrlExternally(addressURL)
+                            }
                         }
-
                     }
+
 
                     Item { Layout.fillHeight: true }
                 }
