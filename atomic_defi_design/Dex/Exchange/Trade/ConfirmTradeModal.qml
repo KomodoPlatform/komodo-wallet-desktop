@@ -321,6 +321,7 @@ MultipageModal
                         {
                             id: dpow_off_warning
                             anchors.fill: parent
+                            color: Style.colorWhite0
                             horizontalAlignment: Qt.AlignHCenter
                             verticalAlignment: Qt.AlignVCenter
                             text_value: Style.warningCharacter + " " + qsTr("Warning, this atomic swap is not dPoW protected!")
