@@ -48,6 +48,7 @@ Dex.ComboBoxWithSearchBar
     popupMaxHeight: 220
 
     model: showAssetStandards ? assetStandards : Dex.API.app.portfolio_pg.global_cfg_mdl.all_proxy
+    textRole: "ticker"
 
     searchBar.visible: !showAssetStandards
     searchBar.searchModel: model
