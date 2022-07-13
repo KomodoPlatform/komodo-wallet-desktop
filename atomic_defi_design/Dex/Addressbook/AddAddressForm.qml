@@ -122,6 +122,7 @@ Dex.Rectangle
             {
                 id: useStandardsCheckBox
                 Layout.preferredWidth: 150
+                Layout.fillHeight: true
                 Layout.leftMargin: 4
                 boxWidth: 22
                 boxHeight: 22
