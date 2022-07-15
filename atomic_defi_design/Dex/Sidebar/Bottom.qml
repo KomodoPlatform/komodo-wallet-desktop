@@ -88,25 +88,31 @@ MouseArea
 
             onClicked:
             {
-                if (privacySwitch.checked) {
+                console.log(">> privacy_mode: " + General.privacy_mode)
+                console.log(">> privacySwitch.checked: " + privacySwitch.checked)
+                if (General.privacy_mode) {
+                    privacySwitch.checked = true
                     var wallet_name = API.app.wallet_mgr.wallet_default_name
+                    
                     let dialog = app.getText(
                     {
-                        "title": qsTr("Disable Privacy?"),
+                        title: qsTr("Disable Privacy?"),
                         text: qsTr("Enter password to confirm"),
                         standardButtons: Dialog.Yes | Dialog.Cancel,
+                        closePolicy: Popup.NoAutoClose,
                         warning: true,
                         iconColor: Dex.CurrentTheme.noColor,
                         isPassword: true,
                         placeholderText: qsTr("Type password"),
-                        yesButtonText: qsTr("Delete"),
+                        yesButtonText: qsTr("Confirm"),
                         cancelButtonText: qsTr("Cancel"),
+
                         onAccepted: function(text)
                         {
                             if (API.app.wallet_mgr.confirm_password(wallet_name, text))
                             {
-                                General.privacy_mode = !General.privacy_mode;
-                                privacySwitch.checked = General.privacy_mode;
+                                General.privacy_mode = false;
+                                privacySwitch.checked = false
                                 app.showDialog(
                                 {
                                     title: qsTr("Privacy status"),
@@ -114,6 +120,7 @@ MouseArea
                                     yesButtonText: qsTr("Ok"), titleBold: true,
                                     standardButtons: Dialog.Ok
                                 })
+                                console.log("+ privacy_mode: " + General.privacy_mode)
                             }
                             else
                             {
@@ -125,15 +132,19 @@ MouseArea
                                     standardButtons: Dialog.Ok, titleBold: true,
                                     yesButtonText: qsTr("Ok"),
                                 })
+                                console.log("- privacy_mode: " + General.privacy_mode)
                             }
+                            console.log("<< privacySwitch.checked: " + privacySwitch.checked)
                             dialog.close()
                             dialog.destroy()
                         }
                     })
                 }
                 else {
-                    General.privacy_mode = !General.privacy_mode;
-                    privacySwitch.checked = General.privacy_mode;
+                    General.privacy_mode = true;
+                    privacySwitch.checked = true
+                    console.log("= privacy_mode: " + General.privacy_mode)
+                    console.log("<< privacySwitch.checked: " + privacySwitch.checked)
                 }
             }
 
@@ -146,7 +157,6 @@ MouseArea
                 anchors.verticalCenter: parent.verticalCenter
                 scale: 0.75
                 mouseArea.hoverEnabled: true
-
                 onClicked: parent.clicked()
             }
         }

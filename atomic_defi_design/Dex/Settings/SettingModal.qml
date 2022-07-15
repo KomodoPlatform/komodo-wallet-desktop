@@ -457,6 +457,7 @@ Qaterial.Dialog
                                 width: parent.width - 30
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 height: 60
+
                                 DexLabel
                                 {
                                     Layout.fillWidth: true
@@ -464,39 +465,46 @@ Qaterial.Dialog
                                     font: DexTypo.subtitle1
                                     text: qsTr("Ask system's password before sending coins ? (2FA)")
                                 }
-                                DexSwitch
+
+                                DefaultSwitch
                                 {
                                     checked: parseInt(atomic_settings2.value("2FA")) === 1
                                     onCheckedChanged:
                                     {
                                         if (checked) {
                                             atomic_settings2.setValue("2FA", 1)
+                                            atomic_settings2.sync()
                                         }
                                         else {
+                                            checked = true
                                             var wallet_name = API.app.wallet_mgr.wallet_default_name
                                             let dialog = app.getText(
                                             {
                                                 "title": qsTr("Disable 2FA?"),
                                                 text: qsTr("Enter password to confirm"),
                                                 standardButtons: Dialog.Yes | Dialog.Cancel,
+                                                closePolicy: Popup.NoAutoClose,
                                                 warning: true,
                                                 iconColor: Dex.CurrentTheme.noColor,
                                                 isPassword: true,
                                                 placeholderText: qsTr("Type password"),
-                                                yesButtonText: qsTr("Delete"),
+                                                yesButtonText: qsTr("Confirm"),
                                                 cancelButtonText: qsTr("Cancel"),
                                                 onAccepted: function(text)
                                                 {
                                                     if (API.app.wallet_mgr.confirm_password(wallet_name, text))
                                                     {
-                                                        atomic_settings2.setValue("2FA", 0)
                                                         app.showDialog(
                                                         {
                                                             title: qsTr("2FA status"),
                                                             text: qsTr("2FA disabled successfully"),
-                                                            yesButtonText: qsTr("Ok"), titleBold: true,
+                                                            yesButtonText: qsTr("Ok"),
+                                                            titleBold: true,
                                                             standardButtons: Dialog.Ok
                                                         })
+                                                        checked = false
+                                                        atomic_settings2.setValue("2FA", 0)
+                                                        atomic_settings2.sync()
                                                     }
                                                     else
                                                     {
@@ -505,7 +513,8 @@ Qaterial.Dialog
                                                             title: qsTr("Wrong password!"),
                                                             text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),
                                                             warning: true,
-                                                            standardButtons: Dialog.Ok, titleBold: true,
+                                                            standardButtons: Dialog.Ok,
+                                                            titleBold: true,
                                                             yesButtonText: qsTr("Ok"),
                                                         })
                                                     }
@@ -514,7 +523,6 @@ Qaterial.Dialog
                                                 }
                                             });
                                         }
-                                        atomic_settings2.sync()
                                     }
                                 }
                             }
