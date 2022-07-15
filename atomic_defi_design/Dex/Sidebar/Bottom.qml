@@ -1,5 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.2
+import QtQuick.Controls 2.15
+import App 1.0
+import Dex.Themes 1.0 as Dex
 
 import "../Components"
 import "../Constants"
@@ -89,7 +92,7 @@ MouseArea
                     var wallet_name = API.app.wallet_mgr.wallet_default_name
                     let dialog = app.getText(
                     {
-                        "title": qsTr("Disable 2FA?"),
+                        "title": qsTr("Disable Privacy?"),
                         text: qsTr("Enter password to confirm"),
                         standardButtons: Dialog.Yes | Dialog.Cancel,
                         warning: true,
@@ -126,7 +129,7 @@ MouseArea
                             dialog.close()
                             dialog.destroy()
                         }
-                    }
+                    })
                 }
                 else {
                     General.privacy_mode = !General.privacy_mode;
