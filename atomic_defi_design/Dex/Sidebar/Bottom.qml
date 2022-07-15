@@ -85,8 +85,53 @@ MouseArea
 
             onClicked:
             {
-                General.privacy_mode = !General.privacy_mode;
-                privacySwitch.checked = General.privacy_mode;
+                if (privacySwitch.checked) {
+                    var wallet_name = API.app.wallet_mgr.wallet_default_name
+                    let dialog = app.getText(
+                    {
+                        "title": qsTr("Disable 2FA?"),
+                        text: qsTr("Enter password to confirm"),
+                        standardButtons: Dialog.Yes | Dialog.Cancel,
+                        warning: true,
+                        iconColor: Dex.CurrentTheme.noColor,
+                        isPassword: true,
+                        placeholderText: qsTr("Type password"),
+                        yesButtonText: qsTr("Delete"),
+                        cancelButtonText: qsTr("Cancel"),
+                        onAccepted: function(text)
+                        {
+                            if (API.app.wallet_mgr.confirm_password(wallet_name, text))
+                            {
+                                General.privacy_mode = !General.privacy_mode;
+                                privacySwitch.checked = General.privacy_mode;
+                                app.showDialog(
+                                {
+                                    title: qsTr("Privacy status"),
+                                    text: qsTr("Privacy mode disabled successfully"),
+                                    yesButtonText: qsTr("Ok"), titleBold: true,
+                                    standardButtons: Dialog.Ok
+                                })
+                            }
+                            else
+                            {
+                                app.showDialog(
+                                {
+                                    title: qsTr("Wrong password!"),
+                                    text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),
+                                    warning: true,
+                                    standardButtons: Dialog.Ok, titleBold: true,
+                                    yesButtonText: qsTr("Ok"),
+                                })
+                            }
+                            dialog.close()
+                            dialog.destroy()
+                        }
+                    }
+                }
+                else {
+                    General.privacy_mode = !General.privacy_mode;
+                    privacySwitch.checked = General.privacy_mode;
+                }
             }
 
             DefaultSwitch

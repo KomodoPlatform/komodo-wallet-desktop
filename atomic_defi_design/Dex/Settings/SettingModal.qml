@@ -469,10 +469,51 @@ Qaterial.Dialog
                                     checked: parseInt(atomic_settings2.value("2FA")) === 1
                                     onCheckedChanged:
                                     {
-                                        if (checked)
+                                        if (checked) {
                                             atomic_settings2.setValue("2FA", 1)
-                                        else
-                                            atomic_settings2.setValue("2FA", 0)
+                                        }
+                                        else {
+                                            var wallet_name = API.app.wallet_mgr.wallet_default_name
+                                            let dialog = app.getText(
+                                            {
+                                                "title": qsTr("Disable 2FA?"),
+                                                text: qsTr("Enter password to confirm"),
+                                                standardButtons: Dialog.Yes | Dialog.Cancel,
+                                                warning: true,
+                                                iconColor: Dex.CurrentTheme.noColor,
+                                                isPassword: true,
+                                                placeholderText: qsTr("Type password"),
+                                                yesButtonText: qsTr("Delete"),
+                                                cancelButtonText: qsTr("Cancel"),
+                                                onAccepted: function(text)
+                                                {
+                                                    if (API.app.wallet_mgr.confirm_password(wallet_name, text))
+                                                    {
+                                                        atomic_settings2.setValue("2FA", 0)
+                                                        app.showDialog(
+                                                        {
+                                                            title: qsTr("2FA status"),
+                                                            text: qsTr("2FA disabled successfully"),
+                                                            yesButtonText: qsTr("Ok"), titleBold: true,
+                                                            standardButtons: Dialog.Ok
+                                                        })
+                                                    }
+                                                    else
+                                                    {
+                                                        app.showDialog(
+                                                        {
+                                                            title: qsTr("Wrong password!"),
+                                                            text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),
+                                                            warning: true,
+                                                            standardButtons: Dialog.Ok, titleBold: true,
+                                                            yesButtonText: qsTr("Ok"),
+                                                        })
+                                                    }
+                                                    dialog.close()
+                                                    dialog.destroy()
+                                                }
+                                            });
+                                        }
                                         atomic_settings2.sync()
                                     }
                                 }
