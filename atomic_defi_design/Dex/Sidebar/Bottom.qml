@@ -88,8 +88,6 @@ MouseArea
 
             onClicked:
             {
-                console.log(">> privacy_mode: " + General.privacy_mode)
-                console.log(">> privacySwitch.checked: " + privacySwitch.checked)
                 if (General.privacy_mode) {
                     privacySwitch.checked = true
                     var wallet_name = API.app.wallet_mgr.wallet_default_name
@@ -120,7 +118,6 @@ MouseArea
                                     yesButtonText: qsTr("Ok"), titleBold: true,
                                     standardButtons: Dialog.Ok
                                 })
-                                console.log("+ privacy_mode: " + General.privacy_mode)
                             }
                             else
                             {
@@ -132,9 +129,7 @@ MouseArea
                                     standardButtons: Dialog.Ok, titleBold: true,
                                     yesButtonText: qsTr("Ok"),
                                 })
-                                console.log("- privacy_mode: " + General.privacy_mode)
                             }
-                            console.log("<< privacySwitch.checked: " + privacySwitch.checked)
                             dialog.close()
                             dialog.destroy()
                         }
@@ -143,8 +138,6 @@ MouseArea
                 else {
                     General.privacy_mode = true;
                     privacySwitch.checked = true
-                    console.log("= privacy_mode: " + General.privacy_mode)
-                    console.log("<< privacySwitch.checked: " + privacySwitch.checked)
                 }
             }
 
