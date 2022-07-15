@@ -114,6 +114,7 @@ namespace atomic_dex
         {
             SPDLOG_INFO("new ticker: {}", ticker.toStdString());
             this->set_tx_fetching_busy(true);
+            SPDLOG_INFO("set_tx_fetching_busy to true");
             m_transactions_mdl->reset();
             mm2_system.fetch_infos_thread(true, true);
             emit currentTickerChanged();
@@ -233,6 +234,24 @@ namespace atomic_dex
             emit txFetchingStatusChanged();
         }
     }
+
+    bool
+    atomic_dex::wallet_page::is_tx_fetching_failed() const
+    {
+        return m_tx_fetching_failed;
+    }
+
+    void
+    atomic_dex::wallet_page::set_tx_fetching_failed(bool status)
+    {
+        if (m_tx_fetching_failed != status)
+        {
+            m_tx_fetching_failed = status;
+            emit txFetchingOutcomeChanged();
+        }
+    }
+
+
 
     QVariant
     wallet_page::get_ticker_infos() const
@@ -790,6 +809,14 @@ namespace atomic_dex
                 //! Update tx (only unconfirmed) or insert (new tx)
                 // SPDLOG_DEBUG("updating / insert tx");
                 m_transactions_mdl->update_or_insert_transactions(transactions);
+            }
+            if (ec)
+            {
+                this->set_tx_fetching_failed(true);
+            }
+            else
+            {
+                this->set_tx_fetching_failed(false);
             }
         }
         else
