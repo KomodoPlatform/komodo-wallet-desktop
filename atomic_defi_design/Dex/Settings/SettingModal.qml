@@ -476,12 +476,11 @@ Qaterial.Dialog
                                             atomic_settings2.sync()
                                         }
                                         else {
-                                            checked = true
                                             var wallet_name = API.app.wallet_mgr.wallet_default_name
                                             let dialog = app.getText(
                                             {
                                                 "title": qsTr("Disable 2FA?"),
-                                                text: qsTr("Enter password to confirm"),
+                                                text: qsTr("Enter your wallet password to confirm"),
                                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                                 closePolicy: Popup.NoAutoClose,
                                                 warning: true,
@@ -502,7 +501,6 @@ Qaterial.Dialog
                                                             titleBold: true,
                                                             standardButtons: Dialog.Ok
                                                         })
-                                                        checked = false
                                                         atomic_settings2.setValue("2FA", 0)
                                                         atomic_settings2.sync()
                                                     }
@@ -511,12 +509,13 @@ Qaterial.Dialog
                                                         app.showDialog(
                                                         {
                                                             title: qsTr("Wrong password!"),
-                                                            text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),
+                                                            text: "%1 ".arg(wallet_name) + qsTr("Wallet password is incorrect"),
                                                             warning: true,
                                                             standardButtons: Dialog.Ok,
                                                             titleBold: true,
                                                             yesButtonText: qsTr("Ok"),
                                                         })
+                                                        checked = true
                                                     }
                                                     dialog.close()
                                                     dialog.destroy()
