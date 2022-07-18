@@ -121,6 +121,7 @@ Item
             }
         }
 
+        // Contact table content
         Dex.DefaultListView
         {
             id: contactTable
@@ -268,7 +269,7 @@ Item
                     {
                         id: addressList
 
-                        visible: model.rowCount() > 0
+                        visible: addressList.model.rowCount() > 0
                         x: 30
                         model: modelData.proxyFilter
                         width: parent.width - 40
