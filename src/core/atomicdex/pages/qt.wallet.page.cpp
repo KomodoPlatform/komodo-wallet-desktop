@@ -114,7 +114,6 @@ namespace atomic_dex
         {
             SPDLOG_INFO("new ticker: {}", ticker.toStdString());
             this->set_tx_fetching_busy(true);
-            SPDLOG_INFO("set_tx_fetching_busy to true");
             m_transactions_mdl->reset();
             mm2_system.fetch_infos_thread(true, true);
             emit currentTickerChanged();

@@ -932,9 +932,9 @@ Item
                         visible:
                         {
                             if (addressURL) console.log("addressURL: " + addressURL)
-                            return !api_wallet_page.tx_fetching_failed && !api_wallet_page.tx_fetching_busy && addressURL != ""
+                            return api_wallet_page.tx_fetching_busy ? false : addressURL == "" ? false : api_wallet_page.tx_fetching_failed 
                         }
-                        text_value:  qsTr("Click to view your address on %1 block explorer").arg(api_wallet_page.ticker)
+                        text_value:  qsTr("Click to view your address on %1 (%2) block explorer").arg(current_ticker_infos.name).arg(api_wallet_page.ticker)
                         font.pixelSize: Style.textSize
                         color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
 
