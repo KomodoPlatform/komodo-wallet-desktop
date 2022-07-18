@@ -187,7 +187,7 @@ SetupPage
                                 width: 30
                                 height: width
                                 radius: 18
-                                color: mouse_area.containsMouse ? Dex.CurrentTheme.floatingBackgroundColor : 'transparent'
+                                color: Dex.CurrentTheme.floatingBackgroundColor
 
                                 Qaterial.ColorIcon
                                 {
