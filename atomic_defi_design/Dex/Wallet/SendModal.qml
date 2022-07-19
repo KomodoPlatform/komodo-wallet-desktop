@@ -681,7 +681,14 @@ MultipageModal
                       + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
         }
 
-        DexBusyIndicator { visible: root.is_send_busy }
+        DefaultBusyIndicator {
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+            Layout.preferredWidth: 32
+            Layout.preferredHeight: Layout.preferredWidth
+            indicatorSize: Layout.preferredWidth
+            indicatorDotSize: 5
+            visible: root.is_send_busy
+        }
 
         // Footer
         RowLayout
@@ -793,6 +800,11 @@ MultipageModal
 
         DefaultBusyIndicator
         {
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+            Layout.preferredWidth: 32
+            Layout.preferredHeight: Layout.preferredWidth
+            indicatorSize: Layout.preferredWidth
+            indicatorDotSize: 5
             visible: root.is_broadcast_busy
         }
 
