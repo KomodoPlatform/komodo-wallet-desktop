@@ -95,7 +95,7 @@ MouseArea
                     let dialog = app.getText(
                     {
                         title: qsTr("Disable Privacy?"),
-                        text: qsTr("Enter password to confirm"),
+                        text: qsTr("Enter wallet password to confirm"),
                         standardButtons: Dialog.Yes | Dialog.Cancel,
                         closePolicy: Popup.NoAutoClose,
                         warning: true,
