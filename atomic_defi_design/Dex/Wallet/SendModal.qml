@@ -350,19 +350,12 @@ MultipageModal
             DefaultButton
             {
                 enabled: !root.is_send_busy
-                visible: {
-                    console.log("needFix: " + needFix)
-                    console.log("address_data.convertible: " + address_data.convertible)
-                    return needFix
-                }
-
+                visible: needFix
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: 10
                 Layout.preferredWidth: 50
                 Layout.preferredHeight: 28
-
                 text: qsTr("Fix")
-
                 onClicked: api_wallet_page.convert_address(input_address.text, address_data.to_address_format)
             }
 
