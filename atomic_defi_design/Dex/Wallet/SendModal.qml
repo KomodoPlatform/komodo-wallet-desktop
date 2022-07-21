@@ -223,6 +223,7 @@ MultipageModal
     {
         if (!is_validate_address_busy)
         {
+            needFix = false
             address_data = api_wallet_page.validate_address_data
             if (address_data.reason !== "")
             {
@@ -235,7 +236,7 @@ MultipageModal
             }
             if (address_data.convertible)
             {
-                reason.text =  address_data.reason;
+                reason.text = address_data.reason;
                 if (needFix!==true) needFix = true;
             }
         }
@@ -329,7 +330,7 @@ MultipageModal
         {
             visible: errorView && input_address.text !== ""
             Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
+            Layout.preferredWidth: 380
             spacing: 4
 
             Item { Layout.fillWidth: true }
@@ -339,8 +340,9 @@ MultipageModal
                 id: reason
 
                 Layout.alignment: Qt.AlignVCenter
+                Layout.preferredWidth: 320
 
-                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                wrapMode: Label.Wrap
                 color: Dex.CurrentTheme.noColor
                 text_value: qsTr("The address has to be mixed case.")
             }
@@ -348,7 +350,11 @@ MultipageModal
             DefaultButton
             {
                 enabled: !root.is_send_busy
-                visible: needFix
+                visible: {
+                    console.log("needFix: " + needFix)
+                    console.log("address_data.convertible: " + address_data.convertible)
+                    return needFix
+                }
 
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: 10
@@ -659,7 +665,7 @@ MultipageModal
                 Layout.alignment: Qt.AlignHCenter
                 horizontalAlignment: DefaultText.AlignHCenter
 
-                wrapMode: Text.Wrap
+                wrapMode: Label.Wrap
                 color: Style.colorRed
                 text_value: qsTr("Custom Fee can't be higher than the amount") + "\n"
                           + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(General.getFeesTicker(current_ticker_infos)), General.getFeesTicker(current_ticker_infos)))
@@ -672,7 +678,7 @@ MultipageModal
             Layout.topMargin: 16
             Layout.alignment: Qt.AlignHCenter
             horizontalAlignment: DefaultText.AlignHCenter
-            wrapMode: Text.Wrap
+            wrapMode: Label.Wrap
             visible: !fee_error.visible && !hasFunds()
 
             color: Dex.CurrentTheme.noColor
@@ -689,6 +695,7 @@ MultipageModal
             indicatorDotSize: 5
             visible: root.is_send_busy
         }
+
 
         // Footer
         RowLayout
