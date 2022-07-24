@@ -489,6 +489,10 @@ Qaterial.Dialog
                                                 placeholderText: qsTr("Type password"),
                                                 yesButtonText: qsTr("Confirm"),
                                                 cancelButtonText: qsTr("Cancel"),
+                                                onRejected: function(text)
+                                                {
+                                                    checked = parseInt(atomic_settings2.value("2FA")) === 1
+                                                },
                                                 onAccepted: function(text)
                                                 {
                                                     if (API.app.wallet_mgr.confirm_password(wallet_name, text))
