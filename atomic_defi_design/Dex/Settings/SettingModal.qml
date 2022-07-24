@@ -489,9 +489,9 @@ Qaterial.Dialog
                                                 placeholderText: qsTr("Type password"),
                                                 yesButtonText: qsTr("Confirm"),
                                                 cancelButtonText: qsTr("Cancel"),
-                                                onRejected: function(text)
+                                                onRejected: function()
                                                 {
-                                                    checked = parseInt(atomic_settings2.value("2FA")) === 1
+                                                    checked = true
                                                 },
                                                 onAccepted: function(text)
                                                 {
