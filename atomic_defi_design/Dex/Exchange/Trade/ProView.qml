@@ -137,22 +137,22 @@ RowLayout
         }
     }
 
-    ColumnLayout
+    WidgetContainer
     {
         Layout.minimumWidth: orderBook.visible || bestOrders.visible ? 353 : -1
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
+        spacing: 4
 
         OrderBook.Vertical
         {
             id: orderBook
 
-            Layout.fillWidth: true
+            width: parent.width
 
-            Layout.minimumHeight: isCollapsed() ? 70 : 365
-            Layout.maximumHeight: bestOrders.visible && !bestOrders.isCollapsed() ? 536 : -1
-            Layout.fillHeight: !isCollapsed()
+            minHeight: 365
+            height: parent.height * 0.65
         }
 
         // Best Orders
@@ -160,10 +160,10 @@ RowLayout
         {
             id: bestOrders
 
-            Layout.fillWidth: true
+            width: parent.width
 
-            Layout.minimumHeight: isCollapsed() ? 70 : 196
-            Layout.fillHeight: !isCollapsed()
+            minHeight: 196
+            height: parent.height * 0.35 - spacing
         }
     }
 
@@ -176,8 +176,10 @@ RowLayout
         Layout.maximumWidth: 350
         Layout.fillWidth: true
 
-        Layout.minimumHeight: 571
+        minHeight: 571
         Layout.fillHeight: true
+
+        resizable: false
     }
 
     ModalLoader
