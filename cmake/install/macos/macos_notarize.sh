@@ -78,7 +78,6 @@ echo "before xcrun"
 # Submit the zipball and get REQUEST_UUID
 SUBMISSION_INFO=$(xcrun altool --notarize-app --primary-bundle-id=${PRIMARY_BUNDLE_ID} --asc-public-id=${ASC_PUBLIC_ID} -u ${APPLE_ID} -p ${APP_SPECIFIC_PASSWORD} --file ${TARGET_BINARY}.zip) ;
 
-echo "123"
 if [ $? != 0 ]; then
     printf "Submission failed: $SUBMISSION_INFO \n"
     exit 5
