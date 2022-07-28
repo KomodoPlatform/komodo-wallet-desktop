@@ -96,30 +96,35 @@ namespace atomic_dex
             {
                 return QLocale::Language::Turkish;
             }
-            if (current_lang == "en")
+            else if (current_lang == "en")
             {
                 return QLocale::Language::English;
             }
-            if (current_lang == "fr")
+            else if (current_lang == "fr")
             {
                 return QLocale::Language::French;
             }
-            if (current_lang == "ru")
+            else if (current_lang == "ru")
             {
                 return QLocale::Language::Russian;
             }
             return QLocale::Language::AnyLanguage;
         };
 
+        auto path = QString{":/assets/languages/atomic_defi_" + new_lang};
+
         SPDLOG_INFO("Locale before parsing AtomicDEX settings: {}", QLocale().name().toStdString());
         QLocale::setDefault(get_locale(new_lang.toStdString()));
         SPDLOG_INFO("Locale after parsing AtomicDEX settings: {}", QLocale().name().toStdString());
-        [[maybe_unused]] auto res = this->m_translator.load("atomic_defi_" + new_lang, QLatin1String(":/assets/languages"));
-        assert(res);
+        if (!this->m_translator.load(path))
+        {
+            SPDLOG_ERROR("Failed to load {} translation in {}.qm", new_lang.toStdString(), path.toStdString());
+            return;
+        }
         this->m_app->installTranslator(&m_translator);
         this->m_qml_engine->retranslate();
+        SPDLOG_INFO("Successfully loaded {} translation in {}.qm", new_lang.toStdString(), path.toStdString());
         emit onLangChanged();
-        SPDLOG_INFO("Post lang changed");
     }
 
     bool atomic_dex::settings_page::is_notification_enabled() const

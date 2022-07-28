@@ -15,7 +15,7 @@ ColumnLayout
     property alias field: input_field
     property alias save_button: save_button
     property alias hide_button: hide_button
-    property alias hide_button_area: hide_button.mouse_area
+    property alias hide_button_area: hide_button.mouseArea
     property bool  copyable: false
     property bool  hidable: false
     property var   onReturn // function
@@ -49,7 +49,7 @@ ColumnLayout
             icon: Qaterial.Icons.contentCopy
             color: copyArea.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.foregroundColor
 
-            DefaultMouseArea
+            DexMouseArea
             {
                 id: copyArea
                 anchors.fill: parent
@@ -76,13 +76,14 @@ ColumnLayout
                 color: Dex.CurrentTheme.accentColor
                 opacity: .7
                 radius: 8
-                border.color: input_field.focus ? Dex.CurrentTheme.accentColor : DexTheme.rectangleBorderColor
+                border.color: input_field.focus ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.backgroundColor
                 border.width: input_field.focus ? 2 : 0
             }
             HideFieldButton {
                 id: hide_button
             }
         }
+
         DexAppButton {
             anchors.verticalCenter: parent.verticalCenter
             id: save_button

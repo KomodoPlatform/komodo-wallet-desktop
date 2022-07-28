@@ -87,6 +87,7 @@ SetupPage
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40
                 placeholderText: qsTr("Search your wallets...")
+                forceFocus: true
                 onTextChanged:
                 {
                     wallets = API.app.wallet_mgr.get_wallets(text)
@@ -186,12 +187,12 @@ SetupPage
                                 width: 30
                                 height: width
                                 radius: 18
-                                color: mouse_area.containsMouse ? Dex.CurrentTheme.floatingBackgroundColor : 'transparent'
+                                color: Dex.CurrentTheme.floatingBackgroundColor
 
                                 Qaterial.ColorIcon
                                 {
                                     anchors.fill: parent
-                                    color: Dex.CurrentTheme.loginWalletIconColorStart
+                                    color: Dex.CurrentTheme.userIconColorStart
                                     source: Qaterial.Icons.account
                                     iconSize: 28
                                 }
@@ -251,7 +252,7 @@ SetupPage
                                             if (API.app.wallet_mgr.confirm_password(wallet_name, text))
                                             {
                                                 API.app.wallet_mgr.delete_wallet(wallet_name);
-                                                app.showText(
+                                                app.showDialog(
                                                 {
                                                     title: qsTr("Wallet status"),
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet deleted successfully"),
@@ -262,7 +263,7 @@ SetupPage
                                             }
                                             else
                                             {
-                                                app.showText(
+                                                app.showDialog(
                                                 {
                                                     title: qsTr("Wallet status"),
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),

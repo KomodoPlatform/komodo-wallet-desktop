@@ -22,7 +22,7 @@ Popup
 
     background: DefaultRectangle { radius: root.radius; color: Dex.CurrentTheme.floatingBackgroundColor }
 
-    Overlay.modal: Rectangle { color: "#AA000000" }
+    Overlay.modal: DefaultRectangle { color: "#AA000000" }
 
     // Fade in animation
     onVisibleChanged:

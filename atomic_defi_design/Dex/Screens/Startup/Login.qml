@@ -15,16 +15,14 @@ SetupPage
 
     property string text_error
     property string walletName
-
     property bool   _isPasswordWrong: false
+
+    image_scale: 1
+    image_path: Dex.CurrentTheme.bigLogoPath
+    backgroundColor: 'transparent'
 
     signal backClicked()
     signal loginSucceeded()
-
-    function reset()
-    {
-        text_error = ""
-    }
 
     function onClickedLogin(password)
     {
@@ -38,20 +36,13 @@ SetupPage
         else
         {
             console.info("Failed: Login");
-            _isPasswordWrong = true;
             return false;
         }
     }
 
-
-    image_scale: 1
-    backgroundColor: 'transparent'
-    image_path: Dex.CurrentTheme.bigLogoPath
-
     content: ColumnLayout
     {
         id: content
-
         spacing: 10
 
         DexLabel
@@ -77,16 +68,23 @@ SetupPage
             width: 300
             background.color: Dex.CurrentTheme.floatingBackgroundColor
             forceFocus: true
+            field.onTextChanged: { _isPasswordWrong = false }
             field.onAccepted:
             {
                 if (_keyChecker.isValid())
                 {
-                    onClickedLogin(field.text)
+                    if (!onClickedLogin(field.text))
+                    {
+                        _inputPassword.error = true;
+                        _isPasswordWrong = true;
+                    }
+                    return true
                 }
                 else
                 {
-                    _inputPassword.error = true
-                    _keyChecker.visible = true
+                    _inputPassword.error = true;
+                    _isPasswordWrong = true;
+                    return false;
                 }
             }
 
@@ -94,25 +92,12 @@ SetupPage
             hideFieldButton.icon.color: Dex.CurrentTheme.foregroundColor
         }
 
-        DexKeyChecker
-        {
-            id: _passwordChecker
-            visible: false
-            field: _inputPassword.field
-        }
-
-        DefaultText
+        DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
-            visible: _isPasswordWrong
-            text: qsTr("Incorrect Password")
+            height: 14
+            text: _isPasswordWrong ? qsTr("Incorrect Password") : ""
             color: Dex.CurrentTheme.noColor
-        }
-
-        Item
-        {
-            height: 1
-            width: 1
         }
 
         GradientButton
@@ -121,7 +106,6 @@ SetupPage
             radius: width
             width: 200
             text: qsTr("Log In")
-            enabled: _passwordChecker.isValid()
             onClicked: _inputPassword.field.accepted()
         }
 

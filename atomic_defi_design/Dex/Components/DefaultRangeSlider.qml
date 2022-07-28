@@ -34,14 +34,14 @@ RangeSlider
         width: control.availableWidth
         height: implicitHeight
         radius: 2
-        color: Dex.CurrentTheme.rangeSliderDistanceColor
+        color: control.rangeDistanceColor
 
         Rectangle
         {
             x: control.first.visualPosition * parent.width
             width: control.second.visualPosition * parent.width - x
             height: parent.height
-            color: Dex.CurrentTheme.rangeSliderBackgroundColor
+            color: control.rangeBackgroundColor
             radius: 2
         }
     }
