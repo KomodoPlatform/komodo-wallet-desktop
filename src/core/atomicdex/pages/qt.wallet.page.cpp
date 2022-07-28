@@ -265,7 +265,7 @@ namespace atomic_dex
     QVariant
     wallet_page::get_ticker_infos() const
     {
-        // SPDLOG_DEBUG("get_ticker_infos");
+        SPDLOG_DEBUG("getting ticker infos");
         QJsonObject obj{
             {"balance", "0"},
             {"name", "Komodo"},
