@@ -245,6 +245,22 @@ namespace atomic_dex
             emit txFetchingStatusChanged();
         }
     }
+    
+    bool
+    atomic_dex::wallet_page::is_tx_fetching_failed() const
+    {
+        return m_tx_fetching_failed;
+    }
+
+    void
+    atomic_dex::wallet_page::set_tx_fetching_failed(bool status)
+    {
+        if (m_tx_fetching_failed != status)
+        {
+            m_tx_fetching_failed = status;
+            emit txFetchingOutcomeChanged();
+        }
+    }
 
     QVariant
     wallet_page::get_ticker_infos() const
@@ -264,6 +280,7 @@ namespace atomic_dex
             {"fiat_amount", "0.00"},
             {"trend_7d", QJsonArray()},
             {"fee_ticker", DEX_PRIMARY_COIN},
+            {"has_parent_fees_ticker", false},
             {"blocks_left", 1},
             {"transactions_left", 0},
             {"current_block", 1},
@@ -286,6 +303,8 @@ namespace atomic_dex
             obj["type"]                               = QString::fromStdString(coin_info.type);
             obj["segwit_supported"]                   = coin_info.segwit;
             obj["is_segwit_on"]                       = coin_info.is_segwit_on;
+            obj["has_parent_fees_ticker"]             = coin_info.has_parent_fees_ticker;
+            obj["fees_ticker"]                        = QString::fromStdString(coin_info.fees_ticker);
             obj["is_claimable"]                       = coin_info.is_claimable;
             obj["address"]                            = QString::fromStdString(mm2_system.address(ticker, ec));
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
@@ -670,6 +689,10 @@ namespace atomic_dex
                 {
                     withdraw_req.fees->type = "Qrc20Gas";
                 }
+                else if (coin_info.has_parent_fees_ticker)
+                {
+                    withdraw_req.fees->type = "otherGas";
+                }
             }
             nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
             ::mm2::api::to_json(json_data, withdraw_req);
@@ -960,6 +983,15 @@ namespace atomic_dex
                 //! Update tx (only unconfirmed) or insert (new tx)
                 // SPDLOG_DEBUG("updating / insert tx");
                 m_transactions_mdl->update_or_insert_transactions(transactions);
+            }
+
+            if (ec)
+            {
+                this->set_tx_fetching_failed(true);
+            }
+            else
+            {
+                this->set_tx_fetching_failed(false);
             }
         }
         else
