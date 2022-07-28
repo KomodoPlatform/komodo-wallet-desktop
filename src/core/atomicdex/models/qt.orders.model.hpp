@@ -66,6 +66,7 @@ namespace atomic_dex
             IsMakerRole,
             HumanDateRole,
             UnixTimestampRole,
+            PaymentLockRole,
             OrderIdRole,
             OrderStatusRole,
             MakerPaymentIdRole,

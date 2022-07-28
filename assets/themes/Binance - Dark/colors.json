@@ -42,7 +42,7 @@
   "tabSelectedColor": "#EBB514FF",
 
   "textDisabledColor": "#444444FF",
-  "textSelectionColor": "#14bca6FF",
+  "textSelectionColor": "#4986EAFF",
   "textPlaceholderColor": "#8B6900FF",
   "textSelectedColor": "#0e1021FF",
 
@@ -71,6 +71,8 @@
   "okColor": "#74fbeeFF",
   "noColor": "#d13990FF",
 
+  "senderColorStart": "#F85757FF",
+  "receiverColorStart": "#845FEFFF",
   "arrowUpColor": "#F85757FF",
   "arrowDownColor": "#845FEFFF",
 

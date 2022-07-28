@@ -26,7 +26,6 @@ TextField
 
     leftPadding: Math.max(0, left_text.width + 20)
     rightPadding: Math.max(0, right_text.width + 20)
-    topPadding: 7
 
     background: DefaultRectangle
     {
@@ -79,5 +78,9 @@ TextField
     Component.onCompleted:
     {
         if (forceFocus) text_field.forceActiveFocus()
+    }
+
+    onVisibleChanged: {
+        if (forceFocus && visible) text_field.forceActiveFocus()
     }
 }

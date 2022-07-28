@@ -168,7 +168,7 @@ DexListView
                     Layout.preferredWidth: parent._iconWidth
                     Layout.preferredHeight: 24
                     source: General.coinIcon(coin)
-                    opacity: !_isCoinEnabled? .1 : 1
+                    opacity: !_isCoinEnabled? .3 : 1
                 }
 
                 DexLabel                          // Order Token Name

@@ -9,27 +9,14 @@ import "../../../Constants"
 import Dex.Themes 1.0 as Dex
 import AtomicDEX.MarketMode 1.0
 import App 1.0 as App
+import Dex.Components 1.0 as Dex
 
 Item
 {
     id: _control
 
     property bool coinEnable: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
-    property var isAsk:
-    {
-        if (parseInt(cex_rates) > 0)
-        {
-            false
-        }
-        else if(parseInt(cex_rates) < 0)
-        {
-            true
-        }
-        else
-        {
-            undefined
-        }
-    }
+    property bool isAsk
 
     AnimatedRectangle
     {
@@ -62,7 +49,7 @@ Item
                 opacity: !_control.coinEnable? .1 : 1
             }
 
-            DexLabel
+            Dex.Text
             {
                 anchors.top: parent.top
                 anchors.left: asset_image.right
@@ -73,7 +60,7 @@ Item
                 font.pixelSize: 12
             }
 
-            DexLabel
+            Dex.Text
             {
                 anchors.bottom: parent.bottom
                 anchors.left: asset_image.right
@@ -87,7 +74,7 @@ Item
 
         Item { Layout.preferredWidth: (parent.width - 300) / 2 }
 
-        DexLabel
+        Dex.Text
         {
             Layout.preferredWidth: 80
             horizontalAlignment: Text.AlignRight
@@ -99,7 +86,7 @@ Item
 
         Item { Layout.preferredWidth: (parent.width - 300) / 2 }
 
-        DexLabel
+        Dex.Text
         {
             Layout.preferredWidth: 80
             horizontalAlignment: Text.AlignRight
@@ -108,7 +95,6 @@ Item
             font.family: App.DexTypo.fontFamily
             font.pixelSize: 12
 
-            
             text: cex_rates === "0" ? "N/A" :
                                       parseFloat(cex_rates) > 0 ? "+" + parseFloat(cex_rates).toFixed(2) + "%" :
                                                                   parseFloat(cex_rates).toFixed(2) + "%"
@@ -181,6 +167,7 @@ Item
             }
             else
             {
+                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
                 if (API.app.trading_pg.market_mode == MarketMode.Buy)
                 {
                     app.pairChanged(rel_ticker, coin)
@@ -190,7 +177,7 @@ Item
                     app.pairChanged(base_ticker, coin)
                 }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
-                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
+                orderSelected()
             }
         }
     }

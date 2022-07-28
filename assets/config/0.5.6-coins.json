@@ -2142,7 +2142,7 @@
         "ws_url": "78.141.233.64:9001"
       },
       {
-  "url": "192.248.166.207:10001",
+        "url": "192.248.166.207:10001",
         "ws_url": "192.248.166.207:9001"
       }
     ],
@@ -5925,7 +5925,7 @@
       "type": "UTXO",
       "active": false,
       "currently_enabled": false
-  },  
+  },
   "QIAIR": {
     "coin": "QIAIR",
     "name": "Qi Airdrop Token",
@@ -10421,7 +10421,7 @@
     "active": false,
     "currently_enabled": false
   },
-    "IC": {
+  "IC": {
     "coin": "IC",
     "name": "Ignition",
     "coingecko_id": "ignition",
@@ -10522,7 +10522,7 @@
         "url": "electrumx1.actioncoin.com:10001"
       },
       {
-        "url": "electrumx2.actioncoin.com:10001"        
+        "url": "electrumx2.actioncoin.com:10001"
       }
     ],
     "explorer_url": [

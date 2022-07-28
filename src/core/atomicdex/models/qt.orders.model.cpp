@@ -91,6 +91,9 @@ namespace atomic_dex
         case UnixTimestampRole:
             item.unix_timestamp = value.toULongLong();
             break;
+        case PaymentLockRole:
+            item.paymentLock = value.toULongLong();
+            break;
         case OrderIdRole:
             item.order_id = value.toString();
             break;
@@ -169,6 +172,8 @@ namespace atomic_dex
             return item.human_date;
         case UnixTimestampRole:
             return item.unix_timestamp;
+        case PaymentLockRole:
+            return item.paymentLock;
         case OrderIdRole:
             return item.order_id;
         case OrderStatusRole:
@@ -232,6 +237,7 @@ namespace atomic_dex
             {IsMakerRole, "is_maker"},
             {HumanDateRole, "date"},
             {UnixTimestampRole, "timestamp"},
+            {PaymentLockRole, "paymentLock"},
             {OrderIdRole, "order_id"},
             {OrderStatusRole, "order_status"},
             {MakerPaymentIdRole, "maker_payment_id"},
@@ -418,6 +424,7 @@ namespace atomic_dex
             auto&& [prev_value, new_value, is_change] = update_value(OrdersRoles::OrderStatusRole, contents.order_status, idx, *this);
 
             update_value(OrdersRoles::UnixTimestampRole, contents.unix_timestamp, idx, *this);
+            update_value(OrdersRoles::PaymentLockRole, contents.paymentLock, idx, *this);
             auto&& [prev_value_d, new_value_d, _] = update_value(OrdersRoles::HumanDateRole, contents.human_date, idx, *this);
             if (is_change)
             {
@@ -709,10 +716,15 @@ namespace atomic_dex
         ::mm2::api::to_json(json_data, req);
         batch.push_back(json_data);
 
+        SPDLOG_DEBUG("recover_funds_of_swap request: {}", json_data.dump(-1));
+
         auto answer_functor = [this](web::http::http_response resp)
         {
             nlohmann::json j_out = nlohmann::json::object();
             std::string    body  = TO_STD_STR(resp.extract_string(true).get());
+
+            SPDLOG_DEBUG("recover_funds_of_swap answer received: {}", body);
+
             if (resp.status_code() == web::http::status_codes::OK)
             {
                 auto answers        = nlohmann::json::parse(body);

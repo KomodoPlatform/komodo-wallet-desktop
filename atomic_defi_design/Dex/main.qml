@@ -108,7 +108,7 @@ DexWindow
                     anchors.fill: parent
                     onClicked:
                     {
-                        let dialog = app.showText(
+                        let dialog = app.showDialog(
                         {
                             "title": qsTr("Confirm Logout"),
                             text: qsTr("Are you sure you want to log out?"),

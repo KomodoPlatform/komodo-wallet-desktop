@@ -79,6 +79,7 @@ ClipRRect // Trade Card
 
         function onBetterOrderDetected(newOrder)
         {
+            if (!selectedOrder) return
             // We shoould rename SelectedOrderStatus enum to OrderbookNotification.
             if (Constants.API.app.trading_pg.selected_order_status == SelectedOrderStatus.BetterPriceAvailable)
             {
@@ -163,7 +164,7 @@ ClipRRect // Trade Card
                     visible: enabled
 
                     anchors.left: parent.right
-                    anchors.leftMargin: 100
+                    anchors.leftMargin: 80
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: -8
 
@@ -187,14 +188,14 @@ ClipRRect // Trade Card
                         delay: 500
                         timeout: 5000
                         visible: parent.hovered
-                        text: qsTr("Reset form.")
+                        text: qsTr("Reset form")
                     }
                 }
             }
 
             DexLabel // Title
             {
-                text: qsTr("You have no tradable assets.")
+                text: qsTr("You have no tradable assets")
                 font: DexTypo.head6
                 opacity: .85
                 visible: !has_coins_with_balance
@@ -413,7 +414,6 @@ ClipRRect // Trade Card
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 5
-                        color: DexTheme.foregroundColor
 
                         up: false
                     }
@@ -593,8 +593,6 @@ ClipRRect // Trade Card
                         anchors.right: parent.right
                         anchors.rightMargin: 5
 
-                        color: DexTheme.foregroundColor
-
                         up: false
                     }
                 }
@@ -637,6 +635,7 @@ ClipRRect // Trade Card
             Item // Swap Button
             {
                 Layout.topMargin: 10
+                Layout.bottomMargin: 10
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: _tradeCard.width - 30
                 Layout.preferredHeight: 50
@@ -873,7 +872,7 @@ ClipRRect // Trade Card
             }
         }
 
-        Item // Swap Info - Details
+        Item // Fees Info - Details
         {
             id: _feesCard
             anchors.topMargin: 10

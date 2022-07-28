@@ -2,21 +2,25 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Dex.Themes 1.0 as Dex
 import App 1.0
 
 import "../../../Components"
 
 // Content
-ColumnLayout {
+ColumnLayout
+{
     id: root
 
-    property
-    var details
+    property var details
+    property var lastEvent
 
     readonly property
     var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
 
-    readonly property bool has_error_event: {
+    // Is there error in swap json?
+    readonly property bool has_error_event:
+    {
         if (!details) return false
 
         const events = details.events
@@ -28,7 +32,9 @@ ColumnLayout {
         return false
     }
 
-    readonly property double total_time_passed: {
+    // Total swaptime from sum of events duration
+    readonly property double totalTimePassed:
+    {
         if (!details) return 0
 
         const events = details.events
@@ -40,7 +46,10 @@ ColumnLayout {
         return sum
     }
 
-    readonly property double total_time_passed_estimated: {
+
+    // Total swap duration estimate
+    readonly property double totalTimePassedEstimated:
+    {
         const events = all_events
 
         let sum = 0
@@ -50,7 +59,9 @@ ColumnLayout {
         return sum
     }
 
-    readonly property int current_event_idx: {
+    // Current Event index
+    readonly property int current_event_idx:
+    {
         if (!details) return -1
         const events = details.events
         if (events.length === 0) return -1
@@ -66,64 +77,145 @@ ColumnLayout {
     }
 
     // Simulated time of the running event
-    property double simulated_time: 0
-    function updateSimulatedTime() {
-        if (!details) {
-            simulated_time = 0
+    property double simulatedTime: 0
+    function updateSimulatedTime()
+    {
+        if (!details)
+        {
+            simulatedTime = 0
             return
         }
 
         const events = details.events
-        if (!events || events.length === 0) {
-            simulated_time = 0
+        if (!events || events.length === 0)
+        {
+            simulatedTime = 0
             return
         }
 
-        const last_event = events[events.length - 1]
-        if (!last_event.timestamp) {
-            simulated_time = 0
+        lastEvent = events[events.length - 1]
+        if (!lastEvent.timestamp)
+        {
+            simulatedTime = 0
             return
         }
 
-        if (current_event_idx !== -1) {
-            const diff = Date.now() - last_event.timestamp
-            simulated_time = diff - (diff % 1000)
-        } else simulated_time = 0
+        if (current_event_idx !== -1)
+        {
+            const diff = Date.now() - lastEvent.timestamp
+            simulatedTime = diff - (diff % 1000)
+
+        } else simulatedTime = 0
     }
 
-    Timer {
+    Timer
+    {
         running: current_event_idx !== -1
         interval: 1000
         repeat: true
         onTriggered: updateSimulatedTime()
     }
 
-    function getTimeText(duration, estimated) {
-        return `<font color="${DexTheme.greenColor}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
-            `<font color="${DexTheme.foregroundColorLightColor0}">` + General.durationTextShort(duration) + `</font>` +
-            `<font color="${DexTheme.foregroundColorLightColor2}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
+    // Simulated countdown time until refund unlocked
+    property double paymentLockCountdownTime: -1    // First we wait for locktime expiry
+    property double waitUntilCountdownTime: -1      // Then we count down to 'wait_until' time
+    function updateCountdownTime()
+    {
+        if (current_event_idx == -1 || !details)
+        {
+            paymentLockCountdownTime = -1
+            return
+        }
+
+        const events = details.events
+
+        if (events[current_event_idx - 1].hasOwnProperty('data'))
+        {
+            if (events[current_event_idx - 1]['data'].hasOwnProperty('wait_until'))
+            {
+                const diff = events[current_event_idx - 1]['data']['wait_until'] * 1000 - Date.now()
+                waitUntilCountdownTime = diff - (diff % 1000)
+
+                if (waitUntilCountdownTime <= 0)
+                {
+                    waitUntilCountdownTime = 0
+                }
+            }
+        }
+
+        else
+        {
+            waitUntilCountdownTime = -1
+        }
+
+        if (details.hasOwnProperty('paymentLock'))
+        {
+            const lock_diff = details.paymentLock - Date.now()
+            paymentLockCountdownTime = lock_diff - (lock_diff % 1000)
+
+            if (paymentLockCountdownTime <= 0)
+            {
+                paymentLockCountdownTime = 0
+            }
+        }
+
+        else
+        {
+            paymentLockCountdownTime = -1
+        }
+    }
+
+    Timer
+    {
+        running: !has_error_event ? false : details.events[details.events.length - 1].state == "Finished" ? false : true
+        interval: 1000
+        repeat: true
+        onTriggered: updateCountdownTime()
+    }
+
+    function getTimeText(duration, estimated)
+    {
+        return `<font color="${Dex.CurrentTheme.okColor}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColor}">` + General.durationTextShort(duration) + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColor3}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
             General.durationTextShort(estimated) + `</font>`
     }
 
-    onTotal_time_passedChanged: updateSimulatedTime()
+    function getRefundText()
+    {
+        if ((paymentLockCountdownTime > 0) && (waitUntilCountdownTime == -1))
+        {
+            return `<font color="${Dex.CurrentTheme.foregroundColor}">` + qsTr(General.durationTextShort(paymentLockCountdownTime) + " until refund lock is released.") + `</font>`
+        }
+        else if (waitUntilCountdownTime > 0) {
+            if (lastEvent.state !== "Finished") {
+                return `<font color="${Dex.CurrentTheme.foregroundColor}">` + qsTr(General.durationTextShort(waitUntilCountdownTime) + " until refund completed.") + `</font>`
+            }
+        }
+        return ""
+    }
 
     // Title
-    DefaultText {
-        text_value: `<font color="${DexTheme.foregroundColorDarkColor4}">` + qsTr("Progress details") + `</font>` +
-            `<font color="${DexTheme.foregroundColorLightColor2}"> | </font>` +
-            getTimeText(total_time_passed + simulated_time, total_time_passed_estimated)
+    DefaultText
+    {
+        Layout.fillWidth: true
+        text_value: `<font color="${Dex.CurrentTheme.foregroundColor}">` + qsTr("Progress details") + `</font>` +
+            `<font color="${Dex.CurrentTheme.foregroundColor}"> | </font>` +
+            getTimeText(totalTimePassed + simulatedTime, totalTimePassedEstimated)
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
     }
 
-    Repeater {
-        Layout.fillWidth: true
+    Repeater
+    {
         Layout.fillHeight: true
         model: all_events
 
-        delegate: Item {
+        delegate: Item
+        {
             readonly property
-            var event: {
+            var event:
+            {
                 if (!details) return undefined
                 const idx = details.events.map(e => e.state).indexOf(modelData)
                 if (idx === -1) return undefined
@@ -135,7 +227,7 @@ ColumnLayout {
 
             readonly property bool is_active: General.exists(event) || is_current_event
 
-            readonly property double time_passed: event ? event.time_diff : is_current_event ? simulated_time : 0
+            readonly property double time_passed: event ? event.time_diff : is_current_event ? simulatedTime : 0
 
             width: root.width
             height: 50
@@ -147,14 +239,17 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: col_layout.verticalCenter
-                color: {
+
+                color:
+                {
                     // Already exists, completed event
-                    if (event) {
+                    if (event)
+                    {
                         // Red for the Finished if swap failed
-                        if (event.state === "Finished" && details.order_status === "failed") return DexTheme.redColor
+                        if (event.state === "Finished" && details.order_status === "failed") return Dex.CurrentTheme.noColor
 
                         // Red for error event, green for the others
-                        return details.error_events.indexOf(event.state) === -1 ? DexTheme.greenColor : DexTheme.redColor
+                        return details.error_events.indexOf(event.state) === -1 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.noColor
                     }
 
                     // In progress one is orange
@@ -162,11 +257,12 @@ ColumnLayout {
                         return Style.colorOrange
 
                     // Passive color for the rest
-                    return DexTheme.foregroundColorLightColor2
+                    return Dex.CurrentTheme.foregroundColor3
                 }
             }
 
-            ColumnLayout {
+            ColumnLayout
+            {
                 id: col_layout
 
                 anchors.left: icon.right
@@ -174,31 +270,35 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
 
-                DefaultText {
+                DefaultText
+                {
                     id: name
 
                     font.pixelSize: Style.textSizeSmall4
 
                     text_value: getEventText(modelData)
-                    color: event ? DexTheme.foregroundColor : is_current_event ? DexTheme.foregroundColorLightColor0 : DexTheme.foregroundColorLightColor2 
+                    color: event ? Dex.CurrentTheme.foregroundColor : is_current_event ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor3
                 }
 
-                AnimatedRectangle {
+                AnimatedRectangle
+                {
                     id: bar
                     visible: is_active
-                    width: 300
+                    width: parent.width
                     height: 2
 
-                    color: DexTheme.foregroundColorDarkColor3 
+                    color: Dex.CurrentTheme.foregroundColor2
 
-                    AnimatedRectangle {
-                        width: parent.width * (total_time_passed > 0 ? (time_passed / (total_time_passed + simulated_time)) : 0)
+                    AnimatedRectangle
+                    {
+                        width: parent.width * (totalTimePassed > 0 ? (time_passed / (totalTimePassed + simulatedTime)) : 0)
                         height: parent.height
-                        color: DexTheme.greenColor
+                        color: Dex.CurrentTheme.okColor
                     }
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     visible: bar.visible
                     font.pixelSize: Style.textSizeSmall2
 

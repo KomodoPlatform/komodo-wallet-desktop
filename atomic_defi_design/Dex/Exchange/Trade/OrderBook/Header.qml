@@ -4,19 +4,18 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
-import "../../../Components"
 import "../../../Constants"
+import Dex.Components 1.0 as Dex
 
-RowLayout
+Row
 {
     width: parent.width
     height: 24
     spacing: 0
 
-    DexLabel
+    Dex.Text
     {
-        Layout.preferredHeight: parent.height
-        Layout.preferredWidth: 100
+        width: parent.width * 0.31
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
         text: qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
@@ -26,12 +25,11 @@ RowLayout
         font.weight: Font.Black
     }
 
-    Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+    Item { width: parent.width * 0.01 }
 
-    DexLabel
+    Dex.Text
     {
-        Layout.preferredHeight: parent.height
-        Layout.preferredWidth: 120
+        width: parent.width * 0.37
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
         text: qsTr("Quantity") + " (" +  atomic_qt_utilities.retrieve_main_ticker(left_ticker) + ")"
@@ -41,12 +39,11 @@ RowLayout
         font.weight: Font.Black
     }
 
-    Item { Layout.preferredWidth: (parent.width - 300) / 2 }
+    Item { width: parent.width * 0.01 }
 
-    DexLabel
+    Dex.Text
     {
-        Layout.preferredHeight: parent.height
-        Layout.preferredWidth: 80
+        width: parent.width * 0.30
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
         text: qsTr("Total") + " (" +  atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"

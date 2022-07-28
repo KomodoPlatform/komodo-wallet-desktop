@@ -13,11 +13,16 @@ ColumnLayout
     property var           titleAlignment:      Qt.AlignLeft
     property int           titleTopMargin:      20
     property int           topMarginAfterTitle: 30
-
-    default property alias content:         _innerLayout.data
-    property alias         footer:          _footer.data
+    
+    property alias         flickable:           modal_flickable
+    property int           flickMax:            500
+    property alias         header:              _header.data
+    default property alias content:             _innerLayout.data
+    property alias         contentSpacing:      _innerLayout.spacing
+    property alias         footer:              _footer.data
 
     Layout.fillWidth: true
+    visible: true
     Layout.fillHeight: false
     Layout.maximumHeight: window.height - 50
 
@@ -27,19 +32,30 @@ ColumnLayout
         Layout.topMargin: root.titleTopMargin
         Layout.alignment: root.titleAlignment
         font: DexTypo.head6
+        visible: text != ''
+    }
+
+    // Header
+
+    ColumnLayout
+    {
+        id: _header
+        spacing: 10
+        Layout.topMargin: root.topMarginAfterTitle
+        Layout.preferredHeight: childrenRect.height
+        visible: childrenRect.height > 0
     }
 
     DefaultFlickable
     {
-        property int _maxHeight: window.height - 50 - _title.height - _footer.height - root.topMarginAfterTitle - root.spacing
+        id: modal_flickable
+        flickableDirection: Flickable.VerticalFlick
 
         Layout.topMargin: root.topMarginAfterTitle
         Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
-        Layout.maximumHeight: _maxHeight
+        Layout.maximumHeight: flickMax
         contentHeight: _innerLayout.height
-
-        flickableDirection: Flickable.VerticalFlick
 
         ColumnLayout
         {
@@ -55,5 +71,7 @@ ColumnLayout
         id: _footer
         Layout.topMargin: Style.rowSpacing
         spacing: Style.buttonSpacing
+        height: childrenRect.height
+        visible: childrenRect.height > 0
     }
 }

@@ -535,7 +535,21 @@ namespace atomic_dex
                 std::error_code ec;
                 amount_std = mm2_system.my_balance(ticker, ec);
             }
-
+            else if (coin_info.has_parent_fees_ticker)
+            {
+                withdraw_req.fees->type = "otherGas";
+            }
+        }
+        nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
+        ::mm2::api::to_json(json_data, withdraw_req);
+        // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
+        batch.push_back(json_data);
+        std::string amount_std = amount.toStdString();
+        if (max)
+        {
+            std::error_code ec;
+            amount_std = mm2_system.my_balance(ticker, ec);
+        }
             auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
             {
                 const auto& settings_system     = m_system_manager.get_system<settings_page>();

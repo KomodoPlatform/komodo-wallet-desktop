@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -68,8 +68,8 @@ namespace atomic_dex
         [[nodiscard]] addressbook_proxy_model* get_addressbook_proxy_mdl() const ;
         
         // QML API
-        Q_INVOKABLE bool add_contact(const QString& name);
-        Q_INVOKABLE void remove_contact(const QString& name);
+        Q_INVOKABLE bool addContact(const QString& name);
+        Q_INVOKABLE void removeContact(const QString& name);
 
         // QML API properties
         Q_PROPERTY(addressbook_proxy_model* proxy READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);

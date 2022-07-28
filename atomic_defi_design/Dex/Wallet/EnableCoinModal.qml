@@ -36,7 +36,6 @@ MultipageModal
         filterCoins("");
         setCheckState(false);
         coin_cfg_model.checked_nb = 0;
-        input_coin_filter.forceActiveFocus();
     }
 
     onClosed: 
@@ -50,6 +49,8 @@ MultipageModal
     {
         titleText: qsTr("Enable assets")
         titleAlignment: Qt.AlignHCenter
+        titleTopMargin: 15
+        topMarginAfterTitle: 15
 
         // Search input
         SearchField
@@ -62,10 +63,9 @@ MultipageModal
             Layout.fillWidth: true
             Layout.preferredHeight: 44
             textField.placeholderText: qsTr("Search asset")
-
+            textField.forceFocus: true
             textField.onTextChanged: filterCoins()
         }
-
 
         RowLayout
         {
@@ -74,43 +74,28 @@ MultipageModal
             Layout.fillWidth: true
             Layout.preferredHeight: 24
 
-            DexCheckBox
+            DefaultCheckBox
             {
-                Layout.leftMargin: 6
                 id: _selectAllCheckBox
+                Layout.fillWidth: true
 
-                visible: list.visible
-                checked: coin_cfg_model.checked_nb === setting_modal.enableable_coins_count - API.app.portfolio_pg.portfolio_mdl.length
+                spacing: 0
                 boxWidth: 20
                 boxHeight: 20
-                width: 20
+                labelWidth: parent.width - 40
+                label.wrapMode: Label.NoWrap
+                label.leftPadding: 24
 
-                DexMouseArea
-                {
-                    anchors.fill: parent
-                    onClicked: setCheckState(!_selectAllCheckBox.checked)
-                }
-            }
-
-            DexLabel
-            {
-                Layout.fillWidth: true
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
                 text: qsTr("Select all assets")
+                visible: list.visible
 
-                DexMouseArea
-                {
-                    anchors.fill: parent
-                    onClicked: setCheckState(!_selectAllCheckBox.checked)
-                }
+                onToggled: root.setCheckState(checked)
             }
-
         }
 
         HorizontalLine { Layout.topMargin: 5; Layout.alignment: Qt.AlignHCenter; Layout.fillWidth: true }
 
-        DexListView
+        DefaultListView
         {
             id: list
             visible: coin_cfg_model.all_disabled_proxy.length > 0
@@ -126,17 +111,24 @@ MultipageModal
                 height: 30
                 width: list.width
 
-                Row
+                RowLayout
                 {
-                    DexCheckBox
+                    spacing: 0
+                    Layout.topMargin: 10
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 24
+
+                    DefaultCheckBox
                     {
                         id: listInnerRowCheckbox
                         readonly property bool backend_checked: model.checked
 
-                        enabled: _selectAllCheckBox.checked ? checked : true
+                        Layout.fillWidth: true
+
+                        spacing: 0
                         boxWidth: 20
                         boxHeight: 20
-                        spacing: 0
+                        labelWidth: parent.width - 40
 
                         onBackend_checkedChanged: if (checked !== backend_checked) checked = backend_checked
                         onCheckStateChanged:
@@ -150,60 +142,60 @@ MultipageModal
                                 }
                             }
                         }
-                    }
 
-                    RowLayout
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        spacing: 0
-
-                        // Icon
-                        DexImage
+                        contentItem: RowLayout
                         {
-                            id: icon
-                            Layout.leftMargin: 8
                             Layout.alignment: Qt.AlignVCenter
-                            source: General.coinIcon(model.ticker)
-                            Layout.preferredWidth: 18
-                            Layout.preferredHeight: 18
-                        }
+                            spacing: 0
 
-                        DexLabel
-                        {
-                            Layout.leftMargin: 4
-                            Layout.alignment: Qt.AlignVCenter
-                            text: model.name + " (" + model.ticker + ")"
-                        }
+                            // Icon
+                            DefaultImage
+                            {
+                                id: icon
+                                Layout.leftMargin: 24
+                                Layout.alignment: Qt.AlignVCenter
+                                source: General.coinIcon(model.ticker)
+                                Layout.preferredWidth: 18
+                                Layout.preferredHeight: 18
+                            }
 
-                        CoinTypeTag
-                        {
-                            id: typeTag
-                            Layout.leftMargin: 6
-                            Layout.alignment: Qt.AlignVCenter
-                            type: model.type
-                        }
+                            DefaultText
+                            {
+                                Layout.leftMargin: 4
+                                Layout.alignment: Qt.AlignVCenter
+                                text: model.name + " (" + model.ticker + ")"
+                            }
 
-                        CoinTypeTag
-                        {
-                            Layout.leftMargin: 6
-                            Layout.alignment: Qt.AlignVCenter
-                            enabled: General.isIDO(model.ticker)
-                            visible: enabled
-                            type: "IDO"
-                        }
+                            CoinTypeTag
+                            {
+                                id: typeTag
+                                Layout.leftMargin: 6
+                                Layout.alignment: Qt.AlignVCenter
+                                type: model.type
+                            }
 
-                        CoinTypeTag
-                        {
-                            Layout.leftMargin: 6
-                            Layout.alignment: Qt.AlignVCenter
-                            enabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_wallet_only
-                            visible: enabled
-                            type: "WALLET ONLY"
+                            CoinTypeTag
+                            {
+                                Layout.leftMargin: 6
+                                Layout.alignment: Qt.AlignVCenter
+                                enabled: General.isIDO(model.ticker)
+                                visible: enabled
+                                type: "IDO"
+                            }
+
+                            CoinTypeTag
+                            {
+                                Layout.leftMargin: 6
+                                Layout.alignment: Qt.AlignVCenter
+                                enabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(model.ticker).is_wallet_only
+                                visible: enabled
+                                type: "WALLET ONLY"
+                            }
                         }
                     }
                 }
 
-                DexMouseArea
+                DefaultMouseArea
                 {
                     anchors.fill: parent
                     onClicked: listInnerRowCheckbox.checked = !listInnerRowCheckbox.checked
@@ -217,7 +209,7 @@ MultipageModal
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
 
-            DexLabel
+            DefaultText
             {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
@@ -271,7 +263,7 @@ MultipageModal
 
         footer:
         [
-            DexAppButton
+            DefaultButton
             {
                 Layout.preferredWidth: 199
                 text: qsTr("Close")
