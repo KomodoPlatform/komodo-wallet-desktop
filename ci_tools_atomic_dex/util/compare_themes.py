@@ -23,7 +23,24 @@ for branch in branches:
         for theme in ['light', 'dark']:
             selectors = set(themes[branch][theme].keys())
             missing = dev_selectors[theme].difference(selectors)
-            obsolete = selectors.difference(dev_selectors[theme])
-            print(f"#### {branch} {theme} ####")
-            print(f"Missing: {missing}")
-            print(f"Obsolete: {obsolete}")
+            themes[branch].update({
+                f"missing_{theme}": missing,
+                f"obsolete_{theme}": selectors.difference(dev_selectors[theme])
+            })
+
+            print(f"\n#### {branch} {theme} ####")
+            for i in themes[branch][f"obsolete_{theme}"]:
+                print(f"Obsolete selector: {i}...")
+
+            for i in themes[branch][f"missing_{theme}"]:
+
+                dev_color = themes['dev'][theme][i]
+                for j in themes['dev'][theme]:
+                    if dev_color == themes['dev'][theme][j]:
+                        if j in themes[branch][theme]:
+                            print(f"Missing {i}... Suggest using {themes[branch][theme][j]}")
+                            break
+                
+
+
+
