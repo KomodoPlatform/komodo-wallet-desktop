@@ -245,7 +245,7 @@ namespace atomic_dex
             emit txFetchingStatusChanged();
         }
     }
-    
+
     bool
     atomic_dex::wallet_page::is_tx_fetching_failed() const
     {
@@ -280,7 +280,6 @@ namespace atomic_dex
             {"fiat_amount", "0.00"},
             {"trend_7d", QJsonArray()},
             {"fee_ticker", DEX_PRIMARY_COIN},
-            {"has_parent_fees_ticker", false},
             {"blocks_left", 1},
             {"transactions_left", 0},
             {"current_block", 1},
@@ -535,21 +534,7 @@ namespace atomic_dex
                 std::error_code ec;
                 amount_std = mm2_system.my_balance(ticker, ec);
             }
-            else if (coin_info.has_parent_fees_ticker)
-            {
-                withdraw_req.fees->type = "otherGas";
-            }
-        }
-        nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
-        ::mm2::api::to_json(json_data, withdraw_req);
-        // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
-        batch.push_back(json_data);
-        std::string amount_std = amount.toStdString();
-        if (max)
-        {
-            std::error_code ec;
-            amount_std = mm2_system.my_balance(ticker, ec);
-        }
+
             auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
             {
                 const auto& settings_system     = m_system_manager.get_system<settings_page>();
@@ -998,7 +983,6 @@ namespace atomic_dex
                 // SPDLOG_DEBUG("updating / insert tx");
                 m_transactions_mdl->update_or_insert_transactions(transactions);
             }
-
             if (ec)
             {
                 this->set_tx_fetching_failed(true);
