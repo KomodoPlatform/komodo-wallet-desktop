@@ -52,8 +52,6 @@ namespace atomic_dex
         void                              set_tx_fetching_failed(bool status);
         [[nodiscard]] bool                is_tx_fetching_busy() const;
         void                              set_tx_fetching_busy(bool status);
-        [[nodiscard]] bool                is_tx_fetching_failed() const;
-        void                              set_tx_fetching_failed(bool status);
         [[nodiscard]] bool                is_convert_address_busy() const;
         void                              set_convert_address_busy(bool status);
         [[nodiscard]] bool                is_validate_address_busy() const;
