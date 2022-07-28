@@ -48,6 +48,8 @@ namespace atomic_dex
         void                              set_rpc_broadcast_data(QString rpc_data);
         [[nodiscard]] QVariant            get_rpc_send_data() const;
         void                              set_rpc_send_data(QVariant rpc_data);
+        [[nodiscard]] bool                is_tx_fetching_failed() const;
+        void                              set_tx_fetching_failed(bool status);
         [[nodiscard]] bool                is_tx_fetching_busy() const;
         void                              set_tx_fetching_busy(bool status);
         [[nodiscard]] bool                is_tx_fetching_failed() const;

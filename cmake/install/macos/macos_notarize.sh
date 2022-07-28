@@ -20,7 +20,7 @@ if ! command -v xq >/dev/null ; then
 fi
 
 OPTS=-h
-LONGOPTS=app-specific-password:,apple-id:,primary-bundle-id:,target-binary:,help
+LONGOPTS=app-specific-password:,apple-id:,primary-bundle-id:,target-binary:,asc-public-id:,help
 
 ! PARSED=$(getopt --options=$OPTS --longoptions=$LONGOPTS --name "$0" -- "$@" )
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
@@ -51,6 +51,10 @@ while true; do
         TARGET_BINARY=$2
         shift 2
         ;;
+    --asc-public-id)
+        ASC_PUBLIC_ID=$2
+        shift 2
+        ;;
     -h|--help)
         echo "Usage: $0 --app-specific-password=<apple_app_specific_password> --apple-id=<apple_id_email> --primary-bundle-id=<java-style-bundle-id> --target-binary=<TARGET_BINARY_FULLPATH>"
         echo "Example: $0 --app-specific-password=\$DDEV_MACOS_APP_PASSWORD --apple-id=accounts@drud.com --primary-bundle-id=com.ddev.ddev --target-binary=.gotmp/bin/darwin_amd64/ddev"
@@ -72,7 +76,7 @@ fi
 
 echo "before xcrun"
 # Submit the zipball and get REQUEST_UUID
-SUBMISSION_INFO=$(xcrun altool --notarize-app --primary-bundle-id=${PRIMARY_BUNDLE_ID} -u ${APPLE_ID} -p ${APP_SPECIFIC_PASSWORD} --file ${TARGET_BINARY}.zip 2>&1) ;
+SUBMISSION_INFO=$(xcrun altool --notarize-app --primary-bundle-id=${PRIMARY_BUNDLE_ID} --asc-public-id=${ASC_PUBLIC_ID} -u ${APPLE_ID} -p ${APP_SPECIFIC_PASSWORD} --file ${TARGET_BINARY}.zip) ;
 
 if [ $? != 0 ]; then
     printf "Submission failed: $SUBMISSION_INFO \n"
