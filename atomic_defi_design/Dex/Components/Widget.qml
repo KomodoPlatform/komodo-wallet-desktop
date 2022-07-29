@@ -28,18 +28,11 @@ Item
     property int            collapsedHeight:            70
     property int            minHeight:                  collapsedHeight
     property int            maxHeight:                  -1
+    property int            currentHeight:              minHeight
 
     default property alias  contentData:                content.data
 
     function isCollapsed() { return collapsed }
-
-    signal verticalResized(var oldHeight, var newHeight)
-
-    implicitHeight: collapsed ?
-                        (column.height !== collapsedHeight ? collapsedHeight : column.height) :
-                        (minHeight >= 0 && column.height < minHeight ? minHeight :
-                         maxHeight >= 0 && column.height > maxHeight ? maxHeight :
-                                                                       column.height)
 
     clip: true
 
@@ -114,8 +107,6 @@ Item
                     root.height = root.maxHeight
                 else if (root.minHeight >= 0 && root.height < root.minHeight)
                     root.height = root.minHeight
-
-                verticalResized(oldHeight, root.height)
             }
         }
     }

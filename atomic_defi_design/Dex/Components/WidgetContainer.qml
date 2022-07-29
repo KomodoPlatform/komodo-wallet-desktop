@@ -4,5 +4,10 @@ Column
 {
     spacing: 4
 
-    property int availableHeight: height - (childrenRect.height + (children.length - 1) * spacing)
+    readonly property int availableHeight: height - (childrenRect.height + (children.length - 1) * spacing)
+
+    function getHeight(ratio)
+    {
+        return (height - (children.length - 1) * spacing) * ratio
+    }
 }

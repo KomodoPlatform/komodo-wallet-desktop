@@ -132,8 +132,10 @@ RowLayout
             id: tradingInfo
 
             Layout.fillWidth: true
-            Layout.minimumHeight: isCollapsed() ? 60 : 610
-            Layout.fillHeight: !isCollapsed()
+            Layout.fillHeight: true
+
+            minHeight: 610
+            resizable: false
         }
     }
 
@@ -152,7 +154,7 @@ RowLayout
             width: parent.width
 
             minHeight: 365
-            height: parent.height * 0.65
+            height: parent.getHeight(0.65)
         }
 
         // Best Orders
@@ -163,7 +165,7 @@ RowLayout
             width: parent.width
 
             minHeight: 196
-            height: parent.height * 0.35 - spacing
+            height: parent.getHeight(0.35)
         }
     }
 
