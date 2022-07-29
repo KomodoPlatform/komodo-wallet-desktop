@@ -150,6 +150,14 @@ QtObject {
         }
     }
 
+    function clean_warnings(text) {
+        if (text.includes("Backend error")) {
+            pos = text.lastIndexOf("]") + 1
+            return text.substring(pos).trim()
+        }
+        return text
+    }
+
     function isIDO(ticker) {
         let IDO_chains = []
         return IDO_chains.includes(ticker)
