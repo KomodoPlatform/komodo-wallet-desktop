@@ -152,8 +152,8 @@ QtObject {
 
     function clean_warnings(text) {
         if (text.includes("Backend error")) {
-            pos = text.lastIndexOf("]") + 1
-            return text.substring(pos).trim()
+            let i = text.lastIndexOf("]") + 1
+            return text.substring(i).trim()
         }
         return text
     }
