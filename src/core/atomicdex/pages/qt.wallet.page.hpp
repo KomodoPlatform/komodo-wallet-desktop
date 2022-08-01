@@ -161,6 +161,8 @@ namespace atomic_dex
         bool                                           m_current_ticker_fees_coin_enabled{true}; // Tells if the current ticker's fees coin is enabled.
         std::chrono::high_resolution_clock::time_point m_update_clock;                           // Clock used to time the `update()` loop of this ecs system.
         bool                                           m_page_open{false};
+
+        mutable std::shared_mutex                      m_update_tx_mutex;
     };
 } // namespace atomic_dex
 

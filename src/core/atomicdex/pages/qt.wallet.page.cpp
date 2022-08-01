@@ -793,6 +793,7 @@ namespace atomic_dex
     void
     wallet_page::on_tx_fetch_finished(const tx_fetch_finished& evt)
     {
+        std::unique_lock{m_update_tx_mutex};
         if (!evt.with_error)
         {
             std::error_code ec;
