@@ -28,7 +28,7 @@ Item
     property int            collapsedHeight:            70
     property int            minHeight:                  collapsedHeight
     property int            maxHeight:                  -1
-    property int            currentHeight:              minHeight
+    property int            _previousHeight
 
     default property alias  contentData:                content.data
 
@@ -83,31 +83,27 @@ Item
         visible: enabled
 
         anchors.bottom: root.bottom
-        height: 5
         width: root.width
+        height: 5
 
         cursorShape: Qt.SizeVerCursor
 
-        drag.target: this
-        drag.axis: Drag.YAxis
         onMouseYChanged:
         {
-            if (drag.active)
+            if (root.parent.objectName === "widgetContainer")
             {
-                let oldHeight = root.height
-
-                if (root.parent.availableHeight && root.parent.availableHeight <= 0 && mouseY > 0)
+                if (root.parent.availableHeight === 0 && mouseY > 0)
                     return
                 if (root.parent.availableHeight && root.parent.availableHeight < mouseY)
                     root.height += root.parent.availableHeight
                 else
                     root.height += mouseY
-
-                if (root.maxHeight >= 0 && root.height > root.maxHeight)
-                    root.height = root.maxHeight
-                else if (root.minHeight >= 0 && root.height < root.minHeight)
-                    root.height = root.minHeight
             }
+
+            if (root.maxHeight >= 0 && root.height > root.maxHeight)
+                root.height = root.maxHeight
+            else if (root.minHeight >= 0 && root.height < root.minHeight)
+                root.height = root.minHeight
         }
     }
 
@@ -133,7 +129,21 @@ Item
                     id: collapseButMouseArea
                     anchors.fill: parent
                     hoverEnabled: true
-                    onClicked: root.collapsed = !root.collapsed
+                    onClicked:
+                    {
+                        let oldHeight = root.height
+                        root.collapsed = !root.collapsed
+                        if (root.collapsed)
+                        {
+                            root._previousHeight = root.height
+                            root.height = root.collapsedHeight
+                        }
+                        else
+                        {
+                            root.height = root._previousHeight
+                            root._previousHeight = root.collapsedHeight
+                        }
+                    }
                 }
             }
         }

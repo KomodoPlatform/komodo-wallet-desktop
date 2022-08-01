@@ -134,27 +134,32 @@ RowLayout
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            minHeight: 610
             resizable: false
         }
     }
 
     WidgetContainer
     {
+        property real _orderBookHeightRatio: 0.65
+        property real _bestOrdersHeightRatio: 0.35
+
         Layout.minimumWidth: orderBook.visible || bestOrders.visible ? 353 : -1
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
         spacing: 4
 
+        onHeightChanged:
+        {
+            orderBook.height = getHeight(_orderBookHeightRatio);
+            bestOrders.height = getHeight(_bestOrdersHeightRatio);
+        }
+
         OrderBook.Vertical
         {
             id: orderBook
 
             width: parent.width
-
-            minHeight: 365
-            height: parent.getHeight(0.65)
         }
 
         // Best Orders
@@ -163,9 +168,6 @@ RowLayout
             id: bestOrders
 
             width: parent.width
-
-            minHeight: 196
-            height: parent.getHeight(0.35)
         }
     }
 
@@ -177,8 +179,6 @@ RowLayout
         Layout.minimumWidth: visible ? 302 : -1
         Layout.maximumWidth: 350
         Layout.fillWidth: true
-
-        minHeight: 571
         Layout.fillHeight: true
 
         resizable: false
