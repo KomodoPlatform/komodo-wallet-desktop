@@ -835,7 +835,6 @@ namespace atomic_dex
 
                                 if (!tickers.empty())
                                 {
-                                    SPDLOG_ERROR("Tickers: {}", tickers.dump());
                                     if (tickers == g_default_coins)
                                     {
                                         this->dispatcher_.trigger<default_coins_enabled>();
