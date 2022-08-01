@@ -469,13 +469,12 @@ namespace atomic_dex
         update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
     }
 
-    auto
-    mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
+    auto mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
-        // SPDLOG_INFO("batch_balance_and_tx");
         (void)tickers;
         (void)is_during_enabling;
         auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
+        
         return m_mm2_client.async_rpc_batch_standalone(batch_array)
             .then(
                 [this, tokens_to_fetch = tokens_to_fetch, is_a_reset, tickers](web::http::http_response resp)
@@ -1471,8 +1470,7 @@ namespace atomic_dex
         }
     }
 
-    void
-    mm2_service::process_tx_answer(const nlohmann::json& answer_json)
+    void mm2_service::process_tx_answer(const nlohmann::json& answer_json)
     {
         ::mm2::api::tx_history_answer answer;
         ::mm2::api::from_json(answer_json, answer);

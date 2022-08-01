@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,21 +16,18 @@
 
 #pragma once
 
-//! Qt
-#include <QNetworkAccessManager>
-
 #include <shared_mutex>
 #include <thread>
 #include <unordered_set>
 
-//! Deps
+#include <QNetworkAccessManager>
+
 #include <antara/gaming/ecs/system.hpp>
 #include <antara/gaming/ecs/system.manager.hpp>
+
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/synchronized_value.hpp>
-//#include <reproc++/reproc.hpp>
 
-//! Project Headers
 #include "atomicdex/api/mm2/mm2.client.hpp"
 #include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/api/mm2/mm2.error.code.hpp"
@@ -59,17 +56,18 @@ namespace atomic_dex
     using t_coins_registry = std::unordered_map<t_ticker, coin_config>;
     using t_coins          = std::vector<coin_config>;
 
-    //! Constants
-    inline constexpr const std::size_t g_tx_max_limit{50};
-
     class ENTT_API mm2_service final : public ag::ecs::pre_update_system<mm2_service>
     {
-      public:
+    public:
         using t_pair_max_vol = std::pair<t_max_taker_vol_answer_success, t_max_taker_vol_answer_success>;
         using t_pair_min_vol = std::pair<t_min_volume_answer_success, t_min_volume_answer_success>;
 
-      private:
-        //! Private typedefs
+        struct tx_fetch_finished
+        {
+            bool with_error{false};
+        };
+
+    private:
         using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
         using t_balance_registry           = std::unordered_map<t_ticker, t_balance_answer>;
         using t_tx_registry                = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
@@ -82,16 +80,9 @@ namespace atomic_dex
 
         ag::ecs::system_manager& m_system_manager;
 
-        //! Client
-        // std::shared_ptr<t_http_client>  m_mm2_client{nullptr};
-        // pplx::cancellation_token_source m_token_source;
         mm2_client m_mm2_client;
 
-        //! Process
-        //reproc::process m_mm2_instance;
-
-        //! Current ticker
-        t_synchronized_ticker m_current_ticker{g_primary_dex_coin};
+        t_synchronized_ticker m_current_ticker{g_primary_dex_coin}; // Current tiker
 
         //! Current orderbook
         t_synchronized_ticker_pair   m_synchronized_ticker_pair{std::make_pair(g_primary_dex_coin, g_second_primary_dex_coin)};
@@ -110,7 +101,6 @@ namespace atomic_dex
         //! Current wallet name
         std::string m_current_wallet_name;
 
-        //! Mutex
         mutable std::shared_mutex m_balance_mutex;
         mutable std::shared_mutex m_coin_cfg_mutex;
         mutable std::shared_mutex m_raw_coin_cfg_mutex;
@@ -146,16 +136,12 @@ namespace atomic_dex
         void handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from, nlohmann::json batch);
 
       public:
-        //! Constructor
         explicit mm2_service(entt::registry& registry, ag::ecs::system_manager& system_manager);
-
-        //! Delete useless operator
         mm2_service(const mm2_service& other)  = delete;
         mm2_service(const mm2_service&& other) = delete;
         mm2_service& operator=(const mm2_service& other) = delete;
         mm2_service& operator=(const mm2_service&& other) = delete;
 
-        //! Destructor
         ~mm2_service() final;
 
         //! Events
@@ -250,13 +236,9 @@ namespace atomic_dex
         void               batch_fetch_orders_and_swap(bool after_manual_reset = false);
         void               add_orders_answer(t_my_orders_answer answer);
 
-        //! Async API
-        mm2_client& get_mm2_client();
-        //[[nodiscard]] pplx::cancellation_token get_cancellation_token() const;
-
-        //! Wallet api
-        [[nodiscard]] std::string get_current_ticker() const;
-        bool                      set_current_ticker(const std::string& ticker);
+        [[nodiscard]] mm2_client&   get_mm2_client();
+        [[nodiscard]] std::string   get_current_ticker() const;
+        bool                        set_current_ticker(const std::string& ticker);
 
         //! Pagination
         void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50, t_filtering_infos infos = {});

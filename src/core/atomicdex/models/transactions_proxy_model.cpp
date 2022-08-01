@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,9 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Project Headers
-#include "atomicdex/models/qt.wallet.transactions.proxy.filter.model.hpp"
-#include "atomicdex/models/qt.wallet.transactions.model.hpp"
+#include "transactions_proxy_model.hpp"
+#include "transactions_model.hpp"
 
 namespace atomic_dex
 {
@@ -24,8 +23,7 @@ namespace atomic_dex
     {
     }
 
-    bool
-    transactions_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
+    bool transactions_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
         int      role       = this->sortRole();
         QVariant left_data  = sourceModel()->data(source_left, role);

@@ -3,10 +3,8 @@
 #include <optional>
 #include <string>
 
-//! Deps
 #include <nlohmann/json_fwd.hpp>
 
-//! Our Headers
 #include "transaction.data.hpp"
 
 namespace mm2::api

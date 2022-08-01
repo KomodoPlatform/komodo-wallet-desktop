@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,7 +16,6 @@
 
 #pragma once
 
-//! QT Headers
 #include <QJsonObject>
 #include <QModelIndex>
 #include <QString>
@@ -25,7 +24,6 @@
 #include <QVariantList>
 #include <QCryptographicHash> //> QCryptographicHash::hash, QCryptographicHash::Keccak_256
 
-//! Project Headers
 #include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/wallet.cfg.hpp"
@@ -33,9 +31,8 @@
 
 namespace atomic_dex
 {
-    template <typename TModel>
-    auto
-    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
+    template <typename QtModel>
+    inline auto update_value(int role, const QVariant& value, const QModelIndex& idx, QtModel& model)
     {
         if (auto prev_value = model.data(idx, role); value != prev_value)
         {
@@ -54,8 +51,7 @@ namespace atomic_dex
                      const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
                      const ag::ecs::system_manager& system_manager);
     
-    [[nodiscard]] QString
-    inline sha256_qstring_from_qt_byte_array(const QByteArray& byte_array)
+    [[nodiscard]] QString inline sha256_qstring_from_qt_byte_array(const QByteArray& byte_array)
     {
         return QLatin1String(QCryptographicHash::hash(byte_array, QCryptographicHash::Sha256).toHex());
     }

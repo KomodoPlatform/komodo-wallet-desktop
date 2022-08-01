@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,8 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Project Headers
-#include "atomicdex/models/qt.wallet.transactions.model.hpp"
+#include "transactions_model.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -38,10 +37,10 @@ namespace atomic_dex
         this->m_model_proxy->sort(0);
     }
 
-    QHash<int, QByteArray>
-    transactions_model::roleNames() const
+    QHash<int, QByteArray> transactions_model::roleNames() const
     {
-        return {
+        return 
+        {
             {AmountRole, "amount"},
             {AmISenderRole, "am_i_sender"},
             {DateRole, "date"},
@@ -55,18 +54,16 @@ namespace atomic_dex
             {BlockheightRole, "blockheight"},
             {ConfirmationsRole, "confirmations"},
             {UnconfirmedRole, "unconfirmed"},
-            {TransactionNoteRole, "transaction_note"}};
+            {TransactionNoteRole, "transaction_note"}
+        };
     }
 
-    int
-    transactions_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
+    int transactions_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        // return m_model_data.size();
         return static_cast<int>(m_file_count);
     }
 
-    bool
-    atomic_dex::transactions_model::setData(const QModelIndex& index, const QVariant& value, int role)
+    bool atomic_dex::transactions_model::setData(const QModelIndex& index, const QVariant& value, int role)
     {
         if (!hasIndex(index.row(), index.column(), index.parent()) || !value.isValid())
         {
@@ -119,8 +116,7 @@ namespace atomic_dex
         return true;
     }
 
-    QVariant
-    transactions_model::data(const QModelIndex& index, int role) const
+    QVariant transactions_model::data(const QModelIndex& index, int role) const
     {
         if (!hasIndex(index.row(), index.column(), index.parent()))
         {
@@ -182,8 +178,7 @@ namespace atomic_dex
         return {};
     }
 
-    void
-    atomic_dex::transactions_model::reset()
+    void atomic_dex::transactions_model::reset()
     {
         this->m_file_count = 0;
         this->beginResetModel();
@@ -192,13 +187,11 @@ namespace atomic_dex
         emit lengthChanged();
     }
 
-    void
-    transactions_model::init_transactions(const t_transactions& transactions)
+    void transactions_model::init_transactions(const t_transactions& transactions)
     {
         if (m_model_data.size() == 0)
         {
             SPDLOG_DEBUG("first time initialization, inserting {} transactions", transactions.size());
-            //! First time insertion
             beginResetModel();
             m_model_data = transactions;
             m_file_count = transactions.size() < g_file_count_limit ? transactions.size() : g_file_count_limit;
@@ -228,13 +221,13 @@ namespace atomic_dex
         emit lengthChanged();
     }
 
-    void
-    atomic_dex::transactions_model::update_transaction(const tx_infos& tx)
+    void atomic_dex::transactions_model::update_transaction(const tx_infos& tx)
     {
         if (const auto res = this->match(this->index(0, 0), TxHashRole, QString::fromStdString(tx.tx_hash)); not res.isEmpty())
         {
-            const QModelIndex& idx       = res.at(0);
-            quint64            timestamp = tx.timestamp;
+            const QModelIndex&  idx       = res.at(0);
+            quint64             timestamp = tx.timestamp;
+
             update_value(TimestampRole, timestamp, idx, *this);
             update_value(DateRole, QString::fromStdString(tx.date), idx, *this);
             update_value(ConfirmationsRole, static_cast<quint64>(tx.confirmations), idx, *this);
@@ -242,8 +235,7 @@ namespace atomic_dex
         }
     }
 
-    void
-    atomic_dex::transactions_model::update_or_insert_transactions(const t_transactions& transactions)
+    void atomic_dex::transactions_model::update_or_insert_transactions(const t_transactions& transactions)
     {
         if (m_model_data.size() > transactions.size())
         {
@@ -285,20 +277,17 @@ namespace atomic_dex
         }
     }
 
-    int
-    transactions_model::get_length() const
+    int transactions_model::get_length() const
     {
         return rowCount();
     }
 
-    transactions_proxy_model*
-    transactions_model::get_transactions_proxy() const
+    transactions_proxy_model* transactions_model::get_transactions_proxy() const
     {
         return m_model_proxy;
     }
 
-    void
-    atomic_dex::transactions_model::fetchMore(const QModelIndex& parent)
+    void atomic_dex::transactions_model::fetchMore(const QModelIndex& parent)
     {
         if (parent.isValid())
         {
@@ -317,10 +306,8 @@ namespace atomic_dex
         emit lengthChanged();
     }
 
-    bool
-    atomic_dex::transactions_model::canFetchMore([[maybe_unused]] const QModelIndex& parent) const
+    bool atomic_dex::transactions_model::canFetchMore([[maybe_unused]] const QModelIndex& parent) const
     {
         return (m_file_count < m_model_data.size());
     }
-
 } // namespace atomic_dex

@@ -16,10 +16,8 @@
 
 #pragma once
 
-// Std Headers
 #include <type_traits>
 
-// Project Headers
 #include "../api.call.hpp"
 
 namespace mm2::api
