@@ -490,6 +490,7 @@ namespace atomic_dex
                         {
                             for (auto&& answer: answers)
                             {
+                                SPDLOG_ERROR("Answer for tx or my_balance: {}",  answer.dump(4));
                                 if (answer.contains("balance"))
                                 {
                                     this->process_balance_answer(answer);
@@ -776,7 +777,7 @@ namespace atomic_dex
                                                         std::this_thread::sleep_for(1s);
                                                         z_nb_try += 1;
 
-                                                    } while (z_nb_try < 50);
+                                                    } while (z_nb_try < 500);
 
                                                     try {
                                                         if (z_error[0].at("result").at("details").contains("error"))
@@ -795,11 +796,14 @@ namespace atomic_dex
                                                                 SPDLOG_WARN("Should set to false the active field in cfg for: {} - reason: {}", tickers[idx], zhtlc_error);
                                                             }
                                                         }
-                                                        else if (z_nb_try == 50)
+                                                        else if (z_nb_try == 500)
                                                         {
                                                             // TODO: Handle this case.
                                                             // There could be no error message if scanning takes too long.
                                                             // Either we force disable here, or schedule to check on it later
+                                                            // If this happens, address will be "Invalid" and balance will be zero.
+                                                            // We should save this ticker in a list to try `init_z_coin_status` again on it periodically until complete.
+
                                                             SPDLOG_DEBUG("Exited zhtlc enable loop after 50 tries");
                                                             SPDLOG_DEBUG(
                                                                 "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
@@ -831,7 +835,7 @@ namespace atomic_dex
 
                                 if (!tickers.empty())
                                 {
-
+                                    SPDLOG_ERROR("Tickers: {}", tickers.dump());
                                     if (tickers == g_default_coins)
                                     {
                                         this->dispatcher_.trigger<default_coins_enabled>();
@@ -1516,7 +1520,8 @@ namespace atomic_dex
         if (it == m_balance_informations.cend())
         {
             ec = dextop_error::unknown_ticker;
-            return "Invalid";
+            SPDLOG_INFO("Invalid Ticker {}", ticker);
+            return "Invalid Ticker";
         }
 
         return it->second.address;
@@ -1674,7 +1679,7 @@ namespace atomic_dex
     {
         t_balance_answer answer_r;
         ::mm2::api::from_json(answer, answer_r);
-        // SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
+            SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
         if (is_pin_cfg_enabled())
         {
             std::shared_lock lock(m_balance_mutex);

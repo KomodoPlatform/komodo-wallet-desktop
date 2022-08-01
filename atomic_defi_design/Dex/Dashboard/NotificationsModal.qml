@@ -270,7 +270,7 @@ DexPopup
         }
 
         // Display the notification
-        const title = qsTr(" %1 Enable status: %2", "TICKER").arg(coin).arg(msg)
+        const title = qsTr(" %1 Enable status", "TICKER").arg(coin)
 
         newNotification("onEnablingZCoinStatus",
             {

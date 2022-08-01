@@ -319,7 +319,7 @@ namespace atomic_dex
             obj["blocks_left"]             = static_cast<qint64>(tx_state.blocks_left);
             obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
             obj["current_block"]           = static_cast<qint64>(tx_state.current_block);
-            obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
+            obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY" || coin_info.ticker == "ZOMBIE";
             std::error_code   ec;
             qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
             std::string       svg = qr0.toSvgString(2);
