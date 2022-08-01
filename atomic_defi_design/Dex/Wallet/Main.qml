@@ -20,16 +20,18 @@ Item
 {
     id: root
     property alias send_modal: send_modal
-    readonly property int layout_margin: 20
-    readonly property string headerTitleColor: Style.colorText2
-    readonly property string headerTitleFont: Style.textSizeMid1
-    readonly property string headerTextColor: Dex.CurrentTheme.foregroundColor
-    readonly property string headerTextFont: Style.textSize
-    readonly property string headerSmallTitleFont: Style.textSizeSmall4
-    readonly property string headerSmallFont: Style.textSizeSmall2
-    readonly property string addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
 
-    function loadingPercentage(remaining) {
+    readonly property int       layout_margin: 20
+    readonly property string    headerTitleColor: Style.colorText2
+    readonly property string    headerTitleFont: Style.textSizeMid1
+    readonly property string    headerTextColor: Dex.CurrentTheme.foregroundColor
+    readonly property string    headerTextFont: Style.textSize
+    readonly property string    headerSmallTitleFont: Style.textSizeSmall4
+    readonly property string    headerSmallFont: Style.textSizeSmall2
+    readonly property string    addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
+
+    function loadingPercentage(remaining)
+    {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
     }
 
@@ -894,7 +896,6 @@ Item
                 {
                     width: parent.width
                     height: parent.height
-                    model: transactions_mdl.proxy_mdl
                 }
 
                 ColumnLayout
@@ -929,11 +930,7 @@ Item
                         id: explorerLink
                         Layout.topMargin: 24
                         Layout.alignment: Qt.AlignHCenter
-                        visible:
-                        {
-                            if (addressURL) console.log("addressURL: " + addressURL)
-                            return api_wallet_page.tx_fetching_busy ? false : addressURL == "" ? false : api_wallet_page.tx_fetching_failed 
-                        }
+                        visible: api_wallet_page.tx_fetching_busy ? false : root.addressURL == "" ? false : api_wallet_page.tx_fetching_failed
                         text_value:  qsTr("Click to view your address on %1 (%2) block explorer").arg(current_ticker_infos.name).arg(api_wallet_page.ticker)
                         font.pixelSize: Style.textSize
                         color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
@@ -944,10 +941,7 @@ Item
                             cursorShape: Qt.PointingHandCursor
                             anchors.fill: parent
                             hoverEnabled: true
-                            onClicked: {
-                                console.log(addressURL)
-                                Qt.openUrlExternally(addressURL)
-                            }
+                            onClicked: Qt.openUrlExternally(addressURL)
                         }
                     }
 
