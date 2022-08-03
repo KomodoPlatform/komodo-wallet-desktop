@@ -490,7 +490,7 @@ namespace atomic_dex
                         {
                             for (auto&& answer: answers)
                             {
-                                SPDLOG_ERROR("Answer for tx or my_balance: {}",  answer.dump(4));
+                                // SPDLOG_ERROR("Answer for tx or my_balance: {}",  answer.dump(4));
                                 if (answer.contains("balance"))
                                 {
                                     this->process_balance_answer(answer);
@@ -749,12 +749,16 @@ namespace atomic_dex
                                                     nlohmann::json     z_batch_array = nlohmann::json::array();
                                                     t_init_z_coin_status_request z_request{.task_id = task_id};
 
-                                                    SPDLOG_DEBUG("Task ID: {}", task_id);
+                                                    SPDLOG_DEBUG("{} init_z_coin Task ID: {}", tickers[idx], task_id);
 
                                                     nlohmann::json j = ::mm2::api::template_request("init_z_coin_status", true);
                                                     ::mm2::api::to_json(j, z_request);
                                                     z_batch_array.push_back(j);
+                                                    std::string last_event = "none";
 
+                                                    // set to enabled "early" so it shows up in models
+                                                    std::unique_lock lock(m_coin_cfg_mutex);
+                                                    m_coins_informations[tickers[idx]].currently_enabled = true;
 
                                                     do {
                                                         pplx::task<web::http::http_response> z_resp_task = m_mm2_client.async_rpc_batch_standalone(z_batch_array);
@@ -762,22 +766,50 @@ namespace atomic_dex
                                                         auto                                 z_answers   = ::mm2::api::basic_batch_answer(z_resp);
                                                         z_error = z_answers;
                                                         // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
-                                                        SPDLOG_DEBUG("Waiting for {} to enable [{}]...", tickers[idx], z_answers[0].at("result").at("status").get<std::string>());
-                                                        if (z_answers[0].at("result").contains("current_scanned_block"))
+
+                                                        std::string status = z_answers[0].at("result").at("status").get<std::string>();
+                                                        if (status == "Ready")
                                                         {
-                                                            SPDLOG_DEBUG("Scanning...");
-                                                            SPDLOG_DEBUG("Scanning: {}/{}", z_answers[0].at("result").at("current_scanned_block"), z_answers[0].at("result").at("latest_block"));
-                                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], z_error[0].dump(4));
-                                                        }
-                                                        if (z_answers[0].at("result").at("status") == "Ready")
-                                                        {
-                                                            SPDLOG_DEBUG("Ready!");
+                                                            SPDLOG_DEBUG("{} activation complete!", tickers[idx]);
                                                             break;
                                                         }
-                                                        std::this_thread::sleep_for(1s);
+                                                        else
+                                                        {
+                                                            std::string event = z_answers[0].at("result").at("details").get<std::string>();
+                                                            if (z_answers[0].at("result").at("details").contains("UpdatingBlocksCache"))
+                                                            {
+                                                                event = "UpdatingBlocksCache";
+                                                                SPDLOG_DEBUG("Scanning {} blocks: {}/{}",
+                                                                    tickers[idx],
+                                                                    z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block"),
+                                                                    z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("latest_block")
+                                                                );
+                                                            }
+                                                            else
+                                                            {
+                                                                SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...",
+                                                                    tickers[idx],
+                                                                    status,
+                                                                    event
+                                                                );
+                                                            }
+                                                            if (event != last_event)
+                                                            {
+                                                                this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
+                                                                last_event = event;
+                                                            }
+                                                            if (event == "BuildingWalletDb")
+                                                            {
+                                                                std::this_thread::sleep_for(30s);
+                                                            }
+                                                            else
+                                                            {
+                                                                std::this_thread::sleep_for(1s);
+                                                            }
+                                                        }
                                                         z_nb_try += 1;
 
-                                                    } while (z_nb_try < 500);
+                                                    } while (z_nb_try < 1000);
 
                                                     try {
                                                         if (z_error[0].at("result").at("details").contains("error"))
@@ -796,15 +828,15 @@ namespace atomic_dex
                                                                 SPDLOG_WARN("Should set to false the active field in cfg for: {} - reason: {}", tickers[idx], zhtlc_error);
                                                             }
                                                         }
-                                                        else if (z_nb_try == 500)
+                                                        else if (z_nb_try == 1000)
                                                         {
                                                             // TODO: Handle this case.
                                                             // There could be no error message if scanning takes too long.
                                                             // Either we force disable here, or schedule to check on it later
                                                             // If this happens, address will be "Invalid" and balance will be zero.
-                                                            // We should save this ticker in a list to try `init_z_coin_status` again on it periodically until complete.
+                                                            // We could save this ticker in a list to try `init_z_coin_status` again on it periodically until complete.
 
-                                                            SPDLOG_DEBUG("Exited zhtlc enable loop after 50 tries");
+                                                            SPDLOG_DEBUG("Exited zhtlc enable loop after 1000 tries");
                                                             SPDLOG_DEBUG(
                                                                 "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                                                 tickers.size(), answers.size()
@@ -812,9 +844,7 @@ namespace atomic_dex
                                                         }
                                                         else
                                                         {
-                                                            std::unique_lock lock(m_coin_cfg_mutex);
-                                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "enabling complete!");
-                                                            m_coins_informations[tickers[idx]].currently_enabled = true;
+                                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "Complete!");
                                                         }
                                                     }
                                                     catch (const std::exception& error)
