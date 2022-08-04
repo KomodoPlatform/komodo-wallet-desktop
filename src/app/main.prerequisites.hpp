@@ -57,6 +57,7 @@
 //! Project Headers
 #include "app.hpp"
 #include "atomicdex/constants/qt.wallet.enums.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/utilities/kill.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"

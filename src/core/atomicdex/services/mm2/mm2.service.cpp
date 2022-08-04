@@ -29,6 +29,7 @@
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
