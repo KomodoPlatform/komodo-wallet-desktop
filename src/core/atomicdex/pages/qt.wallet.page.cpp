@@ -626,6 +626,10 @@ namespace atomic_dex
     void wallet_page::set_current_ticker(const QString& ticker)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        if (is_tx_fetching_busy())
+        {
+            mm2_system.cancel_fetch_infos_thread();
+        }
         if (mm2_system.set_current_ticker(ticker.toStdString()))
         {
             SPDLOG_INFO("new ticker: {}", ticker.toStdString());

@@ -94,9 +94,10 @@ namespace atomic_dex
         t_mm2_time_point m_info_clock;
 
         //! Atomicity / Threads
-        std::atomic_bool m_mm2_running{false};
-        std::atomic_bool m_orderbook_thread_active{false};
-        std::thread      m_mm2_init_thread;
+        std::atomic_bool                m_mm2_running{false};
+        std::atomic_bool                m_orderbook_thread_active{false};
+        std::thread                     m_mm2_init_thread;
+        pplx::cancellation_token_source m_cancellation_token_source;
 
         //! Current wallet name
         std::string m_current_wallet_name;
@@ -154,8 +155,9 @@ namespace atomic_dex
         //! Spawn mm2 instance with given seed
         void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
 
-        //! Refresh the current info (internally call process_balance and process_tx)
+        // Refresh the current info (internally call process_balance and process_tx)
         void fetch_infos_thread(bool is_a_fresh = true, bool only_tx = false);
+        void cancel_fetch_infos_thread();
 
         //! Enable coins
         bool enable_default_coins();

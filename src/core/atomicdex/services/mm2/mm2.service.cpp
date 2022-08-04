@@ -515,9 +515,9 @@ namespace atomic_dex
                         SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
                         this->dispatcher_.trigger<tx_fetch_finished>(true);
                     }
-                })
+                }, m_cancellation_token_source.get_token())
             .then([this, batch = batch_array](pplx::task<void> previous_task)
-                  { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx", batch); });
+                  { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx", batch); }, m_cancellation_token_source.get_token());
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -941,13 +941,11 @@ namespace atomic_dex
         };
         auto error_functor = [this, batch = batch_array](pplx::task<void> previous_task)
         { this->handle_exception_pplx_task(previous_task, "fetch_single_balance", batch); };
-        m_mm2_client.async_rpc_batch_standalone(batch_array).then(answer_functor).then(error_functor);
+        m_mm2_client.async_rpc_batch_standalone(batch_array).then(answer_functor, m_cancellation_token_source.get_token()).then(error_functor);
     }
 
-    void
-    mm2_service::fetch_infos_thread(bool is_a_refresh, bool only_tx)
+    void mm2_service::fetch_infos_thread(bool is_a_refresh, bool only_tx)
     {
-        SPDLOG_INFO("fetch_infos_thread");
         if (only_tx)
         {
             batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
@@ -958,6 +956,11 @@ namespace atomic_dex
             for (auto&& coin: enabled_coins) { fetch_single_balance(coin); }
             batch_balance_and_tx(is_a_refresh, {}, false, true);
         }
+    }
+
+    void mm2_service::cancel_fetch_infos_thread()
+    {
+        m_cancellation_token_source.cancel();
     }
 
     void
