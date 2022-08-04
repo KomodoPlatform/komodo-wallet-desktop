@@ -117,16 +117,7 @@ namespace atomic_dex
         {
             SPDLOG_INFO("new ticker: {}", ticker.toStdString());
             m_transactions_mdl->reset();
-            if (coin_info.coin_type != CoinType::ZHTLC)
-            {
-                SPDLOG_INFO("new ticker is not ZHTLC");
-                this->set_tx_fetching_busy(true);
-            }
-            else
-            {
-                SPDLOG_INFO("new ticker is ZHTLC");
-                this->set_tx_fetching_busy(false);
-            }
+            this->set_tx_fetching_busy(true);
             mm2_system.fetch_infos_thread(true, true);
             emit currentTickerChanged();
             refresh_ticker_infos();
