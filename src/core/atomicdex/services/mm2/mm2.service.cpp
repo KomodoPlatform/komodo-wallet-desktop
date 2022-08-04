@@ -323,7 +323,7 @@ namespace atomic_dex
         {
             SPDLOG_INFO("mm2 didn't stop yet with rpc stop, stopping process manually");
 #if defined(_WIN32) || defined(WIN32)
-            atomic_dex::kill_executable("mm2");
+            atomic_dex::kill_executable(atomic_dex::g_dex_api);
 #else
             /*const reproc::stop_actions stop_actions = {
                 {reproc::stop::terminate, reproc::milliseconds(2000)},

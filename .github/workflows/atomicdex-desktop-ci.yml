@@ -10,6 +10,7 @@ on:
     - cron: '0 0 * * 1'
 
 env:
+  DEX_API: "mm2"
   DEX_PROJECT_NAME: "atomicdex-desktop"
   DEX_DISPLAY_NAME: "AtomicDex Desktop"
   DEX_COMPANY: "KomodoPlatform"
