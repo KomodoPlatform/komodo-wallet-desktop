@@ -30,7 +30,7 @@ namespace mm2::api
 {
     struct z_tx_history_request
     {
-        std::string                                 ticker;
+        std::string                                 coin;
         std::size_t                                 limit;
         //std::string                               from_id{''};
         //std::size_t                               page_number{1};
@@ -56,8 +56,8 @@ namespace mm2::api
 
     struct sync_status_z_additional_infos
     {
-        std::optional<sync_status_z_error>    error;         ///< in case of error
-        std::optional<sync_status_z_coins>    z_infos;   ///< kmd/btc/utxo related coins
+        std::optional<sync_status_z_error>    error;
+        std::optional<sync_status_z_coins>    z_infos;
     };
 
     void from_json(const nlohmann::json& j, sync_status_z_additional_infos& answer);

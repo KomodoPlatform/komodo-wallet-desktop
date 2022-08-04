@@ -30,6 +30,7 @@
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
+#include "atomicdex/api/mm2/rpc2.z_coin_tx_history.hpp"
 #include "atomicdex/api/mm2/rpc2.init_z_coin.hpp"
 #include "atomicdex/api/mm2/rpc2.init_z_coin_status.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
@@ -490,13 +491,19 @@ namespace atomic_dex
                         {
                             for (auto&& answer: answers)
                             {
-                                // SPDLOG_ERROR("Answer for tx or my_balance: {}",  answer.dump(4));
                                 if (answer.contains("balance"))
                                 {
                                     this->process_balance_answer(answer);
                                 }
                                 else if (answer.contains("result"))
                                 {
+                                    if (answer.at("result").contains("coin"))
+                                    {
+                                        SPDLOG_WARN("Tx history answer for {}: {}",
+                                            answer.at("result").at("coin").get<std::string>(),
+                                            answer.at("result").at("transactions")[0].dump(4)
+                                        );
+                                    }
                                     this->process_tx_answer(answer);
                                 }
                                 else
@@ -534,20 +541,26 @@ namespace atomic_dex
         std::vector<std::string> tokens_to_fetch;
         const auto&              ticker    = get_current_ticker();
         auto                     coin_info = get_coin_info(ticker);
-        if (!coin_info.is_zhtlc_family)
+
+        if (coin_info.is_zhtlc_family)
         {
-            if (!coin_info.is_erc_family)
-            {
-                t_tx_history_request request{.coin = ticker, .limit = 5000};
-                nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
-                ::mm2::api::to_json(j, request);
-                batch_array.push_back(j);
-            }
-            else
-            {
-                tokens_to_fetch.push_back(ticker);
-            }
+            t_z_tx_history_request request{.coin = ticker, .limit = 5000};
+            nlohmann::json       j = ::mm2::api::template_request("z_coin_tx_history", true);
+            ::mm2::api::to_json(j, request);
+            batch_array.push_back(j);
         }
+        else if (coin_info.is_erc_family)
+        {
+            tokens_to_fetch.push_back(ticker);
+        }
+        else
+        {
+            t_tx_history_request request{.coin = ticker, .limit = 5000};
+            nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
+            ::mm2::api::to_json(j, request);
+            batch_array.push_back(j);
+        }
+
         if (not only_tx)
         {
             for (auto&& coin: enabled_coins)
@@ -800,7 +813,7 @@ namespace atomic_dex
                                                             }
                                                             if (event == "BuildingWalletDb")
                                                             {
-                                                                std::this_thread::sleep_for(30s);
+                                                                std::this_thread::sleep_for(5s);
                                                             }
                                                             else
                                                             {
@@ -1628,7 +1641,7 @@ namespace atomic_dex
         }
     }
 
-    void
+    void // Legacy method for all coins except tokens, ZHTLC & BCH/SLP
     mm2_service::process_tx_answer(const nlohmann::json& answer_json)
     {
         ::mm2::api::tx_history_answer answer;
@@ -1682,6 +1695,10 @@ namespace atomic_dex
             {
                 current_info.fees = current.fee_details.qrc_fees->miner_fee;
             }
+            else if (current.transaction_fee.has_value())
+            {
+                current_info.fees = current.transaction_fee.value();
+            }
 
             if (current_info.timestamp == 0)
             {
@@ -1697,11 +1714,11 @@ namespace atomic_dex
             out.push_back(std::move(current_info));
         }
 
-
         //! History
         m_tx_informations->insert_or_assign("result", std::make_pair(out, state));
         this->dispatcher_.trigger<tx_fetch_finished>();
     }
+
 
     void
     mm2_service::process_balance_answer(const nlohmann::json& answer)

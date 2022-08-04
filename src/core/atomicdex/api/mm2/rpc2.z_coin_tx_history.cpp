@@ -26,7 +26,7 @@ namespace mm2::api
     //! Serialization
     void to_json(nlohmann::json& j, const z_tx_history_request& request)
     {
-        j["params"]["coin"]                           = request.ticker;
+        j["params"]["coin"]                           = request.coin;
         j["params"]["limit"]                          = request.limit;
         //j["params"]["paging_options"]["PageNumber"]   = request.page_number;
         //j["params"]["paging_options"]["FromId"]       = request.from_id;
