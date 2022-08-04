@@ -497,13 +497,6 @@ namespace atomic_dex
                                 }
                                 else if (answer.contains("result"))
                                 {
-                                    if (answer.at("result").contains("coin"))
-                                    {
-                                        SPDLOG_WARN("Tx history answer for {}: {}",
-                                            answer.at("result").at("coin").get<std::string>(),
-                                            answer.at("result").at("transactions")[0].dump(4)
-                                        );
-                                    }
                                     this->process_tx_answer(answer);
                                 }
                                 else
@@ -544,7 +537,7 @@ namespace atomic_dex
 
         if (coin_info.is_zhtlc_family)
         {
-            t_z_tx_history_request request{.coin = ticker, .limit = 5000};
+            t_z_tx_history_request request{.coin = ticker, .limit = 1000};
             nlohmann::json       j = ::mm2::api::template_request("z_coin_tx_history", true);
             ::mm2::api::to_json(j, request);
             batch_array.push_back(j);
@@ -768,10 +761,11 @@ namespace atomic_dex
                                                     ::mm2::api::to_json(j, z_request);
                                                     z_batch_array.push_back(j);
                                                     std::string last_event = "none";
+                                                    std::string event = "none";
 
                                                     // set to enabled "early" so it shows up in models
-                                                    std::unique_lock lock(m_coin_cfg_mutex);
-                                                    m_coins_informations[tickers[idx]].currently_enabled = true;
+                                                    // std::unique_lock lock(m_coin_cfg_mutex);
+                                                    // m_coins_informations[tickers[idx]].currently_enabled = true;
 
                                                     do {
                                                         pplx::task<web::http::http_response> z_resp_task = m_mm2_client.async_rpc_batch_standalone(z_batch_array);
@@ -788,18 +782,20 @@ namespace atomic_dex
                                                         }
                                                         else
                                                         {
-                                                            std::string event = z_answers[0].at("result").at("details").get<std::string>();
                                                             if (z_answers[0].at("result").at("details").contains("UpdatingBlocksCache"))
                                                             {
                                                                 event = "UpdatingBlocksCache";
-                                                                SPDLOG_DEBUG("Scanning {} blocks: {}/{}",
-                                                                    tickers[idx],
-                                                                    z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block"),
-                                                                    z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("latest_block")
+                                                                // TODO: Use this to derive percentage
+                                                                // z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block"),
+                                                                // z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("latest_block")
+                                                                SPDLOG_DEBUG("Scanning {} blocks",
+                                                                    tickers[idx]
                                                                 );
+                                                                SPDLOG_DEBUG(event);
                                                             }
                                                             else
                                                             {
+                                                                event = z_answers[0].at("result").at("details").get<std::string>();
                                                                 SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...",
                                                                     tickers[idx],
                                                                     status,
