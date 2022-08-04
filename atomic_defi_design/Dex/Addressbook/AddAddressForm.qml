@@ -228,10 +228,12 @@ Dex.Rectangle
             {
                 return
             }
-
-            if (!Dex.API.app.wallet_pg.validate_address_data.is_valid) // Entered address is invalid.
+            
+            let validation_data = Dex.API.app.wallet_pg.validate_address_data
+            if (!validation_data.is_valid) // Entered address is invalid.
             {
-                invalidAddressValueLabel.text = Dex.API.app.wallet_pg.validate_address_data.reason
+                invalidAddressValueLabel.text = validation_data.reason
+                
                 return
             }
 

@@ -257,7 +257,6 @@ namespace atomic_dex
                 auto&       mm2_system = m_system_manager.get_system<mm2_service>();
                 const auto& ticker     = mm2_system.get_current_ticker();
                 auto        answers    = nlohmann::json::parse(body);
-                // SPDLOG_INFO("broadcast answer: {}", answers.dump(4));
                 if (answers[0].contains("tx_hash"))
                 {
                     this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
@@ -442,7 +441,6 @@ namespace atomic_dex
             auto answer_functor = [this, ticker](web::http::http_response resp)
             {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
-                SPDLOG_DEBUG("resp validateaddress: {}", body);
                 nlohmann::json j_out = nlohmann::json::object();
                 j_out["ticker"]      = ticker.toStdString();
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
@@ -835,6 +833,7 @@ namespace atomic_dex
 
     void wallet_page::set_validate_address_data(QVariant rpc_data)
     {
+        
         auto json_result = rpc_data.toJsonObject();
         if (json_result.contains("reason"))
         {
@@ -880,7 +879,7 @@ namespace atomic_dex
                     reason                     = tr("Invalid checksum.");
                     json_result["convertible"] = false;
                 }
-                else if (reason.contains("has invalid prefixes"))
+                else if (reason.contains("has invalid prefixes") or reason.contains("Expected a valid P2PKH or P2SH prefix"))
                 {
                     reason = tr("%1 address has invalid prefixes.").arg(json_result["ticker"].toString());
                 }
