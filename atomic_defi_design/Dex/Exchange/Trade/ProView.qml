@@ -160,6 +160,7 @@ RowLayout
             id: orderBook
 
             width: parent.width
+            minHeight: 320
         }
 
         // Best Orders
@@ -168,6 +169,7 @@ RowLayout
             id: bestOrders
 
             width: parent.width
+            minHeight: 140
         }
     }
 
