@@ -9,7 +9,8 @@ import "../Components"
 import "../Constants" as Constants
 import App 1.0
 
-GradientRectangle {
+GradientRectangle
+{
     width: list_bg.width - list_bg.border.width*2 - 6
     height: 44
     radius: Constants.Style.rectangleCornerRadius + 4

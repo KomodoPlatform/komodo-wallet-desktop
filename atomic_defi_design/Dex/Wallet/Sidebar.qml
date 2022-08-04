@@ -9,6 +9,7 @@ import "../Components"
 import "../Constants" as Constants
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 
 // Coins bar at left side
 Item
@@ -59,7 +60,7 @@ Item
                     Layout.preferredHeight: 38
 
                     textField.placeholderText: qsTr("Search")
-                    forceFocus: true
+                    //forceFocus: true
                     searchModel: portfolio_coins
                 }
 
@@ -71,14 +72,21 @@ Item
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignHCenter
                     color: 'transparent'
-                    content: DexListView {
+                    content: Dex.ListView
+                    {
                         id: list
                         height: list_bg.height
                         model: portfolio_coins
                         topMargin: 5
                         bottomMargin: 5
                         scrollbar_visible: false
-                        DexRectangle {
+
+                        reuseItems: true
+
+                        delegate: SidebarItemDelegate { }
+
+                        Dex.Rectangle
+                        {
                             anchors.bottom: parent.bottom
                             anchors.horizontalCenter: parent.horizontalCenter
                             width: parent.width + 4
@@ -94,23 +102,21 @@ Item
                             }
                         }
 
-                        DexRectangle {
+                        Dex.Rectangle
+                        {
                             anchors.horizontalCenter: parent.horizontalCenter
                             width: parent.width + 4
                             height: 30
                             radius: 8
                             opacity: .5
                             visible: list.position > 0 ? true : false
-                            Qaterial.Icon {
+                            Qaterial.Icon
+                            {
                                 anchors.centerIn: parent
-                                color: DexTheme.foregroundColor
+                                color: Dex.CurrentTheme.foregroundColor
                                 icon: Qaterial.Icons.arrowUpCircleOutline
                             }
                         }
-
-                        reuseItems: true
-
-                        delegate: SidebarItemDelegate { }
                     }
                 }
 
