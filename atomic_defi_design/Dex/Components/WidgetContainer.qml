@@ -10,6 +10,15 @@ Column
         return (height - (children.length - 1) * spacing) * ratio
     }
 
+    function resetSizes()
+    {
+        for (let i = 0; i < children.length; i++)
+        {
+            let child = children[i]
+            child.height = child.minHeight
+        }
+    }
+
     spacing: 4
     objectName: componentName
 }

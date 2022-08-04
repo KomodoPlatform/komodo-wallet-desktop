@@ -140,7 +140,21 @@ Item
                         }
                         else
                         {
-                            root.height = root._previousHeight
+                            if (root.parent.objectName === "widgetContainer" && root.parent.availableHeight < root._previousHeight)
+                            {
+                                if (root.height + root.parent.availableHeight < minHeight)
+                                {
+                                    root.parent.resetSizes()
+                                }
+                                else
+                                {
+                                    root.height += root.parent.availableHeight
+                                }
+                            }
+                            else
+                            {
+                                root.height = root._previousHeight
+                            }
                             root._previousHeight = root.collapsedHeight
                         }
                     }
