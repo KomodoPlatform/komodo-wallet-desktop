@@ -11,7 +11,7 @@ Usage:   `./compare_themes.py`
 '''
 
 REPO_URL = "https://raw.githubusercontent.com/KomodoPlatform/atomicDEX-Desktop"
-BRANCHES = ['dev', 'smartdex', 'GleecDEX', 'shibadex']
+BRANCHES = ['smartdex', 'GleecDEX', 'shibadex']
 
 
 def get_theme_url(branch, theme):
@@ -23,7 +23,7 @@ def get_theme_url(branch, theme):
 def get_themes_data(branches):
     '''Returns a dict of dark/light theme data for each branch.'''
     themes = {}
-    for branch in branches:
+    for branch in branches+['dev']:
         themes.update({branch: {}})
         for theme in ['light', 'dark']:
             url = get_theme_url(branch, theme)
@@ -44,19 +44,18 @@ def get_selectors(themes, branch='dev'):
 def compare_branch_themes(branches, show_results=True):
     '''Scans whitelabel theme data to identify missing/obsolete selectors.'''
     themes = get_themes_data(branches)
-    selectors = get_selectors(themes, 'dev')
+    dev_selectors = get_selectors(themes, 'dev')
 
     for branch in branches:
-        if branch != "dev":
-            for theme in ['light', 'dark']:
-                selectors = set(themes[branch][theme].keys())
-                missing = selectors[theme].difference(selectors)
-                themes[branch].update({
-                    f"missing_{theme}": missing,
-                    f"obsolete_{theme}": selectors.difference(selectors[theme])
-                })
-                if show_results:
-                    output_results(themes, branch, theme)
+        for theme in ['light', 'dark']:
+            selectors = set(themes[branch][theme].keys())
+            missing = dev_selectors[theme].difference(selectors)
+            themes[branch].update({
+                f"missing_{theme}": missing,
+                f"obsolete_{theme}": selectors.difference(dev_selectors[theme])
+            })
+            if show_results:
+                output_results(themes, branch, theme)
 
 
 def output_results(themes, branch, theme):
