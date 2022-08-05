@@ -177,7 +177,7 @@ namespace atomic_dex
                 ::mm2::api::to_json(current_request, req_orderbook);
                 batch.push_back(current_request);
                 auto async_answer = mm2.get_mm2_client().async_rpc_batch_standalone(batch);
-                generic_treat_answer(async_answer, atomic_dex::g_dex_rpc, &internet_service_checker::is_mm2_endpoint_alive);
+                generic_treat_answer(async_answer, TO_STD_STR(atomic_dex::g_dex_rpc), &internet_service_checker::is_mm2_endpoint_alive);
             }
             else
             {

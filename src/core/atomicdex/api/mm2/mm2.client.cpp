@@ -35,7 +35,7 @@ namespace
         web::http::client::http_client_config cfg;
         using namespace std::chrono_literals;
         cfg.set_timeout(30s);
-        return web::http::client::http_client(atomic_dex::g_dex_rpc, cfg);
+        return web::http::client::http_client(FROM_STD_STR(atomic_dex::g_dex_rpc), cfg);
     }
 
     template <mm2::api::rpc Rpc>
