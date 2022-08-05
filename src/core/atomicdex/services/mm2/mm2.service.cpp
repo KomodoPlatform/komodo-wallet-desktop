@@ -786,12 +786,29 @@ namespace atomic_dex
                                                             {
                                                                 event = "UpdatingBlocksCache";
                                                                 // TODO: Use this to derive percentage
-                                                                // z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block"),
-                                                                // z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("latest_block")
-                                                                SPDLOG_DEBUG("Scanning {} blocks",
-                                                                    tickers[idx]
+                                                                std::size_t current_scanned_block = z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block");
+                                                                std::size_t latest_block = z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("latest_block");
+                                                                SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned",
+                                                                    tickers[idx],
+                                                                    status,
+                                                                    event,
+                                                                    current_scanned_block,
+                                                                    latest_block
                                                                 );
-                                                                SPDLOG_DEBUG(event);
+                                                            }
+                                                            else if (z_answers[0].at("result").at("details").contains("BuildingWalletDb"))
+                                                            {
+                                                                event = "BuildingWalletDb";
+                                                                // TODO: Use this to derive percentage
+                                                                std::size_t current_scanned_block = z_answers[0].at("result").at("details").at("BuildingWalletDb").at("current_scanned_block");
+                                                                std::size_t latest_block = z_answers[0].at("result").at("details").at("BuildingWalletDb").at("latest_block");
+                                                                SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned",
+                                                                    tickers[idx],
+                                                                    status,
+                                                                    event,
+                                                                    current_scanned_block,
+                                                                    latest_block
+                                                                );
                                                             }
                                                             else
                                                             {
@@ -802,6 +819,7 @@ namespace atomic_dex
                                                                     event
                                                                 );
                                                             }
+
                                                             if (event != last_event)
                                                             {
                                                                 this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
@@ -809,7 +827,7 @@ namespace atomic_dex
                                                             }
                                                             if (event == "BuildingWalletDb")
                                                             {
-                                                                std::this_thread::sleep_for(5s);
+                                                                std::this_thread::sleep_for(15s);
                                                             }
                                                             else
                                                             {
