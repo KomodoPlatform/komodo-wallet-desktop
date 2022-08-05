@@ -31,6 +31,11 @@ Row
         onTickerChanged: renewIndex()
         Component.onCompleted: renewIndex()
         Component.onDestruction: searchBar.textField.text = ""
+        onVisibleChanged:
+        {
+            renewIndex()
+            model.with_balance = false
+        }
     }
 
     SwapIcon
@@ -67,5 +72,10 @@ Row
         onTickerChanged: renewIndex()
         Component.onCompleted: renewIndex()
         Component.onDestruction: searchBar.textField.text = ""
+        onVisibleChanged:
+        {
+            renewIndex()
+            model.with_balance = false
+        }
     }
 }

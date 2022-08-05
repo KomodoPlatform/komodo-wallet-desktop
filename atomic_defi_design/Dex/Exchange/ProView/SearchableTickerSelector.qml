@@ -28,12 +28,11 @@ Dex.ComboBoxWithSearchBar
     popupForceMaxHeight: true
 
     searchBar.visible: true
-    searchBar.searchModel: control.ticker_list
+    searchBar.searchModel: model
 
     delegate: ItemDelegate
     {
         id: _delegate
-        visible: model.ticker !== "All" 
         width: control.width
         height: visible ? 60 : 0
         highlighted: control.highlightedIndex === index
@@ -101,5 +100,5 @@ Dex.ComboBoxWithSearchBar
         }
     }
     searchBar.onVisibleChanged: if (!visible) { searchBar.textField.text = "" }
-    searchBar.textField.onTextChanged: control.ticker_list.setFilterFixedString(searchBar.textField.text)
+    searchBar.textField.onTextChanged: control.model.setFilterFixedString(searchBar.textField.text)
 }
