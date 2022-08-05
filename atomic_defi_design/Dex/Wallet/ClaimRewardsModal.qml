@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Components 1.0 as Dex
 
 MultipageModal
 {
@@ -107,19 +108,24 @@ MultipageModal
 
     // Inside modal
     width: 1200
-    MultipageModalContent {
+
+    MultipageModalContent
+    {
         titleText: qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker)
 
-        DefaultBusyIndicator {
+        DefaultBusyIndicator
+        {
             visible: !can_claim || is_broadcast_busy
             Layout.alignment: Qt.AlignCenter
         }
 
-        RowLayout {
+        RowLayout
+        {
             visible: can_claim
-
             Layout.fillWidth: true
-            DexLabel {
+
+            Dex.Text
+            {
                 Layout.fillWidth: true
                 text_value:
                 {
@@ -137,62 +143,56 @@ MultipageModal
                 }
             }
 
-            PrimaryButton {
+            Dex.Button
+            {
                 text: qsTr("Refresh")
-                onClicked: prepareClaimRewards()
-
                 enabled: can_claim
+                onClicked: prepareClaimRewards()
             }
         }
 
-        DefaultText {
+        Dex.Text
+        {
             text_value: General.cex_icon + ' <a href="https://support.komodoplatform.com/support/solutions/articles/29000024428-komodo-5-active-user-reward-all-you-need-to-know">' + qsTr('Read more about KMD active users rewards') + '</a>'
             font.pixelSize: Style.textSizeSmall2
         }
 
         // List header
-        Item {
+        Row
+        {
             visible: can_claim
 
             Layout.topMargin: 25
             Layout.fillWidth: true
-
-            height: 40
+            Layout.preferredHeight: 40
 
             // Price
-            DefaultText {
+            Dex.Text
+            {
                 id: utxo_header
                 font.pixelSize: Style.textSizeSmall4
-
                 text_value: qsTr("UTXO")
-
                 font.weight: Font.Medium
                 horizontalAlignment: Text.AlignLeft
-
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.000
-
+                width: parent.width * 0.060
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Amount
-            DefaultText {
+            Dex.Text
+            {
                 id: amount_header
-
                 text_value: qsTr("Amount")
-
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
                 horizontalAlignment: utxo_header.horizontalAlignment
-
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.060
-
+                width: parent.width * 0.165
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Reward
-            DefaultText {
+            Dex.Text
+            {
                 id: reward_header
 
                 text_value: qsTr("Reward")
@@ -200,15 +200,13 @@ MultipageModal
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
-
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.225
-
+                width: parent.width * 0.235
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Accruing start
-            DefaultText {
+            Dex.Text
+            {
                 id: accruing_start_header
 
                 text_value: qsTr("Accruing Start")
@@ -216,15 +214,13 @@ MultipageModal
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
-
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.400
-
+                width: parent.width * 0.150
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Accruing Stop
-            DefaultText {
+            Dex.Text
+            {
                 id: accruing_stop_header
 
                 text_value: qsTr("Accruing Stop")
@@ -232,15 +228,13 @@ MultipageModal
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
-
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.550
-
+                width: parent.width * 0.150
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Time Left
-            DefaultText {
+            Dex.Text
+            {
                 id: time_left_header
 
                 text_value: qsTr("Time Left")
@@ -248,15 +242,13 @@ MultipageModal
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
-
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.700
-
+                width: parent.width * 0.120
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Error
-            DefaultText {
+            Dex.Text
+            {
                 id: error_header
 
                 text_value: qsTr("Error")
@@ -264,166 +256,154 @@ MultipageModal
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
-
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.820
-
                 anchors.verticalCenter: parent.verticalCenter
-            }
-
-            // Line
-            HorizontalLine {
-                width: parent.width
-                color: Style.colorWhite5
-                anchors.bottom: parent.bottom
             }
         }
 
-        DefaultListView {
-            visible: can_claim
+        // Separator
+        HorizontalLine
+        {
+            Layout.fillWidth: true
+        }
 
+        Dex.ListView
+        {
             id: list
+            visible: can_claim
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.maximumHeight: 500
             clip: true
 
-            model: empty_data ? [] :
-                    prepare_claim_rewards_result.kmd_rewards_info.result
+            model: empty_data ? [] : prepare_claim_rewards_result.kmd_rewards_info.result
 
-            delegate: Item {
-                width: root.width
-                height: utxo_value.font.pixelSize * 1.5
+            delegate: Column
+            {
+                width: list.width
 
-                // UTXO
-                DefaultText {
-                    id: utxo_value
+                Row
+                {
+                    width: list.width
 
-                    anchors.left: parent.left
-                    anchors.leftMargin: utxo_header.anchors.leftMargin
+                    // UTXO
+                    Dex.Text
+                    {
+                        id: utxo_value
 
-                    font.pixelSize: utxo_header.font.pixelSize
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width * 0.06
 
-                    text_value: "#" + (index + 1)
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                // Amount
-                DefaultText {
-                    id: amount_value
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: amount_header.anchors.leftMargin
-
-                    font.pixelSize: utxo_value.font.pixelSize
-
-                    text_value: modelData.amount
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                // Reward
-                DefaultText {
-                    id: reward_value
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: reward_header.anchors.leftMargin
-
-                    font.pixelSize: utxo_value.font.pixelSize
-
-                    text_value: modelData.accrued_rewards.Accrued || "-"
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                // Accruing Start
-                DefaultText {
-                    id: accruing_start_value
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: accruing_start_header.anchors.leftMargin
-
-                    font.pixelSize: utxo_value.font.pixelSize
-
-                    text_value: modelData.accrue_start_at_human_date || "-"
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                // Accruing Stop
-                DefaultText {
-                    id: accruing_stop_value
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: accruing_stop_header.anchors.leftMargin
-
-                    font.pixelSize: utxo_value.font.pixelSize
-
-                    text_value: modelData.accrue_stop_at_human_date || "-"
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                // Time Left
-                DefaultText {
-                    id: time_left_value
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: time_left_header.anchors.leftMargin
-
-                    font.pixelSize: utxo_value.font.pixelSize
-
-                    text_value: modelData.accrue_stop_at ? General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at) : '-'
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                // Error
-                DefaultText {
-                    id: error_value
-
-                    anchors.left: parent.left
-                    anchors.leftMargin: error_header.anchors.leftMargin
-
-                    font.pixelSize: utxo_value.font.pixelSize
-
-                    text_value: {
-                        let val = modelData.accrued_rewards.NotAccruedReason
-                        if(val === null || val === undefined) return "-"
-
-                        switch(val) {
-                        case "LocktimeNotSet":
-                            val = qsTr("Locktime is not set")
-                            break
-                        case "LocktimeLessThanThreshold":
-                            val = qsTr("Locktime is less than the threshold")
-                            break
-                        case "UtxoHeightGreaterThanEndOfEra":
-                            val = qsTr("UTXO height is greater than end of the era")
-                            break
-                        case "UtxoAmountLessThanTen":
-                            val = qsTr("UTXO amount is less than 10")
-                            break
-                        case "OneHourNotPassedYet":
-                            val = qsTr("One hour did not pass yet")
-                            break
-                        case "TransactionInMempool":
-                            val = qsTr("Transaction is in mempool")
-                            break
-                        default:
-                            val = qsTr("Unknown problem")
-                            break
-                        }
-
-                        return "❌ " + val
+                        text: "#" + (index + 1)
+                        font.pixelSize: utxo_header.font.pixelSize
                     }
 
-                    anchors.verticalCenter: parent.verticalCenter
+                    // Amount
+                    Dex.Text
+                    {
+                        id: amount_value
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width * 0.165
+
+                        font.pixelSize: utxo_value.font.pixelSize
+                        text: modelData.amount
+                    }
+
+                    // Reward
+                    Dex.Text
+                    {
+                        id: reward_value
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width * 0.235
+
+                        font.pixelSize: utxo_value.font.pixelSize
+                        text: modelData.accrued_rewards.Accrued || "-"
+                    }
+
+                    // Accruing Start
+                    Dex.Text
+                    {
+                        id: accruing_start_value
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width * 0.150
+
+                        font.pixelSize: utxo_value.font.pixelSize
+                        text: modelData.accrue_start_at_human_date || "-"
+                    }
+
+                    // Accruing Stop
+                    Dex.Text
+                    {
+                        id: accruing_stop_value
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width * 0.150
+
+                        font.pixelSize: utxo_value.font.pixelSize
+                        text: modelData.accrue_stop_at_human_date || "-"
+                    }
+
+                    // Time Left
+                    Dex.Text
+                    {
+                        id: time_left_value
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width * 0.120
+
+                        font.pixelSize: utxo_value.font.pixelSize
+                        text: modelData.accrue_stop_at ? General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at) : '-'
+                    }
+
+                    // Error
+                    Dex.Text
+                    {
+                        id: error_value
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width * 0.12
+
+                        font.pixelSize: utxo_value.font.pixelSize
+                        text:
+                        {
+                            let val = modelData.accrued_rewards.NotAccruedReason
+                            if (val === null || val === undefined) return "-"
+
+                            switch (val)
+                            {
+                            case "LocktimeNotSet":
+                                val = qsTr("Locktime is not set")
+                                break
+                            case "LocktimeLessThanThreshold":
+                                val = qsTr("Locktime is less than the threshold")
+                                break
+                            case "UtxoHeightGreaterThanEndOfEra":
+                                val = qsTr("UTXO height is greater than end of the era")
+                                break
+                            case "UtxoAmountLessThanTen":
+                                val = qsTr("UTXO amount is less than 10")
+                                break
+                            case "OneHourNotPassedYet":
+                                val = qsTr("One hour did not pass yet")
+                                break
+                            case "TransactionInMempool":
+                                val = qsTr("Transaction is in mempool")
+                                break
+                            default:
+                                val = qsTr("Unknown problem")
+                                break
+                            }
+
+                            return "❌ " + val
+                        }
+                    }
                 }
 
-                // Line
-                HorizontalLine {
-                    visible: empty_data ? false :
-                             prepare_claim_rewards_result.kmd_rewards_info.result &&
-                             index !== prepare_claim_rewards_result.kmd_rewards_info.result.length - 1
+                HorizontalLine
+                {
                     width: parent.width
-                    color: Style.colorWhite9
-                    anchors.bottom: parent.bottom
                 }
             }
         }

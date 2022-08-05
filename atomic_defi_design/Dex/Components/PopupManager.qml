@@ -166,12 +166,15 @@ Popup
 
                         field.onTextChanged:
                         {
-                            if (validator(field.text))
+                            if (validator)
                             {
-                                dialog.enableAcceptButton = true
-                            }
-                            else {
-                                dialog.enableAcceptButton = false
+                                if (validator(field.text))
+                                {
+                                    dialog.enableAcceptButton = true
+                                }
+                                else {
+                                    dialog.enableAcceptButton = false
+                                }
                             }
                         }
                         field.onAccepted:

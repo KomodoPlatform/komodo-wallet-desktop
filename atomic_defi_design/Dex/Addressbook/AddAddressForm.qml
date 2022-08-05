@@ -122,6 +122,7 @@ Dex.Rectangle
             {
                 id: useStandardsCheckBox
                 Layout.preferredWidth: 150
+                Layout.fillHeight: true
                 Layout.leftMargin: 4
                 boxWidth: 22
                 boxHeight: 22
@@ -227,10 +228,12 @@ Dex.Rectangle
             {
                 return
             }
-
-            if (!Dex.API.app.wallet_pg.validate_address_data.is_valid) // Entered address is invalid.
+            
+            let validation_data = Dex.API.app.wallet_pg.validate_address_data
+            if (!validation_data.is_valid) // Entered address is invalid.
             {
-                invalidAddressValueLabel.text = Dex.API.app.wallet_pg.validate_address_data.reason
+                invalidAddressValueLabel.text = validation_data.reason
+                
                 return
             }
 
@@ -243,6 +246,8 @@ Dex.Rectangle
             if (createAddressResult === true)
             {
                 addressCreated()
+                Dex.API.app.addressbookPg.model.proxy.searchExp = "x"
+                Dex.API.app.addressbookPg.model.proxy.searchExp = ""
             }
             else
             {

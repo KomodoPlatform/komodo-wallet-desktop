@@ -736,7 +736,8 @@ Item
 
             radius: 18
 
-            onTickerChanged: loadChart()
+            // Chart disabled
+            // onTickerChanged: loadChart()
 
             function loadChart()
             {
@@ -790,28 +791,28 @@ Item
 
                 console.debug("Wallet: Loading chart for %1".arg(symbol))
 
-//                webEngineView.loadHtml(`<style>
-//                                        body { margin: 0; background: %1 }
-//                                        </style>
-//                                        <!-- TradingView Widget BEGIN -->
-//                                        <div class="tradingview-widget-container">
-//                                          <div class="tradingview-widget-container__widget"></div>
-//                                          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-//                                          {
-//                                              "symbol": "${symbol}",
-//                                              "width": "100%",
-//                                              "height": "100%",
-//                                              "locale": "en",
-//                                              "dateRange": "1D",
-//                                              "colorTheme": "dark",
-//                                              "trendLineColor": "%2",
-//                                              "isTransparent": true,
-//                                              "autosize": false,
-//                                              "largeChartUrl": ""
-//                                          }
-//                                          </script>
-//                                        </div>
-//                                        <!-- TradingView Widget END -->`.arg(Dex.CurrentTheme.floatingBackgroundColor).arg(Dex.CurrentTheme.textSelectionColor))
+                webEngineView.loadHtml(`<style>
+                                        body { margin: 0; background: %1 }
+                                        </style>
+                                        <!-- TradingView Widget BEGIN -->
+                                        <div class="tradingview-widget-container">
+                                          <div class="tradingview-widget-container__widget"></div>
+                                          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                                          {
+                                              "symbol": "${symbol}",
+                                              "width": "100%",
+                                              "height": "100%",
+                                              "locale": "en",
+                                              "dateRange": "1D",
+                                              "colorTheme": "dark",
+                                              "trendLineColor": "%2",
+                                              "isTransparent": true,
+                                              "autosize": false,
+                                              "largeChartUrl": ""
+                                          }
+                                          </script>
+                                        </div>
+                                        <!-- TradingView Widget END -->`.arg(Dex.CurrentTheme.floatingBackgroundColor).arg(Dex.CurrentTheme.textSelectionColor))
             }
 
             WebEngineView
@@ -826,7 +827,8 @@ Item
                 target: Dex.CurrentTheme
                 function onThemeChanged()
                 {
-                    loadChart();
+                    // Chart disabled
+                    // loadChart();
                 }
             }
 
@@ -908,7 +910,7 @@ Item
                         id: fetching_text_row
                         Layout.topMargin: 24
                         Layout.alignment: Qt.AlignHCenter
-                        text_value: api_wallet_page.tx_fetching_busy ? qsTr("Fetching transactions...") : qsTr('No transactions available.')
+                        text_value: api_wallet_page.tx_fetching_busy ? qsTr("Fetching transactions...") : qsTr('No transactions available')
                         font.pixelSize: Style.textSize
                     }
 
@@ -922,29 +924,31 @@ Item
                         visible: api_wallet_page.tx_fetching_busy
                     }
 
-                    DefaultMouseArea
+                    DefaultText
                     {
-                        id: explorer_mouseArea
-                        cursorShape: Qt.PointingHandCursor
-                        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                        width:  childrenRect.width
-                        height: childrenRect.height
-                        hoverEnabled: true
-                        onClicked: {
-                            console.log(addressURL)
-                            Qt.openUrlExternally(addressURL)
-                        }
-
-                        DefaultText
+                        id: explorerLink
+                        Layout.topMargin: 24
+                        Layout.alignment: Qt.AlignHCenter
+                        visible:
                         {
-                            id: explorerLink
-                            visible: !api_wallet_page.tx_fetching_busy && addressURL != ""
-                            font.pixelSize: Style.textSize
-                            text_value:  qsTr("View block explorer at ") + addressURL
-                            enabled: !explorer_mouseArea.containsMouse
-                            color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
+                            if (addressURL) console.log("addressURL: " + addressURL)
+                            return api_wallet_page.tx_fetching_busy ? false : addressURL == "" ? false : api_wallet_page.tx_fetching_failed 
                         }
+                        text_value:  qsTr("Click to view your address on %1 (%2) block explorer").arg(current_ticker_infos.name).arg(api_wallet_page.ticker)
+                        font.pixelSize: Style.textSize
+                        color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
 
+                        DefaultMouseArea
+                        {
+                            id: explorer_mouseArea
+                            cursorShape: Qt.PointingHandCursor
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                console.log(addressURL)
+                                Qt.openUrlExternally(addressURL)
+                            }
+                        }
                     }
 
                     Item { Layout.fillHeight: true }

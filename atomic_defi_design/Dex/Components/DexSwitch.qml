@@ -119,7 +119,6 @@ Switch
             leftPadding: _indicator.width + control.spacing 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            anchors.verticalCenter: _label2.text != '' ? control.verticalCenter : undefined
             wrapMode: Label.Wrap
         }
 
