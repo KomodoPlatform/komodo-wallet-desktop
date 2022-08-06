@@ -324,6 +324,19 @@ namespace atomic_dex
         return m_proxies[CoinType::UTXO];
     }
 
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_slp_proxy() const
+    {
+        return m_proxies[CoinType::SLP];
+    }
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_zhtlc_proxy() const
+    {
+        return m_proxies[CoinType::ZHTLC];
+    }
+
     int
     global_coins_cfg_model::get_length() const 
     {
