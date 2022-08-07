@@ -100,7 +100,11 @@ struct tests_context : public antara::gaming::world::app
         if (!found)
         {
             SPDLOG_INFO("Extra coins not enabled yet, enabling now");
-            mm2.enable_multiple_coins(m_extra_coins);
+            atomic_dex::mm2_service::t_coins_enable_registry registry;
+            for (auto&& coin: m_extra_coins) {
+                registry[CoinType::UTXO][0].push_back(mm2.get_coin_info(coin));
+            }
+            mm2.enable_multiple_coins_v2(registry);
         }
         while (!m_extra_coins_ready) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
         //! At this point BTC/KMD are enabled but we need ERC20 and QRC20 too / change login behaviour ?

@@ -901,7 +901,7 @@
       "https://bchd.fountainhead.cash:443"
     ],
     "allow_slp_unsafe_conf": false,
-    "type": "UTXO",
+    "type": "BCH",
     "name": "Bitcoin Cash"
   },
   "sTST": {
@@ -915,7 +915,7 @@
       "https://testnet.simpleledger.info/"
     ],
     "explorer_tx_url": "#tx/",
-    "type": "SLP",
+    "type": "tBCH",
     "name": "sTST"
   },
   "HONK": {
@@ -928,7 +928,7 @@
       "https://simpleledger.info/"
     ],
     "explorer_tx_url": "#tx/",
-    "type": "SLP",
+    "type": "BCH",
     "name": "HONK HONK"
   },
   "ASLP": {
@@ -941,7 +941,7 @@
       "https://simpleledger.info/"
     ],
     "explorer_tx_url": "#tx/",
-    "type": "SLP",
+    "type": "BCH",
     "name": "AtomicSLP"
   },
   "USDF": {
@@ -955,7 +955,7 @@
       "https://testnet.simpleledger.info/"
     ],
     "explorer_tx_url": "#tx/",
-    "type": "SLP",
+    "type": "tBCH",
     "name": "Fake USD (Testnet)"
   },
   "tBCH": {
@@ -986,7 +986,7 @@
       "https://bchd-testnet.greyh.at:18335"
     ],
     "allow_slp_unsafe_conf": false,
-    "type": "UTXO",
+    "type": "BCH",
     "name": "Bitcoin Cash (Testnet)"
   },
   "USDT-SLP": {
@@ -999,7 +999,7 @@
       "https://simpleledger.info/"
     ],
     "explorer_tx_url": "#tx/",
-    "type": "SLP",
+    "type": "BCH",
     "name": "Tether"
   },
   "BCH-ERC20": {

@@ -279,4 +279,17 @@ namespace atomic_dex
             break;
         }
     }
+
+    void
+    print_coins(std::vector<coin_config> coins)
+    {
+        std::stringstream ss;
+        ss << "[";
+        for (auto&& coin: coins) {
+            ss << coin.ticker << " ";
+        }
+        ss << "]";
+        SPDLOG_INFO("{}", ss.str());
+    }
+
 } // namespace atomic_dex

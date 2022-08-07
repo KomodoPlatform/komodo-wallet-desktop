@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -71,30 +71,35 @@ namespace atomic_dex
         {
             return false;
         }
-        
-        std::vector<std::string> coins_std{};
-        coins_std.reserve(coins.size());
+
         atomic_dex::mm2_service& mm2 = get_mm2();
-        std::unordered_set<std::string> extra_coins;
+        std::unordered_map<CoinType, std::array<std::vector<coin_config>, 2>> enable_registry;
+        const std::size_t testnet_idx = 0;
+        const std::size_t mainnet_idx = 1;
+        std::unordered_set<std::string> visited;
+        
         for (auto&& coin: coins) {
+            if (visited.contains(coin.toStdString())) {
+                SPDLOG_INFO("already visited: {} - skipping", coin.toStdString());
+                continue;
+            }
             auto coin_info = mm2.get_coin_info(coin.toStdString());
+            const bool is_tesnet = coin_info.is_testnet.value_or(false);
             if (coin_info.has_parent_fees_ticker && coin_info.ticker != coin_info.fees_ticker)
             {
                 auto coin_parent_info = mm2.get_coin_info(coin_info.fees_ticker);
-                if (!coin_parent_info.currently_enabled && !coin_parent_info.active && extra_coins.insert(coin_parent_info.ticker).second)
+                if (!coin_parent_info.currently_enabled && !coin_parent_info.active && visited.insert(coin_parent_info.ticker).second)
                 {
                     SPDLOG_INFO("Adding extra coin: {} to enable", coin_parent_info.ticker);
+                    const auto coin_type = (coin_parent_info.ticker == "BCH" || coin_parent_info.ticker == "tBCH") ? CoinType::SLP : coin_parent_info.coin_type;
+                    enable_registry[coin_type][is_tesnet ? testnet_idx : mainnet_idx].push_back(coin_parent_info);
                 }
             }
-            coins_std.push_back(coin.toStdString());
+            const auto coin_type = (coin_info.ticker == "BCH" || coin_info.ticker == "tBCH") ? CoinType::SLP : coin_info.coin_type;
+            enable_registry[coin_type][is_tesnet ? testnet_idx : mainnet_idx].push_back(coin_info);
+            visited.insert(coin_info.ticker);
         }
-
-        for (auto&& extra_coin : extra_coins)
-        {
-            coins_std.push_back(extra_coin);
-        }
-        mm2.enable_multiple_coins(coins_std);
-
+        mm2.enable_multiple_coins_v2(enable_registry);
         return true;
     }
 

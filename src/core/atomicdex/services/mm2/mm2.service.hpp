@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -88,7 +88,7 @@ namespace atomic_dex
         mm2_client m_mm2_client;
 
         //! Process
-        //reproc::process m_mm2_instance;
+        // reproc::process m_mm2_instance;
 
         //! Current ticker
         t_synchronized_ticker m_current_ticker{g_primary_dex_coin};
@@ -105,6 +105,7 @@ namespace atomic_dex
         //! Atomicity / Threads
         std::atomic_bool m_mm2_running{false};
         std::atomic_bool m_orderbook_thread_active{false};
+        std::atomic_size_t m_nb_update_required{0};
         std::thread      m_mm2_init_thread;
 
         //! Current wallet name
@@ -136,6 +137,14 @@ namespace atomic_dex
         void process_tx_answer(const nlohmann::json& answer_json);
         void process_tx_tokenscan(const std::string& ticker, bool is_a_refresh);
         void fetch_single_balance(const coin_config& cfg_infos);
+
+        //!
+        void process_electrum_legacy(std::vector<coin_config> coins_to_enable);
+        void process_enable_legacy(std::vector<coin_config> coins_to_enable);
+        void process_enable_zhtlc(std::vector<coin_config> coins_to_enable);
+        void process_bch_with_tokens(std::vector<coin_config> coins_to_enable);
+        void process_slp(std::vector<coin_config> coins_to_enable);
+        void batch_enable_answer_legacy(web::http::http_response resp, std::vector<std::string> tickers);
 
         //!
         std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);
@@ -173,12 +182,10 @@ namespace atomic_dex
 
         //! Enable coins
         bool enable_default_coins();
-
-        //! Batch Enable coins
-        void batch_enable_coins(const std::vector<std::string>& tickers, bool first_time = false);
-
-        //! Enable multiple coins
-        void enable_multiple_coins(const std::vector<std::string>& tickers);
+        using t_array_network         = std::array<std::vector<coin_config>, 2>;
+        using t_coins_enable_registry = std::unordered_map<CoinType, t_array_network>;
+        void enable_multiple_coins_v2(const t_coins_enable_registry& coins_to_enable);
+        void batch_enable_coins_v2(CoinType type_to_enable, std::vector<coin_config> coins_to_enable);
 
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
         void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);

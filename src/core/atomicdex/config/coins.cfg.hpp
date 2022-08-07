@@ -75,4 +75,6 @@ namespace atomic_dex
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);
+
+    void print_coins(std::vector<coin_config> coins);
 } // namespace atomic_dex
