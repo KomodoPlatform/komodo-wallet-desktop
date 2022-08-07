@@ -6534,6 +6534,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "ILNF-PLG20": {
+    "coin": "ILNF-PLG20",
+    "name": "ilnf_plg20",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "ilnf",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://matic-mainnet.chainstacklabs.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "MKR-AVX20": {
     "coin": "MKR-AVX20",
     "name": "Maker",
