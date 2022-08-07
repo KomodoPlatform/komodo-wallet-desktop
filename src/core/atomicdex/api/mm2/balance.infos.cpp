@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,27 +14,18 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
+//! Dependencies Headers
 #include <nlohmann/json.hpp>
 
-//! Project Headers
-#include "atomicdex/api/mm2/rpc.balance.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
+// Project Headers
+#include "balance.infos.hpp"
 
 namespace mm2::api
 {
     void
-    to_json(nlohmann::json& j, const balance_request& cfg)
+    from_json(const nlohmann::json& j, balance_infos& answer)
     {
-        j["coin"] = cfg.coin;
-    }
-
-    void
-    from_json(const nlohmann::json& j, balance_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
-        j.at("coin").get_to(cfg.coin);
+        answer.spendable = j.at("spendable").get<std::string>();
+        answer.unspendable = j.at("unspendable").get<std::string>();
     }
 } // namespace mm2::api

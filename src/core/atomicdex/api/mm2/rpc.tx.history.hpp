@@ -10,11 +10,20 @@
 #include "transaction.data.hpp"
 
 namespace mm2::api
-{
+{    
+    struct paging_options
+    {
+        std::optional<std::size_t> page_number;
+        std::optional<std::string> from_id;
+    };
+
+    void to_json(nlohmann::json& j, const paging_options& cfg);
+    
     struct tx_history_request
     {
-        std::string coin;
-        std::size_t limit;
+        std::string                   coin;
+        std::size_t                   limit;
+        std::optional<paging_options> paging_options;
     };
 
     void to_json(nlohmann::json& j, const tx_history_request& cfg);

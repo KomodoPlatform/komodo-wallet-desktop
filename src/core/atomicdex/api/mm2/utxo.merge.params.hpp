@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,27 +14,18 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
-#include <nlohmann/json.hpp>
+#pragma once
 
-//! Project Headers
-#include "atomicdex/api/mm2/rpc.balance.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
+#include <nlohmann/json_fwd.hpp>
 
 namespace mm2::api
 {
-    void
-    to_json(nlohmann::json& j, const balance_request& cfg)
+    struct utxo_merge_params
     {
-        j["coin"] = cfg.coin;
-    }
+        std::size_t merge_at;
+        std::size_t check_every;
+        std::size_t max_merge_at_once;
+    };
 
-    void
-    from_json(const nlohmann::json& j, balance_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
-        j.at("coin").get_to(cfg.coin);
-    }
-} // namespace mm2::api
+    void to_json(nlohmann::json& j, const utxo_merge_params& cfg);
+}

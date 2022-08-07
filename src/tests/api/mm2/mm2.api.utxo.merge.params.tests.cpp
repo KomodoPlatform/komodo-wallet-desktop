@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -15,26 +15,22 @@
  ******************************************************************************/
 
 //! Deps
+#include "doctest/doctest.h"
 #include <nlohmann/json.hpp>
 
-//! Project Headers
-#include "atomicdex/api/mm2/rpc.balance.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/api/mm2/utxo.merge.params.hpp"
 
-namespace mm2::api
+TEST_CASE("mm2::api::utxo_merge_params serialisation")
 {
-    void
-    to_json(nlohmann::json& j, const balance_request& cfg)
+    const nlohmann::json     expected_json = R"(
     {
-        j["coin"] = cfg.coin;
+      "merge_at":50,
+      "check_every":10,
+      "max_merge_at_once":25
     }
-
-    void
-    from_json(const nlohmann::json& j, balance_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
-        j.at("coin").get_to(cfg.coin);
-    }
-} // namespace mm2::api
+    )"_json;
+    mm2::api::utxo_merge_params request{.merge_at = 50, .check_every = 10, .max_merge_at_once = 25};
+    nlohmann::json           j;
+    mm2::api::to_json(j, request);
+    CHECK_EQ(j, expected_json);
+}
