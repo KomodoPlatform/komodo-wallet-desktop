@@ -18,6 +18,7 @@
 #include <unordered_set>
 #include <iostream>
 #include <boost/thread/thread.hpp>
+#include <sstream>
 
 //! Ranges
 #include <range/v3/algorithm/any_of.hpp>

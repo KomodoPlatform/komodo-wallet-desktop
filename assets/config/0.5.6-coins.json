@@ -10669,7 +10669,7 @@
     "type": "ZHTLC",
     "active": false,
     "currently_enabled": false,
-    "wallet_only": true
+    "wallet_only": false
   },
   "ARRR": {
     "coin": "ARRR",
@@ -10688,6 +10688,6 @@
     "type": "ZHTLC",
     "active": false,
     "currently_enabled": false,
-    "wallet_only": true
+    "wallet_only": false
   }
 }
