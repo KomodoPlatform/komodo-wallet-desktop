@@ -39,6 +39,7 @@
 #include "atomicdex/api/mm2/rpc2.init_z_coin.hpp"
 #include "atomicdex/api/mm2/rpc2.init_z_coin_status.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
@@ -357,7 +358,7 @@ namespace atomic_dex
         {
             SPDLOG_INFO("mm2 didn't stop yet with rpc stop, stopping process manually");
 #if defined(_WIN32) || defined(WIN32)
-            atomic_dex::kill_executable("mm2");
+            atomic_dex::kill_executable(atomic_dex::g_dex_api);
 #else
             /*const reproc::stop_actions stop_actions = {
                 {reproc::stop::terminate, reproc::milliseconds(2000)},
