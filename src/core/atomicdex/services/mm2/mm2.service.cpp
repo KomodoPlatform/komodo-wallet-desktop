@@ -600,7 +600,7 @@ namespace atomic_dex
             if (coin_info.is_zhtlc_family)
             {
                 requires_v2 = true;
-                limit = 100;
+                limit = 50;
                 method = "z_coin_tx_history";
             }
             else if (coin_info.coin_type == CoinTypeGadget::SLP || coin_info.ticker == "tBCH" || coin_info.ticker == "BCH")
@@ -1483,7 +1483,7 @@ namespace atomic_dex
         env.insert("MM_LOG", std_path_to_qstring(utils::get_mm2_atomic_dex_current_log_file()));
         env.insert("MM_COINS_PATH", std_path_to_qstring((utils::get_current_configs_path() / "coins.json")));
         QProcess mm2_instance;
-        mm2_instance.setProgram(std_path_to_qstring((tools_path / "mm2")));
+        mm2_instance.setProgram(std_path_to_qstring((tools_path / atomic_dex::g_dex_api)));
         mm2_instance.setWorkingDirectory(std_path_to_qstring(tools_path));
         mm2_instance.setProcessEnvironment(env);
         bool started = mm2_instance.startDetached();
