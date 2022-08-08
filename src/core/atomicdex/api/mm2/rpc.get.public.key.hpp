@@ -37,7 +37,7 @@ namespace atomic_dex::mm2
             std::string public_key;
         } answer;
 
-        using excpected_error_type = rpc_basic_error_type
+        using excpected_error_type = rpc_basic_error_type;
 
         std::optional<excpected_error_type>     error;
     };

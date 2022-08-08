@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 
 //! Implementation RPC [enable]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void

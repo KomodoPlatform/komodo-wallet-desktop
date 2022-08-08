@@ -27,7 +27,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/fraction.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct trade_preimage_request
     {
@@ -75,7 +75,7 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_trade_preimage_request        = ::mm2::api::trade_preimage_request;
-    using t_trade_preimage_answer         = ::mm2::api::trade_preimage_answer;
-    using t_trade_preimage_answer_success = ::mm2::api::trade_preimage_answer_success;
+    using t_trade_preimage_request        = mm2::trade_preimage_request;
+    using t_trade_preimage_answer         = mm2::trade_preimage_answer;
+    using t_trade_preimage_answer_success = mm2::trade_preimage_answer_success;
 } // namespace atomic_dex

@@ -507,7 +507,7 @@ namespace atomic_dex
     {
         QString result;
 
-        ::mm2::api::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
+        mm2::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
         auto                                      res = get_mm2().get_mm2_client().rpc_recover_funds(std::move(request));
         result                                        = QString::fromStdString(res.raw_result);
 

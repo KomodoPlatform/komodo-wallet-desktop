@@ -9,7 +9,7 @@
 //! Our Headers
 #include "transaction.data.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct tx_history_request
     {
@@ -84,5 +84,5 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_tx_history_request = ::mm2::api::tx_history_request;
+    using t_tx_history_request = mm2::tx_history_request;
 }

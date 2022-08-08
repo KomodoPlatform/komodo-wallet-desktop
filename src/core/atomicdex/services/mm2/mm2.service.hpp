@@ -85,7 +85,7 @@ namespace atomic_dex
         //! Client
         // std::shared_ptr<t_http_client>  m_mm2_client{nullptr};
         // pplx::cancellation_token_source m_token_source;
-        mm2_client m_mm2_client;
+        mm2::mm2_client m_mm2_client;
 
         //! Process
         //reproc::process m_mm2_instance;
@@ -251,7 +251,7 @@ namespace atomic_dex
         void               add_orders_answer(t_my_orders_answer answer);
 
         //! Async API
-        mm2_client& get_mm2_client();
+        mm2::mm2_client& get_mm2_client();
         //[[nodiscard]] pplx::cancellation_token get_cancellation_token() const;
 
         //! Wallet api

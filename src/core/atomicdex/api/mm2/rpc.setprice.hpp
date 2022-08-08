@@ -23,7 +23,7 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct setprice_request
     {
@@ -45,5 +45,5 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_setprice_request        = ::mm2::api::setprice_request;
+    using t_setprice_request        = mm2::setprice_request;
 }

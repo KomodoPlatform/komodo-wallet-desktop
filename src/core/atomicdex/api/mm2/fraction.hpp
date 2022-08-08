@@ -1,13 +1,11 @@
 #pragma once
 
-//! STD
 #include <string>
 
-//! Deps
 #include <nlohmann/json_fwd.hpp>
 #include <entt/core/attribute.h>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct fraction
     {

@@ -23,7 +23,7 @@
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct electrum_request
     {

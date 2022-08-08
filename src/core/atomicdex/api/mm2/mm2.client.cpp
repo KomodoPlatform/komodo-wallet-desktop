@@ -34,14 +34,14 @@ namespace
         web::http::client::http_client_config cfg;
         using namespace std::chrono_literals;
         cfg.set_timeout(30s);
-        return web::http::client::http_client(FROM_STD_STR(::mm2::api::g_endpoint), cfg);
+        return web::http::client::http_client(FROM_STD_STR(atomic_dex::mm2::g_endpoint), cfg);
     }
 
-    template <mm2::api::rpc Rpc>
+    template <atomic_dex::mm2::rpc Rpc>
     web::http::http_request make_request(typename Rpc::expected_request_type data_req = {})
     {
         web::http::http_request request;
-        nlohmann::json json_req = {{"method", Rpc::endpoint}, {"userpass", mm2::api::get_rpc_password()}};
+        nlohmann::json json_req = {{"method", Rpc::endpoint}, {"userpass", atomic_dex::mm2::get_rpc_password()}};
 
         request.set_method(web::http::methods::POST);
         if (Rpc::is_v2)
@@ -76,7 +76,7 @@ namespace
     }
 } // namespace
 
-namespace atomic_dex
+namespace atomic_dex::mm2
 {
     template <typename RpcReturnType>
     RpcReturnType mm2_client::rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command)

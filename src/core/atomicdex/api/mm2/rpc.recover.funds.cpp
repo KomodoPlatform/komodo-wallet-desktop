@@ -8,7 +8,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const recover_funds_of_swap_request& cfg)

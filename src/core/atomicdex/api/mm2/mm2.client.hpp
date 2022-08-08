@@ -12,7 +12,7 @@
 #include "rpc.recover.funds.hpp"
 #include "rpc.hpp"
 
-namespace atomic_dex
+namespace atomic_dex::mm2
 {
     class ENTT_API mm2_client
     {

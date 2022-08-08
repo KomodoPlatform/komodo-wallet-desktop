@@ -20,6 +20,8 @@
 
 #include <nlohmann/json_fwd.hpp> //> nlohmann::json
 
+#include "atomicdex/api/mm2/rpc.hpp"
+
 namespace atomic_dex::mm2
 {
     struct enable_slp_rpc
@@ -31,11 +33,11 @@ namespace atomic_dex::mm2
         {
             std::string                                             ticker;
             struct { std::optional<int> required_confirmations; }   activation_params;
-        }
+        };
         
         struct excpected_answer_type
         {
-            struct balance_info { std::string spendable; std::string unspendable; }
+            struct balance_info { std::string spendable; std::string unspendable; };
 
             std::string                                     token_id;
             std::string                                     platform_coin;
@@ -43,7 +45,7 @@ namespace atomic_dex::mm2
             std::unordered_map<std::string, balance_info>   balances;
         };
 
-        using excpected_error_type = rpc_basic_error_type
+        using excpected_error_type = rpc_basic_error_type;
 
         excpected_request_type                  request;
         std::optional<excpected_answer_type>    result;
