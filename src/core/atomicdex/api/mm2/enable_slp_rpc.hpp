@@ -16,34 +16,44 @@
 
 #pragma once
 
-// Std Headers
 #include <string>
 
-// Deps Headers
-#include <nlohmann/json_fwd.hpp>
+#include <nlohmann/json_fwd.hpp> //> nlohmann::json
 
 namespace atomic_dex::mm2
 {
-    struct get_public_key
+    struct enable_slp_rpc
     {
-        static constexpr auto endpoint = "get_public_key";
+        static constexpr auto endpoint  = "enable_slp";
         static constexpr bool is_v2     = true;
-        struct expected_request_type
+        
+        struct excpected_request_type
         {
+            std::string                                             ticker;
+            struct { std::optional<int> required_confirmations; }   activation_params;
+        }
+        
+        struct excpected_answer_type
+        {
+            struct balance_info { std::string spendable; std::string unspendable; }
 
-        } request;
-        struct expected_answer_type
-        {
-            std::string public_key;
-        } answer;
+            std::string                                     token_id;
+            std::string                                     platform_coin;
+            int                                             required_confirmations;
+            std::unordered_map<std::string, balance_info>   balances;
+        };
 
         using excpected_error_type = rpc_basic_error_type
 
+        excpected_request_type                  request;
+        std::optional<excpected_answer_type>    result;
         std::optional<excpected_error_type>     error;
     };
-    using get_public_key_request = get_public_key::expected_request_type;
-    using get_public_key_answer = get_public_key::expected_answer_type;
 
-    inline void to_json([[maybe_unused]] nlohmann::json& j, const get_public_key_request&) { }
-    void from_json(const nlohmann::json& json, get_public_key_answer& in);
+    using enable_slp_rpc_request = enable_slp_rpc::expected_request_type;
+    using enable_slp_rpc_answer = enable_slp_rpc::expected_answer_type;
+    using enable_slp_rpc_error = enable_slp_rpc::excpected_error_type;
+
+    inline void from_json(const nlohmann::json& j, enable_slp_rpc_answer& in);
+    inline void from_json(const nlohmann::json& j, enable_slp_rpc_answer::balance_info& in);
 }
