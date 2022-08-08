@@ -16,6 +16,7 @@
 
 //! Deps
 #include <nlohmann/json.hpp>
+#include <sstream>
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"
