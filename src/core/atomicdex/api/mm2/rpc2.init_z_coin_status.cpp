@@ -30,7 +30,7 @@ namespace mm2::api
     }
 
     //! Deserialization
-    void from_json(const nlohmann::json& j, init_z_coin_status_answer& answer)
+    void from_json(const nlohmann::json& j, init_z_coin_status_answer_success& answer)
     {
         j.at("result").at("status").get_to(answer.status);     // [InProgress, Ready]
         j.at("result").at("details").get_to(answer.details);
@@ -39,6 +39,11 @@ namespace mm2::api
         {
             answer.current_scanned_block = j.at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block").get<std::string>();
             answer.latest_block = j.at("result").at("details").at("UpdatingBlocksCache").at("latest_block").get<std::string>();
+        }
+        else if (j.at("result").at("details").contains("BuildingWalletDb"))
+        {
+            answer.current_scanned_block = j.at("result").at("details").at("BuildingWalletDb").at("current_scanned_block").get<std::string>();
+            answer.latest_block = j.at("result").at("details").at("BuildingWalletDb").at("latest_block").get<std::string>();
         }
 
         if (j.at("result").at("details").contains("result"))
@@ -55,6 +60,22 @@ namespace mm2::api
             }
         }
 
+    }
+
+    void
+    from_json(const nlohmann::json& j, init_z_coin_status_answer& answer)
+    {
+        if (j.count("error") >= 1)
+        {
+            answer.error = j;
+        }
+        else
+        {
+            if (j.contains("result") && j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
+            {
+                answer.result = j.at("result").get<init_z_coin_status_answer_success>();
+            }
+        }
     }
 } // namespace mm2::api
 
