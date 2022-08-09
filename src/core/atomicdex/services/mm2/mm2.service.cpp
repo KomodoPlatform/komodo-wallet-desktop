@@ -2070,7 +2070,7 @@ namespace atomic_dex
         // m_system_manager.get_system<portfolio_page>().get_portfolio()->update_balance_values({copy_coin});
     }
 
-    mm2_client&
+    mm2::mm2_client&
     mm2_service::get_mm2_client()
     {
         return m_mm2_client;

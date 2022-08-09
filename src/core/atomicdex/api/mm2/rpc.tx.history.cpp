@@ -4,7 +4,7 @@
 //! Project Headers
 #include "rpc.tx.history.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
 
     void

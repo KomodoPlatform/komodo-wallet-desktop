@@ -30,7 +30,7 @@
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
 #include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     template <typename RpcSuccessReturnType, typename RpcReturnType>
     void

@@ -22,7 +22,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/orderbook.order.contents.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct orderbook_request
     {
@@ -58,6 +58,6 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_orderbook_request       = ::mm2::api::orderbook_request;
-    using t_orderbook_answer        = ::mm2::api::orderbook_answer;
+    using t_orderbook_request       = mm2::orderbook_request;
+    using t_orderbook_answer        = mm2::orderbook_answer;
 }

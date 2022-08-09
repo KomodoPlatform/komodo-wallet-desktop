@@ -10,7 +10,7 @@
 #include "atomicdex/api/mm2/generic.error.hpp"
 #include "atomicdex/api/mm2/transaction.data.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct withdraw_fees
     {
@@ -46,7 +46,7 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_withdraw_request = ::mm2::api::withdraw_request;
-    using t_withdraw_fees    = ::mm2::api::withdraw_fees;
-    using t_withdraw_answer  = ::mm2::api::withdraw_answer;
+    using t_withdraw_request = mm2::withdraw_request;
+    using t_withdraw_fees    = mm2::withdraw_fees;
+    using t_withdraw_answer  = mm2::withdraw_answer;
 } // namespace atomic_dex

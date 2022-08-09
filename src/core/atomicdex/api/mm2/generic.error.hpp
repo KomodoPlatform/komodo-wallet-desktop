@@ -6,7 +6,7 @@
 //! Deps
 #include <nlohmann/json.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct generic_answer_error
     {

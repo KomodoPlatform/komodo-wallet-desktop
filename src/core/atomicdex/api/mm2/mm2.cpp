@@ -171,7 +171,7 @@ namespace
     }
 } // namespace
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const send_raw_transaction_request& cfg)
@@ -725,8 +725,6 @@ namespace mm2::api
     template mm2::api::validate_address_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::api::convert_address_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::api::recover_funds_of_swap_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::enable_bch_with_tokens_answer rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::api::enable_slp_answer             rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
 
     void
     set_system_manager(ag::ecs::system_manager& system_manager)
