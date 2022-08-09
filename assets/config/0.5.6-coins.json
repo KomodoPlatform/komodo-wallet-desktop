@@ -6500,7 +6500,7 @@
   },
   "ILNF-BEP20": {
     "coin": "ILNF-BEP20",
-    "name": "ilnf_bep20",
+    "name": "ilien Fuel",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "nomics_id": "ilnfbep20",
@@ -6554,7 +6554,7 @@
   },
   "ILNF-PLG20": {
     "coin": "ILNF-PLG20",
-    "name": "ilnf_plg20",
+    "name": "ilien Fuel",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
     "nomics_id": "ilnf",
