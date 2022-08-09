@@ -34,7 +34,6 @@ namespace ag = antara::gaming;
 
 namespace mm2::api
 {
-    inline constexpr const char*                           g_endpoint                 = "http://127.0.0.1:7783";
     inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};

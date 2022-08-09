@@ -21,6 +21,7 @@
 #include "atomicdex/api/mm2/mm2.client.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "rpc.get.public.key.hpp"
 #include "rpc.hpp"
 
@@ -34,7 +35,7 @@ namespace
         web::http::client::http_client_config cfg;
         using namespace std::chrono_literals;
         cfg.set_timeout(30s);
-        return web::http::client::http_client(FROM_STD_STR(::mm2::api::g_endpoint), cfg);
+        return web::http::client::http_client(FROM_STD_STR(atomic_dex::g_dex_rpc), cfg);
     }
 
     template <mm2::api::rpc Rpc>
