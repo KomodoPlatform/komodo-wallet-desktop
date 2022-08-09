@@ -5,6 +5,8 @@ import Qaterial 1.0 as Qaterial
 
 import QtGraphicalEffects 1.0
 
+import bignumberjs 1.0
+
 import App 1.0
 
 import "../../../Components"
@@ -91,7 +93,13 @@ FloatingBackground
                     anchors.verticalCenter: parent.verticalCenter
 
                     font.pixelSize: 12
-                    text: !details ? "" : details.base_amount
+                    text:
+                    {
+                        if (!details) return
+
+                        BigNumber.config({ DECIMAL_PLACES: 6 })
+                        return new BigNumber(details.base_amount).toString(10)
+                    }
                     privacy: is_placed_order
                     elide: Text.ElideRight
                     maximumLineCount: 1
@@ -127,7 +135,14 @@ FloatingBackground
                     anchors.verticalCenter: parent.verticalCenter
 
                     font.pixelSize: 12
-                    text: !details ? "" : details.rel_amount
+                    text:
+                    {
+                        if (!details) return
+
+                        BigNumber.config({ DECIMAL_PLACES: 6 })
+                        return new BigNumber(details.rel_amount).toString(10)
+                    }
+
                     privacy: is_placed_order
                     elide: Text.ElideRight
                     maximumLineCount: 1
