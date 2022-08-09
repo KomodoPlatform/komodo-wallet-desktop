@@ -6498,7 +6498,7 @@
     "active": false,
     "currently_enabled": false
   },
-	"ILNF-BEP20": {
+  "ILNF-BEP20": {
     "coin": "ILNF-BEP20",
     "name": "ilnf_bep20",
     "coinpaprika_id": "test-coin",
