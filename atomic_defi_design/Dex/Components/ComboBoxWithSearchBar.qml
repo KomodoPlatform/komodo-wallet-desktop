@@ -21,7 +21,6 @@ ComboBox
     property alias  searchBar: _searchBar
     property string searchBarPlaceholderText: qsTr("Search")
 
-
     background: Rectangle
     {
         id: bg

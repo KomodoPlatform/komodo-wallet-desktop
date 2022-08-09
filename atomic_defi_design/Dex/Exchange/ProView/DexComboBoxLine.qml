@@ -7,6 +7,7 @@ import QtQuick.Controls.Universal 2.15
 import "../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 
 RowLayout
 {
@@ -19,7 +20,7 @@ RowLayout
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
-    DexImage
+    Dex.Image
     {
         id: icon
         source: General.coinIcon(details.ticker)
@@ -37,7 +38,7 @@ RowLayout
             anchors.verticalCenter: parent.verticalCenter
             width: root.width - 40
 
-            DexText
+            Dex.Text
             {
                 Layout.preferredWidth: parent.width - 15
 
@@ -48,7 +49,7 @@ RowLayout
                 wrapMode: Text.NoWrap
             }
 
-            DexText
+            Dex.Text
             {
                 id: bottom_line
 
@@ -58,7 +59,7 @@ RowLayout
                 text: real_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight
-                color: DexTheme.foregroundColor
+                color: Dex.CurrentTheme.foregroundColor
                 font: DexTypo.body2
                 wrapMode: Label.NoWrap
                 ToolTip.text: real_value
