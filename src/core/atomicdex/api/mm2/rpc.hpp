@@ -22,7 +22,7 @@
 
 #include "../api.call.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     template <typename Rpc>
     concept rpc = requires(Rpc rpc)

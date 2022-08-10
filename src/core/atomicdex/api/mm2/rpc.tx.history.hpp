@@ -9,7 +9,7 @@
 //! Our Headers
 #include "transaction.data.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct paging_options
     {
@@ -93,5 +93,5 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_tx_history_request = mm2::tx_history_request;
+    using t_tx_history_request = ::mm2::api::tx_history_request;
 }

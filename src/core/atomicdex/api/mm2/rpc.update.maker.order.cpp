@@ -8,7 +8,7 @@
 //! Project Headers
 #include <atomicdex/api/mm2/rpc.update.maker.order.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     void
     to_json(nlohmann::json& j, const mm2::api::update_maker_order_request& request)

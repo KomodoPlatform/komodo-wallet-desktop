@@ -25,7 +25,7 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     void
     from_json(const nlohmann::json& j, order_contents& contents)

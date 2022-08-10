@@ -22,7 +22,7 @@
 // Deps Headers
 #include <nlohmann/json_fwd.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct get_public_key
     {
@@ -36,10 +36,6 @@ namespace atomic_dex::mm2
         {
             std::string public_key;
         } answer;
-
-        using excpected_error_type = rpc_basic_error_type;
-
-        std::optional<excpected_error_type>     error;
     };
     using get_public_key_request = get_public_key::expected_request_type;
     using get_public_key_answer = get_public_key::expected_answer_type;

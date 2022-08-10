@@ -7,7 +7,7 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct update_maker_order_request
     {
@@ -27,5 +27,5 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_update_maker_order_request = mm2::update_maker_order_request;
+    using t_update_maker_order_request = ::mm2::api::update_maker_order_request;
 }

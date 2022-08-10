@@ -27,7 +27,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/fraction.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct trade_preimage_request
     {
@@ -43,9 +43,9 @@ namespace atomic_dex::mm2
 
     struct coin_fee
     {
-        std::string coin;
-        std::string amount;
-        fraction    amount_fraction;
+        std::string                  coin;
+        std::string                  amount;
+        mm2::api::fraction           amount_fraction;
     };
 
     ENTT_API void from_json(const nlohmann::json& j, coin_fee& fee);
@@ -75,7 +75,7 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_trade_preimage_request        = mm2::trade_preimage_request;
-    using t_trade_preimage_answer         = mm2::trade_preimage_answer;
-    using t_trade_preimage_answer_success = mm2::trade_preimage_answer_success;
+    using t_trade_preimage_request        = ::mm2::api::trade_preimage_request;
+    using t_trade_preimage_answer         = ::mm2::api::trade_preimage_answer;
+    using t_trade_preimage_answer_success = ::mm2::api::trade_preimage_answer_success;
 } // namespace atomic_dex

@@ -18,7 +18,7 @@
 
 #include <nlohmann/json_fwd.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     template <typename RpcSuccessReturnType, typename RpcReturnType>
     void

@@ -25,7 +25,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/orderbook.order.contents.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct best_orders_request
     {
@@ -56,7 +56,7 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_best_orders_request        = mm2::best_orders_request;
-    using t_best_orders_answer         = mm2::best_orders_answer;
-    using t_best_orders_answer_success = mm2::best_orders_answer_success;
+    using t_best_orders_request        = ::mm2::api::best_orders_request;
+    using t_best_orders_answer         = ::mm2::api::best_orders_answer;
+    using t_best_orders_answer_success = ::mm2::api::best_orders_answer_success;
 } // namespace atomic_dex

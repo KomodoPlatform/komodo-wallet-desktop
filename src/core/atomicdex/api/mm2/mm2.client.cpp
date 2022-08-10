@@ -38,11 +38,11 @@ namespace
         return web::http::client::http_client(FROM_STD_STR(atomic_dex::g_dex_rpc), cfg);
     }
 
-    template <atomic_dex::mm2::rpc Rpc>
+    template <mm2::api::rpc Rpc>
     web::http::http_request make_request(typename Rpc::expected_request_type data_req = {})
     {
         web::http::http_request request;
-        nlohmann::json json_req = {{"method", Rpc::endpoint}, {"userpass", atomic_dex::mm2::get_rpc_password()}};
+        nlohmann::json json_req = {{"method", Rpc::endpoint}, {"userpass", mm2::api::get_rpc_password()}};
 
         request.set_method(web::http::methods::POST);
         if (Rpc::is_v2)
@@ -58,26 +58,19 @@ namespace
         return request;
     }
 
-    template <mm2::rpc Rpc>
-    Rpc process_rpc_answer(const web::http::http_response& answer)
+    template <mm2::api::rpc Rpc>
+    typename Rpc::expected_answer_type make_answer(const web::http::http_response& answer)
     {
-        Rpc rpc;
         auto json_answer = nlohmann::json::parse(TO_STD_STR(answer.extract_string(true).get()));
-        
         if (Rpc::is_v2)
         {
-            if (answer.status_code() == 200)
-                rpc.result = json_answer.at("result").get<typename Rpc::expected_answer_type>();
-            else
-                rpc.error = json_answer.get<typename Rpc::expected_error_type>();
+            return json_answer.at("result").get<typename Rpc::expected_answer_type>();
         }
-        else
-            rpc.result = json_answer.get<typename Rpc::expected_answer_type>();
-        return rpc;
+        return json_answer.get<typename Rpc::expected_answer_type>();
     }
 } // namespace
 
-namespace atomic_dex::mm2
+namespace atomic_dex
 {
     template <typename RpcReturnType>
     RpcReturnType mm2_client::rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command)
@@ -142,17 +135,17 @@ namespace atomic_dex::mm2
         return resp;
     }
 
-    template <mm2::rpc Rpc>
-    void mm2_client::process_rpc_async(const std::function<void(Rpc)>& on_rpc_processed)
+    template <::mm2::api::rpc ApiCallType>
+    void mm2_client::process_rpc_async(const std::function<void(typename ApiCallType::expected_answer_type)>& on_rpc_processed) 
     {
-        auto request = make_request<Rpc>();
+        auto request = make_request<ApiCallType>();
         generate_client()
             .request(request, m_token_source.get_token())
             .template then([on_rpc_processed](const web::http::http_response& resp)
                            {
                                try
                                {
-                                   auto answer = process_rpc_answer<Rpc>(resp);
+                                   auto answer = make_answer<ApiCallType>(resp);
                                    on_rpc_processed(answer);
                                }
                                catch (const std::exception& ex)
@@ -162,7 +155,7 @@ namespace atomic_dex::mm2
                            });
     }
 
-    template void mm2_client::process_rpc_async<atomic_dex::mm2::get_public_key>(const std::function<void(mm2::get_public_key)>&);
+    template void mm2_client::process_rpc_async<::mm2::api::get_public_key>(const std::function<void(::mm2::api::get_public_key_answer)>&);
 
     void
     mm2_client::stop()

@@ -6,7 +6,7 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct recover_funds_of_swap_request
     {
@@ -38,6 +38,6 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_recover_funds_of_swap_request = mm2::recover_funds_of_swap_request;
-    using t_recover_funds_of_swap_answer  = mm2::recover_funds_of_swap_answer;
+    using t_recover_funds_of_swap_request = ::mm2::api::recover_funds_of_swap_request;
+    using t_recover_funds_of_swap_answer  = ::mm2::api::recover_funds_of_swap_answer;
 } // namespace atomic_dex

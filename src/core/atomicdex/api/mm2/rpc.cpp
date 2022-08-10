@@ -2,7 +2,7 @@
 
 #include "rpc.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     inline void from_json(const nlohmann::json& j, rpc_basic_error_type& in)
     {

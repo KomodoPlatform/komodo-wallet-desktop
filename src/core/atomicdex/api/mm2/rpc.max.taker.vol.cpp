@@ -23,7 +23,7 @@
 #include "atomicdex/utilities/global.utilities.hpp"
 
 //! Implementation RPC [max_taker_vol]
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     //! Serialization
     void

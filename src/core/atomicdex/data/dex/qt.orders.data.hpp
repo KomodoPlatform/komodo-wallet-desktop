@@ -9,7 +9,7 @@
 //! deps
 #include <nlohmann/json.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct order_swaps_data
     {
@@ -92,5 +92,5 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_order_swaps_data = mm2::order_swaps_data;
+    using t_order_swaps_data = ::mm2::api::order_swaps_data;
 }

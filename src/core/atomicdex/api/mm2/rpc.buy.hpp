@@ -26,7 +26,7 @@
 //! Project Header
 #include <atomicdex/api/mm2/trading.order.contents.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct buy_request
     {
@@ -68,7 +68,7 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_buy_request        = mm2::buy_request;
-    using t_buy_answer         = mm2::buy_answer;
-    using t_buy_answer_success = mm2::buy_answer_success;
+    using t_buy_request        = ::mm2::api::buy_request;
+    using t_buy_answer         = ::mm2::api::buy_answer;
+    using t_buy_answer_success = ::mm2::api::buy_answer_success;
 } // namespace atomic_dex

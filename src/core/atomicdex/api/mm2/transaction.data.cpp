@@ -9,7 +9,7 @@
 #include "atomicdex/api/mm2/transaction.data.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     void
     from_json(const nlohmann::json& j, fee_regular_coin& cfg)

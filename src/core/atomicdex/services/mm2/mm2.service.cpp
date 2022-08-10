@@ -31,9 +31,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
-#include "atomicdex/api/mm2/rpc.enable.bch.with.tokens.hpp"
 #include "atomicdex/api/mm2/rpc.enable.hpp"
-#include "atomicdex/api/mm2/rpc.enable.slp.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
 #include "atomicdex/api/mm2/rpc2.z_coin_tx_history.hpp"
@@ -945,174 +943,7 @@ namespace atomic_dex
         }
     }
 
-    void
-    mm2_service::process_bch_with_tokens(std::vector<coin_config> coins_to_enable)
-    {
-        auto request_functor = [this, coins_to_enable]() -> std::pair<nlohmann::json, std::vector<std::string>>
-        {
-            auto              bch_functor   = [](auto&& coin_cfg) { return coin_cfg.is_testnet.value_or(false); };
-            const bool        is_testnet    = std::any_of(begin(coins_to_enable), end(coins_to_enable), bch_functor);
-            const std::string parent_ticker = is_testnet ? "tBCH" : "BCH";
 
-            mm2::api::enable_mode mode{
-                .rpc      = "Electrum",
-                .rpc_data = mm2::api::enable_rpc_data{.servers = get_coin_info(parent_ticker).electrum_urls.value_or(std::vector<electrum_server>{})}};
-            std::vector<mm2::api::slp_token_request> requests_slp;
-            std::vector<std::string>                 tickers{parent_ticker};
-            for (auto&& coin: coins_to_enable)
-            {
-                if (coin.ticker != parent_ticker)
-                {
-                    requests_slp.push_back(mm2::api::slp_token_request{.ticker = coin.ticker});
-                    tickers.push_back(coin.ticker);
-                }
-            }
-            t_enable_bch_with_tokens_request request{
-                .ticker                = parent_ticker,
-                .allow_slp_unsafe_conf = false,
-                .bchd_urls             = get_coin_info(parent_ticker).bchd_urls.value_or(std::vector<std::string>{}),
-                .mode                  = mode,
-                .tx_history            = true,
-                .slp_token_requests    = std::move(requests_slp)};
-            nlohmann::json out = ::mm2::api::template_request("enable_bch_with_tokens", true);
-            ::mm2::api::to_json(out, request);
-            nlohmann::json batch = nlohmann::json::array();
-            batch.push_back(out);
-            return {batch, tickers};
-        };
-
-        auto answer_functor = [this](nlohmann::json batch, std::vector<std::string> tickers)
-        {
-            auto rpc_answer_functor = [this, tickers](web::http::http_response resp) mutable
-            {
-                try
-                {
-                    auto answers                = ::mm2::api::basic_batch_answer(resp);
-                    auto bch_with_tokens_answer = ::mm2::api::rpc_process_answer_batch<t_enable_bch_with_tokens_answer>(answers[0], "enable_bch_with_tokens");
-                    if (bch_with_tokens_answer.error.has_value())
-                    {
-                        auto error = bch_with_tokens_answer.error.value();
-                        for (auto&& ticker: tickers) { this->dispatcher_.trigger<enabling_coin_failed>(ticker, error.error); }
-                        SPDLOG_ERROR("{} {}", error.error, error.error_data.dump(4));
-                    }
-                    else
-                    {
-                        auto answer_success = bch_with_tokens_answer.result.value();
-                        for (auto&& [key, value]: answer_success.bch_addresses_infos)
-                        {
-                            const bool     is_testnet    = key.find("test") != std::string::npos;
-                            std::string    parent_ticker = is_testnet ? "tBCH" : "BCH";
-                            nlohmann::json out{{"coin", parent_ticker}, {"balance", value.balances.spendable}, {"address", key}};
-                            {
-                                std::unique_lock lock(m_coin_cfg_mutex);
-                                m_coins_informations[parent_ticker].currently_enabled = true;
-                            }
-                            this->process_balance_answer(out);
-                            break;
-                        }
-
-                        for (auto&& [key, values]: answer_success.slp_addresses_infos)
-                        {
-                            for (auto&& [cur_ticker, balance]: values.balances)
-                            {
-                                nlohmann::json out{{"coin", cur_ticker}, {"balance", balance.spendable}, {"address", key}};
-                                {
-                                    std::unique_lock lock(m_coin_cfg_mutex);
-                                    m_coins_informations[cur_ticker].currently_enabled = true;
-                                }
-                                this->process_balance_answer(out);
-                            }
-                            break;
-                        }
-
-                        this->dispatcher_.trigger<coin_fully_initialized>(tickers);
-                        this->m_nb_update_required += 1;
-                    }
-                }
-                catch (const std::exception& error)
-                {
-                    SPDLOG_ERROR("exception caught in bch_enable: {}", error.what());
-                    for (auto&& ticker: tickers) { this->dispatcher_.trigger<enabling_coin_failed>(ticker, error.what()); }
-                }
-            };
-
-            auto error_rpc_functor = [this, tickers, batch](pplx::task<void> previous_task)
-            { this->handle_exception_pplx_task(previous_task, "batch_enable_coins bch electrum", batch); };
-
-            m_mm2_client.async_rpc_batch_standalone(batch).then(rpc_answer_functor).then(error_rpc_functor);
-        };
-
-        auto&& [request, coins] = request_functor();
-        // SPDLOG_INFO("{}", request.dump(4));
-        answer_functor(request, coins);
-    }
-
-    void
-    mm2_service::process_slp(std::vector<coin_config> coins_to_enable)
-    {
-        SPDLOG_INFO("process_slp");
-        auto request_functor = [coins_to_enable](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
-        {
-            t_enable_slp_request request{.ticker = coin_info.ticker};
-            nlohmann::json       out = ::mm2::api::template_request("enable_slp", true);
-            ::mm2::api::to_json(out, request);
-            nlohmann::json batch = nlohmann::json::array();
-            batch.push_back(out);
-            return {batch, {coin_info.ticker}};
-        };
-
-        auto answer_functor = [this](nlohmann::json batch, std::vector<std::string> tickers)
-        {
-            auto rpc_answer_functor = [this, tickers](web::http::http_response resp) mutable
-            {
-                try
-                {
-                    auto answers    = ::mm2::api::basic_batch_answer(resp);
-                    auto slp_answer = ::mm2::api::rpc_process_answer_batch<t_enable_slp_answer>(answers[0], "enable_slp");
-                    if (slp_answer.error.has_value())
-                    {
-                        auto error = slp_answer.error.value();
-                        this->dispatcher_.trigger<enabling_coin_failed>(tickers[0], error.error);
-                        SPDLOG_ERROR("{} {}", error.error, error.error_data.dump(4));
-                    }
-                    else
-                    {
-                        auto answer_success = slp_answer.result.value();
-
-                        for (auto&& [address, balance_infos]: answer_success.balances)
-                        {
-                            nlohmann::json out{{"coin", tickers[0]}, {"balance", balance_infos.spendable}, {"address", address}};
-                            {
-                                std::unique_lock lock(m_coin_cfg_mutex);
-                                m_coins_informations[tickers[0]].currently_enabled = true;
-                            }
-                            this->process_balance_answer(out);
-                            break;
-                        }
-                        this->dispatcher_.trigger<coin_fully_initialized>(tickers);
-                        this->m_nb_update_required += 1;
-                    }
-                }
-                catch (const std::exception& error)
-                {
-                    SPDLOG_ERROR("Exception caught: {}", error.what());
-                    this->dispatcher_.trigger<enabling_coin_failed>(tickers[0], error.what());
-                }
-            };
-
-            auto error_rpc_functor = [this, tickers, batch](pplx::task<void> previous_task)
-            { this->handle_exception_pplx_task(previous_task, "batch_enable_coins slp", batch); };
-
-            m_mm2_client.async_rpc_batch_standalone(batch).then(rpc_answer_functor).then(error_rpc_functor);
-        };
-
-        for (auto&& coin: coins_to_enable)
-        {
-            auto&& [request, coins] = request_functor(coin);
-            // SPDLOG_INFO("{} {}", request.dump(4), coins[0]);
-            answer_functor(request, coins);
-        }
-    }
 
     void
     mm2_service::process_enable_legacy(std::vector<coin_config> coins)
@@ -1204,14 +1035,7 @@ namespace atomic_dex
             atomic_dex::print_coins(coins_to_enable);
             this->process_electrum_legacy(coins_to_enable);
             break;
-        case CoinTypeGadget::SLP:
-        {
-            auto       bch_functor = [](auto&& coin_cfg) { return coin_cfg.ticker == "tBCH" || coin_cfg.ticker == "BCH"; };
-            const bool has_parent  = ranges::any_of(coins_to_enable, bch_functor);
-            atomic_dex::print_coins(coins_to_enable);
-            has_parent ? this->process_bch_with_tokens(coins_to_enable) : this->process_slp(coins_to_enable);
-            break;
-        }
+        //case CoinTypeGadget::SLP:
         case CoinTypeGadget::ERC20:
         case CoinTypeGadget::BEP20:
         case CoinTypeGadget::Matic:
@@ -2070,7 +1894,7 @@ namespace atomic_dex
         // m_system_manager.get_system<portfolio_page>().get_portfolio()->update_balance_values({copy_coin});
     }
 
-    mm2::mm2_client&
+    mm2_client&
     mm2_service::get_mm2_client()
     {
         return m_mm2_client;

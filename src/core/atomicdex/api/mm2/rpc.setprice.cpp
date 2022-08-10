@@ -19,7 +19,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/rpc.setprice.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     void
     to_json(nlohmann::json& j, const setprice_request& request)

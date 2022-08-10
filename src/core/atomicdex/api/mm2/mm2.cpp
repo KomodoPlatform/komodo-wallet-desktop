@@ -21,8 +21,6 @@
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc.best.orders.hpp"
 #include "atomicdex/api/mm2/rpc.convertaddress.hpp"
-#include "atomicdex/api/mm2/rpc.enable.bch.with.tokens.hpp"
-#include "atomicdex/api/mm2/rpc.enable.slp.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc.recover.funds.hpp"
@@ -171,7 +169,7 @@ namespace
     }
 } // namespace
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     void
     to_json(nlohmann::json& j, const send_raw_transaction_request& cfg)

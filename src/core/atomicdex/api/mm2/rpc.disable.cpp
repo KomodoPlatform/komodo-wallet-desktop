@@ -8,7 +8,7 @@
 #include "atomicdex/api/mm2/generics.hpp"
 #include "atomicdex/api/mm2/rpc.disable.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     //! Serialization
     void

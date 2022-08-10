@@ -20,7 +20,7 @@
 //! Project Headers
 #include <atomicdex/api/mm2/trading.order.contents.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     void
     from_json(const nlohmann::json& j, trading_order_contents& contents)

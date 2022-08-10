@@ -195,7 +195,7 @@ namespace atomic_dex
             }
         }
         nlohmann::json batch;
-        nlohmann::json buy_request = mm2::template_request("buy");
+        nlohmann::json buy_request = ::mm2::api::template_request("buy");
         ::mm2::api::to_json(buy_request, req);
         batch.push_back(buy_request);
         buy_request["userpass"] = "*******";

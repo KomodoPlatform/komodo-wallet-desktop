@@ -254,7 +254,7 @@ namespace atomic_dex
         {
             return false;
         }
-        mm2::order_contents& order = m_model_data.at(index.row());
+        ::mm2::api::order_contents& order = m_model_data.at(index.row());
         switch (static_cast<OrderbookRoles>(role))
         {
         case PriceRole:

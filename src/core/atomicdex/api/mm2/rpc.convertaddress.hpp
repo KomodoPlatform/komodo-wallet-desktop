@@ -6,7 +6,7 @@
 //! Deps
 #include <nlohmann/json.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct convert_address_request
     {
@@ -37,7 +37,7 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_convert_address_request        = mm2::convert_address_request;
-    using t_convert_address_answer         = mm2::convert_address_answer;
-    using t_convert_address_answer_success = mm2::convert_address_answer_success;
+    using t_convert_address_request        = ::mm2::api::convert_address_request;
+    using t_convert_address_answer         = ::mm2::api::convert_address_answer;
+    using t_convert_address_answer_success = ::mm2::api::convert_address_answer_success;
 } // namespace atomic_dex

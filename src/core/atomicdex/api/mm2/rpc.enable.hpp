@@ -22,7 +22,7 @@
 //! Project Headers
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     //! Only for erc 20
     struct enable_request

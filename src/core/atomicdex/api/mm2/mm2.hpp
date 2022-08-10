@@ -32,13 +32,13 @@
 
 namespace ag = antara::gaming;
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
     inline std::unique_ptr<web::http::client::http_client> g_qtum_proxy_http_client{
-        std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_qtum_infos_endpoint))};
+        std::make_unique<web::http::client::http_client>(FROM_STD_STR(::atomic_dex::g_qtum_infos_endpoint))};
 
     nlohmann::json basic_batch_answer(const web::http::http_response& resp);
 
@@ -242,12 +242,12 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_my_orders_answer        = mm2::my_orders_answer;
-    using t_broadcast_request       = mm2::send_raw_transaction_request;
-    using t_my_recent_swaps_answer  = mm2::my_recent_swaps_answer;
-    using t_my_recent_swaps_request = mm2::my_recent_swaps_request;
-    using t_active_swaps_request    = mm2::active_swaps_request;
-    using t_active_swaps_answer     = mm2::active_swaps_answer;
-    using t_get_trade_fee_request   = mm2::trade_fee_request;
-    using t_get_trade_fee_answer    = mm2::trade_fee_answer;
+    using t_my_orders_answer        = ::mm2::api::my_orders_answer;
+    using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
+    using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;
+    using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
+    using t_active_swaps_request    = ::mm2::api::active_swaps_request;
+    using t_active_swaps_answer     = ::mm2::api::active_swaps_answer;
+    using t_get_trade_fee_request   = ::mm2::api::trade_fee_request;
+    using t_get_trade_fee_answer    = ::mm2::api::trade_fee_answer;
 } // namespace atomic_dex

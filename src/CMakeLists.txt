@@ -120,8 +120,6 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/api/mm2/mm2.api.balance.infos.tests.cpp
         tests/api/mm2/mm2.fraction.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
-        tests/api/mm2/mm2.rpc.enable.bch.with.tokens.tests.cpp
-        tests/api/mm2/mm2.rpc.enable.slp.tests.cpp
 
         ##! CFG
         tests/config/coins.cfg.tests.cpp

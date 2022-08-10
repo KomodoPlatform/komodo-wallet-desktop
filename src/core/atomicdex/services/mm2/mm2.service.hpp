@@ -85,7 +85,7 @@ namespace atomic_dex
         //! Client
         // std::shared_ptr<t_http_client>  m_mm2_client{nullptr};
         // pplx::cancellation_token_source m_token_source;
-        mm2::mm2_client m_mm2_client;
+        mm2_client m_mm2_client;
 
         //! Process
         // reproc::process m_mm2_instance;
@@ -142,8 +142,6 @@ namespace atomic_dex
         void process_electrum_legacy(std::vector<coin_config> coins_to_enable);
         void process_enable_legacy(std::vector<coin_config> coins_to_enable);
         void process_enable_zhtlc(std::vector<coin_config> coins_to_enable);
-        void process_bch_with_tokens(std::vector<coin_config> coins_to_enable);
-        void process_slp(std::vector<coin_config> coins_to_enable);
         void batch_enable_answer_legacy(web::http::http_response resp, std::vector<std::string> tickers);
 
         //!
@@ -258,7 +256,7 @@ namespace atomic_dex
         void               add_orders_answer(t_my_orders_answer answer);
 
         //! Async API
-        mm2::mm2_client& get_mm2_client();
+        mm2_client& get_mm2_client();
         //[[nodiscard]] pplx::cancellation_token get_cancellation_token() const;
 
         //! Wallet api

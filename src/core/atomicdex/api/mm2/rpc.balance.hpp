@@ -18,7 +18,7 @@
 
 #include <nlohmann/json_fwd.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct balance_request
     {
@@ -41,6 +41,6 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_balance_request = mm2::balance_request;
-    using t_balance_answer  = mm2::balance_answer;
+    using t_balance_request = ::mm2::api::balance_request;
+    using t_balance_answer  = ::mm2::api::balance_answer;
 } // namespace atomic_dex

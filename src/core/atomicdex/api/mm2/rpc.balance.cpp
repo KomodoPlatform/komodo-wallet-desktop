@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc.balance.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     void
     to_json(nlohmann::json& j, const balance_request& cfg)

@@ -21,7 +21,7 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct order_contents
     {
@@ -65,6 +65,6 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_order_contents  = mm2::order_contents;
+    using t_order_contents  = ::mm2::api::order_contents;   
     using t_orders_contents = std::vector<t_order_contents>;
 } // namespace atomic_dex

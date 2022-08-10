@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 
 //! Implementation RPC [electrum]
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     //! Serialization
     void
