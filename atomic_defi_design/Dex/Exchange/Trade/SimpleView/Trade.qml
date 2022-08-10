@@ -42,7 +42,7 @@ ClipRRect // Trade Card
     onBestChanged: if (best) Constants.API.app.trading_pg.orderbook.refresh_best_orders()
 
     width: bestOrderSimplified.visible ? 600 : coinSelection ? 450 : 380
-    height: col.height + 15
+    height: swap_card_content.height + 15
     radius: 20
 
     Connections // Catches C++ `trading_page` class signals.
@@ -79,6 +79,7 @@ ClipRRect // Trade Card
 
         function onBetterOrderDetected(newOrder)
         {
+            if (!selectedOrder) return
             // We shoould rename SelectedOrderStatus enum to OrderbookNotification.
             if (Constants.API.app.trading_pg.selected_order_status == SelectedOrderStatus.BetterPriceAvailable)
             {
@@ -131,10 +132,9 @@ ClipRRect // Trade Card
 
     Column    // Swap Card Content
     {
-        id: col
+        id: swap_card_content
 
         width: parent.width
-        spacing: 20
         Column // Header
         {
             id: _swapCardHeader
@@ -142,6 +142,7 @@ ClipRRect // Trade Card
             width: parent.width - 20
             leftPadding: 20
             topPadding: 20
+            bottomPadding: 20
             spacing: 15
 
             DexLabel // Title
@@ -153,7 +154,7 @@ ClipRRect // Trade Card
 
             DefaultText // Description
             {
-                anchors.topMargin: 12
+                anchors.topMargin: 10
                 font.pixelSize: Constants.Style.textSizeSmall4
                 text: qsTr("Instant trading with best orders")
 
@@ -163,7 +164,7 @@ ClipRRect // Trade Card
                     visible: enabled
 
                     anchors.left: parent.right
-                    anchors.leftMargin: 100
+                    anchors.leftMargin: 80
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: -8
 
@@ -187,14 +188,14 @@ ClipRRect // Trade Card
                         delay: 500
                         timeout: 5000
                         visible: parent.hovered
-                        text: qsTr("Reset form.")
+                        text: qsTr("Reset form")
                     }
                 }
             }
 
             DexLabel // Title
             {
-                text: qsTr("You have no tradable assets.")
+                text: qsTr("You have no tradable assets")
                 font: DexTypo.head6
                 opacity: .85
                 visible: !has_coins_with_balance
@@ -413,7 +414,6 @@ ClipRRect // Trade Card
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                         anchors.rightMargin: 5
-                        color: DexTheme.foregroundColor
 
                         up: false
                     }
@@ -447,7 +447,7 @@ ClipRRect // Trade Card
                 Layout.preferredWidth: _tradeCard.width - 20
                 Layout.preferredHeight: 90
                 Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 15
+                Layout.topMargin: 10
                 radius: 20
                 color: DexTheme.tradeFieldBoxBackgroundColor
                 visible: !bestOrderSimplified.visible
@@ -593,8 +593,6 @@ ClipRRect // Trade Card
                         anchors.right: parent.right
                         anchors.rightMargin: 5
 
-                        color: DexTheme.foregroundColor
-
                         up: false
                     }
                 }
@@ -634,9 +632,10 @@ ClipRRect // Trade Card
                 }
             }
 
-            Item
+            Item // Swap Button
             {
                 Layout.topMargin: 10
+                Layout.bottomMargin: 10
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: _tradeCard.width - 30
                 Layout.preferredHeight: 50
@@ -743,132 +742,90 @@ ClipRRect // Trade Card
 
         Item
         {
+            height: 35
+            width: 150
+            visible: coinSelectorSimplified.visible
+
+            SearchField
+            {
+                id: _coinSearchField
+                height: 35
+                anchors.fill: parent
+                anchors.leftMargin: 20
+                forceFocus: true
+                textField.onTextChanged: _coinList.model.setFilterFixedString(textField.text)
+                Component.onDestruction: _coinList.model.setFilterFixedString("")
+            }
+        }
+
+        Item
+        {
             id: coinSelectorSimplified
-            width: parent.width
+            width: parent.width - 40
+            anchors.horizontalCenter: parent.horizontalCenter
             height: 300
             visible: _tradeCard.coinSelection && has_coins_with_balance
-
-            Item
-            {
-                width: parent.width
-                height: 50
-
-                Qaterial.ColorIcon
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: Qaterial.Icons.magnify
-                    color: DexTheme.foregroundColor
-                    x: 25
-                    opacity: .7
-                }
-
-                DexTextField
-                {
-                    id: _coinSearchField
-                    width: parent.width-70
-                    height: parent.height
-                    font.pixelSize: 16
-                    x: 45
-                    placeholderText: qsTr("Search")
-
-                    background: DexRectangle
-                    {
-                        border.width: 0
-                        color: 'transparent'
-                    }
-
-                    onTextChanged:
-                    {
-                      _coinList.model.setFilterFixedString(text)
-                    }
-                }
-            }
-
-            Connections {
-                target: _tradeCard
-                function onCoinSelectionChanged() {
-                    _coinSearchField.text = ""
-                }
-            }
 
             SubCoinSelector
             {
                 id: _coinList
-
+                anchors.fill: parent
+                anchors.topMargin: 10
                 onTickerSelected:
                 {
                     _tradeCard.selectedTicker = ticker
                     _tradeCard.coinSelection = false
                     _fromValue.forceActiveFocus()
                 }
+            }
 
+            Connections {
+                target: _tradeCard
+                function onCoinSelectionChanged() {
+                    _coinSearchField.textField.text = ""
+                }
+            }
+        }
+
+        Item
+        {
+            height: 45
+            width: 150
+            visible: bestOrderSimplified.visible && (_bestOrderList.count > 0 || _bestOrderSearchField.textField.text != "")
+
+            SearchField
+            {
+                id: _bestOrderSearchField
+                anchors.topMargin: 10
+                height: 35
                 anchors.fill: parent
-                anchors.rightMargin: 10
                 anchors.leftMargin: 20
-                anchors.bottomMargin: 10
-                anchors.topMargin: 50
+                forceFocus: true
+                textField.onTextChanged: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(textField.text)
+                Component.onDestruction: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
             }
         }
 
         Item
         {
             id: bestOrderSimplified
-            width: parent.width
+            width: parent.width - 40
+            anchors.horizontalCenter: parent.horizontalCenter
             height: 300
             visible: _tradeCard.best && has_coins_with_balance
-
-            Item
-            {
-                width: parent.width
-                height: 50
-
-                Qaterial.ColorIcon
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: Qaterial.Icons.magnify
-                    x: 25
-                    opacity: .7
-                    color: Dex.CurrentTheme.textPlaceholderColor
-                }
-
-                DexTextField
-                {
-                    id: _bestOrderSearchField
-                    width: parent.width-70
-                    height: parent.height
-                    font.pixelSize: 16
-                    x: 45
-                    placeholderText: qsTr("Search")
-
-                    background: DexRectangle
-                    {
-                        border.width: 0
-                        color: 'transparent'
-                    }
-
-                    onTextChanged:
-                    {
-                        Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(text)
-                    }
-                }
-            }
-
-            Connections {
-                target: _tradeCard
-                function onBestChanged() {
-                    _bestOrderSearchField.text = ""
-                }
-            }
 
             SubBestOrder
             {
                 id: _bestOrderList
                 tradeCard: _tradeCard
+                anchors.fill: parent
+                anchors.topMargin: 10
+                visible: _tradeCard.width == 600
 
                 onSelectedOrderChanged:
                 {
                     _tradeCard.selectedOrder = selectedOrder
-                    _bestOrderSearchField.text = ""
+                    _bestOrderSearchField.textField.text = ""
                     _fromValue.forceActiveFocus()
                 }
 
@@ -879,13 +836,13 @@ ClipRRect // Trade Card
                         _tradeCard.best = false
                     }
                 }
+            }
 
-                anchors.fill: parent
-                anchors.rightMargin: 10
-                anchors.leftMargin: 20
-                anchors.bottomMargin: 10
-                anchors.topMargin: 50
-                visible: _tradeCard.width == 600
+            Connections {
+                target: _tradeCard
+                function onBestChanged() {
+                    _bestOrderSearchField.textField.text = ""
+                }
             }
 
             DefaultBusyIndicator
@@ -915,9 +872,10 @@ ClipRRect // Trade Card
             }
         }
 
-        Item // Swap Info - Details
+        Item // Fees Info - Details
         {
             id: _feesCard
+            anchors.topMargin: 10
             anchors.horizontalCenter: parent.horizontalCenter
             width: 350
             height: 50

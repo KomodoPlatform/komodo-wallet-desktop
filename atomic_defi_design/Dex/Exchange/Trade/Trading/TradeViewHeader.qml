@@ -3,124 +3,142 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 
-import Qaterial 1.0 as Qaterial
 import Qt.labs.settings 1.0
+
+import Qaterial 1.0 as Qaterial
 
 import AtomicDEX.MarketMode 1.0
 import AtomicDEX.TradingError 1.0
 import AtomicDEX.TradingMode 1.0
-import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import "../../../Components"
+import "../../../Constants"
 
+// Simple/Pro toggle group
 Item
 {
-    width: parent.width - 5
-    anchors.horizontalCenter: parent.horizontalCenter
+    // property var proViewChart
+    property var proViewTickerSelectors
+    property var proViewTrInfo
+    property var proViewOrderBook
+    property var proViewBestOrders
+    property var proViewPlaceOrderForm
 
-    ColumnLayout
+    Item
     {
-        anchors.fill: parent
-        spacing: 50
+        width: 350
+        height: parent.height
 
-        // Simple/Pro toggle group
-        Item
+        // Simple/Pro select cursor
+        Rectangle
         {
-            Layout.leftMargin: 30
-            Layout.preferredWidth: 120
+            id: cursorRect
+            width: _simpleLabel.width + 28
+            height: _simpleLabel.height + 14
+            radius: 16
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? _simpleLabel.horizontalCenter : _proLabel.horizontalCenter
+            color: Dex.CurrentTheme.tabSelectedColor
+        }
 
-            // Simple/Pro select cursor
-            Rectangle
-            {
-                width: 84
-                height: 32
-                radius: 18
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? _simpleLabel.horizontalCenter : _proLabel.horizontalCenter
-                color: Dex.CurrentTheme.tabSelectedColor
-            }
+        DexLabel
+        {
+            id: _simpleLabel
+            text: "Simple"
+            color: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 14
+            font.weight: Font.Bold
 
-            DexLabel
+            DexMouseArea
             {
-                id: _simpleLabel
-                text: "Simple"
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                font.bold: true
-                DexMouseArea
-                {
-                    id: simple_area
-                    hoverEnabled: true
-                    anchors.fill: parent
-                    onClicked: API.app.trading_pg.current_trading_mode = TradingMode.Simple
-                }
-            }
-
-            DexLabel
-            {
-                id: _proLabel
-                text: "Pro"
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                font.bold: true
-                DexMouseArea
-                {
-                    id: pro_area
-                    hoverEnabled: true
-                    anchors.fill: parent
-                    onClicked: API.app.trading_pg.current_trading_mode = TradingMode.Pro
-                }
+                id: simple_area
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: API.app.trading_pg.current_trading_mode = TradingMode.Simple
             }
         }
 
-        Item
+        DexLabel
         {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        } 
+            id: _proLabel
+            text: "Pro"
+            color: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+            anchors.left: _simpleLabel.right
+            anchors.leftMargin: 10 + cursorRect.width / 2
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 14
+            font.weight: Font.Bold
+
+            DexMouseArea
+            {
+                id: pro_area
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: API.app.trading_pg.current_trading_mode = TradingMode.Pro
+            }
+        }
     }
 
-    // Options menu present in pro mode.
-    Rectangle
+    Qaterial.OutlineButton
     {
+        visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
+
         anchors.right: parent.right
-        y: -10
-        width: 40
-        height: 25
-        enabled: API.app.trading_pg.current_trading_mode == TradingMode.Pro
-        visible: enabled
-        radius: height / 2
-        color: !enabled ? 'transparent' : cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
-                   Dex.CurrentTheme.floatingBackgroundColor : Dex.CurrentTheme.accentColor
 
-        Behavior on color { ColorAnimation { duration: 150 } }
+        outlined: false
+        highlighted: false
 
-        Qaterial.ColorIcon
+        foregroundColor: Dex.CurrentTheme.foregroundColor
+        icon.source: Qaterial.Icons.cog
+        text: qsTr("Pro View Settings")
+        font: DexTypo.subtitle1
+
+        onClicked:
         {
-            source: Qaterial.Icons.cog
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            iconSize: 15
-            color: !parent.enabled ? 'transparent' : cog_area.containsMouse || _viewLoader.item.dexConfig.visible ?
-                       Dex.CurrentTheme.foregroundColor2 : Dex.CurrentTheme.foregroundColor
+            proViewCfgMenu.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
         }
 
-        DexMouseArea
+        DexPopup
         {
-            id: cog_area
-            hoverEnabled: true
-            anchors.fill: parent
-            onClicked: {
-                if (API.app.trading_pg.current_trading_mode == TradingMode.Pro)
+            id: proViewCfgMenu
+
+            backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+
+            contentItem: Item
+            {
+                implicitWidth: 200
+                implicitHeight: 240
+
+                Column
                 {
-                    if (_viewLoader.item.dexConfig.visible)
-                    {
-                        _viewLoader.item.dexConfig.close()
-                    }
-                    else
-                    {
-                        _viewLoader.item.dexConfig.openAt(mapToItem(Overlay.overlay, width / 2, height), Item.Top)
-                    }
+                    anchors.fill: parent
+                    padding: 10
+                    spacing: 8
+
+                    DefaultText { text: qsTr("Display Settings"); font: DexTypo.body2 }
+
+                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
+
+                    CheckEye { text: qsTr("Ticker Selectors"); target: proViewTickerSelectors }
+
+                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
+
+                    CheckEye { text: qsTr("Trading Information"); target: proViewTrInfo }
+
+                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
+
+                    CheckEye { text: qsTr("Order Book"); target: proViewOrderBook }
+
+                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
+
+                    CheckEye { text: qsTr("Best Orders"); target: proViewBestOrders }
+
+                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
+
+                    CheckEye { text: qsTr("Place Order"); target: proViewPlaceOrderForm }
                 }
             }
         }

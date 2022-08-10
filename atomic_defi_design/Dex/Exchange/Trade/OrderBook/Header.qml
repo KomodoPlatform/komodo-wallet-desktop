@@ -4,46 +4,52 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
-import App 1.0
+import "../../../Constants"
+import Dex.Components 1.0 as Dex
 
-import "../../../Components"
-
-Item
+Row
 {
-    property bool is_ask: false
-    RowLayout
+    width: parent.width
+    height: 24
+    spacing: 0
+
+    Dex.Text
     {
-        anchors.fill: parent
-        DefaultText
-        {
-            Layout.preferredWidth: (parent.width / 100) * 33
-            text: is_ask ? qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")" :
-                           qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
-            font.family: DexTypo.fontFamily
-            font.pixelSize: 12
-            font.bold: true
-            font.weight: Font.Black
-            horizontalAlignment: Text.AlignRight
-        }
-        DefaultText
-        {
-            Layout.preferredWidth: (parent.width / 100) * 30
-            text: qsTr("Quantity") + " (" +  atomic_qt_utilities.retrieve_main_ticker(left_ticker) + ")"
-            font.family: DexTypo.fontFamily
-            font.pixelSize: 12
-            font.bold: true
-            font.weight: Font.Black
-            horizontalAlignment: Text.AlignRight
-        }
-        DefaultText
-        {
-            Layout.preferredWidth: (parent.width / 100) * 30
-            text: qsTr("Total") + " (" +  atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
-            font.family: DexTypo.fontFamily
-            font.pixelSize: 12
-            font.bold: true
-            font.weight: Font.Black
-            horizontalAlignment: Text.AlignRight
-        }
+        width: parent.width * 0.31
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+        text: qsTr("Price") + " (" + atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
+        font.family: DexTypo.fontFamily
+        font.pixelSize: 12
+        font.bold: true
+        font.weight: Font.Black
+    }
+
+    Item { width: parent.width * 0.01 }
+
+    Dex.Text
+    {
+        width: parent.width * 0.37
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+        text: qsTr("Quantity") + " (" +  atomic_qt_utilities.retrieve_main_ticker(left_ticker) + ")"
+        font.family: DexTypo.fontFamily
+        font.pixelSize: 12
+        font.bold: true
+        font.weight: Font.Black
+    }
+
+    Item { width: parent.width * 0.01 }
+
+    Dex.Text
+    {
+        width: parent.width * 0.30
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+        text: qsTr("Total") + " (" +  atomic_qt_utilities.retrieve_main_ticker(right_ticker) + ")"
+        font.family: DexTypo.fontFamily
+        font.pixelSize: 12
+        font.bold: true
+        font.weight: Font.Black
     }
 }

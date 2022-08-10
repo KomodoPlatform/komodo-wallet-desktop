@@ -24,6 +24,12 @@ namespace mm2::api
             j["gas_limit"] = cfg.gas_limit.value_or(40);
             j["gas_price"] = std::stoi(cfg.gas_price.value());
         }
+        else if (cfg.type == "otherGas")
+        {
+            j["type"] = "EthGas";
+            j["gas"]       = cfg.gas_limit.value_or(55000);
+            j["gas_price"] = std::stoi(cfg.gas_price.value());
+        }
         else
         {
             j["amount"] = cfg.amount.value();

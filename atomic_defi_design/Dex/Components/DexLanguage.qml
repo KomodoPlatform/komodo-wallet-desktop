@@ -8,34 +8,52 @@ import QtGraphicalEffects 1.0
 
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
-RoundComboBox
+DexComboBox
 {
     id: control
     model: API.app.settings_pg.get_available_langs()
+
+    property color highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+
+
     displayText: API.app.settings_pg.lang
     leftPadding: 5
+
     delegate: ItemDelegate
     {
+        id: combo_item
         width: control.width
         height: 30
         highlighted: control.highlightedIndex === index
-        RowLayout
+
+        contentItem: RowLayout
         {
             anchors.fill: parent
             spacing: -13
-            DefaultImage
+
+            DexImage
             {
                 id: image
                 Layout.preferredHeight: 14
                 source: General.image_path + "lang/" + modelData + ".png"
             }
+
             DexLabel
             {
                 text: modelData
 
             }
         }
+
+        // Dropdown Item background
+        background: DexRectangle {
+            anchors.fill: combo_item
+            color: combo_item.highlighted ? highlightedBackgroundColor : mainBackgroundColor
+        }
+
         onClicked:
         {
             if (modelData !== API.app.settings_pg.lang)
@@ -44,8 +62,10 @@ RoundComboBox
             }
         }
     }
+
     contentItem: Text
     {
+        anchors.fill: parent
         leftPadding: 0
         rightPadding: control.indicator.width + control.spacing
 
@@ -54,7 +74,8 @@ RoundComboBox
         color: control.pressed ? "#17a81a" : "#21be2b"
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
-        DefaultImage
+
+        DexImage
         {
             id: image
             height: 12

@@ -234,6 +234,24 @@ namespace atomic_dex
         }
     }
 
+    bool
+    atomic_dex::wallet_page::is_tx_fetching_failed() const
+    {
+        return m_tx_fetching_failed;
+    }
+
+    void
+    atomic_dex::wallet_page::set_tx_fetching_failed(bool status)
+    {
+        if (m_tx_fetching_failed != status)
+        {
+            m_tx_fetching_failed = status;
+            emit txFetchingOutcomeChanged();
+        }
+    }
+
+
+
     QVariant
     wallet_page::get_ticker_infos() const
     {
@@ -274,6 +292,8 @@ namespace atomic_dex
             obj["type"]                               = QString::fromStdString(coin_info.type);
             obj["segwit_supported"]                   = coin_info.segwit;
             obj["is_segwit_on"]                       = coin_info.is_segwit_on;
+            obj["has_parent_fees_ticker"]             = coin_info.has_parent_fees_ticker;
+            obj["fees_ticker"]                        = QString::fromStdString(coin_info.fees_ticker);
             obj["is_claimable"]                       = coin_info.is_claimable;
             obj["address"]                            = QString::fromStdString(mm2_system.address(ticker, ec));
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
@@ -353,7 +373,7 @@ namespace atomic_dex
                     reason                     = tr("Invalid checksum.");
                     json_result["convertible"] = false;
                 }
-                else if (reason.contains("has invalid prefixes"))
+                else if (reason.contains("has invalid prefixes") or reason.contains("Expected a valid P2PKH or P2SH prefix"))
                 {
                     reason = tr("%1 address has invalid prefixes.").arg(json_result["ticker"].toString());
                 }
@@ -495,6 +515,10 @@ namespace atomic_dex
             else if (coin_info.coin_type == CoinType::QRC20)
             {
                 withdraw_req.fees->type = "Qrc20Gas";
+            }
+            else if (coin_info.has_parent_fees_ticker)
+            {
+                withdraw_req.fees->type = "otherGas";
             }
         }
         nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
@@ -785,6 +809,14 @@ namespace atomic_dex
                 // SPDLOG_DEBUG("updating / insert tx");
                 m_transactions_mdl->update_or_insert_transactions(transactions);
             }
+            if (ec)
+            {
+                this->set_tx_fetching_failed(true);
+            }
+            else
+            {
+                this->set_tx_fetching_failed(false);
+            }
         }
         else
         {
@@ -807,7 +839,7 @@ namespace atomic_dex
     void
     wallet_page::validate_address(QString address, QString ticker)
     {
-        SPDLOG_INFO("validate_address: {} - ticker: {}", address.toStdString(), ticker.toStdString());
+        // SPDLOG_INFO("validate_address: {} - ticker: {}", address.toStdString(), ticker.toStdString());
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
@@ -821,7 +853,7 @@ namespace atomic_dex
             auto answer_functor = [this, ticker](web::http::http_response resp)
             {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
-                SPDLOG_DEBUG("resp validateaddress: {}", body);
+                // SPDLOG_DEBUG("resp validateaddress: {}", body);
                 nlohmann::json j_out = nlohmann::json::object();
                 j_out["ticker"]      = ticker.toStdString();
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))

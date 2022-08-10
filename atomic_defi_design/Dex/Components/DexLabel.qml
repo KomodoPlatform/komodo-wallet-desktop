@@ -10,6 +10,7 @@ Text
 {
     property string text_value
     property bool   privacy: false
+    property bool   monospace: false
 
     Behavior on color
     {
@@ -19,12 +20,7 @@ Text
         }
     }
 
-    font: Qt.font
-    ({
-        pixelSize: 14,
-        letterSpacing: 0.25,
-        weight: Font.Normal
-    })
+    font: monospace ? Dex.DexTypo.monoSmall : Dex.DexTypo.body2
 
     color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
 

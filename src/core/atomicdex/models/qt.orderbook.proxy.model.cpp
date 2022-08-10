@@ -168,12 +168,12 @@ namespace atomic_dex
                 const auto  coin_info  = this->m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(ticker);
                 t_float_50  limit("10000");
                 bool        is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
-
+                const auto  volume = provider.get_total_volume(utils::retrieve_main_ticker(ticker));
                 if (coin_info.ticker.empty() || coin_info.wallet_only) //< this means it's not present in our cfg - skipping
                 {
                     return false;
                 }
-                if (is_cex_id_available && (rates > 100 || fiat_price <= 0 || ((safe_float(provider.get_total_volume(ticker)) < limit) && coin_info.coin_type != CoinType::SmartChain)))
+                if (is_cex_id_available && (rates > 100 || fiat_price <= 0 || ((safe_float(volume) < limit) && coin_info.coin_type != CoinType::SmartChain)))
                 {
                     return false;
                 }

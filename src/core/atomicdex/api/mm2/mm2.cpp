@@ -285,7 +285,7 @@ namespace mm2::api
                 .base_amount    = action == "Sell" ? base_amount : rel_amount,
                 .rel_amount     = action == "Sell" ? rel_amount : base_amount,
                 .order_type     = is_maker ? "maker" : "taker",
-                .human_date     = QString::fromStdString(atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T")),
+                .human_date     = QString::fromStdString(atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000, "%F %T")),
                 .unix_timestamp = static_cast<unsigned long long>(time_key),
                 .order_id       = QString::fromStdString(key),
                 .order_status   = "matching",
@@ -428,7 +428,7 @@ namespace mm2::api
         {
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
-            std::string           human_date = atomic_dex::utils::to_human_date<std::chrono::seconds>(timestamp / 1000, "%F    %H:%M:%S");
+            std::string           human_date = atomic_dex::utils::to_human_date<std::chrono::seconds>(timestamp / 1000, "%F %H:%M:%S");
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
             auto rate_bundler =
@@ -473,6 +473,15 @@ namespace mm2::api
                     jf_evt["time_diff"]                           = res;
                     event_timestamp_registry["Started"]           = ts2; // Started finished at this time
                     total_time_in_ms += res;
+
+                    if (jf_evt.at("data").contains("taker_payment_lock"))
+                    {
+                        contents.paymentLock                     = jf_evt.at("data").at("taker_payment_lock").get<unsigned long long>() * 1000;
+                    }
+                    else if (jf_evt.at("data").contains("maker_payment_lock"))
+                    {
+                        contents.paymentLock                     = jf_evt.at("data").at("maker_payment_lock").get<unsigned long long>() * 1000;
+                    }
                 }
 
                 if (idx > 0)
@@ -584,7 +593,7 @@ namespace mm2::api
         nlohmann::json json_data = template_request("version");
         try
         {
-            auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("http://127.0.0.1:7783"));
+            auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(atomic_dex::g_dex_rpc));
             web::http::http_request request;
             request.set_method(web::http::methods::POST);
             request.set_body(json_data.dump());

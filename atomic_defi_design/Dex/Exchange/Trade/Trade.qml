@@ -21,9 +21,6 @@ Item
     id: exchange_trade
 
     readonly property string total_amount: API.app.trading_pg.total_amount
-    property bool orderSelected: false
-    property bool isUltraLarge: true // width > 1400
-    property bool isBigScreen: width > 1400
 
     Component.onCompleted:
     {
@@ -40,17 +37,6 @@ Item
     }
 
     Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
-
-    onIsUltraLargeChanged:
-    {
-        if (isUltraLarge) {
-            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(
-                        0, Qt.DescendingOrder)
-        } else {
-            API.app.trading_pg.orderbook.asks.proxy_mdl.qml_sort(
-                        0, Qt.AscendingOrder)
-        }
-    }
 
     readonly property bool block_everything: swap_cooldown.running
                                              || fetching_multi_ticker_fees_busy
@@ -122,7 +108,7 @@ Item
         swap_cooldown.restart()
 
         if (API.app.trading_pg.set_pair(is_left_side, changed_ticker))
-            pairChanged(base_ticker, rel_ticker)
+            app.pairChanged(base_ticker, rel_ticker)
     }
 
     function trade(options, default_config) {
@@ -157,17 +143,46 @@ Item
         orderPlaced()
     }
 
+    signal orderSelected()
     signal orderPlaced()
 
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
-    Loader
+    Column
     {
-        id: _viewLoader
         anchors.fill: parent
-        source: API.app.trading_pg.current_trading_mode == TradingMode.Pro ? "ProView.qml" : "SimpleView/Main.qml"
-    }
+        spacing: 15
+        anchors.leftMargin: 20
+        anchors.rightMargin: 20
 
-    TradeViewHeader { }
+        TradeViewHeader
+        {
+            id: header
+            width: parent.width
+            height: parent.height * 0.06
+
+            proViewTickerSelectors: proView.tickerSelectors
+            proViewTrInfo: proView.trInfo
+            proViewOrderBook: proView.orderBook
+            proViewBestOrders: proView.bestOrders
+            proViewPlaceOrderForm: proView.placeOrderForm
+        }
+
+        ProView
+        {
+            id: proView
+            width: parent.width
+            height: parent.height * 0.90
+            visible: API.app.trading_pg.current_trading_mode == TradingMode.Pro
+            enabled: visible
+        }
+
+        SimpleView.Main
+        {
+            anchors.horizontalCenter: parent.horizontalCenter
+            visible: API.app.trading_pg.current_trading_mode == TradingMode.Simple
+            enabled: visible
+        }
+    }
 }

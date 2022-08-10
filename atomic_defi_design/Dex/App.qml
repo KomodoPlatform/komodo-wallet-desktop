@@ -23,28 +23,24 @@ DexRectangle
     // This enumeration represents every possible visual state (commonly named "screen") of the application
     enum ScreenType
     {
-        Startup, // Wallets selection, login, create wallet, import wallet, etc.
-        Dashboard // After logged to a wallet.
+        Startup,    // Wallets selection, login, create wallet, import wallet, etc.
+        Dashboard   // After logged to a wallet.
     }
 
     property string currentWalletName: API.app.wallet_mgr.wallet_default_name
     property bool debug: debug_bar
-    property
-    var notification_modal: notifications_modal
-    property
-    var notifications_list: _currentPage === App.ScreenType.Dashboard ? loader.item.notifications_list : []
+    property var notification_modal: notifications_modal
+    property var notifications_list: _currentPage === App.ScreenType.Dashboard ? loader.item.notifications_list : []
     property bool segwit_on: false
 
-    property
-    var _currentPage: API.app.wallet_mgr.log_status() ? App.ScreenType.Dashboard : App.ScreenType.Startup
-    property
-    var _availablePages: [_startup, dashboard]
+    property var    _currentPage: API.app.wallet_mgr.log_status() ? App.ScreenType.Dashboard : App.ScreenType.Startup
+    property var    _availablePages: [_startup, dashboard]
+    property alias  pageLoader: loader
 
     property alias globalGradient: globalGradient
 
     // Preload Chart
     signal pairChanged(string base, string rel)
-
 
     function onDisconnect()
     {
@@ -146,7 +142,7 @@ DexRectangle
     // Update Modal
     NewUpdateModal
     {
-        id: new_update_modal
+        id: newUpdateModal
         visible: false
     }
 
@@ -422,15 +418,10 @@ DexRectangle
         return dialog
     }
 
-    function showText(data)
-    {
-        return showDialog(data);
-    }
-
     function getText(data)
     {
         data['getText'] = true;
-        return showText(data);
+        return showDialog(data);
     }
 
     Component.onCompleted: 

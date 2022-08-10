@@ -4,20 +4,39 @@ import QtQuick.Controls 2.15
 
 import Qaterial 1.0 as Qaterial
 
-import App 1.0
+import "../../../Constants"
+import "../../../Components"
+import App 1.0 as App
+import AtomicDEX.MarketMode 1.0
+import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 
-
-Item {
+Widget
+{
     id: _control
+    title: qsTr("Best Orders")
+    margins: 20
+    spacing: 20
+
     Header {}
 
-    ListView {
-        id: list
-        anchors.topMargin: 40
-        anchors.fill: parent
+    Dex.ListView
+    {
+        id: _listView
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        spacing: 6
+
         model: API.app.trading_pg.orderbook.best_orders.proxy_mdl
+
         clip: true
         reuseItems: true
-        delegate: ListDelegate  {}
+        scrollbar_visible: false
+
+        delegate: ListDelegate
+        {
+            width: _listView.width
+            height: 30
+        }
     }
 }
