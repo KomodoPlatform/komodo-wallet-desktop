@@ -29,13 +29,13 @@ namespace atomic_dex::mm2
         static constexpr auto endpoint  = "enable_slp";
         static constexpr bool is_v2     = true;
         
-        struct excpected_request_type
+        struct expected_request_type
         {
             std::string                                             ticker;
             struct { std::optional<int> required_confirmations; }   activation_params;
         };
         
-        struct excpected_answer_type
+        struct expected_result_type
         {
             struct balance_info { std::string spendable; std::string unspendable; };
 
@@ -45,17 +45,17 @@ namespace atomic_dex::mm2
             std::unordered_map<std::string, balance_info>   balances;
         };
 
-        using excpected_error_type = rpc_basic_error_type;
+        using expected_error_type = rpc_basic_error_type;
 
-        excpected_request_type                  request;
-        std::optional<excpected_answer_type>    result;
-        std::optional<excpected_error_type>     error;
+        expected_request_type                  request;
+        std::optional<expected_result_type>    result;
+        std::optional<expected_error_type>     error;
     };
 
-    using enable_slp_rpc_request = enable_slp_rpc::expected_request_type;
-    using enable_slp_rpc_answer = enable_slp_rpc::expected_answer_type;
-    using enable_slp_rpc_error = enable_slp_rpc::excpected_error_type;
+    using enable_slp_rpc_request    = enable_slp_rpc::expected_request_type;
+    using enable_slp_rpc_result     = enable_slp_rpc::expected_result_type;
+    using enable_slp_rpc_error      = enable_slp_rpc::expected_error_type;
 
-    inline void from_json(const nlohmann::json& j, enable_slp_rpc_answer& in);
-    inline void from_json(const nlohmann::json& j, enable_slp_rpc_answer::balance_info& in);
+    inline void from_json(const nlohmann::json& j, enable_slp_rpc_result& in);
+    inline void from_json(const nlohmann::json& j, enable_slp_rpc_result::balance_info& in);
 }

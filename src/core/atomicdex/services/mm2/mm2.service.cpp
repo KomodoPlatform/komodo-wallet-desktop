@@ -301,14 +301,14 @@ namespace atomic_dex
         if (m_mm2_running)
         {
             SPDLOG_INFO("preparing mm2 stop batch request");
-            nlohmann::json stop_request = ::mm2::api::template_request("stop");
+            nlohmann::json stop_request = mm2::template_request("stop");
             nlohmann::json batch        = nlohmann::json::array();
             batch.push_back(stop_request);
             SPDLOG_INFO("processing mm2 stop batch request");
             pplx::task<web::http::http_response> resp_task = m_mm2_client.async_rpc_batch_standalone(batch);
             web::http::http_response             resp      = resp_task.get();
             SPDLOG_INFO("mm2 stop batch answer received");
-            auto answers = ::mm2::api::basic_batch_answer(resp);
+            auto answers = mm2::basic_batch_answer(resp);
             if (answers[0].contains("result"))
             {
                 mm2_stopped = answers[0].at("result").get<std::string>() == "success";
@@ -482,7 +482,7 @@ namespace atomic_dex
                 {
                     try
                     {
-                        auto answers = ::mm2::api::basic_batch_answer(resp);
+                        auto answers = mm2::basic_batch_answer(resp);
                         if (not answers.contains("error"))
                         {
                             for (auto&& answer: answers)
@@ -533,8 +533,8 @@ namespace atomic_dex
         if (!coin_info.is_erc_family)
         {
             t_tx_history_request request{.coin = ticker, .limit = 5000};
-            nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
-            ::mm2::api::to_json(j, request);
+            nlohmann::json       j = mm2::template_request("my_tx_history");
+            mm2::to_json(j, request);
             batch_array.push_back(j);
         }
         else
@@ -554,8 +554,8 @@ namespace atomic_dex
                     }
                 }
                 t_balance_request balance_request{.coin = coin.ticker};
-                nlohmann::json    j = ::mm2::api::template_request("my_balance");
-                ::mm2::api::to_json(j, balance_request);
+                nlohmann::json    j = mm2::template_request("my_balance");
+                mm2::to_json(j, balance_request);
                 batch_array.push_back(j);
                 tickers_idx.push_back(coin.ticker);
             }
@@ -601,13 +601,13 @@ namespace atomic_dex
                 request.address_format                   = nlohmann::json::object();
                 request.address_format.value()["format"] = "segwit";
             }
-            nlohmann::json j = ::mm2::api::template_request("electrum");
-            ::mm2::api::to_json(j, request);
+            nlohmann::json j = mm2::template_request("electrum");
+            mm2::to_json(j, request);
             btc_kmd_batch.push_back(j);
             coin_info = get_coin_info(g_primary_dex_coin);
             t_electrum_request request_kmd{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
-            j = ::mm2::api::template_request("electrum");
-            ::mm2::api::to_json(j, request_kmd);
+            j = mm2::template_request("electrum");
+            mm2::to_json(j, request_kmd);
             btc_kmd_batch.push_back(j);
         }
 
@@ -640,8 +640,8 @@ namespace atomic_dex
                     request.address_format                   = nlohmann::json::object();
                     request.address_format.value()["format"] = "segwit";
                 }
-                nlohmann::json j = ::mm2::api::template_request("electrum");
-                ::mm2::api::to_json(j, request);
+                nlohmann::json j = mm2::template_request("electrum");
+                mm2::to_json(j, request);
                 batch_array.push_back(j);
             }
             else
@@ -652,8 +652,8 @@ namespace atomic_dex
                     .coin_type       = coin_info.coin_type,
                     .is_testnet      = coin_info.is_testnet.value_or(false),
                     .with_tx_history = false};
-                nlohmann::json j = ::mm2::api::template_request("enable");
-                ::mm2::api::to_json(j, request);
+                nlohmann::json j = mm2::template_request("enable");
+                mm2::to_json(j, request);
                 // SPDLOG_INFO("enable request: {}", j.dump(4));
                 batch_array.push_back(j);
             }
@@ -680,7 +680,7 @@ namespace atomic_dex
                         try
                         {
                             SPDLOG_DEBUG("Enabling coin finished");
-                            auto answers = ::mm2::api::basic_batch_answer(resp);
+                            auto answers = mm2::basic_batch_answer(resp);
                             SPDLOG_DEBUG("Enabling coin parsed");
 
                             if (answers.count("error") == 0)
@@ -810,16 +810,16 @@ namespace atomic_dex
 
         auto generate_req = [&batch](std::string request_name, auto request)
         {
-            nlohmann::json current_request = ::mm2::api::template_request(std::move(request_name));
-            ::mm2::api::to_json(current_request, request);
+            nlohmann::json current_request = mm2::template_request(std::move(request_name));
+            mm2::to_json(current_request, request);
             batch.push_back(current_request);
         };
 
         generate_req("orderbook", t_orderbook_request{.base = base, .rel = rel});
         if (is_a_reset)
         {
-            generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = base});
-            generate_req("max_taker_vol", ::mm2::api::max_taker_vol_request{.coin = rel});
+            generate_req("max_taker_vol", mm2::max_taker_vol_request{.coin = base});
+            generate_req("max_taker_vol", mm2::max_taker_vol_request{.coin = rel});
             generate_req("min_trading_vol", t_min_volume_request{.coin = base});
             generate_req("min_trading_vol", t_min_volume_request{.coin = rel});
         }
@@ -839,14 +839,14 @@ namespace atomic_dex
         auto answer_functor = [this, is_a_reset](web::http::http_response resp)
         {
             auto&& [base, rel] = m_synchronized_ticker_pair.get();
-            auto answer        = ::mm2::api::basic_batch_answer(resp);
+            auto answer        = mm2::basic_batch_answer(resp);
             if (answer.is_array())
             {
-                auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
+                auto orderbook_answer = mm2::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
 
                 if (is_a_reset)
                 {
-                    auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
+                    auto base_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[1], "max_taker_vol");
                     if (base_max_taker_vol_answer.rpc_result_code == 200)
                     {
                         if (base == base_max_taker_vol_answer.result->coin)
@@ -858,7 +858,7 @@ namespace atomic_dex
                         // SPDLOG_INFO("max_taker_vol: {}", answer[1].dump(4));
                     }
 
-                    auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
+                    auto rel_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[2], "max_taker_vol");
                     if (rel_max_taker_vol_answer.rpc_result_code == 200)
                     {
                         if (rel == rel_max_taker_vol_answer.result->coin)
@@ -869,13 +869,13 @@ namespace atomic_dex
                         // m_balance_factor; this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
                     }
 
-                    auto base_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
+                    auto base_min_taker_vol_answer = mm2::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
                     if (base_min_taker_vol_answer.rpc_result_code == 200)
                     {
                         m_synchronized_min_taker_vol->first = base_min_taker_vol_answer.result.value();
                     }
 
-                    auto rel_min_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<t_min_volume_answer>(answer[4], "min_trading_vol");
+                    auto rel_min_taker_vol_answer = mm2::rpc_process_answer_batch<t_min_volume_answer>(answer[4], "min_trading_vol");
                     if (rel_min_taker_vol_answer.rpc_result_code == 200)
                     {
                         m_synchronized_min_taker_vol->second = rel_min_taker_vol_answer.result.value();
@@ -922,14 +922,14 @@ namespace atomic_dex
             }
         }
         t_balance_request balance_request{.coin = cfg_infos.ticker};
-        nlohmann::json    j = ::mm2::api::template_request("my_balance");
-        ::mm2::api::to_json(j, balance_request);
+        nlohmann::json    j = mm2::template_request("my_balance");
+        mm2::to_json(j, balance_request);
         batch_array.push_back(j);
         auto answer_functor = [this](web::http::http_response resp)
         {
             try
             {
-                auto answers = ::mm2::api::basic_batch_answer(resp);
+                auto answers = mm2::basic_batch_answer(resp);
                 if (!answers.contains("error") && !answers[0].contains("error"))
                 {
                     this->process_balance_answer(answers[0]);
@@ -971,8 +971,8 @@ namespace atomic_dex
         this->dispatcher_.trigger<coin_cfg_parsed>(this->retrieve_coins_informations());
         this->dispatcher_.trigger<force_update_providers>();
         mm2_config cfg{.passphrase = std::move(passphrase), .rpc_password = atomic_dex::gen_random_password()};
-        ::mm2::api::set_system_manager(m_system_manager);
-        ::mm2::api::set_rpc_password(cfg.rpc_password);
+        mm2::set_system_manager(m_system_manager);
+        mm2::set_rpc_password(cfg.rpc_password);
         json       json_cfg;
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
@@ -1006,7 +1006,7 @@ namespace atomic_dex
             {
                 // std::this_thread::
                 using namespace std::chrono_literals;
-                auto               check_mm2_alive = []() { return ::mm2::api::rpc_version() != "error occured during rpc_version"; };
+                auto               check_mm2_alive = []() { return mm2::rpc_version() != "error occured during rpc_version"; };
                 static std::size_t nb_try          = 0;
 
                 while (not check_mm2_alive())
@@ -1086,7 +1086,7 @@ namespace atomic_dex
     mm2_service::batch_fetch_orders_and_swap(bool after_manual_reset)
     {
         nlohmann::json batch             = nlohmann::json::array();
-        nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
+        nlohmann::json my_orders_request = mm2::template_request("my_orders");
         batch.push_back(my_orders_request);
 
 
@@ -1106,7 +1106,7 @@ namespace atomic_dex
         }
 
         //! First time fetch or current page
-        nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
+        nlohmann::json            my_swaps = mm2::template_request("my_recent_swaps");
         t_my_recent_swaps_request request{
             .limit          = limit,
             .page_number    = current_page,
@@ -1119,7 +1119,7 @@ namespace atomic_dex
         batch.push_back(my_swaps);
 
         //! Active swaps
-        nlohmann::json         active_swaps = ::mm2::api::template_request("active_swaps");
+        nlohmann::json         active_swaps = mm2::template_request("active_swaps");
         t_active_swaps_request active_swaps_request{.statuses = true};
         to_json(active_swaps, active_swaps_request);
         batch.push_back(active_swaps);
@@ -1130,12 +1130,12 @@ namespace atomic_dex
 
             //! Parsing Resp
             orders_and_swaps result;
-            auto             answers = ::mm2::api::basic_batch_answer(resp);
+            auto             answers = mm2::basic_batch_answer(resp);
 
             //! Extract
-            const auto orders_answers      = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
-            const auto swap_answer         = ::mm2::api::rpc_process_answer_batch<t_my_recent_swaps_answer>(answers[1], "my_recent_swaps");
-            const auto active_swaps_answer = ::mm2::api::rpc_process_answer_batch<t_active_swaps_answer>(answers[2], "active_swaps");
+            const auto orders_answers      = mm2::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
+            const auto swap_answer         = mm2::rpc_process_answer_batch<t_my_recent_swaps_answer>(answers[1], "my_recent_swaps");
+            const auto active_swaps_answer = mm2::rpc_process_answer_batch<t_active_swaps_answer>(answers[2], "active_swaps");
 
             result.orders_and_swaps.reserve(orders_answers.orders.size() + limit);
             result.nb_orders        = orders_answers.orders.size();
@@ -1271,11 +1271,11 @@ namespace atomic_dex
         };
         std::string url = retrieve_api_functor(ticker, address(ticker, ec));
         SPDLOG_INFO("url scan: {}", url);
-        ::mm2::api::async_process_rpc_get(::mm2::api::g_etherscan_proxy_http_client, "tx_history", url)
+        mm2::async_process_rpc_get(mm2::g_etherscan_proxy_http_client, "tx_history", url)
             .then(
                 [this, ticker](web::http::http_response resp)
                 {
-                    auto answer = m_mm2_client.rpc_process_answer<::mm2::api::tx_history_answer>(resp, "tx_history");
+                    auto answer = m_mm2_client.rpc_process_answer<mm2::tx_history_answer>(resp, "tx_history");
 
                     if (answer.rpc_result_code != 200)
                     {
@@ -1474,8 +1474,8 @@ namespace atomic_dex
     void
     mm2_service::process_tx_answer(const nlohmann::json& answer_json)
     {
-        ::mm2::api::tx_history_answer answer;
-        ::mm2::api::from_json(answer_json, answer);
+        mm2::tx_history_answer answer;
+        mm2::from_json(answer_json, answer);
         t_tx_state state;
         state.state             = answer.result.value().sync_status.state;
         state.current_block     = answer.result.value().current_block;
@@ -1550,7 +1550,7 @@ namespace atomic_dex
     mm2_service::process_balance_answer(const nlohmann::json& answer)
     {
         t_balance_answer answer_r;
-        ::mm2::api::from_json(answer, answer_r);
+        mm2::from_json(answer, answer_r);
         // SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
         if (is_pin_cfg_enabled())
         {

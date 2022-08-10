@@ -14,14 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
-// Deps Headers
 #include <meta/detection/detection.hpp>
 
-// Project Headers
-#include "atomicdex/api/mm2/mm2.client.hpp"
-#include "atomicdex/api/mm2/mm2.hpp"
-#include "atomicdex/api/mm2/rpc.tx.history.hpp"
-#include "rpc.get.public.key.hpp"
+#include "mm2.client.hpp"
+#include "mm2.hpp"
+#include "rpc.tx.history.hpp"
 #include "rpc.hpp"
 
 namespace
@@ -57,7 +54,7 @@ namespace
         return request;
     }
 
-    template <mm2::rpc Rpc>
+    template <atomic_dex::mm2::rpc Rpc>
     Rpc process_rpc_answer(const web::http::http_response& answer)
     {
         Rpc rpc;
@@ -66,12 +63,12 @@ namespace
         if (Rpc::is_v2)
         {
             if (answer.status_code() == 200)
-                rpc.result = json_answer.at("result").get<typename Rpc::expected_answer_type>();
+                rpc.result = json_answer.at("result").get<typename Rpc::expected_result_type>();
             else
                 rpc.error = json_answer.get<typename Rpc::expected_error_type>();
         }
         else
-            rpc.result = json_answer.get<typename Rpc::expected_answer_type>();
+            rpc.result = json_answer.get<typename Rpc::expected_result_type>();
         return rpc;
     }
 } // namespace
@@ -161,8 +158,6 @@ namespace atomic_dex::mm2
                            });
     }
 
-    template void mm2_client::process_rpc_async<atomic_dex::mm2::get_public_key>(const std::function<void(mm2::get_public_key)>&);
-
     void
     mm2_client::stop()
     {
@@ -175,9 +170,9 @@ namespace atomic_dex::mm2
     {
         SPDLOG_INFO("Processing rpc call: {}", rpc_command);
 
-        nlohmann::json json_data = ::mm2::api::template_request(rpc_command);
+        nlohmann::json json_data = mm2::template_request(rpc_command);
 
-        ::mm2::api::to_json(json_data, request);
+        mm2::to_json(json_data, request);
 
         auto json_copy        = json_data;
         json_copy["userpass"] = "*******";
@@ -204,5 +199,5 @@ namespace atomic_dex::mm2
     }
 } // namespace atomic_dex
 
-template mm2::api::tx_history_answer   atomic_dex::mm2_client::rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);
-template mm2::api::disable_coin_answer atomic_dex::mm2_client::rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);
+template atomic_dex::mm2::tx_history_answer   atomic_dex::mm2::mm2_client::rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);
+template atomic_dex::mm2::disable_coin_answer atomic_dex::mm2::mm2_client::rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);

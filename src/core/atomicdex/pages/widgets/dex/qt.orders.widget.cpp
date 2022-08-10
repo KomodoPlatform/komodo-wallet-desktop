@@ -42,20 +42,20 @@ namespace atomic_dex
     qt_orders_widget::common_cancel_all_orders(bool by_coin, const QString& ticker)
     {
         nlohmann::json batch          = nlohmann::json::array();
-        nlohmann::json cancel_request = ::mm2::api::template_request("cancel_all_orders");
+        nlohmann::json cancel_request = mm2::template_request("cancel_all_orders");
         if (by_coin && not ticker.isEmpty())
         {
-            ::mm2::api::cancel_data cd;
+            mm2::cancel_data cd;
             cd.ticker = ticker.toStdString();
-            ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
-            ::mm2::api::to_json(cancel_request, req);
+            mm2::cancel_all_orders_request req{{"Coin", cd}};
+            mm2::to_json(cancel_request, req);
         }
         else
         {
-            ::mm2::api::cancel_data cd;
+            mm2::cancel_data cd;
             cd.ticker = ticker.toStdString();
-            ::mm2::api::cancel_all_orders_request req_all;
-            ::mm2::api::to_json(cancel_request, req_all);
+            mm2::cancel_all_orders_request req_all;
+            mm2::to_json(cancel_request, req_all);
         }
 
         batch.push_back(cancel_request);
@@ -81,9 +81,9 @@ namespace atomic_dex
         nlohmann::json batch = nlohmann::json::array();
         for (auto&& order_id: orders_id)
         {
-            ::mm2::api::cancel_all_orders_request req;
-            nlohmann::json                        cancel_request = ::mm2::api::template_request("cancel_order");
-            ::mm2::api::cancel_order_request      cancel_req{order_id.toStdString()};
+            mm2::cancel_all_orders_request req;
+            nlohmann::json                        cancel_request = mm2::template_request("cancel_order");
+            mm2::cancel_order_request      cancel_req{order_id.toStdString()};
             to_json(cancel_request, cancel_req);
             batch.push_back(cancel_request);
         }

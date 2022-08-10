@@ -55,6 +55,6 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_electrum_request = ::mm2::api::electrum_request;
-    using t_electrum_answer  = ::mm2::api::electrum_answer;
+    using t_electrum_request = mm2::electrum_request;
+    using t_electrum_answer  = mm2::electrum_answer;
 } // namespace atomic_dex

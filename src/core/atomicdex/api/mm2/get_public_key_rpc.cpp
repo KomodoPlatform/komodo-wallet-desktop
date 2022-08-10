@@ -14,36 +14,14 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+#include <nlohmann/json.hpp>
 
-// Std Headers
-#include <string>
-
-// Deps Headers
-#include <nlohmann/json_fwd.hpp>
+#include "get_public_key_rpc.hpp"
 
 namespace atomic_dex::mm2
 {
-    struct get_public_key
+    void from_json(const nlohmann::json& json, get_public_key_rpc_result& in)
     {
-        static constexpr auto endpoint = "get_public_key";
-        static constexpr bool is_v2     = true;
-        struct expected_request_type
-        {
-
-        } request;
-        struct expected_answer_type
-        {
-            std::string public_key;
-        } answer;
-
-        using excpected_error_type = rpc_basic_error_type;
-
-        std::optional<excpected_error_type>     error;
-    };
-    using get_public_key_request = get_public_key::expected_request_type;
-    using get_public_key_answer = get_public_key::expected_answer_type;
-
-    inline void to_json([[maybe_unused]] nlohmann::json& j, const get_public_key_request&) { }
-    void from_json(const nlohmann::json& json, get_public_key_answer& in);
+        json.at("public_key").get_to(in.public_key);
+    }
 }

@@ -27,7 +27,7 @@ namespace atomic_dex::mm2
     template <typename Rpc>
     concept rpc = requires(Rpc rpc)
     {
-        atomic_dex::api_call<Rpc> && Rpc::is_v2 && std::is_same_v<decltype(Rpc::is_v2), bool>;
+        atomic_dex::api_call<Rpc> && std::is_same_v<decltype(Rpc::is_v2), bool>;
     };
 
     struct rpc_basic_error_type

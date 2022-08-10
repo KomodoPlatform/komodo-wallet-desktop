@@ -1,7 +1,3 @@
-//
-// Created by Sztergbaum Roman on 22/05/2021.
-//
-
 #include <nlohmann/json.hpp>
 
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
@@ -10,7 +6,7 @@
 namespace atomic_dex::mm2
 {
     void
-    to_json(nlohmann::json& j, const mm2::api::validate_address_request& req)
+    to_json(nlohmann::json& j, const mm2::validate_address_request& req)
     {
         j["coin"]    = req.coin;
         j["address"] = req.address;

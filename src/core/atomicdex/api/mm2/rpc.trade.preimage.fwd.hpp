@@ -24,5 +24,5 @@ namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_trade_preimage_answer = ::mm2::api::trade_preimage_answer;
+    using t_trade_preimage_answer = mm2::trade_preimage_answer;
 }

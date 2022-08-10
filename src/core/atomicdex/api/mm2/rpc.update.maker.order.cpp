@@ -11,7 +11,7 @@
 namespace atomic_dex::mm2
 {
     void
-    to_json(nlohmann::json& j, const mm2::api::update_maker_order_request& request)
+    to_json(nlohmann::json& j, const mm2::update_maker_order_request& request)
     {
         j["uuid"]      = request.uuid;
         j["new_price"] = request.new_price;

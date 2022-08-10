@@ -521,8 +521,8 @@ namespace atomic_dex
                 withdraw_req.fees->type = "otherGas";
             }
         }
-        nlohmann::json json_data = ::mm2::api::template_request("withdraw", true);
-        ::mm2::api::to_json(json_data, withdraw_req);
+        nlohmann::json json_data = mm2::template_request("withdraw", true);
+        mm2::to_json(json_data, withdraw_req);
         // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
         std::string amount_std = amount.toStdString();
@@ -543,7 +543,7 @@ namespace atomic_dex
             if (resp.status_code() == 200 && body.find("error") == std::string::npos)
             {
                 auto           answers              = nlohmann::json::parse(body);
-                auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
+                auto           withdraw_answer      = mm2::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                 nlohmann::json j_out                = nlohmann::json::object();
                 j_out["withdraw_answer"]            = answers[0]["result"];
                 j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
@@ -645,8 +645,8 @@ namespace atomic_dex
         const auto&         ticker     = mm2_system.get_current_ticker();
         nlohmann::json      batch      = nlohmann::json::array();
         t_broadcast_request broadcast_request{.tx_hex = tx_hex.toStdString(), .coin = ticker};
-        nlohmann::json      json_data = ::mm2::api::template_request("send_raw_transaction");
-        ::mm2::api::to_json(json_data, broadcast_request);
+        nlohmann::json      json_data = mm2::template_request("send_raw_transaction");
+        mm2::to_json(json_data, broadcast_request);
         batch.push_back(json_data);
 
         //! Answer
@@ -709,10 +709,10 @@ namespace atomic_dex
         auto&              mm2_system = m_system_manager.get_system<mm2_service>();
         std::error_code    ec;
         t_withdraw_request withdraw_req{.coin = "KMD", .to = mm2_system.address("KMD", ec), .amount = "0", .max = true};
-        nlohmann::json     json_data = ::mm2::api::template_request("withdraw", true);
-        ::mm2::api::to_json(json_data, withdraw_req);
+        nlohmann::json     json_data = mm2::template_request("withdraw", true);
+        mm2::to_json(json_data, withdraw_req);
         batch.push_back(json_data);
-        json_data = ::mm2::api::template_request("kmd_rewards_info");
+        json_data = mm2::template_request("kmd_rewards_info");
         batch.push_back(json_data);
 
         auto answer_functor = [this](web::http::http_response resp)
@@ -722,11 +722,11 @@ namespace atomic_dex
             if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok) && body.find("error") == std::string::npos)
             {
                 auto           answers              = nlohmann::json::parse(body);
-                auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
+                auto           withdraw_answer      = mm2::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                 nlohmann::json j_out                = nlohmann::json::object();
                 j_out["withdraw_answer"]            = answers[0]["result"];
                 j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
-                auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
+                auto kmd_rewards_answer             = mm2::process_kmd_rewards_answer(answers[1]);
                 j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
                 this->set_rpc_claiming_data(nlohmann_json_object_to_qt_json_object(j_out));
             }
@@ -847,8 +847,8 @@ namespace atomic_dex
             t_validate_address_request req{.coin = ticker.toStdString(), .address = address.toStdString()};
             this->set_validate_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
-            nlohmann::json json_data = ::mm2::api::template_request("validateaddress");
-            ::mm2::api::to_json(json_data, req);
+            nlohmann::json json_data = mm2::template_request("validateaddress");
+            mm2::to_json(json_data, req);
             batch.push_back(json_data);
             auto answer_functor = [this, ticker](web::http::http_response resp)
             {
@@ -859,7 +859,7 @@ namespace atomic_dex
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
                 {
                     auto answers         = nlohmann::json::parse(body);
-                    auto validate_answer = ::mm2::api::rpc_process_answer_batch<t_validate_address_answer>(answers[0], "validateaddress");
+                    auto validate_answer = mm2::rpc_process_answer_batch<t_validate_address_answer>(answers[0], "validateaddress");
                     if (validate_answer.result.has_value())
                     {
                         auto res          = validate_answer.result.value();
@@ -906,8 +906,8 @@ namespace atomic_dex
             t_convert_address_request req{.coin = ticker.toStdString(), .from = from.toStdString(), .to_address_format = address_fmt};
             this->set_convert_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
-            nlohmann::json json_data = ::mm2::api::template_request("convertaddress");
-            ::mm2::api::to_json(json_data, req);
+            nlohmann::json json_data = mm2::template_request("convertaddress");
+            mm2::to_json(json_data, req);
             batch.push_back(json_data);
             auto answer_functor = [this](web::http::http_response resp)
             {
@@ -916,7 +916,7 @@ namespace atomic_dex
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
                 {
                     auto answers        = nlohmann::json::parse(body);
-                    auto convert_answer = ::mm2::api::rpc_process_answer_batch<t_convert_address_answer>(answers[0], "convertaddress");
+                    auto convert_answer = mm2::rpc_process_answer_batch<t_convert_address_answer>(answers[0], "convertaddress");
                     if (convert_answer.result.has_value())
                     {
                         auto res = QString::fromStdString(convert_answer.result.value().address);
@@ -973,8 +973,8 @@ namespace atomic_dex
                 address = mm2_system.address(ticker, ec);
                 t_convert_address_request req{.coin = ticker, .from = address, .to_address_format = address_format};
                 nlohmann::json            batch     = nlohmann::json::array();
-                nlohmann::json            json_data = ::mm2::api::template_request("convertaddress");
-                ::mm2::api::to_json(json_data, req);
+                nlohmann::json            json_data = mm2::template_request("convertaddress");
+                mm2::to_json(json_data, req);
                 batch.push_back(json_data);
                 json_data["userpass"] = "******";
                 SPDLOG_INFO("convertaddress request: {}", json_data.dump());
@@ -984,7 +984,7 @@ namespace atomic_dex
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
                 {
                     auto answers        = nlohmann::json::parse(body);
-                    auto convert_answer = ::mm2::api::rpc_process_answer_batch<t_convert_address_answer>(answers[0], "convertaddress");
+                    auto convert_answer = mm2::rpc_process_answer_batch<t_convert_address_answer>(answers[0], "convertaddress");
                     if (convert_answer.result.has_value())
                     {
                         return QString::fromStdString(convert_answer.result.value().address);
@@ -1005,9 +1005,9 @@ namespace atomic_dex
             //! Need disable + enable + refresh balance + refresh current coin info (address) + change segwit in cfg
             const auto             ticker    = get_current_ticker().toStdString();
             nlohmann::json         batch     = nlohmann::json::array();
-            nlohmann::json         json_data = ::mm2::api::template_request("disable_coin");
+            nlohmann::json         json_data = mm2::template_request("disable_coin");
             t_disable_coin_request req{.coin = ticker};
-            ::mm2::api::to_json(json_data, req);
+            mm2::to_json(json_data, req);
             batch.push_back(json_data);
             //! Disable is in the batch
 
@@ -1020,8 +1020,8 @@ namespace atomic_dex
                 electrum_req.address_format                   = nlohmann::json::object();
                 electrum_req.address_format.value()["format"] = "segwit";
             }
-            nlohmann::json electrum_data = ::mm2::api::template_request("electrum");
-            ::mm2::api::to_json(electrum_data, electrum_req);
+            nlohmann::json electrum_data = mm2::template_request("electrum");
+            mm2::to_json(electrum_data, electrum_req);
             batch.push_back(electrum_data);
             electrum_data["userpass"] = "*******";
             SPDLOG_INFO("electrum_req: {}", electrum_data.dump(-1));

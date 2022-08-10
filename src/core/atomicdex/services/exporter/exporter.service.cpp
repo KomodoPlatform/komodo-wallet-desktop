@@ -66,7 +66,7 @@ namespace atomic_dex
             LOG_PATH("new csv path is: {}", csv_path);
         }
         nlohmann::json            batch           = nlohmann::json::array();
-        nlohmann::json            my_recent_swaps = ::mm2::api::template_request("my_recent_swaps");
+        nlohmann::json            my_recent_swaps = mm2::template_request("my_recent_swaps");
         auto&                     mm2             = m_system_manager.get_system<mm2_service>();
         const auto                swaps_data      = mm2.get_orders_and_swaps();
         t_my_recent_swaps_request request{
@@ -80,8 +80,8 @@ namespace atomic_dex
         batch.push_back(my_recent_swaps);
 
         auto answer_functor = [csv_path](web::http::http_response resp) {
-            auto       answers     = ::mm2::api::basic_batch_answer(resp);
-            const auto swap_answer = ::mm2::api::rpc_process_answer_batch<t_my_recent_swaps_answer>(answers[0], "my_recent_swaps");
+            auto       answers     = mm2::basic_batch_answer(resp);
+            const auto swap_answer = mm2::rpc_process_answer_batch<t_my_recent_swaps_answer>(answers[0], "my_recent_swaps");
             if (swap_answer.result.has_value())
             {
                 const auto result = swap_answer.result.value();

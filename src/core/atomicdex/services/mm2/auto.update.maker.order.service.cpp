@@ -81,7 +81,7 @@ namespace atomic_dex
             nlohmann::json               batch                   = nlohmann::json::array();
             std::string                  new_price               = get_new_price_from_order(data, spread);
             nlohmann::json               conf_settings           = data.conf_settings.value_or(nlohmann::json());
-            nlohmann::json               update_maker_order_json = ::mm2::api::template_request("update_maker_order");
+            nlohmann::json               update_maker_order_json = mm2::template_request("update_maker_order");
             t_float_50                   volume                  = safe_float(data.base_amount.toStdString());
             t_float_50                   min_volume              = volume * min_volume_percent;
             t_update_maker_order_request request{
@@ -96,7 +96,7 @@ namespace atomic_dex
                 request.base_confs = conf_settings.at("base_confs").get<std::size_t>();
                 request.rel_confs  = conf_settings.at("rel_confs").get<std::size_t>();
             }
-            ::mm2::api::to_json(update_maker_order_json, request);
+            mm2::to_json(update_maker_order_json, request);
             batch.push_back(update_maker_order_json);
             update_maker_order_json["userpass"] = "";
             SPDLOG_INFO("request: {}", update_maker_order_json.dump(1));

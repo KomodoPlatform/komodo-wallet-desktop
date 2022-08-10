@@ -335,7 +335,7 @@ SCENARIO("mm2::api::preimage scenario")
     CHECK(batch.is_array());
 
     //! Prepare request template
-    nlohmann::json request_json = ::mm2::api::template_request("trade_preimage");
+    nlohmann::json request_json = mm2::template_request("trade_preimage");
 
     //! Retrieve mm2 service
     auto& mm2 = g_context->system_manager().get_system<atomic_dex::mm2_service>();
@@ -368,7 +368,7 @@ SCENARIO("mm2::api::preimage scenario")
         CHECK(batch.empty());
 
         //! Give the concrete C++ type - here it's atomic_dex::t_trade_preimage_answer
-        return ::mm2::api::rpc_process_answer_batch<atomic_dex::t_trade_preimage_answer>(answers[0], "trade_preimage");
+        return mm2::rpc_process_answer_batch<atomic_dex::t_trade_preimage_answer>(answers[0], "trade_preimage");
     };
 
     //! A test with RICK/MORTY
@@ -378,7 +378,7 @@ SCENARIO("mm2::api::preimage scenario")
         atomic_dex::t_trade_preimage_request request{.base_coin = "RICK", .rel_coin = "MORTY", .swap_method = "buy", .volume = "1", .price = "1"};
 
         //! Transform request into json
-        ::mm2::api::to_json(request_json, request);
+        mm2::to_json(request_json, request);
 
         //! Add it to the batch request
         batch.push_back(request_json);
@@ -406,7 +406,7 @@ SCENARIO("mm2::api::preimage scenario")
     GIVEN("Preparing a wrong request RICK/NONEXISTENT coin")
     {
         atomic_dex::t_trade_preimage_request request{.base_coin = "RICK", .rel_coin = "NONEXISTENT", .swap_method = "buy", .volume = "1"};
-        ::mm2::api::to_json(request_json, request);
+        mm2::to_json(request_json, request);
         batch.push_back(request_json);
         auto copy_request        = request_json;
         copy_request["userpass"] = "";
