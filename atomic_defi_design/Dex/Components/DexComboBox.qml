@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.impl 2.15
-import QtQuick.Controls.Universal 2.15
 
 import Qaterial 1.0 as Qaterial
 
@@ -14,51 +13,40 @@ ComboBox
 {
     id: control
 
-    property alias radius: bg_rect.radius
-    property color lineHoverColor: DexTheme.hoverColor
-    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property int dropDownMaxHeight: 300
-    property color dropdownBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property
-    var dropdownLineText: m => textRole === "" ?
-        m.modelData :
-        !m.modelData ? m[textRole] : m.modelData[textRole]
+    property alias  radius: bg_rect.radius
+    property int    dropDownMaxHeight: 450
+    property color  comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+    property color  mainBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+    property color  popupBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+    property color  highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
     property string mainLineText: control.displayText
-
-    readonly property bool disabled: !enabled
+    property var    dropdownLineText: m => textRole === "" ?
+                                        m.modelData :
+                                        !m.modelData ? m[textRole] : m.modelData[textRole]
 
     font.family: Style.font_family
-
-    Behavior on lineHoverColor
-    {
-        ColorAnimation
-        {
-            duration: Style.animationDuration
-        }
-    }
-
     hoverEnabled: true
 
     // Main, selected text
     contentItem: Item
     {
-        anchors.fill: parent
         DefaultText
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 13
+            width: parent.width - anchors.leftMargin
             font: DexTypo.subtitle2
             text_value: control.mainLineText
+            elide: Text.ElideRight
         }
     }
-
 
     // Main background
     background: FloatingBackground
     {
         id: bg_rect
-        implicitWidth: 120
+        implicitWidth: 150
         implicitHeight: 45
         color: control.mainBackgroundColor
         radius: 20
@@ -68,7 +56,6 @@ ComboBox
     popup: Popup
     {
         width: control.width
-        height: _list.contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : _list.contentHeight
         leftPadding: 0
         rightPadding: 0
         topPadding: 16
@@ -78,14 +65,15 @@ ComboBox
         {
             id: _list
             model: control.popup.visible ? control.delegateModel : null
+            implicitHeight: contentHeight > control.dropDownMaxHeight ? control.dropDownMaxHeight : contentHeight
             currentIndex: control.highlightedIndex
 
             ScrollBar.vertical: ScrollBar
             {
+                visible: _list.contentHeight > control.dropDownMaxHeight
                 anchors.right: _list.right
                 anchors.rightMargin: 2
                 width: 7
-                visible: true
                 background: DefaultRectangle
                 {
                     radius: 12
@@ -108,21 +96,30 @@ ComboBox
         background: Rectangle
         {
             radius: control.radius
-            color: control.dropdownBackgroundColor
+            color: control.popupBackgroundColor
         }
     }
 
     // Each dropdown item
     delegate: ItemDelegate
     {
-        Universal.accent: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+        id: delegate
+
         width: control.width
         highlighted: control.highlightedIndex === index
 
-        contentItem: DexLabel
+        contentItem: DefaultText
         {
+            width: control.width
             font: DexTypo.subtitle2
             text_value: control.dropdownLineText(model)
+            elide: Text.ElideRight
+        }
+
+        background: Rectangle
+        {
+            anchors.fill: delegate
+            color: delegate.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
         }
     }
 

@@ -56,8 +56,8 @@ foreach (current_lib ${LIST_LIBS})
     file(COPY ${current_lib} DESTINATION ${PROJECT_LIB_PATH})
 endforeach ()
 message(STATUS "Executing linuxdeployqt to fix dependencies")
-message(STATUS "Executing cmd: [${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs="libnss3.so,libnssutil3.so" -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage]")
-execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs="libnss3.so,libnssutil3.so" -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage
+message(STATUS "Executing cmd: [${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage]")
+execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)

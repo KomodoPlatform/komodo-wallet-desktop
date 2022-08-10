@@ -16,12 +16,13 @@ import "../Support"
 import "../Sidebar" as Sidebar
 import "../Fiat"
 import "../Settings" as SettingsPage
+import "../Support" as SupportPage
 import "../Screens"
+import "../Addressbook" as Addressbook
 import Dex.Themes 1.0 as Dex
-//import Dex.Sidebar 1.0 as Dex
 
-
-Item {
+Item
+{
     id: dashboard
 
     enum PageType
@@ -29,12 +30,11 @@ Item {
         Portfolio,
         Wallet,
         DEX,            // DEX == Trading page
-        Addressbook,
-        Support
+        Addressbook
     }
 
     property var currentPage: Dashboard.PageType.Portfolio
-    property var availablePages: [portfolio, wallet, exchange, addressbook, support]
+    property var availablePages: [portfolio, wallet, exchange, addressbook]
 
     property alias webEngineView: webEngineView
 
@@ -73,8 +73,6 @@ Item {
             console.warn("Tried to switch to page %1 when loader is not ready yet.".arg(page))
     }
 
-    function resetCoinFilter() { portfolio_coins.setFilterFixedString("") }
-
     function openTradeViewWithTicker()
     {
         dashboard.loader.onLoadComplete = () => {
@@ -85,6 +83,8 @@ Item {
     Layout.fillWidth: true
 
     onCurrentPageChanged: sidebar.currentLineType = currentPage
+
+    SupportPage.SupportModal { id: support_modal }
 
     // Al settings depends this modal
     SettingsPage.SettingModal { id: setting_modal }
@@ -145,7 +145,7 @@ Item {
         {
             id: addressbook
 
-            AddressBook {}
+            Addressbook.Main { }
         }
 
         Component
@@ -153,16 +153,6 @@ Item {
             id: settings
 
             Settings
-            {
-                Layout.alignment: Qt.AlignCenter
-            }
-        }
-
-        Component
-        {
-            id: support
-
-            Support
             {
                 Layout.alignment: Qt.AlignCenter
             }
@@ -208,6 +198,7 @@ Item {
 
         onLineSelected: currentPage = lineType;
         onSettingsClicked: setting_modal.open()
+        onSupportClicked: support_modal.open()
     }
 
     ModalLoader

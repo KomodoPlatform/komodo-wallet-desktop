@@ -58,7 +58,7 @@ execute_process(COMMAND powershell.exe -File ${PROJECT_ROOT_DIR}/ci_tools_atomic
 message(STATUS "manifest output: ${MANIFEST_RESULT} ${MANIFEST_OUTPUT} ${MANIFEST_ERROR}")
 
 message(STATUS "Creating Installer")
-set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.3/bin)
+set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.4/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
 	message(STATUS "command is: [${IFW_BINDIR}/archivegen.exe ${DEX_PROJECT_NAME}.7z .]")

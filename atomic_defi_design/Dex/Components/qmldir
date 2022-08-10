@@ -1,0 +1,22 @@
+module Dex.Components
+
+Button 1.0 DefaultButton.qml
+ComboBox 1.0 DefaultComboBox.qml
+ComboBoxWithSearchBar 1.0 ComboBoxWithSearchBar.qml
+ClickableText 1.0 ClickableText.qml
+ElidableText 1.0 ElidableText.qml
+GradientButton 1.0 GradientButton.qml
+Image 1.0 DefaultImage.qml
+ListView 1.0 DefaultListView.qml
+MouseArea 1.0 DefaultMouseArea.qml
+MultipageModal 1.0 MultipageModal.qml
+MultipageModalContent 1.0 MultipageModalContent.qml
+Popup 1.0 DefaultPopup.qml
+Rectangle 1.0 DefaultRectangle.qml
+ScrollView 1.0 DefaultScrollView.qml
+SearchField 1.0 SearchField.qml
+Text 1.0 DefaultText.qml
+TextField 1.0 DefaultTextField.qml
+TextFieldWithTitle 1.0 TextFieldWithTitle.qml
+ToolTip 1.0 DefaultTooltip.qml
+UserIcon 1.0 UserIcon.qml

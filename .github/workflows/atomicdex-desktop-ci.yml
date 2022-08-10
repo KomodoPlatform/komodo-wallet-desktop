@@ -10,10 +10,20 @@ on:
     - cron: '0 0 * * 1'
 
 env:
+<<<<<<< HEAD
   DEX_PROJECT_NAME: "shibadex-desktop"
   DEX_DISPLAY_NAME: "ShibaDex Desktop"
   DEX_COMPANY: "CZ Web Service S.A"
   DEX_WEBSITE: "https://shibadex.io/"
+=======
+  DEX_API: "mm2"
+  DEX_RPCPORT: 7783
+  DEX_RPC: "http://127.0.0.1:7783"
+  DEX_PROJECT_NAME: "atomicdex-desktop"
+  DEX_DISPLAY_NAME: "AtomicDex Desktop"
+  DEX_COMPANY: "KomodoPlatform"
+  DEX_WEBSITE: "https://atomicdex.io/"
+>>>>>>> dev
 
 jobs:
 
@@ -57,16 +67,17 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
 
-
-      - uses: actions/setup-python@v2
+      - name: Setup Python
+        uses: actions/setup-python@v3
         with:
-          python-version: '3.8'
+          python-version: '3.9'
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
+          setup-python: 'false'
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
@@ -79,6 +90,7 @@ jobs:
         uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
+          setup-python: 'false'
           host: 'mac'
           target: 'desktop'
           dir: '${{ github.workspace }}'
@@ -87,11 +99,8 @@ jobs:
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-          python3  -m aqt tool mac tools_ifw 4.3.0 qt.tools.ifw.43 --outputdir ${{ github.workspace }}/Qt
-          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
-          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.1/bin" >> $GITHUB_PATH
-          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.2/bin" >> $GITHUB_PATH
-          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.3/bin" >> $GITHUB_PATH
+          python3  -m aqt tool mac tools_ifw 4.4.1 qt.tools.ifw.44 --outputdir ${{ github.workspace }}/Qt
+          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.4/bin" >> $GITHUB_PATH
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
@@ -108,11 +117,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           python -m pip install --upgrade pip
-          python -m aqt tool windows tools_ifw 4.3.0 qt.tools.ifw.43 --outputdir C:/Qt
-          echo "C:/Qt/Tools/QtInstallerFramework/4.0/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:/Qt/Tools/QtInstallerFramework/4.1/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:/Qt/Tools/QtInstallerFramework/4.2/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:/Qt/Tools/QtInstallerFramework/4.3/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          python -m aqt tool windows tools_ifw 4.4.1 qt.tools.ifw.44 --outputdir C:/Qt
+          echo "C:/Qt/Tools/QtInstallerFramework/4.4/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo $env:GITHUB_PATH
           echo $env:PATH
 
@@ -206,6 +212,7 @@ jobs:
           export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
           export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
           export APPLE_ID="${{ secrets.APPLE_ID }}"
+          export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export MACOSX_DEPLOYMENT_TARGET=10.13
@@ -358,5 +365,3 @@ jobs:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
           retention-days: 7
-      
-      

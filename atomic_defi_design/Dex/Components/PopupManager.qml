@@ -59,6 +59,7 @@ Popup
     property bool centerAlign: false
     property color backgroundColor: Dex.CurrentTheme.backgroundColor
     property bool titleBold: false
+    property bool forceFocus: false
     property bool enableAcceptButton: validator === undefined ? true : validator(_insideField.field.text)
 
     background: Qaterial.ClipRRect
@@ -158,18 +159,22 @@ Popup
                         field.font: DexTypo.body2
                         placeholderText: dialog.placeholderText
                         field.placeholderText: ""
+                        field.forceFocus: forceFocus
                         field.rightPadding: dialog.isPassword ? 55 : 20
                         field.leftPadding: dialog.isPassword ? 70 : 20
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
 
                         field.onTextChanged:
                         {
-                            if (validator(field.text))
+                            if (validator)
                             {
-                                dialog.enableAcceptButton = true
-                            }
-                            else {
-                                dialog.enableAcceptButton = false
+                                if (validator(field.text))
+                                {
+                                    dialog.enableAcceptButton = true
+                                }
+                                else {
+                                    dialog.enableAcceptButton = false
+                                }
                             }
                         }
                         field.onAccepted:

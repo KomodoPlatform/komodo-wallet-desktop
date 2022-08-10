@@ -46,6 +46,8 @@ namespace mm2::api
         //! eg: 1595406178
         unsigned long long unix_timestamp;
 
+        unsigned long long paymentLock;
+        
         //! eg: b741646a-5738-4012-b5b0-dcd1375affd1
         QString order_id;
 

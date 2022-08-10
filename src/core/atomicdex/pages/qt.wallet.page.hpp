@@ -48,6 +48,8 @@ namespace atomic_dex
         void                              set_rpc_broadcast_data(QString rpc_data);
         [[nodiscard]] QVariant            get_rpc_send_data() const;
         void                              set_rpc_send_data(QVariant rpc_data);
+        [[nodiscard]] bool                is_tx_fetching_failed() const;
+        void                              set_tx_fetching_failed(bool status);
         [[nodiscard]] bool                is_tx_fetching_busy() const;
         void                              set_tx_fetching_busy(bool status);
         [[nodiscard]] bool                is_convert_address_busy() const;
@@ -99,6 +101,7 @@ namespace atomic_dex
         Q_PROPERTY(bool is_send_busy READ is_send_busy WRITE set_send_busy NOTIFY sendStatusChanged)
         Q_PROPERTY(QVariant send_rpc_data READ get_rpc_send_data WRITE set_rpc_send_data NOTIFY sendDataChanged)
         Q_PROPERTY(bool tx_fetching_busy READ is_tx_fetching_busy WRITE set_tx_fetching_busy NOTIFY txFetchingStatusChanged)
+        Q_PROPERTY(bool tx_fetching_failed READ is_tx_fetching_failed WRITE set_tx_fetching_failed NOTIFY txFetchingOutcomeChanged)
         Q_PROPERTY(bool auth_succeeded READ has_auth_succeeded NOTIFY auth_succeededChanged)
         Q_PROPERTY(bool send_available READ is_send_available NOTIFY sendAvailableChanged)
         Q_PROPERTY(QString send_availability_state READ get_send_availability_state NOTIFY sendAvailabilityStateChanged)
@@ -123,6 +126,7 @@ namespace atomic_dex
         void sendDataChanged();
         void transactionsMdlChanged();
         void txFetchingStatusChanged();
+        void txFetchingOutcomeChanged();
         void auth_succeededChanged();
         void sendAvailabilityStateChanged();
         void sendAvailableChanged();
@@ -141,6 +145,7 @@ namespace atomic_dex
         std::atomic_bool                               m_is_broadcast_busy{false};
         std::atomic_bool                               m_is_send_busy{false};
         std::atomic_bool                               m_tx_fetching_busy{false};
+        std::atomic_bool                               m_tx_fetching_failed{false};
         std::atomic_bool                               m_validate_address_busy{false};
         std::atomic_bool                               m_convert_address_busy{false};
 

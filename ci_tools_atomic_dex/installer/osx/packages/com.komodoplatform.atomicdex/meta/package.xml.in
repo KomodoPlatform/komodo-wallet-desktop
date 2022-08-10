@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>${DEX_DISPLAY_NAME}</DisplayName>
     <Description>Install ${DEX_DISPLAY_NAME}.</Description>
-    <Version>0.5.5</Version>
-    <ReleaseDate>2021-12-06</ReleaseDate>
+    <Version>0.5.6</Version>
+    <ReleaseDate>2022-07-12</ReleaseDate>
     <Licenses>
         <License name="GNU General Public License v2.0" file="license.txt" />
     </Licenses>

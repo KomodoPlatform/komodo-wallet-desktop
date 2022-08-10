@@ -309,6 +309,7 @@ SetupPage
                     field.leftPadding: 75
                     field.placeholderText: "Wallet Name"
                     field.onTextChanged: text_error = General.validateWallet(input_wallet_name.field.text)
+                    field.forceFocus: true
 
                     DexRectangle
                     {

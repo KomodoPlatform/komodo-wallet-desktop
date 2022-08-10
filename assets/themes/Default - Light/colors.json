@@ -63,8 +63,8 @@
     "textFieldPrefixColor": "#18171F73",
     "textFieldSuffixColor": "#18171FFF",
 
-    "chartTradingLineBackgroundColor": "#C5F2EF",
-    "chartTradingLineColor": "#53EBD7",
+    "chartTradingLineBackgroundColor": "#C5F2EFFF",
+    "chartTradingLineColor": "#53EBD7FF",
 
     "innerBackgroundColor": "#F5F5F5FF",
 

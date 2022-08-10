@@ -18,6 +18,9 @@ MultipageModal
     property string ticker: api_wallet_page.ticker
     property var selected_address: ""
 
+    Component.onCompleted: API.app.addressbookPg.model.proxy.typeFilter = ticker
+    Component.onDestruction: API.app.addressbookPg.model.proxy.typeFilter = ""
+
     MultipageModalContent
     {
         titleText: qsTr("Select a contact with an %1 address").arg(ticker)
@@ -28,8 +31,8 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             placeholderText: qsTr("Search for contacts...")
-            onTextChanged: API.app.addressbook_pg.model.proxy.search_exp = text
-            Component.onDestruction: API.app.addressbook_pg.model.proxy.search_exp = ""
+            onTextChanged: API.app.addressbookPg.model.proxy.searchExp = text
+            Component.onDestruction: API.app.addressbookPg.model.proxy.searchExp = ""
         }
 
         // Contact List
@@ -39,7 +42,7 @@ MultipageModal
 
             Layout.fillWidth: true
 
-            model: API.app.addressbook_pg.model.proxy
+            model: API.app.addressbookPg.model.proxy
             delegate: DefaultRectangle
             {
                 property int addressesCount
@@ -51,10 +54,10 @@ MultipageModal
 
                 Component.onCompleted:
                 {
-                    modelData.proxy_filter.filter_type = ticker
-                    addressesCount = modelData.proxy_filter.rowCount()
+                    modelData.proxyFilter.filterType = ticker
+                    addressesCount = modelData.proxyFilter.rowCount()
                 }
-                Component.onDestruction: contactModel.proxy_filter.filter_type = ""
+                Component.onDestruction: contactModel.proxyFilter.typeFilter = ""
 
                 DefaultMouseArea
                 {
@@ -95,9 +98,6 @@ MultipageModal
                     anchors.bottom: parent.bottom
                 }
             }
-
-            Component.onCompleted: API.app.addressbook_pg.model.proxy.type_filter = ticker
-            Component.onDestruction: API.app.addressbook_pg.model.proxy.type_filter = ""
         }
 
         footer:
@@ -120,9 +120,9 @@ MultipageModal
 
         readonly property var defaultContactModel:
         {
-            "proxy_filter":
+            "proxyFilter":
             {
-                "filter_type": ""
+                "filterType": ""
             },
             "name": ""
         }
@@ -131,7 +131,7 @@ MultipageModal
         property int columnsMargin: 10
         property int nameColumnWidth: width * 0.3
 
-        titleText: qsTr("Choose an %1 address of %2").arg(contactModel.proxy_filter.filter_type).arg(contactModel.name)
+        titleText: qsTr("Choose an %1 address of %2").arg(contactModel.proxyFilter.filterType).arg(contactModel.name)
 
         RowLayout
         {
@@ -160,7 +160,7 @@ MultipageModal
 
             Layout.fillWidth: true
 
-            model: addressesView.contactModel.proxy_filter
+            model: addressesView.contactModel.proxyFilter
             delegate: DefaultRectangle
             {
                 width: addressListView.width

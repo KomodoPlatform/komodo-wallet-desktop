@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.15
 import QtQuick.Layouts 1.12
 
 import "../Constants" as Dex
@@ -8,7 +8,7 @@ import "../Screens"
 import App 1.0 as Dex
 import Dex.Themes 1.0 as Dex
 
-Dex.DefaultListView
+Dex.DexListView
 {
     id: list
     interactive: false
@@ -16,60 +16,81 @@ Dex.DefaultListView
     model: Dex.API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
     property real _assetRowHeight: 46
-    property real _assetNameColumnWidth: 160
-    property real _assetNameColumnLeftMargin: 15
-    property real _assetBalanceColumnWidth: 380
-    property real _assetChange24hColumnWidth: 120
-    property real _assetPriceColumWidth: 140
-    property real _assetProviderColumnWidth: 42
+    property real _assetNameColumnWidth: 180
+    property real _assetBalanceColumnWidth: 190
+    property real _fiatBalanceColumnWidth: 180
+    property real _assetChange24hColumnWidth: 160
+    property real _assetPriceColumWidth: 180
+    property real _assetProviderColumnWidth: 90
 
-    width: _assetNameColumnWidth + _assetNameColumnLeftMargin + _assetBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
+    width: _assetNameColumnWidth + _assetBalanceColumnWidth + _fiatBalanceColumnWidth + _assetChange24hColumnWidth + _assetPriceColumWidth + _assetProviderColumnWidth
     height: (count * _assetRowHeight) + 46
 
+
     // Header
-    header: RowLayout
+    header: Item
     {
-        id: columnsHeader
         width: list.width
         height: 40
 
-        Dex.ColumnHeader
+        RowLayout
         {
-            Layout.preferredWidth: _assetNameColumnWidth - _assetNameColumnLeftMargin
-            Layout.leftMargin: _assetNameColumnLeftMargin
-            icon_at_left: true
-            sort_type: sort_by_name
-            text: qsTr("Asset")
-        }
+            id: columnsHeader
+            anchors.fill: parent
 
-        Dex.ColumnHeader
-        {
-            Layout.preferredWidth: _assetBalanceColumnWidth
-            icon_at_left: true
-            sort_type: sort_by_value
-            text: qsTr("Balance")
-        }
+            Dex.ColumnHeader
+            {
+                Layout.preferredWidth: _assetNameColumnWidth
+                Layout.fillHeight: true
+                Layout.leftMargin: 15
+                h_align: Text.AlignLeft
+                sort_type: sort_by_name
+                text: qsTr("Asset")
+            }
 
-        Dex.ColumnHeader
-        {
-            Layout.preferredWidth: _assetChange24hColumnWidth
-            icon_at_left: true
-            sort_type: sort_by_change
-            text: qsTr("Change 24h")
-        }
+            Dex.ColumnHeader
+            {
+                Layout.preferredWidth: _assetBalanceColumnWidth
+                Layout.fillHeight: true
+                h_align: Text.AlignRight
+                sort_type: sort_by_value
+                text: qsTr("Balance")
+            }
 
-        Dex.ColumnHeader
-        {
-            Layout.preferredWidth: _assetPriceColumWidth
-            icon_at_left: true
-            sort_type: sort_by_price
-            text: qsTr("Price")
-        }
+            Dex.ColumnHeader
+            {
+                Layout.preferredWidth: _fiatBalanceColumnWidth
+                Layout.fillHeight: true
+                h_align: Text.AlignRight
+                sort_type: sort_by_value
+                text: qsTr("Fiat Balance")
+            }
 
-        Dex.DexLabel
-        {
-            Layout.preferredWidth: _assetProviderColumnWidth
-            text: qsTr("Source")
+            Dex.ColumnHeader
+            {
+                Layout.preferredWidth: _assetChange24hColumnWidth
+                Layout.fillHeight: true
+                h_align: Text.AlignRight
+                sort_type: sort_by_change
+                text: qsTr("Change 24h")
+            }
+
+            Dex.ColumnHeader
+            {
+                Layout.preferredWidth: _assetPriceColumWidth
+                Layout.fillHeight: true
+                h_align: Text.AlignRight
+                sort_type: sort_by_price
+                text: qsTr("Price")
+            }
+
+            Dex.ColumnHeader
+            {
+                Layout.preferredWidth: _assetProviderColumnWidth
+                Layout.fillHeight: true
+                h_align: Text.AlignHCenter
+                text: qsTr("Source")
+            }
         }
     }
 
@@ -79,37 +100,8 @@ Dex.DefaultListView
 
         width: list.width
         height: _assetRowHeight
+
         color: mouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : _idleColor
-
-        Dex.DefaultMouseArea
-        {
-            id: mouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-            onClicked:
-            {
-                if (!can_change_ticker)
-                    return
-                if (mouse.button === Qt.RightButton)
-                    contextMenu.popup()
-                else
-                {
-                    api_wallet_page.ticker = ticker
-                    dashboard.switchPage(Dashboard.PageType.Wallet)
-                }
-            }
-
-            onPressAndHold:
-            {
-                if (!can_change_ticker)
-                    return
-
-                if (mouse.source === Qt.MouseEventNotSynthesized)
-                    contextMenu.popup()
-            }
-        }
 
         RowLayout
         {
@@ -117,13 +109,13 @@ Dex.DefaultListView
 
             Item // Asset Column.
             {
+                Layout.fillHeight: true
                 Layout.preferredWidth: _assetNameColumnWidth
+                Layout.leftMargin: 15
 
-                Dex.DefaultImage {
+                Dex.DexImage {
                     id: assetImage
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
                     source: Dex.General.coinIcon(ticker)
                     width: 30
                     height: 30
@@ -134,7 +126,7 @@ Dex.DefaultListView
                     id: assetNameLabel
                     anchors.top: assetImage.top
                     anchors.left: assetImage.right
-                    anchors.leftMargin: _assetNameColumnLeftMargin
+                    anchors.leftMargin: 15
                     text: model.ticker
                 }
 
@@ -169,18 +161,43 @@ Dex.DefaultListView
             Dex.DexLabel // Balance Column.
             {
                 id: assetBalanceLabel
+                Layout.fillHeight: true
                 Layout.preferredWidth: _assetBalanceColumnWidth
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+
                 font: Dex.DexTypo.body2
-                text_value: Dex.General.formatCrypto("", balance, ticker, main_currency_balance,
-                                                     Dex.API.app.settings_pg.current_currency)
+                text_value: parseFloat(balance).toFixed(8)
+
+                color: Qt.darker(Dex.DexTheme.foregroundColor, 0.8)
+                privacy: true
+            }
+
+            Dex.DexLabel // Fiat Balance
+            {
+                id: fiatBalanceLabel
+                Layout.fillHeight: true
+                Layout.preferredWidth: _fiatBalanceColumnWidth
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+
+                font: Dex.DexTypo.body2
+                text_value: Dex.General.formatFiat("", main_currency_balance, Dex.API.app.settings_pg.current_currency)
+
                 color: Qt.darker(Dex.DexTheme.foregroundColor, 0.8)
                 privacy: true
             }
 
             Dex.DexLabel // Change 24h.
             {
+                id: assetChange24hLabel
+                Layout.fillHeight: true
                 Layout.preferredWidth: _assetChange24hColumnWidth
+
                 font: Dex.DexTypo.body2
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+
                 text_value:
                 {
                     const v = parseFloat(change_24h)
@@ -191,18 +208,25 @@ Dex.DefaultListView
 
             Dex.DexLabel // Price Column.
             {
+                id: price24hLabe
+                Layout.fillHeight: true
                 Layout.preferredWidth: _assetPriceColumWidth
+
                 font: Dex.DexTypo.body2
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+
                 text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
-                                                   Dex.API.app.settings_pg.current_currency)
+                                                   Dex.API.app.settings_pg.current_currency, 6)
                 color: Dex.DexTheme.colorThemeDarkLight
             }
 
             Item // Price Provider
             {
+                Layout.fillHeight: true
                 Layout.preferredWidth: _assetProviderColumnWidth
 
-                Dex.DefaultImage {
+                Dex.DexImage {
                     id: priceProviderIcon
                     enabled: priceProvider !== "unknown"
                     visible: enabled
@@ -232,6 +256,36 @@ Dex.DefaultListView
             }
 
             Dex.CoinMenu { id: contextMenu }
+        }
+
+        Dex.DefaultMouseArea
+        {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+            onClicked:
+            {
+                if (!can_change_ticker)
+                    return
+                if (mouse.button === Qt.RightButton)
+                    contextMenu.popup()
+                else
+                {
+                    api_wallet_page.ticker = ticker
+                    dashboard.switchPage(Dashboard.PageType.Wallet)
+                }
+            }
+
+            onPressAndHold:
+            {
+                if (!can_change_ticker)
+                    return
+
+                if (mouse.source === Qt.MouseEventNotSynthesized)
+                    contextMenu.popup()
+            }
         }
     }
 }

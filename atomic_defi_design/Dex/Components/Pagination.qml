@@ -8,6 +8,8 @@ import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
+// TODO: confirm this component no longer in use; delete.
+
 RowLayout
 {
     id: control
@@ -67,7 +69,7 @@ RowLayout
         currentIndex: options.indexOf(item_count)
         onCurrentValueChanged: API.app.orders_mdl.limit_nb_elements = currentValue
         mainBackgroundColor: Dex.CurrentTheme.backgroundColor
-        dropdownBackgroundColor: Dex.CurrentTheme.backgroundColor
+        popupBackgroundColor: Dex.CurrentTheme.backgroundColor
     }
 
     DefaultText {

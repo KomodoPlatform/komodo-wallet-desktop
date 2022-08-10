@@ -94,6 +94,8 @@ ThemeData
         backgroundColor                     = Dex.Color.argbStrFromRgbaStr(themeData.backgroundColor || defaultTheme.backgroundColor);
         backgroundColorDeep                 = Dex.Color.argbStrFromRgbaStr(themeData.backgroundColorDeep || defaultTheme.backgroundColorDeep);
 
+        busyIndicatorColor                  = Dex.Color.argbStrFromRgbaStr(themeData.busyIndicatorColor || defaultTheme.busyIndicatorColor);
+
         buttonColorDisabled                 = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorDisabled || defaultTheme.buttonColorDisabled);
         buttonColorEnabled                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorEnabled || defaultTheme.buttonColorEnabled);
         buttonColorHovered                  = Dex.Color.argbStrFromRgbaStr(themeData.buttonColorHovered || defaultTheme.buttonColorHovered);
@@ -165,8 +167,8 @@ ThemeData
         rangeSliderIndicatorBackgroundStartColor    = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderIndicatorBackgroundStartColor || defaultTheme.rangeSliderIndicatorBackgroundStartColor);
         rangeSliderIndicatorBackgroundEndColor      = Dex.Color.argbStrFromRgbaStr(themeData.rangeSliderIndicatorBackgroundEndColor || defaultTheme.rangeSliderIndicatorBackgroundEndColor);
 
-        loginWalletIconColorStart                   = Dex.Color.argbStrFromRgbaStr(themeData.loginWalletIconColorStart || defaultTheme.loginWalletIconColorStart)
-        loginWalletIconColorEnd                     = Dex.Color.argbStrFromRgbaStr(themeData.loginWalletIconColorEnd || defaultTheme.loginWalletIconColorEnd)
+        userIconColorStart                   = Dex.Color.argbStrFromRgbaStr(themeData.userIconColorStart || defaultTheme.userIconColorStart)
+        userIconColorEnd                     = Dex.Color.argbStrFromRgbaStr(themeData.userIconColorEnd || defaultTheme.userIconColorEnd)
 
         sidebarBgColor                      = Dex.Color.argbStrFromRgbaStr(themeData.sidebarBgColor || defaultTheme.sidebarBgColor);
         sidebarVersionTextColor             = Dex.Color.argbStrFromRgbaStr(themeData.sidebarVersionTextColor || defaultTheme.sidebarVersionTextColor);
@@ -181,11 +183,17 @@ ThemeData
         tradeSellModeSelectorBackgroundColorEnd             = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorEnd || defaultTheme.tradeSellModeSelectorBackgroundColorEnd);
         tradeMarketModeSelectorNotSelectedBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.tradeMarketModeSelectorNotSelectedBackgroundColor || defaultTheme.tradeMarketModeSelectorNotSelectedBackgroundColor);
 
+        addressBookTagColors = themeData.addressBookTagColors || defaultTheme.addressBookTagColors
+        for (var i = 0; i < addressBookTagColors.length; i++)
+        {
+            addressBookTagColors[i] = Dex.Color.argbStrFromRgbaStr(addressBookTagColors[i])
+        }
+
         okColor                             = Dex.Color.argbStrFromRgbaStr(themeData.okColor || defaultTheme.okColor);
         noColor                             = Dex.Color.argbStrFromRgbaStr(themeData.noColor || defaultTheme.noColor);
 
-        arrowUpColor                        = Dex.Color.argbStrFromRgbaStr(themeData.arrowUpColor || defaultTheme.arrowUpColor);
-        arrowDownColor                      = Dex.Color.argbStrFromRgbaStr(themeData.arrowDownColor || defaultTheme.arrowDownColor);
+        senderColorStart                        = Dex.Color.argbStrFromRgbaStr(themeData.senderColorStart || defaultTheme.senderColorStart);
+        receiverColorStart                      = Dex.Color.argbStrFromRgbaStr(themeData.receiverColorStart || defaultTheme.receiverColorStart);
 
         lineSeparatorColor                  = Dex.Color.argbStrFromRgbaStr(themeData.lineSeparatorColor || defaultTheme.lineSeparatorColor);
     }
@@ -207,6 +215,8 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.foregroundColor : %1".arg(foregroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.backgroundColor : %1".arg(backgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.backgroundColorDeep : %1".arg(backgroundColorDeep));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.busyIndicatorColor : %1".arg(busyIndicatorColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.buttonColorDisabled : %1".arg(buttonColorDisabled));
         console.info("Dex.Themes.CurrentTheme.printValues.buttonColorEnabled : %1".arg(buttonColorEnabled));
@@ -278,8 +288,8 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderIndicatorBackgroundStartColor : %1".arg(rangeSliderIndicatorBackgroundStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.rangeSliderIndicatorBackgroundEndColor : %1".arg(rangeSliderIndicatorBackgroundEndColor));
 
-        console.info("Dex.Themes.CurrentTheme.printValues.loginWalletIconColorStart : %1".arg(loginWalletIconColorStart));
-        console.info("Dex.Themes.CurrentTheme.printValues.loginWalletIconColorEnd : %1".arg(loginWalletIconColorEnd));
+        console.info("Dex.Themes.CurrentTheme.printValues.userIconColorStart : %1".arg(userIconColorStart));
+        console.info("Dex.Themes.CurrentTheme.printValues.userIconColorEnd : %1".arg(userIconColorEnd));
 
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarBgColor : %1".arg(sidebarBgColor));
         console.info("Dex.Themes.CurrentTheme.printValues.sidebarVersionTextColor : %1".arg(sidebarVersionTextColor));
@@ -294,11 +304,13 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.tradeSellModeSelectorBackgroundColorEnd : %1".arg(tradeSellModeSelectorBackgroundColorEnd));
         console.info("Dex.Themes.CurrentTheme.printValues.tradeMarketModeSelectorNotSelectedBackgroundColor : %1".arg(tradeMarketModeSelectorNotSelectedBackgroundColor));
 
+        console.info("Dex.Themes.CurrentTheme.printValues.addressBookTagColors : %1".arg(addressBookTagColors));
+
         console.info("Dex.Themes.CurrentTheme.printValues.okColor : %1".arg(okColor));
         console.info("Dex.Themes.CurrentTheme.printValues.noColor : %1".arg(noColor));
 
-        console.info("Dex.Themes.CurrentTheme.printValues.arrowUpColor : %1".arg(arrowUpColor));
-        console.info("Dex.Themes.CurrentTheme.printValues.arrowDownColor : %1".arg(arrowDownColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.senderColorStart : %1".arg(senderColorStart));
+        console.info("Dex.Themes.CurrentTheme.printValues.receiverColorStart : %1".arg(receiverColorStart));
 
         console.info("Dex.Themes.CurrentTheme.printValues.lineSeparatorColor : %1".arg(lineSeparatorColor));
 

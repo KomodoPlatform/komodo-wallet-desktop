@@ -5,28 +5,109 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
-import "../../../Constants"
 import App 1.0
-import Dex.Themes 1.0 as Dex
 import bignumberjs 1.0
+import "../../../Constants"
+import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
+import AtomicDEX.MarketMode 1.0
+import AtomicDEX.TradingError 1.0
+
 
 Item
 {
     property bool isAsk
+
+    DefaultTooltip
+    {
+        visible: mouse_area.containsMouse && (tooltip_text.text_value != "")
+        width: 300
+
+        contentItem: RowLayout
+        {
+            width: 290
+
+            Qaterial.ColorIcon
+            {
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignVCenter
+                source: Qaterial.Icons.alert
+                color: Qaterial.Colors.amber
+            }
+
+            DexLabel
+            {
+                id: tooltip_text
+                Layout.fillWidth: true
+
+                text_value:
+                {
+                    if (mouse_area.containsMouse)
+                    {
+                        let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
+                        let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
+
+                        if (!enough_funds_to_pay_min_volume)
+                        {
+                            return qsTr("This order requires a minimum amount of %1 %2 <br>You don't have enough funds.<br> %3")
+                                .arg(parseFloat(min_volume).toFixed(8))
+                                .arg(isAsk ? right_ticker : left_ticker)
+                                .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ?
+                                    "Your max balance after fees is: %1".arg(isAsk ?
+                                    relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
+                        }
+
+                        if ([TradingError.LeftParentChainNotEnoughBalance, TradingError.RightParentChainNotEnoughBalance,
+                             TradingError.LeftParentChainNotEnabled, TradingError.RightParentChainNotEnabled].includes(last_trading_error))
+                        {
+                            return General.getTradingError(
+                                last_trading_error, curr_fee_info,
+                                base_ticker, rel_ticker, left_ticker,
+                                right_ticker)
+                        }
+
+                        if (!([TradingError.None, TradingError.PriceFieldNotFilled, TradingError.VolumeFieldNotFilled].includes(last_trading_error)))
+                        {
+                            if (isAsk && API.app.trading_pg.market_mode == MarketMode.Buy)
+                            {
+                                return General.getTradingError(
+                                    last_trading_error, curr_fee_info,
+                                    base_ticker, rel_ticker, left_ticker,
+                                    right_ticker)
+                            }
+
+                            if (!isAsk && API.app.trading_pg.market_mode == MarketMode.Sell)
+                            {
+                                return General.getTradingError(
+                                    last_trading_error, curr_fee_info,
+                                    base_ticker, rel_ticker, left_ticker,
+                                    right_ticker)
+                            }
+                            return ""
+                        }
+                        return ""
+                    }
+                    return ""
+                }
+                wrapMode: Text.WordWrap
+            }
+        }
+        delay: 200
+    }
 
     DefaultMouseArea
     {
         id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
+
         onClicked:
         {
-            if(is_mine) return
+            if (is_mine) return
 
-            if(enough_funds_to_pay_min_volume)
+            if (enough_funds_to_pay_min_volume )
             {
-                exchange_trade.orderSelected = true
-                orderList.currentIndex = index
+                orderbook_list.currentIndex = index
 
                 selectOrder(isAsk, coin, price, quantity, price_denom,
                             price_numer, quantity_denom, quantity_numer,
@@ -34,9 +115,8 @@ Item
                             rel_min_volume, rel_max_volume, base_max_volume_denom,
                             base_max_volume_numer, uuid)
 
-                order_form.visible = General.flipFalse(order_form.visible)
-                order_form.hidden = General.flipTrue(order_form.hidden)
-                if (!order_form.hidden) order_form.contentVisible = General.flipFalse(order_form.contentVisible)
+                placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
+                orderSelected()
             }
         }
 
@@ -82,65 +162,54 @@ Item
             }
         }
 
-        RowLayout
+        Row
         {
             id: row
             anchors.fill: parent
             anchors.horizontalCenter: parent.horizontalCenter
             onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
+            spacing: 0
 
-            // error icon
-            DefaultAlertIcon
+            Dex.ElidableText
             {
-                visible: !enough_funds_to_pay_min_volume
-                iconSize: 12
-                
-                tooltipText:
-                {
-                    let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
-                    let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
-
-                    qsTr("This order requires a minimum amount of %1 %2. %3")
-                        .arg(parseFloat(min_volume).toFixed(8))
-                        .arg(isAsk ? API.app.trading_pg.market_pairs_mdl.right_selected_coin : API.app.trading_pg.market_pairs_mdl.left_selected_coin)
-                        .arg(relMaxTakerVol > 0 || baseMaxTakerVol > 0 ? "Your max balance after fees is: %1".arg(isAsk ? relMaxTakerVol.toFixed(8) : baseMaxTakerVol.toFixed(8)) : "")
-                }
-            }
-
-            // Price
-            DefaultText
-            {
-                Layout.preferredWidth: (parent.width / 100) * 33
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.31
                 text: { new BigNumber(price).toFixed(8) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                wrapMode: Text.NoWrap
             }
 
+            Item { width: parent.width * 0.01 }
+
             // Quantity
-            DefaultText
+            Dex.ElidableText
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.37
                 text: { new BigNumber(quantity).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
                 onTextChanged: depth_bar.width = ((depth * 100) * (mouse_area.width + 40)) / 100
+                wrapMode: Text.NoWrap
             }
 
+            Item { width: parent.width * 0.01 }
+
             // Total
-            DefaultText
+            Dex.ElidableText
             {
-                Layout.preferredWidth: (parent.width / 100) * 30
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.30
                 rightPadding: (is_mine) && (mouse_area.containsMouse || cancel_button.containsMouse) ? 30 : 0
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 text: { new BigNumber(total).toFixed(6) }
-                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignRight
+                wrapMode: Text.NoWrap
 
                 Behavior on rightPadding { NumberAnimation { duration: 150 } }
             }
@@ -151,13 +220,14 @@ Item
     {
         id: cancel_button_text
         property bool requested_cancel: false
+
         visible: is_mine && !requested_cancel
 
-        source: Qaterial.Icons.close
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: 1
         anchors.right: parent.right
         anchors.rightMargin:  mouse_area.containsMouse || cancel_button.containsMouse ? 12 : 6
+
         Behavior on iconSize
         {
             NumberAnimation
@@ -178,10 +248,9 @@ Item
             anchors.fill: parent
             hoverEnabled: true
 
-
             onClicked:
             {
-                if(!is_mine) return
+                if (!is_mine) return
 
                 cancel_button_text.requested_cancel = true
                 cancelOrder(uuid)

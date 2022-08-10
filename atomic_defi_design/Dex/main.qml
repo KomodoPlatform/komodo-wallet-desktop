@@ -1,14 +1,11 @@
-//! Qt Imports
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
 import Qt.labs.settings 1.0
 
-//! 3rdParty Imports
 import Qaterial 1.0 as Qaterial
 
-//! Project Imports
 import App 1.0
 import "Components"
 import Dex.Themes 1.0 as Dex
@@ -108,7 +105,7 @@ DexWindow
                     anchors.fill: parent
                     onClicked:
                     {
-                        let dialog = app.showText(
+                        let dialog = app.showDialog(
                         {
                             "title": qsTr("Confirm Logout"),
                             text: qsTr("Are you sure you want to log out?"),
