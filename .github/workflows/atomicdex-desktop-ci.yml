@@ -10,20 +10,13 @@ on:
     - cron: '0 0 * * 1'
 
 env:
-<<<<<<< HEAD
+  DEX_API: "mm2"
+  DEX_RPCPORT: 7783
+  DEX_RPC: "http://127.0.0.1:7783"
   DEX_PROJECT_NAME: "shibadex-desktop"
   DEX_DISPLAY_NAME: "ShibaDex Desktop"
   DEX_COMPANY: "CZ Web Service S.A"
   DEX_WEBSITE: "https://shibadex.io/"
-=======
-  DEX_API: "mm2"
-  DEX_RPCPORT: 7783
-  DEX_RPC: "http://127.0.0.1:7783"
-  DEX_PROJECT_NAME: "atomicdex-desktop"
-  DEX_DISPLAY_NAME: "AtomicDex Desktop"
-  DEX_COMPANY: "KomodoPlatform"
-  DEX_WEBSITE: "https://atomicdex.io/"
->>>>>>> dev
 
 jobs:
 

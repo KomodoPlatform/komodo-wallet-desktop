@@ -1,20 +1,13 @@
 # Default project values
-<<<<<<< HEAD
+
 set(DEX_PROJECT_NAME "shibaDEX")
 set(DEX_DISPLAY_NAME "shibaDEX Desktop")
 set(DEX_MAINTENANCE_TOOL_NAME "shibaDEX Maintenance Tool")
 set(DEX_COMPANY "CZ Web Service S.A")
 set(DEX_WEBSITE "https://shibadex.io/")
-=======
-set(DEX_API "mm2")
-set(DEX_RPCPORT 7783)
-set(DEX_RPC "http://127.0.0.1:7783")
-set(DEX_PROJECT_NAME "atomicdex-desktop")
-set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
-set(DEX_MAINTENANCE_TOOL_NAME "AtomicDEX Maintenance Tool")
-set(DEX_COMPANY "KomodoPlatform")
-set(DEX_WEBSITE "https://atomicdex.io/")
->>>>>>> dev
+set(DEX_API "mm2-shibadex")
+set(DEX_RPCPORT 7883)
+set(DEX_RPC "http://127.0.0.1:7883")
 set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
 set(DEX_DISCORD "https://komodoplatform.com/discord")
 set(DEX_TWITTER "https://twitter.com/shibadex")
