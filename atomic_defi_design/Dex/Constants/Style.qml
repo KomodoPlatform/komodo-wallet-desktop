@@ -274,6 +274,7 @@ QtObject {
                                           "GST": "#D7D7D7",
                                           "IOTA": "#404040",
                                           "ILNF": "#28873b",
+                                          "ILNSW": "#4B1E7E",
                                           "IC": "#72009D",
                                           "JSTR": "#627EEA",
                                           "DOGE": "#C3A634",
