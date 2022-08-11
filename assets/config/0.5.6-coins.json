@@ -6503,7 +6503,7 @@
     "name": "ilien Fuel",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
-    "nomics_id": "ilnfbep20",
+    "nomics_id": "ILNF",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -6575,7 +6575,7 @@
     "name": "ilien Fuel",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
-    "nomics_id": "ilnf",
+    "nomics_id": "ILNF",
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
