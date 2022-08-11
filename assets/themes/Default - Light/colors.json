@@ -17,17 +17,17 @@
     "gradientButtonEndColor": "#FF6865FF",
     "gradientButtonDisabledStartColor": "#F06500AA",
     "gradientButtonDisabledEndColor": "#FF6865AA",
-    "gradientButtonHoveredStartColor": "#F06500",
-    "gradientButtonHoveredEndColor": "#FF6865",
-    "gradientButtonPressedStartColor": "#F06500",
-    "gradientButtonPressedEndColor": "#FF6865",
+    "gradientButtonHoveredStartColor": "#F06500FF",
+    "gradientButtonHoveredEndColor": "#FF6865FF",
+    "gradientButtonPressedStartColor": "#F06500FF",
+    "gradientButtonPressedEndColor": "#FF6865FF",
     "gradientButtonTextEnabledColor": "#FFFFFFFF",
     "gradientButtonTextDisabledColor": "#FFFFFFFF",
     "gradientButtonTextHoveredColor": "#FFFFFFFF",
     "gradientButtonTextPressedColor": "#FFFFFFFF",
 
-    "checkBoxGradientStartColor": "#F06500",
-    "checkBoxGradientEndColor": "#FF6865",
+    "checkBoxGradientStartColor": "#F06500FF",
+    "checkBoxGradientEndColor": "#FF6865FF",
 
     "switchGradientStartColor": "#F06500FF",
     "switchGradientEndColor": "#F9DBC5FF",
@@ -54,9 +54,9 @@
     "tabSelectedColor": "#F06500FF",
 
     "textDisabledColor": "#A9A9A9FF",
-    "textSelectionColor": "#14bca6",
+    "textSelectionColor": "#14bca6FF",
     "textPlaceholderColor": "#18171F73",
-    "textSelectedColor": "#f9f9fb",
+    "textSelectedColor": "#f9f9fbFF",
 
     "textFieldBackgroundColor": "#EFEFEFFF",
     "textFieldActiveBackgroundColor": "#EDF4FFFF",
@@ -79,6 +79,7 @@
     "loginWalletIconColorEnd": "#FF6865FF",
 
     "sidebarBgColor": "#E5E5E5FF",
+    "sidebarLineTextSelected": "#FFFFFFFF",
     "sidebarVersionTextColor": "#878787FF",
     "sidebarCursorStartColor": "#F06500FF",
     "sidebarCursorEndColor": "#F0650000",
@@ -89,6 +90,9 @@
     "tradeSellModeSelectorBackgroundColorStart": "#F00500FF",
     "tradeSellModeSelectorBackgroundColorEnd": "#FF8A88FF",
     "tradeMarketModeSelectorNotSelectedBackgroundColor": "#89B6FF21",
+
+    "busyIndicatorColor": "##F06500FF",
+    "userIconColorStart": "##F06500FF",
 
     "okColor": "#00AC6EFF",
     "noColor": "#F00500FF",
