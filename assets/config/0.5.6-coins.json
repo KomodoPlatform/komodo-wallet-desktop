@@ -6553,7 +6553,7 @@
     "currently_enabled": false
   },
   "ILNSW-PLG20": {
-    "coin": "ilnsw-plg20",
+    "coin": "ILNSW-PLG20",
     "name": "ilien Swap",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
