@@ -20,6 +20,7 @@
 #include "mm2.hpp"
 #include "rpc.tx.history.hpp"
 #include "rpc.hpp"
+#include "get_public_key_rpc.hpp"
 
 namespace
 {
@@ -148,8 +149,8 @@ namespace atomic_dex::mm2
                            {
                                try
                                {
-                                   auto answer = process_rpc_answer<Rpc>(resp);
-                                   on_rpc_processed(answer);
+                                   auto rpc = process_rpc_answer<Rpc>(resp);
+                                   on_rpc_processed(rpc);
                                }
                                catch (const std::exception& ex)
                                {
@@ -157,6 +158,7 @@ namespace atomic_dex::mm2
                                }
                            });
     }
+    template void mm2_client::process_rpc_async<get_public_key_rpc>(const std::function<void(get_public_key_rpc)>&);
 
     void
     mm2_client::stop()

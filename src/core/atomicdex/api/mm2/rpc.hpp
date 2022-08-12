@@ -39,5 +39,5 @@ namespace atomic_dex::mm2
         std::string error_data;
     };
 
-    inline void from_json(const nlohmann::json& j, rpc_basic_error_type& in);
+    void from_json(const nlohmann::json& j, rpc_basic_error_type& in);
 }
