@@ -69,6 +69,9 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install swig --version=3.0.7 --no-progress --allow-downgrade -y
+          git clone https://github.com/KomodoPlatform/libwally-core.git
+          cd libwally-core
+          ls
           .\tools\msvc\wheel_preamble.bat
           .\tools\msvc\build.bat
 
