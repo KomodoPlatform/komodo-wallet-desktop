@@ -69,11 +69,11 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install swig --version=3.0.7 --no-progress --allow-downgrade -y
-          git clone https://github.com/KomodoPlatform/libwally-core.git
-          cd libwally-core
+          git clone --recurse-submodules https://github.com/KomodoPlatform/libwally-core.git
+          cd libwally-core/tools/msvc
           ls
-          .\tools\msvc\wheel_preamble.bat
-          .\tools\msvc\build.bat
+          wheel_preamble.bat
+          build.bat
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
