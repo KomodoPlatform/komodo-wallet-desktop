@@ -72,8 +72,14 @@ jobs:
           git clone --recurse-submodules https://github.com/KomodoPlatform/libwally-core.git
           cd libwally-core/tools/msvc
           ls
-          wheel_preamble.bat
-          build.bat
+          call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+          tools\msvc\wheel.bat
+          # wheel_preamble.bat
+          # build.bat
+          cd ../..
+          ls
+          cd wally_dist
+          ls
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
