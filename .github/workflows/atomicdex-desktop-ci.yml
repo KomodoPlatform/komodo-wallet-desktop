@@ -65,6 +65,13 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Install Libwally (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          choco install swig --version=3.0.7 --no-progress --allow-downgrade -y
+          .\tools\msvc\wheel_preamble.bat
+          .\tools\msvc\build.bat
+
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2.14.0
