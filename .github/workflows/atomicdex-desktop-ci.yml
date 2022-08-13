@@ -77,10 +77,11 @@ jobs:
           .\wheel.bat
           # wheel_preamble.bat
           # build.bat
-          cd ../..
-          ls
-          cd wally_dist
-          ls
+          cd c:\
+          Get-ChildItem -Filter wally.dll -Recurse
+          cd d:\
+          Get-ChildItem -Filter wally.dll -Recurse
+          
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
