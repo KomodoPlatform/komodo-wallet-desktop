@@ -577,6 +577,15 @@ QtObject {
         return tx_fee + "\n" + trading_fee +"<br>"+minimum_amount
     }
 
+    function is_swap_safe(checkbox)
+    {
+        if (checkbox.checked == true || checkbox.visible == false)
+        {
+            return (!API.app.trading_pg.buy_sell_rpc_busy && API.app.trading_pg.last_trading_error == TradingError.None)
+        }
+        return false
+    }
+
     function validateWallet(wallet_name) {
         if (wallet_name.length >= 25) return "Wallet name must 25 chars or less"
         return checkIfWalletExists(wallet_name)
