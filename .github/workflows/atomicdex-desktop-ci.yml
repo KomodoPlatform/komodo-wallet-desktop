@@ -69,19 +69,20 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install swig --version=3.0.7 --no-progress --allow-downgrade -y
+          # $env:SWIG_PATH = ''
           git clone --recurse-submodules https://github.com/KomodoPlatform/libwally-core.git
           cd "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build"
           ls
           .\vcvarsx86_amd64.bat
-          cd D:\a\atomicDEX-Desktop\atomicDEX-Desktop\libwally-core\tools\msvc
-          .\wheel.bat
+          cd D:\a\atomicDEX-Desktop\atomicDEX-Desktop\libwally-core
+          .\tools\msvc\wheel.bat
           # wheel_preamble.bat
-          # build.bat
+          .\tools\msvc\build.bat
           cd c:\
-          Get-ChildItem -Filter wally.dll -Recurse
+          Get-ChildItem -Filter wally.dll -Recurse -ErrorAction SilentlyContinue
           cd d:\
-          Get-ChildItem -Filter wally.dll -Recurse
-          
+          Get-ChildItem -Filter wally.dll -Recurse -ErrorAction SilentlyContinue
+
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
