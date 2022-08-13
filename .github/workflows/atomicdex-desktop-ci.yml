@@ -72,8 +72,11 @@ jobs:
           git clone --recurse-submodules https://github.com/KomodoPlatform/libwally-core.git
           cd libwally-core/tools/msvc
           ls
-          "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
-          tools\msvc\wheel.bat
+          
+          cd “C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC”
+          vcvarsall.bat amd64
+          cd D:\a\atomicDEX-Desktop\atomicDEX-Desktop\libwally-core\tools\msvc
+          wheel.bat
           # wheel_preamble.bat
           # build.bat
           cd ../..
