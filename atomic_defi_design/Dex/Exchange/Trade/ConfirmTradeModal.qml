@@ -79,7 +79,7 @@ MultipageModal
                     width: 425
                     height: 30
                     color: Style.colorRed2
-                    visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 25
+                    visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
 
                     RowLayout
                     {
@@ -92,13 +92,13 @@ MultipageModal
                             id: allow_bad_trade
                             Layout.alignment: Qt.AlignCenter
                             textColor: Style.colorWhite0
-                            visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 25
+                            visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
                             spacing: 2
                             boxWidth: 20
                             boxHeight: 20
                             labelWidth: 400
                             label.wrapMode: Label.NoWrap
-                            text: qsTr("Trade price is more than 25% different to CEX! Confirm?")
+                            text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
                         }
 
                         Item { width: 3 }
