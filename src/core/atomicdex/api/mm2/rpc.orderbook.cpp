@@ -77,4 +77,4 @@ namespace atomic_dex::mm2
         j["base"] = request.base;
         j["rel"]  = request.rel;
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

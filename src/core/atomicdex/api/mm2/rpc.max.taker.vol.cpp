@@ -63,4 +63,4 @@ namespace atomic_dex::mm2
             answer.result.value().coin = j.at("coin").get<std::string>();
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

@@ -27,4 +27,4 @@ namespace atomic_dex::mm2
     {
         extract_rpc_json_answer<min_volume_answer_success>(j, answer);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

@@ -41,4 +41,4 @@ namespace atomic_dex::mm2
             cfg.address = cfg.address.substr(sizeof("bitcoincash"));
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

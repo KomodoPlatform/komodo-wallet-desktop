@@ -726,4 +726,4 @@ namespace atomic_dex::mm2
     {
         g_system_mgr = std::addressof(system_manager);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

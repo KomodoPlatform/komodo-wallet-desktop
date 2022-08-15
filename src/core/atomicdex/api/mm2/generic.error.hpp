@@ -18,4 +18,4 @@ namespace atomic_dex::mm2
     };
 
     void from_json(const nlohmann::json& j, generic_answer_error& res);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

@@ -164,4 +164,4 @@ namespace atomic_dex::mm2
         j.at("result").get_to(cfg.result);
         // SPDLOG_INFO("balance for {} is {}", cfg.address, cfg.balance);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

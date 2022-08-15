@@ -29,4 +29,4 @@ namespace atomic_dex::mm2
     {
         extract_rpc_json_answer<disable_coin_answer_success>(j, resp);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

@@ -84,4 +84,4 @@ namespace atomic_dex::mm2
         std::string s         = atomic_dex::utils::to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %H:%M");
         cfg.timestamp_as_date = std::move(s);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

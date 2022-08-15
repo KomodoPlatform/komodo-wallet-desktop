@@ -74,4 +74,4 @@ namespace atomic_dex::mm2
     {
         extract_rpc_json_answer<trade_preimage_answer_success>(j, answer);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

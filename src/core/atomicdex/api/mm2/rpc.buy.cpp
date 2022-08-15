@@ -76,4 +76,4 @@ namespace atomic_dex::mm2
             SPDLOG_INFO("The order is not picked from orderbook we create it from volume = {}, price = {}", j.at("volume").dump(4), request.price);
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

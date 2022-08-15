@@ -10,4 +10,4 @@ namespace atomic_dex::mm2
         j.at("error_type").get_to(res.error_type);
         j.at("error_data").get_to(res.error_data);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

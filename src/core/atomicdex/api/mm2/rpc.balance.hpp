@@ -37,7 +37,7 @@ namespace atomic_dex::mm2
     void to_json(nlohmann::json& j, const balance_request& cfg);
 
     void from_json(const nlohmann::json& j, balance_answer& cfg);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {

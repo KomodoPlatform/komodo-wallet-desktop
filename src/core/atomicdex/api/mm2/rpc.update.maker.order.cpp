@@ -41,4 +41,4 @@ namespace atomic_dex::mm2
             j["rel_nota"] = request.rel_nota.value();
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

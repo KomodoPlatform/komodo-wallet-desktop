@@ -51,7 +51,7 @@ namespace atomic_dex::mm2
     void to_json(nlohmann::json& j, const electrum_request& cfg);
 
     void from_json(const nlohmann::json& j, electrum_answer& answer);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {

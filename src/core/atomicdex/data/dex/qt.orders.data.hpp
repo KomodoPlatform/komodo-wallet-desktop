@@ -88,7 +88,7 @@ namespace atomic_dex::mm2
         std::optional<QString>        min_volume{std::nullopt};
         std::optional<nlohmann::json> conf_settings{std::nullopt};
     };
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {

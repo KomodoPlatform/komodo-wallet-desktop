@@ -64,7 +64,7 @@ namespace atomic_dex::mm2
     };
 
     void from_json(const nlohmann::json& j, buy_answer& answer);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {

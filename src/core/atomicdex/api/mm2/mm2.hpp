@@ -239,7 +239,7 @@ namespace atomic_dex::mm2
     void               set_rpc_password(std::string rpc_password) ;
     const std::string& get_rpc_password() ;
     void               set_system_manager(ag::ecs::system_manager& system_manager);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {

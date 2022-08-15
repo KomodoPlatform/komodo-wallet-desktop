@@ -49,4 +49,4 @@ namespace atomic_dex::mm2
         j.at("balance").get_to(cfg.balance);
         j.at("result").get_to(cfg.result);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
