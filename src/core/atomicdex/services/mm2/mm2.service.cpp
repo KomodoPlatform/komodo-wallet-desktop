@@ -651,7 +651,7 @@ namespace atomic_dex
                 }
                 nlohmann::json j = ::mm2::api::template_request("electrum");
                 ::mm2::api::to_json(j, request);
-                SPDLOG_INFO("electrum request: {}", j.dump(4));
+                // SPDLOG_INFO("electrum request: {}", j.dump(4));
                 batch_array.push_back(j);
             }
             else

@@ -41,7 +41,6 @@ namespace mm2::api
         if (cfg.merge_params.has_value()) {
             j["utxo_merge_params"] = cfg.merge_params.value();
         }
-        SPDLOG_INFO("electrum: {}", j.dump());
     }
 
     //! Deserialization
