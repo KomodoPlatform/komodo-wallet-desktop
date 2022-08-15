@@ -117,6 +117,7 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         tests/api/komodo_prices/komodo.prices.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
         tests/api/mm2/mm2.fraction.tests.cpp
+        tests/api/mm2/mm2.api.utxo.merge.params.tests.cpp
 
         ##! Utilities
         tests/utilities/qt.utilities.tests.cpp
