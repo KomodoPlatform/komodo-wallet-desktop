@@ -35,10 +35,12 @@ namespace mm2::api
             j["swap_contract_address"] = cfg.is_testnet ? cfg.testnet_qrc_swap_contract_address : cfg.mainnet_qrc_swap_contract_address;
             j["fallback_swap_contract"] = cfg.is_testnet ? cfg.testnet_fallback_qrc_swap_contract_address : cfg.mainnet_fallback_qrc_swap_contract_address;
         }
-        if (cfg.address_format.has_value()) {
+        if (cfg.address_format.has_value())
+        {
             j["address_format"] = cfg.address_format.value();
         }
-        if (cfg.merge_params.has_value()) {
+        if (cfg.merge_params.has_value())
+        {
             j["utxo_merge_params"] = cfg.merge_params.value();
         }
     }
