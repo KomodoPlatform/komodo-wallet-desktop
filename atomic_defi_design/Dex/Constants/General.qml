@@ -529,6 +529,16 @@ QtObject {
         return type === "QRC-20" ? "Satoshi" : "Gwei"
     }
 
+    function isSpecialToken(current_ticker_infos) {
+        if (current_ticker_infos.hasOwnProperty("has_parent_fees_ticker"))
+            return current_ticker_infos.has_parent_fees_ticker
+        return false
+    }
+
+    function isERC20(current_ticker_infos) {
+        return current_ticker_infos.type === "ERC-20" || current_ticker_infos.type === "BEP-20" || current_ticker_infos.type == "Matic"
+    }
+
     function isParentCoin(ticker) {
         return ["KMD", "ETH", "MATIC", "AVAX", "FTM", "QTUM"].includes(ticker)
     }
@@ -544,6 +554,9 @@ QtObject {
 
     function getParentCoin(type) {
         if(type === "ERC-20") return "ETH"
+        else if(type === "PLG-20") return "MATIC"
+        else if(type === "AVX-20") return "AVAX"
+        else if(type === "FTM-20") return "FTM"
         else if(type === "QRC-20") return "QTUM"
         else if(type === "Smart Chain") return "KMD"
         return "?"

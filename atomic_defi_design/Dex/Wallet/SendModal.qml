@@ -68,18 +68,9 @@ MultipageModal
         api_wallet_page.broadcast(send_result.withdraw_answer.tx_hex, false, send_result.withdraw_answer.max, input_amount.text)
     }
 
-    function isSpecialToken() {
-        if (current_ticker_infos.hasOwnProperty("has_parent_fees_ticker"))
-            return current_ticker_infos.has_parent_fees_ticker
-        return false
-    }
-
-    function isERC20() {
-        return current_ticker_infos.type === "ERC-20" || current_ticker_infos.type === "BEP-20" || current_ticker_infos.type == "Matic"
-    }
 
     function hasErc20CaseIssue(addr) {
-        if(!isERC20()) return false
+        if(!General.isERC20(current_ticker_infos)) return false
         if(addr.length <= 2) return false
 
         addr = addr.substring(2) // Remove 0x
@@ -103,7 +94,7 @@ MultipageModal
 
         const amount = parseFloat(getCryptoAmount())
 
-        if(isSpecialToken()) {
+        if(General.isSpecialToken(current_ticker_infos)) {
             const parent_ticker = General.getFeesTicker(current_ticker_infos)
             const gas_limit = parseFloat(input_custom_fees_gas.text)
             const gas_price = parseFloat(input_custom_fees_gas_price.text)
@@ -137,8 +128,8 @@ MultipageModal
 
     function feesAreFilled() {
         return  (!custom_fees_switch.checked || (
-                       (!isSpecialToken() && input_custom_fees.acceptableInput) ||
-                       (isSpecialToken() && input_custom_fees_gas.acceptableInput && input_custom_fees_gas_price.acceptableInput &&
+                       (!General.isSpecialToken(current_ticker_infos) && input_custom_fees.acceptableInput) ||
+                       (General.isSpecialToken(current_ticker_infos) && input_custom_fees_gas.acceptableInput && input_custom_fees_gas_price.acceptableInput &&
                                        parseFloat(input_custom_fees_gas.text) > 0 && parseFloat(input_custom_fees_gas_price.text) > 0)
                      )
                  )
@@ -603,7 +594,7 @@ MultipageModal
             // Normal coins, Custom fees input
             AmountField
             {
-                visible: !isSpecialToken() && !isParentCoin(api_wallet_page.ticker)
+                visible: !General.isSpecialToken(current_ticker_infos) && !General.isParentCoin(api_wallet_page.ticker)
 
                 id: input_custom_fees
 
@@ -619,7 +610,7 @@ MultipageModal
             // Token coins
             ColumnLayout
             {
-                visible: isSpecialToken()
+                visible: General.isSpecialToken(current_ticker_infos)
                 Layout.alignment: Qt.AlignHCenter
 
                 // Gas input
@@ -722,7 +713,7 @@ MultipageModal
                 text: qsTr("Prepare")
 
                 onClicked: prepareSendCoin(input_address.text, getCryptoAmount(), custom_fees_switch.checked, input_custom_fees.text,
-                                           isSpecialToken(), input_custom_fees_gas.text, input_custom_fees_gas_price.text)
+                                           General.isSpecialToken(current_ticker_infos), input_custom_fees_gas.text, input_custom_fees_gas_price.text)
             }
         }
 

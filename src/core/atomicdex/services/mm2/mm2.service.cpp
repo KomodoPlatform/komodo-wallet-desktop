@@ -752,13 +752,18 @@ namespace atomic_dex
                                                     pplx::task<web::http::http_response> z_resp_task = m_mm2_client.async_rpc_batch_standalone(z_batch_array);
                                                     web::http::http_response             z_resp      = z_resp_task.get();
                                                     auto                                 z_answers   = ::mm2::api::basic_batch_answer(z_resp);
-                                                    z_error = z_answers;
+                                                    z_error                                          = z_answers;
+                                                    std::vector<std::string>             this_ticker;
+                                                    this_ticker.push_back(tickers[idx]);
                                                     // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
                                                     if (status == "Ready")
                                                     {
                                                         SPDLOG_DEBUG("{} activation complete!", tickers[idx]);
+                                                        dispatcher_.trigger<coin_fully_initialized>(this_ticker);
+                                                        std::unique_lock lock(m_coin_cfg_mutex);
+                                                        m_coins_informations[tickers[idx]].currently_enabled = true;
                                                         break;
                                                     }
                                                     else
@@ -1238,10 +1243,12 @@ namespace atomic_dex
                 return;
             }
         }
+
         t_balance_request balance_request{.coin = cfg_infos.ticker};
         nlohmann::json    j = ::mm2::api::template_request("my_balance");
         ::mm2::api::to_json(j, balance_request);
         batch_array.push_back(j);
+
         auto answer_functor = [this](web::http::http_response resp)
         {
             try
@@ -1257,6 +1264,7 @@ namespace atomic_dex
                 SPDLOG_ERROR("exception in fetch_single_balance: {}", error.what());
             }
         };
+
         auto error_functor = [this, batch = batch_array](pplx::task<void> previous_task)
         { this->handle_exception_pplx_task(previous_task, "fetch_single_balance", batch); };
         m_mm2_client.async_rpc_batch_standalone(batch_array).then(answer_functor).then(error_functor);
