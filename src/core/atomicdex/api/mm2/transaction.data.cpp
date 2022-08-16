@@ -75,6 +75,16 @@ namespace mm2::api
         //{
         //    cfg.internal_id = j.at("internal_id").get<std::string>();
         //}
+        if (j.at("timestamp").get<std::size_t>() != 0)
+        {
+            cfg.timestamp = j.at("timestamp").get<std::size_t>();
+        }
+        else
+        {
+            using namespace std::chrono;
+            cfg.timestamp      = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+        }
+
         if (j.contains("confirmations"))
         {
             cfg.confirmations = j.at("confirmations").get<std::size_t>();
