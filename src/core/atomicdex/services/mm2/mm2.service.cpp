@@ -644,7 +644,7 @@ namespace atomic_dex
 
                 if (coin_info.utxo_merge.value_or(false))
                 {
-                    t_utxo_merge_params params{.merge_at = 300, .check_every = 60, .max_merge_at_once = 200};
+                    t_utxo_merge_params params{.merge_at = 250, .check_every = 300, .max_merge_at_once = 125};
                     nlohmann::json             j;
                     mm2::api::to_json(j, params);
                     request.merge_params     = j;
