@@ -36,8 +36,8 @@ namespace mm2::api
 
     struct init_z_coin_status_answer_success
     {
-        std::string status;
-        std::string details;
+        std::string status{"disabled"};
+        std::string details{"N/A"};
         std::optional<std::string> coin;
         std::optional<std::string> address;
         std::optional<std::string> current_scanned_block;
