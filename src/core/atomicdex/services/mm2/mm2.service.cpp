@@ -542,6 +542,7 @@ namespace atomic_dex
                         {
                             for (auto&& answer: answers)
                             {
+                                const std::string error = answer.dump(4);
                                 if (answer.contains("balance"))
                                 {
                                     this->process_balance_answer(answer);
@@ -552,7 +553,6 @@ namespace atomic_dex
                                 }
                                 else
                                 {
-                                    const std::string error = answer.dump(4);
                                     SPDLOG_ERROR("error answer for tx or my_balance: {}", error);
                                     this->dispatcher_.trigger<tx_fetch_finished>(true);
                                     if (error.find("future timed out") != std::string::npos)
@@ -1644,6 +1644,8 @@ namespace atomic_dex
                                     .timestamp         = current.timestamp,
                                     .tx_hash           = current.tx_hash,
                                     .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                                                     : current.fee_details.qrc_fees.has_value()
+                                                                                                     ? current.fee_details.qrc_fees.value().miner_fee
                                                                                                      : current.fee_details.erc_fees.value().total_fee,
                                     .my_balance_change = current.my_balance_change,
                                     .total_amount      = current.total_amount,
@@ -1819,7 +1821,6 @@ namespace atomic_dex
                 state.transactions_left = answer.result.value().sync_status.additional_info.value().regular_infos.value().transactions_left;
             }
         }
-
         t_transactions out;
         out.reserve(answer.result.value().transactions.size());
 
@@ -1855,7 +1856,6 @@ namespace atomic_dex
             {
                 current_info.fees = current.transaction_fee.value();
             }
-
             if (current_info.timestamp == 0)
             {
                 using namespace std::chrono;
@@ -1881,7 +1881,7 @@ namespace atomic_dex
     {
         t_balance_answer answer_r;
         ::mm2::api::from_json(answer, answer_r);
-            SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
+        SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
         if (is_pin_cfg_enabled())
         {
             std::shared_lock lock(m_balance_mutex);
