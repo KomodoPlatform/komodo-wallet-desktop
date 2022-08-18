@@ -48,6 +48,8 @@ namespace atomic_dex
         void                              set_rpc_broadcast_data(QString rpc_data);
         [[nodiscard]] QVariant            get_rpc_send_data() const;
         void                              set_rpc_send_data(QVariant rpc_data);
+        [[nodiscard]] QVariant            get_coin_enabling_status() const;
+        void                              set_coin_enabling_status(QVariant rpc_data);
         [[nodiscard]] bool                is_tx_fetching_failed() const;
         void                              set_tx_fetching_failed(bool status);
         [[nodiscard]] bool                is_tx_fetching_busy() const;
@@ -94,6 +96,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant ticker_infos READ get_ticker_infos NOTIFY tickerInfosChanged)
         Q_PROPERTY(bool is_claiming_busy READ is_rpc_claiming_busy WRITE set_claiming_is_busy NOTIFY rpcClaimingStatusChanged)
         Q_PROPERTY(QVariant claiming_rpc_data READ get_rpc_claiming_data WRITE set_rpc_claiming_data NOTIFY claimingRpcDataChanged)
+        Q_PROPERTY(QVariant enable_status_rpc_data READ get_coin_enabling_status WRITE set_coin_enabling_status NOTIFY coinEnablingStatusChanged)
         Q_PROPERTY(bool is_claiming_faucet_busy READ is_claiming_faucet_busy WRITE set_claiming_faucet_is_busy NOTIFY claimingFaucetStatusChanged)
         Q_PROPERTY(QVariant claiming_faucet_rpc_data READ get_rpc_claiming_faucet_data WRITE set_rpc_claiming_faucet_data NOTIFY claimingFaucetRpcDataChanged)
         Q_PROPERTY(bool is_broadcast_busy READ is_broadcast_busy WRITE set_broadcast_busy NOTIFY broadCastStatusChanged)
@@ -118,6 +121,7 @@ namespace atomic_dex
         void tickerInfosChanged();
         void rpcClaimingStatusChanged();
         void claimingRpcDataChanged();
+        void coinEnablingStatusChanged();
         void claimingFaucetStatusChanged();
         void claimingFaucetRpcDataChanged();
         void broadCastStatusChanged();
@@ -149,6 +153,7 @@ namespace atomic_dex
         std::atomic_bool                               m_validate_address_busy{false};
         std::atomic_bool                               m_convert_address_busy{false};
 
+        t_qt_synchronized_json                         m_coin_enabling_status;
         t_qt_synchronized_json                         m_claiming_rpc_result;
         t_qt_synchronized_json                         m_claiming_rpc_faucet_result;
         t_qt_synchronized_json                         m_send_rpc_result;

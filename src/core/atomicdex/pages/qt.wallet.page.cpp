@@ -391,6 +391,19 @@ namespace atomic_dex
     }
 
     QVariant
+    wallet_page::get_coin_enabling_status() const
+    {
+        return m_coin_enabling_status.get();
+    }
+
+    void
+    wallet_page::set_coin_enabling_status(QVariant rpc_data)
+    {
+        m_coin_enabling_status = rpc_data.toJsonObject();
+        emit coinEnablingStatusChanged();
+    }
+
+    QVariant
     wallet_page::get_rpc_claiming_data() const
     {
         return m_claiming_rpc_result.get();
