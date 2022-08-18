@@ -758,12 +758,14 @@ namespace atomic_dex
                                                     // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
+
                                                     if (status == "Ready")
                                                     {
                                                         SPDLOG_DEBUG("{} activation complete!", tickers[idx]);
                                                         dispatcher_.trigger<coin_fully_initialized>(this_ticker);
                                                         std::unique_lock lock(m_coin_cfg_mutex);
                                                         m_coins_informations[tickers[idx]].currently_enabled = true;
+                                                        this->m_nb_update_required += 1;
                                                         break;
                                                     }
                                                     else
