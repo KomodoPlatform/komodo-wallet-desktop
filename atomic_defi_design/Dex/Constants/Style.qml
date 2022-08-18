@@ -237,6 +237,7 @@ QtObject {
                                           "AUR": "#0A6C5E",
                                           "AVA": "#5B567F",
                                           "AVAX": "#E84142",
+                                          "AVN": "#33E0CE",
                                           "AXS": "#0055D5",
                                           "BAL": "#4D4D4D",
                                           "BNB": "#F9D987",
