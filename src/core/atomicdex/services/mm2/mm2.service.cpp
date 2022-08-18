@@ -194,7 +194,6 @@ namespace
         ofs.write(QString::fromStdString(config_json_data.dump()).toUtf8());
         ofs.close();
 
-
         //! Write contents
         if (!custom_cfg_data.empty())
         {
@@ -762,10 +761,6 @@ namespace atomic_dex
                                                     if (status == "Ready")
                                                     {
                                                         SPDLOG_DEBUG("{} activation complete!", tickers[idx]);
-                                                        dispatcher_.trigger<coin_fully_initialized>(this_ticker);
-                                                        std::unique_lock lock(m_coin_cfg_mutex);
-                                                        m_coins_informations[tickers[idx]].currently_enabled = true;
-                                                        this->m_nb_update_required += 1;
                                                         break;
                                                     }
                                                     else
@@ -810,6 +805,16 @@ namespace atomic_dex
 
                                                         if (event != last_event)
                                                         {
+                                                            if (event == "UpdatingBlocksCache")
+                                                            {
+                                                                // This makes coin visible in portfolio, though it will not be ready for use yet.
+                                                                // TODO: in this limbo state, we need to filter it out of the enable menu options.
+                                                                // and apply some visual indicator (hourglass etc)
+                                                                std::unique_lock lock(m_coin_cfg_mutex);
+                                                                m_coins_informations[tickers[idx]].currently_enabled = true;
+                                                                dispatcher_.trigger<coin_fully_initialized>(this_ticker);
+                                                                this->m_nb_update_required += 1;
+                                                            }                                                            
                                                             this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
                                                             last_event = event;
                                                         }
