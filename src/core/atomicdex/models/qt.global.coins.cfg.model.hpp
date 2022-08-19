@@ -55,7 +55,8 @@ namespace atomic_dex
             IsCustomCoin,
             Type,
             CoinType,
-            Checked
+            Checked,
+            ActivationStatus
         };
         Q_ENUMS(CoinsRoles)
 

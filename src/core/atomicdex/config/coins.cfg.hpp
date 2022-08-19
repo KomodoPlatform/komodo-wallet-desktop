@@ -62,6 +62,7 @@ namespace atomic_dex
         std::string                                 tx_uri{"tx/"};
         std::string                                 address_url{"address/"};
         std::optional<nlohmann::json>               custom_backup;
+        nlohmann::json                              activation_status;
         std::optional<bool>                         is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
         CoinType                                    coin_type;
         bool                                        checked{false};

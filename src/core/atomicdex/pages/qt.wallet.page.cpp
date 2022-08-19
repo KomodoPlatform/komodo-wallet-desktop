@@ -268,6 +268,7 @@ namespace atomic_dex
             {"current_currency_ticker_price", "0.00"},
             {"change_24h", "0"},
             {"tx_state", "InProgress"},
+            {"activation_status", QJsonArray()},
             {"fiat_amount", "0.00"},
             {"trend_7d", QJsonArray()},
             {"fee_ticker", DEX_PRIMARY_COIN},
@@ -296,6 +297,7 @@ namespace atomic_dex
             obj["has_parent_fees_ticker"]             = coin_info.has_parent_fees_ticker;
             obj["fees_ticker"]                        = QString::fromStdString(coin_info.fees_ticker);
             obj["is_claimable"]                       = coin_info.is_claimable;
+            obj["activation_status"]                  = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
             obj["address"]                            = QString::fromStdString(mm2_system.address(ticker, ec));
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
             obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url[0]);

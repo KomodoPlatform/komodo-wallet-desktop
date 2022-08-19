@@ -135,7 +135,7 @@ namespace
 
     void
     update_coin_status(
-        const std::string& wallet_name, const std::vector<std::string>& tickers, bool status, atomic_dex::t_coins_registry& registry,
+        const std::string& wallet_name, const std::vector<std::string>& tickers, auto status, atomic_dex::t_coins_registry& registry,
         std::shared_mutex& registry_mtx, std::string field_name = "active")
     {
         SPDLOG_INFO("Update coins status to: {} - field_name: {} - tickers: {}", status, field_name, fmt::join(tickers, ", "));
@@ -743,10 +743,6 @@ namespace atomic_dex
                                                 std::string last_event = "none";
                                                 std::string event = "none";
 
-                                                // set to enabled "early" so it shows up in models
-                                                // std::unique_lock lock(m_coin_cfg_mutex);
-                                                // m_coins_informations[tickers[idx]].currently_enabled = true;
-
                                                 do {
                                                     pplx::task<web::http::http_response> z_resp_task = m_mm2_client.async_rpc_batch_standalone(z_batch_array);
                                                     web::http::http_response             z_resp      = z_resp_task.get();
@@ -757,6 +753,7 @@ namespace atomic_dex
                                                     // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
+                                                    m_coins_informations[tickers[idx]].activation_status = z_answers[0];
 
                                                     if (status == "Ready")
                                                     {
@@ -814,7 +811,7 @@ namespace atomic_dex
                                                                 m_coins_informations[tickers[idx]].currently_enabled = true;
                                                                 dispatcher_.trigger<coin_fully_initialized>(this_ticker);
                                                                 this->m_nb_update_required += 1;
-                                                            }                                                            
+                                                            }
                                                             this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
                                                             last_event = event;
                                                         }
@@ -1004,7 +1001,7 @@ namespace atomic_dex
                 .coin_type             = coin_info.coin_type,
                 .is_testnet            = coin_info.is_testnet.value_or(false),
                 .with_tx_history       = true,
-                .bchd_urls             = coin_info.bchd_urls,
+                .bchd_urls             = coin_info.bchd_urls};
                 .allow_slp_unsafe_conf = coin_info.allow_slp_unsafe_conf};
             if (coin_info.segwit && coin_info.is_segwit_on)
             {

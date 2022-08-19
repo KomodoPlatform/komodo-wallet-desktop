@@ -30,6 +30,7 @@ namespace
     {
         QJsonObject j{
             {"active", coin.active},
+            {"activation_status", atomic_dex::nlohmann_json_object_to_qt_json_object(coin.activation_status)},
             {"is_claimable", coin.is_claimable},
             {"minimal_balance_for_asking_rewards", QString::fromStdString(coin.minimal_claim_amount)},
             {"ticker", QString::fromStdString(coin.ticker)},
@@ -97,6 +98,8 @@ namespace atomic_dex
             return item.currently_enabled;
         case Active:
             return item.active;
+        case ActivationStatus:
+            return atomic_dex::nlohmann_json_object_to_qt_json_object(item.activation_status);
         case IsCustomCoin:
             return item.is_custom_coin;
         case Type:

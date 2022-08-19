@@ -48,6 +48,11 @@ namespace atomic_dex
             cfg.custom_backup = j.at("mm2_backup");
         }
 
+        if (j.contains("activation_status"))
+        {
+            cfg.activation_status = j.at("activation_status").get<nlohmann::json>();
+        }
+
         if (j.contains("electrum"))
         {
             cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();

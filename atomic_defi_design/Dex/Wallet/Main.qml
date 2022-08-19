@@ -34,6 +34,7 @@ Item
     }
 
     readonly property var transactions_mdl: api_wallet_page.transactions_mdl
+    readonly property var activation_status: current_ticker_infos.activation_status
 
     Layout.fillHeight: true
     Layout.fillWidth: true
