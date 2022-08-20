@@ -43,6 +43,68 @@ QtObject {
         }
     }
 
+    function canSend(ticker, progress=100) {
+        if (!API.app.wallet_pg.send_available) return false
+        if (isZhtlc(ticker) && progress < 100) return false
+        return true
+    }
+
+    function isWalletOnly(ticker)
+    {
+        return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_wallet_only
+    }
+
+    function isZhtlc(ticker)
+    {
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.is_zhtlc_family
+    }
+
+    function isZhtlcReady(ticker, progress=100)
+    {
+        if (progress == 100) return true
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        if (!coin_info.is_zhtlc_family) return true
+        console.log("Progress: " + progress)
+        return false
+    }
+
+    function zhtlcActivationProgress(activation_status, coin='ARRR') {
+        let progress = 0
+        let block_offset = 0
+        let status = activation_status.result.status
+        let details = activation_status.result.details
+        if (coin == 'ARRR')
+        {
+            block_offset = 1900000
+        }
+        /* TODO: tweak percentage creep from checkpont block, not zero.  */
+        /* time full process, allocate steps a proportionate value       */
+        if (status == "Ready")
+        {
+            if (!details.hasOwnProperty("error")) progress = 100
+            else console.log("[zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
+        }
+        else if (status == "InProgress")
+        {
+            if (details.hasOwnProperty("UpdatingBlocksCache"))
+            {
+                let n = details.UpdatingBlocksCache.current_scanned_block - block_offset
+                let d = details.UpdatingBlocksCache.latest_block - block_offset
+                progress = 5 + parseInt(n/d*15)
+            }
+            else if (details.hasOwnProperty("BuildingWalletDb"))
+            {
+                let n = details.BuildingWalletDb.current_scanned_block - block_offset
+                let d = details.BuildingWalletDb.latest_block - block_offset
+                progress = 20 + parseInt(n/d*80)
+            }
+            else progress = 5
+        }
+        else console.log("[zhtlcActivationProgress] Unexpected status: " + status)
+        return progress
+    }
+
     function getNomicsId(ticker) {
         if(ticker === "" || ticker === "All" || ticker===undefined) {
             return ""
