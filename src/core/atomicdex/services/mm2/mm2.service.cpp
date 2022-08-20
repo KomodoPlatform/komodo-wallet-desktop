@@ -872,6 +872,8 @@ namespace atomic_dex
                                                             "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                                             tickers.size(), answers.size()
                                                         );
+                                                        this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], z_error[0].dump(4));
+                                                        to_remove.emplace(tickers[idx]);
                                                     }
                                                     else
                                                     {
