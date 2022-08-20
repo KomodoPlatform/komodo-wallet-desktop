@@ -29,12 +29,14 @@ Item
     readonly property string headerSmallFont: Style.textSizeSmall2
     readonly property string addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
 
+
     function loadingPercentage(remaining) {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
     }
 
     readonly property var transactions_mdl: api_wallet_page.transactions_mdl
     readonly property var activation_status: current_ticker_infos.activation_status
+    readonly property var activation_progress: General.isZhtlc(api_wallet_page.ticker) ? General.zhtlcActivationProgress(current_ticker_infos.activation_status, api_wallet_page.ticker) : 100
 
     Layout.fillHeight: true
     Layout.fillWidth: true
@@ -402,8 +404,7 @@ Item
                 // Send Button
                 DefaultButton
                 {
-                    enabled: API.app.wallet_pg.send_available
-
+                    enabled: General.canSend(api_wallet_page.ticker, activation_progress)
                     anchors.fill: parent
                     radius: 18
 
@@ -431,8 +432,9 @@ Item
                 // Send button error icon
                 DefaultAlertIcon
                 {
-                    visible: API.app.wallet_pg.send_availability_state !== ""
-                    tooltipText: API.app.wallet_pg.send_availability_state
+                    visible: !General.isZhtlcReady(api_wallet_page.ticker, activation_progress) || api_wallet_page.send_availability_state !== ""
+                    tooltipText: General.isZhtlcReady(api_wallet_page.ticker, activation_progress) ? api_wallet_page.send_availability_state
+                                                    : api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
 
@@ -496,26 +498,40 @@ Item
                 sourceComponent: CannotEnableCoinModal { coin_to_enable_ticker: API.app.wallet_pg.ticker_infos.fee_ticker }
             }
 
-            // Receive Button
-            DefaultButton
+            Item
             {
                 Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
-                radius: 18
 
-                label.text: qsTr("Receive")
-                label.font.pixelSize: 16
-                content.anchors.left: content.parent.left
-                content.anchors.leftMargin: 23
-
-                onClicked: receive_modal.open()
-
-                TransactionArrow
+                // Receive Button
+                DefaultButton
                 {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: arrow_send.anchors.rightMargin
-                    amISender: false
+                    // Address wont display until activated
+                    enabled: General.isZhtlcReady(api_wallet_page.ticker, activation_progress)
+                    anchors.fill: parent
+                    radius: 18
+
+                    label.text: qsTr("Receive")
+                    label.font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
+
+                    onClicked: receive_modal.open()
+
+                    TransactionArrow
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 19
+                        amISender: false
+                    }
+                }
+
+                // Receive button error icon
+                DefaultAlertIcon
+                {
+                    visible: !General.isZhtlcReady(api_wallet_page.ticker, activation_progress)
+                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
 
@@ -534,7 +550,7 @@ Item
 
                 DefaultButton
                 {
-                    enabled: !API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
+                    enabled: !General.isWalletOnly(api_wallet_page.ticker) && activation_progress == 100
                     anchors.fill: parent
                     radius: 18
 
@@ -570,8 +586,10 @@ Item
                 // Swap button error icon
                 DefaultAlertIcon
                 {
-                    visible: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(api_wallet_page.ticker).is_wallet_only
-                    tooltipText: api_wallet_page.ticker + qsTr(" is wallet only")
+                    visible: General.isWalletOnly(api_wallet_page.ticker) || activation_progress != 100
+                    tooltipText: General.isWalletOnly(api_wallet_page.ticker)
+                                    ? api_wallet_page.ticker + qsTr(" is wallet only")
+                                    : api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
 
