@@ -425,17 +425,21 @@ namespace atomic_dex
     mm2_service::disable_coin(const std::string& ticker, std::error_code& ec)
     {
         coin_config coin_info = get_coin_info(ticker);
+
         if (not coin_info.currently_enabled)
         {
             return true;
         }
 
         t_disable_coin_request request{.coin = ticker};
+
         auto                   answer = m_mm2_client.rpc_disable_coin(std::move(request));
+        SPDLOG_INFO("mm2_service::disable_coin: {} result: {}", ticker, answer.raw_result);
 
         if (answer.error.has_value())
         {
             std::string error = answer.error.value();
+            SPDLOG_INFO("mm2_service::disable_coin: {} error {}", ticker, error);
             if (error.find("such coin") != std::string::npos)
             {
                 ec = dextop_error::disable_unknown_coin;
@@ -451,6 +455,7 @@ namespace atomic_dex
                 ec = dextop_error::order_is_matched_at_the_moment;
                 return false;
             }
+            return false;
         }
 
         coin_info.currently_enabled = false;
@@ -510,7 +515,6 @@ namespace atomic_dex
     void
     mm2_service::disable_multiple_coins(const std::vector<std::string>& tickers)
     {
-        SPDLOG_DEBUG("disable_multiple_coins");
         for (const auto& ticker: tickers)
         {
             std::error_code ec;
@@ -751,13 +755,20 @@ namespace atomic_dex
                                                     std::vector<std::string>             this_ticker;
                                                     this_ticker.push_back(tickers[idx]);
                                                     // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
-
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
-                                                    m_coins_informations[tickers[idx]].activation_status = z_answers[0];
 
                                                     if (status == "Ready")
                                                     {
+                                                        if (z_answers[0].at("result").at("details").contains("error"))
+                                                        {
+                                                            break;
+                                                        }
                                                         SPDLOG_DEBUG("{} activation complete!", tickers[idx]);
+                                                        std::unique_lock lock(m_coin_cfg_mutex);
+                                                        m_coins_informations[tickers[idx]].currently_enabled = true;
+
+                                                        dispatcher_.trigger<coin_fully_initialized>(this_ticker);
+                                                        this->m_nb_update_required += 1;
                                                         break;
                                                     }
                                                     else
@@ -809,12 +820,14 @@ namespace atomic_dex
                                                                 // and apply some visual indicator (hourglass etc)
                                                                 std::unique_lock lock(m_coin_cfg_mutex);
                                                                 m_coins_informations[tickers[idx]].currently_enabled = true;
+
                                                                 dispatcher_.trigger<coin_fully_initialized>(this_ticker);
                                                                 this->m_nb_update_required += 1;
                                                             }
                                                             this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
                                                             last_event = event;
                                                         }
+
                                                         if (event == "BuildingWalletDb")
                                                         {
                                                             std::this_thread::sleep_for(15s);
@@ -824,6 +837,7 @@ namespace atomic_dex
                                                             std::this_thread::sleep_for(1s);
                                                         }
                                                     }
+                                                    m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                     z_nb_try += 1;
 
                                                 } while (z_nb_try < 1000);
@@ -1001,7 +1015,7 @@ namespace atomic_dex
                 .coin_type             = coin_info.coin_type,
                 .is_testnet            = coin_info.is_testnet.value_or(false),
                 .with_tx_history       = true,
-                .bchd_urls             = coin_info.bchd_urls};
+                .bchd_urls             = coin_info.bchd_urls,
                 .allow_slp_unsafe_conf = coin_info.allow_slp_unsafe_conf};
             if (coin_info.segwit && coin_info.is_segwit_on)
             {
