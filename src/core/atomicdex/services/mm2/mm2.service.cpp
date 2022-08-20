@@ -759,6 +759,7 @@ namespace atomic_dex
 
                                                     if (status == "Ready")
                                                     {
+                                                        m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                         if (z_answers[0].at("result").at("details").contains("error"))
                                                         {
                                                             break;
@@ -776,48 +777,30 @@ namespace atomic_dex
                                                         if (z_answers[0].at("result").at("details").contains("UpdatingBlocksCache"))
                                                         {
                                                             event = "UpdatingBlocksCache";
-                                                            // TODO: Use this to derive percentage
                                                             std::size_t current_scanned_block = z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block");
                                                             std::size_t latest_block = z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("latest_block");
-                                                            SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned",
-                                                                tickers[idx],
-                                                                status,
-                                                                event,
-                                                                current_scanned_block,
-                                                                latest_block
-                                                            );
+                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned", tickers[idx], status, event, current_scanned_block, latest_block);
                                                         }
                                                         else if (z_answers[0].at("result").at("details").contains("BuildingWalletDb"))
                                                         {
                                                             event = "BuildingWalletDb";
-                                                            // TODO: Use this to derive percentage
                                                             std::size_t current_scanned_block = z_answers[0].at("result").at("details").at("BuildingWalletDb").at("current_scanned_block");
                                                             std::size_t latest_block = z_answers[0].at("result").at("details").at("BuildingWalletDb").at("latest_block");
-                                                            SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned",
-                                                                tickers[idx],
-                                                                status,
-                                                                event,
-                                                                current_scanned_block,
-                                                                latest_block
-                                                            );
+                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned", tickers[idx], status, event, current_scanned_block, latest_block);
                                                         }
                                                         else
                                                         {
                                                             event = z_answers[0].at("result").at("details").get<std::string>();
-                                                            SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...",
-                                                                tickers[idx],
-                                                                status,
-                                                                event
-                                                            );
+                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
                                                         }
 
                                                         if (event != last_event)
                                                         {
+                                                            SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
+                                                            // After this event, full activation is just a matter of time (earlier it might fail).
+                                                            // We tag it as activated, so it shows up in portfolio and not enable list.
                                                             if (event == "UpdatingBlocksCache")
                                                             {
-                                                                // This makes coin visible in portfolio, though it will not be ready for use yet.
-                                                                // TODO: in this limbo state, we need to filter it out of the enable menu options.
-                                                                // and apply some visual indicator (hourglass etc)
                                                                 std::unique_lock lock(m_coin_cfg_mutex);
                                                                 m_coins_informations[tickers[idx]].currently_enabled = true;
 
@@ -827,15 +810,7 @@ namespace atomic_dex
                                                             this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
                                                             last_event = event;
                                                         }
-
-                                                        if (event == "BuildingWalletDb")
-                                                        {
-                                                            std::this_thread::sleep_for(15s);
-                                                        }
-                                                        else
-                                                        {
-                                                            std::this_thread::sleep_for(1s);
-                                                        }
+                                                        std::this_thread::sleep_for(2s);
                                                     }
                                                     m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                     z_nb_try += 1;
