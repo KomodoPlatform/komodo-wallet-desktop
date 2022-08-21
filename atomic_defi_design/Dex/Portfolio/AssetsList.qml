@@ -178,6 +178,21 @@ Dex.DexListView
                         opacity: .7
                         color: Dex.DexTheme.redColor
                     }
+
+                    Dex.DexLabel
+                    {
+                        enabled: Dex.General.zhtlcActivationProgress(activation_status, ticker) != 100
+                        visible: enabled
+                        anchors.left: parent.right
+                        anchors.leftMargin: 5
+                        text:
+                        {
+                            return Dex.General.zhtlcActivationProgress(activation_status, ticker) + "%"
+                        }
+                        font: Dex.DexTypo.overLine
+                        opacity: .7
+                        color: Dex.DexTheme.redColor
+                    }
                 }
 
             }
