@@ -79,6 +79,7 @@ namespace atomic_dex
                 .main_currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, true)),
                 .main_fiat_price_for_one_unit     = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker)),
                 .trend_7d                         = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(coin.ticker)),
+                .activation_status                = nlohmann_json_object_to_qt_json_object(coin.activation_status),
                 .price_provider                   = QString::fromStdString(provider.get_price_provider(coin.ticker)),
                 .price_last_timestamp             = static_cast<int>(provider.get_last_price_timestamp(coin.ticker)),
                 .is_excluded                      = false,
@@ -149,6 +150,10 @@ namespace atomic_dex
                     }
                     QJsonArray trend = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(ticker));
                     update_value(Trend7D, trend, idx, *this);
+
+                    auto        coin_info          = mm2_system.get_coin_info(ticker);
+                    QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
+                    update_value(ActivationStatus, status, idx, *this);
                     // SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
             };
@@ -207,6 +212,9 @@ namespace atomic_dex
                 }
                 QJsonArray trend = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(ticker));
                 update_value(Trend7D, trend, idx, *this);
+                auto        coin_info          = mm2_system.get_coin_info(ticker);
+                QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
+                update_value(ActivationStatus, status, idx, *this);
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
                 {
                     m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
@@ -243,6 +251,8 @@ namespace atomic_dex
             return item.main_fiat_price_for_one_unit;
         case NameRole:
             return item.name;
+        case ActivationStatus:
+            return item.activation_status;
         case Trend7D:
             return item.trend_7d;
         case Excluded:
@@ -312,6 +322,9 @@ namespace atomic_dex
             break;
         case Trend7D:
             item.trend_7d = value.toJsonArray();
+            break;
+        case ActivationStatus:
+            item.activation_status = value.toJsonObject();
             break;
         case Excluded:
             item.is_excluded = value.toBool();
@@ -427,6 +440,7 @@ namespace atomic_dex
             {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
             {MainFiatPriceForOneUnit, "main_fiat_price_for_one_unit"},
             {Trend7D, "trend_7d"},
+            {ActivationStatus, "activation_status"},
             {Excluded, "excluded"},
             {Display, "display"},
             {NameAndTicker, "name_and_ticker"},

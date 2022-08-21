@@ -797,9 +797,9 @@ namespace atomic_dex
                                                         if (event != last_event)
                                                         {
                                                             SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
-                                                            // After this event, full activation is just a matter of time (earlier it might fail).
+                                                            // After an event change, full activation is just a matter of time (earlier it might fail).
                                                             // We tag it as activated, so it shows up in portfolio and not enable list.
-                                                            if (event == "UpdatingBlocksCache")
+                                                            if (!m_coins_informations[tickers[idx]].currently_enabled && event != "ActivatingCoin")
                                                             {
                                                                 std::unique_lock lock(m_coin_cfg_mutex);
                                                                 m_coins_informations[tickers[idx]].currently_enabled = true;
@@ -826,12 +826,17 @@ namespace atomic_dex
                                                             "Removing zhtlc from enabling, idx: {}, tickers size: {}, answers size: {}",
                                                             tickers[idx], idx, tickers.size(), answers.size()
                                                         );
+
                                                         this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], z_error[0].dump(4));
                                                         to_remove.emplace(tickers[idx]);
 
                                                         if (error.find("already initialized") == std::string::npos)
                                                         {
                                                             SPDLOG_WARN("Should set to false the active field in cfg for: {} - reason: {}", tickers[idx], zhtlc_error);
+                                                        }
+                                                        else
+                                                        {
+                                                            update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                                                         }
                                                     }
                                                     else if (z_nb_try == 1000)
@@ -848,6 +853,7 @@ namespace atomic_dex
                                                             tickers.size(), answers.size()
                                                         );
                                                         this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], z_error[0].dump(4));
+                                                        update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                                                         to_remove.emplace(tickers[idx]);
                                                     }
                                                     else
@@ -886,7 +892,7 @@ namespace atomic_dex
                         catch (const std::exception& error)
                         {
                             SPDLOG_ERROR("exception caught in batch_enable_coins: {}", error.what());
-                            // update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
+                            update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                             //! Emit event here
                         }
                     })
@@ -894,7 +900,7 @@ namespace atomic_dex
                     [this, tickers, batch](pplx::task<void> previous_task)
                     {
                         this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch);
-                        // update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
+                        update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                     });
         };
 
