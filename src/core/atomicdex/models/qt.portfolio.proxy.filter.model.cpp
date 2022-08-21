@@ -56,6 +56,7 @@ namespace atomic_dex
             return safe_float(left_data.toString().toStdString()) < safe_float(right_data.toString().toStdString());
         case portfolio_model::MainFiatPriceForOneUnit:
         case portfolio_model::Trend7D:
+        case portfolio_model::ActivationStatus:
         case portfolio_model::Excluded:
         case portfolio_model::Display:
         case portfolio_model::NameAndTicker:
