@@ -329,6 +329,26 @@ DexPopup
         toast.show(title, General.time_toast_important_error, error)
     }
 
+    function onDisblingCoinFailedStatus(coin, error, human_date, timestamp)
+    {
+        const title = qsTr("Failed to disable %1", "TICKER").arg(coin)
+
+        newNotification("onDisablingCoinFailedStatus",
+            {
+                coin,
+                error,
+                human_date,
+                timestamp
+            },
+            timestamp,
+            title,
+            human_date,
+            "open_log_modal",
+            error)
+
+        toast.show(title, General.time_toast_important_error, error)
+    }
+
     function onEndpointNonReacheableStatus(base_uri, human_date, timestamp)
     {
         const title = qsTr("Endpoint not reachable")
@@ -393,6 +413,7 @@ DexPopup
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
         API.app.notification_mgr.enablingZCoinStatus.connect(onEnablingZCoinStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.disablingCoinFailedStatus.connect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
         API.app.notification_mgr.batchFailed.connect(onBatchFailed)
@@ -403,6 +424,7 @@ DexPopup
         API.app.notification_mgr.balanceUpdateStatus.disconnect(onBalanceUpdateStatus)
         API.app.notification_mgr.enablingZCoinStatus.disconnect(onEnablingZCoinStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.disablingCoinFailedStatus.disconnect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
         API.app.notification_mgr.batchFailed.disconnect(onBatchFailed)

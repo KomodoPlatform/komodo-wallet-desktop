@@ -44,6 +44,7 @@ namespace atomic_dex
         void on_swap_status_notification(const swap_status_notification& evt);
         void on_enabling_z_coin_status(const enabling_z_coin_status& evt);
         void on_enabling_coin_failed(const enabling_coin_failed& evt);
+        void on_disabling_coin_failed(const disabling_coin_failed& evt);
         void on_balance_update_notification(const balance_update_notification& evt);
         void on_endpoint_nonreacheable(const endpoint_nonreacheable& evt);
         void on_mismatch_custom_coins_configuration(const mismatch_configuration_custom_coin& evt);
@@ -54,6 +55,7 @@ namespace atomic_dex
         void balanceUpdateStatus(bool am_i_sender, QString amount, QString ticker, QString human_date, qint64 timestamp);
         void enablingZCoinStatus(QString coin, QString error, QString human_date, qint64 timestamp);
         void enablingCoinFailedStatus(QString coin, QString error, QString human_date, qint64 timestamp);
+        void disablingCoinFailedStatus(QString coin, QString error, QString human_date, qint64 timestamp);
         void endpointNonReacheableStatus(QString base_uri, QString human_date, qint64 timestamp);
         void mismatchCustomCoinConfiguration(QString asset, QString human_date, qint64 timestamp);
         void fatalNotification(QString message);

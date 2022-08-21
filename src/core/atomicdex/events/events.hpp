@@ -60,6 +60,12 @@ namespace atomic_dex
         std::string reason;
     };
 
+    struct disabling_coin_failed
+    {
+        std::string coin;
+        std::string reason;
+    };
+
     struct batch_failed
     {
         std::string from;
