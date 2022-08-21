@@ -44,7 +44,6 @@ DexComboBox
             DexLabel
             {
                 text: modelData
-
             }
         }
 
