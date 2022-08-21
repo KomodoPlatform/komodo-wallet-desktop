@@ -29,7 +29,6 @@ Item
     readonly property string headerSmallFont: Style.textSizeSmall2
     readonly property string addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
 
-
     function loadingPercentage(remaining) {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
     }
@@ -89,6 +88,30 @@ Item
                             Layout.preferredHeight: 60
                             Layout.preferredWidth: Layout.preferredHeight
                             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+                            DexRectangle
+                            {
+                                anchors.centerIn: parent
+                                anchors.fill: parent
+                                radius: 30
+                                enabled: General.isZhtlc(api_wallet_page.ticker) ? General.zhtlcActivationProgress(activation_status, api_wallet_page.ticker) != 100 : false
+                                visible: enabled
+                                opacity: .9
+                                color: DexTheme.backgroundColor
+                            }
+
+                            DexLabel
+                            {
+                                anchors.centerIn: parent
+                                anchors.fill: parent
+                                enabled: General.isZhtlc(api_wallet_page.ticker) ? General.zhtlcActivationProgress(activation_status, api_wallet_page.ticker) != 100 : false
+                                visible: enabled
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                                text: General.zhtlcActivationProgress(activation_status, api_wallet_page.ticker) + "%"
+                                font: DexTypo.head8
+                                color: DexTheme.greenColor
+                            }
                         }
 
                         DefaultText
@@ -929,7 +952,18 @@ Item
                         id: fetching_text_row
                         Layout.topMargin: 24
                         Layout.alignment: Qt.AlignHCenter
-                        text_value: api_wallet_page.tx_fetching_busy ? qsTr("Fetching transactions...") : qsTr('No transactions available')
+
+                        text_value:
+                        {
+                            let progress = General.zhtlcActivationProgress(activation_status, api_wallet_page.ticker)
+                            if (api_wallet_page.tx_fetching_busy) return qsTr("Fetching transactions...")
+                            if (General.isZhtlc(api_wallet_page.ticker))
+                            {
+                                if (progress != 100) return qsTr("Please wait, %1 is %2").arg(api_wallet_page.ticker).arg(progress) + qsTr("% activated...")
+                            }
+                            return qsTr('No transactions available')
+                        }
+
                         font.pixelSize: Style.textSize
                     }
 
