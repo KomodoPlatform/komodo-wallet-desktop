@@ -70,20 +70,19 @@ QtObject {
     }
 
     function zhtlcActivationProgress(activation_status, coin='ARRR') {
-        let progress = 0
-        let block_offset = 0
+        let progress = 100
+        if (!activation_status.hasOwnProperty("result")) return progress
         let status = activation_status.result.status
         let details = activation_status.result.details
-        if (coin == 'ARRR')
-        {
-            block_offset = 1900000
-        }
-        /* TODO: tweak percentage creep from checkpont block, not zero.  */
-        /* time full process, allocate steps a proportionate value       */
+
+        let block_offset = 0
+        if (coin == 'ARRR') block_offset = 1900000
+
+        // use range from checkoint block to present
         if (status == "Ready")
         {
-            if (!details.hasOwnProperty("error")) progress = 100
-            else console.log("[zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
+            if (details.hasOwnProperty("error"))
+                console.log("[zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
         }
         else if (status == "InProgress")
         {
@@ -99,6 +98,7 @@ QtObject {
                 let d = details.BuildingWalletDb.latest_block - block_offset
                 progress = 20 + parseInt(n/d*80)
             }
+            else if (details.hasOwnProperty("RequestingBalance")) progress = 98
             else progress = 5
         }
         else console.log("[zhtlcActivationProgress] Unexpected status: " + status)

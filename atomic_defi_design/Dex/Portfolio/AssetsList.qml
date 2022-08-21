@@ -119,6 +119,30 @@ Dex.DexListView
                     source: Dex.General.coinIcon(ticker)
                     width: 30
                     height: 30
+
+                    Dex.DexRectangle
+                    {
+                        anchors.centerIn: parent
+                        anchors.fill: parent
+                        radius: 15
+                        enabled: Dex.General.isZhtlc(ticker) ? Dex.General.zhtlcActivationProgress(activation_status, ticker) != 100 : false
+                        visible: enabled
+                        opacity: .9
+                        color: Dex.DexTheme.backgroundColor
+                    }
+
+                    Dex.DexLabel
+                    {
+                        anchors.centerIn: parent
+                        anchors.fill: parent
+                        enabled: Dex.General.isZhtlc(ticker) ? Dex.General.zhtlcActivationProgress(activation_status, ticker) != 100 : false
+                        visible: enabled
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        text: Dex.General.zhtlcActivationProgress(activation_status, ticker) + "%"
+                        font: Dex.DexTypo.head8
+                        color: Dex.DexTheme.greenColor
+                    }
                 }
 
                 Dex.DexLabel
