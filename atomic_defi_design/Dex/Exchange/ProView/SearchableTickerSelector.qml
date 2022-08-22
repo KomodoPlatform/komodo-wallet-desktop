@@ -70,7 +70,8 @@ Dex.ComboBoxWithSearchBar
                 ticker:                 model.data(model.index(idx, 0), 257),
                 name:                   model.data(model.index(idx, 0), 259),
                 balance:                model.data(model.index(idx, 0), 260),
-                main_currency_balance:  model.data(model.index(idx, 0), 261)
+                main_currency_balance:  model.data(model.index(idx, 0), 261),
+                activation_status:      model.data(model.index(idx, 0), 266)
             }
 
             prev_details = new_details
