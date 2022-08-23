@@ -6,12 +6,12 @@
     <message>
         <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="129"/>
         <source>Use standard network address</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard-Netzwerkadresse verwenden</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="139"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="144"/>
@@ -27,7 +27,7 @@
         <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="176"/>
         <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="299"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="190"/>
@@ -47,7 +47,7 @@
     <message>
         <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="278"/>
         <source>You need to enable %1 before adding this kind of address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie müssen %1 aktivieren, bevor Sie diese Art von Adresse hinzufügen.</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="286"/>
@@ -65,7 +65,7 @@
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="126"/>
         <source>Choose the asset type</source>
-        <translation>Wählen Sie den Vermögenswert-Typ aus</translation>
+        <translation>Wählen Sie den Asset-Typ aus</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="151"/>
@@ -92,7 +92,7 @@
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="178"/>
         <source>Choose the asset ticker</source>
-        <translation>Wählen Sie den Vermögenswert-Ticker</translation>
+        <translation>Wählen Sie den Asset-Ticker</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="186"/>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="249"/>
         <source>Choose the asset logo</source>
-        <translation>Wählen Sie das Logo für den Vermögenswert aus</translation>
+        <translation>Wählen Sie ein Logo für das Asset aus</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="254"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="265"/>
         <source>Please choose the asset logo</source>
-        <translation>Bitte wählen Sie für den Vermögenswert ein Logo aus</translation>
+        <translation>Bitte wählen Sie für das Asset ein Logo aus</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="312"/>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="434"/>
         <source>Asset not found, please go back and make sure Contract Address is correct</source>
-        <translation>Vermögenswert nicht gefunden, bitte gehen Sie zurück und stellen Sie sicher, dass die Vertragsadresse korrekt ist</translation>
+        <translation>Asset nicht gefunden, bitte gehen Sie zurück und stellen Sie sicher, dass die Vertragsadresse korrekt ist</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="453"/>
@@ -209,17 +209,17 @@
     <message>
         <location filename="../../Dex/Addressbook/AddTagPopup.qml" line="27"/>
         <source>Tag name</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlagwort</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AddTagPopup.qml" line="36"/>
         <source>Contact already has this tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Kontakt hat bereits dieses Schlagwort.</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AddTagPopup.qml" line="45"/>
         <source>+ ADD</source>
-        <translation type="unfinished"></translation>
+        <translation>+ HINZUFÜGEN</translation>
     </message>
 </context>
 <context>
@@ -248,17 +248,17 @@
     <message>
         <location filename="../../Dex/Addressbook/AssetFromStandardSelector.qml" line="28"/>
         <source> asset</source>
-        <translation type="unfinished"></translation>
+        <translation>Asset</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AssetFromStandardSelector.qml" line="35"/>
         <source>Search an asset</source>
-        <translation type="unfinished"></translation>
+        <translation>Asset suchen</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AssetFromStandardSelector.qml" line="92"/>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Deaktiviert</translation>
     </message>
 </context>
 <context>
@@ -266,7 +266,7 @@
     <message>
         <location filename="../../Dex/Portfolio/AssetPieChart.qml" line="182"/>
         <source>Assets</source>
-        <translation>Vermögenswerte</translation>
+        <translation>Assets</translation>
     </message>
 </context>
 <context>
@@ -274,7 +274,7 @@
     <message>
         <location filename="../../Dex/Portfolio/AssetsList.qml" line="48"/>
         <source>Asset</source>
-        <translation>Vermögenswert</translation>
+        <translation>Asset</translation>
     </message>
     <message>
         <location filename="../../Dex/Portfolio/AssetsList.qml" line="57"/>
@@ -322,17 +322,17 @@
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="86"/>
         <source>Privacy</source>
-        <translation>Privatsphäre</translation>
+        <translation>Datenschutz</translation>
     </message>
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="97"/>
         <source>Disable Privacy?</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenschutz deaktivieren?</translation>
     </message>
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="98"/>
         <source>Enter wallet password to confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie zur Bestätigung das Kennwort der Brieftasche ein</translation>
     </message>
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="104"/>
@@ -347,17 +347,17 @@
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="106"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="116"/>
         <source>Privacy status</source>
-        <translation type="unfinished"></translation>
+        <translation>Status Datenschutz</translation>
     </message>
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="117"/>
         <source>Privacy mode disabled successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Datenschutzmodus wurde erfolgreich deaktiviert</translation>
     </message>
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="118"/>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="126"/>
         <source>Wrong password!</source>
-        <translation type="unfinished"></translation>
+        <translation>Falsches Kennwort!</translation>
     </message>
     <message>
         <location filename="../../Dex/Sidebar/Bottom.qml" line="127"/>
@@ -381,12 +381,12 @@
     <message>
         <location filename="../../Dex/Settings/CamouflagePasswordModal.qml" line="19"/>
         <source>Setup Camouflage Password</source>
-        <translation>Tarnpasswort einrichten</translation>
+        <translation>Tarnkennwort einrichten</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/CamouflagePasswordModal.qml" line="43"/>
         <source>Camouflage Password is a secret password for emergency situations.</source>
-        <translation>Das Camouflage Password ist ein geheimes Passwort für Notsituationen</translation>
+        <translation>Das Tarnkennwort (Camouflage Password) ist ein geheimes Passwort für Notsituationen.</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/CamouflagePasswordModal.qml" line="53"/>
@@ -396,7 +396,8 @@
     <message>
         <location filename="../../Dex/Settings/CamouflagePasswordModal.qml" line="62"/>
         <source>Here you enter the suffix and at login you need to enter {real_password}{suffix}</source>
-        <translation>Hier geben Sie den Zusatz ein und beim Einloggen benötigen Sie {real_password}{suffix}</translation>
+        <translation>Hier geben Sie den Zusatz ein und beim Einloggen benötigen Sie {echtes Kennwort}{suffix}
+Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/CamouflagePasswordModal.qml" line="71"/>
@@ -490,7 +491,7 @@
     <message>
         <location filename="../../Dex/Components/CexInfoModal.qml" line="20"/>
         <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
-        <translation>Mit dem Symbol ⓘ gekennzeichnete Marktdaten (Kurse, Charts etc.) stammen aus Drittquellen.&lt;br&gt;&lt;br&gt;Die Daten stammen von &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
+        <translation>Mit dem Symbol ⓘ gekennzeichnete Marktdaten (Kurse, Charts etc.) stammen aus Drittquellen.&lt;br&gt;&lt;br&gt;Die Daten stammen von &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; und &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle unterstützte Paare:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Letzte Referenz (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -642,17 +643,17 @@
     <message>
         <location filename="../../Dex/Components/CoinMenu.qml" line="47"/>
         <source>Disable all %1 assets</source>
-        <translation>Alle %1 Vermögenswerte deaktivieren</translation>
+        <translation>Alle %1 Assets deaktivieren</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/CoinMenu.qml" line="53"/>
         <source>Disable all assets</source>
-        <translation>Alle Vermögenswerte deaktivieren</translation>
+        <translation>Alle Assets deaktivieren</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/CoinMenu.qml" line="60"/>
         <source>Disable 0 balance assets</source>
-        <translation>Alle Vermögenswerte mit der Balance 0 deaktivieren</translation>
+        <translation>Alle Assets mit der Balance 0 deaktivieren</translation>
     </message>
 </context>
 <context>
@@ -744,7 +745,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="128"/>
         <source>Loading fees...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lade Gebühren...</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="157"/>
@@ -816,7 +817,7 @@
     <message>
         <location filename="../../Dex/Screens/Dashboard.qml" line="94"/>
         <source>The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.</source>
-        <translation>Die aktuelle Anzahl aktivierter Coins stimmt nicht mit Ihrer Konfigurationsvorgabe überein. Die Konfiguration der Vermögenswerte wird zurückgesetzt.</translation>
+        <translation>Die aktuelle Anzahl aktivierter Coins stimmt nicht mit Ihrer Konfigurationsvorgabe überein. Die Konfiguration der Assets wird zurückgesetzt.</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Dashboard.qml" line="304"/>
@@ -1015,12 +1016,12 @@
     <message>
         <location filename="../../Dex/Components/DefaultRangeSlider.qml" line="107"/>
         <source>Min</source>
-        <translation>Minimum</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/DefaultRangeSlider.qml" line="115"/>
         <source>Max</source>
-        <translation>Maximum</translation>
+        <translation>Max</translation>
     </message>
 </context>
 <context>
@@ -1127,7 +1128,7 @@
     <message>
         <location filename="../../Dex/Components/DexRangeSlider.qml" line="109"/>
         <source>Min</source>
-        <translation>Minimum</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/DexRangeSlider.qml" line="116"/>
@@ -1137,7 +1138,7 @@
     <message>
         <location filename="../../Dex/Components/DexRangeSlider.qml" line="123"/>
         <source>Max</source>
-        <translation>Maximum</translation>
+        <translation>Max</translation>
     </message>
 </context>
 <context>
@@ -1158,7 +1159,7 @@
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="26"/>
         <source>Contact name</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktname</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="27"/>
@@ -1168,7 +1169,7 @@
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="42"/>
         <source>Address list</source>
-        <translation type="unfinished"></translation>
+        <translation>Adressliste</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="145"/>
@@ -1178,7 +1179,7 @@
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="145"/>
         <source>address copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse in die Zwischenablage kopiert</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="161"/>
@@ -1188,7 +1189,7 @@
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="195"/>
         <source>+ Add</source>
-        <translation type="unfinished"></translation>
+        <translation>+ Hinzufügen</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="219"/>
@@ -1198,7 +1199,7 @@
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="270"/>
         <source>Add tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlagwort hinzufügen</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="291"/>
@@ -1216,7 +1217,7 @@
     <message>
         <location filename="../../Dex/Addressbook/EnableAssetModal.qml" line="19"/>
         <source>The selected address belongs to a disabled asset, you need to enabled it before sending.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die ausgewählte Adresse gehört zu einem deaktivierten Asset, Sie müssen es vor dem Senden aktivieren.</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EnableAssetModal.qml" line="27"/>
@@ -1226,7 +1227,7 @@
     <message>
         <location filename="../../Dex/Addressbook/EnableAssetModal.qml" line="40"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -1234,37 +1235,37 @@
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="50"/>
         <source>Enable assets</source>
-        <translation>Vermögenswerte aktivieren</translation>
+        <translation>Assets aktivieren</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="89"/>
         <source>Select all assets</source>
-        <translation>Alle Vermögenswerte auswählen</translation>
+        <translation>Alle Assets auswählen</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="220"/>
         <source>All assets are already enabled!</source>
-        <translation>Alle Vermögenswerte sind bereits aktiviert!</translation>
+        <translation>Alle Assets sind bereits aktiviert!</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="217"/>
         <source>You can still enable %1 assets. Selected: %2.</source>
-        <translation>Sie können weiterhin %1 Vermögenswerte aktivieren. Ausgewählt: %2.</translation>
+        <translation>Sie können weiterhin %1 Assets aktivieren. Ausgewählt: %2.</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="65"/>
         <source>Search asset</source>
-        <translation>Vermögenswert suchen</translation>
+        <translation>Asset suchen</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="238"/>
         <source>Change assets limit</source>
-        <translation>Vermögenslimit ändern</translation>
+        <translation>Asset-Limit ändern</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="252"/>
         <source>Add a custom asset</source>
-        <translation>Benutzerdefinierten Vermögenswert hinzufügen</translation>
+        <translation>Benutzerdefiniertes Asset hinzufügen</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="269"/>
@@ -1632,7 +1633,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/BestOrder/List.qml" line="17"/>
         <source>Best Orders</source>
-        <translation>Bester Auftrag</translation>
+        <translation>Die günstigsten Aufträge</translation>
     </message>
 </context>
 <context>
@@ -1640,7 +1641,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="125"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation>%1 ist nicht aktiviert - Möchten Sie es aktivieren, um %2 beste Bestellungen auswählen zu können? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</translation>
+        <translation>%1 ist nicht aktiviert - Möchten Sie es aktivieren, um die günstigsten Aufträge von %2 auswählen zu können? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Ja&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Nein&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="52"/>
@@ -1671,7 +1672,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Screens/Startup/Logging.qml" line="43"/>
         <source>Enabling assets</source>
-        <translation>Vermögenswerte ermöglichen</translation>
+        <translation>Assets ermöglichen</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/Logging.qml" line="43"/>
@@ -1814,17 +1815,17 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="913"/>
         <source>Fetching transactions...</source>
-        <translation type="unfinished"></translation>
+        <translation>Transaktionen werden abgerufen...</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="913"/>
         <source>No transactions available</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Transaktionen verfügbar</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="937"/>
         <source>Click to view your address on %1 (%2) block explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Klicken Sie hier, um Ihre Adresse im %1 (%2) Block-Explorer anzuzeigen</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="90"/>
@@ -1877,12 +1878,12 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="73"/>
         <source>Search contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt suchen</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="90"/>
         <source>+ NEW CONTACT</source>
-        <translation type="unfinished"></translation>
+        <translation>+ Neuer Kontakt</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="111"/>
@@ -1907,12 +1908,12 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="334"/>
         <source>address copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse in die Zwischenablage kopiert</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="357"/>
         <source>This contact does not have any registered address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Kontakt hat keine registrierte Adresse.</translation>
     </message>
 </context>
 <context>
@@ -1977,7 +1978,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="28"/>
         <source>Contact name</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktname</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="37"/>
@@ -1987,7 +1988,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="46"/>
         <source>+ ADD</source>
-        <translation type="unfinished"></translation>
+        <translation>+ HINZUFÜGEN</translation>
     </message>
 </context>
 <context>
@@ -2026,7 +2027,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="88"/>
         <source>Mandatory version found</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwingend notwendige Version gefunden</translation>
     </message>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="95"/>
@@ -2036,17 +2037,17 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="102"/>
         <source>This update is mandatory to continue using the application</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Update ist zwingend erforderlich, um die Anwendung weiterhin verwenden zu können</translation>
     </message>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="117"/>
         <source>Close Dex</source>
-        <translation type="unfinished"></translation>
+        <translation>Dex schließen</translation>
     </message>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="131"/>
         <source>Your application is updated.</source>
-        <translation>Ihre Anwendung ist aktualisiert.</translation>
+        <translation>Ihre Anwendung ist auf dem neuesten Stand.</translation>
     </message>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="111"/>
@@ -2200,22 +2201,22 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="203"/>
         <source>Order Matching</source>
-        <translation type="unfinished">Auftrag wird zusammengeführt</translation>
+        <translation>Auftrag wird abgeglichen</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="205"/>
         <source>Matched</source>
-        <translation type="unfinished">Zusammengeführt</translation>
+        <translation>Abgestimmt</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="205"/>
         <source>Order Matched</source>
-        <translation type="unfinished">Auftrag wurde zusammengeführt</translation>
+        <translation>Auftrag wurde abgestimmt</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="207"/>
         <source>Ongoing</source>
-        <translation type="unfinished">Laufend</translation>
+        <translation type="unfinished">Läuft</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="207"/>
@@ -2302,13 +2303,13 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="329"/>
         <source>Mismatch at %1 custom asset configuration</source>
         <comment>TICKER</comment>
-        <translation>Nichtübereinstimmung bei benutzerdefinierter Konfiguration des %1 Vermögenswert</translation>
+        <translation>Nichtübereinstimmung bei benutzerdefinierter Konfiguration des %1 Asset</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="339"/>
         <source>Application needs to be restarted for %1 custom asset.</source>
         <comment>TICKER</comment>
-        <translation>Die Anwendung muss für %1 benutzerdefinierten Vermögenswert neu gestartet werden.</translation>
+        <translation>Die Anwendung muss für benutzerdefiniertes Asset %1 neu gestartet werden.</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="347"/>
@@ -2333,7 +2334,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="462"/>
         <source>There aren&apos;t any notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Es gibt keine Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="656"/>
@@ -2371,16 +2372,16 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="160"/>
         <source>How to use the pro-view slider ?</source>
-        <translation>Wie verwende ich den Schieberegler für die Pro-Ansicht?</translation>
+        <translation>Wie verwende ich den Schieberegler?</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="161"/>
         <source>This slider is used to setup the order requirements you need.
 Left slider: Sets the minimum amount required to process a trade.
 Right slider: Sets the volume you want to trade.</source>
-        <translation>Dieser Schieberegler wird verwendet, um die Auftragsanforderungen festzulegen, die Sie benötigen.
-Linker Schieberegler: Legt den Mindestbetrag fest, der für die Abwicklung eines Handels erforderlich ist.
-Rechter Schieberegler: Legt das Volumen fest, das Sie handeln möchten.</translation>
+        <translation>Der Schieber wird verwendet, um die Auftragsanforderungen festzulegen.
+Linker Schieber: Legt den erforderlichen Mindestbetrag fest.
+Rechter Schieber: Legt das Volumen fest, das Sie handeln möchten.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="214"/>
@@ -2471,37 +2472,37 @@ Rechter Schieberegler: Legt das Volumen fest, das Sie handeln möchten.</transla
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="150"/>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="156"/>
         <source>Swap ID</source>
-        <translation type="unfinished">Swap ID</translation>
+        <translation>Swap ID</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="163"/>
         <source>Maker Payment Sent Transaction ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Maker-Zahlung gesendet:  Transaktions-ID</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="163"/>
         <source>Maker Payment Spent Transaction ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Maker-Zahlung ausgegeben: Transaktions-ID</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="170"/>
         <source>Maker Payment TXID</source>
-        <translation type="unfinished"></translation>
+        <translation>Maker-Zahlung: TXID</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="177"/>
         <source>Taker Payment Spent Transaction ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Taker-Zahlung ausgegeben: Transaktions-ID</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="177"/>
         <source>Taker Payment Sent Transaction ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Taker-Zahlung gesendet:  Transaktions-ID</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="183"/>
         <source>Taker Payment TXID</source>
-        <translation type="unfinished"></translation>
+        <translation>Taker-Zahlung: TXID</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="244"/>
@@ -2524,7 +2525,7 @@ Rechter Schieberegler: Legt das Volumen fest, das Sie handeln möchten.</transla
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="13"/>
         <source>Selected Order Removed</source>
-        <translation type="unfinished">Ausgewählten Auftrag entfernt</translation>
+        <translation>Ausgewählten Auftrag entfernt</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="20"/>
@@ -2536,7 +2537,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="27"/>
         <source>OK</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -2655,12 +2656,12 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Portfolio/Portfolio.qml" line="151"/>
         <source>ADD ASSET</source>
-        <translation>VERMÖGENSWERT HINZUFÜGEN</translation>
+        <translation>ASSET HINZUFÜGEN</translation>
     </message>
     <message>
         <location filename="../../Dex/Portfolio/Portfolio.qml" line="232"/>
         <source>Search asset</source>
-        <translation>Vermögenswert suchen</translation>
+        <translation>Asset suchen</translation>
     </message>
     <message>
         <location filename="../../Dex/Portfolio/Portfolio.qml" line="253"/>
@@ -2703,13 +2704,13 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="76"/>
         <source>Expedient</source>
-        <translation type="unfinished">Sinnvoll</translation>
+        <translation>Sinnvoll</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="76"/>
         <source>%1 compared to CEX</source>
         <comment>PRICE_DIFF%</comment>
-        <translation type="unfinished">%1 im Vergleich zu CEX</translation>
+        <translation>%1 im Vergleich zu CEX</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="122"/>
@@ -2742,7 +2743,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Exchange/Trade/PriceLineSimplified.qml" line="151"/>
         <source>Expedient</source>
-        <translation type="unfinished">Sinnvoll</translation>
+        <translation>Sinnvoll</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/PriceLineSimplified.qml" line="151"/>
@@ -2827,7 +2828,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Settings/RecoverSeedModal.qml" line="80"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/RecoverSeedModal.qml" line="90"/>
@@ -2872,17 +2873,17 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Addressbook/RemoveContactPopup.qml" line="26"/>
         <source>Do you want to remove this contact ?</source>
-        <translation type="unfinished">Möchten Sie diesen Kontakt entfernen?</translation>
+        <translation>Möchten Sie diesen Kontakt entfernen?</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/RemoveContactPopup.qml" line="35"/>
         <source>Yes</source>
-        <translation type="unfinished">Ja</translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/RemoveContactPopup.qml" line="45"/>
         <source>No</source>
-        <translation type="unfinished">Nein</translation>
+        <translation>Nein</translation>
     </message>
 </context>
 <context>
@@ -2944,7 +2945,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="264"/>
         <source>Prepare to send </source>
-        <translation>Auf Versand vorbereiten</translation>
+        <translation>Versandvorbereitung von</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="284"/>
@@ -2974,12 +2975,12 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="358"/>
         <source>Fix</source>
-        <translation type="unfinished">Festlegen</translation>
+        <translation>Korrigieren</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="412"/>
         <source>MAX</source>
-        <translation>Maximum</translation>
+        <translation>MAX</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="456"/>
@@ -2999,22 +3000,22 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="543"/>
         <source>Specify in Fiat</source>
-        <translation>Geben Sie in Fiat an</translation>
+        <translation>In Fiat angeben</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="544"/>
         <source>Specify in Crypto</source>
-        <translation>Geben Sie in Krypto an</translation>
+        <translation>In Krypto angeben</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="578"/>
         <source>Enable Custom Fees</source>
-        <translation>Benutzerdefinierte Gebühren aktivieren</translation>
+        <translation>Benutzerdefinierte Gebühren</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="590"/>
         <source>Only use custom fees if you know what you are doing!</source>
-        <translation>Verwenden Sie benutzerdefinierte Gebühren nur, wenn Sie wissen, was Sie tun!</translation>
+        <translation>Benutzerdefinierte Gebühren nur verwenden, wenn Sie wissen, was Sie tun!</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="616"/>
@@ -3100,7 +3101,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Wallet/SendModalContactList.qml" line="90"/>
         <source>1 address</source>
-        <translation type="unfinished">1. Adresse</translation>
+        <translation>1 Adresse</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModalContactList.qml" line="110"/>
@@ -3264,43 +3265,43 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="482"/>
         <source>Disable 2FA?</source>
-        <translation type="unfinished"></translation>
+        <translation>2FA deaktivieren?</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="483"/>
         <source>Enter your wallet password to confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie zur Bestätigung das Kennwort ihrer Brieftasche ein</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="489"/>
         <source>Type password</source>
-        <translation type="unfinished">Kennwort eingeben</translation>
+        <translation>Kennwort eingeben</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="502"/>
         <source>2FA status</source>
-        <translation type="unfinished"></translation>
+        <translation>2FA Status</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="503"/>
         <source>2FA disabled successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>2FA erfolgreich deaktiviert</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="504"/>
         <location filename="../../Dex/Settings/SettingModal.qml" line="520"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="515"/>
         <source>Wrong password!</source>
-        <translation type="unfinished"></translation>
+        <translation>Falsches Kennwort!</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="516"/>
         <source>Wallet password is incorrect</source>
-        <translation type="unfinished"></translation>
+        <translation>Kennwort der Brieftasche ist falsch</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="594"/>
@@ -3358,7 +3359,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="546"/>
         <source>Setup Camouflage Password</source>
-        <translation>Tarnpasswort einrichten</translation>
+        <translation>Tarnkennwort einrichten</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="547"/>
@@ -3456,7 +3457,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Settings/Settings.qml" line="211"/>
         <source>Setup Camouflage Password</source>
-        <translation>Tarnpasswort einrichten</translation>
+        <translation>Tarnkennwort einrichten</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/Settings.qml" line="227"/>
@@ -3484,12 +3485,12 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Wallet/Sidebar.qml" line="61"/>
         <source>Search</source>
-        <translation type="unfinished">Suchen</translation>
+        <translation>Suchen</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/Sidebar.qml" line="131"/>
         <source>Add asset</source>
-        <translation>Vermögenswert hinzufügen</translation>
+        <translation>Asset hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -3535,7 +3536,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="225"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation>%1 ist nicht aktiviert - Möchten Sie es aktivieren, um %2 beste Bestellungen auswählen zu können? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</translation>
+        <translation>%1 ist nicht aktiviert - Möchten Sie es aktivieren, um die günstigsten Aufträge von %2 auswählen zu können? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Ja&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Nein&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -3715,19 +3716,19 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
         <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds. 
 
 %1 enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
-        <translation>Bei anderen DEXs können Sie im Allgemeinen nur Vermögenswerte handeln, die auf einem einzigen Blockchain-Netzwerk basieren, Proxy-Token verwenden und nur einen einzigen Auftrag mit denselben Mitteln aufgeben.
+        <translation>Bei anderen DEXs können Sie im Allgemeinen nur Assets handeln, die auf einem einzigen Blockchain-Netzwerk basieren, Proxy-Token verwenden und nur einen einzigen Auftrag mit denselben Geldmitteln aufgeben.
 
 %1 ermöglicht Ihnen den nativen Handel über zwei verschiedene Blockchain-Netzwerke ohne Proxy-Token. Sie können auch mehrere Aufträge mit demselben Guthaben aufgeben. Sie können beispielsweise 0,1 BTC für KMD, QTUM oder VRSC verkaufen – die erste Order, die automatisch ausgeführt wird, storniert alle anderen Orders.</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="115"/>
         <source>How long does each atomic swap take?</source>
-        <translation>Wie lange dauert jeder Atomic Swap?</translation>
+        <translation>Wie lange dauert ein Atomic Swap?</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="116"/>
         <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
-        <translation>Mehrere Faktoren bestimmen die Bearbeitungszeit für jeden Swap. Die Blockzeit der gehandelten Vermögenswerte hängt von jedem Netzwerk ab (Bitcoin ist normalerweise das langsamste). Außerdem kann der Benutzer die Sicherheitseinstellungen anpassen. Zum Beispiel (können Sie %1 bitten, eine KMD-Transaktion nach nur 3 Bestätigungen als endgültig zu betrachten, wodurch die Tauschzeit kürzer wird als beim Warten auf eine &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;Beglaubigung (notarization)&lt;/a&gt;).</translation>
+        <translation>Mehrere Faktoren bestimmen die Bearbeitungszeit für einen Swap. Die Blockzeit der gehandelten Assets hängt vom jeweiligen Netzwerk ab (Bitcoin ist normalerweise das langsamste). Außerdem kann der Benutzer die Sicherheitseinstellungen anpassen. Zum Beispiel (können Sie %1 bitten, eine KMD-Transaktion nach nur 3 Bestätigungen als endgültig zu betrachten, wodurch die Tauschzeit kürzer wird als beim Warten auf eine &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;Beglaubigung &lt;/a&gt;).</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="121"/>
@@ -3805,7 +3806,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="160"/>
         <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The %1 developer community is always ready to help!</source>
-        <translation>Unbedingt! Sie können unsere Entwicklerdokumentation für weitere Details lesen oder uns mit Ihren Partnerschaftsanfragen kontaktieren. Haben Sie eine spezielle technische Frage? Die %1-Entwicklercommunity ist immer bereit zu helfen!</translation>
+        <translation>Auf jeden Fall! Sie können unsere Entwicklerdokumentation für weitere Details lesen oder uns mit Ihren Partnerschaftsanfragen kontaktieren. Haben Sie eine spezielle technische Frage? Die %1-Entwicklercommunity ist immer bereit zu helfen!</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="165"/>
@@ -3844,13 +3845,13 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
         <location filename="../../Dex/Exchange/ProView/TradingInfo/SwapProgress.qml" line="178"/>
         <source>act</source>
         <comment>SHORT FOR ACTUAL TIME</comment>
-        <translation>aktuelle Dauer</translation>
+        <translation>tatsächlich</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/SwapProgress.qml" line="180"/>
         <source>est</source>
         <comment>SHORT FOR ESTIMATED</comment>
-        <translation>geschätzte Dauer</translation>
+        <translation>geschätzt</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/SwapProgress.qml" line="202"/>
@@ -3900,7 +3901,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="150"/>
         <source>Swap</source>
-        <translation type="unfinished">Tauschen</translation>
+        <translation>Tauschen</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="159"/>
@@ -3910,17 +3911,17 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="191"/>
         <source>Reset form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular zurücksetzen</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="198"/>
         <source>You have no tradable assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine handelbaren Assets vorhanden</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="233"/>
         <source>From</source>
-        <translation type="unfinished">Von</translation>
+        <translation>Von</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="298"/>
@@ -3930,12 +3931,12 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="432"/>
         <source>MAX</source>
-        <translation>Maximum</translation>
+        <translation>MAX</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="462"/>
         <source>To</source>
-        <translation>Bis</translation>
+        <translation>Nach</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="537"/>
@@ -4148,7 +4149,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Wallet/TransactionDetailsModal.qml" line="106"/>
         <source>From address</source>
-        <translation type="unfinished"></translation>
+        <translation>Von Adresse</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/TransactionDetailsModal.qml" line="111"/>
@@ -4158,7 +4159,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Wallet/TransactionDetailsModal.qml" line="119"/>
         <source>To address</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach Adresse</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/TransactionDetailsModal.qml" line="131"/>
@@ -4235,7 +4236,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Screens/Startup/WalletsView.qml" line="89"/>
         <source>Search your wallets...</source>
-        <translation type="unfinished">Durchsuchen Sie Ihre Brieftaschen ...</translation>
+        <translation>Brieftaschen durchsuchen ...</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/WalletsView.qml" line="102"/>
