@@ -138,6 +138,10 @@ namespace
         const std::string& wallet_name, const std::vector<std::string>& tickers, auto status, atomic_dex::t_coins_registry& registry,
         std::shared_mutex& registry_mtx, std::string field_name = "active")
     {
+        if (wallet_name == "")
+        {
+            return;
+        }
         SPDLOG_INFO("Update coins status to: {} - field_name: {} - tickers: {}", status, field_name, fmt::join(tickers, ", "));
         fs::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
@@ -271,6 +275,8 @@ namespace atomic_dex
     {
         m_orderbook_clock = std::chrono::high_resolution_clock::now();
         m_info_clock      = std::chrono::high_resolution_clock::now();
+        dispatcher_.sink<zhtlc_enter_enabling>().connect<&mm2_service::on_zhtlc_enter_enabling>(*this);
+        dispatcher_.sink<zhtlc_leave_enabling>().connect<&mm2_service::on_zhtlc_leave_enabling>(*this);
         dispatcher_.sink<gui_enter_trading>().connect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().connect<&mm2_service::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&mm2_service::on_refresh_orderbook>(*this);
@@ -329,6 +335,8 @@ namespace atomic_dex
         dispatcher_.sink<gui_enter_trading>().disconnect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().disconnect<&mm2_service::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().disconnect<&mm2_service::on_refresh_orderbook>(*this);
+        dispatcher_.sink<zhtlc_enter_enabling>().disconnect<&mm2_service::on_zhtlc_enter_enabling>(*this);
+        dispatcher_.sink<zhtlc_leave_enabling>().disconnect<&mm2_service::on_zhtlc_leave_enabling>(*this);
         SPDLOG_INFO("mm2 signals successfully disconnected");
         bool mm2_stopped = false;
         if (m_mm2_running)
@@ -674,6 +682,7 @@ namespace atomic_dex
     void
     mm2_service::process_enable_zhtlc(std::vector<coin_config> coins)
     {
+        dispatcher_.trigger<zhtlc_enter_enabling>();
         auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
             t_init_z_coin_request request{
@@ -902,6 +911,7 @@ namespace atomic_dex
                         this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch);
                         update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                     });
+            dispatcher_.trigger<zhtlc_leave_enabling>();
         };
 
         for (auto&& coin: coins)
@@ -1691,6 +1701,22 @@ namespace atomic_dex
     }
 
     void
+    mm2_service::on_zhtlc_enter_enabling([[maybe_unused]] const zhtlc_enter_enabling& evt)
+    {
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
+        m_zhtlc_enable_thread_active = true;
+    }
+
+    void
+    mm2_service::on_zhtlc_leave_enabling([[maybe_unused]] const zhtlc_leave_enabling& evt)
+    {
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
+        m_zhtlc_enable_thread_active = false;
+    }
+
+    void
     mm2_service::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading& evt)
     {
         SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
@@ -1732,6 +1758,12 @@ namespace atomic_dex
     mm2_service::is_orderbook_thread_active() const
     {
         return this->m_orderbook_thread_active.load();
+    }
+
+    bool
+    mm2_service::is_zhtlc_enable_thread_active() const
+    {
+        return this->m_zhtlc_enable_thread_active.load();
     }
 
     nlohmann::json
