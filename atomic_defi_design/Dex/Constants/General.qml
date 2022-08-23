@@ -725,6 +725,7 @@ QtObject {
     }
 
     function getTradingError(error, fee_info, base_ticker, rel_ticker, left_ticker, right_ticker) {
+
         switch(error) {
         case TradingError.None:
             return ""
@@ -735,7 +736,11 @@ QtObject {
         case TradingError.PriceFieldNotFilled:
             return qsTr("Please fill the price field")
         case TradingError.VolumeFieldNotFilled:
-            return qsTr("Please fill the volume field")
+            return qsTr("Please fill the price field")
+        case TradingError.LeftZhtlcChainNotEnabled:
+            return qsTr("Please wait for %1 to fully activate").arg(left_ticker)
+        case TradingError.RightZhtlcChainNotEnabled:
+            return qsTr("Please wait for %1 to fully activate").arg(right_ticker)
         case TradingError.VolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(API.app.trading_pg.market_pairs_mdl.left_selected_coin) + " : " + General.getMinTradeAmount()
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:

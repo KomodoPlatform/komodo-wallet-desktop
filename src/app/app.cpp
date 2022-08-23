@@ -120,22 +120,9 @@ namespace atomic_dex
             bool       has_parent_fees = coin_info.has_parent_fees_ticker;
             if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
-                if (coin_info.is_zhtlc_family)
+                if (!get_mm2().is_zhtlc_coin_ready(coin.toStdString()))
                 {
-                    if (coin_info.activation_status.contains("result"))
-                    {
-                        if (coin_info.activation_status.at("result").contains("status"))
-                        {
-                            if (coin_info.activation_status.at("result").at("status") == "Ready")
-                            {
-                                coins_copy.push_front(coin);
-                            }
-                            else
-                            {
-                                this->dispatcher_.trigger<disabling_coin_failed>(coin.toStdString(), "Can't disable until fully activated.");
-                            }
-                        }
-                    }
+                    this->dispatcher_.trigger<disabling_coin_failed>(coin.toStdString(), "Can't disable until fully activated.");
                 }
                 else
                 {

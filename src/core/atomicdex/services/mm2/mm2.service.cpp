@@ -959,7 +959,31 @@ namespace atomic_dex
         }
     }
 
-
+    bool mm2_service::is_zhtlc_coin_ready(const std::string coin) const
+    {
+        const auto coin_info       = get_coin_info(coin);
+        if (coin_info.is_zhtlc_family)
+        {
+            if (coin_info.activation_status.contains("result"))
+            {
+                if (coin_info.activation_status.at("result").contains("status"))
+                {
+                    if (coin_info.activation_status.at("result").at("status") == "Ready")
+                    {
+                        if (coin_info.activation_status.at("result").contains("details"))
+                        {
+                            if (!coin_info.activation_status.at("result").at("details").contains("error"))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
+    }
 
     void
     mm2_service::process_enable_legacy(std::vector<coin_config> coins)

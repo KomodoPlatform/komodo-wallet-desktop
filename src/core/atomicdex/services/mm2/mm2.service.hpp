@@ -189,6 +189,7 @@ namespace atomic_dex
         using t_coins_enable_registry = std::unordered_map<CoinType, t_array_network>;
         void enable_multiple_coins_v2(const t_coins_enable_registry& coins_to_enable);
         void batch_enable_coins_v2(CoinType type_to_enable, std::vector<coin_config> coins_to_enable);
+        [[nodiscard]] bool is_zhtlc_coin_ready(const std::string coin) const;
 
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
         void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
