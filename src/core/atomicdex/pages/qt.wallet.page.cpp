@@ -1048,14 +1048,22 @@ namespace atomic_dex
                     }
                     else
                     {
+                        if (!m_system_manager.get_system<mm2_service>().is_zhtlc_coin_ready(ticker.toStdString()))
+                        {
+                            j_out["reason"]   = "Validation error: Coin not fully enabled";
+                        }
+                        else
+                        {
+                            j_out["reason"]   = "Validation error: Unknown";
+                        }
+
                         j_out["is_valid"] = false;
-                        j_out["reason"]   = "valideaddress unknown error";
                     }
                 }
                 else
                 {
                     j_out["is_valid"] = false;
-                    j_out["reason"]   = "valideaddress unknown error";
+                    j_out["reason"]   = "Validation error: Problem with connection";
                 }
                 this->set_validate_address_data(nlohmann_json_object_to_qt_json_object(j_out));
                 this->set_validate_address_busy(false);
