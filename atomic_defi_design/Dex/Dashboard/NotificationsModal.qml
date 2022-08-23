@@ -329,7 +329,7 @@ DexPopup
         toast.show(title, General.time_toast_important_error, error)
     }
 
-    function onDisblingCoinFailedStatus(coin, error, human_date, timestamp)
+    function onDisablingCoinFailedStatus(coin, error, human_date, timestamp)
     {
         const title = qsTr("Failed to disable %1", "TICKER").arg(coin)
 
