@@ -32,14 +32,7 @@ MultipageModalContent
         id: tx_hash
         font_size: 13
         align_left: true
-        text_box_width:
-        {
-            let char_len = current_ticker_infos.address.length
-            if (char_len > 70) return 560
-            if (char_len > 50) return 400
-            if (char_len > 40) return 350
-            return 300
-        }
+        text_box_width: 560
         onCopyNotificationTitle: qsTr("%1 txid", "TICKER").arg(api_wallet_page.ticker)
         onCopyNotificationMsg: qsTr("copied to clipboard.")
         privacy: true
@@ -59,14 +52,7 @@ MultipageModalContent
         id: address
         font_size: 13
         align_left: true
-        text_box_width:
-        {
-            let char_len = current_ticker_infos.address.length
-            if (char_len > 70) return 560
-            if (char_len > 50) return 400
-            if (char_len > 40) return 350
-            return 300
-        }
+        text_box_width: 560
         onCopyNotificationTitle: qsTr("%1 address", "TICKER").arg(api_wallet_page.ticker)
         onCopyNotificationMsg: qsTr("copied to clipboard.")
         privacy: true

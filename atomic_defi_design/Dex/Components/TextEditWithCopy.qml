@@ -29,9 +29,11 @@ RowLayout
         RowLayout
         {
             spacing: 4
+            anchors.fill: parent
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: !align_left ? parent.horizontalCenter : undefined
-            x: !align_left ? undefined : 10
+
+            Item { width: 6 }
 
             TextEdit
             {
@@ -65,6 +67,8 @@ RowLayout
                 linkURL: control.linkURL
                 iconSize: font_size
             }
+
+            Item { width: 6 }
         }
 
         DefaultMouseArea
