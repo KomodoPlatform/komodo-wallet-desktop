@@ -32,7 +32,8 @@ MultipageModalContent
         id: tx_hash
         font_size: 13
         align_left: true
-        text_box_width: {
+        text_box_width:
+        {
             let char_len = current_ticker_infos.address.length
             if (char_len > 70) return 560
             if (char_len > 50) return 400
@@ -58,7 +59,8 @@ MultipageModalContent
         id: address
         font_size: 13
         align_left: true
-        text_box_width: {
+        text_box_width:
+        {
             let char_len = current_ticker_infos.address.length
             if (char_len > 70) return 560
             if (char_len > 50) return 400
