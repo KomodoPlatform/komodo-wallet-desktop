@@ -29,9 +29,9 @@ RowLayout
         RowLayout
         {
             spacing: 4
-            anchors.leftMargin: 6
-            anchors.rightMargin: 6
-            anchors.centerIn: parent
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: !align_left ? parent.horizontalCenter : undefined
+            x: !align_left ? undefined : 10
 
             TextEdit
             {
