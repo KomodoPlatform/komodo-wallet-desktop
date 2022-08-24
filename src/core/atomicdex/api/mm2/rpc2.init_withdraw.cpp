@@ -42,7 +42,7 @@ namespace mm2::api
 
         if (request.fees.has_value())
         {
-            obj["fee"] = request.fees.value();
+            obj["params"]["fee"] = request.fees.value();
         }
 
         j.update(obj);
