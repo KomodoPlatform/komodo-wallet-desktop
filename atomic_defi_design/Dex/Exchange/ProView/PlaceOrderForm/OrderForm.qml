@@ -65,6 +65,7 @@ ColumnLayout
             left_text: qsTr("Price")
             right_text: right_ticker
             enabled: !(API.app.trading_pg.preffered_order.price !== undefined)
+            color: enabled ? Dex.CurrentTheme.foregroundColor1 : Dex.CurrentTheme.foregroundColor2
             text: backend_price
             width: parent.width
             height: 41
@@ -73,27 +74,40 @@ ColumnLayout
             onTextChanged: setPrice(text)
         }
 
-        DefaultText
+        OrderFormSubfield
         {
             id: price_usd_value
-            anchors.right: input_price.right
             anchors.top: input_price.bottom
+            anchors.left: input_price.left
             anchors.topMargin: 7
-
-            text_value: General.getFiatText(non_null_price, right_ticker)
-            font.pixelSize: input_price.font.pixelSize
-            color: Dex.CurrentTheme.foregroundColor2
-
-            CexInfoTrigger {}
+            reduce.onClicked:
+            {
+                let price = General.formatDouble(parseFloat(input_price.text) * 0.99)
+                setPrice(String(price))
+            }
+            increase.onClicked:
+            {
+                let price = General.formatDouble(parseFloat(input_price.text) * 1.01)
+                setPrice(String(price))
+            }
+            market.onClicked:
+            {
+                if (input_price.text == "0") setPrice("1")
+                let price = General.formatDouble(API.app.trading_pg.cex_price)
+                setPrice(String(price))
+            }
+            fiat_value: General.getFiatText(non_null_price, right_ticker)
+            left_label: "-1%"
+            middle_label: "0%"
+            right_label: "+1%"
         }
     }
-
 
     Item
     {
         Layout.preferredWidth: parent.width
-        Layout.topMargin: 10
-        Layout.preferredHeight: input_volume.height + inputVolumePrice.height + inputVolumePrice.anchors.topMargin
+        Layout.topMargin: 8
+        Layout.preferredHeight: input_volume.height + volume_usd_value.height + volume_usd_value.anchors.topMargin
 
         AmountField
         {
@@ -108,18 +122,85 @@ ColumnLayout
             onTextChanged: setVolume(text)
         }
 
-        DefaultText
+        OrderFormSubfield
         {
-            id: inputVolumePrice
-            anchors.right: input_volume.right
+            id: volume_usd_value
             anchors.top: input_volume.bottom
-            anchors.topMargin: price_usd_value.anchors.topMargin
+            anchors.left: input_volume.left
+            anchors.topMargin: 7
+            reduce.onClicked:
+            {
+                let volume = General.formatDouble(API.app.trading_pg.max_volume * 0.25)
+                setVolume(String(volume))
+            }
+            market.onClicked:
+            {
+                let volume = General.formatDouble(API.app.trading_pg.max_volume * 0.5)
+                setVolume(String(volume))
+            }
+            increase.onClicked: 
+            {
+                let volume = General.formatDouble(API.app.trading_pg.max_volume)
+                setVolume(String(volume))
+            }
+            fiat_value: General.getFiatText(non_null_volume, left_ticker)
+            left_label: "25%"
+            middle_label: "50%"
+            right_label: "Max"
+        }
+    }
 
-            text_value: General.getFiatText(non_null_volume, left_ticker)
-            font.pixelSize: input_volume.font.pixelSize
-            color: Dex.CurrentTheme.foregroundColor2
+    Item
+    {
+        visible: _useCustomMinTradeAmountCheckbox.checked
+        Layout.preferredWidth: parent.width
+        Layout.topMargin: 8
+        Layout.preferredHeight: input_minvolume.height + volume_usd_value.height + volume_usd_value.anchors.topMargin
 
-            CexInfoTrigger {}
+        AmountField
+        {
+            id: input_minvolume
+            width: parent.width
+            height: 41
+            radius: 18
+            left_text: qsTr("Min Volume")
+            right_text: left_ticker
+            placeholderText: sell_mode ? qsTr("Min amount to sell") : qsTr("Min amount to receive")
+            text: API.app.trading_pg.min_trade_vol
+            onTextChanged: setMinimumAmount(text)
+        }
+
+        OrderFormSubfield
+        {
+            id: minvolume_usd_value
+            anchors.top: input_minvolume.bottom
+            anchors.left: input_minvolume.left
+            anchors.topMargin: 7
+            reduce.onClicked:
+            {
+                let volume = API.app.trading_pg.max_volume * 0.05
+                if (volume > parseFloat(input_volume.text))
+                    volume = parseFloat(input_volume.text)
+                setMinimumAmount(General.formatDouble(volume))
+            }
+            market.onClicked:
+            {
+                let volume = API.app.trading_pg.max_volume * 0.10
+                if (volume > parseFloat(input_volume.text))
+                    volume = parseFloat(input_volume.text)
+                setMinimumAmount(General.formatDouble(volume))
+            }
+            increase.onClicked: 
+            {
+                let volume = API.app.trading_pg.max_volume * 0.20
+                if (volume > parseFloat(input_volume.text))
+                    volume = parseFloat(input_volume.text)
+                setMinimumAmount(General.formatDouble(volume))
+            }
+            fiat_value: General.getFiatText(non_null_volume, left_ticker)
+            left_label: "5%"
+            middle_label: "10%"
+            right_label: "20%"
         }
     }
 
@@ -127,7 +208,8 @@ ColumnLayout
     {
         Layout.preferredWidth: parent.width
         Layout.preferredHeight: minVolLabel.height
-        Layout.topMargin: 6
+        Layout.topMargin: 8
+        visible: !_useCustomMinTradeAmountCheckbox.checked
 
         DefaultText
         {
@@ -164,9 +246,39 @@ ColumnLayout
         }
     }
 
+    RowLayout
+    {
+        Layout.topMargin: 10
+        Layout.rightMargin: 2
+        Layout.leftMargin: 2
+        Layout.fillWidth: true
+        spacing: 5
+
+        DefaultCheckBox
+        {
+            id: _useCustomMinTradeAmountCheckbox
+            boxWidth: 20
+            boxHeight: 20
+            labelWidth: 0
+        }
+
+        DefaultText
+        {
+            Layout.fillWidth: true
+            height: _useCustomMinTradeAmountCheckbox.height
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Label.WordWrap
+            text: qsTr("Use custom minimum trade amount")
+            color: Dex.CurrentTheme.foregroundColor3
+            font.pixelSize: 13
+        }
+    }
+
     DefaultRangeSlider
     {
         id: _volumeRange
+        visible: false
 
         function getRealValue() { return first.position * (first.to - first.from); }
         function getRealValue2() { return second.position * (second.to - second.from); }
@@ -187,33 +299,5 @@ ColumnLayout
 
         first.onValueChanged: if (first.pressed) setMinimumAmount(General.formatDouble(first.value))
         second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
-    }
-
-    RowLayout
-    {
-        Layout.topMargin: 15
-        Layout.rightMargin: 2
-        Layout.leftMargin: 2
-        Layout.fillWidth: true
-        spacing: 5
-
-        DefaultCheckBox
-        {
-            id: _useCustomMinTradeAmountCheckbox
-            boxWidth: 20
-            boxHeight: 20
-            labelWidth: 0
-        }
-
-        DefaultText {
-            Layout.fillWidth: true
-            height: _useCustomMinTradeAmountCheckbox.height
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-            wrapMode: Label.WordWrap
-            text: qsTr("Use custom minimum trade amount")
-            color: Dex.CurrentTheme.foregroundColor3
-            font.pixelSize: 13
-        }
     }
 }
