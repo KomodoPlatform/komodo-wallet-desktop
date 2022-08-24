@@ -10548,5 +10548,90 @@
     ],
     "active": false,
     "currently_enabled": false
+  },
+  "sTST": {
+    "coin": "sTST",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://testnet.simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "sTST"
+  },
+  "HONK": {
+    "coin": "HONK",
+    "active": false,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "HONK HONK"
+  },
+  "ASLP": {
+    "coin": "ASLP",
+    "active": false,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "AtomicSLP"
+  },
+  "USDF": {
+    "coin": "USDF",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://testnet.simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "Fake USD (Testnet)"
+  },
+  "tBCH": {
+    "coin": "tBCH",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "tbch.loping.net:60002",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electroncash.de:50004",
+        "protocol": "SSL"
+      },
+      {
+        "url": "testnet.bitcoincash.network:60002",
+        "protocol": "SSL"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.bitcoin.com/tbch/"
+    ],
+    "bchd_urls": [
+      "https://bchd-testnet.greyh.at:18335"
+    ],
+    "allow_slp_unsafe_conf": false,
+    "type": "UTXO",
+    "name": "Bitcoin Cash (Testnet)"
   }
 }
