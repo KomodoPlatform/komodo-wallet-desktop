@@ -661,6 +661,9 @@ namespace atomic_dex
                         if (not idx.empty())
                         {
                             update_value(portfolio_model::PrivKey, QString::fromStdString(show_priv_key_answer.priv_key), idx.at(0), *portfolio_mdl);
+                            std::error_code ec;
+                            QString public_address = QString::fromStdString(m_system_manager.get_system<mm2_service>().address(show_priv_key_answer.coin, ec));
+                            update_value(portfolio_model::Address, public_address, idx.at(0), *portfolio_mdl);
                         }
                     }
                 }
