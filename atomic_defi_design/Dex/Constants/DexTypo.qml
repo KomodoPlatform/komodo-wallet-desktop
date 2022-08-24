@@ -99,6 +99,12 @@ QtObject {
         family: fontFamily,
         weight: Font.Normal
     })
+    property font body3: Qt.font({
+        pixelSize: 12 * fontDensity,
+        letterSpacing: 0.25,
+        family: fontFamily,
+        weight: Font.Normal
+    })
     property font button: Qt.font({
         pixelSize: 16 * fontDensity,
         letterSpacing: 1.25,

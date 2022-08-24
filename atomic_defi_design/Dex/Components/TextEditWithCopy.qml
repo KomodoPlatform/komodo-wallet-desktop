@@ -12,12 +12,13 @@ RowLayout
     property int font_size: Style.textSize
     property int text_box_width: 500
     property bool privacy: false
+    property bool align_left: false
     property string linkURL: ""
     property string onCopyNotificationTitle: ""
     property string onCopyNotificationMsg: qsTr("copied to clipboard")
     Layout.fillWidth: true
 
-    Item { Layout.fillWidth: true }
+    Item { Layout.fillWidth: !align_left }
 
     DexRectangle
     {

@@ -145,7 +145,7 @@ MultipageModal
         input_amount.text = current_ticker_infos.balance
     }
 
-    width: 700
+    width: 750
 
     closePolicy: Popup.NoAutoClose
 
@@ -274,6 +274,7 @@ MultipageModal
                 height: 44
                 placeholderText: qsTr("Address of the recipient")
                 forceFocus: true
+                font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
                 onTextChanged: api_wallet_page.validate_address(text)
             }
 
@@ -738,12 +739,31 @@ MultipageModal
     MultipageModalContent
     {
         titleText: qsTr("Send")
+        titleAlignment: Qt.AlignHCenter
 
         // Address
-        TextEditWithTitle
+        TitleText
         {
-            title: qsTr("Recipient's address")
-            text: input_address.text
+            text: qsTr("Recipient's address")
+            Layout.fillWidth: true
+            color: Dex.CurrentTheme.foregroundColor2
+        }
+
+        TextEditWithCopy
+        {
+            text_value: input_address.text
+            font_size: 13
+            align_left: true
+            text_box_width: {
+                let char_len = current_ticker_infos.address.length
+                if (char_len > 70) return 560
+                if (char_len > 50) return 400
+                if (char_len > 40) return 350
+                return 300
+            }
+            onCopyNotificationTitle: qsTr("%1 address", "TICKER").arg(api_wallet_page.ticker)
+            onCopyNotificationMsg: qsTr("copied to clipboard.")
+            privacy: true
         }
 
         // Amount
