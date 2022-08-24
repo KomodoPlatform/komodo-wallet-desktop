@@ -145,7 +145,7 @@ MultipageModal
         input_amount.text = current_ticker_infos.balance
     }
 
-    width: 650
+    width: 700
 
     closePolicy: Popup.NoAutoClose
 
@@ -259,7 +259,7 @@ MultipageModal
         {
             enabled: !root.segwit && !root.is_send_busy
 
-            Layout.preferredWidth: 420
+            Layout.preferredWidth: 500
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
 
@@ -270,7 +270,7 @@ MultipageModal
             {
                 id: input_address
 
-                width: 390
+                width: 470
                 height: 44
                 placeholderText: qsTr("Address of the recipient")
                 forceFocus: true
@@ -361,7 +361,7 @@ MultipageModal
             enabled: !root.is_send_busy
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 420
+            Layout.preferredWidth: 500
             Layout.preferredHeight: 44
             Layout.topMargin: 32
 
