@@ -12,14 +12,17 @@ MultipageModal
 
     function reset() { }
 
-    width: 600
+    width: 750
 
     MultipageModalContent
     {
         titleText: qsTr("Receive")
+        titleAlignment: Qt.AlignHCenter
 
         TextEditWithTitle
         {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
             title: qsTr("Only send %1 to this address:", "TICKER").arg(api_wallet_page.ticker)
             text: current_ticker_infos.address
             label.font.pixelSize: 13
@@ -36,8 +39,8 @@ MultipageModal
 
             source: current_ticker_infos.qrcode_address
 
-            sourceSize.width: 300
-            sourceSize.height: 300
+            sourceSize.width: 320
+            sourceSize.height: 320
         }
 
         // Buttons

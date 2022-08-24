@@ -91,6 +91,7 @@ namespace atomic_dex
 
         if (to_change)
         {
+            SPDLOG_INFO("set_current_orderbook");
             this->get_orderbook_wrapper()->clear_orderbook();
             this->clear_forms("set_current_orderbook");
         }
