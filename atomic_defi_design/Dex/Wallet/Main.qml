@@ -94,7 +94,7 @@ Item
                                 anchors.centerIn: parent
                                 anchors.fill: parent
                                 radius: 30
-                                enabled: General.isZhtlc(api_wallet_page.ticker) ? General.zhtlcActivationProgress(activation_status, api_wallet_page.ticker) != 100 : false
+                                enabled: activation_progress != 100
                                 visible: enabled
                                 opacity: .9
                                 color: DexTheme.backgroundColor
@@ -104,11 +104,11 @@ Item
                             {
                                 anchors.centerIn: parent
                                 anchors.fill: parent
-                                enabled: General.isZhtlc(api_wallet_page.ticker) ? General.zhtlcActivationProgress(activation_status, api_wallet_page.ticker) != 100 : false
+                                enabled: activation_progress != 100
                                 visible: enabled
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                text: General.zhtlcActivationProgress(activation_status, api_wallet_page.ticker) + "%"
+                                text: activation_progress + "%"
                                 font: DexTypo.head8
                                 color: DexTheme.greenColor
                             }
@@ -455,9 +455,10 @@ Item
                 // Send button error icon
                 DefaultAlertIcon
                 {
-                    visible: !General.isZhtlcReady(api_wallet_page.ticker, activation_progress) || api_wallet_page.send_availability_state !== ""
-                    tooltipText: General.isZhtlcReady(api_wallet_page.ticker, activation_progress) ? api_wallet_page.send_availability_state
-                                                    : api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
+                    visible: activation_progress != 100 || api_wallet_page.send_availability_state !== ""
+                    tooltipText: General.isZhtlc(api_wallet_page.ticker) && activation_progress != 100
+                                            ? api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
+                                            : api_wallet_page.send_availability_state
                 }
             }
 
@@ -955,11 +956,10 @@ Item
 
                         text_value:
                         {
-                            let progress = General.zhtlcActivationProgress(activation_status, api_wallet_page.ticker)
                             if (api_wallet_page.tx_fetching_busy) return qsTr("Fetching transactions...")
                             if (General.isZhtlc(api_wallet_page.ticker))
                             {
-                                if (progress != 100) return qsTr("Please wait, %1 is %2").arg(api_wallet_page.ticker).arg(progress) + qsTr("% activated...")
+                                if (activation_progress != 100) return qsTr("Please wait, %1 is %2").arg(api_wallet_page.ticker).arg(activation_progress) + qsTr("% activated...")
                             }
                             return qsTr('No transactions available')
                         }
@@ -984,6 +984,7 @@ Item
                         Layout.alignment: Qt.AlignHCenter
                         visible:
                         {
+                            if (activation_progress != 100) return false
                             if (addressURL) console.log("addressURL: " + addressURL)
                             return api_wallet_page.tx_fetching_busy ? false : addressURL == "" ? false : api_wallet_page.tx_fetching_failed 
                         }
