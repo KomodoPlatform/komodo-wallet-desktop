@@ -202,7 +202,7 @@ MultipageModal
         if(root.visible && broadcast_result !== "") {
             if(broadcast_result.indexOf("error") !== -1) {
                 reset()
-                showError(qsTr("Failed to Send"), General.prettifyJSON(broadcast_result))
+                showError(qsTr("Failed to Broadcast"), General.prettifyJSON(broadcast_result))
             }
             else {
                 root.currentIndex = 2
@@ -563,6 +563,7 @@ MultipageModal
             DefaultSwitch
             {
                 id: custom_fees_switch
+                visible: !General.isZhtlc(api_wallet_page.ticker)
                 enabled: !root.is_send_busy
                 Layout.preferredWidth: 260
                 onCheckedChanged: input_custom_fees.text = ""
@@ -595,7 +596,7 @@ MultipageModal
             // Normal coins, Custom fees input
             AmountField
             {
-                visible: !General.isSpecialToken(current_ticker_infos) && !General.isParentCoin(api_wallet_page.ticker)
+                visible: !General.isSpecialToken(current_ticker_infos) && !General.isParentCoin(api_wallet_page.ticker) || api_wallet_page.ticker == "KMD"
 
                 id: input_custom_fees
 
@@ -611,7 +612,8 @@ MultipageModal
             // Token coins
             ColumnLayout
             {
-                visible: General.isSpecialToken(current_ticker_infos)
+                visible: (General.isSpecialToken(current_ticker_infos) || General.isParentCoin(api_wallet_page.ticker)) && !api_wallet_page.ticker == "KMD"
+
                 Layout.alignment: Qt.AlignHCenter
 
                 // Gas input
