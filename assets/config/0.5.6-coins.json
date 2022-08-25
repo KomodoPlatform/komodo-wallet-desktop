@@ -9573,6 +9573,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "LRC-BEP20": {
+    "coin": "LRC-BEP20",
+    "name": "Loopring",
+    "coinpaprika_id": "lrc-loopring",
+    "coingecko_id": "loopring",
+    "nomics_id": "LRC",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "LRC-PLG20": {
     "coin": "LRC-PLG20",
     "name": "Loopring",
