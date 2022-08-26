@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,21 +16,16 @@
 
 #pragma once
 
-//! Qt
-#include <QNetworkAccessManager>
-
 #include <shared_mutex>
 #include <thread>
 #include <unordered_set>
 
-//! Deps
+#include <QNetworkAccessManager>
 #include <antara/gaming/ecs/system.hpp>
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/synchronized_value.hpp>
-//#include <reproc++/reproc.hpp>
 
-//! Project Headers
 #include "atomicdex/api/mm2/mm2.client.hpp"
 #include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/api/mm2/mm2.error.code.hpp"
@@ -171,15 +166,21 @@ namespace atomic_dex
         //! Refresh the current info (internally call process_balance and process_tx)
         void fetch_infos_thread(bool is_a_fresh = true, bool only_tx = false);
 
-        //! Enable coins
-        bool enable_default_coins();
+        // Coins enabling functions
+        bool enable_default_coins(); // Enables required coins + coins enabled in the config
+        void enable_coins(const std::vector<std::string>& tickers);
+        void enable_coins(const t_coins& coins);
+        void enable_coin(const std::string& ticker);
+        void enable_coin(const coin_config& coin_config);
+      private:
+        void enable_erc_family_coin(const coin_config& coin_config);
+        void enable_erc_family_coins(const t_coins& coins);
+        void enable_utxo_qrc20_coin(coin_config coin_config);
+        void enable_utxo_qrc20_coins(const t_coins& coins);
+        void enable_slp_coin(coin_config coin_config);
+        void enable_slp_coins(const t_coins& coins);
 
-        //! Batch Enable coins
-        void batch_enable_coins(const std::vector<std::string>& tickers, bool first_time = false);
-
-        //! Enable multiple coins
-        void enable_multiple_coins(const std::vector<std::string>& tickers);
-
+      public:
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
         void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
         void               remove_custom_coin(const std::string& ticker);

@@ -93,7 +93,7 @@ namespace atomic_dex
         {
             coins_std.push_back(extra_coin);
         }
-        mm2.enable_multiple_coins(coins_std);
+        mm2.enable_coins(coins_std);
 
         return true;
     }

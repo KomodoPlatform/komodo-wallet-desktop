@@ -20,6 +20,11 @@
 
 namespace atomic_dex::mm2
 {
+    void to_json(nlohmann::json& j, const get_public_key_rpc_request& request)
+    {
+    
+    }
+    
     void from_json(const nlohmann::json& json, get_public_key_rpc_result& in)
     {
         json.at("public_key").get_to(in.public_key);

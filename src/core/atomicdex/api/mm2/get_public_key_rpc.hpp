@@ -47,6 +47,6 @@ namespace atomic_dex::mm2
     using get_public_key_rpc_result     = get_public_key_rpc::expected_result_type;
     using get_public_key_rpc_error      = get_public_key_rpc::expected_error_type;
 
-    inline void to_json([[maybe_unused]] nlohmann::json& j, const get_public_key_rpc_request&) { }
+    void to_json([[maybe_unused]] nlohmann::json& j, const get_public_key_rpc_request&);
     void from_json(const nlohmann::json& json, get_public_key_rpc_result& in);
 }
