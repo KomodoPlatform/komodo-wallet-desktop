@@ -30,6 +30,8 @@ namespace atomic_dex::mm2
 
         template <mm2::rpc Rpc>
         void process_rpc_async(const std::function<void(Rpc)>& on_rpc_processed);
+        template <mm2::rpc Rpc>
+        void process_rpc_async(typename Rpc::expected_request_type request, const std::function<void(Rpc)>& on_rpc_processed);
 
         //! Synced
         template <typename TRequest, typename TAnswer>

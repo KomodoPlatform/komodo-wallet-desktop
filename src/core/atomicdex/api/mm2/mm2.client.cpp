@@ -16,11 +16,12 @@
 
 #include <meta/detection/detection.hpp>
 
+#include "enable_slp_rpc.hpp"
+#include "get_public_key_rpc.hpp"
 #include "mm2.client.hpp"
 #include "mm2.hpp"
-#include "rpc.tx.history.hpp"
 #include "rpc.hpp"
-#include "get_public_key_rpc.hpp"
+#include "rpc.tx.history.hpp"
 
 namespace
 {
@@ -40,16 +41,18 @@ namespace
     {
         web::http::http_request request;
         nlohmann::json json_req = {{"method", Rpc::endpoint}, {"userpass", atomic_dex::mm2::get_rpc_password()}};
+        nlohmann::json json_data;
 
+        nlohmann::to_json(json_data, data_req);
         request.set_method(web::http::methods::POST);
         if (Rpc::is_v2)
         {
             json_req["mmrpc"] = "2.0";
-            json_req.push_back({"params", data_req});
+            json_req.push_back({"params", json_data});
         }
         else
         {
-            json_req.insert(json_req.end(), nlohmann::json(data_req));
+            json_req.insert(json_req.end(), json_data);
         }
         request.set_body(json_req.dump());
         return request;
@@ -142,14 +145,24 @@ namespace atomic_dex::mm2
     template <mm2::rpc Rpc>
     void mm2_client::process_rpc_async(const std::function<void(Rpc)>& on_rpc_processed)
     {
-        auto request = make_request<Rpc>();
+        using request_type = typename Rpc::expected_request_type;
+        process_rpc_async(request_type{}, on_rpc_processed);
+    }
+    template void mm2_client::process_rpc_async<get_public_key_rpc>(const std::function<void(get_public_key_rpc)>&);
+    template void mm2_client::process_rpc_async<enable_slp_rpc>(const std::function<void(enable_slp_rpc)>&);
+    
+    template <mm2::rpc Rpc>
+    void mm2_client::process_rpc_async(typename Rpc::expected_request_type request, const std::function<void(Rpc)>& on_rpc_processed)
+    {
+        auto http_request = make_request<Rpc>(request);
         generate_client()
-            .request(request, m_token_source.get_token())
-            .template then([on_rpc_processed](const web::http::http_response& resp)
+            .request(http_request, m_token_source.get_token())
+            .template then([on_rpc_processed, request](const web::http::http_response& resp)
                            {
                                try
                                {
                                    auto rpc = process_rpc_answer<Rpc>(resp);
+                                   rpc.request = request;
                                    on_rpc_processed(rpc);
                                }
                                catch (const std::exception& ex)
@@ -158,7 +171,6 @@ namespace atomic_dex::mm2
                                }
                            });
     }
-    template void mm2_client::process_rpc_async<get_public_key_rpc>(const std::function<void(get_public_key_rpc)>&);
 
     void
     mm2_client::stop()
