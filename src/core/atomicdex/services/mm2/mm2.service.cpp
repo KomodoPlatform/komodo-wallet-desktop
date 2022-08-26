@@ -479,7 +479,7 @@ namespace atomic_dex
                 SPDLOG_WARN("{} cannot be enabled because it is already enabled.", coin_config.ticker);
                 continue;
             }
-            if (coin_config.type == "SLP")
+            if (coin_config.coin_type == CoinType::SLP || (coin_config.other_types && coin_config.other_types->contains(CoinType::SLP)))
             {
                 slp_coins.push_back(coin_config);
             }
@@ -637,7 +637,7 @@ namespace atomic_dex
 
     void mm2_service::enable_slp_coins(const t_coins& coins)
     {
-        auto callback = [this](mm2::enable_slp_rpc rpc)
+        auto callback = [this]<typename RpcRequest>(RpcRequest rpc)
         {
             if (rpc.error)
             {
@@ -653,10 +653,23 @@ namespace atomic_dex
         
         for (const auto& coin_config : coins)
         {
-            mm2::enable_slp_rpc rpc;
+            if (coin_config.coin_type != CoinType::SLP) // tBCH
+            {
+                mm2::enable_bch_with_tokens_rpc rpc;
+                
+                rpc.request.ticker = coin_config.ticker;
+                rpc.request.allow_slp_unsafe_conf = coin_config.allow_slp_unsafe_conf.has_value() && coin_config.allow_slp_unsafe_conf.value();
+                rpc.request.bchd_urls = coin_config.bchd_urls.value_or(std::vector<std::string>{});
+                rpc.request.mode.rpc_data.servers = coin_config.electrum_urls.value_or(std::vector<electrum_server>{});
+                m_mm2_client.process_rpc_async<mm2::enable_bch_with_tokens_rpc>(rpc.request, callback);
+            }
+            else
+            {
+                mm2::enable_slp_rpc rpc;
 
-            rpc.request.ticker = coin_config.ticker;
-            m_mm2_client.process_rpc_async<mm2::enable_slp_rpc>(rpc.request, callback);
+                rpc.request.ticker = coin_config.ticker;
+                m_mm2_client.process_rpc_async<mm2::enable_slp_rpc>(rpc.request, callback);
+            }
         }
     }
     
