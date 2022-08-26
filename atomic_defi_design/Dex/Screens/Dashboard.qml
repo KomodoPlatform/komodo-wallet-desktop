@@ -225,6 +225,39 @@ Item
         sourceComponent: RestartModal {}
     }
 
+    // Download Zcash Params
+    property alias zcash_params: zcash_params_modal.item
+    ModalLoader
+    {
+        id: zcash_params_modal
+        sourceComponent: ZcashParamsModal
+        {
+        }
+    }
+
+    function onEnablingZCoinStatus(coin, msg, human_date, timestamp)
+    {
+        // Ignore if coin already enabled (e.g. parent chain in batch)
+        console.log(msg)
+        if (msg.search("ZCashParamsNotFound") > -1)
+        {
+            console.log(coin)
+            zcash_params_modal.open()
+            zcash_params.coin = coin
+            console.trace()
+            return
+        }
+    }
+
+    Component.onCompleted:
+    {
+        API.app.notification_mgr.enablingZCoinStatus.connect(onEnablingZCoinStatus)
+    }
+    Component.onDestruction:
+    {
+        API.app.notification_mgr.enablingZCoinStatus.disconnect(onEnablingZCoinStatus)
+    }
+
     function getStatusColor(status)
     {
         switch (status) {

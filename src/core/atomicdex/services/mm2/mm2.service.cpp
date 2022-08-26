@@ -772,8 +772,7 @@ namespace atomic_dex
                                                         if (z_answers[0].at("result").at("details").contains("error"))
                                                         {
                                                             event = z_answers[0].at("result").at("details").at("error").get<std::string>();
-                                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
-                                                            SPDLOG_DEBUG("Enabling {} error: {}", tickers[idx], z_answers[0].at("result").at("details").dump(4));
+                                                            SPDLOG_DEBUG("Enabling [{}] error: {}", tickers[idx], event);
                                                             break;
                                                         }
                                                         SPDLOG_DEBUG("{} activation complete!", tickers[idx]);
@@ -839,6 +838,7 @@ namespace atomic_dex
                                                             tickers[idx], idx, tickers.size(), answers.size()
                                                         );
 
+                                                        this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
                                                         this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], z_error[0].dump(4));
                                                         to_remove.emplace(tickers[idx]);
 
