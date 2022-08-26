@@ -683,11 +683,14 @@ namespace atomic_dex
         this->m_post_clear_forms = true;
         this->set_selected_order_status(SelectedOrderStatus::None);
         this->reset_fees();
+        this->determine_cex_rates();
         emit cexPriceChanged();
         emit invalidCexPriceChanged();
         emit cexPriceReversedChanged();
         emit feesChanged();
         emit prefferedOrderChanged();
+        emit priceChanged();
+        emit priceReversedChanged();
     }
 
     QString
@@ -1011,6 +1014,9 @@ namespace atomic_dex
                 set_current_orderbook(base, rel);
             }
         }
+        this->determine_cex_rates();
+        emit priceChanged();
+        emit priceReversedChanged();
         return true;
     }
 

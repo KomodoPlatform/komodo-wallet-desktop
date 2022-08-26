@@ -80,17 +80,18 @@ ColumnLayout
             anchors.top: input_price.bottom
             anchors.left: input_price.left
             anchors.topMargin: 7
-            reduce.onClicked:
+            visible: !API.app.trading_pg.invalid_cex_price
+            left_btn.onClicked:
             {
-                let price = General.formatDouble(parseFloat(input_price.text) * 0.99)
+                let price = General.formatDouble(parseFloat(input_price.text) - (General.formatDouble(API.app.trading_pg.cex_price)*0.01))
                 setPrice(String(price))
             }
-            increase.onClicked:
+            right_btn.onClicked:
             {
-                let price = General.formatDouble(parseFloat(input_price.text) * 1.01)
+                let price = General.formatDouble(parseFloat(input_price.text) + (General.formatDouble(API.app.trading_pg.cex_price)*0.01))
                 setPrice(String(price))
             }
-            market.onClicked:
+            middle_btn.onClicked:
             {
                 if (input_price.text == "0") setPrice("1")
                 let price = General.formatDouble(API.app.trading_pg.cex_price)
@@ -100,6 +101,9 @@ ColumnLayout
             left_label: "-1%"
             middle_label: "0%"
             right_label: "+1%"
+            left_tooltip_text: "Reduce 1% relative to CEX market price."
+            middle_tooltip_text: "Use CEX market price."
+            right_tooltip_text: "Increase 1% relative to CEX market price."
         }
     }
 
@@ -128,17 +132,17 @@ ColumnLayout
             anchors.top: input_volume.bottom
             anchors.left: input_volume.left
             anchors.topMargin: 7
-            reduce.onClicked:
+            left_btn.onClicked:
             {
                 let volume = General.formatDouble(API.app.trading_pg.max_volume * 0.25)
                 setVolume(String(volume))
             }
-            market.onClicked:
+            middle_btn.onClicked:
             {
                 let volume = General.formatDouble(API.app.trading_pg.max_volume * 0.5)
                 setVolume(String(volume))
             }
-            increase.onClicked: 
+            right_btn.onClicked:
             {
                 let volume = General.formatDouble(API.app.trading_pg.max_volume)
                 setVolume(String(volume))
@@ -147,6 +151,9 @@ ColumnLayout
             left_label: "25%"
             middle_label: "50%"
             right_label: "Max"
+            left_tooltip_text: "Swap 25% of your balance."
+            middle_tooltip_text: "Swap 50% of your balance."
+            right_tooltip_text: "Swap maximum balance."
         }
     }
 
@@ -167,7 +174,7 @@ ColumnLayout
             right_text: left_ticker
             placeholderText: sell_mode ? qsTr("Min amount to sell") : qsTr("Min amount to receive")
             text: API.app.trading_pg.min_trade_vol
-            onTextChanged: setMinimumAmount(text)
+            onTextChanged: if (API.app.trading_pg.min_trade_vol != text) setMinimumAmount(text)
         }
 
         OrderFormSubfield
@@ -176,21 +183,21 @@ ColumnLayout
             anchors.top: input_minvolume.bottom
             anchors.left: input_minvolume.left
             anchors.topMargin: 7
-            reduce.onClicked:
+            left_btn.onClicked:
             {
                 let volume = API.app.trading_pg.max_volume * 0.05
                 if (volume > parseFloat(input_volume.text))
                     volume = parseFloat(input_volume.text)
                 setMinimumAmount(General.formatDouble(volume))
             }
-            market.onClicked:
+            middle_btn.onClicked:
             {
                 let volume = API.app.trading_pg.max_volume * 0.10
                 if (volume > parseFloat(input_volume.text))
                     volume = parseFloat(input_volume.text)
                 setMinimumAmount(General.formatDouble(volume))
             }
-            increase.onClicked: 
+            right_btn.onClicked:
             {
                 let volume = API.app.trading_pg.max_volume * 0.20
                 if (volume > parseFloat(input_volume.text))
@@ -201,6 +208,9 @@ ColumnLayout
             left_label: "5%"
             middle_label: "10%"
             right_label: "20%"
+            left_tooltip_text: "Minimum accepted trade equals 5% of your balance."
+            middle_tooltip_text: "Minimum accepted trade equals 10% of your balance."
+            right_tooltip_text: "Minimum accepted trade equals 20% of your balance."
         }
     }
 
