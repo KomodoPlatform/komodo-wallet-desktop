@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,11 +14,99 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
+#include <stdexcept>
+
 #include <nlohmann/json.hpp>
 
-//! Project Headers
-#include "atomicdex/config/coins.cfg.hpp"
+#include "coins.cfg.hpp"
+
+namespace
+{
+    CoinType get_coin_type_from_str(const std::string& coin_type)
+    {
+        if (coin_type == "QRC-20")
+        {
+            return CoinType::QRC20;
+        }
+        if (coin_type == "ERC-20")
+        {
+            return CoinType::ERC20;
+        }
+        if (coin_type == "UTXO")
+        {
+            return CoinType::UTXO;
+        }
+        if (coin_type == "Smart Chain")
+        {
+            return CoinType::SmartChain;
+        }
+        if (coin_type == "BEP-20")
+        {
+            return CoinType::BEP20;
+        }
+        if (coin_type == "SLP")
+        {
+            return CoinType::SLP;
+        }
+        if (coin_type == "Matic")
+        {
+            return CoinType::Matic;
+        }
+        if (coin_type == "Optimism")
+        {
+            return CoinType::Optimism;
+        }
+        if (coin_type == "Arbitrum")
+        {
+            return CoinType::Arbitrum;
+        }
+        if (coin_type == "AVX-20")
+        {
+            return CoinType::AVX20;
+        }
+        if (coin_type == "FTM-20")
+        {
+            return CoinType::FTM20;
+        }
+        if (coin_type == "HRC-20")
+        {
+            return CoinType::HRC20;
+        }
+        if (coin_type == "Ubiq")
+        {
+            return CoinType::Ubiq;
+        }
+        if (coin_type == "KRC-20")
+        {
+            return CoinType::KRC20;
+        }
+        if (coin_type == "Moonriver")
+        {
+            return CoinType::Moonriver;
+        }
+        if (coin_type == "Moonbeam")
+        {
+            return CoinType::Moonbeam;
+        }
+        if (coin_type == "HecoChain")
+        {
+            return CoinType::HecoChain;
+        }
+        if (coin_type == "SmartBCH")
+        {
+            return CoinType::SmartBCH;
+        }
+        if (coin_type == "Ethereum Classic")
+        {
+            return CoinType::EthereumClassic;
+        }
+        if (coin_type == "RSK Smart Bitcoin")
+        {
+            return CoinType::RSK;
+        }
+        throw std::invalid_argument{"Undefined given coin type."};
+    }
+}
 
 namespace atomic_dex
 {
@@ -29,6 +117,17 @@ namespace atomic_dex
         cfg.gui_ticker = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
         j.at("name").get_to(cfg.name);
         j.at("type").get_to(cfg.type);
+        if (j.contains("other_types"))
+        {
+            std::vector<std::string> other_types;
+            
+            j.at("other_types").get_to(other_types);
+            cfg.other_types = std::set<CoinType>();
+            for (const auto& other_type : other_types)
+            {
+                cfg.other_types->emplace(get_coin_type_from_str(other_type));
+            }
+        }
         if (j.contains("mm2_backup"))
         {
             cfg.custom_backup = j.at("mm2_backup");
@@ -36,6 +135,14 @@ namespace atomic_dex
         if (j.contains("electrum"))
         {
             cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();
+        }
+        if (j.contains("bchd_urls"))
+        {
+            cfg.bchd_urls = j.at("bchd_urls").get<std::vector<std::string>>();
+        }
+        if (j.contains("allow_slp_unsafe_conf"))
+        {
+            cfg.allow_slp_unsafe_conf = j.at("allow_slp_unsafe_conf").get<bool>();
         }
         if (j.contains("nodes"))
         {
@@ -103,86 +210,7 @@ namespace atomic_dex
         {
             cfg.is_testnet = j.at("is_testnet").get<bool>();
         }
-        if (cfg.type == "QRC-20")
-        {
-            cfg.coin_type = CoinType::QRC20;
-        }
-        else if (cfg.type == "ERC-20")
-        {
-            cfg.coin_type = CoinType::ERC20;
-        }
-        else if (cfg.type == "UTXO")
-        {
-            cfg.coin_type = CoinType::UTXO;
-        }
-        else if (cfg.type == "Smart Chain")
-        {
-            cfg.coin_type = CoinType::SmartChain;
-        }
-        else if (cfg.type == "BEP-20")
-        {
-            cfg.coin_type = CoinType::BEP20;
-        }
-        else if (cfg.type == "SLP")
-        {
-            cfg.coin_type = CoinType::SLP;
-        }
-        else if (cfg.type == "Matic")
-        {
-            cfg.coin_type = CoinType::Matic;
-        }
-        else if (cfg.type == "Optimism")
-        {
-            cfg.coin_type = CoinType::Optimism;
-        }
-        else if (cfg.type == "Arbitrum")
-        {
-            cfg.coin_type = CoinType::Arbitrum;
-        }
-        else if (cfg.type == "AVX-20")
-        {
-            cfg.coin_type = CoinType::AVX20;
-        }
-        else if (cfg.type == "FTM-20")
-        {
-            cfg.coin_type = CoinType::FTM20;
-        }
-        else if (cfg.type == "HRC-20")
-        {
-            cfg.coin_type = CoinType::HRC20;
-        }
-        else if (cfg.type == "Ubiq")
-        {
-            cfg.coin_type = CoinType::Ubiq;
-        }
-        else if (cfg.type == "KRC-20")
-        {
-            cfg.coin_type = CoinType::KRC20;
-        }
-        else if (cfg.type == "Moonriver")
-        {
-            cfg.coin_type = CoinType::Moonriver;
-        }
-        else if (cfg.type == "Moonbeam")
-        {
-            cfg.coin_type = CoinType::Moonbeam;
-        }
-        else if (cfg.type == "HecoChain")
-        {
-            cfg.coin_type = CoinType::HecoChain;
-        }
-        else if (cfg.type == "SmartBCH")
-        {
-            cfg.coin_type = CoinType::SmartBCH;
-        }
-        else if (cfg.type == "Ethereum Classic")
-        {
-            cfg.coin_type = CoinType::EthereumClassic;
-        }
-        else if (cfg.type == "RSK Smart Bitcoin")
-        {
-            cfg.coin_type = CoinType::RSK;
-        }
+        cfg.coin_type = get_coin_type_from_str(cfg.type);
         if (j.contains("wallet_only"))
         {
             cfg.wallet_only = j.at("wallet_only").get<bool>();

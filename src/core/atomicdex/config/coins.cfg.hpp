@@ -16,16 +16,11 @@
 
 #pragma once
 
-//! QT
-#include <QObject>
-
-//! STD
 #include <optional>
+#include <set>
 
-//! Deps
 #include <nlohmann/json.hpp>
 
-//! Project
 #include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
@@ -43,6 +38,8 @@ namespace atomic_dex
         std::string                     gui_ticker; ///< Ticker displayed in the gui
         std::string                     name;       ///< nice name
         std::optional<electrum_servers> electrum_urls;
+        std::optional<nodes>            bchd_urls;
+        std::optional<bool>             allow_slp_unsafe_conf;
         std::optional<nodes>            urls;
         bool                            is_claimable{false};
         std::string                     minimal_claim_amount{"0"};
@@ -53,6 +50,7 @@ namespace atomic_dex
         std::string                     nomics_id{"test-coin"};
         bool                            is_custom_coin{false};
         std::string                     type;
+        std::optional<std::set<CoinType>> other_types;
         std::vector<std::string>        explorer_url; ///< usefull for transaction, take this url and append transaction id
         std::string                     tx_uri{"tx/"};
         std::string                     address_url{"address/"};
