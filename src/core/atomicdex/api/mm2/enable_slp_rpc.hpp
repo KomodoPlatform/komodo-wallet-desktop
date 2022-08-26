@@ -55,5 +55,6 @@ namespace atomic_dex::mm2
     using enable_slp_rpc_result     = enable_slp_rpc::expected_result_type;
     using enable_slp_rpc_error      = enable_slp_rpc::expected_error_type;
 
-    inline void from_json(const nlohmann::json& j, enable_slp_rpc_result& in);
+    void to_json(nlohmann::json& j, const enable_slp_rpc_request& request);
+    void from_json(const nlohmann::json& j, enable_slp_rpc_result& in);
 }
