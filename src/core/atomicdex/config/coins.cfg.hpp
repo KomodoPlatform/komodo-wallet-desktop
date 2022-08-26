@@ -27,6 +27,7 @@
 
 //! Project
 #include "atomicdex/api/mm2/mm2.constants.hpp"
+#include "atomicdex/api/mm2/utxo.merge.params.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
@@ -73,6 +74,7 @@ namespace atomic_dex
         bool                                        is_segwit_on{false};
         bool                                        is_erc_family{false};
         bool                                        is_zhtlc_family{false};
+        std::optional<bool>                         utxo_merge{false};
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);

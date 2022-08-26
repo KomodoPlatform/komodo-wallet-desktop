@@ -332,6 +332,7 @@ QtObject {
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
                                           "MCL": "#EA0000",
+                                          "ILNSW": "#28873B",
                                           "MM": "#F5B700",
                                           "CCL": "#FFE400",
                                           "BET": "#F69B57",

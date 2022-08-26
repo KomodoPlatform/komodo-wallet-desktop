@@ -41,15 +41,19 @@ namespace mm2::api
             j["fallback_swap_contract"] = cfg.is_testnet ? cfg.testnet_fallback_qrc_swap_contract_address : cfg.mainnet_fallback_qrc_swap_contract_address;
         }
 
-        if (cfg.address_format.has_value()) {
-            j["address_format"] = cfg.address_format.value();
-        }
-
         if (cfg.bchd_urls.has_value()) {
             j["bchd_urls"] = cfg.bchd_urls.value();
             j["allow_slp_unsafe_conf"] = cfg.allow_slp_unsafe_conf.value_or(false);
         }
-        //SPDLOG_INFO("electrum: {}", j.dump());
+
+        if (cfg.address_format.has_value())
+        {
+            j["address_format"] = cfg.address_format.value();
+        }
+        if (cfg.merge_params.has_value())
+        {
+            j["utxo_merge_params"] = cfg.merge_params.value();
+        }
     }
 
     //! Deserialization

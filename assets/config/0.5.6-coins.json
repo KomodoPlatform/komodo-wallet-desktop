@@ -6605,7 +6605,7 @@
     "name": "ilien Fuel",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
-    "nomics_id": "ilnfbep20",
+    "nomics_id": "ILNF",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -6654,12 +6654,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "ILNSW-PLG20": {
+    "coin": "ILNSW-PLG20",
+    "name": "ilien Swap",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "test-coin",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://matic-mainnet.chainstacklabs.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "ILNF-PLG20": {
     "coin": "ILNF-PLG20",
     "name": "ilien Fuel",
     "coinpaprika_id": "test-coin",
     "coingecko_id": "test-coin",
-    "nomics_id": "ilnf",
+    "nomics_id": "ILNF",
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
@@ -6766,7 +6784,7 @@
   },
   "NAV": {
     "coin": "NAV",
-    "name": "NavCoin",
+    "name": "Navcoin",
     "coinpaprika_id": "nav-navcoin",
     "coingecko_id": "nav-coin",
     "nomics_id": "NAV",

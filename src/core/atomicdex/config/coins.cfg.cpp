@@ -43,6 +43,11 @@ namespace atomic_dex
         cfg.is_testnet           = j.contains("is_testnet") ? j.at("is_testnet").get<bool>() : false;
         cfg.wallet_only          = j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
 
+        if (j.contains("utxo_merge"))
+        {
+            cfg.utxo_merge = j.at("utxo_merge");
+        }
+
         if (j.contains("mm2_backup"))
         {
             cfg.custom_backup = j.at("mm2_backup");

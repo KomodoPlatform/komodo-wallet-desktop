@@ -13,7 +13,7 @@ MultipageModal {
 
     // Inside modal
     MultipageModalContent {
-        titleText: qsTr("%1 Activation Failed! Download Zcash Params?").arg(coin)
+        titleText: qsTr("%1 Activation Failed!").arg(coin)
 
         DefaultText {
             Layout.preferredHeight: 200
