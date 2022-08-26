@@ -369,6 +369,7 @@ namespace atomic_dex
         // system_manager_.create_system<coinpaprika_provider>(system_manager_);
         //system_manager_.create_system<coingecko_provider>(system_manager_);
         system_manager_.create_system<komodo_prices_provider>();
+        system_manager_.create_system<zcash_params_service>();
         system_manager_.create_system<update_checker_service>();
         system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<exporter_service>(system_manager_);
@@ -751,6 +752,17 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
+//! update checker
+namespace atomic_dex
+{
+    zcash_params_service* application::get_zcash_params_service() const
+    {
+        auto ptr = const_cast<zcash_params_service*>(std::addressof(system_manager_.get_system<zcash_params_service>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
+} // namespace atomic_dex
+
 //! IP checker
 namespace atomic_dex
 {
@@ -821,3 +833,34 @@ namespace atomic_dex
         }
     }
 } // namespace atomic_dex
+
+
+/*
+//! App restart
+namespace atomic_dex
+{
+    void
+    application::get_zcash_params()
+    {
+        QProcess get_params;
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        #if defined(_WIN32) || defined(WIN32)
+        get_params.setProgram(std_path_to_qstring((tools_path / "get_params.bat")));
+        #else
+        get_params.setProgram(std_path_to_qstring((tools_path / "get_params.sh")));
+        #endif
+        get_params.setWorkingDirectory(std_path_to_qstring(tools_path));
+        get_params.setProcessEnvironment(env);
+        bool started = get_params.startDetached();
+
+        if (!started)
+        {
+            SPDLOG_ERROR("Couldn't start get_params");
+            std::exit(EXIT_FAILURE);
+        }
+
+        
+
+    }
+} // namespace atomic_dex
+*/

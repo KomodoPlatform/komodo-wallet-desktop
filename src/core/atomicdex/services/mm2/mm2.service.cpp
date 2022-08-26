@@ -771,6 +771,9 @@ namespace atomic_dex
                                                         m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                         if (z_answers[0].at("result").at("details").contains("error"))
                                                         {
+                                                            event = z_answers[0].at("result").at("details").at("error").get<std::string>();
+                                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
+                                                            SPDLOG_DEBUG("Enabling {} error: {}", tickers[idx], z_answers[0].at("result").at("details").dump(4));
                                                             break;
                                                         }
                                                         SPDLOG_DEBUG("{} activation complete!", tickers[idx]);

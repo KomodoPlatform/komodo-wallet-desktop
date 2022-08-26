@@ -49,6 +49,7 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
+#include "atomicdex/services/update/zcash.params.service.hpp"
 
 namespace ag = antara::gaming;
 
@@ -74,6 +75,7 @@ namespace atomic_dex
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
         Q_PROPERTY(qt_wallet_manager* wallet_mgr READ get_wallet_mgr NOTIFY walletMgrChanged)
         Q_PROPERTY(update_checker_service* updateCheckerService READ get_update_checker_service NOTIFY updateCheckerServiceChanged)
+        Q_PROPERTY(zcash_params_service* zcashParamsService READ get_zcash_params_service NOTIFY zcashParamsServiceChanged)
 
         //! Private function
         void connect_signals();
@@ -134,6 +136,7 @@ namespace atomic_dex
         internet_service_checker*        get_internet_checker() const;
         ip_service_checker*              get_ip_checker() const;
         update_checker_service*          get_update_checker_service() const;
+        zcash_params_service*            get_zcash_params_service() const;
         exporter_service*                get_exporter_service() const;
 
         void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine);
@@ -174,6 +177,7 @@ namespace atomic_dex
         void walletPageChanged();
         void ordersChanged();
         void updateCheckerServiceChanged();
+        void zcashParamsServiceChanged();
         void tradingPageChanged();
         void settingsPageChanged();
         void internetCheckerChanged();
