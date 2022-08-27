@@ -51,6 +51,9 @@ namespace atomic_dex
         [[nodiscard]] QVariant get_update_info() const;
         [[nodiscard]] bool     get_is_fetching() const noexcept { return *is_fetching; }
 
+        [[nodiscard]] fs::path      get_zcash_params_folder();
+        Q_INVOKABLE void            download_zcash_params();
+
       signals:
         void updateInfoChanged();
         void isFetchingChanged();
