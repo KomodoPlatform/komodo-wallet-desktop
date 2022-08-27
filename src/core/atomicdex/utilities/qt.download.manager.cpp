@@ -1,18 +1,37 @@
-//
-// Created by Sztergbaum Roman on 04/04/2021.
-//
+/******************************************************************************
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
 
+
+#include <QDebug>
 #include <QFile>
 
 //! Project
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
-#include "qt.download.manager.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
 
 namespace atomic_dex
 {
-    qt_download_manager::qt_download_manager(entt::dispatcher& dispatcher) : m_dispatcher(dispatcher)
+    qt_download_manager::qt_download_manager(
+        entt::registry& registry, ag::ecs::system_manager& system_manager,
+        entt::dispatcher& dispatcher, QObject* parent) :
+        QObject(parent), system(registry),
+        m_system_manager(system_manager), m_dispatcher(dispatcher)
     {
+        dispatcher.sink<download_started>().connect<&qt_download_manager::on_download_started>(*this);
         SPDLOG_INFO("qt_download_manager created");
         connect(&m_manager, &QNetworkAccessManager::finished, this, &qt_download_manager::download_finished);
     }
@@ -78,5 +97,26 @@ namespace atomic_dex
         return m_last_downloaded_path;
     }
 
-    qt_download_manager::~qt_download_manager() {}
+    void
+    qt_download_manager::on_download_started([[maybe_unused]] const download_started& evt)
+    {
+        SPDLOG_INFO("Default coins are enabled, we can now check internet with mm2 too");
+        //g_mm2_default_coins_ready = true;
+    }
+
+    void
+    qt_download_manager::update() 
+    {
+        using namespace std::chrono_literals;
+
+        const auto now = std::chrono::high_resolution_clock::now();
+        const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
+        //set_seconds_left_to_auto_retry(60.0 - s.count());
+        if (s >= 60s)
+        {
+            //this->fetch_internet_connection();
+            //m_update_clock = std::chrono::high_resolution_clock::now();
+            //set_seconds_left_to_auto_retry(60.0);
+        }
+    }
 } // namespace atomic_dex

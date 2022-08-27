@@ -26,6 +26,7 @@
 #include "atomicdex/services/update/zcash.params.service.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
 #include "atomicdex/version/version.hpp"
 
 namespace atomic_dex
@@ -83,7 +84,7 @@ namespace atomic_dex
                 filename = "sprout-proving.key";
             }
             SPDLOG_INFO("Downloading {}...", filename);
-            // qt_download_manager::do_download(QUrl(url), folder, filename);
+            //qt_download_manager::do_download(QUrl(url), folder, filename);
         }
     }
 
