@@ -12,6 +12,7 @@
 
 #include "atomicdex/events/events.hpp"
 
+
 namespace atomic_dex
 {
     class qt_download_manager final : public QObject, public ag::ecs::pre_update_system<qt_download_manager>
@@ -28,10 +29,10 @@ namespace atomic_dex
 
         entt::dispatcher&        m_dispatcher;
         QNetworkAccessManager    m_manager;
-        std::string              m_current_filename;
-        fs::path                 m_last_downloaded_path;
+        std::string              m_download_filename;
+        fs::path                 m_download_path;
         QVector<QNetworkReply*>  m_current_downloads;
-        float                    m_current_progress;
+        float                    m_download_progress;
 
       public:
 
@@ -42,12 +43,12 @@ namespace atomic_dex
         ~qt_download_manager() final = default;
 
         //! QT Properties
-        void                   do_download(const QUrl& url);
-        [[nodiscard]] fs::path get_last_download_path() const;
+        void                   do_download(const std::string url, const fs::path folder, std::string filename);
+        [[nodiscard]] fs::path get_last_download_path();
 
         //! Public override
         void update()  final;
-        
+
         //! Events
         void on_download_started([[maybe_unused]] const download_started& evt);
 

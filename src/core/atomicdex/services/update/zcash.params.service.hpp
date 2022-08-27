@@ -19,10 +19,9 @@
 #include <QObject>
 #include <QVariant>
 
+#include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/synchronized_value.hpp>
 #include <nlohmann/json_fwd.hpp>
-
-#include <antara/gaming/ecs/system.hpp>
 
 namespace atomic_dex
 {
@@ -36,6 +35,8 @@ namespace atomic_dex
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
         using t_json_synchronized = boost::synchronized_value<nlohmann::json>;
 
+        ag::ecs::system_manager&        m_system_manager;
+        entt::dispatcher&               m_dispatcher;
         t_json_synchronized             m_update_info;
         t_update_time_point             m_update_clock;
         boost::synchronized_value<bool> is_fetching;
@@ -43,7 +44,9 @@ namespace atomic_dex
         void fetch_update_info();
 
       public:
-        explicit zcash_params_service(entt::registry& registry, QObject* parent = nullptr);
+        explicit zcash_params_service(
+            entt::registry& registry, ag::ecs::system_manager& system_manager,
+            entt::dispatcher& dispatcher, QObject* parent = nullptr);
         ~zcash_params_service() final = default;
 
         void update() final;

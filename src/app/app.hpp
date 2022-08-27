@@ -50,6 +50,7 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/services/update/zcash.params.service.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
 
 namespace ag = antara::gaming;
 
@@ -134,6 +135,7 @@ namespace atomic_dex
         settings_page*                   get_settings_page() const;
         qt_wallet_manager*               get_wallet_mgr() const;
         internet_service_checker*        get_internet_checker() const;
+        qt_download_manager*             get_qt_download_manager() const;
         ip_service_checker*              get_ip_checker() const;
         update_checker_service*          get_update_checker_service() const;
         zcash_params_service*            get_zcash_params_service() const;

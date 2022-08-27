@@ -37,11 +37,12 @@ namespace atomic_dex
     }
 
     void
-    qt_download_manager::do_download(const QUrl& url)
+    qt_download_manager::do_download(const std::string url, const fs::path folder, std::string filename)
     {
-        m_current_filename     = atomic_dex::utils::u8string(fs::path(url.toString().toStdString()).filename());
-        m_last_downloaded_path = fs::temp_directory_path() / m_current_filename;
-        QNetworkRequest request(url);
+        m_download_filename     = filename;
+        m_download_path         = folder / m_download_filename;
+        SPDLOG_INFO("[do_download] Downloading: {}", url);
+        QNetworkRequest request(QUrl(QString::fromStdString(url)));
         request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::RedirectPolicy::NoLessSafeRedirectPolicy);
         QNetworkReply* reply = m_manager.get(request);
         connect(reply, &QNetworkReply::downloadProgress, this, &qt_download_manager::download_progress);
@@ -51,19 +52,19 @@ namespace atomic_dex
     void
     qt_download_manager::download_progress(qint64 bytes_received, qint64 bytes_total)
     {
-        m_current_progress = float(bytes_received) / float(bytes_total);
-        m_dispatcher.trigger(qt_download_progressed{m_current_progress});
-        SPDLOG_INFO("bytes_received : {}, bytes_total: {}, percent {}%", bytes_received, bytes_total, m_current_progress * 100);
+        m_download_progress = float(bytes_received) / float(bytes_total);
+        m_dispatcher.trigger(qt_download_progressed{m_download_progress});
+        SPDLOG_INFO("bytes_received : {}, bytes_total: {}, percent {}%", bytes_received, bytes_total, m_download_progress * 100);
     }
 
     void
     qt_download_manager::download_finished(QNetworkReply* reply)
     {
         auto save_disk_functor = [this](QIODevice* data) {
-            QFile file(utils::u8string(m_last_downloaded_path).c_str());
+            QFile file(utils::u8string(m_download_path).c_str());
             if (!file.open(QIODevice::WriteOnly))
             {
-                SPDLOG_ERROR("Could not open {} for writing: {}", utils::u8string(m_last_downloaded_path), file.errorString().toStdString());
+                SPDLOG_ERROR("Could not open {} for writing: {}", utils::u8string(m_download_path), file.errorString().toStdString());
                 return false;
             }
 
@@ -79,10 +80,10 @@ namespace atomic_dex
         }
         else
         {
-            SPDLOG_INFO("Successfully downloaded: {}", m_current_filename);
+            SPDLOG_INFO("Successfully downloaded: {}", m_download_filename);
             if (save_disk_functor(reply))
             {
-                SPDLOG_INFO("Successfully saved {} to {}", url.toString().toStdString(), utils::u8string(m_last_downloaded_path));
+                SPDLOG_INFO("Successfully saved {} to {}", url.toString().toStdString(), utils::u8string(m_download_path));
                 m_dispatcher.trigger<download_release_finished>();
             }
         }
@@ -92,9 +93,9 @@ namespace atomic_dex
     }
 
     fs::path
-    qt_download_manager::get_last_download_path() const
+    qt_download_manager::get_last_download_path()
     {
-        return m_last_downloaded_path;
+        return m_download_path;
     }
 
     void
@@ -105,7 +106,7 @@ namespace atomic_dex
     }
 
     void
-    qt_download_manager::update() 
+    qt_download_manager::update()
     {
         using namespace std::chrono_literals;
 

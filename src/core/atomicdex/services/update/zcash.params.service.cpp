@@ -31,7 +31,11 @@
 
 namespace atomic_dex
 {
-    zcash_params_service::zcash_params_service(entt::registry& registry, QObject* parent) : QObject(parent), system(registry)
+    zcash_params_service::zcash_params_service(
+        entt::registry& registry, ag::ecs::system_manager& system_manager,
+        entt::dispatcher& dispatcher, QObject* parent) :
+        QObject(parent), system(registry),
+        m_system_manager(system_manager), m_dispatcher(dispatcher)
     {
         m_update_clock  = std::chrono::high_resolution_clock::now();
         m_update_info = nlohmann::json::object();
@@ -66,7 +70,7 @@ namespace atomic_dex
     {
         SPDLOG_INFO("Starting zcash params downoad");
         using namespace std::chrono_literals;
-        fs::path folder = this->get_zcash_params_folder();
+        const fs::path folder = this->get_zcash_params_folder();
         std::string zcash_params[5] = {
             "https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves",
             "https://z.cash/downloads/sprout-verifying.key",
@@ -74,8 +78,7 @@ namespace atomic_dex
             "https://z.cash/downloads/sapling-output.params",
             "https://z.cash/downloads/sprout-groth16.params"
         };
-
-        //const auto& qt_dl_mgr = system_manager_.get_system<mm2_service>();
+        auto& qt_download_mgr = m_system_manager.get_system<qt_download_manager>();
         for(const std::string &url: zcash_params)
         {
             std::string filename = atomic_dex::utils::u8string(fs::path(url).filename());
@@ -84,7 +87,7 @@ namespace atomic_dex
                 filename = "sprout-proving.key";
             }
             SPDLOG_INFO("Downloading {}...", filename);
-            //qt_download_manager::do_download(QUrl(url), folder, filename);
+            qt_download_mgr.do_download(url, folder, filename);
         }
     }
 
