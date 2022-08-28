@@ -83,7 +83,6 @@ namespace atomic_dex
             "https://z.cash/downloads/sprout-groth16.params"
         };
 
-        auto& qt_download_mgr = m_system_manager.get_system<qt_download_manager>();
         for(const std::string &url: zcash_params)
         {
             std::string filename = atomic_dex::utils::u8string(fs::path(url).filename());
@@ -92,7 +91,8 @@ namespace atomic_dex
                 filename = "sprout-proving.key";
             }
             SPDLOG_INFO("Downloading {}...", filename);
-            qt_download_mgr.do_download(url, folder, filename);
+            qt_downloader* downloader = new qt_downloader(m_dispatcher);
+            downloader->do_download(QUrl(QString::fromStdString(url)), filename, folder);
         }
     }
 

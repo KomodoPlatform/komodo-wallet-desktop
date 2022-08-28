@@ -22,6 +22,8 @@
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/synchronized_value.hpp>
 #include <nlohmann/json_fwd.hpp>
+#include "atomicdex/utilities/qt.download.manager.hpp"
+
 
 namespace atomic_dex
 {

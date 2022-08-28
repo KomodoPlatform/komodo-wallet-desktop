@@ -377,7 +377,6 @@ namespace atomic_dex
 
 
         system_manager_.create_system<zcash_params_service>(system_manager_, this->dispatcher_, this);
-        system_manager_.create_system<qt_download_manager>(system_manager_, this->dispatcher_, this);
 
         connect_signals();
         if (qt_wallet_manager::is_there_a_default_wallet())
@@ -797,18 +796,6 @@ namespace atomic_dex
     application::get_wallet_mgr() const
     {
         auto ptr = const_cast<qt_wallet_manager*>(std::addressof(system_manager_.get_system<qt_wallet_manager>()));
-        assert(ptr != nullptr);
-        return ptr;
-    }
-} // namespace atomic_dex
-
-//! Wallet_mgr
-namespace atomic_dex
-{
-    qt_download_manager*
-    application::get_qt_download_mgr() const
-    {
-        auto ptr = const_cast<qt_download_manager*>(std::addressof(system_manager_.get_system<qt_download_manager>()));
         assert(ptr != nullptr);
         return ptr;
     }
