@@ -75,6 +75,7 @@ namespace atomic_dex
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
         Q_PROPERTY(qt_wallet_manager* wallet_mgr READ get_wallet_mgr NOTIFY walletMgrChanged)
+        Q_PROPERTY(qt_download_manager* download_mgr READ get_qt_download_mgr NOTIFY downloadMgrChanged)
         Q_PROPERTY(update_checker_service* updateCheckerService READ get_update_checker_service NOTIFY updateCheckerServiceChanged)
         Q_PROPERTY(zcash_params_service* zcashParamsService READ get_zcash_params_service NOTIFY zcashParamsServiceChanged)
 
@@ -135,7 +136,7 @@ namespace atomic_dex
         settings_page*                   get_settings_page() const;
         qt_wallet_manager*               get_wallet_mgr() const;
         internet_service_checker*        get_internet_checker() const;
-        qt_download_manager*             get_qt_download_manager() const;
+        qt_download_manager*             get_qt_download_mgr() const;
         ip_service_checker*              get_ip_checker() const;
         update_checker_service*          get_update_checker_service() const;
         zcash_params_service*            get_zcash_params_service() const;
@@ -171,6 +172,7 @@ namespace atomic_dex
 
       signals:
         void walletMgrChanged();
+        void downloadMgrChanged();
         void coinInfoChanged();
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();

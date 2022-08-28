@@ -31,8 +31,8 @@ namespace atomic_dex
         QObject(parent), system(registry),
         m_system_manager(system_manager), m_dispatcher(dispatcher)
     {
-        dispatcher.sink<download_started>().connect<&qt_download_manager::on_download_started>(*this);
         SPDLOG_INFO("qt_download_manager created");
+        dispatcher.sink<download_started>().connect<&qt_download_manager::on_download_started>(*this);
         connect(&m_manager, &QNetworkAccessManager::finished, this, &qt_download_manager::download_finished);
     }
 
@@ -42,10 +42,12 @@ namespace atomic_dex
         m_download_filename     = filename;
         m_download_path         = folder / m_download_filename;
         SPDLOG_INFO("[do_download] Downloading: {}", url);
+        this->set_download_complete(false);
         QNetworkRequest request(QUrl(QString::fromStdString(url)));
         request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::RedirectPolicy::NoLessSafeRedirectPolicy);
         QNetworkReply* reply = m_manager.get(request);
         connect(reply, &QNetworkReply::downloadProgress, this, &qt_download_manager::download_progress);
+        SPDLOG_INFO("[do_download] connected: {}", url);
         m_current_downloads.append(reply);
     }
 
@@ -53,8 +55,40 @@ namespace atomic_dex
     qt_download_manager::download_progress(qint64 bytes_received, qint64 bytes_total)
     {
         m_download_progress = float(bytes_received) / float(bytes_total);
-        m_dispatcher.trigger(qt_download_progressed{m_download_progress});
-        SPDLOG_INFO("bytes_received : {}, bytes_total: {}, percent {}%", bytes_received, bytes_total, m_download_progress * 100);
+        m_dispatcher.trigger(qt_download_progressed{m_download_filename, m_download_progress});
+        SPDLOG_INFO("Downloading {}: {}%", m_download_filename, m_download_progress * 100);
+
+        QJsonObject data;
+        data.insert("filename", QString::fromStdString(m_download_filename));
+        data.insert("progress", QString::number(m_download_progress * 100));
+
+        this->set_download_status(data);
+    }
+
+    bool
+    qt_download_manager::get_download_complete()
+    {
+        return m_download_complete;
+    }
+
+    void
+    qt_download_manager::set_download_complete(bool finished)
+    {
+        m_download_complete = finished;
+        emit downloadFinishedChanged();
+    }
+
+    QJsonObject
+    qt_download_manager::get_download_status()
+    {
+        return m_download_status;
+    }
+
+    void
+    qt_download_manager::set_download_status(QJsonObject data)
+    {
+        m_download_status = data;
+        emit downloadStatusChanged();
     }
 
     void
@@ -90,6 +124,7 @@ namespace atomic_dex
 
         m_current_downloads.removeAll(reply);
         reply->deleteLater();
+        this->set_download_complete(true);
     }
 
     fs::path
@@ -101,8 +136,6 @@ namespace atomic_dex
     void
     qt_download_manager::on_download_started([[maybe_unused]] const download_started& evt)
     {
-        SPDLOG_INFO("Default coins are enabled, we can now check internet with mm2 too");
-        //g_mm2_default_coins_ready = true;
     }
 
     void
@@ -112,7 +145,7 @@ namespace atomic_dex
 
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
-        //set_seconds_left_to_auto_retry(60.0 - s.count());
+        // set_seconds_left_to_auto_retry(60.0 - s.count());
         if (s >= 60s)
         {
             //this->fetch_internet_connection();

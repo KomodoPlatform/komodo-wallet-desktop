@@ -68,9 +68,13 @@ namespace atomic_dex
 
     void zcash_params_service::download_zcash_params() 
     {
-        SPDLOG_INFO("Starting zcash params downoad");
+        SPDLOG_INFO("Starting zcash params download");
         using namespace std::chrono_literals;
         const fs::path folder = this->get_zcash_params_folder();
+        if (not fs::exists(folder))
+        {
+            fs::create_directories(folder);
+        }
         std::string zcash_params[5] = {
             "https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves",
             "https://z.cash/downloads/sprout-verifying.key",
@@ -78,6 +82,7 @@ namespace atomic_dex
             "https://z.cash/downloads/sapling-output.params",
             "https://z.cash/downloads/sprout-groth16.params"
         };
+
         auto& qt_download_mgr = m_system_manager.get_system<qt_download_manager>();
         for(const std::string &url: zcash_params)
         {

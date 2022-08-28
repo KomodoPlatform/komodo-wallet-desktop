@@ -3,10 +3,14 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QObject>
+#include <QVariant>
+#include <QJsonObject>
 #include <QUrl>
 #include <QVector>
 
+#include <boost/thread/synchronized_value.hpp>
 #include <entt/signal/dispatcher.hpp>
+
 //! Deps
 #include <antara/gaming/ecs/system.manager.hpp>
 
@@ -19,8 +23,12 @@ namespace atomic_dex
     {
         Q_OBJECT
 
+        Q_PROPERTY(QJsonObject download_status READ get_download_status WRITE set_download_status NOTIFY downloadStatusChanged)
+        Q_PROPERTY(bool download_complete READ get_download_complete WRITE set_download_complete NOTIFY downloadFinishedChanged)
+
         //! Private typedefs
-        using t_update_time_point = std::chrono::high_resolution_clock::time_point;
+        using t_update_time_point      = std::chrono::high_resolution_clock::time_point;
+        using t_qt_synchronized_json   = boost::synchronized_value<QJsonObject>;
 
         //! Private members
         ag::ecs::system_manager& m_system_manager;
@@ -33,6 +41,8 @@ namespace atomic_dex
         fs::path                 m_download_path;
         QVector<QNetworkReply*>  m_current_downloads;
         float                    m_download_progress;
+        bool                     m_download_complete{false};
+        QJsonObject              m_download_status;
 
       public:
 
@@ -51,14 +61,25 @@ namespace atomic_dex
 
         //! Events
         void on_download_started([[maybe_unused]] const download_started& evt);
+        void download_finished(QNetworkReply* reply);
+
+        //! Get / Set
+        QJsonObject get_download_status();
+        void set_download_status(QJsonObject data);
+        bool get_download_complete();
+        void set_download_complete(bool finished);
+
+      signals:
+        void downloadStatusChanged();
+        void downloadFinishedChanged();
 
       public slots:
-        void download_finished(QNetworkReply* reply);
         void download_progress(qint64 bytes_received, qint64 bytes_total);
     };
     
     struct qt_download_progressed
     {
+        std::string filename;
         float progress;
     };
 } // namespace atomic_dex

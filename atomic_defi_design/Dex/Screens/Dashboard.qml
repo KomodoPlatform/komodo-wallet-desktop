@@ -244,8 +244,6 @@ Item
             console.log(coin)
             zcash_params_modal.open()
             zcash_params.coin = coin
-            console.trace()
-            return
         }
     }
 

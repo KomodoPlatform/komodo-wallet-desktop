@@ -806,7 +806,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     qt_download_manager*
-    application::get_qt_download_manager() const
+    application::get_qt_download_mgr() const
     {
         auto ptr = const_cast<qt_download_manager*>(std::addressof(system_manager_.get_system<qt_download_manager>()));
         assert(ptr != nullptr);
