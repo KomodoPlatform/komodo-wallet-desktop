@@ -16,9 +16,6 @@
 
 #include "atomicdex/pch.hpp"
 
-#include <QJsonDocument>
-#include <QTranslator>
-
 #include <boost/algorithm/string/replace.hpp>
 #include <nlohmann/json.hpp>
 
@@ -28,6 +25,7 @@
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.download.manager.hpp"
 #include "atomicdex/version/version.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -93,7 +91,24 @@ namespace atomic_dex
             SPDLOG_INFO("Downloading {}...", filename);
             qt_downloader* downloader = new qt_downloader(m_dispatcher);
             downloader->do_download(QUrl(QString::fromStdString(url)), filename, folder);
+            connect(downloader, &qt_downloader::downloadStatusChanged, this, &zcash_params_service::set_download_status);
+            // connect(downloader, &qt_downloader::downloadStatusChanged(), this, &zcash_params_service::set_download_status); call to non-static member function without an object argument
+
         }
+    }
+
+
+    QJsonObject
+    zcash_params_service::get_download_status()
+    {
+        return m_download_status;
+    }
+
+    void
+    zcash_params_service::set_download_status(QJsonObject& status)
+    {
+        m_download_status = status;
+        emit downloadStatusChanged(m_download_status);
     }
 
     void zcash_params_service::fetch_update_info() 

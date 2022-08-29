@@ -18,10 +18,14 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QTranslator>
 
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/synchronized_value.hpp>
 #include <nlohmann/json_fwd.hpp>
+#include <entt/signal/dispatcher.hpp>
 #include "atomicdex/utilities/qt.download.manager.hpp"
 
 
@@ -31,6 +35,7 @@ namespace atomic_dex
     {
         Q_OBJECT
 
+        Q_PROPERTY(QJsonObject download_status READ get_download_status WRITE set_download_status NOTIFY downloadStatusChanged)
         Q_PROPERTY(QVariant updateInfo READ get_update_info NOTIFY updateInfoChanged)
         Q_PROPERTY(bool isFetching READ get_is_fetching NOTIFY isFetchingChanged)
 
@@ -41,6 +46,7 @@ namespace atomic_dex
         entt::dispatcher&               m_dispatcher;
         t_json_synchronized             m_update_info;
         t_update_time_point             m_update_clock;
+        QJsonObject                     m_download_status;
         boost::synchronized_value<bool> is_fetching;
 
         void fetch_update_info();
@@ -53,13 +59,18 @@ namespace atomic_dex
 
         void update() final;
 
-        [[nodiscard]] QVariant get_update_info() const;
-        [[nodiscard]] bool     get_is_fetching() const noexcept { return *is_fetching; }
+        [[nodiscard]] QJsonObject   get_download_status();
+        [[nodiscard]] QVariant      get_update_info() const;
+        [[nodiscard]] bool          get_is_fetching() const noexcept { return *is_fetching; }
 
         [[nodiscard]] fs::path      get_zcash_params_folder();
         Q_INVOKABLE void            download_zcash_params();
 
+      public slots:
+        void                        set_download_status(QJsonObject& status);
+
       signals:
+        void downloadStatusChanged(QJsonObject& status);
         void updateInfoChanged();
         void isFetchingChanged();
     };
