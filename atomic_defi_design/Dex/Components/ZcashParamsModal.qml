@@ -29,11 +29,78 @@ Dex.MultipageModal {
             {
                 Dex.DexLabel
                 {
-                    text: "sprout-groth16.params"
+                    text: "sprout-proving.key:"
+                }
+                Dex.DexLabel
+                {
+                    id: sprout_proving_key
+                    text: "0.00%"
                 }
             }
         }
 
+        ColumnLayout
+        {
+            RowLayout
+            {
+                Dex.DexLabel
+                {
+                    text: "sprout-groth16.params:"
+                }
+                Dex.DexLabel
+                {
+                    id: sprout_groth_params
+                    text: "0.00%"
+                }
+            }
+        }
+
+        ColumnLayout
+        {
+            RowLayout
+            {
+                Dex.DexLabel
+                {
+                    text: "sprout-verifying.key:"
+                }
+                Dex.DexLabel
+                {
+                    id: sprout_verifying_key
+                    text: "0.00%"
+                }
+            }
+        }
+
+        ColumnLayout
+        {
+            RowLayout
+            {
+                Dex.DexLabel
+                {
+                    text: "sapling-output.params:"
+                }
+                Dex.DexLabel
+                {
+                    id: sapling_output_params
+                    text: "0.00%"
+                }
+            }
+        }
+        ColumnLayout
+        {
+            RowLayout
+            {
+                Dex.DexLabel
+                {
+                    text: "sapling-spend.params:"
+                }
+                Dex.DexLabel
+                {
+                    id: sapling_spend_params
+                    text: "0.00%"
+                }
+            }
+        }
 
         footer:
         [
@@ -42,7 +109,7 @@ Dex.MultipageModal {
             {
                 text: qsTr("Start download")
                 onClicked: {
-                    Dex.API.app.zcashParamsService.download_zcash_params()
+                    Dex.API.app.zcash_params.download_zcash_params()
                 }
             },
             Item { Layout.fillWidth: true },
@@ -59,17 +126,32 @@ Dex.MultipageModal {
             },
             Item { Layout.fillWidth: true }
         ]
-    }
 
-
-    Connections // Catches signals from orders_model.
-    {
-        target: API.app.download_mgr
-        function onDownloadStatusChanged()
+        Connections
         {
-            let status = Dex.API.app.download_mgr.download_status
-            console.log(status.filename)
-            console.log(status.progress)
+            target: Dex.API.app.zcash_params
+            function onDownloadStatusChanged()
+            {
+                let data = JSON.parse(Dex.API.app.zcash_params.get_download_progress())
+                switch(data.filename)
+                {
+                    case "sprout-proving.key.deprecated-sworn-elves":
+                        sprout_proving_key.text = Dex.General.formatDouble(data.progress * 100, 2) + "%"
+                        break
+                    case "sprout-groth16.params":
+                        sprout_groth_params.text = Dex.General.formatDouble(data.progress * 100, 2) + "%"
+                        break
+                    case "sprout-verifying.key":
+                        sprout_verifying_key.text = Dex.General.formatDouble(data.progress * 100, 2) + "%"
+                        break
+                    case "sapling-output.params":
+                        sapling_output_params.text = Dex.General.formatDouble(data.progress * 100, 2) + "%"
+                        break
+                    case "sapling-spend.params":
+                        sapling_spend_params.text = Dex.General.formatDouble(data.progress * 100, 2) + "%"
+                        break
+                }
+            }
         }
     }
 }

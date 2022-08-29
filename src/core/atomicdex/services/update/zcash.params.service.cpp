@@ -92,33 +92,26 @@ namespace atomic_dex
             qt_downloader* downloader = new qt_downloader(m_dispatcher);
             downloader->do_download(QUrl(QString::fromStdString(url)), filename, folder);
             connect(downloader, &qt_downloader::downloadStatusChanged, this, &zcash_params_service::set_download_status);
-            // connect(downloader, &qt_downloader::downloadStatusChanged(), this, &zcash_params_service::set_download_status); call to non-static member function without an object argument
-
         }
     }
 
-
     QJsonObject
-    zcash_params_service::get_download_status()
+    zcash_params_service::get_download_status() const
     {
         return m_download_status;
+    }
+
+    QString
+    zcash_params_service::get_download_progress()
+    {
+        return QString(QJsonDocument(m_download_status).toJson());
     }
 
     void
     zcash_params_service::set_download_status(QJsonObject& status)
     {
         m_download_status = status;
-        emit downloadStatusChanged(m_download_status);
+        emit downloadStatusChanged();
     }
 
-    void zcash_params_service::fetch_update_info() 
-    {
-    }
-
-    QVariant zcash_params_service::get_update_info() const 
-    {
-        nlohmann::json info = *m_update_info;
-        QJsonDocument  doc  = QJsonDocument::fromJson(QString::fromStdString(info.dump()).toUtf8());
-        return doc.toVariant();
-    }
 } // namespace atomic_dex

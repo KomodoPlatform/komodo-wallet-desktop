@@ -32,7 +32,6 @@ namespace atomic_dex
         Q_OBJECT
 
         Q_PROPERTY(QJsonObject download_status READ get_download_status NOTIFY downloadStatusChanged)
-        // Q_PROPERTY(bool isFetching READ get_is_fetching NOTIFY isFetchingChanged)
 
         entt::dispatcher&       m_dispatcher;
         QNetworkAccessManager   m_manager;
@@ -60,9 +59,4 @@ namespace atomic_dex
         void download_progress(qint64 bytes_received, qint64 bytes_total);
     };
     
-    struct qt_download_progressed
-    {
-        std::string   filename;
-        float         progress;
-    };
 } // namespace atomic_dex

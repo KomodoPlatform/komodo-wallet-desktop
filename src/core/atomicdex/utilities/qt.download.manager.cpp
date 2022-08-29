@@ -26,7 +26,6 @@ namespace atomic_dex
 {
     qt_downloader::qt_downloader(entt::dispatcher& dispatcher) : m_dispatcher(dispatcher)
     {
-        SPDLOG_INFO("qt_downloader created");
         connect(&m_manager, &QNetworkAccessManager::finished, this, &qt_downloader::download_finished);
     }
 
@@ -40,15 +39,6 @@ namespace atomic_dex
         request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::RedirectPolicy::NoLessSafeRedirectPolicy);
         QNetworkReply* reply = m_manager.get(request);
         connect(reply, &QNetworkReply::downloadProgress, this, &qt_downloader::download_progress);
-        // connect(this, this->m_download_status, &zcash_params_service::set_download_status);                                         no known conversion from 'QJsonObject' to 'const char *' for 2nd argument
-        // connect(this, this->downloadStatusChanged(), &zcash_params_service::set_download_status);                                   cannot convert argument of incomplete type 'void' to 'const char *' for 2nd argument
-        // connect(this, &this::downloadStatusChanged, &zcash_params_service::set_download_status);                                    cannot take the address of an rvalue of type 'atomic_dex::qt_downloader *'
-
-        // connect(this, downloadStatusChanged(), &zcash_params_service::set_download_status); fail on:                                cannot convert argument of incomplete type 'void' to 'const char *' for 2nd argument
-        // connect(this, get_download_status(), &zcash_params_service::set_download_status); fail on:                                  no known conversion from 'QJsonObject' to 'const char *' for 2nd argument
-        // connect(this, m_download_status, &zcash_params_service::set_download_status); fail on:                                      no known conversion from 'QJsonObject' to 'const char *' for 2nd argument
-        // connect(this, m_download_status, get_download_status(), &zcash_params_service::set_download_status); fail on:               no known conversion from 'QJsonObject' to 'const QObject *' for 3rd argument
-        // connect(this, m_download_status, &zcash_params_service::downloadStatusChanged, &zcash_params_service::set_download_status); 2/3 bad
         m_download_reply = reply;
         m_current_downloads.append(reply);
     }
@@ -60,7 +50,7 @@ namespace atomic_dex
         m_download_status.insert("progress", m_download_progress);
         emit downloadStatusChanged(m_download_status);
         m_dispatcher.trigger(m_download_status);
-        SPDLOG_INFO("{} bytes_received : {}, bytes_total: {}, percent {}%", m_download_filename, bytes_received, bytes_total, m_download_progress * 100);
+        // SPDLOG_INFO("{} bytes_received : {}, bytes_total: {}, percent {}%", m_download_filename, bytes_received, bytes_total, m_download_progress * 100);
     }
 
     void

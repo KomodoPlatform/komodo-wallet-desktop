@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <QDebug>
 #include <QObject>
 #include <QVariant>
 #include <QJsonObject>
@@ -35,9 +36,7 @@ namespace atomic_dex
     {
         Q_OBJECT
 
-        Q_PROPERTY(QJsonObject download_status READ get_download_status WRITE set_download_status NOTIFY downloadStatusChanged)
-        Q_PROPERTY(QVariant updateInfo READ get_update_info NOTIFY updateInfoChanged)
-        Q_PROPERTY(bool isFetching READ get_is_fetching NOTIFY isFetchingChanged)
+        Q_PROPERTY(QJsonObject m_download_status READ get_download_status WRITE set_download_status NOTIFY downloadStatusChanged)
 
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
         using t_json_synchronized = boost::synchronized_value<nlohmann::json>;
@@ -59,20 +58,17 @@ namespace atomic_dex
 
         void update() final;
 
-        [[nodiscard]] QJsonObject   get_download_status();
-        [[nodiscard]] QVariant      get_update_info() const;
-        [[nodiscard]] bool          get_is_fetching() const noexcept { return *is_fetching; }
+        [[nodiscard]] QJsonObject             get_download_status() const;
+        [[nodiscard]] fs::path                get_zcash_params_folder();
+        Q_INVOKABLE   void                    download_zcash_params();
+        Q_INVOKABLE   QString                 get_download_progress();
 
-        [[nodiscard]] fs::path      get_zcash_params_folder();
-        Q_INVOKABLE void            download_zcash_params();
+      signals:
+        void downloadStatusChanged();
 
       public slots:
         void                        set_download_status(QJsonObject& status);
 
-      signals:
-        void downloadStatusChanged(QJsonObject& status);
-        void updateInfoChanged();
-        void isFetchingChanged();
     };
 } // namespace atomic_dex
 
