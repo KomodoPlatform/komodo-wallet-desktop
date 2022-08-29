@@ -3712,6 +3712,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "JST-BEP20": {
+    "coin": "JST-BEP20",
+    "name": "JUST",
+    "coinpaprika_id": "jst-just",
+    "coingecko_id": "just",
+    "nomics_id": "JST",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "JSTR": {
     "coin": "JSTR",
     "name": "Ropsten test ERC20",
