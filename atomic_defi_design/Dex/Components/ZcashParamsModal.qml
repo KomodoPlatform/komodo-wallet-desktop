@@ -83,7 +83,9 @@ Dex.MultipageModal {
             {
                 id: download_button
                 text: qsTr("Start download")
-                enabled: !Dex.API.app.zcash_params.is_downloading()
+                enabled: !sprout_proving_key.bar_width_pct > 0 || !sprout_groth_params.bar_width_pct > 0
+                            || !sprout_verifying_key.bar_width_pct > 0 ||  !sapling_output_params.bar_width_pct > 0
+                            || !sapling_spend_params.bar_width_pct > 0
                 onClicked: {
                     download_button.enabled = false
                     Dex.API.app.zcash_params.download_zcash_params()
