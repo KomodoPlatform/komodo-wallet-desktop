@@ -78,8 +78,8 @@ namespace atomic_dex
 
         std::string zcash_params[5] = {
             "https://z.cash/downloads/sapling-spend.params",
-            "https://z.cash/downloads/sapling-output.params",,
-            "https://z.cash/downloads/sprout-groth16.params"
+            "https://z.cash/downloads/sapling-output.params",
+            "https://z.cash/downloads/sprout-groth16.params",
             "https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves",
             "https://z.cash/downloads/sprout-verifying.key"
         };
