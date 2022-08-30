@@ -16,17 +16,16 @@
 
 #pragma once
 
-#include <QDebug>
-#include <QObject>
-#include <QVariant>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QTranslator>
 
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/synchronized_value.hpp>
-#include <nlohmann/json_fwd.hpp>
 #include <entt/signal/dispatcher.hpp>
+
+#include "atomicdex/pch.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.download.manager.hpp"
 
 
@@ -36,7 +35,6 @@ namespace atomic_dex
     {
         Q_OBJECT
 
-        Q_PROPERTY(QJsonObject m_download_status READ get_download_status WRITE set_download_status NOTIFY downloadStatusChanged)
         Q_PROPERTY(QJsonObject m_combined_download_status READ get_combined_download_status NOTIFY combinedDownloadStatusChanged)
 
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
@@ -46,7 +44,6 @@ namespace atomic_dex
         entt::dispatcher&               m_dispatcher;
         t_json_synchronized             m_update_info;
         t_update_time_point             m_update_clock;
-        QJsonObject                     m_download_status;
         QJsonObject                     m_combined_download_status;
         boost::synchronized_value<bool> is_fetching;
 
@@ -60,19 +57,15 @@ namespace atomic_dex
 
         void update() final;
 
-        [[nodiscard]] QJsonObject             get_download_status() const;
+        Q_INVOKABLE   void                    download_zcash_params();
+        Q_INVOKABLE   QString                 get_combined_download_progress();
         [[nodiscard]] QJsonObject             get_combined_download_status() const;
         [[nodiscard]] fs::path                get_zcash_params_folder();
-        Q_INVOKABLE   void                    download_zcash_params();
-        Q_INVOKABLE   QString                 get_download_progress();
-        Q_INVOKABLE   QString                 get_combined_download_progress();
 
       signals:
-        void downloadStatusChanged();
         void combinedDownloadStatusChanged();
 
       public slots:
-        void                        set_download_status(QJsonObject& status);
         void                        set_combined_download_status(QJsonObject& status);
 
     };

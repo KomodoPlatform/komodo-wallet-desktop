@@ -14,18 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomicdex/pch.hpp"
-
-#include <boost/algorithm/string/replace.hpp>
-#include <nlohmann/json.hpp>
-
-#include "atomicdex/events/events.hpp"
 #include "atomicdex/services/update/zcash.params.service.hpp"
-#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
-#include "atomicdex/utilities/qt.download.manager.hpp"
-#include "atomicdex/version/version.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -91,35 +80,14 @@ namespace atomic_dex
             SPDLOG_INFO("Downloading {}...", filename);
             qt_downloader* downloader = new qt_downloader(m_dispatcher);
             downloader->do_download(QUrl(QString::fromStdString(url)), filename, folder);
-            connect(downloader, &qt_downloader::downloadStatusChanged, this, &zcash_params_service::set_download_status);
             connect(downloader, &qt_downloader::downloadStatusChanged, this, &zcash_params_service::set_combined_download_status);
         }
-    }
-
-
-    QString
-    zcash_params_service::get_download_progress()
-    {
-        return QString(QJsonDocument(m_download_status).toJson());
     }
 
     QString
     zcash_params_service::get_combined_download_progress()
     {
         return QString(QJsonDocument(m_combined_download_status).toJson());
-    }
-
-    QJsonObject
-    zcash_params_service::get_download_status() const
-    {
-        return m_download_status;
-    }
-
-    void
-    zcash_params_service::set_download_status(QJsonObject& status)
-    {
-        m_download_status = status;
-        emit downloadStatusChanged();
     }
 
     QJsonObject
