@@ -18,9 +18,9 @@
 
 //! Project
 #include "atomicdex/events/events.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
-#include "qt.download.manager.hpp"
 #include "atomicdex/services/update/zcash.params.service.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
 
 namespace atomic_dex
 {
@@ -41,6 +41,7 @@ namespace atomic_dex
         connect(reply, &QNetworkReply::downloadProgress, this, &qt_downloader::download_progress);
         m_download_reply = reply;
         m_current_downloads.append(reply);
+        m_dispatcher.trigger<download_started>();
     }
 
     void
@@ -57,10 +58,12 @@ namespace atomic_dex
     qt_downloader::download_finished(QNetworkReply* reply)
     {
         auto save_disk_functor = [this](QIODevice* data) {
+            // Todo: handle download fail on front end
             QFile file(utils::u8string(m_download_path).c_str());
             if (!file.open(QIODevice::WriteOnly))
             {
                 SPDLOG_ERROR("Could not open {} for writing: {}", utils::u8string(m_download_path), file.errorString().toStdString());
+                m_dispatcher.trigger<download_failed>();
                 return false;
             }
 
@@ -80,7 +83,7 @@ namespace atomic_dex
             if (save_disk_functor(reply))
             {
                 SPDLOG_INFO("Successfully saved {} to {}", url.toString().toStdString(), utils::u8string(m_download_path));
-                m_dispatcher.trigger<download_release_finished>();
+                m_dispatcher.trigger<download_complete>();
             }
         }
 

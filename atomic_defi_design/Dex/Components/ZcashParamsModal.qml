@@ -67,10 +67,6 @@ Dex.MultipageModal {
                 bar_width_pct: 0
                 pct_value.text: "0.00 %"
             }
-
-            Component.onCompleted: {
-                // Check which files are already downloaded, set bar to 100%
-            }
         }
 
         HorizontalLine
@@ -85,8 +81,11 @@ Dex.MultipageModal {
             Item { Layout.fillWidth: true },
             Dex.DefaultButton
             {
+                id: download_button
                 text: qsTr("Start download")
+                enabled: !Dex.API.app.zcash_params.is_downloading()
                 onClicked: {
+                    download_button.enabled = false
                     Dex.API.app.zcash_params.download_zcash_params()
                 }
             },
@@ -101,8 +100,7 @@ Dex.MultipageModal {
             {
                 text: qsTr("Close")
                 onClicked: close()
-            },
-            Item { Layout.fillWidth: true }
+            }
         ]
 
         Connections

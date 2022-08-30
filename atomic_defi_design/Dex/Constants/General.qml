@@ -768,11 +768,11 @@ QtObject {
     }
 
     readonly property var zcash_params_filesize: ({
-        "sprout-proving.key.deprecated-sworn-elves": 910173851,
-        "sprout-groth16.params": 725523612,
-        "sprout-verifying.key": 1449,
         "sapling-output.params": 3592860,
-        "sapling-spend.params": 47958396
+        "sapling-spend.params": 47958396,
+        "sprout-groth16.params": 725523612,
+        "sprout-proving.key.deprecated-sworn-elves": 910173851,
+        "sprout-verifying.key": 1449
     })
 
     readonly property var supported_pairs: ({

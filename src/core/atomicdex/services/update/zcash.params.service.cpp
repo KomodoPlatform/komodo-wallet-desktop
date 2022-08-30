@@ -14,7 +14,18 @@
  *                                                                            *
  ******************************************************************************/
 
+
+#include <QJsonObject>
+#include <QJsonDocument>
+
+#include <antara/gaming/ecs/system.manager.hpp>
+#include <entt/signal/dispatcher.hpp>
+#include <nlohmann/json.hpp>
+
+#include "atomicdex/pch.hpp"
 #include "atomicdex/services/update/zcash.params.service.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
 
 namespace atomic_dex
 {
@@ -34,8 +45,9 @@ namespace atomic_dex
 
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
-        if (s >= 1h)
+        if (s >= 1s)
         {
+            // TODO: We could use this for an ETA
         }
     }
 
@@ -55,19 +67,21 @@ namespace atomic_dex
 
     void zcash_params_service::download_zcash_params() 
     {
-        SPDLOG_INFO("Starting zcash params download");
+        m_is_downloading = true;
         using namespace std::chrono_literals;
         const fs::path folder = this->get_zcash_params_folder();
+
         if (not fs::exists(folder))
         {
             fs::create_directories(folder);
         }
+
         std::string zcash_params[5] = {
-            "https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves",
-            "https://z.cash/downloads/sprout-verifying.key",
             "https://z.cash/downloads/sapling-spend.params",
-            "https://z.cash/downloads/sapling-output.params",
+            "https://z.cash/downloads/sapling-output.params",,
             "https://z.cash/downloads/sprout-groth16.params"
+            "https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves",
+            "https://z.cash/downloads/sprout-verifying.key"
         };
 
         for(const std::string &url: zcash_params)
@@ -84,9 +98,23 @@ namespace atomic_dex
         }
     }
 
+    bool
+    zcash_params_service::is_downloading()
+    {
+        return m_is_downloading;
+    }
+
     QString
     zcash_params_service::get_combined_download_progress()
     {
+        foreach(const QString& key, m_combined_download_status.keys()) {
+            double val = m_combined_download_status.value(key).toDouble();
+            if (val < 1)
+            {
+                break;
+            }
+            m_is_downloading = false;
+        }
         return QString(QJsonDocument(m_combined_download_status).toJson());
     }
 

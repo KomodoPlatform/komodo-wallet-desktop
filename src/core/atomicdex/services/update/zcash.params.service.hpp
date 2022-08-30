@@ -18,15 +18,13 @@
 
 #include <QJsonObject>
 #include <QJsonDocument>
-#include <QTranslator>
 
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <boost/thread/synchronized_value.hpp>
 #include <entt/signal/dispatcher.hpp>
+#include <nlohmann/json.hpp>
 
 #include "atomicdex/pch.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
-#include "atomicdex/utilities/qt.download.manager.hpp"
 
 
 namespace atomic_dex
@@ -45,7 +43,7 @@ namespace atomic_dex
         t_json_synchronized             m_update_info;
         t_update_time_point             m_update_clock;
         QJsonObject                     m_combined_download_status;
-        boost::synchronized_value<bool> is_fetching;
+        bool                            m_is_downloading{false};
 
         void fetch_update_info();
 
@@ -58,15 +56,16 @@ namespace atomic_dex
         void update() final;
 
         Q_INVOKABLE   void                    download_zcash_params();
+        Q_INVOKABLE   bool                    is_downloading();
         Q_INVOKABLE   QString                 get_combined_download_progress();
         [[nodiscard]] QJsonObject             get_combined_download_status() const;
         [[nodiscard]] fs::path                get_zcash_params_folder();
 
       signals:
-        void combinedDownloadStatusChanged();
+        void          combinedDownloadStatusChanged();
 
       public slots:
-        void                        set_combined_download_status(QJsonObject& status);
+        void          set_combined_download_status(QJsonObject& status);
 
     };
 } // namespace atomic_dex

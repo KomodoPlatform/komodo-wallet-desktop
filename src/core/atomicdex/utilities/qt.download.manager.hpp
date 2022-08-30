@@ -16,9 +16,9 @@
 
 #pragma once
 
+#include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QJsonObject>
 #include <QObject>
 #include <QUrl>
 #include <QVector>

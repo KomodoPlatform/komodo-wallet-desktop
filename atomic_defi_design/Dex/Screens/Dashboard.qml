@@ -192,7 +192,7 @@ Item
         DefaultRectangle
         {
             id: status_bar
-            visible: false
+            visible: API.app.zcash_params.is_downloading()
             width: parent.width
             height: 24
             anchors.bottom: parent.bottom

@@ -34,12 +34,13 @@ namespace atomic_dex
     using mm2_initialized           = entt::tag<"mm2_running_and_enabling"_hs>;
     //using tx_fetch_finished       = entt::tag<"gui_tx_fetch_finished"_hs>;
     using default_coins_enabled     = entt::tag<"default_coins_enabled"_hs>;
-    using download_started          = entt::tag<"download_started"_hs>;
     // using process_swaps_and_orders_finished = entt::tag<"process_swaps_and_orders_finished"_hs>;
     using band_oracle_refreshed     = entt::tag<"band_oracle_refreshed"_hs>;
     using current_currency_changed  = entt::tag<"update_orders_and_swap_values"_hs>;
     using force_update_providers    = entt::tag<"force_update_providers"_hs>;
-    using download_release_finished = entt::tag<"download_release_finished"_hs>;
+    using download_started          = entt::tag<"download_started"_hs>;
+    using download_complete         = entt::tag<"download_complete"_hs>;
+    using download_failed           = entt::tag<"download_failed"_hs>;
 
     struct tx_fetch_finished
     {
