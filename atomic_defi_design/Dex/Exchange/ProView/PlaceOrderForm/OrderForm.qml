@@ -84,6 +84,7 @@ ColumnLayout
             left_btn.onClicked:
             {
                 let price = General.formatDouble(parseFloat(input_price.text) - (General.formatDouble(API.app.trading_pg.cex_price)*0.01))
+                if (price < 0) price = 0
                 setPrice(String(price))
             }
             right_btn.onClicked:
