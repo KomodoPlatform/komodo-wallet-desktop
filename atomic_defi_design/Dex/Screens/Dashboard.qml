@@ -187,6 +187,57 @@ Item
                 running: !loader.visible
             }
         }
+
+        // Status bar
+        DefaultRectangle
+        {
+            id: status_bar
+            visible: false
+            width: parent.width
+            height: 32
+            anchors.bottom: parent.bottom
+            color: 'transparent'
+
+            DefaultRectangle
+            {
+                color: Dex.CurrentTheme.floatingBackgroundColor
+                width: 400
+                height: parent.height
+                anchors.right: parent.right
+                radius: 0
+
+                DefaultProgressBar
+                {
+                    id: download_progress
+                    anchors.leftMargin: 5
+                    anchors.rightMargin: 5
+                    height: 30
+                    bar_width_pct: 33
+                    label_metrics.text: "Zcash Params d/l:"
+                    label_metrics.font.family: 'Montserrat'
+                    label_metrics.font.pixelSize: 11
+                    pct_value.text: "33.00 %"
+                    pct_value.font.family: 'lato'
+                    pct_value.font.pixelSize: 11
+                }
+
+                DexMouseArea
+                {
+                    id: download_mouse_area
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: zcash_params_modal.open()
+                }
+            }
+            Connections
+            {
+                target: API.app.zcash_params
+                function onDownloadStatusChanged()
+                {
+                    status_bar.visible = true
+                }
+            }
+        }
     }
 
     // Sidebar, left side

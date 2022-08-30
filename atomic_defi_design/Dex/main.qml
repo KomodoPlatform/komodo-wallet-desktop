@@ -196,11 +196,14 @@ DexWindow
             anchors.verticalCenter: parent.verticalCenter
             layoutDirection: Qt.RightToLeft
             spacing: 6
+
             Item
             {
                 width: 15
                 height: 1
             }
+
+            // User / logout
             Rectangle
             {
                 width: __row.width + 10
@@ -208,6 +211,7 @@ DexWindow
                 anchors.verticalCenter: parent.verticalCenter
                 radius: 3
                 color: _area.containsMouse ? Dex.CurrentTheme.floatingBackgroundColor : "transparent"
+
                 Row
                 {
                     id: __row
@@ -244,6 +248,7 @@ DexWindow
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
+
                 DexMouseArea
                 {
                     id: _area
@@ -261,11 +266,14 @@ DexWindow
                     }
                 }
             }
+
             Item
             {
                 width: 10
                 height: 1
             }
+
+            // Wallet Balance
             Row
             {
                 anchors.verticalCenter: parent.verticalCenter
@@ -280,6 +288,7 @@ DexWindow
                     visible: _label.visible
                     anchors.verticalCenter: parent.verticalCenter
                 }
+
                 DexLabel
                 {
                     text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
@@ -312,6 +321,7 @@ DexWindow
                 height: 1
             }
 
+            // Notifications
             DexIconButton
             {
                 color: containsMouse ? Dex.CurrentTheme.gradientButtonPressedStartColor : Dex.CurrentTheme.foregroundColor
@@ -354,6 +364,7 @@ DexWindow
                 fileName: atomic_cfg_file
             }
 
+            // Theme toggle
             DexIconButton
             {
                 id: themeSwitchBut

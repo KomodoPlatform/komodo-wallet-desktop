@@ -14,16 +14,25 @@ RowLayout
     property double   bar_width_pct: 0
     property color    bar_color: Dex.DexTheme.greenColor
     property alias    label: _label
+    property alias    label_metrics: _labelMetrics
     property alias    pct_bar: _pct_bar
     property alias    pct_value: _pct_value
     width: parent.width
     height: 42
     spacing: 5
 
+    TextMetrics {
+        id: _labelMetrics
+        elide: Text.ElideMiddle
+        elideWidth: 125
+    }
+
     Dex.DexLabel
     {
         id: _label
-        Layout.preferredWidth: 200
+        text: _labelMetrics.elidedText
+        width: _labelMetrics.boundingRect.width + 10
+        Layout.preferredWidth: 125
         font.bold: true
         Layout.alignment: Qt.AlignVCenter
         Component.onCompleted: font.weight = Font.Bold

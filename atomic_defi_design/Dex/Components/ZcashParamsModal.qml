@@ -60,6 +60,10 @@ Dex.MultipageModal {
                 bar_width_pct: 0
                 pct_value.text: "0.00 %"
             }
+
+            Component.onCompleted: {
+                // Check which files are already downloaded, set bar to 100%
+            }
         }
 
         footer:
