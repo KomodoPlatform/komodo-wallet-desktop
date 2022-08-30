@@ -92,7 +92,21 @@ namespace atomic_dex
             qt_downloader* downloader = new qt_downloader(m_dispatcher);
             downloader->do_download(QUrl(QString::fromStdString(url)), filename, folder);
             connect(downloader, &qt_downloader::downloadStatusChanged, this, &zcash_params_service::set_download_status);
+            connect(downloader, &qt_downloader::downloadStatusChanged, this, &zcash_params_service::set_combined_download_status);
         }
+    }
+
+
+    QString
+    zcash_params_service::get_download_progress()
+    {
+        return QString(QJsonDocument(m_download_status).toJson());
+    }
+
+    QString
+    zcash_params_service::get_combined_download_progress()
+    {
+        return QString(QJsonDocument(m_combined_download_status).toJson());
     }
 
     QJsonObject
@@ -101,17 +115,26 @@ namespace atomic_dex
         return m_download_status;
     }
 
-    QString
-    zcash_params_service::get_download_progress()
-    {
-        return QString(QJsonDocument(m_download_status).toJson());
-    }
-
     void
     zcash_params_service::set_download_status(QJsonObject& status)
     {
         m_download_status = status;
         emit downloadStatusChanged();
+    }
+
+    QJsonObject
+    zcash_params_service::get_combined_download_status() const
+    {
+        return m_combined_download_status;
+    }
+
+    void
+    zcash_params_service::set_combined_download_status(QJsonObject& status)
+    {
+        QString filename  = status.value("filename").toString();
+        m_combined_download_status.insert(filename, status.value("progress"));
+        // SPDLOG_INFO("Filename: {} {}%", filename.toUtf8().constData(), std::to_string(status.value("progress").toDouble()));
+        emit combinedDownloadStatusChanged();
     }
 
 } // namespace atomic_dex

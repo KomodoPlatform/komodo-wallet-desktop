@@ -19,7 +19,14 @@ Dex.MultipageModal {
 
         Dex.DefaultText {
             Layout.fillWidth: true
-            text: qsTr("To activate ZHTLC coins like %1, you need to download the Zcash Params. This might take a while...").arg(coin)
+            text: qsTr("To activate ZHTLC coins, you need to download the Zcash Params.\nThis might take a while...")
+        }
+
+        HorizontalLine
+        {
+            Layout.topMargin: 8
+            Layout.bottomMargin: 8
+            Layout.fillWidth: true
         }
 
         ColumnLayout
@@ -66,6 +73,13 @@ Dex.MultipageModal {
             }
         }
 
+        HorizontalLine
+        {
+            Layout.topMargin: 8
+            Layout.bottomMargin: 8
+            Layout.fillWidth: true
+        }
+
         footer:
         [
             Item { Layout.fillWidth: true },
@@ -94,32 +108,35 @@ Dex.MultipageModal {
         Connections
         {
             target: Dex.API.app.zcash_params
-            function onDownloadStatusChanged()
+            function onCombinedDownloadStatusChanged()
             {
-                let data = JSON.parse(Dex.API.app.zcash_params.get_download_progress())
-                let pct = Dex.General.formatDouble(data.progress * 100, 2)
-                switch(data.filename)
-                {
-                    case "sprout-proving.key.deprecated-sworn-elves":
-                        sprout_proving_key.bar_width_pct = pct
-                        sprout_proving_key.pct_value.text = pct + "%"
-                        break
-                    case "sprout-groth16.params":
-                        sprout_groth_params.bar_width_pct = pct
-                        sprout_groth_params.pct_value.text = pct + "%"
-                        break
-                    case "sprout-verifying.key":
-                        sprout_verifying_key.bar_width_pct = pct
-                        sprout_verifying_key.pct_value.text = pct + "%"
-                        break
-                    case "sapling-output.params":
-                        sapling_output_params.bar_width_pct = pct
-                        sapling_output_params.pct_value.text = pct + "%"
-                        break
-                    case "sapling-spend.params":
-                        sapling_spend_params.bar_width_pct = pct
-                        sapling_spend_params.pct_value.text = pct + "%"
-                        break
+                let data = JSON.parse(Dex.API.app.zcash_params.get_combined_download_progress())
+                for (let k in data) {
+                    let v = data[k];
+                    let pct = Dex.General.formatDouble(v * 100, 2)
+                    switch(k)
+                    {
+                        case "sprout-proving.key.deprecated-sworn-elves":
+                            sprout_proving_key.bar_width_pct = pct
+                            sprout_proving_key.pct_value.text = pct + "%"
+                            break
+                        case "sprout-groth16.params":
+                            sprout_groth_params.bar_width_pct = pct
+                            sprout_groth_params.pct_value.text = pct + "%"
+                            break
+                        case "sprout-verifying.key":
+                            sprout_verifying_key.bar_width_pct = pct
+                            sprout_verifying_key.pct_value.text = pct + "%"
+                            break
+                        case "sapling-output.params":
+                            sapling_output_params.bar_width_pct = pct
+                            sapling_output_params.pct_value.text = pct + "%"
+                            break
+                        case "sapling-spend.params":
+                            sapling_spend_params.bar_width_pct = pct
+                            sapling_spend_params.pct_value.text = pct + "%"
+                            break
+                    }
                 }
             }
         }

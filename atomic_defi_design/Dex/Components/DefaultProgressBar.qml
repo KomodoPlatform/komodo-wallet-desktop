@@ -11,29 +11,23 @@ import App 1.0
 RowLayout
 {
     id: root
+    property double   label_width: 175
     property double   bar_width_pct: 0
     property color    bar_color: Dex.DexTheme.greenColor
     property alias    label: _label
-    property alias    label_metrics: _labelMetrics
     property alias    pct_bar: _pct_bar
     property alias    pct_value: _pct_value
+    anchors.leftMargin: 10
+    anchors.rightMargin: 10
     width: parent.width
     height: 42
-    spacing: 5
-
-    TextMetrics {
-        id: _labelMetrics
-        elide: Text.ElideMiddle
-        elideWidth: 125
-    }
+    spacing: 10
 
     Dex.DexLabel
     {
         id: _label
-        text: _labelMetrics.elidedText
-        width: _labelMetrics.boundingRect.width + 10
-        Layout.preferredWidth: 125
         font.bold: true
+        Layout.preferredWidth: label_width
         Layout.alignment: Qt.AlignVCenter
         Component.onCompleted: font.weight = Font.Bold
     }
@@ -43,8 +37,6 @@ RowLayout
     {
         Layout.alignment: Qt.AlignVCenter
         Layout.fillWidth: true
-        Layout.rightMargin: 10
-        Layout.leftMargin: 10
         height: 5
 
         Rectangle

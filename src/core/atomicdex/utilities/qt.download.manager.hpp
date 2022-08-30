@@ -49,6 +49,7 @@ namespace atomic_dex
         void                          do_download(const QUrl& url, std::string filename, fs::path folder);
         [[nodiscard]] fs::path        get_last_download_path() const;
         [[nodiscard]] QJsonObject     get_download_status() const;
+        [[nodiscard]] QJsonObject     get_combined_download_status() const;
         [[nodiscard]] QNetworkReply*  get_reply() const;
 
       signals:

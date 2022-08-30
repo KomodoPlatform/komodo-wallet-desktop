@@ -194,14 +194,14 @@ Item
             id: status_bar
             visible: false
             width: parent.width
-            height: 32
+            height: 24
             anchors.bottom: parent.bottom
             color: 'transparent'
 
             DefaultRectangle
             {
-                color: Dex.CurrentTheme.floatingBackgroundColor
-                width: 400
+                color: Dex.CurrentTheme.accentColor
+                width: 380
                 height: parent.height
                 anchors.right: parent.right
                 radius: 0
@@ -209,14 +209,16 @@ Item
                 DefaultProgressBar
                 {
                     id: download_progress
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    height: 30
-                    bar_width_pct: 33
-                    label_metrics.text: "Zcash Params d/l:"
-                    label_metrics.font.family: 'Montserrat'
-                    label_metrics.font.pixelSize: 11
-                    pct_value.text: "33.00 %"
+                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    width: parent.width - 10
+                    height: parent.height
+                    bar_width_pct: 0
+                    label.text: "Zcash params downloading:"
+                    label.font.family: 'Montserrat'
+                    label.font.pixelSize: 11
+                    label_width: 180
+                    pct_value.text: "0.00 %"
                     pct_value.font.family: 'lato'
                     pct_value.font.pixelSize: 11
                 }
@@ -232,9 +234,23 @@ Item
             Connections
             {
                 target: API.app.zcash_params
-                function onDownloadStatusChanged()
+                function onCombinedDownloadStatusChanged()
                 {
-                    status_bar.visible = true
+                    const filesizes = General.zcash_params_filesize
+                    let combined_sum = Object.values(filesizes).reduce((total, v) => total + v, 0);
+
+                    let donwloaded_sum = 0
+                    let data = JSON.parse(API.app.zcash_params.get_combined_download_progress())
+                    for (let k in data) {
+                        let v = data[k];
+                        donwloaded_sum += v * filesizes[k]
+                    }
+
+                    let pct = General.formatDouble(donwloaded_sum / combined_sum * 100, 2)
+                    if (pct == 100) status_bar.visible = false
+                    else status_bar.visible = true
+                    download_progress.bar_width_pct = pct
+                    download_progress.pct_value.text = pct + "%"
                 }
             }
         }

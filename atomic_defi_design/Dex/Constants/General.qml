@@ -767,6 +767,14 @@ QtObject {
         }
     }
 
+    readonly property var zcash_params_filesize: ({
+        "sprout-proving.key.deprecated-sworn-elves": 910173851,
+        "sprout-groth16.params": 725523612,
+        "sprout-verifying.key": 1449,
+        "sapling-output.params": 3592860,
+        "sapling-spend.params": 47958396
+    })
+
     readonly property var supported_pairs: ({
                                                 "1INCH/BTC": "BINANCE:1INCHBTC",
                                                 "1INCH/ETH": "HUOBI:1INCHETH",
