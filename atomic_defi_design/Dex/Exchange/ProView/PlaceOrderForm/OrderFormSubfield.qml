@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
+import "../../../Constants" as Dex
 import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
@@ -53,11 +54,28 @@ RowLayout
         {
             id: _left_tooltip
             visible: _left_btn.containsMouse && left_tooltip_text != ""
-            contentItem: DefaultText
+            
+            contentItem: FloatingBackground
             {
-               text: left_tooltip_text
-               font: Dex.DexTypo.caption
-               padding: 5
+                anchors.top: parent.bottom
+                anchors.topMargin: 30
+                color: Dex.CurrentTheme.accentColor
+
+                DefaultText
+                {
+                    text: left_tooltip_text
+                    font: Dex.DexTypo.caption
+                    leftPadding: 10
+                    rightPadding: 10
+                    topPadding: 6
+                    bottomPadding: 6
+                }
+            }
+
+            background: Rectangle {
+                width: 0
+                height: 0
+                color: "transparent"
             }
         }
 
@@ -103,15 +121,33 @@ RowLayout
             {
                 id: _middle_tooltip
                 visible: _middle_btn.containsMouse && middle_tooltip_text != ""
-                contentItem: DefaultText
+
+                contentItem: FloatingBackground
                 {
-                   text: middle_tooltip_text
-                   font: Dex.DexTypo.caption
-                   padding: 5
+                    anchors.top: parent.bottom
+                    anchors.topMargin: 30
+                    color: Dex.CurrentTheme.accentColor
+
+                    DefaultText
+                    {
+                        text: middle_tooltip_text
+                        font: Dex.DexTypo.caption
+                        leftPadding: 10
+                        rightPadding: 10
+                        topPadding: 6
+                        bottomPadding: 6
+                    }
+                }
+
+                background: Rectangle {
+                    width: 0
+                    height: 0
+                    color: "transparent"
                 }
             }
         }
     }
+
     Item
     {
 
@@ -121,6 +157,7 @@ RowLayout
         // Background when market mode is different
         DefaultRectangle
         {
+            id: right_rect
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
@@ -140,11 +177,29 @@ RowLayout
         {
             id: _right_tooltip
             visible: _right_btn.containsMouse && right_tooltip_text != ""
-            contentItem: DefaultText
+
+
+            contentItem: FloatingBackground
             {
-               text: right_tooltip_text
-               font: Dex.DexTypo.caption
-               padding: 5
+                anchors.top: parent.bottom
+                anchors.topMargin: 30
+                color: Dex.CurrentTheme.accentColor
+
+                DefaultText
+                {
+                    text: right_tooltip_text
+                    font: Dex.DexTypo.caption
+                    leftPadding: 10
+                    rightPadding: 10
+                    topPadding: 6
+                    bottomPadding: 6
+                }
+            }
+
+            background: Rectangle {
+                width: 0
+                height: 0
+                color: "transparent"
             }
         }
 
