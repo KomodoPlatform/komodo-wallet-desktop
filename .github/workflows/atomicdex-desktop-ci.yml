@@ -35,7 +35,7 @@ jobs:
 
         include:
           - name: ubuntu-qt-5-15-2
-            os: ubuntu-20.04
+            os: ubuntu-18.04
             qt: '5.15.2'
             type: 'release'
 
