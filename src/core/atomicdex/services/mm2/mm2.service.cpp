@@ -29,6 +29,7 @@
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
@@ -323,7 +324,7 @@ namespace atomic_dex
         {
             SPDLOG_INFO("mm2 didn't stop yet with rpc stop, stopping process manually");
 #if defined(_WIN32) || defined(WIN32)
-            atomic_dex::kill_executable("mm2");
+            atomic_dex::kill_executable(atomic_dex::g_dex_api);
 #else
             /*const reproc::stop_actions stop_actions = {
                 {reproc::stop::terminate, reproc::milliseconds(2000)},
@@ -640,6 +641,14 @@ namespace atomic_dex
                     request.address_format                   = nlohmann::json::object();
                     request.address_format.value()["format"] = "segwit";
                 }
+
+                if (coin_info.utxo_merge.value_or(false))
+                {
+                    t_utxo_merge_params params{.merge_at = 250, .check_every = 300, .max_merge_at_once = 125};
+                    nlohmann::json             j;
+                    mm2::api::to_json(j, params);
+                    request.merge_params     = j;
+                }
                 nlohmann::json j = ::mm2::api::template_request("electrum");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
@@ -654,7 +663,6 @@ namespace atomic_dex
                     .with_tx_history = false};
                 nlohmann::json j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
-                // SPDLOG_INFO("enable request: {}", j.dump(4));
                 batch_array.push_back(j);
             }
             //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
@@ -998,7 +1006,7 @@ namespace atomic_dex
         env.insert("MM_LOG", std_path_to_qstring(utils::get_mm2_atomic_dex_current_log_file()));
         env.insert("MM_COINS_PATH", std_path_to_qstring((utils::get_current_configs_path() / "coins.json")));
         QProcess mm2_instance;
-        mm2_instance.setProgram(std_path_to_qstring((tools_path / "mm2")));
+        mm2_instance.setProgram(std_path_to_qstring((tools_path / atomic_dex::g_dex_api)));
         mm2_instance.setWorkingDirectory(std_path_to_qstring(tools_path));
         mm2_instance.setProcessEnvironment(env);
         bool started = mm2_instance.startDetached();

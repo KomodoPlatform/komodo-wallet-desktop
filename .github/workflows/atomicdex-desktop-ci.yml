@@ -10,6 +10,9 @@ on:
     - cron: '0 0 * * 1'
 
 env:
+  DEX_API: "mm2"
+  DEX_RPCPORT: 7783
+  DEX_RPC: "http://127.0.0.1:7783"
   DEX_PROJECT_NAME: "atomicdex-desktop"
   DEX_DISPLAY_NAME: "AtomicDex Desktop"
   DEX_COMPANY: "KomodoPlatform"

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,46 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomicdex/pch.hpp"
+//! Deps
+#include "doctest/doctest.h"
+#include <nlohmann/json.hpp>
 
-#include <QDebug>
-#include <QStringList>
+#include "atomicdex/api/mm2/utxo.merge.params.hpp"
 
-#define DOCTEST_CONFIG_IMPLEMENT
-#include <doctest/doctest.h>
-
-#include "atomic.dex.tests.hpp"
-#include "atomicdex/utilities/kill.hpp"
-
-std::unique_ptr<tests_context> g_context{nullptr};
-
-int
-main(int argc, char** argv)
+TEST_CASE("mm2::api::utxo_merge_params serialisation")
 {
-    doctest::Context context;
-
-    context.applyCommandLine(argc, argv);
-
-    atomic_dex::kill_executable(atomic_dex::g_dex_api);
-
-    QStringList  args;
-    const int    ac = argc;
-    char** const av = argv;
-    for (int a = 0; a < ac; ++a) { args << QString::fromLocal8Bit(av[a]); }
-
-    if (args.filter("-tc").empty())
+    const nlohmann::json     expected_json = R"(
     {
-        g_context = std::make_unique<tests_context>(argv);
+      "merge_at":50,
+      "check_every":10,
+      "max_merge_at_once":25
     }
-
-    int res = context.run();
-
-    if (context.shouldExit()) // important - query flags (and --exit) rely on the user doing this
-    {
-        delete g_context.release();
-        return res; // propagate the result of the tests
-    }
-
-    delete g_context.release();
-    return res; // the result from doctest is propagated here as well
+    )"_json;
+    mm2::api::utxo_merge_params request{.merge_at = 50, .check_every = 10, .max_merge_at_once = 25};
+    nlohmann::json           j;
+    mm2::api::to_json(j, request);
+    CHECK_EQ(j, expected_json);
 }

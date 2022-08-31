@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,46 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomicdex/pch.hpp"
+#pragma once
 
-#include <QDebug>
-#include <QStringList>
+#include <nlohmann/json_fwd.hpp>
 
-#define DOCTEST_CONFIG_IMPLEMENT
-#include <doctest/doctest.h>
-
-#include "atomic.dex.tests.hpp"
-#include "atomicdex/utilities/kill.hpp"
-
-std::unique_ptr<tests_context> g_context{nullptr};
-
-int
-main(int argc, char** argv)
+namespace mm2::api
 {
-    doctest::Context context;
-
-    context.applyCommandLine(argc, argv);
-
-    atomic_dex::kill_executable(atomic_dex::g_dex_api);
-
-    QStringList  args;
-    const int    ac = argc;
-    char** const av = argv;
-    for (int a = 0; a < ac; ++a) { args << QString::fromLocal8Bit(av[a]); }
-
-    if (args.filter("-tc").empty())
+    struct utxo_merge_params
     {
-        g_context = std::make_unique<tests_context>(argv);
-    }
+        std::size_t merge_at;
+        std::size_t check_every;
+        std::size_t max_merge_at_once;
+    };
 
-    int res = context.run();
-
-    if (context.shouldExit()) // important - query flags (and --exit) rely on the user doing this
-    {
-        delete g_context.release();
-        return res; // propagate the result of the tests
-    }
-
-    delete g_context.release();
-    return res; // the result from doctest is propagated here as well
+    void to_json(nlohmann::json& j, const utxo_merge_params& cfg);
 }
+
+namespace atomic_dex
+{
+    using t_utxo_merge_params = ::mm2::api::utxo_merge_params;
+} // namespace atomic_dex
