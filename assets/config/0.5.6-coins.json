@@ -6733,6 +6733,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "NENG": {
+    "coin": "NENG",
+    "name": "Nengcoin",
+    "type": "UTXO",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "neng-nengcoin",
+    "nomics_id": "NENG",
+    "electrum": [
+      {
+        "url": "electrum.shorelinecrypto.com:10001"
+      },
+      {
+        "url": "electrum1.mooo.com:10001"
+      },
+      {
+        "url": "electrum2.mooo.com:10001"
+      }
+    ],
+    "explorer_url": [
+      "http://nengexplorer.mooo.com:3001/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "NEXO-ERC20": {
     "coin": "NEXO-ERC20",
     "name": "Nexo",
