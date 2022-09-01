@@ -39,16 +39,15 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, fees_data& cfg)
     {
-        // SPDLOG_WARN("fees_data for {}", j.at("coin").get<std::string>());
-        if (j.at("coin").get<std::string>() == "QTUM" || j.at("coin").get<std::string>() == "tQTUM")
-        {
-            cfg.qrc_fees = fee_qrc_coin{};
-            from_json(j, cfg.qrc_fees.value());
-        }
-        else if (j.count("amount") == 1)
+        if (j.count("amount") == 1)
         {
             cfg.normal_fees = fee_regular_coin{};
             from_json(j, cfg.normal_fees.value());
+        }
+        else if (j.at("coin").get<std::string>() == "QTUM" || j.at("coin").get<std::string>() == "tQTUM")
+        {
+            cfg.qrc_fees = fee_qrc_coin{};
+            from_json(j, cfg.qrc_fees.value());
         }
         else
         {

@@ -36,7 +36,6 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, fee_qrc_coin& cfg);
 
-
     struct fees_data
     {
         std::optional<fee_regular_coin> normal_fees;        ///< btc, kmd based coins
