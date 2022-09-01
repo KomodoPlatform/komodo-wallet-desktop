@@ -12,6 +12,7 @@ import Dex.Themes 1.0 as Dex
 ColumnLayout
 {
     id: root
+    spacing: 8
 
     function focusVolumeField()
     {
@@ -19,6 +20,8 @@ ColumnLayout
     }
 
     readonly property string total_amount: API.app.trading_pg.total_amount
+    readonly property int input_height: 70
+    readonly property int subfield_margin: 5
 
     readonly property bool can_submit_trade: last_trading_error === TradingError.None
 
@@ -56,7 +59,7 @@ ColumnLayout
     Item
     {
         Layout.preferredWidth: parent.width
-        Layout.preferredHeight: input_price.height + price_usd_value.height + price_usd_value.anchors.topMargin
+        Layout.preferredHeight: input_height
 
         AmountField
         {
@@ -66,12 +69,13 @@ ColumnLayout
             right_text: right_ticker
             enabled: !(API.app.trading_pg.preffered_order.price !== undefined)
             color: enabled ? Dex.CurrentTheme.foregroundColor1 : Dex.CurrentTheme.foregroundColor2
-            text: backend_price
+            text: backend_price ? backend_price : General.formatDouble(API.app.trading_pg.cex_price)
             width: parent.width
             height: 41
             radius: 18
 
             onTextChanged: setPrice(text)
+            Component.onCompleted: text = General.formatDouble(API.app.trading_pg.cex_price) ? General.formatDouble(API.app.trading_pg.cex_price) : 1
         }
 
         OrderFormSubfield
@@ -79,7 +83,7 @@ ColumnLayout
             id: price_usd_value
             anchors.top: input_price.bottom
             anchors.left: input_price.left
-            anchors.topMargin: 7
+            anchors.topMargin: subfield_margin
             visible: !API.app.trading_pg.invalid_cex_price
             left_btn.onClicked:
             {
@@ -111,8 +115,7 @@ ColumnLayout
     Item
     {
         Layout.preferredWidth: parent.width
-        Layout.topMargin: 8
-        Layout.preferredHeight: input_volume.height + volume_usd_value.height + volume_usd_value.anchors.topMargin
+        Layout.preferredHeight: input_height
 
         AmountField
         {
@@ -132,7 +135,7 @@ ColumnLayout
             id: volume_usd_value
             anchors.top: input_volume.bottom
             anchors.left: input_volume.left
-            anchors.topMargin: 7
+            anchors.topMargin: subfield_margin
             left_btn.onClicked:
             {
                 let volume = General.formatDouble(API.app.trading_pg.max_volume * 0.25)
@@ -162,8 +165,7 @@ ColumnLayout
     {
         visible: _useCustomMinTradeAmountCheckbox.checked
         Layout.preferredWidth: parent.width
-        Layout.topMargin: 8
-        Layout.preferredHeight: input_minvolume.height + volume_usd_value.height + volume_usd_value.anchors.topMargin
+        Layout.preferredHeight: input_height
 
         AmountField
         {
@@ -183,7 +185,7 @@ ColumnLayout
             id: minvolume_usd_value
             anchors.top: input_minvolume.bottom
             anchors.left: input_minvolume.left
-            anchors.topMargin: 7
+            anchors.topMargin: subfield_margin
             left_btn.onClicked:
             {
                 let volume = API.app.trading_pg.max_volume * 0.05
@@ -218,8 +220,7 @@ ColumnLayout
     Item
     {
         Layout.preferredWidth: parent.width
-        Layout.preferredHeight: minVolLabel.height
-        Layout.topMargin: 8
+        Layout.preferredHeight: 30
         visible: !_useCustomMinTradeAmountCheckbox.checked
 
         DefaultText
@@ -229,40 +230,14 @@ ColumnLayout
             font.pixelSize: 13
             text: qsTr("Min volume: ") + API.app.trading_pg.min_trade_vol
         }
-
-        DefaultText
-        {
-            anchors.left: minVolLabel.right
-            anchors.leftMargin: 8
-            anchors.verticalCenter: minVolLabel.verticalCenter
-
-            text: General.cex_icon
-            color: Dex.CurrentTheme.foregroundColor3
-
-            DefaultMouseArea
-            {
-                anchors.fill: parent
-                onClicked: _sliderHelpModal.open()
-            }
-
-            ModalLoader
-            {
-                id: _sliderHelpModal
-                sourceComponent: HelpModal
-                {
-                    title: qsTr("How to use the pro-view slider ?")
-                    helpSentence: qsTr("This slider is used to setup the order requirements you need.\nLeft slider: Sets the minimum amount required to process a trade.\nRight slider: Sets the volume you want to trade.")
-                }
-            }
-        }
     }
 
     RowLayout
     {
-        Layout.topMargin: 10
         Layout.rightMargin: 2
         Layout.leftMargin: 2
-        Layout.fillWidth: true
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: 30
         spacing: 5
 
         DefaultCheckBox
@@ -271,6 +246,7 @@ ColumnLayout
             boxWidth: 20
             boxHeight: 20
             labelWidth: 0
+            onToggled: setMinimumAmount(0)
         }
 
         DefaultText
@@ -284,31 +260,5 @@ ColumnLayout
             color: Dex.CurrentTheme.foregroundColor3
             font.pixelSize: 13
         }
-    }
-
-    DefaultRangeSlider
-    {
-        id: _volumeRange
-        visible: false
-
-        function getRealValue() { return first.position * (first.to - first.from); }
-        function getRealValue2() { return second.position * (second.to - second.from); }
-
-        enabled: input_volume.enabled && !(!sell_mode && General.isZero(non_null_price)) && to > 0
-
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: parent.width
-
-        from: API.app.trading_pg.orderbook.current_min_taker_vol
-        to: Math.max(0, parseFloat(max_volume))
-
-        first.value: parseFloat(API.app.trading_pg.min_trade_vol)
-
-        firstDisabled: !_useCustomMinTradeAmountCheckbox.checked
-
-        second.value: parseFloat(non_null_volume)
-
-        first.onValueChanged: if (first.pressed) setMinimumAmount(General.formatDouble(first.value))
-        second.onValueChanged: if (second.pressed) setVolume(General.formatDouble(second.value))
     }
 }
