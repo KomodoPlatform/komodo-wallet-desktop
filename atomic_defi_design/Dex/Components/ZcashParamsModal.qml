@@ -8,16 +8,19 @@ import "../Constants" as Dex
 import "../Components" as Dex
 import App 1.0
 
-Dex.MultipageModal {
+Dex.MultipageModal
+{
     id: root
     property string coin: "";
     width: 750
 
     // Inside modal
-    Dex.MultipageModalContent {
+    Dex.MultipageModalContent
+    {
         titleText: qsTr("%1 Activation Failed!").arg(coin)
 
-        Dex.DefaultText {
+        Dex.DefaultText
+        {
             Layout.fillWidth: true
             text: qsTr("To activate ZHTLC coins, you need to download the Zcash Params.\nThis might take a while...")
         }
@@ -111,7 +114,8 @@ Dex.MultipageModal {
             function onCombinedDownloadStatusChanged()
             {
                 let data = JSON.parse(Dex.API.app.zcash_params.get_combined_download_progress())
-                for (let k in data) {
+                for (let k in data)
+                {
                     let v = data[k];
                     let pct = Dex.General.formatDouble(v * 100, 2)
                     switch(k)

@@ -31,7 +31,7 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, disable_coin_answer& resp);
-}
+} // namespace mm2::api
 
 namespace atomic_dex
 {

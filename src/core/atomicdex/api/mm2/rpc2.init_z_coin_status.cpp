@@ -59,7 +59,6 @@ namespace mm2::api
                 answer.unspendable_balance = j.at("result").at("details").at("result").at("wallet_balance").at("balance").at("unspendable").get<std::string>();
             }
         }
-
     }
 
     void

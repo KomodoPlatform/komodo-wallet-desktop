@@ -83,7 +83,6 @@ namespace atomic_dex
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
         QString     ticker    = this->sourceModel()->data(idx, atomic_dex::portfolio_model::TickerRole).toString();
         QString     type      = this->sourceModel()->data(idx, atomic_dex::portfolio_model::CoinType).toString();
-        // QJsonObject status    = this->sourceModel()->data(idx, atomic_dex::portfolio_model::ActivationStatus).toJsonObject();
 
         if (this->filterRole() == atomic_dex::portfolio_model::MultiTickerCurrentlyEnabled)
         {
@@ -102,29 +101,6 @@ namespace atomic_dex
                 return false;
             }
         }
-
-        // Filter out partially activated htlc coins
-        // This is not working as expected - will remove code when alternative found
-        //if (status.contains("result"))
-        //{
-        //    if (status.value("result").toObject().contains("status"))
-        //    {
-        //        if (status.value("result").toObject().value("status") != "Ready")
-        //        {
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            if (status.value("result").toObject().contains("details"))
-        //            {
-        //                if (not status.value("result").toObject().value("result").toObject().contains("error"))
-        //                {
-        //                    return false;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         if (am_i_a_market_selector && m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(ticker.toStdString()).wallet_only)
         {

@@ -942,7 +942,6 @@ Item
 
                 ColumnLayout
                 {
-
                     visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
                     anchors.fill: parent
                     anchors.centerIn: parent
@@ -953,7 +952,7 @@ Item
                         id: fetching_text_row
                         Layout.topMargin: 24
                         Layout.alignment: Qt.AlignHCenter
-
+                        font.pixelSize: Style.textSize
                         text_value:
                         {
                             if (api_wallet_page.tx_fetching_busy) return qsTr("Fetching transactions...")
@@ -963,8 +962,6 @@ Item
                             }
                             return qsTr('No transactions available')
                         }
-
-                        font.pixelSize: Style.textSize
                     }
 
                     DefaultBusyIndicator

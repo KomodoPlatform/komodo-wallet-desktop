@@ -43,7 +43,8 @@ QtObject {
         }
     }
 
-    function canSend(ticker, progress=100) {
+    function canSend(ticker, progress=100)
+    {
         if (!API.app.wallet_pg.send_available) return false
         if (isZhtlc(ticker) && progress < 100) return false
         return true
@@ -69,7 +70,8 @@ QtObject {
         return false
     }
 
-    function zhtlcActivationProgress(activation_status, coin='ARRR') {
+    function zhtlcActivationProgress(activation_status, coin='ARRR')
+    {
         let progress = 100
         if (!activation_status.hasOwnProperty("result")) return progress
         let status = activation_status.result.status
@@ -587,11 +589,13 @@ QtObject {
         return true
     }
 
-    function tokenUnitName(type) {
+    function tokenUnitName(type)
+    {
         return type === "QRC-20" ? "Satoshi" : "Gwei"
     }
 
-    function isSpecialToken(current_ticker_infos) {
+    function isSpecialToken(current_ticker_infos)
+    {
         if (current_ticker_infos.hasOwnProperty("has_parent_fees_ticker"))
             return current_ticker_infos.has_parent_fees_ticker
         return false
@@ -727,14 +731,14 @@ QtObject {
                  +")")
     }
 
-    function checkIfWalletExists(name) {
+    function checkIfWalletExists(name)
+    {
         if(API.app.wallet_mgr.get_wallets().indexOf(name) !== -1)
             return qsTr("Wallet %1 already exists", "WALLETNAME").arg(name)
         return ""
     }
 
     function getTradingError(error, fee_info, base_ticker, rel_ticker, left_ticker, right_ticker) {
-
         switch(error) {
         case TradingError.None:
             return ""

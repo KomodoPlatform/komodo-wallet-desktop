@@ -284,7 +284,6 @@ DexPopup
             human_date,
             "open_log_modal",
             msg)
-
     }
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
@@ -345,7 +344,6 @@ DexPopup
             human_date,
             "open_log_modal",
             error)
-
         toast.show(title, General.time_toast_important_error, error)
     }
 

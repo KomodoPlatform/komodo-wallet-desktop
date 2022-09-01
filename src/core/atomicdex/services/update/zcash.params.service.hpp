@@ -66,7 +66,6 @@ namespace atomic_dex
 
       public slots:
         void          set_combined_download_status(QJsonObject& status);
-
     };
 } // namespace atomic_dex
 

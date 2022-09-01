@@ -71,7 +71,8 @@ MultipageModal
             label.font.pixelSize: 13
         }
 
-        AddressList {
+        AddressList
+        {
             width: parent.width
             title: qsTr("From")
             model: !details ? [] :
@@ -80,7 +81,8 @@ MultipageModal
             onCopyNotificationTitle: qsTr("From address")
         }
 
-        AddressList {
+        AddressList
+        {
             width: parent.width
             title: qsTr("To")
             model: !details ?

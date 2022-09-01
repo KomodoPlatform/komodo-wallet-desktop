@@ -44,9 +44,7 @@ namespace mm2::api
         {
             obj["params"]["fee"] = request.fees.value();
         }
-
         j.update(obj);
-
     }
 
     //! Deserialization

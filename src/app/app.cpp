@@ -78,8 +78,10 @@ namespace atomic_dex
         const std::size_t mainnet_idx = 1;
         std::unordered_set<std::string> visited;
         
-        for (auto&& coin: coins) {
-            if (visited.contains(coin.toStdString())) {
+        for (auto&& coin: coins)
+        {
+            if (visited.contains(coin.toStdString()))
+            {
                 SPDLOG_INFO("already visited: {} - skipping", coin.toStdString());
                 continue;
             }
@@ -835,34 +837,3 @@ namespace atomic_dex
         }
     }
 } // namespace atomic_dex
-
-
-/*
-//! App restart
-namespace atomic_dex
-{
-    void
-    application::get_zcash_params()
-    {
-        QProcess get_params;
-        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-        #if defined(_WIN32) || defined(WIN32)
-        get_params.setProgram(std_path_to_qstring((tools_path / "get_params.bat")));
-        #else
-        get_params.setProgram(std_path_to_qstring((tools_path / "get_params.sh")));
-        #endif
-        get_params.setWorkingDirectory(std_path_to_qstring(tools_path));
-        get_params.setProcessEnvironment(env);
-        bool started = get_params.startDetached();
-
-        if (!started)
-        {
-            SPDLOG_ERROR("Couldn't start get_params");
-            std::exit(EXIT_FAILURE);
-        }
-
-        
-
-    }
-} // namespace atomic_dex
-*/
