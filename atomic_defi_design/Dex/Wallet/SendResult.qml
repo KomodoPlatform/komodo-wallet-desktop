@@ -117,7 +117,7 @@ MultipageModalContent
             Layout.fillWidth: true
             text: qsTr("View on Explorer")
             radius: 18
-            onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
+            onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text_value)
         }
     ]
 }
