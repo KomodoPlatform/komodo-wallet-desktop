@@ -1146,7 +1146,10 @@ namespace atomic_dex
         const auto  swap_method = m_market_mode == MarketMode::Sell ? "sell"s : "buy"s;
         std::string volume      = get_volume().toStdString();
 
-
+        if (base == rel)
+        {
+            return;
+        }
         if (volume == "0")
         {
             volume = "0.0001";
@@ -1157,7 +1160,7 @@ namespace atomic_dex
             .base_coin = base,
             .rel_coin = rel,
             .swap_method = swap_method,
-            .volume = volume, // : 0.00001,
+            .volume = volume,
             .price = get_price().toStdString()
         };
 

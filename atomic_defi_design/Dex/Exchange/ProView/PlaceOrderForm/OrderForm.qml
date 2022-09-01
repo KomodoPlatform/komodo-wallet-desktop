@@ -155,9 +155,9 @@ ColumnLayout
             left_label: "25%"
             middle_label: "50%"
             right_label: "Max"
-            left_tooltip_text: "Swap 25% of your balance."
-            middle_tooltip_text: "Swap 50% of your balance."
-            right_tooltip_text: "Swap maximum balance."
+            left_tooltip_text: "Swap 25% of your tradable balance."
+            middle_tooltip_text: "Swap 50% of your tradable balance."
+            right_tooltip_text: "Swap 100% of your tradable balance."
         }
     }
 
@@ -188,32 +188,26 @@ ColumnLayout
             anchors.topMargin: subfield_margin
             left_btn.onClicked:
             {
-                let volume = API.app.trading_pg.max_volume * 0.05
-                if (volume > parseFloat(input_volume.text))
-                    volume = parseFloat(input_volume.text)
+                let volume = input_volume.text * 0.10
                 setMinimumAmount(General.formatDouble(volume))
             }
             middle_btn.onClicked:
             {
-                let volume = API.app.trading_pg.max_volume * 0.10
-                if (volume > parseFloat(input_volume.text))
-                    volume = parseFloat(input_volume.text)
+                let volume = input_volume.text * 0.25
                 setMinimumAmount(General.formatDouble(volume))
             }
             right_btn.onClicked:
             {
-                let volume = API.app.trading_pg.max_volume * 0.20
-                if (volume > parseFloat(input_volume.text))
-                    volume = parseFloat(input_volume.text)
+                let volume = input_volume.text * 0.50
                 setMinimumAmount(General.formatDouble(volume))
             }
             fiat_value: General.getFiatText(non_null_volume, left_ticker)
-            left_label: "5%"
-            middle_label: "10%"
-            right_label: "20%"
-            left_tooltip_text: "Minimum accepted trade equals 5% of your balance."
-            middle_tooltip_text: "Minimum accepted trade equals 10% of your balance."
-            right_tooltip_text: "Minimum accepted trade equals 20% of your balance."
+            left_label: "10%"
+            middle_label: "25%"
+            right_label: "50%"
+            left_tooltip_text: "Minimum accepted trade equals 10% of order volume."
+            middle_tooltip_text: "Minimum accepted trade equals 25% of order volume."
+            right_tooltip_text: "Minimum accepted trade equals 50% of order volume."
         }
     }
 
