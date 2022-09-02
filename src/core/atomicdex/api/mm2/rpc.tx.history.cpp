@@ -6,23 +6,46 @@
 
 namespace atomic_dex::mm2
 {
-    void
-    to_json(nlohmann::json& j, const tx_history_request& cfg)
+    void to_json(nlohmann::json& j, const paging_options& cfg)
     {
-        j["coin"]  = cfg.coin;
-        j["limit"] = cfg.limit;
+        if (cfg.page_number.has_value())
+        {
+            j["PageNumber"] = cfg.page_number.value();
+        }
+        if (cfg.from_id.has_value())
+        {
+            j["FromId"] = cfg.from_id.value();
+        }
+    }
+    
+    void to_json(nlohmann::json& j, const tx_history_request& cfg)
+    {
+        nlohmann::json obj = nlohmann::json::object();
+        
+        obj["coin"]  = cfg.coin;
+        obj["limit"] = cfg.limit;
+        if (cfg.paging_options.has_value() && j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
+        {
+            obj["paging_options"] = cfg.paging_options.value();
+        }
+        if (j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
+        {
+            j["params"] = obj;
+        }
+        else
+        {
+            j.update(obj);
+        }
     }
 
-    void
-    from_json(const nlohmann::json& j, sync_status_additional_error& answer)
+    void from_json(const nlohmann::json& j, sync_status_additional_error& answer)
     {
         j.at("code").get_to(answer.code);
         j.at("message").get_to(answer.message);
     }
 
 
-    void
-    from_json(const nlohmann::json& j, sync_status_eth_erc_20_coins& answer)
+    void from_json(const nlohmann::json& j, sync_status_eth_erc_20_coins& answer)
     {
         j.at("blocks_left").get_to(answer.blocks_left);
     }
