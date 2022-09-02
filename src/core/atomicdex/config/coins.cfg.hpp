@@ -22,6 +22,7 @@
 #include <nlohmann/json.hpp>
 
 #include "atomicdex/api/mm2/mm2.constants.hpp"
+#include "atomicdex/api/mm2/utxo.merge.params.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
@@ -37,7 +38,8 @@ namespace atomic_dex
         std::optional<std::string>      alias_ticker{std::nullopt};
         std::string                     gui_ticker; ///< Ticker displayed in the gui
         std::string                     name;       ///< nice name
-        std::optional<electrum_servers> electrum_urls;
+        std::optional<electrum_servers>  electrum_urls;
+        std::optional<bool>              utxo_merge{false};
         std::optional<nodes>            bchd_urls;
         std::optional<bool>             allow_slp_unsafe_conf;
         std::optional<nodes>            urls;

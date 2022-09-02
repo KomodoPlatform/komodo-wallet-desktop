@@ -132,6 +132,11 @@ namespace atomic_dex
         {
             cfg.custom_backup = j.at("mm2_backup");
         }
+        
+        if (j.contains("utxo_merge"))
+        {
+            cfg.utxo_merge = j.at("utxo_merge");
+        }
         if (j.contains("electrum"))
         {
             cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();

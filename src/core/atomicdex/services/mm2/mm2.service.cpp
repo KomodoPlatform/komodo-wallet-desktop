@@ -20,13 +20,15 @@
 #include <QFile>
 #include <QProcess>
 
+#include "atomicdex/api/mm2/utxo.merge.params.hpp"
+#include "atomicdex/api/mm2/enable_bch_with_tokens_rpc.hpp"
+#include "atomicdex/api/mm2/enable_slp_rpc.hpp"
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
-#include "atomicdex/api/mm2/enable_slp_rpc.hpp"
-#include "atomicdex/api/mm2/enable_bch_with_tokens_rpc.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
@@ -312,7 +314,7 @@ namespace atomic_dex
         {
             SPDLOG_INFO("mm2 didn't stop yet with rpc stop, stopping process manually");
 #if defined(_WIN32) || defined(WIN32)
-            atomic_dex::kill_executable("mm2");
+            atomic_dex::kill_executable(atomic_dex::g_dex_api);
 #else
             /*const reproc::stop_actions stop_actions = {
                 {reproc::stop::terminate, reproc::milliseconds(2000)},
@@ -610,6 +612,14 @@ namespace atomic_dex
             {
                 request.address_format                   = nlohmann::json::object();
                 request.address_format.value()["format"] = "segwit";
+            }
+            if (coin_config.utxo_merge.value_or(false))
+            {
+                mm2::utxo_merge_params  merge_params{.merge_at = 250, .check_every = 300, .max_merge_at_once = 125};
+                nlohmann::json          json_merge_params;
+                
+                mm2::to_json(json_merge_params, merge_params);
+                request.merge_params = json_merge_params;
             }
             mm2::to_json(j, request);
             batch_array.push_back(j);
@@ -1124,7 +1134,7 @@ namespace atomic_dex
         env.insert("MM_LOG", std_path_to_qstring(utils::get_mm2_atomic_dex_current_log_file()));
         env.insert("MM_COINS_PATH", std_path_to_qstring((utils::get_current_configs_path() / "coins.json")));
         QProcess mm2_instance;
-        mm2_instance.setProgram(std_path_to_qstring((tools_path / "mm2")));
+        mm2_instance.setProgram(std_path_to_qstring((tools_path / atomic_dex::g_dex_api)));
         mm2_instance.setWorkingDirectory(std_path_to_qstring(tools_path));
         mm2_instance.setProcessEnvironment(env);
         bool started = mm2_instance.startDetached();

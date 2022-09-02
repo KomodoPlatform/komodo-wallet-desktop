@@ -201,7 +201,11 @@ namespace atomic_dex
     void
     portfolio_proxy_model::set_with_fiat_balance(bool value)
     {
-        m_with_fiat_balance = value;
+        if (value != m_with_fiat_balance)
+        {
+            m_with_fiat_balance = value;
+            this->invalidateFilter();
+        }
     }
 
     void

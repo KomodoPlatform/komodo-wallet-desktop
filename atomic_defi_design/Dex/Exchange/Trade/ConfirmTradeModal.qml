@@ -11,6 +11,7 @@ import "Orders/"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
+
 MultipageModal
 {
     id: root
@@ -24,9 +25,9 @@ MultipageModal
         titleText: qsTr("Confirm Exchange Details")
         title.font.pixelSize: Style.textSize2
         titleAlignment: Qt.AlignHCenter
-        titleTopMargin: 10
-        topMarginAfterTitle: 0
-        flickMax: window.height - 450
+        titleTopMargin: 0
+        topMarginAfterTitle: 10
+        flickMax: window.height - 480
 
         header: [
             RowLayout
@@ -70,6 +71,39 @@ MultipageModal
                 id: warnings_text
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
+
+                // Large margin Warning
+                FloatingBackground
+                {
+                    Layout.alignment: Qt.AlignCenter
+                    width: 425
+                    height: 30
+                    color: Style.colorRed2
+                    visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
+
+                    RowLayout
+                    {
+                        Layout.fillWidth: true
+
+                        Item { width: 3 }
+
+                        DefaultCheckBox
+                        {
+                            id: allow_bad_trade
+                            Layout.alignment: Qt.AlignCenter
+                            textColor: Style.colorWhite0
+                            visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
+                            spacing: 2
+                            boxWidth: 20
+                            boxHeight: 20
+                            labelWidth: 400
+                            label.wrapMode: Label.NoWrap
+                            text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
+                        }
+
+                        Item { width: 3 }
+                    }
+                }
 
                 DefaultText
                 {
@@ -368,7 +402,7 @@ MultipageModal
                 leftPadding: 45
                 rightPadding: 45
                 radius: 10
-                enabled: !buy_sell_rpc_busy && last_trading_error === TradingError.None
+                enabled: General.is_swap_safe(allow_bad_trade)
                 onClicked:
                 {
                     trade({ enable_custom_config: enable_custom_config.checked,

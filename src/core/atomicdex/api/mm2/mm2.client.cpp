@@ -21,6 +21,7 @@
 #include "enable_bch_with_tokens_rpc.hpp"
 #include "mm2.client.hpp"
 #include "mm2.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "rpc.hpp"
 #include "rpc.tx.history.hpp"
 
@@ -31,10 +32,13 @@ namespace
 
     t_http_client generate_client()
     {
-        web::http::client::http_client_config cfg;
         using namespace std::chrono_literals;
-        cfg.set_timeout(30s);
-        return web::http::client::http_client(FROM_STD_STR(atomic_dex::mm2::g_endpoint), cfg);
+        
+        constexpr auto                          client_timeout = 30s;
+        web::http::client::http_client_config   cfg;
+        
+        cfg.set_timeout(client_timeout);
+        return {FROM_STD_STR(atomic_dex::g_dex_rpc), cfg};
     }
 
     template <atomic_dex::mm2::rpc Rpc>

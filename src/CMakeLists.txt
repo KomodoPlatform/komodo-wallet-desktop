@@ -14,7 +14,7 @@ DEX_NEW_LIB(core INTERFACE
             $<$<PLATFORM_ID:Windows>:NOMINMAX>
             $<$<PLATFORM_ID:Windows>:SPDLOG_WCHAR_TO_UTF8_SUPPORT>
             _TURN_OFF_PLATFORM_STRING
-            DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
+            DEX_API="${DEX_API}" DEX_RPC="${DEX_RPC}" DEX_RPCPORT="${DEX_RPCPORT}" DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
             DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}" DEX_DISCORD_URL="${DEX_DISCORD}" DEX_TWITTER_URL="${DEX_TWITTER}"
             DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" #DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
             DEX_PROJECT_NAME="${DEX_PROJECT_NAME}" DEX_COMPANY_NAME="${DEX_COMPANY_NAME}"
@@ -111,7 +111,13 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
     tests/atomic.dex.provider.cex.prices.tests.cpp
     tests/atomic.dex.qt.utilities.tests.cpp
 
-    tests/config/coins.cfg.tests.cpp
+        tests/config/coins.cfg.tests.cpp
+        ##! API
+        tests/api/coingecko/coingecko.tests.cpp
+        tests/api/komodo_prices/komodo.prices.tests.cpp
+        tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
+        tests/api/mm2/mm2.fraction.tests.cpp
+        tests/api/mm2/mm2.api.utxo.merge.params.tests.cpp
 
     ##! API
     tests/api/coingecko/coingecko.tests.cpp

@@ -157,7 +157,7 @@ Dex.MultipageModal
                 }
                 else
                 {
-                    console.error(Dex.API.app.updateCheckerService.udpateInfo.status)
+                    console.error(Dex.API.app.updateCheckerService.updateInfo.status)
                 }
             }
         }

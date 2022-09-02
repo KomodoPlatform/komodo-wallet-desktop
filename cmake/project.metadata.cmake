@@ -1,4 +1,7 @@
 # Default project values
+set(DEX_API "mm2")
+set(DEX_RPCPORT 7783)
+set(DEX_RPC "http://127.0.0.1:7783")
 set(DEX_PROJECT_NAME "atomicdex-desktop")
 set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
 set(DEX_MAINTENANCE_TOOL_NAME "AtomicDEX Maintenance Tool")
@@ -25,6 +28,15 @@ if (UNIX AND NOT APPLE)
 endif ()
 
 # Erases default project values with environment variables if they exist.
+if (DEFINED ENV{DEX_API})
+    set(DEX_API $ENV{DEX_API})
+endif ()
+if (DEFINED ENV{DEX_RPCPORT})
+    set(DEX_RPCPORT $ENV{DEX_RPCPORT})
+endif ()
+if (DEFINED ENV{DEX_RPC})
+    set(DEX_RPC $ENV{DEX_RPC})
+endif ()
 if (DEFINED ENV{DEX_PROJECT_NAME})
     set(DEX_PROJECT_NAME $ENV{DEX_PROJECT_NAME})
 endif ()

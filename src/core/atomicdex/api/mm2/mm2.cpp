@@ -593,7 +593,7 @@ namespace atomic_dex::mm2
         nlohmann::json json_data = template_request("version");
         try
         {
-            auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("http://127.0.0.1:7783"));
+            auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(atomic_dex::g_dex_rpc));
             web::http::http_request request;
             request.set_method(web::http::methods::POST);
             request.set_body(json_data.dump());
