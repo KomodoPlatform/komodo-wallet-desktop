@@ -19,6 +19,7 @@
 #include <shared_mutex>
 #include <thread>
 #include <unordered_set>
+#include <unordered_map>
 
 #include <QNetworkAccessManager>
 #include <antara/gaming/ecs/system.hpp>
@@ -34,13 +35,13 @@
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
-#include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/data/dex/orders.and.swaps.data.hpp"
 #include "atomicdex/data/wallet/tx.data.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/common/coin_info.hpp"
 
 namespace atomic_dex
 {
@@ -77,13 +78,7 @@ namespace atomic_dex
 
         ag::ecs::system_manager& m_system_manager;
 
-        //! Client
-        // std::shared_ptr<t_http_client>  m_mm2_client{nullptr};
-        // pplx::cancellation_token_source m_token_source;
         mm2::mm2_client m_mm2_client;
-
-        //! Process
-        //reproc::process m_mm2_instance;
 
         //! Current ticker
         t_synchronized_ticker m_current_ticker{g_primary_dex_coin};
@@ -179,6 +174,8 @@ namespace atomic_dex
         void enable_utxo_qrc20_coins(const t_coins& coins);
         void enable_slp_coin(coin_config coin_config);
         void enable_slp_coins(const t_coins& coins);
+        void enable_slp_testnet_coin(coin_config coin_config);
+        void enable_slp_testnet_coins(const t_coins& coins);
 
       public:
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
@@ -224,6 +221,12 @@ namespace atomic_dex
 
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
+        
+        // Tells if the given coin is enabled.
+        [[nodiscard]] bool is_coin_enabled(const std::string& ticker) const;
+        
+        // Tells if the given is coin is present inside the config.
+        [[nodiscard]] bool has_coin(const std::string& ticker) const;
 
         //! Get Current orderbook
         [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const;
@@ -249,11 +252,9 @@ namespace atomic_dex
         void               reset_fake_balance_to_zero(const std::string& ticker);
         void               decrease_fake_balance(const std::string& ticker, const std::string& amount);
         void               batch_fetch_orders_and_swap(bool after_manual_reset = false);
-        void               add_orders_answer(t_my_orders_answer answer);
 
         //! Async API
         mm2::mm2_client& get_mm2_client();
-        //[[nodiscard]] pplx::cancellation_token get_cancellation_token() const;
 
         //! Wallet api
         [[nodiscard]] std::string get_current_ticker() const;
