@@ -11,18 +11,19 @@ import App 1.0
 Dex.MultipageModal
 {
     id: root
-    property string coin: "";
+    readonly property var coins: API.app.zcash_params.get_enable_after_download()
     width: 750
+    closePolicy: Popup.NoAutoClose
 
     // Inside modal
     Dex.MultipageModalContent
     {
-        titleText: qsTr("%1 Activation Failed!").arg(coin)
+        titleText: qsTr("%1 Activation Failed!").arg(coins.join(' / '))
 
         Dex.DefaultText
         {
             Layout.fillWidth: true
-            text: qsTr("To activate ZHTLC coins, you need to download the Zcash Params.\nThis might take a while...")
+            text: qsTr("To activate ZHTLC coins, you need to download the Zcash Params.\nThis might take a few minutes...")
         }
 
         HorizontalLine
@@ -34,28 +35,6 @@ Dex.MultipageModal
 
         ColumnLayout
         {
-            Dex.DefaultProgressBar
-            {
-                id: sprout_proving_key
-                label.text: "sprout-proving.key"
-                bar_width_pct: 0
-                pct_value.text: "0.00 %"
-            }
-
-            Dex.DefaultProgressBar
-            {
-                id: sprout_groth_params
-                label.text: "sprout-groth16.params"
-                bar_width_pct: 0
-                pct_value.text: "0.00 %"
-            }
-            Dex.DefaultProgressBar
-            {
-                id: sprout_verifying_key
-                label.text: "sprout-verifying.key"
-                bar_width_pct: 0
-                pct_value.text: "0.00 %"
-            }
             Dex.DefaultProgressBar
             {
                 id: sapling_output_params
@@ -85,10 +64,8 @@ Dex.MultipageModal
             Dex.DefaultButton
             {
                 id: download_button
-                text: qsTr("Start download")
-                enabled: !sprout_proving_key.bar_width_pct > 0 || !sprout_groth_params.bar_width_pct > 0
-                            || !sprout_verifying_key.bar_width_pct > 0 ||  !sapling_output_params.bar_width_pct > 0
-                            || !sapling_spend_params.bar_width_pct > 0
+                text: qsTr("Download params & enable coins")
+                enabled: !sapling_output_params.bar_width_pct > 0 || !sapling_spend_params.bar_width_pct > 0
                 onClicked: {
                     download_button.enabled = false
                     Dex.API.app.zcash_params.download_zcash_params()
@@ -105,7 +82,8 @@ Dex.MultipageModal
             {
                 text: qsTr("Close")
                 onClicked: close()
-            }
+            },
+            Item { Layout.fillWidth: true }
         ]
 
         Connections
@@ -113,25 +91,15 @@ Dex.MultipageModal
             target: Dex.API.app.zcash_params
             function onCombinedDownloadStatusChanged()
             {
+                let combined_progress = 0
                 let data = JSON.parse(Dex.API.app.zcash_params.get_combined_download_progress())
                 for (let k in data)
                 {
                     let v = data[k];
                     let pct = Dex.General.formatDouble(v * 100, 2)
+                    combined_progress += parseFloat(v)/Object.keys(data).length
                     switch(k)
                     {
-                        case "sprout-proving.key.deprecated-sworn-elves":
-                            sprout_proving_key.bar_width_pct = pct
-                            sprout_proving_key.pct_value.text = pct + "%"
-                            break
-                        case "sprout-groth16.params":
-                            sprout_groth_params.bar_width_pct = pct
-                            sprout_groth_params.pct_value.text = pct + "%"
-                            break
-                        case "sprout-verifying.key":
-                            sprout_verifying_key.bar_width_pct = pct
-                            sprout_verifying_key.pct_value.text = pct + "%"
-                            break
                         case "sapling-output.params":
                             sapling_output_params.bar_width_pct = pct
                             sapling_output_params.pct_value.text = pct + "%"
@@ -140,6 +108,12 @@ Dex.MultipageModal
                             sapling_spend_params.bar_width_pct = pct
                             sapling_spend_params.pct_value.text = pct + "%"
                             break
+                    }
+                    console.log(combined_progress)
+                    if (combined_progress == 1)
+                    {
+                        console.log("closing")
+                        root.close()
                     }
                 }
             }

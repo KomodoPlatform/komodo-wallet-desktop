@@ -773,10 +773,7 @@ QtObject {
 
     readonly property var zcash_params_filesize: ({
         "sapling-output.params": 3592860,
-        "sapling-spend.params": 47958396,
-        "sprout-groth16.params": 725523612,
-        "sprout-proving.key.deprecated-sworn-elves": 910173851,
-        "sprout-verifying.key": 1449
+        "sapling-spend.params": 47958396
     })
 
     readonly property var supported_pairs: ({

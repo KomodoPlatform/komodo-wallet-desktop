@@ -247,7 +247,12 @@ Item
                     }
 
                     let pct = General.formatDouble(donwloaded_sum / combined_sum * 100, 2)
-                    if (pct == 100) status_bar.visible = false
+                    if (pct == 100)
+                    {
+                        API.app.enable_coins(API.app.zcash_params.get_enable_after_download())
+                        status_bar.visible = false
+                        API.app.zcash_params.clear_enable_after_download()
+                    }
                     else status_bar.visible = true
                     download_progress.bar_width_pct = pct
                     download_progress.pct_value.text = pct + "%"
@@ -309,8 +314,8 @@ Item
         if (msg.search("ZCashParamsNotFound") > -1)
         {
             console.log(coin)
+            API.app.zcash_params.enable_after_download(coin)
             zcash_params_modal.open()
-            zcash_params.coin = coin
         }
     }
 

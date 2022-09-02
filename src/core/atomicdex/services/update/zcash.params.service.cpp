@@ -76,12 +76,9 @@ namespace atomic_dex
             fs::create_directories(folder);
         }
 
-        std::string zcash_params[5] = {
+        std::string zcash_params[2] = {
             "https://z.cash/downloads/sapling-spend.params",
-            "https://z.cash/downloads/sapling-output.params",
-            "https://z.cash/downloads/sprout-groth16.params",
-            "https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves",
-            "https://z.cash/downloads/sprout-verifying.key"
+            "https://z.cash/downloads/sapling-output.params"
         };
 
         for(const std::string &url: zcash_params)
@@ -102,6 +99,24 @@ namespace atomic_dex
     zcash_params_service::is_downloading()
     {
         return m_is_downloading;
+    }
+
+    void
+    zcash_params_service::enable_after_download(const QString& coin)
+    {
+        m_enable_after_download.append(coin);
+    }
+
+    void
+    zcash_params_service::clear_enable_after_download()
+    {
+        m_enable_after_download.clear();
+    }
+
+    QStringList
+    zcash_params_service::get_enable_after_download()
+    {
+        return m_enable_after_download;
     }
 
     QString

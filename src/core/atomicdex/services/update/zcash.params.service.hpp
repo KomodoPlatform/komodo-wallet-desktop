@@ -44,6 +44,7 @@ namespace atomic_dex
         t_update_time_point             m_update_clock;
         QJsonObject                     m_combined_download_status;
         bool                            m_is_downloading{false};
+        QStringList                     m_enable_after_download;
 
         void fetch_update_info();
 
@@ -55,11 +56,14 @@ namespace atomic_dex
 
         void update() final;
 
-        Q_INVOKABLE   void                    download_zcash_params();
-        Q_INVOKABLE   bool                    is_downloading();
-        Q_INVOKABLE   QString                 get_combined_download_progress();
-        [[nodiscard]] QJsonObject             get_combined_download_status() const;
-        [[nodiscard]] fs::path                get_zcash_params_folder();
+        Q_INVOKABLE   void                        enable_after_download(const QString& coin);
+        Q_INVOKABLE   QStringList                 get_enable_after_download();
+        Q_INVOKABLE   void                        clear_enable_after_download();
+        Q_INVOKABLE   void                        download_zcash_params();
+        Q_INVOKABLE   bool                        is_downloading();
+        Q_INVOKABLE   QString                     get_combined_download_progress();
+        [[nodiscard]] QJsonObject                 get_combined_download_status() const;
+        [[nodiscard]] fs::path                    get_zcash_params_folder();
 
       signals:
         void          combinedDownloadStatusChanged();
