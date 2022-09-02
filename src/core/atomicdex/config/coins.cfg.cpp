@@ -304,7 +304,7 @@ namespace atomic_dex
             break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = "BCH";
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "tBCH" : "BCH";
             break;
         default:
             cfg.has_parent_fees_ticker = false;
