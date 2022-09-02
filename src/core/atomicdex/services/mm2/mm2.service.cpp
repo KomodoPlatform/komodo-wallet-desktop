@@ -939,7 +939,7 @@ namespace atomic_dex
                 if (res)
                 {
                     this->process_balance_answer(answer);
-                    if (this->get_coin_info(g_primary_dex_coin).currently_enabled && this->get_coin_info(g_second_primary_dex_coin).currently_enabled)
+                    if (tickers == g_default_coins)
                     {
                         SPDLOG_INFO("Trigger default_coins_enabled");
                         this->dispatcher_.trigger<default_coins_enabled>();
