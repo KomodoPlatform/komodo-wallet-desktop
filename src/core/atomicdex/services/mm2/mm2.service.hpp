@@ -55,9 +55,6 @@ namespace atomic_dex
     using t_coins_registry = std::unordered_map<t_ticker, coin_config>;
     using t_coins          = std::vector<coin_config>;
 
-    //! Constants
-    inline constexpr const std::size_t g_tx_max_limit{50};
-
     class ENTT_API mm2_service final : public ag::ecs::pre_update_system<mm2_service>
     {
       public:
