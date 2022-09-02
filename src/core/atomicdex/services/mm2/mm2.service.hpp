@@ -62,7 +62,6 @@ namespace atomic_dex
         using t_pair_min_vol = std::pair<t_min_volume_answer_success, t_min_volume_answer_success>;
 
       private:
-        //! Private typedefs
         using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
         using t_balance_registry           = std::unordered_map<t_ticker, t_balance_answer>;
         using t_tx_registry                = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
