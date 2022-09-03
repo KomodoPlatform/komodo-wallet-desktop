@@ -35,6 +35,7 @@ MultipageModal
     readonly property bool is_validate_address_busy: api_wallet_page.validate_address_busy 
     readonly property bool is_convert_address_busy: api_wallet_page.convert_address_busy
     readonly property string address: api_wallet_page.converted_address
+    readonly property string withdraw_status: api_wallet_page.withdraw_status
 
     readonly property bool auth_succeeded: api_wallet_page.auth_succeeded
 
@@ -681,6 +682,18 @@ MultipageModal
             indicatorSize: Layout.preferredWidth
             indicatorDotSize: 5
             visible: root.is_send_busy
+        }
+
+        // Withdraw status
+        DefaultText
+        {
+            Layout.topMargin: 16
+            Layout.alignment: Qt.AlignHCenter
+            horizontalAlignment: DefaultText.AlignHCenter
+            wrapMode: Label.Wrap
+            visible: General.isZhtlc(api_wallet_page.ticker) && withdraw_status != "Complete"
+            color: Dex.CurrentTheme.foregroundColor
+            text_value: withdraw_status
         }
 
 

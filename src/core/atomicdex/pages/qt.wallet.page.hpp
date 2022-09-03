@@ -58,6 +58,8 @@ namespace atomic_dex
         void                              set_convert_address_busy(bool status);
         [[nodiscard]] bool                is_validate_address_busy() const;
         void                              set_validate_address_busy(bool status);
+        [[nodiscard]] QString             get_withdraw_status() const;
+        void                              set_withdraw_status(QString status);
         [[nodiscard]] QString             get_converted_address() const;
         void                              set_converted_address(QString converted_address);
         [[nodiscard]] QVariant            get_validate_address_data() const;
@@ -114,6 +116,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant validate_address_data READ get_validate_address_data WRITE set_validate_address_data NOTIFY validateAddressDataChanged)
         Q_PROPERTY(bool convert_address_busy READ is_convert_address_busy WRITE set_convert_address_busy NOTIFY convertAddressBusyChanged)
         Q_PROPERTY(QString converted_address READ get_converted_address WRITE set_converted_address NOTIFY convertedAddressChanged)
+        Q_PROPERTY(QString withdraw_status READ get_withdraw_status WRITE set_withdraw_status NOTIFY withdrawStatusChanged)
 
         // QML API Properties Signals
       signals:
@@ -140,6 +143,7 @@ namespace atomic_dex
         void validateAddressDataChanged();
         void convertAddressBusyChanged();
         void convertedAddressChanged();
+        void withdrawStatusChanged();
 
       private:
         ag::ecs::system_manager&                       m_system_manager;
@@ -160,6 +164,7 @@ namespace atomic_dex
         t_qt_synchronized_string                       m_broadcast_rpc_result;
         t_qt_synchronized_json                         m_validate_address_result;
         t_qt_synchronized_string                       m_converted_address;
+        t_qt_synchronized_string                       m_withdraw_status;
         bool                                           m_auth_succeeded;
         bool                                           m_send_available{true};
         QString                                        m_send_availability_state;

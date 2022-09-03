@@ -557,9 +557,10 @@ namespace atomic_dex
                             SPDLOG_DEBUG("Task ID: {}", task_id);
                             using namespace std::chrono_literals;
                             auto&              mm2_system = m_system_manager.get_system<mm2_service>();
-                            static std::size_t z_nb_try      = 0;
+                            static std::size_t z_nb_try      = 1;
                             nlohmann::json     z_error       = nlohmann::json::array();
                             nlohmann::json     z_batch_array = nlohmann::json::array();
+                            QString            z_status;
                             t_withdraw_status_request z_request{.task_id = task_id};
 
                             nlohmann::json j = ::mm2::api::template_request("withdraw_status", true);
@@ -567,35 +568,41 @@ namespace atomic_dex
                             z_batch_array.push_back(j);
 
                             do {
-
                                 pplx::task<web::http::http_response> z_resp_task = mm2_system.get_mm2_client().async_rpc_batch_standalone(z_batch_array);
                                 web::http::http_response             z_resp      = z_resp_task.get();
                                 auto                                 z_answers   = ::mm2::api::basic_batch_answer(z_resp);
                                 z_error = z_answers;
+                                z_status = QString::fromStdString(z_answers[0].at("result").at("status").get<std::string>());
 
-                                SPDLOG_DEBUG("Waiting for {} withdraw status [{}]...", ticker, z_answers[0].at("result").at("status").get<std::string>());
-                                if (z_answers[0].at("result").at("status") == "Ready")
+                                SPDLOG_DEBUG("[{}/120] Waiting for {} withdraw status [{}]...", z_nb_try, ticker, z_status.toUtf8().constData());
+                                if (z_status == "Ready")
                                 {
                                     break;
                                 }
-                                std::this_thread::sleep_for(1s);
+                                else
+                                {
+                                    set_withdraw_status("Generating transaction... ");
+                                }
+                                std::this_thread::sleep_for(2s);
                                 z_nb_try += 1;
 
-                            } while (z_nb_try < 50);
+                            } while (z_nb_try < 120);
 
                             try {
                                 if (z_error[0].at("result").at("details").contains("error"))
                                 {
-                                    std::string zhtlc_error   = z_error[0].at("result").at("details").at("error").get<std::string>();
-                                    SPDLOG_DEBUG("Error zhtlc withdraw_status {}: {} ", ticker, zhtlc_error);
+                                    SPDLOG_DEBUG("Error zhtlc withdraw_status {}: {} ", ticker, z_status.toUtf8().constData());
+                                    z_status   = QString::fromStdString(z_error[0].at("result").at("details").at("error").get<std::string>());
+                                    set_withdraw_status(z_status);
                                 }
-                                else if (z_nb_try == 50)
+                                else if (z_nb_try == 120)
                                 {
                                     // TODO: Handle this case.
                                     // There could be no error message if scanning takes too long.
                                     // Either we force disable here, or schedule to check on it later
-                                    SPDLOG_DEBUG("Exited zhtlc enable loop after 50 tries");
+                                    SPDLOG_DEBUG("Exited zhtlc withdraw loop after 120 tries");
                                     SPDLOG_DEBUG("Bad answer for [{}] zhtlc withdraw_status: {}", ticker, z_error[0].dump(4));
+                                    set_withdraw_status("Timed out");
                                 }
                                 else
                                 {
@@ -635,11 +642,15 @@ namespace atomic_dex
                                         j_out["withdraw_answer"]["fee_details"]["amount_fiat"] =
                                             global_price_system.get_price_as_currency_from_amount(current_fiat, coin_info.fees_ticker, fee);
                                     }
+                                    SPDLOG_DEBUG("zhtlc set_rpc_send_data (else)");
                                     this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
+                                    set_withdraw_status("Complete");
                                 }
+                                z_nb_try = 0;
                             }
                             catch (const std::exception& error)
                             {
+                                set_withdraw_status(QString::fromStdString(error.what()));
                                 SPDLOG_ERROR("exception caught in zhtlc withdraw_status: {}", error.what());
                             }
                         }
@@ -1115,6 +1126,19 @@ namespace atomic_dex
             };
             mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
         }
+    }
+
+    QString
+    wallet_page::get_withdraw_status() const
+    {
+        return m_withdraw_status.get();
+    }
+
+    void
+    wallet_page::set_withdraw_status(QString status)
+    {
+        m_withdraw_status = status;
+        emit withdrawStatusChanged();
     }
 
     QString
