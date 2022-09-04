@@ -49,6 +49,8 @@ Grid
                     {
                         API.app.settings_pg.lang = model.modelData;
                         console.info("Switched language to %1".arg(API.app.settings_pg.lang));
+                        menu_list.update()
+                        app.update()
                     }
                 }
             }

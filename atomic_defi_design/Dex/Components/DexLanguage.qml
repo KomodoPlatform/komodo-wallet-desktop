@@ -32,12 +32,12 @@ DexComboBox
         contentItem: RowLayout
         {
             anchors.fill: parent
-            spacing: -13
+            spacing: -25
 
             DexImage
             {
                 id: image
-                Layout.preferredHeight: 14
+                Layout.preferredHeight: 25
                 source: General.image_path + "lang/" + modelData + ".png"
             }
 
@@ -77,8 +77,8 @@ DexComboBox
         DexImage
         {
             id: image
-            height: 12
-            x: 8
+            height: 25
+            x: 12
             anchors.verticalCenter: parent.verticalCenter
             source: General.image_path + "lang/" + control.displayText + ".png"
         }
