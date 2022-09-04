@@ -1920,13 +1920,15 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <name>MarketModeSelector</name>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/MarketModeSelector.qml" line="61"/>
-        <source>Sell</source>
-        <translation>Verkaufen</translation>
+        <source>Sell %1</source>
+        <comment>TICKER</comment>
+        <translation>%1 Verkaufen</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/MarketModeSelector.qml" line="61"/>
-        <source>Buy</source>
-        <translation>Kaufen</translation>
+        <source>Buy %1</source>
+        <comment>TICKER</comment>
+        <translation>%1 Kaufen</translation>
     </message>
 </context>
 <context>

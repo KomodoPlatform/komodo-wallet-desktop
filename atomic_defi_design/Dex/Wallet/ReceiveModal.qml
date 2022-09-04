@@ -25,7 +25,7 @@ MultipageModal
             label.font.pixelSize: 13
             copy: true
             privacy: true
-            onCopyNotificationTitle: qsTr("%1 address".arg(api_wallet_page.ticker))
+            onCopyNotificationTitle: qsTr("%1 address", "TICKER").arg(api_wallet_page.ticker)
             onCopyNotificationMsg: qsTr("copied to clipboard.")
         }
 
