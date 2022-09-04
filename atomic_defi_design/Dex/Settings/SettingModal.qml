@@ -8,6 +8,7 @@ import QtQuick.Window 2.12
 import QtQuick.Controls.Universal 2.12
 
 import Qaterial 1.0 as Qaterial
+import ModelHelper 0.1
 
 import "../Components"
 import "../Constants"
@@ -23,6 +24,7 @@ Qaterial.Dialog
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
     property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
+    property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
 
     width: 950
     height: 650
@@ -669,7 +671,8 @@ Qaterial.Dialog
                 onClicked:
                 {
                     setting_modal.close()
-                    logout_modal.open()
+                    if (orders.count != 0) logout_modal.open()
+                    else return_to_login()
                 }
             }
         }

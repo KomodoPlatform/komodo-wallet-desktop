@@ -14,7 +14,7 @@ Row
 
     property real size: 13
     property bool hovered: minimizeButton.containsMouse || closeButton.containsMouse || extendButton.containsMouse
-    property var   orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
+    property var  orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
 
     anchors.top: parent.top
     width: 195

@@ -54,13 +54,7 @@ MultipageModal {
                 Layout.fillWidth: true
                 onClicked: 
                 {
-                    app.notifications_list = []
-                    userMenu.close()
-                    app.currentWalletName = ""
-                    API.app.disconnect()
-                    app.onDisconnect()
-                    window.logged = false
-                    root.close()
+                    return_to_login()
                 }
             },
             DefaultButton {

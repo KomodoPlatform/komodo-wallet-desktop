@@ -44,6 +44,17 @@ DexRectangle
     // Preload Chart
     signal pairChanged(string base, string rel)
 
+    
+    function return_to_login() {
+        app.notifications_list = []
+        userMenu.close()
+        app.currentWalletName = ""
+        API.app.disconnect()
+        app.onDisconnect()
+        window.logged = false
+        logout_modal.close()
+    }
+
     function onDisconnect()
     {
         app.notifications_list = [];
