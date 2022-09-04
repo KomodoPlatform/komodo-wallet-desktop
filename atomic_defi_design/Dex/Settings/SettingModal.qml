@@ -35,30 +35,6 @@ Qaterial.Dialog
     modal: true
     title: "Settings"
 
-    function disconnect()
-    {
-        let dialog = app.showDialog(
-        {
-            "title": qsTr("Confirm Logout"),
-            text: qsTr("Are you sure you want to log out?"),
-            standardButtons: Dialog.Yes | Dialog.Cancel,
-            warning: true,
-            yesButtonText: qsTr("Yes"),
-            cancelButtonText: qsTr("Cancel"),
-            onAccepted: function(text)
-            {
-                app.notifications_list = []
-                app.currentWalletName = ""
-                API.app.disconnect()
-                onDisconnect()
-                window.logged = false
-                dialog.close()
-                dialog.destroy()
-            }
-        })
-
-    }
-
 
     header: Item
     {}
@@ -692,8 +668,8 @@ Qaterial.Dialog
                 iconSource: Qaterial.Icons.logout
                 onClicked:
                 {
-                    disconnect()
                     setting_modal.close()
+                    logout_modal.open()
                 }
             }
         }

@@ -15,10 +15,6 @@ import App 1.0
 
 Item {
     id: root
-    function disconnect() {
-        API.app.disconnect()
-        onDisconnect()
-    }
 
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
@@ -249,7 +245,7 @@ Item {
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Log out")
-                onClicked: disconnect()
+                onClicked: logout_modal.open()
             }
         }
     }

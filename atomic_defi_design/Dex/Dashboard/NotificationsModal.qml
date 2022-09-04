@@ -417,7 +417,7 @@ DexPopup
             MenuItem
             {
                 text: qsTr("Quit")
-                onTriggered: Qt.quit()
+                onTriggered: logout_modal.open()
             }
         }
     }

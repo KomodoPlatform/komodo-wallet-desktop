@@ -103,35 +103,7 @@ DexWindow
                     id: logout_area
                     hoverEnabled: true
                     anchors.fill: parent
-                    onClicked:
-                    {
-                        let dialog = app.showDialog(
-                        {
-                            "title": qsTr("Confirm Logout"),
-                            text: qsTr("Are you sure you want to log out?"),
-                            standardButtons: Dialog.Yes | Dialog.Cancel,
-                            warning: true,
-                            height: 230,
-                            centerAlign: true,
-                            yesButtonText: qsTr("Yes"),
-                            cancelButtonText: qsTr("Cancel"),
-                            onAccepted: function(text)
-                            {
-                                app.notifications_list = []
-                                userMenu.close()
-                                app.currentWalletName = ""
-                                API.app.disconnect()
-                                app.onDisconnect()
-                                window.logged = false
-                                dialog.close()
-                                dialog.destroy()
-                            },
-                            onRejected: function()
-                            {
-                                userMenu.close()
-                            }
-                        })
-                    }
+                    onClicked: app.logout_confirm_modal.open()
                 }
             }
         }
