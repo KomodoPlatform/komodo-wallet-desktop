@@ -11,7 +11,7 @@ namespace atomic_dex::mm2
     {
         j["coin"] = in.coin;
         j["limit"] = in.limit;
-        j["paging_options"] = nlohmann::object();
+        j["paging_options"] = nlohmann::json::object();
         if (in.paging_options.from_id)
         {
             j["paging_options"]["FromId"] = *in.paging_options.from_id
