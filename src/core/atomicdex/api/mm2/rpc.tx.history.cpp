@@ -6,18 +6,6 @@
 
 namespace atomic_dex::mm2
 {
-    void to_json(nlohmann::json& j, const paging_options& cfg)
-    {
-        if (cfg.page_number.has_value())
-        {
-            j["PageNumber"] = cfg.page_number.value();
-        }
-        if (cfg.from_id.has_value())
-        {
-            j["FromId"] = cfg.from_id.value();
-        }
-    }
-    
     void to_json(nlohmann::json& j, const tx_history_request& cfg)
     {
         nlohmann::json obj = nlohmann::json::object();
