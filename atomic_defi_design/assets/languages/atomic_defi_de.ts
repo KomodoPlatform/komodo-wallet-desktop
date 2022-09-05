@@ -730,7 +730,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="24"/>
         <source>Confirm Exchange Details</source>
-        <translation>Bestätigen Sie die Börsen-Details</translation>
+        <translation>Bestätigen Sie die Austausch-Details</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="77"/>
@@ -1104,7 +1104,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
     <message numerus="yes">
         <location filename="../../Dex/Components/DexKeyChecker.qml" line="99"/>
         <source>At least %n character(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Mindestens %n Zeichen</numerusform>
             <numerusform>Mindestens %n Zeichen</numerusform>
         </translation>
@@ -1842,11 +1842,14 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
         <source>Chart</source>
         <translation type="unfinished">Chart</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="48"/>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="100"/>
         <source>Orders</source>
-        <translation>Aufträge</translation>
+        <translation>
+            <numerusform>Auftrag</numerusform>
+            <numerusform>Aufträge</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="56"/>
@@ -2533,7 +2536,7 @@ Rechter Schieber: Legt das Volumen fest, das Sie handeln möchten.</translation>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="20"/>
         <source>The selected order does not exist anymore, it might have been matched or canceled, and no order with a better price is available.
 Please select a new order.</source>
-        <translation> Der ausgewählte Auftrag existiert nicht mehr, er wurde möglicherweise zugeordnet oder storniert, und es ist kein Auftrag mit einem besseren Preis verfügbar.
+        <translation>Der ausgewählte Auftrag existiert nicht mehr! Er wurde möglicherweise zugeordnet oder storniert und es ist kein Auftrag mit einem besseren Preis verfügbar.
 Bitte wählen Sie einen neuen Auftrag aus.</translation>
     </message>
     <message>
@@ -2947,7 +2950,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="264"/>
         <source>Prepare to send </source>
-        <translation>Versandvorbereitung von</translation>
+        <translation>Versandvorbereitung von </translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="284"/>
@@ -3634,11 +3637,14 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
 </context>
 <context>
     <name>SubOrders</name>
-    <message>
+    <message numerus="yes">
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="84"/>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="285"/>
         <source>Orders</source>
-        <translation>Aufträge</translation>
+        <translation>
+            <numerusform>Auftrag</numerusform>
+            <numerusform>Aufträge</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="119"/>
@@ -3928,7 +3934,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="298"/>
         <source>Enter an amount</source>
-        <translation>Geben Sie einen Betrag ein</translation>
+        <translation>Betrag eingeben</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="432"/>
@@ -3943,7 +3949,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="537"/>
         <source>Pick an order</source>
-        <translation>Wählen Sie einen Auftrag</translation>
+        <translation>Auftrag auswählen</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="620"/>
@@ -4156,7 +4162,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Wallet/TransactionDetailsModal.qml" line="111"/>
         <source>To</source>
-        <translation>Bis</translation>
+        <translation>Nach</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/TransactionDetailsModal.qml" line="119"/>
