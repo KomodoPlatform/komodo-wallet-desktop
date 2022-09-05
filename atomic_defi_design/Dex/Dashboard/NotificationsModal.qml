@@ -443,7 +443,7 @@ DexPopup
                 pixelSize: 20
                 weight: Font.Normal
             }
-            text: "Notifications"
+            text: qsTr("Notifications")
         }
 
         Item

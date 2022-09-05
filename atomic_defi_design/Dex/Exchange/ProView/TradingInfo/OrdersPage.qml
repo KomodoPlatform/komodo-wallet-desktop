@@ -7,6 +7,7 @@ import Qaterial 1.0 as Qaterial
 
 import App 1.0
 import "../../../Components"
+import "../../../Constants"
 import "../../.."
 import Dex.Themes 1.0 as Dex
 
@@ -92,10 +93,9 @@ Item {
             spacing: 10
             DefaultButton
             {
-                Layout.preferredWidth: 86
                 Layout.preferredHeight: 29
                 radius: 7
-                label.font.pixelSize: 14
+                label.font: DexTypo.body2
                 text: qsTr("Filter")
                 iconSource: Qaterial.Icons.filter
                 onClicked: settings.visible = !settings.visible
@@ -104,10 +104,9 @@ Item {
             DefaultButton
             {
                 visible: root.is_history
-                Layout.preferredWidth: 86
                 Layout.preferredHeight: 29
                 radius: 7
-                label.font.pixelSize: 14
+                label.font: DexTypo.body2
                 text: qsTr("Export CSV")
                 onClicked:
                 {
@@ -119,6 +118,7 @@ Item {
             DefaultText
             {
                 color: Dex.CurrentTheme.foregroundColor2
+                font: DexTypo.caption
                 visible: !settings.visible
                 text: qsTr("Filter") + ": %1 / %2 <br> %3: %4 - %5".arg(combo_base.currentTicker).arg(combo_rel.currentTicker).arg(qsTr("Date")).arg(min_date.selectedDate.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd")).arg(max_date.selectedDate.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd"))
             }
@@ -137,10 +137,9 @@ Item {
                 {
                     visible: root.is_history
                     enabled: list_model_proxy.can_i_apply_filtering
-                    Layout.preferredWidth: 86
                     Layout.preferredHeight: 29
                     radius: 7
-                    label.font.pixelSize: 14
+                    label.font: DexTypo.body2
                     text: qsTr("Apply Filter")
                     onClicked: list_model_proxy.apply_all_filtering()
                 }
@@ -149,10 +148,9 @@ Item {
                 {
                     visible: !root.is_history
                     enabled: API.app.orders_mdl.length > 0
-                    Layout.preferredWidth: 86
                     Layout.preferredHeight: 29
                     radius: 7
-                    label.font.pixelSize: 14
+                    label.font: DexTypo.body2
                     text: qsTr("Cancel All")
                     iconSource: Qaterial.Icons.close
                     onClicked: API.app.trading_pg.orders.cancel_order(list_model_proxy.get_filtered_ids())
