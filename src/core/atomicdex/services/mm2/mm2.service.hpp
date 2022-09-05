@@ -41,7 +41,6 @@
 #include "atomicdex/data/wallet/tx.data.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
-#include "atomicdex/common/coin_info.hpp"
 
 namespace atomic_dex
 {
