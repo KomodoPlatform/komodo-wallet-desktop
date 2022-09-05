@@ -26,6 +26,6 @@ namespace atomic_dex::mm2
     {
         out.coin = json["coin"];
         out.current_block = json["current_block"];
-        out.transactions = json["transactions"];
+        out.transactions = json["transactions"].get<std::vector<transaction_data>>();
     }
 }
