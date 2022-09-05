@@ -35,6 +35,8 @@
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
+#include "atomicdex/api/mm2/enable_bch_with_tokens_rpc.hpp"
+#include "atomicdex/api/mm2/enable_slp_rpc.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/data/dex/orders.and.swaps.data.hpp"
@@ -171,6 +173,10 @@ namespace atomic_dex
         void enable_slp_coins(const t_coins& coins);
         void enable_slp_testnet_coin(coin_config coin_config);
         void enable_slp_testnet_coins(const t_coins& coins);
+        
+        // Balances processing functions
+        void process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc);
+        void process_balance_answer(const mm2::enable_slp_rpc& rpc);
 
       public:
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)

@@ -21,8 +21,6 @@
 #include <QProcess>
 
 #include "atomicdex/api/mm2/utxo.merge.params.hpp"
-#include "atomicdex/api/mm2/enable_bch_with_tokens_rpc.hpp"
-#include "atomicdex/api/mm2/enable_slp_rpc.hpp"
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
@@ -655,7 +653,7 @@ namespace atomic_dex
                         for (const auto& balance : slp_address_info.second.balances)
                         {
                             dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {balance.first}});
-                            fetch_single_balance(get_coin_info(balance.first));
+                            process_balance_answer(rpc);
                         }
                     }
                 }
@@ -720,7 +718,6 @@ namespace atomic_dex
             else
             {
                 dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {rpc.request.ticker}});
-                fetch_single_balance(get_coin_info(rpc.request.ticker));
                 if constexpr (std::is_same_v<RpcRequest, mm2::enable_bch_with_tokens_rpc>)
                 {
                     for (const auto& slp_address_info : rpc.result->slp_addresses_infos)
@@ -728,10 +725,10 @@ namespace atomic_dex
                         for (const auto& balance : slp_address_info.second.balances)
                         {
                             dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {balance.first}});
-                            fetch_single_balance(get_coin_info(balance.first));
                         }
                     }
                 }
+                process_balance_answer(rpc);
             }
         };
         
@@ -772,6 +769,51 @@ namespace atomic_dex
                 rpc.request.slp_tokens_requests.push_back({.ticker = coin_config.ticker});
             }
             m_mm2_client.process_rpc_async<mm2::enable_bch_with_tokens_rpc>(rpc.request, callback);
+        }
+    }
+
+    void mm2_service::process_balance_answer(const mm2::enable_slp_rpc& rpc)
+    {
+        const auto& answer = rpc.result.value();
+        mm2::balance_answer balance_answer;
+        
+        balance_answer.address  = answer.balances.begin()->first;
+        balance_answer.balance  = answer.balances.begin()->second.spendable;
+        balance_answer.coin     = answer.platform_coin;
+        
+        {
+            std::unique_lock lock(m_balance_mutex);
+            m_balance_informations[balance_answer.coin] = std::move(balance_answer);
+        }
+    }
+
+    void mm2_service::process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc)
+    {
+        const auto& answer = rpc.result.value();
+        
+        {
+            mm2::balance_answer balance_answer;
+            
+            balance_answer.coin = rpc.request.ticker;
+            balance_answer.balance = answer.bch_addresses_infos.begin()->second.balances.spendable;
+            balance_answer.address = answer.bch_addresses_infos.begin()->first;
+            {
+                std::unique_lock lock(m_balance_mutex);
+                m_balance_informations[balance_answer.coin] = std::move(balance_answer);
+            }
+        }
+        for (auto [address, data] : answer.slp_addresses_infos)
+        {
+            mm2::balance_answer balance_answer;
+        
+            balance_answer.coin = data.balances.begin()->first;
+            balance_answer.address = address;
+            balance_answer.balance = data.balances.begin()->second.spendable;
+        
+            {
+                std::unique_lock lock(m_balance_mutex);
+                m_balance_informations[balance_answer.coin] = std::move(balance_answer);
+            }
         }
     }
     
