@@ -14,7 +14,7 @@ namespace atomic_dex::mm2
         j["paging_options"] = nlohmann::json::object();
         if (in.paging_options.from_id)
         {
-            j["paging_options"]["FromId"] = *in.paging_options.from_id
+            j["paging_options"]["FromId"] = *in.paging_options.from_id;
         }
         if (in.paging_options.page_number)
         {
