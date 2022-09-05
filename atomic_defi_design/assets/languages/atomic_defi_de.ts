@@ -2271,12 +2271,12 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="252"/>
         <source>You sent %1</source>
-        <translation>Sie haben %1 gesendet</translation>
+        <translation>Sie %1 haben gesendet</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="252"/>
         <source>You received %1</source>
-        <translation>Sie haben %1 erhalten</translation>
+        <translation>Sie %1 haben erhalten</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="253"/>
@@ -2335,6 +2335,11 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="419"/>
         <source>Quit</source>
         <translation>Beenden</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="440"/>
+        <source>Notifications</source>
+        <translation>Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="462"/>
@@ -2790,6 +2795,12 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
         <source>Only send %1 to this address:</source>
         <comment>TICKER</comment>
         <translation>Sende nur %1 an diese Adresse:</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Wallet/ReceiveModal.qml" line="23"/>
+        <source>%1 Address</source>
+        <comment>TICKER</comment>
+        <translation>%1 Adresse</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/ReceiveModal.qml" line="29"/>
