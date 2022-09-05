@@ -1041,9 +1041,6 @@ namespace atomic_dex
                         {
                             this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
                         }
-                        // t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
-                        // this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
-                        // SPDLOG_INFO("max_taker_vol: {}", answer[1].dump(4));
                     }
 
                     auto rel_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[2], "max_taker_vol");
@@ -1053,8 +1050,6 @@ namespace atomic_dex
                         {
                             this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
                         }
-                        // t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) *
-                        // m_balance_factor; this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
                     }
 
                     auto base_min_taker_vol_answer = mm2::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
