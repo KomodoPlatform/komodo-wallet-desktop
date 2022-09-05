@@ -5,6 +5,7 @@
 
 #include "paging_options.hpp"
 #include "transaction.data.hpp"
+#include "rpc.hpp"
 
 #pragma once
 
