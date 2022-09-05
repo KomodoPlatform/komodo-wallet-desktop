@@ -1694,8 +1694,8 @@ namespace atomic_dex
     mm2_service::process_balance_answer(const nlohmann::json& answer)
     {
         t_balance_answer answer_r;
+        
         mm2::from_json(answer, answer_r);
-        // SPDLOG_INFO("Successfully fetched ticker: {} balance: {} address: {}", answer_r.coin, answer_r.balance, answer_r.address);
         if (is_pin_cfg_enabled())
         {
             std::shared_lock lock(m_balance_mutex);
@@ -1705,15 +1705,14 @@ namespace atomic_dex
                 return;
             }
         }
-
         t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
         answer_r.balance  = result.str(8, std::ios_base::fixed);
-        // auto copy_coin = answer_r.coin;
+        
         {
             std::unique_lock lock(m_balance_mutex);
+            
             m_balance_informations[answer_r.coin] = std::move(answer_r);
         }
-        // m_system_manager.get_system<portfolio_page>().get_portfolio()->update_balance_values({copy_coin});
     }
 
     mm2::mm2_client&
