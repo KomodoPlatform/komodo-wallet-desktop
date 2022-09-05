@@ -30,6 +30,7 @@ DexRectangle
     property string currentWalletName: API.app.wallet_mgr.wallet_default_name
     property bool debug: debug_bar
     property var notification_modal: notifications_modal
+    property var logout_confirm_modal: logout_modal
     property var notifications_list: _currentPage === App.ScreenType.Dashboard ? loader.item.notifications_list : []
     property bool segwit_on: false
 
@@ -37,10 +38,22 @@ DexRectangle
     property var    _availablePages: [_startup, dashboard]
     property alias  pageLoader: loader
 
+
     property alias globalGradient: globalGradient
 
     // Preload Chart
     signal pairChanged(string base, string rel)
+
+    
+    function return_to_login() {
+        app.notifications_list = []
+        userMenu.close()
+        app.currentWalletName = ""
+        API.app.disconnect()
+        app.onDisconnect()
+        window.logged = false
+        logout_modal.close()
+    }
 
     function onDisconnect()
     {
@@ -131,6 +144,12 @@ DexRectangle
         error_log_modal.open()
         error_log_modal.item.header = title
         error_log_modal.item.field.text = content
+    }
+
+    ModalLoader
+    {
+        id: logout_modal
+        sourceComponent: LogoutModal {}
     }
 
     // Toast
