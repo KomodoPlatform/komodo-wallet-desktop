@@ -82,7 +82,6 @@ namespace atomic_dex
     void
     qt_orderbook_wrapper::refresh_orderbook(t_orderbook_answer answer)
     {
-        SPDLOG_INFO("Refresh orderbook");
         this->m_asks->refresh_orderbook(answer.asks);
         this->m_bids->refresh_orderbook(answer.bids);
         const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_data();
@@ -104,7 +103,6 @@ namespace atomic_dex
     void
     qt_orderbook_wrapper::reset_orderbook(t_orderbook_answer answer)
     {
-        SPDLOG_INFO("Reset orderbook");
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);
         this->set_both_taker_vol();
@@ -121,7 +119,6 @@ namespace atomic_dex
     void
     qt_orderbook_wrapper::clear_orderbook()
     {
-        SPDLOG_INFO("Clear orderbook");
         this->m_asks->clear_orderbook();
         this->m_bids->clear_orderbook();
         this->m_best_orders->clear_orderbook();
