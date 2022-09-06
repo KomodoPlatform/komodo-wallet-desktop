@@ -804,6 +804,11 @@ namespace atomic_dex
         }
         for (auto [address, data] : answer.slp_addresses_infos)
         {
+            if (data.balances.empty())
+            {
+                continue;
+            }
+            
             mm2::balance_answer balance_answer;
         
             balance_answer.coin = data.balances.begin()->first;

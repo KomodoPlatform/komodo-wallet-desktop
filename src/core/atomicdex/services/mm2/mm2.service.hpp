@@ -175,8 +175,8 @@ namespace atomic_dex
         void enable_slp_testnet_coins(const t_coins& coins);
         
         // Balances processing functions
-        void process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc);
-        void process_balance_answer(const mm2::enable_slp_rpc& rpc);
+        void process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc);    // Called after enabling SLP coins along tBCH/BCH.
+        void process_balance_answer(const mm2::enable_slp_rpc& rpc);                // Called after enabling an SLP coin.
 
       public:
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
