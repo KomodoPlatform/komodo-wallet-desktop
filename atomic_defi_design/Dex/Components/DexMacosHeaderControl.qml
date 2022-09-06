@@ -4,6 +4,9 @@ import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
 
 import Qaterial 1.0 as Qaterial
+import ModelHelper 0.1
+
+import "../Constants"
 
 Row
 {
@@ -11,6 +14,7 @@ Row
 
     property real size: 13
     property bool hovered: minimizeButton.containsMouse || closeButton.containsMouse || extendButton.containsMouse
+    property var  orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
 
     anchors.top: parent.top
     width: 195
@@ -40,10 +44,9 @@ Row
             id: closeButton
             hoverEnabled: true
             anchors.fill: parent
-            onClicked:
-            {
-                Qt.quit()
-                console.log("Window.visibility: " + window.visibility)
+            onClicked: {
+                if (orders.count == 0 || !API.app.wallet_mgr.log_status()) Qt.quit()
+                else app.logout_confirm_modal.open()
             }
         }
     }

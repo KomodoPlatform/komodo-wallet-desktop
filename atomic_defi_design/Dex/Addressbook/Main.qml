@@ -84,9 +84,8 @@ Item
 
                 Dex.GradientButton
                 {
-                    width: 213
-                    height: 48.51
-                    radius: 18
+                    height: 40
+                    radius: 15
                     text: qsTr("+ NEW CONTACT")
 
                     onClicked: newContactPopup.open()
@@ -226,15 +225,16 @@ Item
                     Row
                     {
                         spacing: 45
-                        width: 160
+                        width: edit_contact.implicitWidth + delete_contact.implicitWidth + 65
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
-                        anchors.rightMargin: 2
+                        anchors.rightMargin: 20
+
                         Dex.ClickableText
                         {
+                            id: edit_contact
                             anchors.verticalCenter: parent.verticalCenter
-                            font.underline: true
-                            font.pixelSize: 15
+                            font: Dex.DexTypo.underline14
                             text: qsTr("Edit")
                             onClicked:
                             {
@@ -242,11 +242,12 @@ Item
                                 editContactLoader.open()
                             }
                         }
+
                         Dex.ClickableText
                         {
+                            id: delete_contact
                             anchors.verticalCenter: parent.verticalCenter
-                            font.underline: true
-                            font.pixelSize: 15
+                            font: Dex.DexTypo.underline14
                             text: qsTr("Delete")
                             onClicked: removeContactPopup.open()
 

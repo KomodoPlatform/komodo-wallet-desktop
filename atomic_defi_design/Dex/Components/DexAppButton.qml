@@ -47,7 +47,6 @@ DexRectangle
                Dex.CurrentTheme.buttonColorDisabled
     opacity: _controlMouseArea.containsMouse ? 1 : .8
 
-
     Row
     {
         id: _contentRow
@@ -74,7 +73,7 @@ DexRectangle
         {
             id: _label
             anchors.verticalCenter: parent.verticalCenter
-            font: DexTypo.button
+            font: DexTypo.body2
             text: control.text
             color: enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ?
                     Dex.CurrentTheme.buttonTextPressedColor :

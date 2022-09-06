@@ -2,13 +2,17 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Universal 2.15
 import QtQuick.Layouts 1.12
+import ModelHelper 0.1
 
 import Qaterial 1.0 as Qaterial
 
+import "../Constants"
 import Dex.Themes 1.0 as Dex
 
 RowLayout
 {
+    property var   orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
+
     width: 120
     anchors.right: parent.right
     height: 30
@@ -68,6 +72,9 @@ RowLayout
         foregroundColor: Dex.CurrentTheme.foregroundColor
         icon.source: Qaterial.Icons.windowClose
 
-        onClicked: Qt.quit()
+        onClicked: {
+            if (orders.count == 0 || !API.app.wallet_mgr.log_status()) Qt.quit()
+            else app.logout_confirm_modal.open()
+        }
     }
 }
