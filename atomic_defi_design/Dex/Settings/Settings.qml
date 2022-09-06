@@ -225,7 +225,7 @@ Item {
                 text: qsTr("Reset wallet configuration")
                 onClicked: {
                     restart_modal.open()
-                    restart_modal.item.onTimerEnded = () => { API.app.settings_pg.reset_coin_cfg() }
+                    restart_modal.item.onTimerEnded = () => { API.app.reset_coin_cfg() }
                 }
             }
 
