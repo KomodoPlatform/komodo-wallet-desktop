@@ -111,6 +111,13 @@ QtObject {
         family: fontFamily,
         weight: Font.Normal
     })
+    property font underline14: Qt.font({
+        pixelSize: 14 * fontDensity,
+        letterSpacing: 0.25,
+        family: fontFamily,
+        weight: Font.Normal,
+        underline: true
+    })
     property font button: Qt.font({
         pixelSize: 16 * fontDensity,
         letterSpacing: 1.25,

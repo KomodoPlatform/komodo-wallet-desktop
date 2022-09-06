@@ -16,9 +16,9 @@ MultipageModal
 {
     id: root
     readonly property var fees: API.app.trading_pg.fees
-
+    width: 720
     horizontalPadding: 30
-    verticalPadding: 40
+    verticalPadding: 30
 
     MultipageModalContent
     {
@@ -325,7 +325,7 @@ MultipageModal
                         DefaultSlider
                         {
                             id: required_confirmation_count
-                            height: 30
+                            height: 24
 
                             Layout.alignment: Qt.AlignCenter
 
@@ -344,8 +344,8 @@ MultipageModal
                     FloatingBackground
                     {
                         Layout.alignment: Qt.AlignCenter
-                        width: 360
-                        height: 30
+                        width: dpow_off_warning.implicitWidth + 30
+                        height: dpow_off_warning.implicitHeight + 10
                         color: Style.colorRed2
                         visible: {
                             enable_custom_config.checked && (config_section.is_dpow_configurable && !enable_dpow_confs.checked)
@@ -355,6 +355,7 @@ MultipageModal
                         {
                             id: dpow_off_warning
                             anchors.fill: parent
+                            font: DexTypo.body2
                             color: Style.colorWhite0
                             horizontalAlignment: Qt.AlignHCenter
                             verticalAlignment: Qt.AlignVCenter

@@ -61,8 +61,10 @@ DexRectangle {
             color: DexTheme.buttonGradientEnabled2
         }
     }
+
     color: outlinedColor
     gradient: outlinedColor !== "" ? undefined : btnGradient
+
     DexRectangle {
         visible: !parent.containsMouse
         radius: parent.radius - 2
@@ -75,16 +77,20 @@ DexRectangle {
     height: _label.implicitHeight + (padding * verticalPadding)
     width: _contentRow.implicitWidth + (padding * horizontalPadding)
 
-    Row {
+    Row
+    {
         id: _contentRow
 
-        anchors {
+        anchors
+        {
             horizontalCenter: parent.horizontalAlignment == Qt.AlignHCenter ? parent.horizontalCenter : undefined
             verticalCenter: parent.verticalAlignment == Qt.AlignVCenter ? parent.verticalCenter : undefined
         }
 
         spacing: _icon.visible ? parent.spacing : 0
-        Qaterial.ColorIcon {
+
+        Qaterial.ColorIcon
+        {
             id: _icon
             iconSize: _label.font.pixelSize + 2
             visible: control.iconSource === "" ? false : true
@@ -93,14 +99,16 @@ DexRectangle {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        DexLabel {
+        DexLabel
+        {
             id: _label
             anchors.verticalCenter: parent.verticalCenter
-            font: DexTypo.body1
+            font: DexTypo.body2
             text: control.text
             color: control.foregroundColor
         }
     }
+
     DexMouseArea {
         id: _controlMouseArea
         anchors.fill: parent

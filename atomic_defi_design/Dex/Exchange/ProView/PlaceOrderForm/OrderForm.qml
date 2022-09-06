@@ -106,9 +106,9 @@ ColumnLayout
             left_label: "-1%"
             middle_label: "0%"
             right_label: "+1%"
-            left_tooltip_text: "Reduce 1% relative to CEX market price."
-            middle_tooltip_text: "Use CEX market price."
-            right_tooltip_text: "Increase 1% relative to CEX market price."
+            left_tooltip_text: qsTr("Reduce 1% relative to CEX market price.")
+            middle_tooltip_text: qsTr("Use CEX market price.")
+            right_tooltip_text: qsTr("Increase 1% relative to CEX market price.")
         }
     }
 
@@ -154,10 +154,10 @@ ColumnLayout
             fiat_value: General.getFiatText(non_null_volume, left_ticker)
             left_label: "25%"
             middle_label: "50%"
-            right_label: "Max"
-            left_tooltip_text: "Swap 25% of your tradable balance."
-            middle_tooltip_text: "Swap 50% of your tradable balance."
-            right_tooltip_text: "Swap 100% of your tradable balance."
+            right_label:  qsTr("Max")
+            left_tooltip_text:  qsTr("Swap 25% of your tradable balance.")
+            middle_tooltip_text:  qsTr("Swap 50% of your tradable balance.")
+            right_tooltip_text:  qsTr("Swap 100% of your tradable balance.")
         }
     }
 
@@ -205,9 +205,9 @@ ColumnLayout
             left_label: "10%"
             middle_label: "25%"
             right_label: "50%"
-            left_tooltip_text: "Minimum accepted trade equals 10% of order volume."
-            middle_tooltip_text: "Minimum accepted trade equals 25% of order volume."
-            right_tooltip_text: "Minimum accepted trade equals 50% of order volume."
+            left_tooltip_text:  qsTr("Minimum accepted trade equals 10% of order volume.")
+            middle_tooltip_text:  qsTr("Minimum accepted trade equals 25% of order volume.")
+            right_tooltip_text:  qsTr("Minimum accepted trade equals 50% of order volume.")
         }
     }
 

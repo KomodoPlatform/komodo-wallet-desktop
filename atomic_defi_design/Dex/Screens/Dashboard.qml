@@ -285,6 +285,7 @@ Item
         id: cex_rates_modal
         sourceComponent: CexInfoModal {}
     }
+
     ModalLoader
     {
         id: min_trade_modal
@@ -328,6 +329,21 @@ Item
         API.app.notification_mgr.enablingZCoinStatus.disconnect(onEnablingZCoinStatus)
     }
 
+    function isSwapDone(status)
+    {
+        switch (status) {
+            case "matching":
+            case "matched":
+            case "ongoing":
+                return false
+            case "successful":
+            case "refunding":
+            case "failed":
+            default:
+                return true
+        }
+    }
+
     function getStatusColor(status)
     {
         switch (status) {
@@ -342,21 +358,6 @@ Item
             case "failed":
             default:
                 return DexTheme.redColor
-        }
-    }
-
-    function isSwapDone(status)
-    {
-        switch (status) {
-            case "matching":
-            case "matched":
-            case "ongoing":
-                return false
-            case "successful":
-            case "refunding":
-            case "failed":
-            default:
-                return true
         }
     }
 
@@ -383,18 +384,15 @@ Item
     function getStatusFontSize(status)
     {
         switch (status) {
-            case "matching":
-                return 9
-            case "matched":
-                return 9
-            case "ongoing":
-                return 9
             case "successful":
                 return 16
             case "refunding":
                 return 16
             case "failed":
                 return 12
+            case "matching":
+            case "matched":
+            case "ongoing":
             default:
                 return 9
         }
