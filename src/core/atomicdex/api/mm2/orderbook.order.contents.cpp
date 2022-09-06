@@ -63,37 +63,6 @@ namespace mm2::api
         j.at("rel_max_volume").at("fraction").at("numer").get_to(contents.rel_max_volume_numer);
         j.at("rel_max_volume").at("fraction").at("denom").get_to(contents.rel_max_volume_denom);
 
-        const bool  is_buy = false; // m_system_manager.get_system<trading_page>().get_market_mode() == MarketMode::Buy;
-        if (is_buy)
-        {
-            j.at("base_min_volume").at("decimal").get_to(contents.min_volume);
-            j.at("base_min_volume").at("fraction").at("numer").get_to(contents.min_volume_fraction_numer);
-            j.at("base_min_volume").at("fraction").at("denom").get_to(contents.min_volume_fraction_denom);
-            j.at("base_max_volume").at("decimal").get_to(contents.maxvolume);
-            j.at("base_max_volume").at("fraction").at("numer").get_to(contents.max_volume_fraction_numer);
-            j.at("base_max_volume").at("fraction").at("denom").get_to(contents.max_volume_fraction_denom);
-        }
-        else
-        {
-            j.at("rel_min_volume").at("decimal").get_to(contents.min_volume);
-            j.at("rel_min_volume").at("fraction").at("numer").get_to(contents.min_volume_fraction_numer);
-            j.at("rel_min_volume").at("fraction").at("denom").get_to(contents.min_volume_fraction_denom);
-            j.at("rel_max_volume").at("decimal").get_to(contents.maxvolume);
-            j.at("rel_max_volume").at("fraction").at("numer").get_to(contents.max_volume_fraction_numer);
-            j.at("rel_max_volume").at("fraction").at("denom").get_to(contents.max_volume_fraction_denom);
-
-        }
-
-        // contents.price = t_float_50(contents.price).str(8, std::ios_base::fixed);
-        if (contents.price.find('.') != std::string::npos)
-        {
-            boost::trim_right_if(contents.price, boost::is_any_of("0"));
-            contents.price = contents.price;
-        }
-        contents.maxvolume = atomic_dex::utils::adjust_precision(contents.maxvolume);
-        t_float_50 total_f = safe_float(contents.price) * safe_float(contents.maxvolume);
-        contents.total     = atomic_dex::utils::adjust_precision(total_f.str());
-
         // Not in v2 RPC
         // j.at("age").get_to(contents.age);
         // j.at("zcredits").get_to(contents.zcredits);

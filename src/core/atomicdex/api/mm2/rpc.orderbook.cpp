@@ -41,20 +41,49 @@ namespace mm2::api
         answer.human_timestamp = atomic_dex::utils::to_human_date(answer.timestamp, "%Y-%m-%d %I:%M:%S");
 
         t_float_50 result_asks_f(0);
-        for (auto&& cur_asks: answer.asks) { result_asks_f = result_asks_f + safe_float(cur_asks.maxvolume); }
+        for (auto&& cur_asks: answer.asks) {
+            cur_asks.min_volume                 = cur_asks.base_min_volume;
+            cur_asks.min_volume_fraction_numer  = cur_asks.base_min_volume_numer;
+            cur_asks.min_volume_fraction_denom  = cur_asks.base_min_volume_denom;
+            cur_asks.maxvolume                  = cur_asks.base_max_volume;
+            cur_asks.max_volume_fraction_numer  = cur_asks.base_max_volume_numer;
+            cur_asks.max_volume_fraction_denom  = cur_asks.base_max_volume_denom;
 
+            if (cur_asks.price.find('.') != std::string::npos)
+            {
+                boost::trim_right_if(cur_asks.price, boost::is_any_of("0"));
+                cur_asks.price = cur_asks.price;
+            }
+            cur_asks.maxvolume = atomic_dex::utils::adjust_precision(cur_asks.maxvolume);
+            t_float_50 total_f                  = safe_float(cur_asks.price) * safe_float(cur_asks.maxvolume);
+            cur_asks.total                      = atomic_dex::utils::adjust_precision(total_f.str());
+            result_asks_f                       = result_asks_f + safe_float(cur_asks.maxvolume);
+        }
         answer.asks_total_volume = result_asks_f.str();
 
         t_float_50 result_bids_f(0);
         for (auto& cur_bids: answer.bids)
         {
-            cur_bids.total        = cur_bids.maxvolume;
-            t_float_50 new_volume = safe_float(cur_bids.maxvolume) / safe_float(cur_bids.price);
-            cur_bids.maxvolume    = atomic_dex::utils::adjust_precision(new_volume.str());
-            result_bids_f         = result_bids_f + safe_float(cur_bids.maxvolume);
-        }
+            cur_bids.min_volume                 = cur_bids.rel_min_volume;
+            cur_bids.min_volume_fraction_numer  = cur_bids.rel_min_volume_numer;
+            cur_bids.min_volume_fraction_denom  = cur_bids.rel_min_volume_denom;
+            cur_bids.maxvolume                  = cur_bids.rel_max_volume;
+            cur_bids.max_volume_fraction_numer  = cur_bids.rel_max_volume_numer;
+            cur_bids.max_volume_fraction_denom  = cur_bids.rel_max_volume_denom;
+            cur_bids.total                      = cur_bids.maxvolume;
 
+            if (cur_bids.price.find('.') != std::string::npos)
+            {
+                boost::trim_right_if(cur_bids.price, boost::is_any_of("0"));
+                cur_bids.price = cur_bids.price;
+            }
+            cur_bids.maxvolume = atomic_dex::utils::adjust_precision(cur_bids.maxvolume);
+            t_float_50 total_f                  = safe_float(cur_bids.price) * safe_float(cur_bids.maxvolume);
+            cur_bids.total                      = atomic_dex::utils::adjust_precision(total_f.str());
+            result_bids_f                       = result_bids_f + safe_float(cur_bids.maxvolume);
+        }
         answer.bids_total_volume = result_bids_f.str();
+
         for (auto&& cur_asks: answer.asks)
         {
             t_float_50 percent_f   = safe_float(cur_asks.maxvolume) / result_asks_f;
