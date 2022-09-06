@@ -64,12 +64,12 @@ namespace mm2::api
         t_float_50 result_bids_f(0);
         for (auto& cur_bids: answer.bids)
         {
-            cur_bids.min_volume                 = cur_bids.rel_min_volume;
-            cur_bids.min_volume_fraction_numer  = cur_bids.rel_min_volume_numer;
-            cur_bids.min_volume_fraction_denom  = cur_bids.rel_min_volume_denom;
-            cur_bids.maxvolume                  = cur_bids.rel_max_volume;
-            cur_bids.max_volume_fraction_numer  = cur_bids.rel_max_volume_numer;
-            cur_bids.max_volume_fraction_denom  = cur_bids.rel_max_volume_denom;
+            cur_bids.min_volume                 = cur_bids.base_min_volume;
+            cur_bids.min_volume_fraction_numer  = cur_bids.base_min_volume_numer;
+            cur_bids.min_volume_fraction_denom  = cur_bids.base_min_volume_denom;
+            cur_bids.maxvolume                  = cur_bids.base_max_volume;
+            cur_bids.max_volume_fraction_numer  = cur_bids.base_max_volume_numer;
+            cur_bids.max_volume_fraction_denom  = cur_bids.base_max_volume_denom;
             cur_bids.total                      = cur_bids.maxvolume;
 
             if (cur_bids.price.find('.') != std::string::npos)
