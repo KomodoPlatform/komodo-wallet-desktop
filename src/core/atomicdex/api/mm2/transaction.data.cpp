@@ -89,9 +89,16 @@ namespace mm2::api
             cfg.confirmations = j.at("confirmations").get<std::size_t>();
         }
 
-        if (cfg.from.empty() && cfg.coin == "FIRO")
+        if (cfg.from.empty())
         {
-            cfg.from.emplace_back("Lelantusjsplit (Hidden)");
+            if (cfg.coin == "FIRO")
+            {
+                cfg.from.emplace_back("Lelantusjsplit (Hidden)");
+            }
+            else
+            {
+                cfg.from.emplace_back("Shielded");
+            }
         }
 
         // transaction_fee only in ZHTLC response
