@@ -10825,7 +10825,7 @@
     "coin": "ARRR",
     "name": "Pirate",
     "nomics_id": "ARRR",
-    "coinpaprika_id": "arrr-coin",
+    "coinpaprika_id": "arrr-pirate",
     "coingecko_id": "pirate-chain",
     "light_wallet_d_servers": [
       "http://pirate.sirseven.me:443"
