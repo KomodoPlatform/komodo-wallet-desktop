@@ -18,13 +18,36 @@ Widget
     margins: 20
     spacing: 20
 
-    Header {}
+    Header
+    {
+        visible: !warning_text.visible
+    }
+
+    Item
+    {
+        id: warning_text
+        visible: API.app.trading_pg.volume == 0
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: parent.height
+
+        DefaultText
+        {
+            text_value: qsTr("Enter volume to see best orders.")
+            anchors.fill: parent
+            anchors.centerIn: parent
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: Style.textSizeSmall4
+            color: Dex.CurrentTheme.foregroundColor2
+        }
+    }
 
     Dex.ListView
     {
         id: _listView
         Layout.fillWidth: true
         Layout.fillHeight: true
+        visible: !warning_text.visible
         spacing: 6
 
         model: API.app.trading_pg.orderbook.best_orders.proxy_mdl

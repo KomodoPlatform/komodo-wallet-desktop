@@ -68,7 +68,7 @@ ColumnLayout
             left_text: qsTr("Price")
             right_text: right_ticker
             enabled: !(API.app.trading_pg.preffered_order.price !== undefined)
-            color: enabled ? Dex.CurrentTheme.foregroundColor1 : Dex.CurrentTheme.foregroundColor2
+            color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             text: backend_price ? backend_price : General.formatDouble(API.app.trading_pg.cex_price)
             width: parent.width
             height: 41

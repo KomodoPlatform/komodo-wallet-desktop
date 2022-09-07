@@ -27,7 +27,7 @@ namespace mm2::api
     from_json(const nlohmann::json& j, orderbook_answer& answer)
     {
         using namespace date;
-        SPDLOG_INFO("got orderbook data...");
+        // SPDLOG_INFO("got orderbook data...");
 
         j.at("result").at("base").get_to(answer.base);
         j.at("result").at("rel").get_to(answer.rel);

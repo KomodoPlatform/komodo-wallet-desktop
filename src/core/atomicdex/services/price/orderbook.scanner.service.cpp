@@ -64,8 +64,8 @@ namespace atomic_dex
                 to_json(best_orders_req_json, req);
                 batch.push_back(best_orders_req_json);
 
-                best_orders_req_json["userpass"] = "*****";
-                //  SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
+                // best_orders_req_json["userpass"] = "*****";
+                // SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
 
                 this->m_rpc_busy = true;
                 emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
