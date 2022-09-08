@@ -826,7 +826,7 @@ namespace atomic_dex
     mm2_service::disable_multiple_coins(const std::vector<std::string>& tickers)
     {
         SPDLOG_DEBUG("disable_multiple_coins");
-        for (const auto& ticker: tickers)
+        for (const auto& ticker : tickers)
         {
             std::error_code ec;
             disable_coin(ticker, ec);
