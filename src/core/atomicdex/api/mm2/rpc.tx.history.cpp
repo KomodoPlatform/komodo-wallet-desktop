@@ -12,10 +12,6 @@ namespace atomic_dex::mm2
         
         obj["coin"]  = cfg.coin;
         obj["limit"] = cfg.limit;
-        if (cfg.paging_options.has_value() && j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
-        {
-            obj["paging_options"] = cfg.paging_options.value();
-        }
         if (j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
         {
             j["params"] = obj;

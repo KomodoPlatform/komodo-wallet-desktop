@@ -14,7 +14,6 @@ namespace atomic_dex::mm2
     {
         std::string                   coin;
         std::size_t                   limit;
-        std::optional<paging_options> paging_options;
     };
 
     void to_json(nlohmann::json& j, const tx_history_request& cfg);
