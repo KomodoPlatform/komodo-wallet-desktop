@@ -12,6 +12,8 @@ namespace atomic_dex::mm2
     struct transactions_fetched_event
     {
         std::string                     ticker;
-        std::vector<transaction_data>   transactions;
+        std::vector<tx_infos>           transactions;
+        bool                            has_error;
+        std::string                     error_msg;
     };
 }
