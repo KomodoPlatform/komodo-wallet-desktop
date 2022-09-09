@@ -99,15 +99,13 @@ namespace atomic_dex
 //! Getters/Setters
 namespace atomic_dex
 {
-    QString
-    wallet_page::get_current_ticker() const
+    QString wallet_page::get_current_ticker() const
     {
         const auto& mm2_system = m_system_manager.get_system<mm2_service>();
         return QString::fromStdString(mm2_system.get_current_ticker());
     }
 
-    void
-    wallet_page::set_current_ticker(const QString& ticker)
+    void wallet_page::set_current_ticker(const QString& ticker)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.set_current_ticker(ticker.toStdString()))
@@ -218,14 +216,12 @@ namespace atomic_dex
         }
     }
 
-    bool
-    atomic_dex::wallet_page::is_tx_fetching_busy() const
+    bool atomic_dex::wallet_page::is_tx_fetching_busy() const
     {
         return m_tx_fetching_busy;
     }
 
-    void
-    atomic_dex::wallet_page::set_tx_fetching_busy(bool status)
+    void atomic_dex::wallet_page::set_tx_fetching_busy(bool status)
     {
         if (m_tx_fetching_busy != status)
         {
@@ -234,14 +230,12 @@ namespace atomic_dex
         }
     }
 
-    bool
-    atomic_dex::wallet_page::is_tx_fetching_failed() const
+    bool atomic_dex::wallet_page::is_tx_fetching_failed() const
     {
         return m_tx_fetching_failed;
     }
 
-    void
-    atomic_dex::wallet_page::set_tx_fetching_failed(bool status)
+    void atomic_dex::wallet_page::set_tx_fetching_failed(bool status)
     {
         if (m_tx_fetching_failed != status)
         {
@@ -250,10 +244,7 @@ namespace atomic_dex
         }
     }
 
-
-
-    QVariant
-    wallet_page::get_ticker_infos() const
+    QVariant wallet_page::get_ticker_infos() const
     {
         // SPDLOG_DEBUG("get_ticker_infos");
         QJsonObject obj{
