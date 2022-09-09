@@ -14,19 +14,17 @@ DexComboBox
 {
     id: control
     model: API.app.settings_pg.get_available_langs()
-
-    property color highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
-    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-
+    height: 50
 
     displayText: API.app.settings_pg.lang
     leftPadding: 5
 
+    // Each dropdown item
     delegate: ItemDelegate
     {
         id: combo_item
         width: control.width
-        height: 30
+        height: 35
         highlighted: control.highlightedIndex === index
 
         contentItem: RowLayout
@@ -47,10 +45,11 @@ DexComboBox
             }
         }
 
-        // Dropdown Item background
-        background: DexRectangle {
+        background: Rectangle
+        {
             anchors.fill: combo_item
-            color: combo_item.highlighted ? highlightedBackgroundColor : mainBackgroundColor
+            radius: 6
+            color: combo_item.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
         }
 
         onClicked:
@@ -62,17 +61,13 @@ DexComboBox
         }
     }
 
+    // Main, selected item
     contentItem: Text
     {
         anchors.fill: parent
         leftPadding: 0
         rightPadding: control.indicator.width + control.spacing
-
-        //text: control.displayText
-        font: control.font
-        color: control.pressed ? "#17a81a" : "#21be2b"
         verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
 
         DexImage
         {
@@ -82,6 +77,12 @@ DexComboBox
             anchors.verticalCenter: parent.verticalCenter
             source: General.image_path + "lang/" + control.displayText + ".png"
         }
+    }
+
+    background: FloatingBackground
+    {
+        radius: 20
+        color: Dex.CurrentTheme.comboBoxBackgroundColor
     }
 
     DexMouseArea
