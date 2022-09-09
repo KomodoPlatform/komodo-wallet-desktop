@@ -38,7 +38,8 @@ namespace atomic_dex
 
     struct tx_fetch_finished
     {
-        bool with_error{false};
+        bool        with_error{false};
+        std::string ticker;
     };
 
     struct process_swaps_and_orders_finished

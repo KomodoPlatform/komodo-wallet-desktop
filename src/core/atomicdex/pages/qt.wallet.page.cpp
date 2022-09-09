@@ -781,7 +781,7 @@ namespace atomic_dex
     void
     wallet_page::on_tx_fetch_finished(const tx_fetch_finished& evt)
     {
-        if (!evt.with_error)
+        if (!evt.with_error && QString::fromStdString(evt.ticker) == get_current_ticker())
         {
             std::error_code ec;
             t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);

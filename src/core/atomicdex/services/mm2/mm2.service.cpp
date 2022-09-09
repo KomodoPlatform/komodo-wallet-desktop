@@ -851,22 +851,25 @@ namespace atomic_dex
         auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
         return m_mm2_client.async_rpc_batch_standalone(batch_array)
             .then(
-                [this, tokens_to_fetch = tokens_to_fetch, is_a_reset, tickers](web::http::http_response resp)
+                [this, tokens_to_fetch = tokens_to_fetch, is_a_reset, tickers, batch_array = batch_array](web::http::http_response resp)
                 {
                     try
                     {
                         auto answers = mm2::basic_batch_answer(resp);
                         if (not answers.contains("error"))
                         {
-                            for (auto&& answer: answers)
+                            for (auto i = 0ul; i < answers.size(); i++)
                             {
+                                std::string ticker = batch_array[i].at("coin");
+                                auto&       answer = answers[i];
+                                
                                 if (answer.contains("balance"))
                                 {
                                     this->process_balance_answer(answer);
                                 }
                                 else if (answer.contains("result"))
                                 {
-                                    this->process_tx_answer(answer);
+                                    this->process_tx_answer(answer, ticker);
                                 }
                                 else
                                 {
@@ -1469,7 +1472,7 @@ namespace atomic_dex
                     if (answer.rpc_result_code != 200)
                     {
                         SPDLOG_ERROR("{}", answer.raw_result);
-                        this->dispatcher_.trigger<tx_fetch_finished>();
+                        this->dispatcher_.trigger<tx_fetch_finished>(true, ticker);
                     }
                     else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
                     {
@@ -1525,13 +1528,12 @@ namespace atomic_dex
                         m_tx_informations->insert_or_assign(ticker, std::make_pair(out, state));
 
                         //! Dispatch
-                        this->dispatcher_.trigger<tx_fetch_finished>();
+                        this->dispatcher_.trigger<tx_fetch_finished>(false, ticker);
                     }
                 })
             .then(
                 [this](pplx::task<void> previous_task)
                 {
-                    this->dispatcher_.trigger<tx_fetch_finished>();
                     this->handle_exception_pplx_task(previous_task, "process_tx_tokenscan", {});
                 });
     }
@@ -1661,7 +1663,7 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::process_tx_answer(const nlohmann::json& answer_json)
+    mm2_service::process_tx_answer(const nlohmann::json& answer_json, std::string ticker)
     {
         mm2::tx_history_answer answer;
         mm2::from_json(answer_json, answer);
@@ -1732,7 +1734,7 @@ namespace atomic_dex
 
         //! History
         m_tx_informations->insert_or_assign("result", std::make_pair(out, state));
-        this->dispatcher_.trigger<tx_fetch_finished>();
+        this->dispatcher_.trigger<tx_fetch_finished>(false, std::move(ticker));
     }
 
     void
