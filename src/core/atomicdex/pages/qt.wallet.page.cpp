@@ -246,7 +246,6 @@ namespace atomic_dex
 
     QVariant wallet_page::get_ticker_infos() const
     {
-        // SPDLOG_DEBUG("get_ticker_infos");
         QJsonObject obj{
             {"balance", "0"},
             {"name", "Komodo"},
@@ -295,7 +294,6 @@ namespace atomic_dex
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(ticker));
-            // SPDLOG_INFO("fee_ticker of ticker :{} is {}", ticker, coin_info.fees_ticker);
             obj["fee_ticker"]              = QString::fromStdString(coin_info.fees_ticker);
             obj["blocks_left"]             = static_cast<qint64>(tx_state.blocks_left);
             obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
@@ -305,7 +303,6 @@ namespace atomic_dex
             qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
             std::string       svg = qr0.toSvgString(2);
             obj["qrcode_address"] = QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
-            // SPDLOG_DEBUG("is_segwit_on {} segwit: {}", coin_info.is_segwit_on, coin_info.segwit);
         }
         return obj;
     }
