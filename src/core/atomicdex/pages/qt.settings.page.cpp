@@ -423,7 +423,7 @@ namespace atomic_dex
             this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
             this->set_fetching_custom_token_data_busy(false);
         };
-        ::mm2::api::async_process_rpc_get(::mm2::api::g_qtum_proxy_http_client, "qrc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+        mm2::api::async_process_rpc_get(::mm2::api::g_qtum_proxy_http_client, "qrc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void settings_page::process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type)
@@ -665,6 +665,9 @@ namespace atomic_dex
                         if (not idx.empty())
                         {
                             update_value(portfolio_model::PrivKey, QString::fromStdString(show_priv_key_answer.priv_key), idx.at(0), *portfolio_mdl);
+                            std::error_code ec;
+                            QString public_address = QString::fromStdString(m_system_manager.get_system<mm2_service>().address(show_priv_key_answer.coin, ec));
+                            update_value(portfolio_model::Address, public_address, idx.at(0), *portfolio_mdl);
                         }
                     }
                 }
@@ -709,6 +712,6 @@ namespace atomic_dex
         fetching_public_key = true;
         emit fetchingPublicKeyChanged();
 
-        mm2_system.get_mm2_client().process_rpc_async<atomic_dex::mm2::get_public_key>(get_pub_key_rpc_callback);
+        mm2_system.get_mm2_client().process_rpc_async<::mm2::api::get_public_key>(get_pub_key_rpc_callback);
     }
 } // namespace atomic_dex

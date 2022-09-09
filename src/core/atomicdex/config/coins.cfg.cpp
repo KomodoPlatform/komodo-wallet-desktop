@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,6 +16,7 @@
 
 //! Deps
 #include <nlohmann/json.hpp>
+#include <sstream>
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"
@@ -26,61 +27,58 @@ namespace atomic_dex
     from_json(const nlohmann::json& j, coin_config& cfg)
     {
         j.at("coin").get_to(cfg.ticker);
-        cfg.gui_ticker = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
         j.at("name").get_to(cfg.name);
         j.at("type").get_to(cfg.type);
-        if (j.contains("mm2_backup"))
-        {
-            cfg.custom_backup = j.at("mm2_backup");
-        }
-        
+        j.at("active").get_to(cfg.active);
+        j.at("currently_enabled").get_to(cfg.currently_enabled);
+        j.at("explorer_url").get_to(cfg.explorer_url);
+
+        cfg.gui_ticker           = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
+        cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
+        cfg.coinpaprika_id       = j.contains("coinpaprika_id") ? j.at("coinpaprika_id").get<std::string>() : "test-coin";
+        cfg.coingecko_id         = j.contains("coingecko_id") ? j.at("coingecko_id").get<std::string>() : "test-coin";
+        cfg.nomics_id            = j.contains("nomics_id") ? j.at("nomics_id").get<std::string>() : "test-coin";
+        cfg.is_claimable         = j.count("is_claimable") > 0;
+        cfg.is_custom_coin       = j.contains("is_custom_coin") ? j.at("is_custom_coin").get<bool>() : false;
+        cfg.is_testnet           = j.contains("is_testnet") ? j.at("is_testnet").get<bool>() : false;
+        cfg.wallet_only          = j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
+
         if (j.contains("utxo_merge"))
         {
             cfg.utxo_merge = j.at("utxo_merge");
         }
+
+        if (j.contains("mm2_backup"))
+        {
+            cfg.custom_backup = j.at("mm2_backup");
+        }
+
+        if (j.contains("activation_status"))
+        {
+            cfg.activation_status = j.at("activation_status").get<nlohmann::json>();
+        }
+
         if (j.contains("electrum"))
         {
             cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();
         }
+
         if (j.contains("nodes"))
         {
             cfg.urls = j.at("nodes").get<std::vector<std::string>>();
         }
-        cfg.is_claimable         = j.count("is_claimable") > 0;
-        cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
-        j.at("active").get_to(cfg.active);
-        j.at("currently_enabled").get_to(cfg.currently_enabled);
 
-        if (j.contains("coinpaprika_id"))
+        // Used for ZHTLC coins
+        if (j.contains("light_wallet_d_servers"))
         {
-            j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
-        }
-        else
-        {
-            cfg.coinpaprika_id = "test-coin";
+            cfg.z_urls = j.at("light_wallet_d_servers").get<std::vector<std::string>>();
         }
 
-        if (j.contains("nomics_id"))
+        // Used for SLP coins
+        if (j.contains("bchd_urls"))
         {
-            j.at("nomics_id").get_to(cfg.nomics_id);
-        }
-        else
-        {
-            cfg.nomics_id = "test-coin";
-        }
-
-        if (j.contains("coingecko_id"))
-        {
-            j.at("coingecko_id").get_to(cfg.coingecko_id);
-        }
-        else
-        {
-            cfg.coingecko_id = "test-coin";
-        }
-
-        if (j.contains("is_custom_coin"))
-        {
-            cfg.is_custom_coin = true;
+            cfg.bchd_urls = j.at("bchd_urls").get<std::vector<std::string>>();
+            cfg.allow_slp_unsafe_conf = j.at("allow_slp_unsafe_conf").get<bool>();
         }
 
         if (j.contains("is_segwit_on"))
@@ -95,19 +93,17 @@ namespace atomic_dex
             cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
         }
 
-        j.at("explorer_url").get_to(cfg.explorer_url);
         if (j.contains("explorer_tx_url"))
         {
             j.at("explorer_tx_url").get_to(cfg.tx_uri);
         }
+
         if (j.contains("explorer_address_url"))
         {
             j.at("explorer_address_url").get_to(cfg.address_url);
         }
-        if (j.contains("is_testnet"))
-        {
-            cfg.is_testnet = j.at("is_testnet").get<bool>();
-        }
+
+        // Set Coin Type
         if (cfg.type == "QRC-20")
         {
             cfg.coin_type = CoinType::QRC20;
@@ -188,9 +184,9 @@ namespace atomic_dex
         {
             cfg.coin_type = CoinType::RSK;
         }
-        if (j.contains("wallet_only"))
+        else if (cfg.type == "ZHTLC")
         {
-            cfg.wallet_only = j.at("wallet_only").get<bool>();
+            cfg.coin_type = CoinType::ZHTLC;
         }
 
         switch (cfg.coin_type)
@@ -281,7 +277,12 @@ namespace atomic_dex
             break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = "BCH";
+            cfg.fees_ticker            = cfg.is_testnet.value() ? "tBCH" : "BCH";
+            break;
+        case CoinType::ZHTLC:
+            cfg.has_parent_fees_ticker = false;
+            cfg.is_zhtlc_family        = true;
+            cfg.fees_ticker            = cfg.ticker;
             break;
         default:
             cfg.has_parent_fees_ticker = false;
@@ -289,4 +290,17 @@ namespace atomic_dex
             break;
         }
     }
+
+    void
+    print_coins(std::vector<coin_config> coins)
+    {
+        std::stringstream ss;
+        ss << "[";
+        for (auto&& coin: coins) {
+            ss << coin.ticker << " ";
+        }
+        ss << "]";
+        SPDLOG_INFO("{}", ss.str());
+    }
+
 } // namespace atomic_dex

@@ -107,22 +107,23 @@ endif ()
 
 # Testing executable
 add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
+        tests/atomic.dex.qt.utilities.tests.cpp
+        tests/atomic.dex.provider.cex.prices.api.tests.cpp
+        tests/atomic.dex.provider.cex.prices.tests.cpp
         tests/atomic.dex.tests.cpp
         tests/atomic.dex.wallet.config.tests.cpp
-        tests/atomic.dex.provider.cex.prices.tests.cpp
-        tests/atomic.dex.qt.utilities.tests.cpp
 
-        tests/config/coins.cfg.tests.cpp
         ##! API
         tests/api/coingecko/coingecko.tests.cpp
         tests/api/komodo_prices/komodo.prices.tests.cpp
-        tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
-        tests/api/mm2/mm2.fraction.tests.cpp
+        tests/api/mm2/mm2.api.format.address.tests.cpp
         tests/api/mm2/mm2.api.utxo.merge.params.tests.cpp
+        tests/api/mm2/mm2.api.balance.infos.tests.cpp
+        tests/api/mm2/mm2.fraction.tests.cpp
+        tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
 
-        ##! Utilities
-        tests/utilities/qt.utilities.tests.cpp
-        tests/utilities/global.utilities.tests.cpp
+        ##! CFG
+        tests/config/coins.cfg.tests.cpp
 
         ##! Managers
         tests/managers/addressbook.manager.tests.cpp
@@ -130,7 +131,10 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         ##! Models
         tests/models/qt.addressbook.contact.model.tests.cpp
 
-        tests/atomic.dex.provider.cex.prices.api.tests.cpp)
+        ##! Utilities
+        tests/utilities/qt.utilities.tests.cpp
+        tests/utilities/global.utilities.tests.cpp)
+
 target_link_libraries(${PROJECT_NAME}_tests
         PUBLIC
         ${PROJECT_NAME}::core

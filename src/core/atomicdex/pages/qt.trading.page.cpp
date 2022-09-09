@@ -28,6 +28,7 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
 
 //! Constructor / Destructor
 namespace atomic_dex
@@ -91,6 +92,7 @@ namespace atomic_dex
 
         if (to_change)
         {
+            SPDLOG_INFO("set_current_orderbook");
             this->get_orderbook_wrapper()->clear_orderbook();
             this->clear_forms("set_current_orderbook");
         }
@@ -925,6 +927,12 @@ namespace atomic_dex
             case TradingErrorGadget::RightParentChainNotEnabled:
                 SPDLOG_WARN("last_trading_error is RightParentChainNotEnabled");
                 break;
+            case TradingErrorGadget::LeftZhtlcChainNotEnabled:
+                SPDLOG_WARN("last_trading_error is LeftZhtlcChainNotEnabled");
+                break;
+            case TradingErrorGadget::RightZhtlcChainNotEnabled:
+                SPDLOG_WARN("last_trading_error is RightZhtlcChainNotEnabled");
+                break;
             default:
                 break;
             }
@@ -1273,6 +1281,15 @@ namespace atomic_dex
                 current_trading_error = TradingError::RightParentChainNotEnoughBalance;
             }
         }
+        else if (!mm2.is_zhtlc_coin_ready(left))
+        {
+            current_trading_error = TradingError::LeftZhtlcChainNotEnabled;
+        }
+        else if (!mm2.is_zhtlc_coin_ready(right))
+        {
+            current_trading_error = TradingError::RightZhtlcChainNotEnabled;
+        }
+
         if (current_trading_error == TradingError::None)
         {
             if (max_balance_without_dust < safe_float(regular_min_taker_vol)) //<! Checking balance < minimal_trading_amount

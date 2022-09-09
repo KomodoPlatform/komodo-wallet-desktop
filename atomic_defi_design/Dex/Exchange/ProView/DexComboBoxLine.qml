@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Universal 2.15
 
+import "../../Constants" as Dex
 import "../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
@@ -30,6 +31,30 @@ RowLayout
         Layout.leftMargin: padding
         Layout.topMargin: Layout.leftMargin
         Layout.bottomMargin: Layout.leftMargin
+
+        DexRectangle
+        {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            radius: 15
+            enabled: Dex.General.isZhtlc(details.ticker) ? Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) != 100 : false
+            visible: enabled
+            opacity: .9
+            color: Dex.DexTheme.backgroundColor
+        }
+
+        DexLabel
+        {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            enabled: Dex.General.isZhtlc(details.ticker) ? Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) != 100 : false
+            visible: enabled
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) + "%"
+            font: Dex.DexTypo.body2
+            color: Dex.DexTheme.greenColor
+        }
 
         ColumnLayout
         {

@@ -280,7 +280,7 @@ Qaterial.Dialog
 
                                 onClicked:
                                 {
-                                    dialog = app.showDialog(
+                                    reset_dialog = app.showDialog(
                                     {
                                         title: qsTr("Reset wallet configuration"),
                                         text: qsTr("This will restart your wallet with default settings"),
@@ -296,7 +296,7 @@ Qaterial.Dialog
                                             }
                                         }
                                     })
-                                    dialog.close()
+                                    reset_dialog.close()
                                 }
                             }
                         }

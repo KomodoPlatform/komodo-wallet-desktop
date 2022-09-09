@@ -36,9 +36,5 @@ namespace mm2::api
         j.at("balance").get_to(cfg.balance);
         cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
         j.at("coin").get_to(cfg.coin);
-        if (cfg.coin == "BCH")
-        {
-            cfg.address = cfg.address.substr(sizeof("bitcoincash"));
-        }
     }
 } // namespace mm2::api

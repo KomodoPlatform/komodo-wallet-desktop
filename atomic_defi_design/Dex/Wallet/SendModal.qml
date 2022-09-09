@@ -35,6 +35,7 @@ MultipageModal
     readonly property bool is_validate_address_busy: api_wallet_page.validate_address_busy 
     readonly property bool is_convert_address_busy: api_wallet_page.convert_address_busy
     readonly property string address: api_wallet_page.converted_address
+    readonly property string withdraw_status: api_wallet_page.withdraw_status
 
     readonly property bool auth_succeeded: api_wallet_page.auth_succeeded
 
@@ -68,18 +69,9 @@ MultipageModal
         api_wallet_page.broadcast(send_result.withdraw_answer.tx_hex, false, send_result.withdraw_answer.max, input_amount.text)
     }
 
-    function isSpecialToken() {
-        if (current_ticker_infos.hasOwnProperty("has_parent_fees_ticker"))
-            return current_ticker_infos.has_parent_fees_ticker
-        return false
-    }
-
-    function isERC20() {
-        return current_ticker_infos.type === "ERC-20" || current_ticker_infos.type === "BEP-20" || current_ticker_infos.type == "Matic"
-    }
 
     function hasErc20CaseIssue(addr) {
-        if(!isERC20()) return false
+        if(!General.isERC20(current_ticker_infos)) return false
         if(addr.length <= 2) return false
 
         addr = addr.substring(2) // Remove 0x
@@ -103,7 +95,7 @@ MultipageModal
 
         const amount = parseFloat(getCryptoAmount())
 
-        if(isSpecialToken()) {
+        if(General.isSpecialToken(current_ticker_infos)) {
             const parent_ticker = General.getFeesTicker(current_ticker_infos)
             const gas_limit = parseFloat(input_custom_fees_gas.text)
             const gas_price = parseFloat(input_custom_fees_gas_price.text)
@@ -137,8 +129,8 @@ MultipageModal
 
     function feesAreFilled() {
         return  (!custom_fees_switch.checked || (
-                       (!isSpecialToken() && input_custom_fees.acceptableInput) ||
-                       (isSpecialToken() && input_custom_fees_gas.acceptableInput && input_custom_fees_gas_price.acceptableInput &&
+                       (!General.isSpecialToken(current_ticker_infos) && input_custom_fees.acceptableInput) ||
+                       (General.isSpecialToken(current_ticker_infos) && input_custom_fees_gas.acceptableInput && input_custom_fees_gas_price.acceptableInput &&
                                        parseFloat(input_custom_fees_gas.text) > 0 && parseFloat(input_custom_fees_gas_price.text) > 0)
                      )
                  )
@@ -154,7 +146,7 @@ MultipageModal
         input_amount.text = current_ticker_infos.balance
     }
 
-    width: 650
+    width: 750
 
     closePolicy: Popup.NoAutoClose
 
@@ -211,7 +203,7 @@ MultipageModal
         if(root.visible && broadcast_result !== "") {
             if(broadcast_result.indexOf("error") !== -1) {
                 reset()
-                showError(qsTr("Failed to Send"), General.prettifyJSON(broadcast_result))
+                showError(qsTr("Failed to Broadcast"), General.prettifyJSON(broadcast_result))
             }
             else {
                 root.currentIndex = 2
@@ -268,7 +260,7 @@ MultipageModal
         {
             enabled: !root.segwit && !root.is_send_busy
 
-            Layout.preferredWidth: 420
+            Layout.preferredWidth: 500
             Layout.preferredHeight: 44
             Layout.alignment: Qt.AlignHCenter
 
@@ -279,10 +271,11 @@ MultipageModal
             {
                 id: input_address
 
-                width: 390
+                width: 470
                 height: 44
                 placeholderText: qsTr("Address of the recipient")
                 forceFocus: true
+                font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
                 onTextChanged: api_wallet_page.validate_address(text)
             }
 
@@ -370,7 +363,7 @@ MultipageModal
             enabled: !root.is_send_busy
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 420
+            Layout.preferredWidth: 500
             Layout.preferredHeight: 44
             Layout.topMargin: 32
 
@@ -571,6 +564,7 @@ MultipageModal
             DefaultSwitch
             {
                 id: custom_fees_switch
+                visible: !General.isZhtlc(api_wallet_page.ticker)
                 enabled: !root.is_send_busy
                 Layout.preferredWidth: 260
                 onCheckedChanged: input_custom_fees.text = ""
@@ -603,7 +597,7 @@ MultipageModal
             // Normal coins, Custom fees input
             AmountField
             {
-                visible: !isSpecialToken() && !isParentCoin(api_wallet_page.ticker)
+                visible: !General.isSpecialToken(current_ticker_infos) && !General.isParentCoin(api_wallet_page.ticker) || api_wallet_page.ticker == "KMD"
 
                 id: input_custom_fees
 
@@ -619,7 +613,8 @@ MultipageModal
             // Token coins
             ColumnLayout
             {
-                visible: isSpecialToken()
+                visible: (General.isSpecialToken(current_ticker_infos) || General.isParentCoin(api_wallet_page.ticker)) && !api_wallet_page.ticker == "KMD"
+
                 Layout.alignment: Qt.AlignHCenter
 
                 // Gas input
@@ -689,6 +684,18 @@ MultipageModal
             visible: root.is_send_busy
         }
 
+        // Withdraw status
+        DefaultText
+        {
+            Layout.topMargin: 16
+            Layout.alignment: Qt.AlignHCenter
+            horizontalAlignment: DefaultText.AlignHCenter
+            wrapMode: Label.Wrap
+            visible: General.isZhtlc(api_wallet_page.ticker) && withdraw_status != "Complete"
+            color: Dex.CurrentTheme.foregroundColor
+            text_value: withdraw_status
+        }
+
 
         // Footer
         RowLayout
@@ -722,7 +729,7 @@ MultipageModal
                 text: qsTr("Prepare")
 
                 onClicked: prepareSendCoin(input_address.text, getCryptoAmount(), custom_fees_switch.checked, input_custom_fees.text,
-                                           isSpecialToken(), input_custom_fees_gas.text, input_custom_fees_gas_price.text)
+                                           General.isSpecialToken(current_ticker_infos), input_custom_fees_gas.text, input_custom_fees_gas_price.text)
             }
         }
 
@@ -747,12 +754,32 @@ MultipageModal
     MultipageModalContent
     {
         titleText: qsTr("Send")
+        titleAlignment: Qt.AlignHCenter
 
         // Address
-        TextEditWithTitle
+        TitleText
         {
-            title: qsTr("Recipient's address")
-            text: input_address.text
+            text: qsTr("Recipient's address")
+            Layout.fillWidth: true
+            color: Dex.CurrentTheme.foregroundColor2
+        }
+
+        TextEditWithCopy
+        {
+            text_value: input_address.text
+            font_size: 13
+            align_left: true
+            text_box_width:
+            {
+                let char_len = current_ticker_infos.address.length
+                if (char_len > 70) return 560
+                if (char_len > 50) return 450
+                if (char_len > 40) return 400
+                return 300
+            }
+            onCopyNotificationTitle: qsTr("%1 address", "TICKER").arg(api_wallet_page.ticker)
+            onCopyNotificationMsg: qsTr("copied to clipboard.")
+            privacy: true
         }
 
         // Amount
