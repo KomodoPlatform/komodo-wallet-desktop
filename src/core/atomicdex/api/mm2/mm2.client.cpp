@@ -19,6 +19,8 @@
 #include "enable_slp_rpc.hpp"
 #include "get_public_key_rpc.hpp"
 #include "enable_bch_with_tokens_rpc.hpp"
+#include "my_tx_history_rpc.hpp"
+#include "my_tx_history_v1_rpc.hpp"
 #include "mm2.client.hpp"
 #include "mm2.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
@@ -156,6 +158,8 @@ namespace atomic_dex::mm2
     template void mm2_client::process_rpc_async<get_public_key_rpc>(const std::function<void(get_public_key_rpc)>&);
     template void mm2_client::process_rpc_async<enable_slp_rpc>(const std::function<void(enable_slp_rpc)>&);
     template void mm2_client::process_rpc_async<enable_bch_with_tokens_rpc>(const std::function<void(enable_bch_with_tokens_rpc)>&);
+    template void mm2_client::process_rpc_async<my_tx_history_rpc>(const std::function<void(my_tx_history_rpc)>&);
+    template void mm2_client::process_rpc_async<my_tx_history_v1_rpc>(const std::function<void(my_tx_history_v1_rpc)>&);
     
     template <mm2::rpc Rpc>
     void mm2_client::process_rpc_async(typename Rpc::expected_request_type request, const std::function<void(Rpc)>& on_rpc_processed)
