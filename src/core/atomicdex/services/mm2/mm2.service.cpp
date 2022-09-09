@@ -1457,7 +1457,7 @@ namespace atomic_dex
         SPDLOG_INFO("url scan: {}", url);
         mm2::async_process_rpc_get(mm2::g_etherscan_proxy_http_client, "tx_history", url)
             .then(
-                [this, ticker](web::http::http_response resp)
+                [this, ticker](const web::http::http_response& resp)
                 {
                     auto answer = m_mm2_client.rpc_process_answer<mm2::tx_history_answer>(resp, "tx_history");
 
