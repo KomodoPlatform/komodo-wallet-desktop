@@ -31,6 +31,7 @@
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/utilities/kill.hpp"
 
 namespace ag = antara::gaming;
 
