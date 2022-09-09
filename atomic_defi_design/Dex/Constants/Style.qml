@@ -474,7 +474,7 @@ QtObject {
                                           "YFII": "#FF2A79",
                                           "ZET": "#155169",
                                           "ZIL": "#42BBB9",
-                                          "ZOMBIE": "#3F3F3F",
+                                          "ZOMBIE": "#72B001",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A",
                                           "VOTE2022": "#7490AA",
