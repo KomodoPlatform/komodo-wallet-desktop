@@ -28,6 +28,9 @@ namespace atomic_dex::mm2
     concept rpc = requires(Rpc rpc)
     {
         atomic_dex::api_call<Rpc> && std::is_same_v<decltype(Rpc::is_v2), bool>;
+        rpc.request;
+        rpc.result;
+        rpc.error;
     };
 
     struct rpc_basic_error_type
