@@ -646,6 +646,7 @@ namespace atomic_dex
             {
                 dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {rpc.request.ticker}});
                 fetch_single_balance(get_coin_info(rpc.request.ticker));
+                m_coins_informations[rpc.request.ticker].currently_enabled = true;
                 if constexpr (std::is_same_v<RpcRequest, mm2::enable_bch_with_tokens_rpc>)
                 {
                     for (const auto& slp_address_info : rpc.result->slp_addresses_infos)
@@ -654,6 +655,7 @@ namespace atomic_dex
                         {
                             dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {balance.first}});
                             process_balance_answer(rpc);
+                            m_coins_informations[balance.first].currently_enabled = true;
                         }
                     }
                 }
@@ -718,6 +720,7 @@ namespace atomic_dex
             else
             {
                 dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {rpc.request.ticker}});
+                m_coins_informations[rpc.request.ticker].currently_enabled = true;
                 if constexpr (std::is_same_v<RpcRequest, mm2::enable_bch_with_tokens_rpc>)
                 {
                     for (const auto& slp_address_info : rpc.result->slp_addresses_infos)
@@ -725,6 +728,7 @@ namespace atomic_dex
                         for (const auto& balance : slp_address_info.second.balances)
                         {
                             dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {balance.first}});
+                            m_coins_informations[balance.first].currently_enabled = true;
                         }
                     }
                 }
