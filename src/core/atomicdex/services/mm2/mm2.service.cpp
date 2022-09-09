@@ -1381,10 +1381,9 @@ namespace atomic_dex
             .then([this, batch](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "batch_fetch_orders_and_swap", batch); });
     }
 
-    void
-    mm2_service::process_tx_tokenscan(const std::string& ticker, [[maybe_unused]] bool is_a_refresh)
+    void mm2_service::process_tx_tokenscan(const std::string& ticker, [[maybe_unused]] bool is_a_refresh)
     {
-        SPDLOG_DEBUG("process_tx ticker: {}", ticker);
+        SPDLOG_DEBUG("Process transactions of ticker: {}", ticker);
         std::error_code ec;
         using namespace std::string_literals;
         auto construct_url_functor = [this](
