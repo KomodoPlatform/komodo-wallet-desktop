@@ -3985,6 +3985,26 @@
     "active": false,
     "currently_enabled": false
   },
+  "LNC": {
+    "coin": "LNC",
+    "name": "LightningCash",
+    "coinpaprika_id": "lnc-lightningcash",
+    "coingecko_id": "lightningcash",
+    "nomics_id": "LNC3",
+    "electrum": [
+      {
+        "url": "74.208.95.26:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.lightningcash-coin.com/"
+    ],
+    "explorer_tx_url": "tx/",
+    "explorer_address_url": "address/",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "LOOM-ERC20": {
     "coin": "LOOM-ERC20",
     "name": "Loom Network",
