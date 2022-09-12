@@ -29,8 +29,8 @@ TEST_CASE("mm2::balance_infos deserialization")
            "unspendable":"0.00001"
        }
     })"_json;
-    mm2::balance_infos infos;
-    mm2::from_json(json.at("balances"), infos);
+    atomic_dex::mm2::balance_infos infos;
+    atomic_dex::mm2::from_json(json.at("balances"), infos);
     CHECK_EQ(infos.spendable, "0.11398301");
     CHECK_EQ(infos.unspendable, "0.00001");
 }
