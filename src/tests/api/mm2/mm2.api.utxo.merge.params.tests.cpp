@@ -20,7 +20,7 @@
 
 #include "atomicdex/api/mm2/utxo.merge.params.hpp"
 
-TEST_CASE("mm2::api::utxo_merge_params serialisation")
+TEST_CASE("mm2::utxo_merge_params serialisation")
 {
     const nlohmann::json     expected_json = R"(
     {

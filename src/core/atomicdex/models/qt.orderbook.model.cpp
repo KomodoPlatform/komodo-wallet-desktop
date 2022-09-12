@@ -626,7 +626,7 @@ namespace atomic_dex
     void
     orderbook_model::clear_orderbook()
     {
-        SPDLOG_INFO("clear orderbook");
+        // SPDLOG_INFO("clear orderbook");
         this->beginResetModel();
         m_model_data = t_orders_contents{};
         m_orders_id_registry.clear();

@@ -38,7 +38,7 @@ namespace atomic_dex::mm2
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
     inline std::unique_ptr<web::http::client::http_client> g_qtum_proxy_http_client{
-        std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_qtum_infos_endpoint))};
+        std::make_unique<web::http::client::http_client>(FROM_STD_STR(::atomic_dex::g_qtum_infos_endpoint))};
 
     nlohmann::json basic_batch_answer(const web::http::http_response& resp);
 

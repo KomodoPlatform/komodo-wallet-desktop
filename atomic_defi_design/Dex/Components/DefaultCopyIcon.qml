@@ -23,7 +23,7 @@ Qaterial.Icon
         hoverEnabled: true
         onClicked:
         {
-            Qaterial.Clipboard.text = control.text
+            Qaterial.Clipboard.text = copyText
             app.notifyCopy(notifyTitle, notifyMsg)
         }
     }

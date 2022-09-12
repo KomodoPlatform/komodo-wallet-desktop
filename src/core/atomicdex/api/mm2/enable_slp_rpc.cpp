@@ -16,7 +16,7 @@ namespace atomic_dex::mm2
             j["activation_params"] = nlohmann::json::object();
         }
     }
-    
+
     void from_json(const nlohmann::json& j, enable_slp_rpc_result& in)
     {
         j.at("token_id").get_to(in.token_id);

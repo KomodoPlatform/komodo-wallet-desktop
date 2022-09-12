@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.0
 import Qaterial 1.0 as Qaterial
+import ModelHelper 0.1
 
 import Dex.Themes 1.0 as Dex
 
@@ -14,6 +15,7 @@ import "../Screens"
 DexPopup
 {
     id: root
+    property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
 
     width: 406
     height: 526
@@ -260,6 +262,32 @@ DexPopup
         }
     }
 
+    function onEnablingZCoinStatus(coin, msg, human_date, timestamp)
+    {
+        // Ignore if coin already enabled (e.g. parent chain in batch)
+        if (msg.search("already initialized") > -1)
+        {
+            console.trace()
+            return
+        }
+
+        // Display the notification
+        const title = qsTr(" %1 Enable status", "TICKER").arg(coin)
+
+        newNotification("onEnablingZCoinStatus",
+            {
+                coin,
+                human_date,
+                timestamp
+            },
+            timestamp,
+            title,
+            msg,
+            human_date,
+            "open_log_modal",
+            msg)
+    }
+
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp)
     {
@@ -299,6 +327,25 @@ DexPopup
             "open_log_modal",
             error)
 
+        toast.show(title, General.time_toast_important_error, error)
+    }
+
+    function onDisablingCoinFailedStatus(coin, error, human_date, timestamp)
+    {
+        const title = qsTr("Failed to disable %1", "TICKER").arg(coin)
+
+        newNotification("onDisablingCoinFailedStatus",
+            {
+                coin,
+                error,
+                human_date,
+                timestamp
+            },
+            timestamp,
+            title,
+            human_date,
+            "open_log_modal",
+            error)
         toast.show(title, General.time_toast_important_error, error)
     }
 
@@ -364,7 +411,9 @@ DexPopup
     {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingZCoinStatus.connect(onEnablingZCoinStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.disablingCoinFailedStatus.connect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
         API.app.notification_mgr.batchFailed.connect(onBatchFailed)
@@ -373,7 +422,9 @@ DexPopup
     {
         API.app.notification_mgr.updateSwapStatus.disconnect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.disconnect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingZCoinStatus.disconnect(onEnablingZCoinStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.disablingCoinFailedStatus.disconnect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
         API.app.notification_mgr.batchFailed.disconnect(onBatchFailed)
@@ -417,7 +468,11 @@ DexPopup
             MenuItem
             {
                 text: qsTr("Quit")
-                onTriggered: Qt.quit()
+                onTriggered:
+                {
+                    if (orders.count != 0) logout_modal.open()
+                    else return_to_login()
+                }
             }
         }
     }
@@ -437,7 +492,7 @@ DexPopup
                 pixelSize: 20
                 weight: Font.Normal
             }
-            text: "Notifications"
+            text: qsTr("Notifications")
         }
 
         Item

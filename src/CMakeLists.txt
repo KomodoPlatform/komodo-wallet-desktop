@@ -53,6 +53,7 @@ set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM TRUE)
 set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_en.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_de.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_ru.ts)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages)
@@ -73,7 +74,7 @@ dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex qml_qrc
 dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/assets assets_qrc 
     PATH_PREFIX "assets"
     FILES_TO_EXCLUDE ".gitignore;.DS_Store;CONTRIBUTING.txt;FONTLOG.txt;LICENCE-FAQ.txt;LICENCE.txt;README.txt;TRADEMARKS.txt;.ts;.qm;.qrc"
-    FILES "languages/atomic_defi_en.qm;languages/atomic_defi_fr.qm;languages/atomic_defi_ru.qm;languages/atomic_defi_tr.qm")
+    FILES "languages/atomic_defi_en.qm;languages/atomic_defi_de.qm;languages/atomic_defi_fr.qm;languages/atomic_defi_ru.qm;languages/atomic_defi_tr.qm")
 
 # Main executable
 add_executable(${PROJECT_NAME}
@@ -106,37 +107,45 @@ endif ()
 
 # Testing executable
 add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
-    tests/atomic.dex.tests.cpp
-    tests/atomic.dex.wallet.config.tests.cpp
-    tests/atomic.dex.provider.cex.prices.tests.cpp
-    tests/atomic.dex.qt.utilities.tests.cpp
+        tests/atomic.dex.qt.utilities.tests.cpp
+        tests/atomic.dex.provider.cex.prices.api.tests.cpp
+        tests/atomic.dex.provider.cex.prices.tests.cpp
+        tests/atomic.dex.tests.cpp
+        tests/atomic.dex.wallet.config.tests.cpp
 
+        ##! API
+        tests/api/coingecko/coingecko.tests.cpp
+        tests/api/komodo_prices/komodo.prices.tests.cpp
+        tests/api/mm2/mm2.api.format.address.tests.cpp
+        tests/api/mm2/mm2.api.utxo.merge.params.tests.cpp
+        tests/api/mm2/mm2.api.balance.infos.tests.cpp
+        tests/api/mm2/mm2.fraction.tests.cpp
+        tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
+
+        ##! CFG
         tests/config/coins.cfg.tests.cpp
+        
         ##! API
         tests/api/coingecko/coingecko.tests.cpp
         tests/api/komodo_prices/komodo.prices.tests.cpp
         tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
         tests/api/mm2/mm2.fraction.tests.cpp
-        tests/api/mm2/mm2.api.utxo.merge.params.tests.cpp
+        tests/api/mm2/enable_bch_with_tokens_rpc_tests.cpp
 
-    ##! API
-    tests/api/coingecko/coingecko.tests.cpp
-    tests/api/komodo_prices/komodo.prices.tests.cpp
-    tests/api/mm2/mm2.rpc.trade.preimage.tests.cpp
-    tests/api/mm2/mm2.fraction.tests.cpp
-    tests/api/mm2/enable_bch_with_tokens_rpc_tests.cpp
+        ##! Utilities
+        tests/utilities/qt.utilities.tests.cpp
+        tests/utilities/global.utilities.tests.cpp
 
-    ##! Utilities
-    tests/utilities/qt.utilities.tests.cpp
-    tests/utilities/global.utilities.tests.cpp
+        ##! Managers
+        tests/managers/addressbook.manager.tests.cpp
 
-    ##! Managers
-    tests/managers/addressbook.manager.tests.cpp
+        ##! Models
+        tests/models/qt.addressbook.contact.model.tests.cpp
 
-    ##! Models
-    tests/models/qt.addressbook.contact.model.tests.cpp
+        ##! Utilities
+        tests/utilities/qt.utilities.tests.cpp
+        tests/utilities/global.utilities.tests.cpp)
 
-    tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 target_link_libraries(${PROJECT_NAME}_tests
         PUBLIC
         ${PROJECT_NAME}::core

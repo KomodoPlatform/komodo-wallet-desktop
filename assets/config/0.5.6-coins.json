@@ -93,7 +93,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -228,7 +228,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -384,7 +384,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -777,7 +777,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -864,7 +864,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -897,8 +897,110 @@
     "explorer_url": [
       "https://explorer.bitcoin.com/bch/"
     ],
-    "type": "UTXO",
+    "bchd_urls": [
+      "https://bchd.fountainhead.cash:443"
+    ],
+    "allow_slp_unsafe_conf": false,
+    "type": "BCH",
     "name": "Bitcoin Cash"
+  },
+  "sTST": {
+    "coin": "sTST",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://testnet.simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "tBCH",
+    "name": "sTST"
+  },
+  "HONK": {
+    "coin": "HONK",
+    "active": false,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "BCH",
+    "name": "HONK HONK"
+  },
+  "ASLP": {
+    "coin": "ASLP",
+    "active": false,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "BCH",
+    "name": "AtomicSLP"
+  },
+  "USDF": {
+    "coin": "USDF",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://testnet.simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "tBCH",
+    "name": "Fake USD (Testnet)"
+  },
+  "tBCH": {
+    "coin": "tBCH",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "tbch.loping.net:60002",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electroncash.de:50004",
+        "protocol": "SSL"
+      },
+      {
+        "url": "testnet.bitcoincash.network:60002",
+        "protocol": "SSL"
+      }
+    ],
+    "explorer_url": [
+      "https://tbch.loping.net/"
+    ],
+    "bchd_urls": [
+      "https://bchd-testnet.greyh.at:18335"
+    ],
+    "allow_slp_unsafe_conf": false,
+    "type": "BCH",
+    "name": "Bitcoin Cash (Testnet)"
+  },
+  "USDT-SLP": {
+    "coin": "USDT-SLP",
+    "active": false,
+    "coingecko_id": "tether",
+    "coinpaprika_id": "usdt-tether",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "BCH",
+    "name": "Tether"
   },
   "BCH-ERC20": {
     "coin": "BCH-ERC20",
@@ -1138,7 +1240,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -1476,7 +1578,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -1579,7 +1681,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -1641,7 +1743,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -1910,7 +2012,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -2090,7 +2192,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -2142,7 +2244,7 @@
         "ws_url": "78.141.233.64:9001"
       },
       {
-	"url": "192.248.166.207:10001",
+        "url": "192.248.166.207:10001",
         "ws_url": "192.248.166.207:9001"
       }
     ],
@@ -2798,7 +2900,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -3363,7 +3465,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -3498,7 +3600,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -3536,7 +3638,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -3574,7 +3676,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -3612,7 +3714,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -3631,7 +3733,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -3667,7 +3769,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -3703,12 +3805,30 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
     ],
     "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
+  "JST-BEP20": {
+    "coin": "JST-BEP20",
+    "name": "JUST",
+    "coinpaprika_id": "jst-just",
+    "coingecko_id": "just",
+    "nomics_id": "JST",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
     "active": false,
     "currently_enabled": false
   },
@@ -3865,6 +3985,42 @@
     "active": false,
     "currently_enabled": false
   },
+  "LOOM-ERC20": {
+    "coin": "LOOM-ERC20",
+    "name": "Loom Network",
+    "coinpaprika_id": "loom-loom-network",
+    "coingecko_id": "loom-network-new",
+    "nomics_id": "LOOM",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "LOOM-BEP20": {
+    "coin": "LOOM-BEP20",
+    "name": "Loom Network",
+    "coinpaprika_id": "loom-loom-network",
+    "coingecko_id": "loom-network-new",
+    "nomics_id": "LOOM",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "LTC": {
     "active": true,
     "coin": "LTC",
@@ -3954,7 +4110,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -4057,7 +4213,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -4311,7 +4467,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -4410,7 +4566,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -4515,7 +4671,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -4570,7 +4726,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -4753,7 +4909,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -5025,7 +5181,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -5165,7 +5321,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -5322,7 +5478,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -5548,7 +5704,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -5778,7 +5934,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -5886,7 +6042,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -5925,7 +6081,7 @@
       "type": "UTXO",
       "active": false,
       "currently_enabled": false
-  },	
+  },
   "QIAIR": {
     "coin": "QIAIR",
     "name": "Qi Airdrop Token",
@@ -6386,7 +6542,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -6543,7 +6699,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -6561,7 +6717,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -6579,7 +6735,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -6733,6 +6889,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "NENG": {
+    "coin": "NENG",
+    "name": "Nengcoin",
+    "type": "UTXO",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "neng-nengcoin",
+    "nomics_id": "NENG",
+    "electrum": [
+      {
+        "url": "electrum.shorelinecrypto.com:10001"
+      },
+      {
+        "url": "electrum1.mooo.com:10001"
+      },
+      {
+        "url": "electrum2.mooo.com:10001"
+      }
+    ],
+    "explorer_url": [
+      "http://nengexplorer.mooo.com:3001/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "NEXO-ERC20": {
     "coin": "NEXO-ERC20",
     "name": "Nexo",
@@ -6776,7 +6956,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -6899,7 +7079,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -6935,7 +7115,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -7190,7 +7370,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -7292,7 +7472,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -7373,7 +7553,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -7573,7 +7753,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -7678,7 +7858,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -7748,7 +7928,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -8123,7 +8303,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -8564,7 +8744,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -8864,7 +9044,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -8917,7 +9097,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -8969,7 +9149,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9021,7 +9201,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9105,7 +9285,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9208,7 +9388,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9246,7 +9426,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9282,7 +9462,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9318,7 +9498,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9354,7 +9534,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9456,7 +9636,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9510,7 +9690,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9537,6 +9717,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "LRC-BEP20": {
+    "coin": "LRC-BEP20",
+    "name": "Loopring",
+    "coinpaprika_id": "lrc-loopring",
+    "coingecko_id": "loopring",
+    "nomics_id": "LRC",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "LRC-PLG20": {
     "coin": "LRC-PLG20",
     "name": "Loopring",
@@ -9546,7 +9744,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9616,7 +9814,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9703,7 +9901,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9757,7 +9955,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9827,7 +10025,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -9967,7 +10165,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -10087,7 +10285,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -10139,7 +10337,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -10241,7 +10439,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -10353,7 +10551,7 @@
     "nodes": [
       "https://polygon-rpc.com",
       "https://poly-rpc.gateway.pokt.network",
-      "https://matic-mainnet.chainstacklabs.com"
+      "https://rpc-mainnet.maticvigil.com"
     ],
     "explorer_url": [
       "https://polygonscan.com/"
@@ -10475,7 +10673,7 @@
     "active": false,
     "currently_enabled": false
   },
-    "IC": {
+  "IC": {
     "coin": "IC",
     "name": "Ignition",
     "coingecko_id": "ignition",
@@ -10571,12 +10769,12 @@
         "url": "electrumx2.actioncoin.com:30001",
         "ws_url": "electrumx2.actioncoin.com:20001",
         "protocol": "SSL"
-      },	
+      },  
       {
         "url": "electrumx1.actioncoin.com:10001"
       },
       {
-        "url": "electrumx2.actioncoin.com:10001"	      
+        "url": "electrumx2.actioncoin.com:10001"
       }
     ],
     "explorer_url": [
@@ -10602,6 +10800,46 @@
     ],
     "active": false,
     "currently_enabled": false
+  },
+  "ZOMBIE": {
+    "coin": "ZOMBIE",
+    "name": "Zombie",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "is_testnet": true,
+    "light_wallet_d_servers": [
+      "http://zombie.sirseven.me:443"
+    ],
+    "electrum": [
+      {"url":"zombie.sirseven.me:10033"}
+    ],
+    "explorer_url": [
+      "https://zombie.explorer.lordofthechains.com/"
+    ],
+    "type": "ZHTLC",
+    "active": false,
+    "currently_enabled": false,
+    "wallet_only": false
+  },
+  "ARRR": {
+    "coin": "ARRR",
+    "name": "Pirate",
+    "nomics_id": "ARRR",
+    "coinpaprika_id": "arrr-pirate",
+    "coingecko_id": "pirate-chain",
+    "light_wallet_d_servers": [
+      "http://pirate.sirseven.me:443"
+    ],
+    "electrum": [
+      {"url":"pirate.sirseven.me:10032"}
+    ],
+    "explorer_url": [
+      "https://pirate.explorer.dexstats.info/"
+    ],
+    "type": "ZHTLC",
+    "active": false,
+    "currently_enabled": false,
+    "wallet_only": false
   },
   "sTST": {
     "coin": "sTST",

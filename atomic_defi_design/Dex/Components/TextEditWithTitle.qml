@@ -36,7 +36,7 @@ ComponentWithTitle
             opacity: show_content ? 1 : 0
             wrapMode: Text.WordWrap
             monospace: control.monospace
-
+            rightPadding: 5
             Behavior on opacity { SmoothedAnimation { duration: expand_animation.duration; velocity: -1 } }
             Behavior on Layout.preferredHeight { SmoothedAnimation { id: expand_animation; duration: Constants.Style.animationDuration * 2; velocity: -1 } }
         }
@@ -48,7 +48,6 @@ ComponentWithTitle
             copyText: control.text
             notifyTitle: control.onCopyNotificationTitle
             notifyMsg: control.onCopyNotificationMsg
-            x: _text.width + 10
             iconSize: 14
         }
 
@@ -56,7 +55,7 @@ ComponentWithTitle
         {
             visible: control.linkURL !== ""
             linkURL: control.linkURL
-            x: copyIcon.visible ? _text.width + 10 : _text.width + 16
+            x: copyIcon.visible ? _text.width + 18 : _text.width + 28
             iconSize: 14
         }
 

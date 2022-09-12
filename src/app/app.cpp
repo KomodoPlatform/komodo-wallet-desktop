@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -76,7 +76,8 @@ namespace atomic_dex
         coins_std.reserve(coins.size());
         atomic_dex::mm2_service& mm2 = get_mm2();
         std::unordered_set<std::string> extra_coins;
-        for (auto&& coin: coins) {
+        for (auto&& coin : coins)
+        {
             auto coin_info = mm2.get_coin_info(coin.toStdString());
             if (coin_info.has_parent_fees_ticker && coin_info.ticker != coin_info.fees_ticker)
             {
@@ -88,13 +89,12 @@ namespace atomic_dex
             }
             coins_std.push_back(coin.toStdString());
         }
-
         for (auto&& extra_coin : extra_coins)
         {
             coins_std.push_back(extra_coin);
         }
         mm2.enable_coins(coins_std);
-
+        
         return true;
     }
 
@@ -115,13 +115,20 @@ namespace atomic_dex
             bool       has_parent_fees = coin_info.has_parent_fees_ticker;
             if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
-                if (has_parent_fees)
+                if (!get_mm2().is_zhtlc_coin_ready(coin.toStdString()))
                 {
-                    coins_copy.push_front(coin);
+                    this->dispatcher_.trigger<disabling_coin_failed>(coin.toStdString(), "Can't disable until fully activated.");
                 }
                 else
                 {
-                    coins_copy.push_back(coin);
+                    if (has_parent_fees)
+                    {
+                        coins_copy.push_front(coin);
+                    }
+                    else
+                    {
+                        coins_copy.push_back(coin);
+                    }
                 }
             }
         }
@@ -362,6 +369,9 @@ namespace atomic_dex
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
+
+
+        system_manager_.create_system<zcash_params_service>(system_manager_, this->dispatcher_, this);
 
         connect_signals();
         if (qt_wallet_manager::is_there_a_default_wallet())
@@ -734,6 +744,17 @@ namespace atomic_dex
     update_checker_service* application::get_update_checker_service() const
     {
         auto ptr = const_cast<update_checker_service*>(std::addressof(system_manager_.get_system<update_checker_service>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
+} // namespace atomic_dex
+
+//! update checker
+namespace atomic_dex
+{
+    zcash_params_service* application::get_zcash_params_service() const
+    {
+        auto ptr = const_cast<zcash_params_service*>(std::addressof(system_manager_.get_system<zcash_params_service>()));
         assert(ptr != nullptr);
         return ptr;
     }

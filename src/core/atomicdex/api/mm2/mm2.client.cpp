@@ -38,7 +38,7 @@ namespace
         
         constexpr auto                          client_timeout = 30s;
         web::http::client::http_client_config   cfg;
-        
+
         cfg.set_timeout(client_timeout);
         return {FROM_STD_STR(atomic_dex::g_dex_rpc), cfg};
     }
@@ -149,7 +149,7 @@ namespace atomic_dex::mm2
         return resp;
     }
 
-    template <mm2::rpc Rpc>
+    template <rpc Rpc>
     void mm2_client::process_rpc_async(const std::function<void(Rpc)>& on_rpc_processed)
     {
         using request_type = typename Rpc::expected_request_type;

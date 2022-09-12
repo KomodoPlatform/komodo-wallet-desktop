@@ -38,6 +38,8 @@ namespace atomic_dex::mm2
         const std::string                            mainnet_fallback_qrc_swap_contract_address{mainnet_qrc_swap_contract_address};
         std::optional<nlohmann::json>                address_format;
         std::optional<nlohmann::json>                merge_params;
+        std::optional<std::vector<std::string>>  bchd_urls;
+        std::optional<bool>                      allow_slp_unsafe_conf;
     };
 
     struct electrum_answer

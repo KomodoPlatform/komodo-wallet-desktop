@@ -1,5 +1,22 @@
+/******************************************************************************
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
+
 #pragma once
 
+#include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QObject>
@@ -10,31 +27,37 @@
 
 namespace atomic_dex
 {
-    class qt_download_manager : public QObject
+    class qt_downloader : public QObject
     {
         Q_OBJECT
 
+        Q_PROPERTY(QJsonObject download_status READ get_download_status NOTIFY downloadStatusChanged)
+
         entt::dispatcher&       m_dispatcher;
         QNetworkAccessManager   m_manager;
-        std::string             m_current_filename;
-        fs::path                m_last_downloaded_path;
+        std::string             m_download_filename;
+        fs::path                m_download_path;
         QVector<QNetworkReply*> m_current_downloads;
-        float                   m_current_progress;
+        float                   m_download_progress;
+        QJsonObject             m_download_status;
+        QNetworkReply*          m_download_reply;
 
       public:
-        qt_download_manager(entt::dispatcher& dispatcher);
-        ~qt_download_manager();
+        qt_downloader(entt::dispatcher& dispatcher);
+        ~qt_downloader();
 
-        void                   do_download(const QUrl& url);
-        [[nodiscard]] fs::path get_last_download_path() const;
+        void                          do_download(const QUrl& url, std::string filename, fs::path folder);
+        [[nodiscard]] fs::path        get_last_download_path() const;
+        [[nodiscard]] QJsonObject     get_download_status() const;
+        [[nodiscard]] QJsonObject     get_combined_download_status() const;
+        [[nodiscard]] QNetworkReply*  get_reply() const;
+
+      signals:
+        void downloadStatusChanged(QJsonObject &status);
 
       public slots:
         void download_finished(QNetworkReply* reply);
         void download_progress(qint64 bytes_received, qint64 bytes_total);
     };
     
-    struct qt_download_progressed
-    {
-        float progress;
-    };
 } // namespace atomic_dex

@@ -13,5 +13,5 @@ namespace atomic_dex::mm2
         std::string numer;
     };
 
-    ENTT_API void from_json(const nlohmann::json& j, fraction& fraction);
+    ENTT_API void from_json(const nlohmann::json& j,  mm2::fraction& fraction);
 }

@@ -40,16 +40,17 @@ namespace atomic_dex
     {
         if (m_rpc_busy)
         {
-            //SPDLOG_INFO("process_best_orders is busy - skipping");
+            // SPDLOG_INFO("process_best_orders is busy - skipping");
             return;
         }
-        //SPDLOG_INFO("process_best_orders processing");
+
+        // SPDLOG_INFO("process_best_orders processing");
         if (m_system_manager.has_system<mm2_service>())
         {
             auto& mm2_system = m_system_manager.get_system<mm2_service>();
             if (mm2_system.is_mm2_running() && mm2_system.is_orderbook_thread_active())
             {
-                //SPDLOG_INFO("process_best_orders");
+                // SPDLOG_INFO("process_best_orders");
                 using namespace std::string_literals;
                 const auto&           trading_pg = m_system_manager.get_system<trading_page>();
                 auto                  volume     = trading_pg.get_volume().toStdString();
@@ -63,8 +64,8 @@ namespace atomic_dex
                 to_json(best_orders_req_json, req);
                 batch.push_back(best_orders_req_json);
 
-                best_orders_req_json["userpass"] = "*****";
-                //SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
+                // best_orders_req_json["userpass"] = "*****";
+                // SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
 
                 this->m_rpc_busy = true;
                 emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();

@@ -34,8 +34,8 @@ namespace atomic_dex::mm2
 
     struct orderbook_answer
     {
-        std::size_t                 askdepth;
-        std::size_t                 biddepth;
+        std::size_t                 askdepth{0};
+        std::size_t                 biddepth{0};
         std::vector<order_contents> asks;
         std::vector<order_contents> bids;
         std::string                 base;

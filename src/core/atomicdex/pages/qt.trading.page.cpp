@@ -28,6 +28,7 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
 
 //! Constructor / Destructor
 namespace atomic_dex
@@ -91,6 +92,7 @@ namespace atomic_dex
 
         if (to_change)
         {
+            SPDLOG_INFO("set_current_orderbook");
             this->get_orderbook_wrapper()->clear_orderbook();
             this->clear_forms("set_current_orderbook");
         }
@@ -683,11 +685,14 @@ namespace atomic_dex
         this->m_post_clear_forms = true;
         this->set_selected_order_status(SelectedOrderStatus::None);
         this->reset_fees();
+        this->determine_cex_rates();
         emit cexPriceChanged();
         emit invalidCexPriceChanged();
         emit cexPriceReversedChanged();
         emit feesChanged();
         emit prefferedOrderChanged();
+        emit priceChanged();
+        emit priceReversedChanged();
     }
 
     QString
@@ -922,6 +927,12 @@ namespace atomic_dex
             case TradingErrorGadget::RightParentChainNotEnabled:
                 SPDLOG_WARN("last_trading_error is RightParentChainNotEnabled");
                 break;
+            case TradingErrorGadget::LeftZhtlcChainNotEnabled:
+                SPDLOG_WARN("last_trading_error is LeftZhtlcChainNotEnabled");
+                break;
+            case TradingErrorGadget::RightZhtlcChainNotEnabled:
+                SPDLOG_WARN("last_trading_error is RightZhtlcChainNotEnabled");
+                break;
             default:
                 break;
             }
@@ -1011,6 +1022,9 @@ namespace atomic_dex
                 set_current_orderbook(base, rel);
             }
         }
+        this->determine_cex_rates();
+        emit priceChanged();
+        emit priceReversedChanged();
         return true;
     }
 
@@ -1131,28 +1145,45 @@ namespace atomic_dex
             SPDLOG_WARN("MM2 Service not available, cannot determine fees - skipping");
             return;
         }
-        using namespace std::string_literals;
         const auto* market_pair = get_market_pairs_mdl();
+        using namespace std::string_literals;
         auto&       mm2         = this->m_system_manager.get_system<mm2_service>();
+        // TODO: there is a race condition that sometimes results in base == rel after switching base/rel tickers
         const auto  base        = market_pair->get_left_selected_coin().toStdString();
         const auto  rel         = market_pair->get_right_selected_coin().toStdString();
         const auto  swap_method = m_market_mode == MarketMode::Sell ? "sell"s : "buy"s;
+        std::string volume      = get_volume().toStdString();
 
+        if (base == rel)
+        {
+            return;
+        }
+        if (volume == "0")
+        {
+            volume = "0.0001";
+        }
+
+        SPDLOG_INFO("get_volume().toStdString(): {}", get_volume().toStdString());
         t_trade_preimage_request req{
-            .base_coin = base, .rel_coin = rel, .swap_method = swap_method, .volume = get_volume().toStdString(), .price = get_price().toStdString()};
+            .base_coin = base,
+            .rel_coin = rel,
+            .swap_method = swap_method,
+            .volume = volume,
+            .price = get_price().toStdString()
+        };
 
         nlohmann::json batch;
         nlohmann::json preimage_request = mm2::template_request("trade_preimage");
         mm2::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
-        SPDLOG_INFO("request: {}", preimage_request.dump(-1));
+        SPDLOG_INFO("trade_preimage request: {}", preimage_request.dump(-1));
 
         this->set_preimage_busy(true);
         auto answer_functor = [this, &mm2](web::http::http_response resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
-            SPDLOG_INFO("preimage answer received: {}", body);
+            SPDLOG_INFO("trade_preimage answer received: {}", body);
             if (resp.status_code() == web::http::status_codes::OK)
             {
                 auto           answers               = nlohmann::json::parse(body);
@@ -1250,6 +1281,15 @@ namespace atomic_dex
                 current_trading_error = TradingError::RightParentChainNotEnoughBalance;
             }
         }
+        else if (!mm2.is_zhtlc_coin_ready(left))
+        {
+            current_trading_error = TradingError::LeftZhtlcChainNotEnabled;
+        }
+        else if (!mm2.is_zhtlc_coin_ready(right))
+        {
+            current_trading_error = TradingError::RightZhtlcChainNotEnabled;
+        }
+
         if (current_trading_error == TradingError::None)
         {
             if (max_balance_without_dust < safe_float(regular_min_taker_vol)) //<! Checking balance < minimal_trading_amount
@@ -1422,8 +1462,11 @@ namespace atomic_dex
 
         if (safe_float(get_orderbook_wrapper()->get_current_min_taker_vol().toStdString()) > safe_float(min_trade_vol.toStdString()))
         {
-            SPDLOG_WARN("Spurious min_diff detected - overriding immediately");
-            min_trade_vol = get_orderbook_wrapper()->get_current_min_taker_vol();
+            SPDLOG_WARN("Spurious min_diff detected - (not) overriding immediately (using get_orderbook_wrapper()->get_current_min_taker_vol())");
+            // TODO: Sometimes this ends up returning a higher value than expected.
+            // Commenting out as it might be better to not update if this is the case.
+            // If not associated bugs appear as a result, we can delete this.
+            // min_trade_vol = get_orderbook_wrapper()->get_current_min_taker_vol();
         }
 
         if (min_trade_vol != m_minimal_trading_amount)

@@ -105,4 +105,4 @@ namespace atomic_dex::mm2
             answer.result = j.at("result").get<tx_history_answer_success>();
         }
     }
-}
+} // namespace atomic_dex::mm2

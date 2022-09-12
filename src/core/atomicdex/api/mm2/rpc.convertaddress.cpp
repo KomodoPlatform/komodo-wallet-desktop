@@ -12,7 +12,7 @@
 namespace atomic_dex::mm2
 {
     void
-    to_json(nlohmann::json& j, const mm2::convert_address_request& req)
+    to_json(nlohmann::json& j, const convert_address_request& req)
     {
         j["coin"]              = req.coin;
         j["from"]              = req.from;
