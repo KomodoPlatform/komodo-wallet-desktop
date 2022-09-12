@@ -7501,6 +7501,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "TAMA-ERC20": {
+    "coin": "TAMA-ERC20",
+    "name": "Tamadoge",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "test-coin",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "TEL-ERC20": {
     "coin": "TEL-ERC20",
     "name": "Telcoin",
