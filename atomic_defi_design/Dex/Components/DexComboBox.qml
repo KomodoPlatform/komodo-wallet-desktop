@@ -103,7 +103,7 @@ ComboBox
     // Each dropdown item
     delegate: ItemDelegate
     {
-        id: delegate
+        id: combo_item
 
         width: control.width
         highlighted: control.highlightedIndex === index
@@ -118,8 +118,8 @@ ComboBox
 
         background: Rectangle
         {
-            anchors.fill: delegate
-            color: delegate.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
+            anchors.fill: combo_item
+            color: combo_item.highlighted ? Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor : Dex.CurrentTheme.comboBoxBackgroundColor
         }
     }
 
