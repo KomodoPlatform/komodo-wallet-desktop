@@ -10,6 +10,8 @@
 //! Qt Headers
 #include <QCryptographicHash>
 #include <QString>
+#include <QFile>
+
 
 //! Project Headers
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -305,5 +307,29 @@ namespace atomic_dex::utils
             out.push_back(coin.ticker);
         }
         return out;
+    }
+
+    nlohmann::json
+    read_json_file(fs::path filepath)
+    {
+        nlohmann::json valid_json_data;
+
+        if (fs::exists(filepath))
+        {
+            QFile ifs;
+#if defined(_WIN32) || defined(WIN32)
+            ifs.setFileName(QString::fromStdWString(filepath.wstring()));
+#else
+            ifs.setFileName(QString::fromStdString(filepath.string()));
+#endif
+            ifs.open(QIODevice::ReadOnly | QIODevice::Text);
+            std::string json_str = QString(ifs.readAll()).toUtf8().constData();
+            if (nlohmann::json::accept(json_str))
+            {
+                valid_json_data = nlohmann::json::parse(json_str);
+            }
+            ifs.close();
+        }
+        return valid_json_data;
     }
 } // namespace atomic_dex::utils

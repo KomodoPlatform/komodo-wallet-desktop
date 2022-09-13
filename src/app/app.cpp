@@ -295,19 +295,14 @@ namespace atomic_dex
 
         if (fs::exists(wallet_custom_cfg_path))
         {
-            nlohmann::json custom_config_json_data;
-            QFile          file;
-            file.setFileName(std_path_to_qstring(wallet_custom_cfg_path));
-            file.open(QIODevice::ReadOnly | QIODevice::Text);
-
-            //! Read Contents
-            custom_config_json_data = nlohmann::json::parse(QString(file.readAll()).toStdString());
-            file.close();
+            nlohmann::json custom_config_json_data = utils::read_json_file(wallet_custom_cfg_path);
 
             //! Modify
             for (auto&& [key, value]: custom_config_json_data.items()) { value["active"] = false; }
 
             //! Write
+            QFile      file;
+            file.setFileName(std_path_to_qstring(wallet_custom_cfg_path));
             file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
             file.write(QString::fromStdString(custom_config_json_data.dump()).toUtf8());
             file.close();
