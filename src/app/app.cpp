@@ -287,6 +287,7 @@ namespace atomic_dex
             //! Write
             QFile          output_coins_file;
             //SPDLOG_DEBUG("Data written: ", default_coin_config_json_data.dump(4));
+            output_coins_file.setFileName(std_path_to_qstring(wallet_cfg_path));
             output_coins_file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
             output_coins_file.write(QString::fromStdString(default_coin_config_json_data.dump(4)).toUtf8());
             output_coins_file.close();

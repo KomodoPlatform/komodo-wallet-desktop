@@ -682,7 +682,6 @@ namespace atomic_dex
     void
     mm2_service::process_enable_zhtlc(std::vector<coin_config> coins)
     {
-        SPDLOG_DEBUG("[process_enable_zhtlc] ===========================================================================================");
         dispatcher_.trigger<zhtlc_enter_enabling>();
         auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
