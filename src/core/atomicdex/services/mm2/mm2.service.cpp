@@ -715,10 +715,10 @@ namespace atomic_dex
         
         if (!has_coin(bch_ticker))
         {
-            static constexpr auto error = "BCH is not present in the config. Cannot enable SLP tokens.";
+            static constexpr auto error = "{} is not present in the config. Cannot enable SLP tokens.";
             
             SPDLOG_ERROR(error);
-            this->dispatcher_.trigger<enabling_coin_failed>(coins[0].ticker, error);
+            this->dispatcher_.trigger<enabling_coin_failed>(bch_ticker, fmt::format(error, bch_ticker));
             return;
         }
         
