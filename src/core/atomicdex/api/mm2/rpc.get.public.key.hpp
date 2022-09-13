@@ -22,7 +22,7 @@
 // Deps Headers
 #include <nlohmann/json_fwd.hpp>
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     struct get_public_key
     {

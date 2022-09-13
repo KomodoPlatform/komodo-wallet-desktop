@@ -48,6 +48,8 @@ namespace atomic_dex
         void                              set_rpc_broadcast_data(QString rpc_data);
         [[nodiscard]] QVariant            get_rpc_send_data() const;
         void                              set_rpc_send_data(QVariant rpc_data);
+        [[nodiscard]] QVariant            get_coin_enabling_status() const;
+        void                              set_coin_enabling_status(QVariant rpc_data);
         [[nodiscard]] bool                is_tx_fetching_failed() const;
         void                              set_tx_fetching_failed(bool status);
         [[nodiscard]] bool                is_tx_fetching_busy() const;
@@ -56,6 +58,8 @@ namespace atomic_dex
         void                              set_convert_address_busy(bool status);
         [[nodiscard]] bool                is_validate_address_busy() const;
         void                              set_validate_address_busy(bool status);
+        [[nodiscard]] QString             get_withdraw_status() const;
+        void                              set_withdraw_status(QString status);
         [[nodiscard]] QString             get_converted_address() const;
         void                              set_converted_address(QString converted_address);
         [[nodiscard]] QVariant            get_validate_address_data() const;
@@ -94,6 +98,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant ticker_infos READ get_ticker_infos NOTIFY tickerInfosChanged)
         Q_PROPERTY(bool is_claiming_busy READ is_rpc_claiming_busy WRITE set_claiming_is_busy NOTIFY rpcClaimingStatusChanged)
         Q_PROPERTY(QVariant claiming_rpc_data READ get_rpc_claiming_data WRITE set_rpc_claiming_data NOTIFY claimingRpcDataChanged)
+        Q_PROPERTY(QVariant enable_status_rpc_data READ get_coin_enabling_status WRITE set_coin_enabling_status NOTIFY coinEnablingStatusChanged)
         Q_PROPERTY(bool is_claiming_faucet_busy READ is_claiming_faucet_busy WRITE set_claiming_faucet_is_busy NOTIFY claimingFaucetStatusChanged)
         Q_PROPERTY(QVariant claiming_faucet_rpc_data READ get_rpc_claiming_faucet_data WRITE set_rpc_claiming_faucet_data NOTIFY claimingFaucetRpcDataChanged)
         Q_PROPERTY(bool is_broadcast_busy READ is_broadcast_busy WRITE set_broadcast_busy NOTIFY broadCastStatusChanged)
@@ -111,6 +116,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant validate_address_data READ get_validate_address_data WRITE set_validate_address_data NOTIFY validateAddressDataChanged)
         Q_PROPERTY(bool convert_address_busy READ is_convert_address_busy WRITE set_convert_address_busy NOTIFY convertAddressBusyChanged)
         Q_PROPERTY(QString converted_address READ get_converted_address WRITE set_converted_address NOTIFY convertedAddressChanged)
+        Q_PROPERTY(QString withdraw_status READ get_withdraw_status WRITE set_withdraw_status NOTIFY withdrawStatusChanged)
 
         // QML API Properties Signals
       signals:
@@ -118,6 +124,7 @@ namespace atomic_dex
         void tickerInfosChanged();
         void rpcClaimingStatusChanged();
         void claimingRpcDataChanged();
+        void coinEnablingStatusChanged();
         void claimingFaucetStatusChanged();
         void claimingFaucetRpcDataChanged();
         void broadCastStatusChanged();
@@ -136,6 +143,7 @@ namespace atomic_dex
         void validateAddressDataChanged();
         void convertAddressBusyChanged();
         void convertedAddressChanged();
+        void withdrawStatusChanged();
 
       private:
         ag::ecs::system_manager&                       m_system_manager;
@@ -149,12 +157,14 @@ namespace atomic_dex
         std::atomic_bool                               m_validate_address_busy{false};
         std::atomic_bool                               m_convert_address_busy{false};
 
+        t_qt_synchronized_json                         m_coin_enabling_status;
         t_qt_synchronized_json                         m_claiming_rpc_result;
         t_qt_synchronized_json                         m_claiming_rpc_faucet_result;
         t_qt_synchronized_json                         m_send_rpc_result;
         t_qt_synchronized_string                       m_broadcast_rpc_result;
         t_qt_synchronized_json                         m_validate_address_result;
         t_qt_synchronized_string                       m_converted_address;
+        t_qt_synchronized_string                       m_withdraw_status;
         bool                                           m_auth_succeeded;
         bool                                           m_send_available{true};
         QString                                        m_send_availability_state;

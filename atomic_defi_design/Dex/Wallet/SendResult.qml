@@ -5,24 +5,57 @@ import QtQuick.Controls 2.15
 import "../Components"
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 MultipageModalContent
 {
     id: root
 
     property var    result
-    property alias  address: address.text
+    property alias  address: address.text_value
     property string custom_amount
-    property alias  tx_hash: tx_hash.text
+    property alias  tx_hash: tx_hash.text_value
 
     titleText: qsTr("Transaction Complete!")
 
+    // Transaction Hash
+    TitleText
+    {
+        text: qsTr("Transaction Hash")
+        Layout.fillWidth: true
+        visible: text !== ""
+        color: Dex.CurrentTheme.foregroundColor2
+    }
+
+    TextEditWithCopy
+    {
+        id: tx_hash
+        font_size: 13
+        align_left: true
+        text_box_width: 560
+        onCopyNotificationTitle: qsTr("%1 txid", "TICKER").arg(api_wallet_page.ticker)
+        onCopyNotificationMsg: qsTr("copied to clipboard.")
+        privacy: true
+    }
+
     // Address
-    TextEditWithTitle
+    TitleText
+    {
+        text: qsTr("Recipient's address")
+        Layout.fillWidth: true
+        visible: text !== ""
+        color: Dex.CurrentTheme.foregroundColor2
+    }
+
+    TextEditWithCopy
     {
         id: address
-        title: qsTr("Recipient's address")
-        visible: text !== ""
+        font_size: 13
+        align_left: true
+        text_box_width: 560
+        onCopyNotificationTitle: qsTr("%1 address", "TICKER").arg(api_wallet_page.ticker)
+        onCopyNotificationMsg: qsTr("copied to clipboard.")
+        privacy: true
     }
 
     // Amount
@@ -68,13 +101,6 @@ MultipageModalContent
         text: result.withdraw_answer.date
     }
 
-    // Transaction Hash
-    TextEditWithTitle
-    {
-        id: tx_hash
-        Layout.fillWidth: true
-        title: qsTr("Transaction Hash")
-    }
 
     // Buttons
     footer:
@@ -91,7 +117,7 @@ MultipageModalContent
             Layout.fillWidth: true
             text: qsTr("View on Explorer")
             radius: 18
-            onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
+            onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text_value)
         }
     ]
 }

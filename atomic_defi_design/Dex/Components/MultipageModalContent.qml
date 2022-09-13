@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 ColumnLayout
 {
@@ -10,7 +11,10 @@ ColumnLayout
 
     property alias         title:               _title
     property alias         titleText:           _title.text
+    property alias         subtitle:            _subtitle
+    property alias         subtitleText:        _subtitle.text
     property var           titleAlignment:      Qt.AlignLeft
+    property var           subtitleAlignment:   Qt.AlignLeft
     property int           titleTopMargin:      20
     property int           topMarginAfterTitle: 30
     
@@ -32,6 +36,16 @@ ColumnLayout
         Layout.topMargin: root.titleTopMargin
         Layout.alignment: root.titleAlignment
         font: DexTypo.head6
+        visible: text != ''
+    }
+
+    DefaultText
+    {
+        id: _subtitle
+        Layout.topMargin: 5
+        Layout.alignment: root.subtitleAlignment
+        color: Dex.CurrentTheme.foregroundColor2
+        font.pixelSize: 13
         visible: text != ''
     }
 

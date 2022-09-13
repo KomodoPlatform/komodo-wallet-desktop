@@ -60,6 +60,9 @@ namespace atomic_dex
         //! eg: Komodo data rates
         QJsonArray trend_7d;
 
+        //! eg: Komodo data rates
+        QJsonObject activation_status;
+
         //! Price provider
         QString price_provider;
 

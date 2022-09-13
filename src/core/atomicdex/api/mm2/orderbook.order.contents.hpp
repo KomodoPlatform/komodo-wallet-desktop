@@ -30,9 +30,12 @@ namespace mm2::api
         std::string                price;
         std::string                price_fraction_numer;
         std::string                price_fraction_denom;
+        std::string                min_volume;
+        std::string                min_volume_fraction_numer;
+        std::string                min_volume_fraction_denom;
+        std::string                maxvolume;
         std::string                max_volume_fraction_numer;
         std::string                max_volume_fraction_denom;
-        std::string                maxvolume;
         std::string                base_min_volume;
         std::string                base_min_volume_denom;
         std::string                base_min_volume_numer;
@@ -46,13 +49,12 @@ namespace mm2::api
         std::string                rel_max_volume_denom;
         std::string                rel_max_volume_numer;
         std::string                pubkey;
-        std::size_t                age;
-        std::size_t                zcredits;
+        //std::size_t                age;
+        //std::size_t                zcredits;
         std::string                total;
         std::string                uuid;
         std::string                depth_percent;
         bool                       is_mine;
-        std::string                min_volume{"0"};
         std::optional<std::string> rel_coin{std::nullopt};
 
         std::string to_string() const noexcept;

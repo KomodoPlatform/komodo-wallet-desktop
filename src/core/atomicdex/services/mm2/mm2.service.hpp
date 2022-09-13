@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -88,7 +88,7 @@ namespace atomic_dex
         mm2_client m_mm2_client;
 
         //! Process
-        //reproc::process m_mm2_instance;
+        // reproc::process m_mm2_instance;
 
         //! Current ticker
         t_synchronized_ticker m_current_ticker{g_primary_dex_coin};
@@ -105,6 +105,8 @@ namespace atomic_dex
         //! Atomicity / Threads
         std::atomic_bool m_mm2_running{false};
         std::atomic_bool m_orderbook_thread_active{false};
+        std::atomic_bool m_zhtlc_enable_thread_active{false};
+        std::atomic_size_t m_nb_update_required{0};
         std::thread      m_mm2_init_thread;
 
         //! Current wallet name
@@ -138,6 +140,12 @@ namespace atomic_dex
         void fetch_single_balance(const coin_config& cfg_infos);
 
         //!
+        void process_electrum_legacy(std::vector<coin_config> coins_to_enable);
+        void process_enable_legacy(std::vector<coin_config> coins_to_enable);
+        void process_enable_zhtlc(std::vector<coin_config> coins_to_enable);
+        void batch_enable_answer_legacy(web::http::http_response resp, std::vector<std::string> tickers);
+
+        //!
         std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);
         [[nodiscard]] std::pair<t_transactions, t_tx_state> get_tx(t_mm2_ec& ec) const;
         std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
@@ -165,6 +173,10 @@ namespace atomic_dex
 
         void on_gui_leave_trading(const gui_leave_trading& evt);
 
+        void on_zhtlc_enter_enabling(const zhtlc_enter_enabling& evt);
+
+        void on_zhtlc_leave_enabling(const zhtlc_leave_enabling& evt);
+
         //! Spawn mm2 instance with given seed
         void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
 
@@ -173,12 +185,11 @@ namespace atomic_dex
 
         //! Enable coins
         bool enable_default_coins();
-
-        //! Batch Enable coins
-        void batch_enable_coins(const std::vector<std::string>& tickers, bool first_time = false);
-
-        //! Enable multiple coins
-        void enable_multiple_coins(const std::vector<std::string>& tickers);
+        using t_array_network         = std::array<std::vector<coin_config>, 2>;
+        using t_coins_enable_registry = std::unordered_map<CoinType, t_array_network>;
+        void enable_multiple_coins_v2(const t_coins_enable_registry& coins_to_enable);
+        void batch_enable_coins_v2(CoinType type_to_enable, std::vector<coin_config> coins_to_enable);
+        [[nodiscard]] bool is_zhtlc_coin_ready(const std::string coin) const;
 
         //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
         void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
@@ -237,6 +248,7 @@ namespace atomic_dex
         [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
 
         [[nodiscard]] bool is_orderbook_thread_active() const;
+        [[nodiscard]] bool is_zhtlc_enable_thread_active() const;
 
         [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const;
 
