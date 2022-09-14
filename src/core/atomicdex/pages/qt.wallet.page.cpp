@@ -3,11 +3,13 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QSettings>
-#include <QrCode.hpp>
 
+//! Deps
+#include <QrCode.hpp>
 #include <antara/app/net/http.code.hpp>
 #include <antara/gaming/core/security.authentification.hpp>
 
+//! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
 #include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
@@ -28,11 +30,12 @@ namespace atomic_dex
     wallet_page::wallet_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
         QObject(parent), system(registry), m_system_manager(system_manager), m_transactions_mdl(new transactions_model(system_manager, this))
     {
-        this->dispatcher_.sink<mm2_service::tx_fetch_finished>().connect<&wallet_page::on_mm2_tx_fetch_finished>(*this);
+        this->dispatcher_.sink<tx_fetch_finished>().connect<&wallet_page::on_tx_fetch_finished>(*this);
         this->dispatcher_.sink<ticker_balance_updated>().connect<&wallet_page::on_ticker_balance_updated>(*this);
     }
 
-    void wallet_page::update()
+    void
+    wallet_page::update()
     {
         if (!m_page_open)
         {
@@ -48,8 +51,13 @@ namespace atomic_dex
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
     }
+} // namespace atomic_dex
 
-    void wallet_page::check_send_availability()
+//! Private API
+namespace atomic_dex
+{
+    void
+    wallet_page::check_send_availability()
     {
         auto& mm2              = m_system_manager.get_system<mm2_service>();
         auto  global_coins_cfg = m_system_manager.get_system<portfolio_page>().get_global_cfg();
@@ -88,6 +96,7 @@ namespace atomic_dex
         emit sendAvailabilityStateChanged();
         emit currentTickerFeesCoinEnabledChanged();
     }
+} // namespace atomic_dex
 
 //! Getters/Setters
 namespace atomic_dex
@@ -486,7 +495,8 @@ namespace atomic_dex
         emit tickerInfosChanged();
     }
 
-    void wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data)
+    void
+    wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data)
     {
         //! Preparation
         this->set_send_busy(true);
@@ -780,7 +790,8 @@ namespace atomic_dex
         }
     }
 
-    void wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount)
+    void
+    wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount)
     {
 #if defined(__APPLE__) || defined(WIN32) || defined(_WIN32)
         QSettings& settings = this->entity_registry_.ctx<QSettings>();
@@ -798,7 +809,8 @@ namespace atomic_dex
 #endif
     }
 
-    void wallet_page::broadcast_on_auth_finished(bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount)
+    void
+    wallet_page::broadcast_on_auth_finished(bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount)
     {
         if (!is_auth)
         {
@@ -827,6 +839,7 @@ namespace atomic_dex
                 auto&       mm2_system = m_system_manager.get_system<mm2_service>();
                 const auto& ticker     = mm2_system.get_current_ticker();
                 auto        answers    = nlohmann::json::parse(body);
+                // SPDLOG_INFO("broadcast answer: {}", answers.dump(4));
                 if (answers[0].contains("tx_hash"))
                 {
                     this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
@@ -869,7 +882,8 @@ namespace atomic_dex
         mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 
-    void wallet_page::claim_rewards()
+    void
+    wallet_page::claim_rewards()
     {
         this->set_claiming_is_busy(true);
         nlohmann::json     batch      = nlohmann::json::array();
@@ -885,6 +899,7 @@ namespace atomic_dex
         auto answer_functor = [this](web::http::http_response resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
+            // SPDLOG_DEBUG("resp claiming: {}", body);
             if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok) && body.find("error") == std::string::npos)
             {
                 auto           answers              = nlohmann::json::parse(body);
@@ -922,7 +937,8 @@ namespace atomic_dex
         mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 
-    void wallet_page::claim_faucet()
+    void
+    wallet_page ::claim_faucet()
     {
         const auto&                mm2_system = m_system_manager.get_system<mm2_service>();
         const auto&                ticker     = mm2_system.get_current_ticker();
@@ -943,17 +959,20 @@ namespace atomic_dex
             .then(&handle_exception_pplx_task);
     }
 
-    transactions_model* wallet_page::get_transactions_mdl() const
+    transactions_model*
+    wallet_page::get_transactions_mdl() const
     {
         return m_transactions_mdl;
     }
 
-    void wallet_page::on_ticker_balance_updated(const ticker_balance_updated&)
+    void
+    wallet_page::on_ticker_balance_updated(const ticker_balance_updated&)
     {
         refresh_ticker_infos();
     }
 
-    void wallet_page::on_mm2_tx_fetch_finished(const mm2_service::tx_fetch_finished& evt)
+    void
+    wallet_page::on_tx_fetch_finished(const tx_fetch_finished& evt)
     {
         if (!evt.with_error && QString::fromStdString(evt.ticker) == get_current_ticker())
         {
@@ -985,7 +1004,8 @@ namespace atomic_dex
         this->set_tx_fetching_busy(false);
     }
 
-    void wallet_page::validate_address(QString address)
+    void
+    wallet_page::validate_address(QString address)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
@@ -995,8 +1015,10 @@ namespace atomic_dex
         }
     }
 
-    void wallet_page::validate_address(QString address, QString ticker)
+    void
+    wallet_page::validate_address(QString address, QString ticker)
     {
+        // SPDLOG_INFO("validate_address: {} - ticker: {}", address.toStdString(), ticker.toStdString());
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
@@ -1010,6 +1032,7 @@ namespace atomic_dex
             auto answer_functor = [this, ticker](web::http::http_response resp)
             {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
+                // SPDLOG_DEBUG("resp validateaddress: {}", body);
                 nlohmann::json j_out = nlohmann::json::object();
                 j_out["ticker"]      = ticker.toStdString();
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
@@ -1048,7 +1071,8 @@ namespace atomic_dex
         }
     }
 
-    void wallet_page::convert_address(QString from, QVariant to_address_format)
+    void
+    wallet_page::convert_address(QString from, QVariant to_address_format)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
@@ -1058,7 +1082,8 @@ namespace atomic_dex
         }
     }
 
-    void wallet_page::convert_address(QString from, QString ticker, QVariant to_address_format)
+    void
+    wallet_page::convert_address(QString from, QString ticker, QVariant to_address_format)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
@@ -1107,6 +1132,19 @@ namespace atomic_dex
     QString
     wallet_page::get_converted_address() const
     {
+        return m_converted_address.get();
+    }
+
+    void
+    wallet_page::set_converted_address(QString converted_address)
+    {
+        m_converted_address = converted_address;
+        emit convertedAddressChanged();
+    }
+
+    QString
+    wallet_page::switch_address_mode(bool checked)
+    {
         auto&       mm2_system = m_system_manager.get_system<mm2_service>();
         std::string address    = "";
         if (mm2_system.is_mm2_running())
@@ -1139,6 +1177,7 @@ namespace atomic_dex
                 mm2::to_json(json_data, req);
                 batch.push_back(json_data);
                 json_data["userpass"] = "******";
+                SPDLOG_INFO("convertaddress request: {}", json_data.dump());
                 web::http::http_response resp = mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).get();
                 std::string              body = TO_STD_STR(resp.extract_string(true).get());
                 SPDLOG_DEBUG("resp convertaddress: {}", body);
@@ -1156,8 +1195,10 @@ namespace atomic_dex
         return QString::fromStdString(address);
     }
 
-    void wallet_page::post_switch_address_mode(bool is_segwit)
+    void
+    wallet_page::post_switch_address_mode(bool is_segwit)
     {
+        SPDLOG_INFO("switching to : {}", is_segwit ? "segwit" : "legacy");
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
@@ -1183,6 +1224,7 @@ namespace atomic_dex
             mm2::to_json(electrum_data, electrum_req);
             batch.push_back(electrum_data);
             electrum_data["userpass"] = "*******";
+            SPDLOG_INFO("electrum_req: {}", electrum_data.dump(-1));
 
             //! Answer functor
             auto answer_functor = [this, ticker, is_segwit](web::http::http_response resp)
@@ -1194,6 +1236,7 @@ namespace atomic_dex
                     auto& mm2_system = m_system_manager.get_system<mm2_service>();
                     mm2_system.change_segwit_status(ticker, is_segwit);
                     mm2_system.fetch_infos_thread(true, false);
+                    SPDLOG_INFO("Switching address mode success");
                 }
             };
 

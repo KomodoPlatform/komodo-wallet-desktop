@@ -249,7 +249,7 @@ namespace atomic_dex
                     if (std::find(to_init.begin(), to_init.end(), g_primary_dex_coin) != to_init.end())
                     {
                         get_wallet_page()->get_transactions_mdl()->reset();
-                        this->dispatcher_.trigger<mm2_service::tx_fetch_finished>();
+                        this->dispatcher_.trigger<tx_fetch_finished>();
                     }
                     get_wallet_page()->refresh_ticker_infos();
                     system_manager_.get_system<qt_wallet_manager>().set_status("complete");

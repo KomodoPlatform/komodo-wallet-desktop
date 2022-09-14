@@ -1,5 +1,6 @@
 #pragma once
 
+//! Qt
 #include <QJsonObject>
 #include <QObject>
 #include <QVariant>
@@ -10,27 +11,22 @@ namespace atomic_dex
 {
     class wallet_page final : public QObject, public ag::ecs::pre_update_system<wallet_page>
     {
+        // Q_Object definition
         Q_OBJECT
 
         using t_qt_synchronized_json   = boost::synchronized_value<QJsonObject>;
         using t_qt_synchronized_string = boost::synchronized_value<QString>;
 
-    public:
+      public:
         explicit wallet_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
+        void update() override;
         ~wallet_page() final = default;
 
-        void update() override;
-
         void refresh_ticker_infos();
-        
-        void on_mm2_tx_fetch_finished(const tx_fetch_finished&);
+
+        void on_tx_fetch_finished(const tx_fetch_finished&);
         void on_ticker_balance_updated(const ticker_balance_updated&);
 
-    private:
-        // When called, refreshes `send_available` and `send_availability_state` values. `send_available` is set to false when you cannot send coins from the selected asset, thus `send_availability_state` will contain the reason of why it's not possible.
-        void check_send_availability();
-
-    public:
         // Getters/Setters
         [[nodiscard]] transactions_model* get_transactions_mdl() const;
         [[nodiscard]] QString             get_current_ticker() const;
@@ -76,16 +72,23 @@ namespace atomic_dex
         [[nodiscard]] bool                is_page_open() const;
         void                              set_page_open(bool value);
 
+        void check_send_availability(); // When called, refreshes `m_send_availability_state` and `m_send_available` respective values. `m_send_available` is
+                                        // equal to false when you cannot send the selected coin, thus `m_send_availability_state` will contain the reason of
+                                        // why it's not possible.
+
         // QML API
-        Q_INVOKABLE void    validate_address(QString address);
-        Q_INVOKABLE void    validate_address(QString address, QString ticker);
-        Q_INVOKABLE void    convert_address(QString from, QVariant to_address_format);                 // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#convertaddress
-        Q_INVOKABLE void    convert_address(QString from, QString ticker, QVariant to_address_format); // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#convertaddress
-        Q_INVOKABLE void    claim_rewards();
-        Q_INVOKABLE void    claim_faucet();
-        Q_INVOKABLE void    broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount);
-        void                broadcast_on_auth_finished(bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max,const QString& amount); // Sending coins requires OS local user credentials verification. This is called by the Q_INVOKABLE broadcast() method after entering credentials.
-        Q_INVOKABLE void    send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
+        Q_INVOKABLE void validate_address(QString address);
+        Q_INVOKABLE void validate_address(QString address, QString ticker);
+        Q_INVOKABLE void convert_address(QString from, QVariant to_address_format);                 // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#convertaddress
+        Q_INVOKABLE void convert_address(QString from, QString ticker, QVariant to_address_format); // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#convertaddress
+        Q_INVOKABLE void claim_rewards();
+        Q_INVOKABLE void claim_faucet();
+        Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount);
+        void             broadcast_on_auth_finished(
+                        bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max,
+                        const QString& amount); // Broadcast requires OS local user credentials verification. This is called by the Q_INVOKABLE broadcast() method after
+                                                // entering credentials.
+        Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
         Q_INVOKABLE QString switch_address_mode(bool checked);
         Q_INVOKABLE void    post_switch_address_mode(bool is_segwit);
 
@@ -116,7 +119,7 @@ namespace atomic_dex
         Q_PROPERTY(QString withdraw_status READ get_withdraw_status WRITE set_withdraw_status NOTIFY withdrawStatusChanged)
 
         // QML API Properties Signals
-    signals:
+      signals:
         void currentTickerChanged();
         void tickerInfosChanged();
         void rpcClaimingStatusChanged();
@@ -142,7 +145,7 @@ namespace atomic_dex
         void convertedAddressChanged();
         void withdrawStatusChanged();
 
-    private:
+      private:
         ag::ecs::system_manager&                       m_system_manager;
         transactions_model*                            m_transactions_mdl;
         std::atomic_bool                               m_is_claiming_busy{false};
@@ -166,10 +169,8 @@ namespace atomic_dex
         bool                                           m_send_available{true};
         QString                                        m_send_availability_state;
         bool                                           m_current_ticker_fees_coin_enabled{true}; // Tells if the current ticker's fees coin is enabled.
-        std::chrono::high_resolution_clock::time_point m_update_clock;                           // Clock used as a refresh rate in `update()`.
+        std::chrono::high_resolution_clock::time_point m_update_clock;                           // Clock used to time the `update()` loop of this ecs system.
         bool                                           m_page_open{false};
-
-        mutable std::shared_mutex                      m_update_tx_mutex;
     };
 } // namespace atomic_dex
 

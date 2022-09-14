@@ -893,12 +893,12 @@ namespace atomic_dex
         update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
     }
 
-    auto mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
+    auto
+    mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
         (void)tickers;
         (void)is_during_enabling;
         auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
-        
         return m_mm2_client.async_rpc_batch_standalone(batch_array)
             .then(
                 [this, tokens_to_fetch = tokens_to_fetch, is_a_reset, tickers, batch_array = batch_array](web::http::http_response resp)
@@ -951,9 +951,9 @@ namespace atomic_dex
                         SPDLOG_ERROR("exception in batch_balance_and_tx: {}", error.what());
                         this->dispatcher_.trigger<tx_fetch_finished>(true);
                     }
-                }, m_cancellation_token_source.get_token())
+                })
             .then([this, batch = batch_array](pplx::task<void> previous_task)
-                  { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx", batch); }, m_cancellation_token_source.get_token());
+                  { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx", batch); });
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -1498,11 +1498,13 @@ namespace atomic_dex
 
         auto error_functor = [this, batch = batch_array](pplx::task<void> previous_task)
         { this->handle_exception_pplx_task(previous_task, "fetch_single_balance", batch); };
-        m_mm2_client.async_rpc_batch_standalone(batch_array).then(answer_functor, m_cancellation_token_source.get_token()).then(error_functor);
+        m_mm2_client.async_rpc_batch_standalone(batch_array).then(answer_functor).then(error_functor);
     }
 
-    void mm2_service::fetch_infos_thread(bool is_a_refresh, bool only_tx)
+    void
+    mm2_service::fetch_infos_thread(bool is_a_refresh, bool only_tx)
     {
+        SPDLOG_INFO("fetch_infos_thread");
         if (only_tx)
         {
             batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
