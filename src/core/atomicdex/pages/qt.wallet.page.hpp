@@ -23,7 +23,7 @@ namespace atomic_dex
 
         void refresh_ticker_infos();
         
-        void on_mm2_tx_fetch_finished(const mm2_service::tx_fetch_finished&);
+        void on_mm2_tx_fetch_finished(const tx_fetch_finished&);
         void on_ticker_balance_updated(const ticker_balance_updated&);
 
     private:
