@@ -109,7 +109,7 @@ namespace atomic_dex
         QString     secondary_coin = QString::fromStdString(g_second_primary_dex_coin);
         QStringList coins_copy;
         const auto& mm2 = system_manager_.get_system<mm2_service>();
-        for (auto&& coin: coins)
+        for (auto&& coin : coins)
         {
             const auto coin_info       = mm2.get_coin_info(coin.toStdString());
             bool       has_parent_fees = coin_info.has_parent_fees_ticker;
@@ -139,7 +139,7 @@ namespace atomic_dex
             system_manager_.get_system<portfolio_page>().disable_coins(coins_copy);
             system_manager_.get_system<trading_page>().disable_coins(coins_copy);
             coins_std.reserve(coins_copy.size());
-            for (auto&& coin: coins_copy)
+            for (auto&& coin : coins_copy)
             {
                 if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_primary_coin_fully_enabled)
                 {
