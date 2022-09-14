@@ -901,7 +901,7 @@
       "https://bchd.fountainhead.cash:443"
     ],
     "allow_slp_unsafe_conf": false,
-    "type": "BCH",
+    "type": "UTXO",
     "name": "Bitcoin Cash"
   },
   "USDT-SLP": {
@@ -914,7 +914,7 @@
       "https://simpleledger.info/"
     ],
     "explorer_tx_url": "#tx/",
-    "type": "BCH",
+    "type": "SLP",
     "name": "Tether"
   },
   "BCH-ERC20": {
