@@ -910,8 +910,17 @@ namespace atomic_dex
                         {
                             for (auto i = 0ul; i < answers.size(); i++)
                             {
-                                std::string ticker = batch_array[i].at("coin");
                                 auto&       answer = answers[i];
+                                std::string ticker;
+                                
+                                if (batch_array[i].contains("mmrpc") && batch_array[i].at("mmrpc") == "2.0")
+                                {
+                                    ticker = batch_array[i].at("params").at("coin");
+                                }
+                                else
+                                {
+                                    ticker = batch_array[i].at("coin");
+                                }
                                 
                                 if (answer.contains("balance"))
                                 {
