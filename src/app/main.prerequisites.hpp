@@ -57,6 +57,7 @@
 //! Project Headers
 #include "app.hpp"
 #include "atomicdex/constants/qt.wallet.enums.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/utilities/kill.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -104,7 +105,7 @@ static void
 signal_handler(int signal)
 {
     SPDLOG_ERROR("sigabort received, cleaning mm2");
-    atomic_dex::kill_executable("mm2");
+    atomic_dex::kill_executable(atomic_dex::g_dex_api);
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
     std::ifstream                 ifs("./backtrace.dump");
@@ -158,7 +159,7 @@ static void
 clean_previous_run()
 {
     SPDLOG_INFO("cleaning previous mm2 instance");
-    atomic_dex::kill_executable("mm2");
+    atomic_dex::kill_executable(atomic_dex::g_dex_api);
 }
 
 static void
@@ -322,7 +323,7 @@ handle_settings(QSettings& settings)
 #endif
     create_settings_functor("AutomaticUpdateOrderBot", QVariant(false));
     create_settings_functor("WalletChartsCategory", qint32(WalletChartsCategories::OneMonth));
-    create_settings_functor("AvailableLang", QStringList{"en", "fr", "tr", "ru"});
+    create_settings_functor("AvailableLang", QStringList{"en", "fr", "de", "tr", "ru"});
     create_settings_functor("CurrentLang", QString("en"));
     create_settings_functor("2FA", 0);
     create_settings_functor("MaximumNbCoinsEnabled", 50);

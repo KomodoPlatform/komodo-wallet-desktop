@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -30,6 +30,7 @@ namespace
     {
         QJsonObject j{
             {"active", coin.active},
+            {"activation_status", atomic_dex::nlohmann_json_object_to_qt_json_object(coin.activation_status)},
             {"is_claimable", coin.is_claimable},
             {"minimal_balance_for_asking_rewards", QString::fromStdString(coin.minimal_claim_amount)},
             {"ticker", QString::fromStdString(coin.ticker)},
@@ -44,6 +45,7 @@ namespace
             {"has_parent_fees_ticker", coin.has_parent_fees_ticker},
             {"is_testnet", coin.is_testnet.value_or(false)},
             {"is_erc_family", coin.is_erc_family},
+            {"is_zhtlc_family", coin.is_zhtlc_family},
             {"is_wallet_only", coin.wallet_only},
             {"fees_ticker", QString::fromStdString(coin.fees_ticker)}};
         return j;
@@ -96,6 +98,8 @@ namespace atomic_dex
             return item.currently_enabled;
         case Active:
             return item.active;
+        case ActivationStatus:
+            return atomic_dex::nlohmann_json_object_to_qt_json_object(item.activation_status);
         case IsCustomCoin:
             return item.is_custom_coin;
         case Type:
@@ -213,8 +217,7 @@ namespace atomic_dex
     }
 
     template <typename TArray>
-    void
-    global_coins_cfg_model::update_status(const TArray& tickers, bool status) 
+    void global_coins_cfg_model::update_status(const TArray& tickers, bool status)
     {
         auto update_functor = [this, status](QModelIndexList res, [[maybe_unused]] const QString& ticker) {
             // SPDLOG_INFO("Changing Active/CurrentlyEnabled status to {} for ticker {}", status, ticker.toStdString());
@@ -321,6 +324,19 @@ namespace atomic_dex
     global_coins_cfg_model::get_all_utxo_proxy() const 
     {
         return m_proxies[CoinType::UTXO];
+    }
+
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_slp_proxy() const
+    {
+        return m_proxies[CoinType::SLP];
+    }
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_zhtlc_proxy() const
+    {
+        return m_proxies[CoinType::ZHTLC];
     }
 
     int

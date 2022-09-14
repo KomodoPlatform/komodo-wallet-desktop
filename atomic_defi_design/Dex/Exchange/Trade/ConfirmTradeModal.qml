@@ -11,22 +11,23 @@ import "Orders/"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
+
 MultipageModal
 {
     id: root
     readonly property var fees: API.app.trading_pg.fees
-
+    width: 720
     horizontalPadding: 30
-    verticalPadding: 40
+    verticalPadding: 30
 
     MultipageModalContent
     {
         titleText: qsTr("Confirm Exchange Details")
         title.font.pixelSize: Style.textSize2
         titleAlignment: Qt.AlignHCenter
-        titleTopMargin: 10
-        topMarginAfterTitle: 0
-        flickMax: window.height - 450
+        titleTopMargin: 0
+        topMarginAfterTitle: 10
+        flickMax: window.height - 480
 
         header: [
             RowLayout
@@ -70,6 +71,39 @@ MultipageModal
                 id: warnings_text
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
+
+                // Large margin Warning
+                FloatingBackground
+                {
+                    Layout.alignment: Qt.AlignCenter
+                    width: 425
+                    height: 30
+                    color: Style.colorRed2
+                    visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
+
+                    RowLayout
+                    {
+                        Layout.fillWidth: true
+
+                        Item { width: 3 }
+
+                        DefaultCheckBox
+                        {
+                            id: allow_bad_trade
+                            Layout.alignment: Qt.AlignCenter
+                            textColor: Style.colorWhite0
+                            visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
+                            spacing: 2
+                            boxWidth: 20
+                            boxHeight: 20
+                            labelWidth: 400
+                            label.wrapMode: Label.NoWrap
+                            text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
+                        }
+
+                        Item { width: 3 }
+                    }
+                }
 
                 DefaultText
                 {
@@ -291,7 +325,7 @@ MultipageModal
                         DefaultSlider
                         {
                             id: required_confirmation_count
-                            height: 30
+                            height: 24
 
                             Layout.alignment: Qt.AlignCenter
 
@@ -310,8 +344,8 @@ MultipageModal
                     FloatingBackground
                     {
                         Layout.alignment: Qt.AlignCenter
-                        width: 360
-                        height: 30
+                        width: dpow_off_warning.implicitWidth + 30
+                        height: dpow_off_warning.implicitHeight + 10
                         color: Style.colorRed2
                         visible: {
                             enable_custom_config.checked && (config_section.is_dpow_configurable && !enable_dpow_confs.checked)
@@ -321,6 +355,7 @@ MultipageModal
                         {
                             id: dpow_off_warning
                             anchors.fill: parent
+                            font: DexTypo.body2
                             color: Style.colorWhite0
                             horizontalAlignment: Qt.AlignHCenter
                             verticalAlignment: Qt.AlignVCenter
@@ -368,7 +403,7 @@ MultipageModal
                 leftPadding: 45
                 rightPadding: 45
                 radius: 10
-                enabled: !buy_sell_rpc_busy && last_trading_error === TradingError.None
+                enabled: General.is_swap_safe(allow_bad_trade)
                 onClicked:
                 {
                     trade({ enable_custom_config: enable_custom_config.checked,

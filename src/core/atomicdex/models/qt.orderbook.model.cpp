@@ -254,7 +254,7 @@ namespace atomic_dex
         {
             return false;
         }
-        ::mm2::api::order_contents& order = m_model_data.at(index.row());
+        mm2::order_contents& order = m_model_data.at(index.row());
         switch (static_cast<OrderbookRoles>(role))
         {
         case PriceRole:
@@ -411,7 +411,7 @@ namespace atomic_dex
 
 
     void
-    orderbook_model::initialize_order(const ::mm2::api::order_contents& order)
+    orderbook_model::initialize_order(const mm2::order_contents& order)
     {
         if (m_orders_id_registry.contains(order.uuid))
         {
@@ -450,7 +450,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::update_order(const ::mm2::api::order_contents& order)
+    orderbook_model::update_order(const mm2::order_contents& order)
     {
         if (const auto res = this->match(index(0, 0), UUIDRole, QString::fromStdString(order.uuid)); not res.isEmpty())
         {
@@ -541,7 +541,7 @@ namespace atomic_dex
     void
     orderbook_model::refresh_orderbook(const t_orders_contents& orderbook)
     {
-        auto refresh_functor = [this](const std::vector<::mm2::api::order_contents>& contents)
+        auto refresh_functor = [this](const std::vector<mm2::order_contents>& contents)
         {
             // SPDLOG_INFO("refresh orderbook of size: {}", contents.size());
             for (auto&& current_order: contents)
@@ -626,7 +626,7 @@ namespace atomic_dex
     void
     orderbook_model::clear_orderbook()
     {
-        SPDLOG_INFO("clear orderbook");
+        // SPDLOG_INFO("clear orderbook");
         this->beginResetModel();
         m_model_data = t_orders_contents{};
         m_orders_id_registry.clear();

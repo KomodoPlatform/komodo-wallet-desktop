@@ -28,7 +28,15 @@ Menu {
         id: disable_action
         text: qsTr("Disable %1", "TICKER").arg(ticker)
         onTriggered: API.app.disable_coins([ticker])
-        enabled: General.canDisable(ticker)
+        enabled:
+        {
+            let progress = General.zhtlcActivationProgress(current_ticker_infos.activation_status, ticker)
+            if (General.isZhtlc(ticker))
+            {
+                if (progress != 100) return false
+            }
+            return General.canDisable(ticker, progress)
+        }
     }
 
     MenuItem {

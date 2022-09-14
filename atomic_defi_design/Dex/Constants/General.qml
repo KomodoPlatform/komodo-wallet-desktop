@@ -43,6 +43,70 @@ QtObject {
         }
     }
 
+    function canSend(ticker, progress=100)
+    {
+        if (!API.app.wallet_pg.send_available) return false
+        if (isZhtlc(ticker) && progress < 100) return false
+        return true
+    }
+
+    function isWalletOnly(ticker)
+    {
+        return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_wallet_only
+    }
+
+    function isZhtlc(ticker)
+    {
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.is_zhtlc_family
+    }
+
+    function isZhtlcReady(ticker, progress=100)
+    {
+        if (progress == 100) return true
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        if (!coin_info.is_zhtlc_family) return true
+        console.log("Progress: " + progress)
+        return false
+    }
+
+    function zhtlcActivationProgress(activation_status, coin='ARRR')
+    {
+        let progress = 100
+        if (!activation_status.hasOwnProperty("result")) return progress
+        let status = activation_status.result.status
+        let details = activation_status.result.details
+
+        let block_offset = 0
+        if (coin == 'ARRR') block_offset = 1900000
+
+        // use range from checkoint block to present
+        if (status == "Ready")
+        {
+            if (details.hasOwnProperty("error"))
+                console.log("[zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
+        }
+        else if (status == "InProgress")
+        {
+            if (details.hasOwnProperty("UpdatingBlocksCache"))
+            {
+                let n = details.UpdatingBlocksCache.current_scanned_block - block_offset
+                let d = details.UpdatingBlocksCache.latest_block - block_offset
+                progress = 5 + parseInt(n/d*15)
+            }
+            else if (details.hasOwnProperty("BuildingWalletDb"))
+            {
+                let n = details.BuildingWalletDb.current_scanned_block - block_offset
+                let d = details.BuildingWalletDb.latest_block - block_offset
+                progress = 20 + parseInt(n/d*80)
+            }
+            else if (details.hasOwnProperty("RequestingBalance")) progress = 98
+            else progress = 5
+        }
+        else console.log("[zhtlcActivationProgress] Unexpected status: " + status)
+        return progress
+    }
+
     function getNomicsId(ticker) {
         if(ticker === "" || ticker === "All" || ticker===undefined) {
             return ""
@@ -525,8 +589,20 @@ QtObject {
         return true
     }
 
-    function tokenUnitName(type) {
+    function tokenUnitName(type)
+    {
         return type === "QRC-20" ? "Satoshi" : "Gwei"
+    }
+
+    function isSpecialToken(current_ticker_infos)
+    {
+        if (current_ticker_infos.hasOwnProperty("has_parent_fees_ticker"))
+            return current_ticker_infos.has_parent_fees_ticker
+        return false
+    }
+
+    function isERC20(current_ticker_infos) {
+        return current_ticker_infos.type === "ERC-20" || current_ticker_infos.type === "BEP-20" || current_ticker_infos.type == "Matic"
     }
 
     function isParentCoin(ticker) {
@@ -544,6 +620,9 @@ QtObject {
 
     function getParentCoin(type) {
         if(type === "ERC-20") return "ETH"
+        else if(type === "PLG-20") return "MATIC"
+        else if(type === "AVX-20") return "AVAX"
+        else if(type === "FTM-20") return "FTM"
         else if(type === "QRC-20") return "QTUM"
         else if(type === "Smart Chain") return "KMD"
         return "?"
@@ -575,6 +654,15 @@ QtObject {
 
 
         return tx_fee + "\n" + trading_fee +"<br>"+minimum_amount
+    }
+
+    function is_swap_safe(checkbox)
+    {
+        if (checkbox.checked == true || checkbox.visible == false)
+        {
+            return (!API.app.trading_pg.buy_sell_rpc_busy && API.app.trading_pg.last_trading_error == TradingError.None)
+        }
+        return false
     }
 
     function validateWallet(wallet_name) {
@@ -643,7 +731,8 @@ QtObject {
                  +")")
     }
 
-    function checkIfWalletExists(name) {
+    function checkIfWalletExists(name)
+    {
         if(API.app.wallet_mgr.get_wallets().indexOf(name) !== -1)
             return qsTr("Wallet %1 already exists", "WALLETNAME").arg(name)
         return ""
@@ -660,7 +749,11 @@ QtObject {
         case TradingError.PriceFieldNotFilled:
             return qsTr("Please fill the price field")
         case TradingError.VolumeFieldNotFilled:
-            return qsTr("Please fill the volume field")
+            return qsTr("Please fill the price field")
+        case TradingError.LeftZhtlcChainNotEnabled:
+            return qsTr("Please wait for %1 to fully activate").arg(left_ticker)
+        case TradingError.RightZhtlcChainNotEnabled:
+            return qsTr("Please wait for %1 to fully activate").arg(right_ticker)
         case TradingError.VolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(API.app.trading_pg.market_pairs_mdl.left_selected_coin) + " : " + General.getMinTradeAmount()
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
@@ -677,6 +770,11 @@ QtObject {
             return qsTr("Unknown Error") + ": " + error
         }
     }
+
+    readonly property var zcash_params_filesize: ({
+        "sapling-output.params": 3592860,
+        "sapling-spend.params": 47958396
+    })
 
     readonly property var supported_pairs: ({
                                                 "1INCH/BTC": "BINANCE:1INCHBTC",

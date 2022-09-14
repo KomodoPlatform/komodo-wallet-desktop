@@ -58,7 +58,11 @@ Rectangle
     {
         anchors.centerIn: parent
         color: API.app.trading_pg.market_mode == marketMode ? Dex.CurrentTheme.gradientButtonTextEnabledColor : Dex.CurrentTheme.foregroundColor
-        text: (marketMode == Dex.MarketMode.Sell ? qsTr("Sell") : qsTr("Buy")) + ` ${ticker}`
+        text:
+        {
+            if (marketMode == Dex.MarketMode.Sell) qsTr("Sell %1", "TICKER").arg(ticker)
+            else qsTr("Buy %1", "TICKER").arg(ticker)
+        }
     }
 
     DefaultMouseArea

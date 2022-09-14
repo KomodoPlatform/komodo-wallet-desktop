@@ -22,7 +22,7 @@
 #include "atomicdex/api/mm2/generics.hpp"
 #include "atomicdex/api/mm2/rpc.sell.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const sell_request& request)
@@ -91,4 +91,4 @@ namespace mm2::api
     {
         extract_rpc_json_answer<sell_answer_success>(j, answer);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

@@ -12,7 +12,7 @@ import Dex.Themes 1.0 as Dex
 
 ColumnLayout
 {
-    spacing: 5
+    spacing: 3
 
     RowLayout
     {

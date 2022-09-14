@@ -17,19 +17,95 @@ Widget
     margins: 15
     collapsable: false
 
+    // Market mode selector
+    RowLayout
+    {
+        Layout.topMargin: 5
+        Layout.bottomMargin: 2
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width
+        height: 40
+
+        MarketModeSelector
+        {
+            Layout.alignment: Qt.AlignLeft
+            Layout.preferredWidth: (parent.width / 100) * 46
+            Layout.preferredHeight: 40
+            marketMode: MarketMode.Buy
+            ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+        }
+
+        Item { Layout.fillWidth: true }
+
+        MarketModeSelector
+        {
+            Layout.alignment: Qt.AlignRight
+            Layout.preferredWidth: (parent.width / 100) * 46
+            Layout.preferredHeight: 40
+            ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+        }
+    }
+
+    // Protocol text for platform tokens
+    Item
+    {
+        height: 40
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width
+        visible: protocolIcon != ""
+
+        ColumnLayout
+        {
+            spacing: 2
+            anchors.fill: parent
+            anchors.centerIn: parent
+
+            DexLabel
+            {
+                id: protocolTitle
+                Layout.preferredWidth: parent.width
+                text_value: "Protocol:"
+                font.pixelSize: Style.textSizeSmall1
+                horizontalAlignment: Text.AlignHCenter
+                color: Style.colorText2
+            }
+
+            RowLayout
+            {
+                id: protocol
+                Layout.alignment: Qt.AlignHCenter
+
+                DefaultImage
+                {
+                    id: protocolImg
+                    source: protocolIcon
+                    Layout.preferredHeight: 16
+                    Layout.preferredWidth: Layout.preferredHeight
+                }
+
+                DexLabel
+                {
+                    id: protocolText
+                    text_value: General.getProtocolText(left_ticker)
+                    wrapMode: DexLabel.NoWrap
+                    font.pixelSize: Style.textSizeSmall1
+                    color: Style.colorText2
+                }
+            }
+        }
+    }
 
     // Order selected indicator
     Item
     {
-        Layout.topMargin: 5
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: parent.width
-        Layout.preferredHeight: 40
-        visible: API.app.trading_pg.preffered_order.price !== undefined
+        height: 40
 
         RowLayout
         {
             id: orderSelection
+            visible: API.app.trading_pg.preffered_order.price !== undefined
             anchors.fill: parent
             anchors.verticalCenter: parent.verticalCenter
 
@@ -62,6 +138,7 @@ Widget
 
         Rectangle
         {
+            visible: API.app.trading_pg.preffered_order.price !== undefined
             anchors.fill: parent
             radius: 8
             color: 'transparent'
@@ -69,132 +146,29 @@ Widget
         }
     }
 
-    // Market mode selector
-    RowLayout
-    {
-        Layout.topMargin: 5
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: parent.width
-        Layout.fillHeight: true
-
-        MarketModeSelector
-        {
-            Layout.alignment: Qt.AlignLeft
-            Layout.preferredWidth: (parent.width / 100) * 46
-            Layout.preferredHeight: 50
-            marketMode: MarketMode.Buy
-            ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-        }
-
-        Item { Layout.fillWidth: true }
-
-        MarketModeSelector
-        {
-            Layout.alignment: Qt.AlignRight
-            Layout.preferredWidth: (parent.width / 100) * 46
-            Layout.preferredHeight: 50
-            ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-        }
-    }
-
-    HorizontalLine
-    {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: parent.width
-        visible: protocolIcon != ""
-        color: Dex.CurrentTheme.backgroundColorDeep
-    }
-
-    ColumnLayout
-    {
-        spacing: 3
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: parent.width
-        visible: protocolIcon != ""
-
-        DexLabel
-        {
-            id: protocolTitle
-            Layout.preferredWidth: parent.width
-            text_value: "Protocol:"
-            font.pixelSize: Style.textSizeSmall1
-            horizontalAlignment: Text.AlignHCenter
-            color: Style.colorText2
-        }
-
-        RowLayout
-        {
-            id: protocol
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: parent.width
-
-            Item { Layout.fillWidth: true }
-
-            DefaultImage
-            {
-                id: protocolImg
-                source: protocolIcon
-                Layout.preferredHeight: 16
-                Layout.preferredWidth: Layout.preferredHeight
-            }
-
-            DexLabel
-            {
-                id: protocolText
-                text_value: General.getProtocolText(left_ticker)
-                wrapMode: DexLabel.NoWrap
-                font.pixelSize: Style.textSizeSmall1
-                color: Style.colorText2
-            }
-
-            Item { Layout.fillWidth: true }
-        }
-    }
-
     OrderForm
     {
         id: formBase
-        Layout.preferredWidth: parent.width
+        width: parent.width
+        height: 340
         Layout.alignment: Qt.AlignHCenter
     }
 
-    TotalView
+    Item { Layout.fillHeight: true }
+
+    // Error messages
+    Item
     {
+        height: 60
         Layout.preferredWidth: parent.width
-        Layout.alignment: Qt.AlignHCenter
-    }
-
-    DexGradientAppButton
-    {
-        Layout.preferredHeight: 40
-        Layout.preferredWidth: parent.width - 20
-        Layout.alignment: Qt.AlignHCenter
-
-        radius: 18
-        text: qsTr("START SWAP")
-        font.weight: Font.Medium
-        enabled: formBase.can_submit_trade
-        onClicked: confirm_trade_modal.open()
-    }
-
-    ColumnLayout
-    {
-        spacing: parent.spacing
-        visible: errors.text_value !== ""
-        Layout.preferredWidth: parent.width
-
-        HorizontalLine
-        {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: parent.width
-        }
 
         // Show errors
         DefaultText
         {
             id: errors
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: parent.width
+            visible: errors.text_value !== ""
+            anchors.fill: parent
+            anchors.centerIn: parent
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Style.textSizeSmall4
             color: Dex.CurrentTheme.noColor
@@ -205,5 +179,25 @@ Widget
                             rel_ticker, left_ticker, right_ticker)
             elide: Text.ElideRight
         }
+    }
+
+    TotalView
+    {
+        height: 80
+        Layout.preferredWidth: parent.width
+        Layout.alignment: Qt.AlignHCenter
+    }
+
+    DexGradientAppButton
+    {
+        height: 40
+        Layout.preferredWidth: parent.width - 20
+        Layout.alignment: Qt.AlignHCenter
+
+        radius: 18
+        text: qsTr("START SWAP")
+        font.weight: Font.Medium
+        enabled: formBase.can_submit_trade
+        onClicked: confirm_trade_modal.open()
     }
 }

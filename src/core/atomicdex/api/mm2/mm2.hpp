@@ -32,9 +32,8 @@
 
 namespace ag = antara::gaming;
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
-    inline constexpr const char*                           g_endpoint                 = "http://127.0.0.1:7783";
     inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
@@ -239,16 +238,16 @@ namespace mm2::api
     void               set_rpc_password(std::string rpc_password) ;
     const std::string& get_rpc_password() ;
     void               set_system_manager(ag::ecs::system_manager& system_manager);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_my_orders_answer        = ::mm2::api::my_orders_answer;
-    using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
-    using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer;
-    using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
-    using t_active_swaps_request    = ::mm2::api::active_swaps_request;
-    using t_active_swaps_answer     = ::mm2::api::active_swaps_answer;
-    using t_get_trade_fee_request   = ::mm2::api::trade_fee_request;
-    using t_get_trade_fee_answer    = ::mm2::api::trade_fee_answer;
+    using t_my_orders_answer        = mm2::my_orders_answer;
+    using t_broadcast_request       = mm2::send_raw_transaction_request;
+    using t_my_recent_swaps_answer  = mm2::my_recent_swaps_answer;
+    using t_my_recent_swaps_request = mm2::my_recent_swaps_request;
+    using t_active_swaps_request    = mm2::active_swaps_request;
+    using t_active_swaps_answer     = mm2::active_swaps_answer;
+    using t_get_trade_fee_request   = mm2::trade_fee_request;
+    using t_get_trade_fee_answer    = mm2::trade_fee_answer;
 } // namespace atomic_dex

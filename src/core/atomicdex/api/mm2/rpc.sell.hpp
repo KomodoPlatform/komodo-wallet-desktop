@@ -26,7 +26,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/trading.order.contents.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct sell_request
     {
@@ -66,11 +66,11 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, sell_answer& answer);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_sell_request        = ::mm2::api::sell_request;
-    using t_sell_answer         = ::mm2::api::sell_answer;
-    using t_sell_answer_success = ::mm2::api::sell_answer_success;
+    using t_sell_request        = mm2::sell_request;
+    using t_sell_answer         = mm2::sell_answer;
+    using t_sell_answer_success = mm2::sell_answer_success;
 } // namespace atomic_dex

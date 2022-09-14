@@ -14,16 +14,16 @@
  *                                                                            *
  ******************************************************************************/
 
-// Deps Headers
 #include <nlohmann/json.hpp>
 
-// Project Headers
-#include "rpc.get.public.key.hpp"
+#include "utxo.merge.params.hpp"
 
 namespace atomic_dex::mm2
 {
-    void from_json(const nlohmann::json& json, get_public_key_answer& in)
+    void to_json(nlohmann::json& j, const utxo_merge_params& cfg)
     {
-        json.at("public_key").get_to(in.public_key);
+        j["merge_at"] = cfg.merge_at;
+        j["check_every"] = cfg.check_every;
+        j["max_merge_at_once"] = cfg.max_merge_at_once;
     }
 }
