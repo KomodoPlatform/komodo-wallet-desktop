@@ -968,11 +968,7 @@ namespace atomic_dex
 
         if (coin_info.is_erc_family)
         {
-            t_tx_history_request request{.coin = ticker, .limit = 5000};
-            const bool requires_v2 = coin_info.coin_type == CoinTypeGadget::SLP;
-            nlohmann::json       j = mm2::template_request("my_tx_history", requires_v2);
-            mm2::to_json(j, request);
-            batch_array.push_back(j);
+            tokens_to_fetch.push_back(ticker);
         }
         else
         {
@@ -998,7 +994,7 @@ namespace atomic_dex
 
         if (not only_tx)
         {
-            for (auto&& coin: enabled_coins)
+            for (auto&& coin : enabled_coins)
             {
                 if (is_pin_cfg_enabled())
                 {
