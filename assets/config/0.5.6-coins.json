@@ -237,31 +237,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "ABY-OLD": {
-    "coin": "ABY-OLD",
-    "name": "ArtByte (OLD)",
-    "coinpaprika_id": "aby-artbyte",
-    "coingecko_id": "artbyte",
-    "nomics_id": "ABY2",
-    "electrum": [
-      {
-        "url": "electrumx.aby.ewmcx.biz:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
-      },
-      {
-        "url": "failover.aby.ewmcx.biz:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
-      }
-    ],
-    "explorer_url": [
-      "http://aby-explorer.ewmcx.info/"
-    ],
-    "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
-  },
   "ABY": {
     "coin": "ABY",
     "name": "ArtByte",
@@ -7546,6 +7521,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "TAMA-ERC20": {
+    "coin": "TAMA-ERC20",
+    "name": "Tamadoge",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "nomics_id": "test-coin",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "TEL-ERC20": {
     "coin": "TEL-ERC20",
     "name": "Telcoin",
@@ -8619,32 +8612,6 @@
     "explorer_url": [
       "https://insight.zerocurrency.io/insight/"
     ],
-    "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
-  },
-  "ZET-OLD": {
-    "coin": "ZET-OLD",
-    "name": "Zetacoin (OLD)",
-    "coinpaprika_id": "zet-zetacoin",
-    "coingecko_id": "zetacoin",
-    "nomics_id": "ZET",
-    "electrum": [
-      {
-        "url": "failover.zet.ewmci.xyz:50002",
-        "protocol": "SSL",
-        "disable_cert_verification": true
-      },
-      {
-        "url": "electrumx.zet.ewmcx.info:50001",
-        "protocol": "TCP"
-      }
-    ],
-    "explorer_url": [
-      "https://chainz.cryptoid.info/zet-old/"
-    ],
-    "explorer_tx_url": "tx.dws?",
-    "explorer_address_url": "address.dws?",
     "type": "UTXO",
     "active": false,
     "currently_enabled": false
