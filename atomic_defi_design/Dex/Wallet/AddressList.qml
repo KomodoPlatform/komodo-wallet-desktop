@@ -31,12 +31,14 @@ ColumnLayout
 
         clip: true
 
-        delegate: DefaultTextEdit
+        delegate: TextEditWithCopy
         {
             id: address_text
             text_value: model.modelData
             privacy: true
-            font.pixelSize: root.addressFontSize
+            font_size: 13
+            align_left: true
+            text_box_width: 600
             linkURL: root.linkURL
             onCopyNotificationTitle: root.onCopyNotificationTitle
         }

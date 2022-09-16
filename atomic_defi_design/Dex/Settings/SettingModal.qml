@@ -8,6 +8,7 @@ import QtQuick.Window 2.12
 import QtQuick.Controls.Universal 2.12
 
 import Qaterial 1.0 as Qaterial
+import ModelHelper 0.1
 
 import "../Components"
 import "../Constants"
@@ -23,6 +24,7 @@ Qaterial.Dialog
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
     property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
+    property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
 
     width: 950
     height: 650
@@ -34,30 +36,6 @@ Qaterial.Dialog
     dim: true
     modal: true
     title: "Settings"
-
-    function disconnect()
-    {
-        let dialog = app.showDialog(
-        {
-            "title": qsTr("Confirm Logout"),
-            text: qsTr("Are you sure you want to log out?"),
-            standardButtons: Dialog.Yes | Dialog.Cancel,
-            warning: true,
-            yesButtonText: qsTr("Yes"),
-            cancelButtonText: qsTr("Cancel"),
-            onAccepted: function(text)
-            {
-                app.notifications_list = []
-                app.currentWalletName = ""
-                API.app.disconnect()
-                onDisconnect()
-                window.logged = false
-                dialog.close()
-                dialog.destroy()
-            }
-        })
-
-    }
 
 
     header: Item
@@ -302,7 +280,7 @@ Qaterial.Dialog
 
                                 onClicked:
                                 {
-                                    dialog = app.showDialog(
+                                    reset_dialog = app.showDialog(
                                     {
                                         title: qsTr("Reset wallet configuration"),
                                         text: qsTr("This will restart your wallet with default settings"),
@@ -318,7 +296,7 @@ Qaterial.Dialog
                                             }
                                         }
                                     })
-                                    dialog.close()
+                                    reset_dialog.close()
                                 }
                             }
                         }
@@ -692,8 +670,9 @@ Qaterial.Dialog
                 iconSource: Qaterial.Icons.logout
                 onClicked:
                 {
-                    disconnect()
                     setting_modal.close()
+                    if (orders.count != 0) logout_modal.open()
+                    else return_to_login()
                 }
             }
         }

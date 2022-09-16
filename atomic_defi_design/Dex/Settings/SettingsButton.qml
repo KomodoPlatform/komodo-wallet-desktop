@@ -20,38 +20,46 @@ RowLayout
     {
         Layout.alignment: Qt.AlignVCenter
         font: DexTypo.subtitle1
-        text: control.title // qsTr("Logs")
+        text: control.title
     }
 
     Item { Layout.fillWidth: true }
 
-    DexAppButton
-    {
-        visible: control.noBackground
-        Layout.alignment: Qt.AlignVCenter
-        text: control.buttonText
-        color: containsMouse ? DexTheme.buttonColorHovered : 'transparent'
-        height: 48
-        radius: 20
-        font: Qt.font({
-            pixelSize: 19 ,
-            letterSpacing: 0.15,
-            family: DexTypo.fontFamily,
-            underline: true,
-            weight: Font.Normal
-        })
-        iconSource: Qaterial.Icons.logout
-        onClicked: control.clicked()
-    }
 
-    DexAppOutlineButton
+    Item
     {
+        width: 120
         Layout.alignment: Qt.AlignVCenter
-        leftPadding: 20 
-        rightPadding: 20
-        radius: 20
-        visible: !control.noBackground
-        text: control.buttonText //qsTr("Open Folder")
-        onClicked: control.clicked()
+        Layout.preferredWidth: 200
+
+        Row
+        {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+
+            DexAppButton
+            {
+                visible: control.noBackground
+                text: control.buttonText
+                color: containsMouse ? DexTheme.buttonColorHovered : 'transparent'
+                height: 40
+                radius: 20
+                padding: 20
+                font: DexTypo.body1
+                iconSource: Qaterial.Icons.logout
+                onClicked: control.clicked()
+            }
+
+            DexAppOutlineButton
+            {
+                height: 40
+                padding: 20
+                radius: 20
+                font: DexTypo.body1
+                visible: !control.noBackground
+                text: control.buttonText
+                onClicked: control.clicked()
+            }
+        }
     }
 }

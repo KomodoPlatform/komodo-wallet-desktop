@@ -55,6 +55,7 @@ namespace atomic_dex
             MainCurrencyPriceForOneUnit,
             MainFiatPriceForOneUnit,
             Trend7D,
+            ActivationStatus,
             Excluded,
             Display,
             NameAndTicker,

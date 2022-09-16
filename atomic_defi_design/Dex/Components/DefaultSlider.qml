@@ -35,8 +35,8 @@ Slider
     {
         x: control.leftPadding + control.visualPosition * (control.availableWidth - width)
         y: control.topPadding + control.availableHeight / 2 - height / 2
-        implicitWidth: 26
-        implicitHeight: 26
+        implicitWidth: 18
+        implicitHeight: 18
         radius: 13
         gradient: Gradient
         {

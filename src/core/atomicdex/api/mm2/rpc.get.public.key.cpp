@@ -20,7 +20,7 @@
 // Project Headers
 #include "rpc.get.public.key.hpp"
 
-namespace atomic_dex::mm2
+namespace mm2::api
 {
     void from_json(const nlohmann::json& json, get_public_key_answer& in)
     {

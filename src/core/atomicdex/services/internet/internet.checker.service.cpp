@@ -172,7 +172,7 @@ namespace atomic_dex
             {
                 SPDLOG_INFO("mm2 is alive, checking if ware able to fetch a simple orderbook");
                 nlohmann::json      batch           = nlohmann::json::array();
-                nlohmann::json      current_request = ::mm2::api::template_request("orderbook");
+                nlohmann::json      current_request = ::mm2::api::template_request("orderbook", true);
                 t_orderbook_request req_orderbook{.base = g_primary_dex_coin, .rel = g_second_primary_dex_coin};
                 ::mm2::api::to_json(current_request, req_orderbook);
                 batch.push_back(current_request);

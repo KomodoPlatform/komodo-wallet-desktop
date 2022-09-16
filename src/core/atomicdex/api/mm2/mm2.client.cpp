@@ -73,8 +73,7 @@ namespace
 namespace atomic_dex
 {
     template <typename RpcReturnType>
-    RpcReturnType
-    mm2_client::rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command)
+    RpcReturnType mm2_client::rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command)
     {
         std::string body = TO_STD_STR(resp.extract_string(true).get());
         SPDLOG_INFO("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
@@ -137,7 +136,7 @@ namespace atomic_dex
     }
 
     template <::mm2::api::rpc ApiCallType>
-    void mm2_client::process_rpc_async(const std::function<void(typename ApiCallType::expected_answer_type)>& on_rpc_processed)
+    void mm2_client::process_rpc_async(const std::function<void(typename ApiCallType::expected_answer_type)>& on_rpc_processed) 
     {
         auto request = make_request<ApiCallType>();
         generate_client()
@@ -156,7 +155,7 @@ namespace atomic_dex
                            });
     }
 
-    template void mm2_client::process_rpc_async<atomic_dex::mm2::get_public_key>(const std::function<void(mm2::get_public_key_answer)>&);
+    template void mm2_client::process_rpc_async<::mm2::api::get_public_key>(const std::function<void(::mm2::api::get_public_key_answer)>&);
 
     void
     mm2_client::stop()

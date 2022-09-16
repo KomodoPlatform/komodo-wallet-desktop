@@ -43,9 +43,9 @@ namespace mm2::api
 
     struct coin_fee
     {
-        std::string coin;
-        std::string amount;
-        fraction    amount_fraction;
+        std::string                  coin;
+        std::string                  amount;
+        mm2::api::fraction           amount_fraction;
     };
 
     ENTT_API void from_json(const nlohmann::json& j, coin_fee& fee);

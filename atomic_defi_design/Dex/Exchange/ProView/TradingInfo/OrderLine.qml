@@ -54,7 +54,7 @@ FloatingBackground
                 id: statusText
                 anchors.centerIn: parent
 
-                visible: clickable ? ! details ? false : (details.is_swap || !details.is_maker) : false
+                visible: clickable ? !details ? false : (details.is_swap || !details.is_maker) : false
                 font.pixelSize: getStatusFontSize(details.order_status)
                 color: !details ? Dex.CurrentTheme.foregroundColor : getStatusColor(details.order_status)
                 text_value: !details ? "" : visible ? getStatusStep(details.order_status) : ''

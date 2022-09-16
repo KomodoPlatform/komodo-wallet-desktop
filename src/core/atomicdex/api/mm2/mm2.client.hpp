@@ -28,7 +28,7 @@ namespace atomic_dex
         //! API
         pplx::task<web::http::http_response> async_rpc_batch_standalone(nlohmann::json batch_array);
 
-        template <mm2::api::rpc Rpc>
+        template <::mm2::api::rpc Rpc>
         void process_rpc_async(const std::function<void(typename Rpc::expected_answer_type)>& on_rpc_processed);
 
         //! Synced

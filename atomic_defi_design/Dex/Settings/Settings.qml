@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
+import ModelHelper 0.1
 
 
 // Project Imports
@@ -15,14 +16,11 @@ import App 1.0
 
 Item {
     id: root
-    function disconnect() {
-        API.app.disconnect()
-        onDisconnect()
-    }
 
     readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
+    property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
 
 
 
@@ -177,8 +175,6 @@ Item {
                 onClicked: view_seed_modal.open()
             }
 
-
-
             HorizontalLine {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
@@ -249,7 +245,11 @@ Item {
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
                 text: qsTr("Log out")
-                onClicked: disconnect()
+                onClicked:
+                {
+                    if (orders.count != 0) logout_modal.open()
+                    else return_to_login()
+                }
             }
         }
     }
