@@ -744,7 +744,11 @@ namespace atomic_dex
             for (const auto& coin_config : coins)
             {
                 mm2::enable_slp_rpc rpc{.request={.ticker = coin_config.ticker}};
-
+                
+                if (coin_config.ticker == bch_info.ticker)
+                {
+                    continue;
+                }
                 m_mm2_client.process_rpc_async<mm2::enable_slp_rpc>(rpc.request, callback);
             }
         }
@@ -819,6 +823,10 @@ namespace atomic_dex
             {
                 mm2::enable_slp_rpc rpc{.request={.ticker = coin_config.ticker}};
                 
+                if (coin_config.ticker == bch_info.ticker)
+                {
+                    continue;
+                }
                 m_mm2_client.process_rpc_async<mm2::enable_slp_rpc>(rpc.request, callback);
             }
         }
