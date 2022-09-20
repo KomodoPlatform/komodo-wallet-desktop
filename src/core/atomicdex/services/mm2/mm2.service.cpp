@@ -603,13 +603,13 @@ namespace atomic_dex
 
     void mm2_service::enable_utxo_qrc20_coin(coin_config coin_config)
     {
-        enable_utxo_qrc20_coins(t_coins{coin_config});
+        enable_utxo_qrc20_coins(t_coins{std::move(coin_config)});
     }
 
     void mm2_service::enable_utxo_qrc20_coins(const t_coins& coins)
     {
         auto batch_array = nlohmann::json::array();
-        auto callback = [this, coins](web::http::http_response resp)
+        auto callback = [this, coins](const web::http::http_response& resp)
         {
             try
             {
@@ -755,7 +755,7 @@ namespace atomic_dex
     
     void mm2_service::enable_slp_testnet_coin(coin_config coin_config)
     {
-        enable_slp_testnet_coins(t_coins{coin_config});
+        enable_slp_testnet_coins(t_coins{std::move(coin_config)});
     }
 
     void mm2_service::enable_slp_testnet_coins(const t_coins& coins)
