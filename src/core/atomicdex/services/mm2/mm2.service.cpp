@@ -530,11 +530,26 @@ namespace atomic_dex
                 other_coins.push_back(coin_config);
             }
         }
-        enable_utxo_qrc20_coins(other_coins);
-        enable_erc_family_coins(erc_family_coins);
-        enable_slp_coins(slp_coins);
-        enable_slp_testnet_coins(slp_testnet_coins);
-        enable_zhtlc(zhtlc_coins);
+        if (other_coins.size() > 0)
+        {
+            enable_utxo_qrc20_coins(other_coins);
+        }
+        if (erc_family_coins.size() > 0)
+        {
+            enable_erc_family_coins(erc_family_coins);
+        }
+        if (slp_coins.size() > 0)
+        {
+            enable_slp_coins(slp_coins);
+        }
+        if (slp_testnet_coins.size() > 0)
+        {
+            enable_slp_testnet_coins(slp_testnet_coins);
+        }
+        if (zhtlc_coins.size() > 0)
+        {
+            enable_zhtlc(zhtlc_coins);
+        }
     }
 
     void mm2_service::enable_erc_family_coin(const coin_config& coin_config)
