@@ -21,7 +21,7 @@ Dex.Rectangle
     property string  addressKey
     property string  addressValue
 
-    property var     availableNetworkStandards: ["QRC-20", "ERC-20", "BEP-20", "Smart Chain"]
+    property var     availableNetworkStandards: ["QRC-20", "ERC-20", "BEP-20", "Smart Chain", "SLP"]
 
     // Return the asset type that will be used in the backend to validate the address
     function getTypeForAddressChecker(addressType)
