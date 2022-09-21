@@ -46,11 +46,11 @@ Dex.Rectangle
     {
         switch (addressType)
         {
-        case "QRC-20":      return true
-        case "BEP-20":      return true
-        case "ERC-20":      return true
-        case "Smart Chain": return true
-        case "SLP":         return true
+            case "QRC-20":      return true
+            case "BEP-20":      return true
+            case "ERC-20":      return true
+            case "Smart Chain": return true
+            case "SLP":         return true
         }
         return false
     }
@@ -156,10 +156,12 @@ Dex.Rectangle
         Dex.Text
         {
             id: invalidAddressValueLabel
-            Layout.fillWidth: true
+            Layout.preferredWidth: 458
+            Layout.preferredHeight: 60
             visible: text !== ""
             color: Dex.CurrentTheme.noColor
-            wrapMode: Dex.Text.Wrap
+            wrapMode: Dex.Text.WordWrap
+            elide: Dex.Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
         }
 
