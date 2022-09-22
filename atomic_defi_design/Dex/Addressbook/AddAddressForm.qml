@@ -32,11 +32,10 @@ Dex.Rectangle
             case "BEP-20":      return "BNB"
             case "ERC-20":      return "ETH"
             case "Smart Chain": return "KMD"
-            case "SLP":         return "BCH"
         }
 
         let coinInfo = Dex.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(addressType);
-        if (coinInfo.has_parent_fees_ticker)
+        if (coinInfo.has_parent_fees_ticker && coinInfo.type !== "SLP")
             return coinInfo.fees_ticker;
         return addressType
     }
