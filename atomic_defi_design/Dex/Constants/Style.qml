@@ -384,6 +384,7 @@ QtObject {
                                           "CEL": "#4055A6",
                                           "CELR": "#595959",
                                           "CENNZ": "#2E87F1",
+                                          "CHTA": "#C3A634",
                                           "COMP": "#00DBA3",
                                           "CRO": "#243565",
                                           "CVC": "#3AB03E",
