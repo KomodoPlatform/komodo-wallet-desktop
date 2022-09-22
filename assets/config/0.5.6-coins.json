@@ -1889,6 +1889,30 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "CHTA": {
+    "coin": "CHTA",
+    "name": "Cheetahcoin",
+    "type": "UTXO",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "chta-cheetahcoin",
+    "nomics_id": "CHTA",
+    "electrum": [
+      {
+        "url": "electrum.shorelinecrypto.com:10007"
+      },
+      {
+        "url": "electrum1.mooo.com:10007"
+      },
+      {
+        "url": "electrum2.mooo.com:10007"
+      }
+    ],
+    "explorer_url": [
+      "http://chtaexplorer.mooo.com:3002/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "CLC": {
     "coin": "CLC",
     "name": "Collider Coin",
