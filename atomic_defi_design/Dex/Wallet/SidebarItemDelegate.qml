@@ -15,7 +15,7 @@ GradientRectangle
     height: 44
     radius: Dex.Style.rectangleCornerRadius + 4
 
-    start_color: list.currentIndex == index ? Dex.DexTheme.buttonColorEnabled : mouse_area.containsMouse ? Dex.DexTheme.buttonColorHovered : 'transparent'
+    start_color: api_wallet_page.ticker === ticker ? Dex.DexTheme.buttonColorEnabled : mouse_area.containsMouse ? Dex.DexTheme.buttonColorHovered : 'transparent'
     end_color: 'transparent'
 
     // Click area
@@ -28,12 +28,7 @@ GradientRectangle
         onClicked:
         {
             if (mouse.button === Qt.RightButton) context_menu.popup()
-            else
-            {
-                api_wallet_page.ticker = ticker
-                if(list.currentIndex != index)
-                    list.currentIndex = index
-            }
+            else api_wallet_page.ticker = ticker
         }
         onPressAndHold: if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
     }
