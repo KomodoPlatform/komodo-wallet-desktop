@@ -79,7 +79,10 @@ namespace atomic_dex
         for (auto&& coin : coins)
         {
             auto coin_info = mm2.get_coin_info(coin.toStdString());
-            if (coin_info.has_parent_fees_ticker && coin_info.ticker != coin_info.fees_ticker)
+            
+            if (coin_info.has_parent_fees_ticker &&
+                coin_info.ticker != coin_info.fees_ticker &&
+                !coins.contains(QString::fromStdString(coin_info.fees_ticker)))
             {
                 auto coin_parent_info = mm2.get_coin_info(coin_info.fees_ticker);
                 if (!coin_parent_info.currently_enabled && !coin_parent_info.active && extra_coins.insert(coin_parent_info.ticker).second)
@@ -94,7 +97,6 @@ namespace atomic_dex
             coins_std.push_back(extra_coin);
         }
         mm2.enable_coins(coins_std);
-        
         return true;
     }
 

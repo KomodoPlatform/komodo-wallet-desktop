@@ -902,6 +902,7 @@
     ],
     "allow_slp_unsafe_conf": false,
     "type": "UTXO",
+    "other_types": ["SLP"],
     "name": "Bitcoin Cash"
   },
   "USDT-SLP": {

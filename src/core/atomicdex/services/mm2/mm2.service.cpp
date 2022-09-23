@@ -530,11 +530,26 @@ namespace atomic_dex
                 other_coins.push_back(coin_config);
             }
         }
-        enable_utxo_qrc20_coins(other_coins);
-        enable_erc_family_coins(erc_family_coins);
-        enable_slp_coins(slp_coins);
-        enable_slp_testnet_coins(slp_testnet_coins);
-        enable_zhtlc(zhtlc_coins);
+        if (other_coins.size() > 0)
+        {
+            enable_utxo_qrc20_coins(other_coins);
+        }
+        if (erc_family_coins.size() > 0)
+        {
+            enable_erc_family_coins(erc_family_coins);
+        }
+        if (slp_coins.size() > 0)
+        {
+            enable_slp_coins(slp_coins);
+        }
+        if (slp_testnet_coins.size() > 0)
+        {
+            enable_slp_testnet_coins(slp_testnet_coins);
+        }
+        if (zhtlc_coins.size() > 0)
+        {
+            enable_zhtlc(zhtlc_coins);
+        }
     }
 
     void mm2_service::enable_erc_family_coin(const coin_config& coin_config)
@@ -603,13 +618,13 @@ namespace atomic_dex
 
     void mm2_service::enable_utxo_qrc20_coin(coin_config coin_config)
     {
-        enable_utxo_qrc20_coins(t_coins{coin_config});
+        enable_utxo_qrc20_coins(t_coins{std::move(coin_config)});
     }
 
     void mm2_service::enable_utxo_qrc20_coins(const t_coins& coins)
     {
         auto batch_array = nlohmann::json::array();
-        auto callback = [this, coins](web::http::http_response resp)
+        auto callback = [this, coins](const web::http::http_response& resp)
         {
             try
             {
@@ -729,7 +744,11 @@ namespace atomic_dex
             for (const auto& coin_config : coins)
             {
                 mm2::enable_slp_rpc rpc{.request={.ticker = coin_config.ticker}};
-
+                
+                if (coin_config.ticker == bch_info.ticker)
+                {
+                    continue;
+                }
                 m_mm2_client.process_rpc_async<mm2::enable_slp_rpc>(rpc.request, callback);
             }
         }
@@ -755,7 +774,7 @@ namespace atomic_dex
     
     void mm2_service::enable_slp_testnet_coin(coin_config coin_config)
     {
-        enable_slp_testnet_coins(t_coins{coin_config});
+        enable_slp_testnet_coins(t_coins{std::move(coin_config)});
     }
 
     void mm2_service::enable_slp_testnet_coins(const t_coins& coins)
@@ -804,6 +823,10 @@ namespace atomic_dex
             {
                 mm2::enable_slp_rpc rpc{.request={.ticker = coin_config.ticker}};
                 
+                if (coin_config.ticker == bch_info.ticker)
+                {
+                    continue;
+                }
                 m_mm2_client.process_rpc_async<mm2::enable_slp_rpc>(rpc.request, callback);
             }
         }
