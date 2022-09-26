@@ -711,9 +711,9 @@ namespace atomic_dex
         this->set_recover_fund_busy(true);
         auto&                                   mm2_system = m_system_manager.get_system<mm2_service>();
         nlohmann::json                          batch      = nlohmann::json::array();
-        nlohmann::json                          json_data  = ::mm2::api::template_request("recover_funds_of_swap");
-        mm2::api::recover_funds_of_swap_request req{.swap_uuid = uuid.toStdString()};
-        ::mm2::api::to_json(json_data, req);
+        nlohmann::json                          json_data  = mm2::template_request("recover_funds_of_swap");
+        mm2::recover_funds_of_swap_request req{.swap_uuid = uuid.toStdString()};
+        mm2::to_json(json_data, req);
         batch.push_back(json_data);
 
         SPDLOG_DEBUG("recover_funds_of_swap request: {}", json_data.dump(-1));
@@ -728,7 +728,7 @@ namespace atomic_dex
             if (resp.status_code() == web::http::status_codes::OK)
             {
                 auto answers        = nlohmann::json::parse(body);
-                auto recover_answer = ::mm2::api::rpc_process_answer_batch<t_recover_funds_of_swap_answer>(answers[0], "recover_funds_of_swap");
+                auto recover_answer = mm2::rpc_process_answer_batch<t_recover_funds_of_swap_answer>(answers[0], "recover_funds_of_swap");
                 if (recover_answer.result.has_value())
                 {
                     auto answer       = recover_answer.result.value();

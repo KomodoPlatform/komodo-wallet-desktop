@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc2.z_coin_tx_history.hpp"
 
 //! Implementation 2.0 RPC [z_coin_tx_history]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void to_json(nlohmann::json& j, const z_tx_history_request& request)
@@ -103,4 +103,4 @@ namespace mm2::api
             answer.result = j.at("result").get<z_tx_history_answer_success>();
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

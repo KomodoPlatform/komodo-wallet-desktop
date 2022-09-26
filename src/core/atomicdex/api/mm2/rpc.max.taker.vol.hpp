@@ -23,7 +23,7 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct max_taker_vol_request
     {
@@ -52,11 +52,11 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, max_taker_vol_answer& answer);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_max_taker_vol_request        = ::mm2::api::max_taker_vol_request;
-    using t_max_taker_vol_answer         = ::mm2::api::max_taker_vol_answer;
-    using t_max_taker_vol_answer_success = ::mm2::api::max_taker_vol_answer_success;
+    using t_max_taker_vol_request        = mm2::max_taker_vol_request;
+    using t_max_taker_vol_answer         = mm2::max_taker_vol_answer;
+    using t_max_taker_vol_answer_success = mm2::max_taker_vol_answer_success;
 } // namespace atomic_dex

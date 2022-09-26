@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc2.init_z_coin_status.hpp"
 
 //! Implementation 2.0 RPC [init_z_coin_status]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void to_json(nlohmann::json& j, const init_z_coin_status_request& request)
@@ -76,5 +76,5 @@ namespace mm2::api
             }
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 

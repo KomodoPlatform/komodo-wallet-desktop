@@ -4,27 +4,12 @@
 //! Project Headers
 #include "rpc.tx.history.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
-
-    void
-    to_json(nlohmann::json& j, const paging_options& cfg)
-    {
-        if (cfg.page_number.has_value())
-        {
-            j["PageNumber"] = cfg.page_number.value();
-        }
-        if (cfg.from_id.has_value())
-        {
-            j["FromId"] = cfg.from_id.value();
-        }
-    }
-
-    void
-    to_json(nlohmann::json& j, const tx_history_request& cfg)
+    void to_json(nlohmann::json& j, const tx_history_request& cfg)
     {
         nlohmann::json obj = nlohmann::json::object();
-
+        
         obj["coin"]  = cfg.coin;
         obj["limit"] = cfg.limit;
         if (cfg.paging_options.has_value() && j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
@@ -41,16 +26,14 @@ namespace mm2::api
         }
     }
 
-    void
-    from_json(const nlohmann::json& j, sync_status_additional_error& answer)
+    void from_json(const nlohmann::json& j, sync_status_additional_error& answer)
     {
         j.at("code").get_to(answer.code);
         j.at("message").get_to(answer.message);
     }
 
 
-    void
-    from_json(const nlohmann::json& j, sync_status_eth_erc_20_coins& answer)
+    void from_json(const nlohmann::json& j, sync_status_eth_erc_20_coins& answer)
     {
         j.at("blocks_left").get_to(answer.blocks_left);
     }
@@ -122,4 +105,4 @@ namespace mm2::api
             answer.result = j.at("result").get<tx_history_answer_success>();
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

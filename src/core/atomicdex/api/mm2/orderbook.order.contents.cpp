@@ -25,7 +25,7 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     from_json(const nlohmann::json& j, order_contents& contents)
@@ -83,4 +83,4 @@ namespace mm2::api
         ss << "rel_min_volume: " << rel_min_volume << " ";
         return ss.str();
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

@@ -23,7 +23,7 @@
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct electrum_request
     {
@@ -54,10 +54,10 @@ namespace mm2::api
     void to_json(nlohmann::json& j, const electrum_request& cfg);
 
     void from_json(const nlohmann::json& j, electrum_answer& answer);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_electrum_request = ::mm2::api::electrum_request;
-    using t_electrum_answer  = ::mm2::api::electrum_answer;
+    using t_electrum_request = mm2::electrum_request;
+    using t_electrum_answer  = mm2::electrum_answer;
 } // namespace atomic_dex

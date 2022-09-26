@@ -71,37 +71,32 @@ namespace atomic_dex
         {
             return false;
         }
-
-        atomic_dex::mm2_service& mm2 = get_mm2();
-        std::unordered_map<CoinType, std::array<std::vector<coin_config>, 2>> enable_registry;
-        const std::size_t testnet_idx = 0;
-        const std::size_t mainnet_idx = 1;
-        std::unordered_set<std::string> visited;
         
-        for (auto&& coin: coins)
+        std::vector<std::string> coins_std{};
+        coins_std.reserve(coins.size());
+        atomic_dex::mm2_service& mm2 = get_mm2();
+        std::unordered_set<std::string> extra_coins;
+        for (auto&& coin : coins)
         {
-            if (visited.contains(coin.toStdString()))
-            {
-                SPDLOG_INFO("already visited: {} - skipping", coin.toStdString());
-                continue;
-            }
             auto coin_info = mm2.get_coin_info(coin.toStdString());
-            const bool is_tesnet = coin_info.is_testnet.value_or(false);
-            if (coin_info.has_parent_fees_ticker && coin_info.ticker != coin_info.fees_ticker)
+            
+            if (coin_info.has_parent_fees_ticker &&
+                coin_info.ticker != coin_info.fees_ticker &&
+                !coins.contains(QString::fromStdString(coin_info.fees_ticker)))
             {
                 auto coin_parent_info = mm2.get_coin_info(coin_info.fees_ticker);
-                if (!coin_parent_info.currently_enabled && !coin_parent_info.active && visited.insert(coin_parent_info.ticker).second)
+                if (!coin_parent_info.currently_enabled && !coin_parent_info.active && extra_coins.insert(coin_parent_info.ticker).second)
                 {
                     SPDLOG_INFO("Adding extra coin: {} to enable", coin_parent_info.ticker);
-                    const auto coin_type = (coin_parent_info.ticker == "BCH" || coin_parent_info.ticker == "tBCH") ? CoinType::SLP : coin_parent_info.coin_type;
-                    enable_registry[coin_type][is_tesnet ? testnet_idx : mainnet_idx].push_back(coin_parent_info);
                 }
             }
-            const auto coin_type = (coin_info.ticker == "BCH" || coin_info.ticker == "tBCH") ? CoinType::SLP : coin_info.coin_type;
-            enable_registry[coin_type][is_tesnet ? testnet_idx : mainnet_idx].push_back(coin_info);
-            visited.insert(coin_info.ticker);
+            coins_std.push_back(coin.toStdString());
         }
-        mm2.enable_multiple_coins_v2(enable_registry);
+        for (auto&& extra_coin : extra_coins)
+        {
+            coins_std.push_back(extra_coin);
+        }
+        mm2.enable_coins(coins_std);
         return true;
     }
 
@@ -116,7 +111,7 @@ namespace atomic_dex
         QString     secondary_coin = QString::fromStdString(g_second_primary_dex_coin);
         QStringList coins_copy;
         const auto& mm2 = system_manager_.get_system<mm2_service>();
-        for (auto&& coin: coins)
+        for (auto&& coin : coins)
         {
             const auto coin_info       = mm2.get_coin_info(coin.toStdString());
             bool       has_parent_fees = coin_info.has_parent_fees_ticker;
@@ -146,7 +141,7 @@ namespace atomic_dex
             system_manager_.get_system<portfolio_page>().disable_coins(coins_copy);
             system_manager_.get_system<trading_page>().disable_coins(coins_copy);
             coins_std.reserve(coins_copy.size());
-            for (auto&& coin: coins_copy)
+            for (auto&& coin : coins_copy)
             {
                 if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_primary_coin_fully_enabled)
                 {
@@ -524,7 +519,7 @@ namespace atomic_dex
     {
         QString result;
 
-        ::mm2::api::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
+        mm2::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
         auto                                      res = get_mm2().get_mm2_client().rpc_recover_funds(std::move(request));
         result                                        = QString::fromStdString(res.raw_result);
 

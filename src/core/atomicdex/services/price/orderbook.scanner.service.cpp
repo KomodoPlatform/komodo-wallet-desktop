@@ -60,7 +60,7 @@ namespace atomic_dex
 
                 //! Prepare request
                 nlohmann::json batch                = nlohmann::json::array();
-                nlohmann::json best_orders_req_json = ::mm2::api::template_request("best_orders", true);
+                nlohmann::json best_orders_req_json = mm2::template_request("best_orders");
                 to_json(best_orders_req_json, req);
                 batch.push_back(best_orders_req_json);
 
@@ -75,8 +75,7 @@ namespace atomic_dex
                     if (resp.status_code() == 200)
                     {
                         auto answers           = nlohmann::json::parse(body);
-                        auto best_order_answer = ::mm2::api::rpc_process_answer_batch<t_best_orders_answer>(answers[0], "best_orders");
-                        // SPDLOG_INFO("best_orders answer: {}", answers[0]);
+                        auto best_order_answer = mm2::rpc_process_answer_batch<t_best_orders_answer>(answers[0], "best_orders");
                         if (best_order_answer.result.has_value())
                         {
                             this->m_best_orders_infos = best_order_answer.result.value();

@@ -26,7 +26,7 @@
 #include "atomicdex/api/mm2/rpc.best.orders.hpp"
 
 //! Implementation RPC [best_orders]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const best_orders_request& req)
@@ -76,4 +76,4 @@ namespace mm2::api
         extract_rpc_json_answer<best_orders_answer_success>(j, answer);
     }
 
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
