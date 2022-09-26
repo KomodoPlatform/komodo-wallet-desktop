@@ -5233,7 +5233,7 @@
     "name": "Avian",
     "coinpaprika_id": "avn-avian",
     "coingecko_id": "avian-network",
-    "nomics_id": "avn3-avian",
+    "nomics_id": "AVN3",
     "electrum": [
       {
         "url": "electrum-us.avn.network:50001",
