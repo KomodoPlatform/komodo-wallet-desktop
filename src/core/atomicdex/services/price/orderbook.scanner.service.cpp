@@ -60,7 +60,7 @@ namespace atomic_dex
 
                 //! Prepare request
                 nlohmann::json batch                = nlohmann::json::array();
-                nlohmann::json best_orders_req_json = mm2::template_request("best_orders");
+                nlohmann::json best_orders_req_json = mm2::template_request("best_orders", true);
                 to_json(best_orders_req_json, req);
                 batch.push_back(best_orders_req_json);
 
