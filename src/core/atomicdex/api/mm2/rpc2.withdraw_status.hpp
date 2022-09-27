@@ -26,7 +26,7 @@
 #include "atomicdex/api/mm2/generic.error.hpp"
 #include "atomicdex/api/mm2/transaction.data.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct withdraw_status_request
     {
@@ -47,6 +47,6 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_withdraw_status_request = ::mm2::api::withdraw_status_request;
-    using t_withdraw_status_answer = ::mm2::api::withdraw_status_answer;
+    using t_withdraw_status_request = mm2::withdraw_status_request;
+    using t_withdraw_status_answer = mm2::withdraw_status_answer;
 } // namespace atomic_dex

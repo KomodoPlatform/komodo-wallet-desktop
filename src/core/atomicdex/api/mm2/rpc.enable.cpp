@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc.enable.hpp"
 
 //! Implementation RPC [enable]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void
@@ -164,4 +164,4 @@ namespace mm2::api
         j.at("result").get_to(cfg.result);
         // SPDLOG_INFO("balance for {} is {}", cfg.address, cfg.balance);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

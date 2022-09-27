@@ -197,8 +197,8 @@ namespace atomic_dex
             }
         }
         nlohmann::json batch;
-        nlohmann::json buy_request = ::mm2::api::template_request("buy");
-        ::mm2::api::to_json(buy_request, req);
+        nlohmann::json buy_request = mm2::template_request("buy");
+        mm2::to_json(buy_request, req);
         batch.push_back(buy_request);
         buy_request["userpass"] = "*******";
 
@@ -354,8 +354,8 @@ namespace atomic_dex
         }
 
         nlohmann::json batch;
-        nlohmann::json sell_request = ::mm2::api::template_request("sell");
-        ::mm2::api::to_json(sell_request, req);
+        nlohmann::json sell_request = mm2::template_request("sell");
+        mm2::to_json(sell_request, req);
         batch.push_back(sell_request);
 
         sell_request["userpass"] = "******";
@@ -1173,8 +1173,8 @@ namespace atomic_dex
         };
 
         nlohmann::json batch;
-        nlohmann::json preimage_request = ::mm2::api::template_request("trade_preimage");
-        ::mm2::api::to_json(preimage_request, req);
+        nlohmann::json preimage_request = mm2::template_request("trade_preimage");
+        mm2::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
         SPDLOG_INFO("trade_preimage request: {}", preimage_request.dump(-1));
@@ -1188,7 +1188,7 @@ namespace atomic_dex
             {
                 auto           answers               = nlohmann::json::parse(body);
                 nlohmann::json answer                = answers[0];
-                auto           trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
+                auto           trade_preimage_answer = mm2::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.error.has_value())
                 {
                     auto        error_answer = trade_preimage_answer.error.value();

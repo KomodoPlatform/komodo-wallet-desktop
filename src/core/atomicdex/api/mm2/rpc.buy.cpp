@@ -22,7 +22,7 @@
 #include "atomicdex/api/mm2/generics.hpp"
 #include "atomicdex/api/mm2/rpc.buy.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     from_json(const nlohmann::json& j, buy_answer_success& contents)
@@ -76,4 +76,4 @@ namespace mm2::api
             SPDLOG_INFO("The order is not picked from orderbook we create it from volume = {}, price = {}", j.at("volume").dump(4), request.price);
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

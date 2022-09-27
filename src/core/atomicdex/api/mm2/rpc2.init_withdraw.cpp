@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc2.init_withdraw.hpp"
 
 //! Implementation 2.0 RPC [init_withdraw]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const init_withdraw_fees& request)
@@ -52,4 +52,4 @@ namespace mm2::api
     {
         j.at("task_id").get_to(answer.task_id);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

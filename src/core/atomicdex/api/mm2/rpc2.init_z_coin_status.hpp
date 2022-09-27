@@ -25,7 +25,7 @@
 //! Project Headers
 #include "generic.error.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct init_z_coin_status_request
     {
@@ -63,7 +63,7 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_init_z_coin_status_request         = ::mm2::api::init_z_coin_status_request;
-    using t_init_z_coin_status_answer          = ::mm2::api::init_z_coin_status_answer;
-    using t_init_z_coin_status_answer_success  = ::mm2::api::init_z_coin_status_answer_success;
+    using t_init_z_coin_status_request         = mm2::init_z_coin_status_request;
+    using t_init_z_coin_status_answer          = mm2::init_z_coin_status_answer;
+    using t_init_z_coin_status_answer_success  = mm2::init_z_coin_status_answer_success;
 } // namespace atomic_dex

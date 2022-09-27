@@ -201,7 +201,7 @@ ColumnLayout
                 let volume = input_volume.text * 0.50
                 setMinimumAmount(General.formatDouble(volume))
             }
-            fiat_value: General.getFiatText(non_null_volume, left_ticker)
+            fiat_value: General.getFiatText(API.app.trading_pg.min_trade_vol, left_ticker)
             left_label: "10%"
             middle_label: "25%"
             right_label: "50%"

@@ -26,7 +26,7 @@
 //! Our Headers
 #include "transaction.data.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct z_tx_history_request
     {
@@ -94,10 +94,10 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, z_tx_history_answer& answer);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_z_tx_history_request = ::mm2::api::z_tx_history_request;
-    using t_z_tx_history_answer = ::mm2::api::z_tx_history_answer;
+    using t_z_tx_history_request = mm2::z_tx_history_request;
+    using t_z_tx_history_answer = mm2::z_tx_history_answer;
 } // namespace atomic_dex

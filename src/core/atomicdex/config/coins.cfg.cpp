@@ -14,12 +14,104 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
+#include <stdexcept>
+
 #include <nlohmann/json.hpp>
 #include <sstream>
 
-//! Project Headers
-#include "atomicdex/config/coins.cfg.hpp"
+#include "coins.cfg.hpp"
+
+namespace
+{
+    CoinType get_coin_type_from_str(const std::string& coin_type)
+    {
+        if (coin_type == "QRC-20")
+        {
+            return CoinType::QRC20;
+        }
+        if (coin_type == "ERC-20")
+        {
+            return CoinType::ERC20;
+        }
+        if (coin_type == "UTXO")
+        {
+            return CoinType::UTXO;
+        }
+        if (coin_type == "Smart Chain")
+        {
+            return CoinType::SmartChain;
+        }
+        if (coin_type == "BEP-20")
+        {
+            return CoinType::BEP20;
+        }
+        if (coin_type == "SLP")
+        {
+            return CoinType::SLP;
+        }
+        if (coin_type == "Matic")
+        {
+            return CoinType::Matic;
+        }
+        if (coin_type == "Optimism")
+        {
+            return CoinType::Optimism;
+        }
+        if (coin_type == "Arbitrum")
+        {
+            return CoinType::Arbitrum;
+        }
+        if (coin_type == "AVX-20")
+        {
+            return CoinType::AVX20;
+        }
+        if (coin_type == "FTM-20")
+        {
+            return CoinType::FTM20;
+        }
+        if (coin_type == "HRC-20")
+        {
+            return CoinType::HRC20;
+        }
+        if (coin_type == "Ubiq")
+        {
+            return CoinType::Ubiq;
+        }
+        if (coin_type == "KRC-20")
+        {
+            return CoinType::KRC20;
+        }
+        if (coin_type == "Moonriver")
+        {
+            return CoinType::Moonriver;
+        }
+        if (coin_type == "Moonbeam")
+        {
+            return CoinType::Moonbeam;
+        }
+        if (coin_type == "HecoChain")
+        {
+            return CoinType::HecoChain;
+        }
+        if (coin_type == "SmartBCH")
+        {
+            return CoinType::SmartBCH;
+        }
+        if (coin_type == "Ethereum Classic")
+        {
+            return CoinType::EthereumClassic;
+        }
+        if (coin_type == "RSK Smart Bitcoin")
+        {
+            return CoinType::RSK;
+        }
+        if (coin_type == "ZHTLC")
+        {
+            return CoinType::ZHTLC;
+        }
+        throw std::invalid_argument{"Undefined given coin type."};
+    }
+}
 
 namespace atomic_dex
 {
@@ -29,8 +121,8 @@ namespace atomic_dex
         j.at("coin").get_to(cfg.ticker);
         j.at("name").get_to(cfg.name);
         j.at("type").get_to(cfg.type);
+        cfg.coin_type = get_coin_type_from_str(cfg.type);
         j.at("active").get_to(cfg.active);
-        j.at("currently_enabled").get_to(cfg.currently_enabled);
         j.at("explorer_url").get_to(cfg.explorer_url);
 
         cfg.gui_ticker           = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
@@ -43,150 +135,68 @@ namespace atomic_dex
         cfg.is_testnet           = j.contains("is_testnet") ? j.at("is_testnet").get<bool>() : false;
         cfg.wallet_only          = j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
 
+        if (j.contains("other_types"))
+        {
+            std::vector<std::string> other_types;
+            
+            j.at("other_types").get_to(other_types);
+            cfg.other_types = std::set<CoinType>();
+            for (const auto& other_type : other_types)
+            {
+                cfg.other_types->emplace(get_coin_type_from_str(other_type));
+            }
+        }
         if (j.contains("utxo_merge"))
         {
             cfg.utxo_merge = j.at("utxo_merge");
         }
-
         if (j.contains("mm2_backup"))
         {
             cfg.custom_backup = j.at("mm2_backup");
         }
-
         if (j.contains("activation_status"))
         {
             cfg.activation_status = j.at("activation_status").get<nlohmann::json>();
         }
-
         if (j.contains("electrum"))
         {
             cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();
         }
-
+        // Used for SLP coins
+        if (j.contains("bchd_urls"))
+        {
+            cfg.bchd_urls = j.at("bchd_urls").get<std::vector<std::string>>();
+        }
         if (j.contains("nodes"))
         {
             cfg.urls = j.at("nodes").get<std::vector<std::string>>();
         }
-
+        if (j.contains("allow_slp_unsafe_conf"))
+        {
+            cfg.allow_slp_unsafe_conf = j.at("allow_slp_unsafe_conf").get<bool>();
+        }
         // Used for ZHTLC coins
         if (j.contains("light_wallet_d_servers"))
         {
             cfg.z_urls = j.at("light_wallet_d_servers").get<std::vector<std::string>>();
         }
-
-        // Used for SLP coins
-        if (j.contains("bchd_urls"))
-        {
-            cfg.bchd_urls = j.at("bchd_urls").get<std::vector<std::string>>();
-            cfg.allow_slp_unsafe_conf = j.at("allow_slp_unsafe_conf").get<bool>();
-        }
-
         if (j.contains("is_segwit_on"))
         {
             cfg.segwit = true;
             j.at("is_segwit_on").get_to(cfg.is_segwit_on);
             SPDLOG_INFO("coin: {} support segwit with current_segwit mode: {}", cfg.ticker, cfg.is_segwit_on);
         }
-
         if (j.contains("alias_ticker"))
         {
             cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
         }
-
         if (j.contains("explorer_tx_url"))
         {
             j.at("explorer_tx_url").get_to(cfg.tx_uri);
         }
-
         if (j.contains("explorer_address_url"))
         {
             j.at("explorer_address_url").get_to(cfg.address_url);
-        }
-
-        // Set Coin Type
-        if (cfg.type == "QRC-20")
-        {
-            cfg.coin_type = CoinType::QRC20;
-        }
-        else if (cfg.type == "ERC-20")
-        {
-            cfg.coin_type = CoinType::ERC20;
-        }
-        else if (cfg.type == "UTXO")
-        {
-            cfg.coin_type = CoinType::UTXO;
-        }
-        else if (cfg.type == "Smart Chain")
-        {
-            cfg.coin_type = CoinType::SmartChain;
-        }
-        else if (cfg.type == "BEP-20")
-        {
-            cfg.coin_type = CoinType::BEP20;
-        }
-        else if (cfg.type == "SLP")
-        {
-            cfg.coin_type = CoinType::SLP;
-        }
-        else if (cfg.type == "Matic")
-        {
-            cfg.coin_type = CoinType::Matic;
-        }
-        else if (cfg.type == "Optimism")
-        {
-            cfg.coin_type = CoinType::Optimism;
-        }
-        else if (cfg.type == "Arbitrum")
-        {
-            cfg.coin_type = CoinType::Arbitrum;
-        }
-        else if (cfg.type == "AVX-20")
-        {
-            cfg.coin_type = CoinType::AVX20;
-        }
-        else if (cfg.type == "FTM-20")
-        {
-            cfg.coin_type = CoinType::FTM20;
-        }
-        else if (cfg.type == "HRC-20")
-        {
-            cfg.coin_type = CoinType::HRC20;
-        }
-        else if (cfg.type == "Ubiq")
-        {
-            cfg.coin_type = CoinType::Ubiq;
-        }
-        else if (cfg.type == "KRC-20")
-        {
-            cfg.coin_type = CoinType::KRC20;
-        }
-        else if (cfg.type == "Moonriver")
-        {
-            cfg.coin_type = CoinType::Moonriver;
-        }
-        else if (cfg.type == "Moonbeam")
-        {
-            cfg.coin_type = CoinType::Moonbeam;
-        }
-        else if (cfg.type == "HecoChain")
-        {
-            cfg.coin_type = CoinType::HecoChain;
-        }
-        else if (cfg.type == "SmartBCH")
-        {
-            cfg.coin_type = CoinType::SmartBCH;
-        }
-        else if (cfg.type == "Ethereum Classic")
-        {
-            cfg.coin_type = CoinType::EthereumClassic;
-        }
-        else if (cfg.type == "RSK Smart Bitcoin")
-        {
-            cfg.coin_type = CoinType::RSK;
-        }
-        else if (cfg.type == "ZHTLC")
-        {
-            cfg.coin_type = CoinType::ZHTLC;
         }
 
         switch (cfg.coin_type)
@@ -291,8 +301,7 @@ namespace atomic_dex
         }
     }
 
-    void
-    print_coins(std::vector<coin_config> coins)
+    void print_coins(std::vector<coin_config> coins)
     {
         std::stringstream ss;
         ss << "[";
@@ -302,5 +311,4 @@ namespace atomic_dex
         ss << "]";
         SPDLOG_INFO("{}", ss.str());
     }
-
 } // namespace atomic_dex

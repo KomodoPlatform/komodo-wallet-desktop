@@ -22,7 +22,7 @@
 //! Project Headers
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Only for erc 20
     struct enable_request
@@ -115,10 +115,10 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, const enable_answer& cfg);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_enable_request = ::mm2::api::enable_request;
-    using t_enable_answer  = ::mm2::api::enable_answer;
+    using t_enable_request = mm2::enable_request;
+    using t_enable_answer  = mm2::enable_answer;
 } // namespace atomic_dex

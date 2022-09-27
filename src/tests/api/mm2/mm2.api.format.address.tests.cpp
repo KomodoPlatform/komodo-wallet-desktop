@@ -20,7 +20,7 @@
 
 #include "atomicdex/api/mm2/format.address.hpp"
 
-TEST_CASE("mm2::api::address_format serialisation")
+TEST_CASE("mm2::address_format serialisation")
 {
     const nlohmann::json     expected_json = R"(
     {
@@ -28,8 +28,9 @@ TEST_CASE("mm2::api::address_format serialisation")
       "network":"bchtest"
     }
     )"_json;
-    mm2::api::format_address request{.format = "cashaddress", .network = "bchtest"};
-    nlohmann::json           j;
-    mm2::api::to_json(j, request);
+    atomic_dex::mm2::format_address request{.format = "cashaddress", .network = "bchtest"};
+    nlohmann::json j;
+    
+    atomic_dex::mm2::to_json(j, request);
     CHECK_EQ(j, expected_json);
 }

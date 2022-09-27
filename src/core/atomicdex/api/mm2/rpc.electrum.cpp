@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 
 //! Implementation RPC [electrum]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void
@@ -64,4 +64,4 @@ namespace mm2::api
         j.at("balance").get_to(cfg.balance);
         j.at("result").get_to(cfg.result);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

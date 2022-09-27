@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     from_json(const nlohmann::json& j, orderbook_answer& answer)
@@ -105,4 +105,4 @@ namespace mm2::api
         j["params"]["base"] = request.base;
         j["params"]["rel"]  = request.rel;
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
