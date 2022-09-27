@@ -5406,6 +5406,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "AVN": {
+    "coin": "AVN",
+    "name": "Avian",
+    "coinpaprika_id": "avn-avian",
+    "coingecko_id": "avian-network",
+    "nomics_id": "AVN3",
+    "electrum": [
+      {
+        "url": "electrum-us.avn.network:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrum-eu.avn.network:50001",
+        "protocol": "TCP"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.avn.network/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "AWC": {
     "active": false,
     "coin": "AWC",
