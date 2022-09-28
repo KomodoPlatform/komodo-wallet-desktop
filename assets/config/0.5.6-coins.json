@@ -1760,6 +1760,30 @@
     "currently_enabled": false,
     "wallet_only": true
   },
+  "CHTA": {
+    "coin": "CHTA",
+    "name": "Cheetahcoin",
+    "type": "UTXO",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "chta-cheetahcoin",
+    "nomics_id": "CHTA",
+    "electrum": [
+      {
+        "url": "electrum.shorelinecrypto.com:10007"
+      },
+      {
+        "url": "electrum1.mooo.com:10007"
+      },
+      {
+        "url": "electrum2.mooo.com:10007"
+      }
+    ],
+    "explorer_url": [
+      "http://chtaexplorer.mooo.com:3002/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "CLC": {
     "coin": "CLC",
     "name": "Collider Coin",
@@ -3831,6 +3855,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "LNC": {
+    "coin": "LNC",
+    "name": "LightningCash",
+    "coinpaprika_id": "lnc-lightningcash",
+    "coingecko_id": "lightningcash",
+    "nomics_id": "LNC3",
+    "electrum": [
+      {
+        "url": "74.208.95.26:50001"
+      },
+      {
+        "url": "74.56.11.23:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.lightningcash-coin.com/"
+    ],
+    "explorer_tx_url": "tx/",
+    "explorer_address_url": "address/",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "LOOM-ERC20": {
     "coin": "LOOM-ERC20",
     "name": "Loom Network",
@@ -5227,6 +5274,29 @@
       "https://explorer.harmony.one/"
     ],
     "type": "HRC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "AVN": {
+    "coin": "AVN",
+    "name": "Avian",
+    "coinpaprika_id": "avn-avian",
+    "coingecko_id": "avian-network",
+    "nomics_id": "AVN3",
+    "electrum": [
+      {
+        "url": "electrum-us.avn.network:50001",
+        "protocol": "TCP"
+      },
+      {
+        "url": "electrum-eu.avn.network:50001",
+        "protocol": "TCP"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.avn.network/"
+    ],
+    "type": "UTXO",
     "active": false,
     "currently_enabled": false
   },
