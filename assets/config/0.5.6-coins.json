@@ -848,51 +848,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "BCH": {
-    "coin": "BCH",
-    "coingecko_id": "bitcoin-cash",
-    "coinpaprika_id": "bch-bitcoin-cash",
-    "nomics_id": "BCH",
-    "active": false,
-    "currently_enabled": false,
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10055",
-        "ws_url": "electrum1.cipig.net:30055"
-      },
-      {
-        "url": "electrum2.cipig.net:10055",
-        "ws_url": "electrum2.cipig.net:30055"
-      },
-      {
-        "url": "electrum3.cipig.net:10055",
-        "ws_url": "electrum3.cipig.net:30055"
-      }
-    ],
-    "explorer_url": [
-      "https://explorer.bitcoin.com/bch/"
-    ],
-    "bchd_urls": [
-      "https://bchd.fountainhead.cash:443"
-    ],
-    "allow_slp_unsafe_conf": false,
-    "type": "UTXO",
-    "other_types": ["SLP"],
-    "name": "Bitcoin Cash"
-  },
-  "USDT-SLP": {
-    "coin": "USDT-SLP",
-    "active": false,
-    "coingecko_id": "tether",
-    "coinpaprika_id": "usdt-tether",
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://simpleledger.info/"
-    ],
-    "explorer_tx_url": "#tx/",
-    "type": "SLP",
-    "name": "Tether"
-  },
   "BCH-ERC20": {
     "coin": "BCH-ERC20",
     "name": "Bitcoin Cash",
@@ -10760,34 +10715,6 @@
     "currently_enabled": false,
     "wallet_only": false
   },
-  "sTST": {
-    "coin": "sTST",
-    "active": false,
-    "is_testnet": true,
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://testnet.simpleledger.info/"
-    ],
-    "explorer_tx_url": "#tx/",
-    "type": "SLP",
-    "name": "sTST"
-  },
-  "USDF": {
-    "coin": "USDF",
-    "active": false,
-    "is_testnet": true,
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://testnet.simpleledger.info/"
-    ],
-    "explorer_tx_url": "#tx/",
-    "type": "SLP",
-    "name": "Fake USD (Testnet)"
-  },
   "tBCH": {
     "coin": "tBCH",
     "active": false,
@@ -10819,5 +10746,104 @@
     "type": "UTXO",
     "other_types": ["SLP"],
     "name": "Bitcoin Cash (Testnet)"
+  },
+  "sTST": {
+    "coin": "sTST",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://testnet.simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "sTST"
+  },
+  "USDF": {
+    "coin": "USDF",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://testnet.simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "Fake USD (Testnet)"
+  },
+  "BCH": {
+    "coin": "BCH",
+    "coingecko_id": "bitcoin-cash",
+    "coinpaprika_id": "bch-bitcoin-cash",
+    "nomics_id": "BCH",
+    "active": false,
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10055",
+        "ws_url": "electrum1.cipig.net:30055"
+      },
+      {
+        "url": "electrum2.cipig.net:10055",
+        "ws_url": "electrum2.cipig.net:30055"
+      },
+      {
+        "url": "electrum3.cipig.net:10055",
+        "ws_url": "electrum3.cipig.net:30055"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.bitcoin.com/bch/"
+    ],
+    "bchd_urls": [
+      "https://bchd.fountainhead.cash:443"
+    ],
+    "allow_slp_unsafe_conf": false,
+    "type": "UTXO",
+    "other_types": ["SLP"],
+    "name": "Bitcoin Cash"
+  },
+  "HONK": {
+    "coin": "HONK",
+    "active": false,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "HONK HONK"
+  },
+  "ASLP": {
+    "coin": "ASLP",
+    "active": false,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "AtomicSLP"
+  },
+  "USDT-SLP": {
+    "coin": "USDT-SLP",
+    "active": false,
+    "coingecko_id": "tether",
+    "coinpaprika_id": "usdt-tether",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "Tether"
   }
 }

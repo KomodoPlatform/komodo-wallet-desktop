@@ -508,7 +508,7 @@ namespace atomic_dex
             }
             else if (coin_config.coin_type == CoinType::SLP || (coin_config.other_types && coin_config.other_types->contains(CoinType::SLP)))
             {
-                if (coin_config.is_testnet)
+                if (coin_config.is_testnet.value_or(false))
                 {
                     slp_testnet_coins.push_back(coin_config);
                 }
