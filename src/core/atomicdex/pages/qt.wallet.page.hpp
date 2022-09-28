@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QVariant>
 
-#include "atomicdex/models/qt.wallet.transactions.model.hpp"
+#include "atomicdex/models/transactions_model.hpp"
 
 namespace atomic_dex
 {

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -20,7 +20,6 @@
 #include <entt/core/type_info.hpp>
 #include <entt/core/type_traits.hpp>
 
-//! Project Headers
 #include <atomicdex/config/coins.cfg.hpp>
 
 namespace atomic_dex

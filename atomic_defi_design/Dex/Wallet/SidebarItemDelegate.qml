@@ -9,7 +9,8 @@ import "../Components"
 import "../Constants" as Dex
 import App 1.0
 
-GradientRectangle {
+GradientRectangle
+{
     width: list_bg.width - list_bg.border.width*2 - 6
     height: 44
     radius: Dex.Style.rectangleCornerRadius + 4
@@ -24,23 +25,16 @@ GradientRectangle {
         hoverEnabled: true
 
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: {
-            if(!can_change_ticker) return
-
+        onClicked:
+        {
             if (mouse.button === Qt.RightButton) context_menu.popup()
             else api_wallet_page.ticker = ticker
         }
-        onPressAndHold: {
-            if(!can_change_ticker) return
-
-            if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
-        }
+        onPressAndHold: if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
     }
 
     // Right click menu
-    CoinMenu {
-        id: context_menu
-    }
+    CoinMenu { id: context_menu }
 
     readonly property double side_margin: 16
 

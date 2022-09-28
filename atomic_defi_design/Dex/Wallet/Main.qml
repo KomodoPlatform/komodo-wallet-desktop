@@ -20,16 +20,18 @@ Item
 {
     id: root
     property alias send_modal: send_modal
-    readonly property int layout_margin: 20
-    readonly property string headerTitleColor: Style.colorText2
-    readonly property string headerTitleFont: Style.textSizeMid1
-    readonly property string headerTextColor: Dex.CurrentTheme.foregroundColor
-    readonly property string headerTextFont: Style.textSize
-    readonly property string headerSmallTitleFont: Style.textSizeSmall4
-    readonly property string headerSmallFont: Style.textSizeSmall2
-    readonly property string addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
 
-    function loadingPercentage(remaining) {
+    readonly property int       layout_margin: 20
+    readonly property string    headerTitleColor: Style.colorText2
+    readonly property string    headerTitleFont: Style.textSizeMid1
+    readonly property string    headerTextColor: Dex.CurrentTheme.foregroundColor
+    readonly property string    headerTextFont: Style.textSize
+    readonly property string    headerSmallTitleFont: Style.textSizeSmall4
+    readonly property string    headerSmallFont: Style.textSizeSmall2
+    readonly property string    addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
+
+    function loadingPercentage(remaining)
+    {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
     }
 
@@ -937,7 +939,6 @@ Item
                 {
                     width: parent.width
                     height: parent.height
-                    model: transactions_mdl.proxy_mdl
                 }
 
                 ColumnLayout
@@ -994,10 +995,7 @@ Item
                             cursorShape: Qt.PointingHandCursor
                             anchors.fill: parent
                             hoverEnabled: true
-                            onClicked: {
-                                console.log(addressURL)
-                                Qt.openUrlExternally(addressURL)
-                            }
+                            onClicked: Qt.openUrlExternally(addressURL)
                         }
                     }
 

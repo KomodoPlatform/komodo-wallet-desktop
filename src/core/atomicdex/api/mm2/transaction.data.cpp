@@ -1,24 +1,16 @@
-//
-// Created by Sztergbaum Roman on 08/06/2021.
-//
-
-//! Deps
 #include <nlohmann/json.hpp>
 
-//! Our Headers
 #include "atomicdex/api/mm2/transaction.data.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex::mm2
 {
-    void
-    from_json(const nlohmann::json& j, fee_regular_coin& cfg)
+    void from_json(const nlohmann::json& j, fee_regular_coin& cfg)
     {
         j.at("amount").get_to(cfg.amount);
     }
 
-    void
-    from_json(const nlohmann::json& j, fee_erc_coin& cfg)
+    void from_json(const nlohmann::json& j, fee_erc_coin& cfg)
     {
         j.at("coin").get_to(cfg.coin);
         j.at("gas").get_to(cfg.gas);
@@ -26,8 +18,7 @@ namespace atomic_dex::mm2
         j.at("total_fee").get_to(cfg.total_fee);
     }
 
-    void
-    from_json(const nlohmann::json& j, fee_qrc_coin& cfg)
+    void from_json(const nlohmann::json& j, fee_qrc_coin& cfg)
     {
         j.at("coin").get_to(cfg.coin);
         j.at("gas_limit").get_to(cfg.gas_limit);
@@ -36,8 +27,7 @@ namespace atomic_dex::mm2
         j.at("total_gas_fee").get_to(cfg.total_gas_fee);
     }
 
-    void
-    from_json(const nlohmann::json& j, fees_data& cfg)
+    void from_json(const nlohmann::json& j, fees_data& cfg)
     {
         if (j.count("amount") == 1)
         {
@@ -56,8 +46,7 @@ namespace atomic_dex::mm2
         }
     }
 
-    void
-    from_json(const nlohmann::json& j, transaction_data& cfg)
+    void from_json(const nlohmann::json& j, transaction_data& cfg)
     {
         j.at("block_height").get_to(cfg.block_height);
         j.at("coin").get_to(cfg.coin);

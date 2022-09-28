@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -22,17 +22,14 @@ namespace atomic_dex
 {
     class transactions_proxy_model final : public QSortFilterProxyModel
     {
-      Q_OBJECT
+        Q_OBJECT
 
-      public:
-        //! Constructor
+    public:
         transactions_proxy_model(QObject* parent);
+        ~transactions_proxy_model() final = default;
 
-        //! Destructor
-        ~transactions_proxy_model()  final = default;
-
-      protected:
-        //! Override member functions
+    protected:
+        // Override
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
     };
 }
