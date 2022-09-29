@@ -182,9 +182,9 @@ Item
     Connections
     {
         target: app
-        function onPairChanged()
+        function onPairChanged(left, right)
         {
-            root.loadChart(left_ticker, right_ticker)
+            root.loadChart(left, right)
         }
     }
 
