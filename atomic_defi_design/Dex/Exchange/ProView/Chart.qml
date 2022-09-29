@@ -6,6 +6,7 @@ import QtWebEngine 1.8
 import "../../Components"
 import "../../Constants"
 import Dex.Themes 1.0 as Dex
+import AtomicDEX.MarketMode 1.0
 
 Item
 {
@@ -184,7 +185,14 @@ Item
         target: app
         function onPairChanged(left, right)
         {
-            root.loadChart(left, right)
+            if (API.app.trading_pg.market_mode == MarketMode.Sell)
+            {
+                root.loadChart(left, right)
+            }
+            else
+            {
+                root.loadChart(right, left)
+            }
         }
     }
 
