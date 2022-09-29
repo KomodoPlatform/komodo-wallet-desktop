@@ -51,17 +51,15 @@ namespace atomic_dex::mm2
         case CoinType::Optimism:
         {
             j["urls"]                  = cfg.urls;
-            j["swap_contract_address"] = cfg.is_testnet ? cfg.optimism_erc_testnet_swap_contract_address : cfg.optimism_erc_swap_contract_address;
-            j["fallback_swap_contract"] =
-                cfg.is_testnet ? cfg.optimism_erc_testnet_fallback_swap_contract_address : cfg.optimism_erc_fallback_swap_contract_address;
+            j["swap_contract_address"] = cfg.optimism_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.optimism_erc_fallback_swap_contract_address;
             break;
         }
         case CoinType::Arbitrum:
         {
             j["urls"]                  = cfg.urls;
-            j["swap_contract_address"] = cfg.is_testnet ? cfg.arbitrum_erc_testnet_swap_contract_address : cfg.arbitrum_erc_swap_contract_address;
-            j["fallback_swap_contract"] =
-                cfg.is_testnet ? cfg.arbitrum_erc_testnet_fallback_swap_contract_address : cfg.arbitrum_erc_fallback_swap_contract_address;
+            j["swap_contract_address"] = cfg.arbitrum_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.arbitrum_erc_fallback_swap_contract_address;
             break;
         }
         case CoinType::BEP20:

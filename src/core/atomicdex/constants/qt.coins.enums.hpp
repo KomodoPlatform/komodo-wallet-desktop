@@ -53,8 +53,9 @@ namespace atomic_dex
             RSK             = 19,
             ZHTLC           = 20,
             Disabled        = 21,
-            All             = 22,
-            Size            = 23
+            Invalid         = 22,
+            All             = 23,
+            Size            = 24
         };
 
         Q_ENUM(CoinTypeEnum)
