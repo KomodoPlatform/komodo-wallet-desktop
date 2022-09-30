@@ -109,7 +109,9 @@ namespace
         {
             return CoinType::ZHTLC;
         }
-        throw std::invalid_argument{"Undefined given coin type."};
+        SPDLOG_INFO("Invalid coin type: {}", coin_type);
+        return CoinType::Invalid;
+        // throw std::invalid_argument{"Undefined given coin type."};
     }
 }
 
@@ -222,12 +224,12 @@ namespace atomic_dex
             break;
         case CoinType::Optimism:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHK-OPT20" : "ETH-OPT20";
+            cfg.fees_ticker            = "ETH-OPT20";
             cfg.is_erc_family          = true;
             break;
         case CoinType::Arbitrum:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHR-ARB20" : "ETH-ARB20";
+            cfg.fees_ticker            = "ETH-ARB20";
             cfg.is_erc_family          = true;
             break;
         case CoinType::AVX20:
@@ -292,6 +294,10 @@ namespace atomic_dex
         case CoinType::ZHTLC:
             cfg.has_parent_fees_ticker = false;
             cfg.is_zhtlc_family        = true;
+            cfg.fees_ticker            = cfg.ticker;
+            break;
+        case CoinType::Invalid:
+            cfg.has_parent_fees_ticker = false;
             cfg.fees_ticker            = cfg.ticker;
             break;
         default:
