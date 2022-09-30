@@ -9858,7 +9858,7 @@
     "coin": "PRCY-BEP20",
     "name": "PRivaCY Coin",
     "coinpaprika_id": "prcy-privacy-coin",
-    "coingecko_id": "privacy-coin",
+    "coingecko_id": "prcy-coin",
     "nomics_id": "PRCY",
     "nodes": [
       "http://bsc1.cipig.net:8655",
@@ -9876,7 +9876,7 @@
     "coin": "PRCY-ERC20",
     "name": "PRivaCY Coin",
     "coinpaprika_id": "prcy-privacy-coin",
-    "coingecko_id": "privacy-coin",
+    "coingecko_id": "prcy-coin",
     "nomics_id": "PRCY",
     "nodes": [
       "http://eth1.cipig.net:8555",
@@ -9894,7 +9894,7 @@
     "coin": "PRCY-PLG20",
     "name": "PRivaCY Coin",
     "coinpaprika_id": "prcy-privacy-coin",
-    "coingecko_id": "privacy-coin",
+    "coingecko_id": "prcy-coin",
     "nomics_id": "PRCY",
     "nodes": [
       "https://polygon-rpc.com",
