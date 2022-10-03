@@ -5755,7 +5755,7 @@
     "coin": "NYAN",
     "name": "Nyancoin",
     "coinpaprika_id": "nyan-nyancoin",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "nyancoin",
     "nomics_id": "NYAN",
     "electrum": [
       {
@@ -5814,7 +5814,7 @@
   "PGX-PLG20": {
     "coin": "PGX-PLG20",
     "name": "Pegaxy Stone",
-    "coinpaprika_id": "test-coin",
+    "coinpaprika_id": "pgx-pegaxy-stone",
     "coingecko_id": "pegaxy-stone",
     "nomics_id": "PGX",
     "nodes": [
@@ -9792,7 +9792,7 @@
     "coin": "PRCY-BEP20",
     "name": "PRivaCY Coin",
     "coinpaprika_id": "prcy-privacy-coin",
-    "coingecko_id": "privacy-coin",
+    "coingecko_id": "prcy-coin",
     "nomics_id": "PRCY",
     "nodes": [
       "http://bsc1.cipig.net:8655",
@@ -9810,7 +9810,7 @@
     "coin": "PRCY-ERC20",
     "name": "PRivaCY Coin",
     "coinpaprika_id": "prcy-privacy-coin",
-    "coingecko_id": "privacy-coin",
+    "coingecko_id": "prcy-coin",
     "nomics_id": "PRCY",
     "nodes": [
       "http://eth1.cipig.net:8555",
@@ -9828,7 +9828,7 @@
     "coin": "PRCY-PLG20",
     "name": "PRivaCY Coin",
     "coinpaprika_id": "prcy-privacy-coin",
-    "coingecko_id": "privacy-coin",
+    "coingecko_id": "prcy-coin",
     "nomics_id": "PRCY",
     "nodes": [
       "https://polygon-rpc.com",
