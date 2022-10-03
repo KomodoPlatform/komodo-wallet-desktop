@@ -242,6 +242,8 @@ DexPopup
         const change = General.formatFullCrypto("", amount, ticker, "", "", true)
         if (!app.segwit_on)
         {
+            if (amount != 0)
+            {
             newNotification("onBalanceUpdateStatus",
                 {
                     am_i_sender,
@@ -255,6 +257,7 @@ DexPopup
                 qsTr("Your wallet balance changed"),
                 human_date,
                 "open_wallet_page")
+            }
         }
         else
         {

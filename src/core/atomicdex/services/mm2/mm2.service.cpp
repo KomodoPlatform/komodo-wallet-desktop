@@ -417,9 +417,11 @@ namespace atomic_dex
     bool mm2_service::disable_coin(const std::string& ticker, std::error_code& ec)
     {
         coin_config coin_info = get_coin_info(ticker);
+        SPDLOG_INFO("[mm2_service::disable_coin]: {}", ticker);
 
         if (not coin_info.currently_enabled)
         {
+            SPDLOG_INFO("[mm2_service::disable_coin]: {} not currently_enabled", ticker);
             return true;
         }
 
@@ -489,7 +491,9 @@ namespace atomic_dex
         }
         coins.erase(std::unique(coins.begin(), coins.end(), [](auto left, auto right) { return left.ticker == right.ticker; }), coins.end()); // Remove duplicates
         enable_coins(coins);
-        update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
+        // This updates coins as active which might not be if activation failed.
+        // update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
+
     }
 
     void mm2_service::enable_coins(const t_coins& coins)
@@ -573,11 +577,19 @@ namespace atomic_dex
                     for (auto&& answer : answers)
                     {
                         auto [res, error] = this->process_batch_enable_answer(answer);
-                        if (!res && error.find("already initialized") == std::string::npos)
+                        if (!res)
                         {
                             SPDLOG_DEBUG(
                                 "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", coins[idx].ticker, idx,
                                 coins.size(), answers.size());
+                            if (error.find("already initialized") != std::string::npos)
+                            {
+                                SPDLOG_ERROR(error);
+                            }
+                            else
+                            {
+                                SPDLOG_ERROR(error);
+                            }
                             this->dispatcher_.trigger<enabling_coin_failed>(coins[idx].ticker, error);
                         }
                         else
@@ -637,11 +649,19 @@ namespace atomic_dex
                     for (auto&& answer : answers)
                     {
                         auto [res, error] = this->process_batch_enable_answer(answer);
-                        if (!res && error.find("already initialized") == std::string::npos)
+                        if (!res)
                         {
                             SPDLOG_DEBUG(
                                 "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", coins[idx].ticker, idx,
                                 coins.size(), answers.size());
+                            if (error.find("already initialized") != std::string::npos)
+                            {
+                                SPDLOG_ERROR(error);
+                            }
+                            else
+                            {
+                                SPDLOG_ERROR(error);
+                            }
                             this->dispatcher_.trigger<enabling_coin_failed>(coins[idx].ticker, error);
                         }
                         else
@@ -703,9 +723,17 @@ namespace atomic_dex
         constexpr auto bch_ticker = "BCH";
         auto callback = [this]<typename RpcRequest>(RpcRequest rpc)
         {
-            if (rpc.error && rpc.error->error.find("already initialized") == std::string::npos)
+            if (rpc.error)
             {
                 SPDLOG_ERROR(rpc.error->error);
+                if (rpc.error->error.find("already initialized") != std::string::npos)
+                {
+                    SPDLOG_ERROR(rpc.error->error);
+                }
+                else
+                {
+                    SPDLOG_ERROR(rpc.error->error);
+                }
                 this->dispatcher_.trigger<enabling_coin_failed>(rpc.request.ticker, rpc.error->error);
             }
             else
@@ -782,9 +810,17 @@ namespace atomic_dex
         constexpr auto bch_ticker = "tBCH";
         auto callback = [this]<typename RpcRequest>(RpcRequest rpc)
         {
-            if (rpc.error && rpc.error->error.find("already initialized") == std::string::npos)
+            if (rpc.error)
             {
                 SPDLOG_ERROR(rpc.error->error);
+                if (rpc.error->error.find("already initialized") != std::string::npos)
+                {
+                    SPDLOG_ERROR(rpc.error->error);
+                }
+                else
+                {
+                    SPDLOG_ERROR(rpc.error->error);
+                }
                 this->dispatcher_.trigger<enabling_coin_failed>(rpc.request.ticker, rpc.error->error);
             }
             else
@@ -868,7 +904,6 @@ namespace atomic_dex
     void mm2_service::process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc)
     {
         const auto& answer = rpc.result.value();
-        
         {
             mm2::balance_answer balance_answer;
             
@@ -1114,17 +1149,22 @@ namespace atomic_dex
                                 for (auto&& answer: answers)
                                 {
                                     auto [res, error] = this->process_batch_enable_answer(answer);
-                                    if (error.find("already initialized") != std::string::npos)
-                                    {
-                                        SPDLOG_ERROR("{} already initialized", tickers[idx]);
-                                    }
-                                    else if (!res)
+
+                                    if (!res)
                                     {
                                         SPDLOG_DEBUG(
                                             "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                             tickers.size(), answers.size());
+                                        if (error.find("already initialized") != std::string::npos)
+                                        {
+                                            SPDLOG_ERROR(error);
+                                        }
+                                        else
+                                        {
+                                            SPDLOG_ERROR(error);
+                                            to_remove.emplace(tickers[idx]);
+                                        }
                                         this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], error);
-                                        to_remove.emplace(tickers[idx]);
                                     }
                                     else if (answer.contains("result"))
                                     {
@@ -1235,7 +1275,7 @@ namespace atomic_dex
 
                                                         if (error.find("already initialized") != std::string::npos)
                                                         {
-                                                            update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
+                                                            update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
                                                         }
                                                     }
                                                     else if (z_nb_try == 1000)
@@ -2157,10 +2197,9 @@ namespace atomic_dex
         }
         t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
         answer_r.balance  = result.str(8, std::ios_base::fixed);
-        
+
         {
             std::unique_lock lock(m_balance_mutex);
-            
             m_balance_informations[answer_r.coin] = std::move(answer_r);
         }
     }
