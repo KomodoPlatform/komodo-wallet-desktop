@@ -586,8 +586,8 @@ namespace atomic_dex
                                 coins.size(), answers.size());
                             if (error.find("already initialized") != std::string::npos)
                             {
+                                SPDLOG_INFO("{} {}: ", coins[idx].ticker, error);
                                 activated_coins.push_back(std::move(coins[idx]));
-                                SPDLOG_ERROR(error);
                             }
                             else
                             {
@@ -684,8 +684,8 @@ namespace atomic_dex
                                 coins.size(), answers.size());
                             if (error.find("already initialized") != std::string::npos)
                             {
+                                SPDLOG_INFO("{} {}: ", coins[idx].ticker, error);
                                 activated_coins.push_back(std::move(coins[idx]));
-                                SPDLOG_ERROR(error);
                             }
                             else
                             {
@@ -773,19 +773,27 @@ namespace atomic_dex
         {
             if (rpc.error)
             {
-                SPDLOG_ERROR(rpc.error->error);
-                SPDLOG_ERROR(rpc.error->error_type);
                 if (rpc.error->error_type.find("PlatformIsAlreadyActivated") != std::string::npos || rpc.error->error_type.find("TokenIsAlreadyActivated") != std::string::npos)
                 {
-                    SPDLOG_ERROR("{} already initialized: ", rpc.request.ticker);
+                    SPDLOG_ERROR("{} {}: ", rpc.request.ticker, rpc.error->error_type);
                     fetch_single_balance(get_coin_info(rpc.request.ticker));
                     update_coin_active({rpc.request.ticker}, true);
                     m_coins_informations[rpc.request.ticker].currently_enabled = true;
                     dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {rpc.request.ticker}});
+                    if constexpr (std::is_same_v<RpcRequest, mm2::enable_bch_with_tokens_rpc>)
+                    {
+                        for (const auto& slp_coin_info : rpc.request.slp_tokens_requests)
+                        {
+                            SPDLOG_ERROR("{} {}: ", slp_coin_info.ticker, rpc.error->error_type);
+                            fetch_single_balance(get_coin_info(slp_coin_info.ticker));
+                            update_coin_active({slp_coin_info.ticker}, true);
+                            m_coins_informations[slp_coin_info.ticker].currently_enabled = true;
+                            dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {slp_coin_info.ticker}});
+                        }
+                    }
                 }
                 else
                 {
-                    SPDLOG_ERROR(rpc.error->error);
                     m_coins_informations[rpc.request.ticker].currently_enabled = false;
                     update_coin_active({rpc.request.ticker}, false);
                     this->dispatcher_.trigger<enabling_coin_failed>(rpc.request.ticker, rpc.error->error);
@@ -868,19 +876,27 @@ namespace atomic_dex
         {
             if (rpc.error)
             {
-                SPDLOG_ERROR(rpc.error->error);
-                SPDLOG_ERROR(rpc.error->error_type);
                 if (rpc.error->error_type.find("PlatformIsAlreadyActivated") != std::string::npos || rpc.error->error_type.find("TokenIsAlreadyActivated") != std::string::npos)
                 {
-                    SPDLOG_ERROR("{} already initialized: ", rpc.request.ticker);
+                    SPDLOG_ERROR("{} {}: ", rpc.request.ticker, rpc.error->error_type);
                     fetch_single_balance(get_coin_info(rpc.request.ticker));
                     update_coin_active({rpc.request.ticker}, true);
                     m_coins_informations[rpc.request.ticker].currently_enabled = true;
                     dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {rpc.request.ticker}});
+                    if constexpr (std::is_same_v<RpcRequest, mm2::enable_bch_with_tokens_rpc>)
+                    {
+                        for (const auto& slp_coin_info : rpc.request.slp_tokens_requests)
+                        {
+                            SPDLOG_ERROR("{} {}: ", slp_coin_info.ticker, rpc.error->error_type);
+                            fetch_single_balance(get_coin_info(slp_coin_info.ticker));
+                            update_coin_active({slp_coin_info.ticker}, true);
+                            m_coins_informations[slp_coin_info.ticker].currently_enabled = true;
+                            dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {slp_coin_info.ticker}});
+                        }
+                    }
                 }
                 else
                 {
-                    SPDLOG_ERROR(rpc.error->error);
                     m_coins_informations[rpc.request.ticker].currently_enabled = false;
                     update_coin_active({rpc.request.ticker}, false);
                     this->dispatcher_.trigger<enabling_coin_failed>(rpc.request.ticker, rpc.error->error);
