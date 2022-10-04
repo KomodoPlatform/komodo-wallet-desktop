@@ -1266,6 +1266,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "BTCZ-BEP20": {
+    "coin": "BTCZ-BEP20",
+    "name": "BitcoinZ",
+    "coinpaprika_id": "btcz-bitcoinz",
+    "coingecko_id": "bitcoinz",
+    "nomics_id": "BTCZ",
+    "nodes": [
+      "http://bsc1.cipig.net:8655",
+      "http://bsc2.cipig.net:8655",
+      "http://bsc3.cipig.net:8655"
+    ],
+    "explorer_url": [
+      "https://bscscan.com/"
+    ],
+    "type": "BEP-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "BTX": {
     "coin": "BTX",
     "name": "BitCore",
