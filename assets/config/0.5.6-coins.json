@@ -1151,6 +1151,42 @@
     "active": false,
     "currently_enabled": false
   },
+  "BRZ-PLG20": {
+    "coin": "BRZ-PLG20",
+    "name": "Brazilian Digital Token",
+    "forex_id": "BRL",
+    "coinpaprika_id": "brz-brazilian-digital-token",
+    "coingecko_id": "brz",
+    "nomics_id": "BRZ",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://rpc-mainnet.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
+  "BRZ-AVX20": {
+    "coin": "BRZ-AVX20",
+    "name": "Brazilian Digital Token",
+    "forex_id": "BRL",
+    "coinpaprika_id": "brz-brazilian-digital-token",
+    "coingecko_id": "brz",
+    "nomics_id": "BRZ",
+    "nodes": [
+      "https://api.avax.network/ext/bc/C/rpc"
+    ],
+    "explorer_url": [
+      "https://snowtrace.io/"
+    ],
+    "type": "AVX-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "BSTY": {
     "coin": "BSTY",
     "name": "GlobalBoost-Y",
