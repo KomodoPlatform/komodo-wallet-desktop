@@ -7439,6 +7439,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "SOL-PLG20": {
+    "coin": "SOL-PLG20",
+    "name": "Solana",
+    "coinpaprika_id": "sol-solana",
+    "coingecko_id": "solana",
+    "nomics_id": "SOL",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://rpc-mainnet.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "SPACE": {
     "coin": "SPACE",
     "name": "Spacecoin",
