@@ -513,6 +513,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "ATOM-PLG20": {
+    "coin": "ATOM-PLG20",
+    "name": "Cosmos",
+    "coinpaprika_id": "atom-cosmos",
+    "coingecko_id": "cosmos",
+    "nomics_id": "ATOM",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://rpc-mainnet.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "AUR": {
     "coin": "AUR",
     "name": "Auroracoin",
