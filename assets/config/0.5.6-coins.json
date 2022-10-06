@@ -8506,6 +8506,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "YFI-PLG20": {
+    "coin": "YFI-PLG20",
+    "name": "yearn.finance",
+    "coinpaprika_id": "yfi-yearnfinance",
+    "coingecko_id": "yearn-finance",
+    "nomics_id": "YFI",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://rpc-mainnet.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "YFII-BEP20": {
     "coin": "YFII-BEP20",
     "name": "DFI.Money",
