@@ -440,6 +440,40 @@
     "active": false,
     "currently_enabled": false
   },
+  "APE-FTM20": {
+    "coin": "APE-FTM20",
+    "name": "ApeCoin",
+    "coinpaprika_id": "ape-apecoin",
+    "coingecko_id": "apecoin",
+    "nomics_id": "APE7",
+    "nodes": [
+      "https://rpc.ftm.tools/"
+    ],
+    "explorer_url": [
+      "https://ftmscan.com/"
+    ],
+    "type": "FTM-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "APE-PLG20": {
+    "coin": "APE-PLG20",
+    "name": "ApeCoin",
+    "coinpaprika_id": "ape-apecoin",
+    "coingecko_id": "apecoin",
+    "nomics_id": "APE7",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://rpc-mainnet.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "ARRR-BEP20": {
     "coin": "ARRR-BEP20",
     "name": "Pirate",
