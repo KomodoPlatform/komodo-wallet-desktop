@@ -404,6 +404,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "ANKR-PLG20": {
+    "coin": "ANKR-PLG20",
+    "name": "Ankr",
+    "coinpaprika_id": "ankr-ankr-network",
+    "coingecko_id": "ankr",
+    "nomics_id": "ANKR",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://rpc-mainnet.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "APE-ERC20": {
     "coin": "APE-ERC20",
     "name": "ApeCoin",
