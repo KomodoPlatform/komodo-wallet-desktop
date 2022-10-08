@@ -3997,6 +3997,42 @@
     "active": false,
     "currently_enabled": false
   },
+  "LDO-ERC20": {
+    "coin": "LDO-ERC20",
+    "name": "Lido DAO",
+    "coinpaprika_id": "ldo-lido-dao",
+    "coingecko_id": "lido-dao",
+    "nomics_id": "LDO",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "LDO-PLG20": {
+    "coin": "LDO-PLG20",
+    "name": "Lido DAO",
+    "coinpaprika_id": "ldo-lido-dao",
+    "coingecko_id": "lido-dao",
+    "nomics_id": "LDO",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://rpc-mainnet.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "LNC": {
     "coin": "LNC",
     "name": "LightningCash",

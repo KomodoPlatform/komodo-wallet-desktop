@@ -301,6 +301,7 @@ QtObject {
                                           "FLUX": "#2B61D1",
                                           "FIRO": "#BB2100",
                                           "LBC": "#00775C",
+                                          "LDO": "#F69988",
                                           "LOOM": "#48BEFF",
                                           "LTC": "#BFBBBB",
                                           "LUNA": "#FFD83D",
