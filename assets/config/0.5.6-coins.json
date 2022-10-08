@@ -3313,6 +3313,42 @@
     "active": false,
     "currently_enabled": false
   },
+  "GLM-ERC20": {
+    "coin": "GLM-ERC20",
+    "name": "Golem",
+    "coinpaprika_id": "glm-golem",
+    "coingecko_id": "golem",
+    "nomics_id": "GLM",
+    "nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
+  "GLM-PLG20": {
+    "coin": "GLM-PLG20",
+    "name": "Golem",
+    "coinpaprika_id": "glm-golem",
+    "coingecko_id": "golem",
+    "nomics_id": "GLM",
+    "nodes": [
+      "https://polygon-rpc.com",
+      "https://poly-rpc.gateway.pokt.network",
+      "https://rpc-mainnet.maticvigil.com"
+    ],
+    "explorer_url": [
+      "https://polygonscan.com/"
+    ],
+    "type": "Matic",
+    "active": false,
+    "currently_enabled": false
+  },
   "GM-BEP20": {
     "coin": "GM-BEP20",
     "name": "GM Wagmi",

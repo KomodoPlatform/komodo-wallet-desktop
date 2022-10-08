@@ -269,6 +269,7 @@ QtObject {
                                           "GALA": "#011B36",
                                           "GLEEC": "#8C41FF",
                                           "GRMS": "#12B690",
+                                          "GLM": "#0050E6",
                                           "GMS": "#0BFBE2",
                                           "GMT": "#E9CB7B",
                                           "GRS": "#377E96",
