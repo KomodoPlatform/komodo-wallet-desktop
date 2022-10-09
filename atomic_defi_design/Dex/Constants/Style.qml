@@ -467,6 +467,7 @@ QtObject {
                                           "WAVES": "#016BFF",
                                           "WBTC": "#CCCCCC",
                                           "WHIVE": "#FFCC00",
+                                          "WOO": "#595959",
                                           "XEC": "#273498",
                                           "XEP": "#0277E5",
                                           "XLM": "#737373",
