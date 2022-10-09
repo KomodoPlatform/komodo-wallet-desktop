@@ -272,6 +272,7 @@ QtObject {
                                           "GLM": "#0050E6",
                                           "GMS": "#0BFBE2",
                                           "GMT": "#E9CB7B",
+                                          "GMX": "#07A9E6",
                                           "GRS": "#377E96",
                                           "GRT": "#6E54DB",
                                           "GST": "#D7D7D7",
