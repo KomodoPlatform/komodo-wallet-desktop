@@ -293,6 +293,7 @@ SetupPage
             ColumnLayout
             {
                 visible: currentStep === 0
+                enabled: visible
                 Layout.preferredWidth: 450
                 spacing: Style.rowSpacing
 
@@ -367,6 +368,7 @@ SetupPage
                         }
                     }
                 }
+
                 TextField
                 {
                     id: input_generated_seed
@@ -497,11 +499,11 @@ SetupPage
                 }
             }
 
-
             // Second page, write the seed word
             ColumnLayout
             {
                 visible: currentStep === 1
+                enabled: visible
 
                 DefaultRectangle
                 {
@@ -673,6 +675,8 @@ SetupPage
             ColumnLayout
             {
                 visible: currentStep === 2
+                enabled: visible
+
                 Layout.preferredWidth: 450
                 spacing: Style.rowSpacing
 
