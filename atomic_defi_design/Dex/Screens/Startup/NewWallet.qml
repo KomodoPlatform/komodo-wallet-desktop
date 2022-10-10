@@ -8,6 +8,7 @@ import "../../Components"
 import "../../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 
 SetupPage
 {
@@ -158,7 +159,7 @@ SetupPage
 
     image_scale: 0.7
 
-    content: DexRectangle
+    content: Dex.Rectangle
     {
         color: Dex.CurrentTheme.floatingBackgroundColor
         width: column_layout.width + 50
@@ -210,6 +211,7 @@ SetupPage
             }
             mmo.model = getRandomWords(4)
         }
+
         ColumnLayout
         {
             id: column_layout
@@ -249,7 +251,7 @@ SetupPage
                     }
                 }
 
-                DexLabel
+                Dex.Text
                 {
                     font: DexTypo.head6
                     text_value: if (currentStep === 0)
@@ -273,8 +275,6 @@ SetupPage
             {
                 Layout.fillWidth: true
             }
-
-
 
             ModalLoader
             {
@@ -311,7 +311,7 @@ SetupPage
                     field.onTextChanged: text_error = General.validateWallet(input_wallet_name.field.text)
                     field.forceFocus: true
 
-                    DexRectangle
+                    Dex.Rectangle
                     {
                         x: 5
                         height: 40
