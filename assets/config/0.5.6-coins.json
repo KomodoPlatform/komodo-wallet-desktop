@@ -10333,6 +10333,22 @@
     "active": false,
     "currently_enabled": false
   },
+  "SHIB-KRC20": {
+    "coin": "SHIB-KRC20",
+    "name": "Shiba Inu",
+    "coinpaprika_id": "shib-shiba-inu",
+    "coingecko_id": "shiba-inu",
+    "nomics_id": "SHIB",
+    "nodes": [
+      "https://rpc-mainnet.kcc.network"
+    ],
+    "explorer_url": [
+      "https://explorer.kcc.io/en/"
+    ],
+    "type": "KRC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "SHR": {
     "coin": "SHR",
     "name": "ShareToken",
