@@ -224,7 +224,18 @@ namespace atomic_dex
                     ifs.setFileName(atomic_dex::std_path_to_qstring(path));
                     ifs.open(QIODevice::ReadOnly | QIODevice::Text);
                     nlohmann::json config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
-                    auto           res              = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
+
+                    //! Iterate through config
+                    for (auto& [key, value]: config_json_data.items())
+                    {
+                        //! Ensure default coin are marked as active
+                        if (key == DEX_PRIMARY_COIN || key == DEX_SECOND_PRIMARY_COIN)
+                        {
+                            config_json_data.at(key)["active"] = true;
+                        }
+                    }
+
+                    auto   res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
                     return res;
                 }
                 catch (const std::exception& error)
@@ -232,6 +243,7 @@ namespace atomic_dex
                     SPDLOG_ERROR("exception caught: {}", error.what());
                 }
             }
+            SPDLOG_DEBUG("Coins file does not exist!");
             return {};
         };
 
