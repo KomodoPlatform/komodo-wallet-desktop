@@ -88,11 +88,11 @@ FetchContent_MakeAvailable(mm2 jl777-coins qmaterial)
 
 ##! Configure our needs.
 if (UNIX)
-    configure_file(${jl777-coins_SOURCE_DIR}/utils/desktop_coins.json ${CMAKE_CURRENT_SOURCE_DIR}/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
+    configure_file(${jl777-coins_SOURCE_DIR}/utils/coins_config.json ${CMAKE_CURRENT_SOURCE_DIR}/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/${DEX_API} COPYONLY)
 else ()
-    configure_file(${jl777-coins_SOURCE_DIR}/utils/desktop_coins.json ${CMAKE_BINARY_DIR}/bin/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
+    configure_file(${jl777-coins_SOURCE_DIR}/utils/coins_config.json ${CMAKE_BINARY_DIR}/bin/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/${DEX_API}.exe COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/msvcp140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/msvcp140.dll COPYONLY)
