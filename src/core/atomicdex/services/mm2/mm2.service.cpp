@@ -1646,13 +1646,17 @@ namespace atomic_dex
         SPDLOG_INFO("fetch_infos_thread");
         if (only_tx)
         {
+            SPDLOG_INFO("fetch_infos_thread only tx start");
             batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
+            SPDLOG_INFO("fetch_infos_thread only tx end");
         }
         else
         {
+            SPDLOG_INFO("fetch_infos_thread not only tx start");
             const auto& enabled_coins = get_enabled_coins();
             for (auto&& coin: enabled_coins) { fetch_single_balance(coin); }
             batch_balance_and_tx(is_a_refresh, {}, false, true);
+            SPDLOG_INFO("fetch_infos_thread not only tx end");
         }
     }
 

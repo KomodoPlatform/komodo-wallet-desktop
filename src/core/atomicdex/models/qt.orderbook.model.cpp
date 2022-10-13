@@ -584,7 +584,7 @@ namespace atomic_dex
                 SPDLOG_INFO("end loop {}", id);
             }
             for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
-            SPDLOG_INFO("end functor", id);
+            SPDLOG_INFO("end functor");
         };
 
         refresh_functor(orderbook);
