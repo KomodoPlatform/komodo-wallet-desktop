@@ -154,7 +154,7 @@ namespace atomic_dex
                     auto        coin_info          = mm2_system.get_coin_info(ticker);
                     QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
                     update_value(ActivationStatus, status, idx, *this);
-                    // SPDLOG_DEBUG("updated currency values of: {}", ticker);
+                    SPDLOG_DEBUG("updated currency values of: {}", ticker);
                 }
             };
             taskflow.emplace(update_functor);
