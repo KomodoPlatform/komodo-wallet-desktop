@@ -20,7 +20,7 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
         echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
     echo os.getEnv("PROJECT_ROOT_DIR")
-    echo os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name))
+    echo os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name)
     os.setCurrentDir(os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name))
     echo os.getCurrentDir()
 
