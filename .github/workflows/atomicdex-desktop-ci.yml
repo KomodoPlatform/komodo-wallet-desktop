@@ -232,6 +232,7 @@ jobs:
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export MACOSX_DEPLOYMENT_TARGET=10.13
+          export PROJECT_ROOT_DIR=${{ github.workspace }}
           export CC=clang
           export CXX=clang++
           cd ci_tools_atomic_dex
@@ -260,6 +261,7 @@ jobs:
           #export LDFLAGS=-stdlib=libc++
           export CXX=clang++-12
           export CC=clang-12
+          export PROJECT_ROOT_DIR=${{ github.workspace }}
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
           cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
@@ -280,6 +282,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export CC=clang
           export CXX=clang++
+          export PROJECT_ROOT_DIR=${{ github.workspace }}
           echo "Running tests"
           #./ci_tools_atomic_dex tests ${{ matrix.type }}
           #cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
