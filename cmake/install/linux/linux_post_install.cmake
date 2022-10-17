@@ -29,7 +29,7 @@ else ()
 endif ()
 
 message(STATUS "VCPKG package manager enabled")
-set(LINUX_DEPLOY_PATH ${PROJECT_SOURCE_DIR}/ci_tools_atomic_dex/linux_misc/linuxdeployqt-7-x86_64.AppImage)
+set(LINUX_DEPLOY_PATH ${PROJECT_ROOT_DIR}/linux_misc/linuxdeployqt-7-x86_64.AppImage)
 
 if (EXISTS ${LINUX_DEPLOY_PATH})
     message(STATUS "linuxdeployqt path is -> ${LINUX_DEPLOY_PATH}")
