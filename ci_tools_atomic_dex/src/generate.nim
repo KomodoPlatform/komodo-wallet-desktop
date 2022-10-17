@@ -7,10 +7,17 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
     download_packages()
     var full_name = "build-" & build_type 
     if not os.existsDir(os.getCurrentDir().joinPath(full_name)):
-        echo "creating directory: " & full_name 
         os.createDir(full_name)
+        echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+        echo os.getCurrentDir()
+        echo "creating directory: " & full_name
+        echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
     else:
+        echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+        echo os.getCurrentDir()
         echo "existing directory: " & full_name
+        echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+
     os.setCurrentDir(os.getCurrentDir().joinPath(full_name))
     assert(os.existsEnv("QT_INSTALL_CMAKE_PATH"))
     var cmd_line = "cmake -GNinja -DCMAKE_BUILD_TYPE=" &  build_type & " " &

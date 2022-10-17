@@ -31,11 +31,23 @@ Options:
 
 proc main() =
   let args = docopt(doc, version = "Atomic Dex CI Tools 0.0.1")
+  echo "================= MAIN ======================================================"
+  echo os.getCurrentDir()
+  echo "======================= Pre-VCPKG Prepare ================================================="
   vcpkg_prepare()
+  echo "========================== Post-VCPKG Prepare ================================================="
+  echo os.getCurrentDir()
+  echo "==================================================================================="
   if args["--install_vcpkg"]:
     install_vcpkg()
+    echo "========================= Post-VCPKG Install ======================================="
+    echo os.getCurrentDir()
+    echo "==================================================================================="
   elif args["--install_dependencies"]:
     download_packages()
+    echo "========================== Post Download Packages ========================================"
+    echo os.getCurrentDir()
+    echo "==================================================================================="
   elif args["generate"]:
     if args["release"]:
       generate_solution("Release", $args["--osx_sdk"], $args["--compiler"])
