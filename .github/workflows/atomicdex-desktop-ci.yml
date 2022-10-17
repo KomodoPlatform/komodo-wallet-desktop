@@ -156,7 +156,7 @@ jobs:
         run: |
           echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
           echo ${{ github.sha }}
-          sudo ./ci_tools_atomic_dex/ci_scripts/linux_script.sh
+          sudo ${{ github.workspace }}/ci_tools_atomic_dex/ci_scripts/linux_script.sh
 
       - name: Upload env variable for vpkg (Linux)
         if: runner.os == 'Linux'
@@ -176,7 +176,7 @@ jobs:
       - name: Install deps (MacOS)
         if: runner.os == 'macOS'
         run: |
-          ./ci_tools_atomic_dex/ci_scripts/osx_script.sh
+          ${{ github.workspace }}/ci_tools_atomic_dex/ci_scripts/osx_script.sh
 
       - name: Upload env variable for vpkg (MacOS)
         if: runner.os == 'macOS'
@@ -199,8 +199,8 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
 
-          ./ci_tools_atomic_dex build debug
-          ./ci_tools_atomic_dex bundle debug
+          ${{ github.workspace }}/ci_tools_atomic_dex build debug
+          ${{ github.workspace }}/ci_tools_atomic_dex bundle debug
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'
@@ -236,7 +236,7 @@ jobs:
           export CXX=clang++
           cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
+          ${{ github.workspace }}/ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
 
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'
@@ -261,8 +261,8 @@ jobs:
           export CXX=clang++-12
           export CC=clang-12
           echo "Running tests"
-          ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          ${{ github.workspace }}/ci_tools_atomic_dex tests release
+          cd ${{ github.workspace }}/build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
           cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
           #curl https://report.ci/upload.py --output upload.py
           ls
@@ -304,7 +304,7 @@ jobs:
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'
         run: |
-          ls ./bundled/linux/
+          ls ${{ github.workspace }}/bundled/linux/
           echo "artifact_name_zstd=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "artifact_name_appimage=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
@@ -317,7 +317,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zstd }}
-          path: ./bundled/linux/${{ env.target_name_zstd }}
+          path: ${{ github.workspace }}/bundled/linux/${{ env.target_name_zstd }}
           retention-days: 7
 
       - name: Upload bundle artifact (Linux ZIP)
@@ -325,7 +325,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zip }}
-          path: ./bundled/linux/${{ env.target_name_zip }}
+          path: ${{ github.workspace }}/bundled/linux/${{ env.target_name_zip }}
           retention-days: 7
 
       - name: Upload bundle artifact (Linux AppImage)
@@ -333,13 +333,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_appimage }}
-          path: ./bundled/linux/${{ env.target_name_appimage }}
+          path: ${{ github.workspace }}/bundled/linux/${{ env.target_name_appimage }}
           retention-days: 7
 
       - name: Upload env variable for artifacts (macOS)
         if: runner.os == 'macOS'
         run: |
-          ls ./bundled/osx/
+          ls ${{ github.workspace }}/bundled/osx/
           echo "artifact_name_dmg=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
           echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).7z" >> $GITHUB_ENV
 
@@ -348,7 +348,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_dmg }}
-          path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}.dmg
+          path: ${{ github.workspace }}/bundled/osx/${{ env.DEX_PROJECT_NAME }}.dmg
           retention-days: 7
 
       - name: Upload artifacts (MacOS installer)
@@ -356,7 +356,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_installer }}
-          path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
+          path: ${{ github.workspace }}/bundled/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
           retention-days: 7
 
       - name: Upload env variable for artifacts (Windows)
@@ -371,7 +371,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zip }}
-          path: ./bundled/windows/bin.zip
+          path: ${{ github.workspace }}/bundled/windows/bin.zip
           retention-days: 7
 
       - name: Upload artifacts (Windows installer)
@@ -379,5 +379,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_installer }}
-          path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
+          path: ${{ github.workspace }}/bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
           retention-days: 7
