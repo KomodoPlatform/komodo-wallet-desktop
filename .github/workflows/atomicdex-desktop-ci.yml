@@ -198,8 +198,8 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
 
-          ./ci_tools_atomic_dex build release
-          ./ci_tools_atomic_dex bundle release
+          ./ci_tools_atomic_dex build debug
+          ./ci_tools_atomic_dex bundle debug
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'
