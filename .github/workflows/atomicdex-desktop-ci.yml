@@ -191,6 +191,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
+          export PROJECT_ROOT_DIR=${{ github.workspace }}
           #export CXXFLAGS=-stdlib=libc++
           #export LDFLAGS=-stdlib=libc++
           export CXX=clang++-12
