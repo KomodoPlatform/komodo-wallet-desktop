@@ -9,6 +9,7 @@ import build
 import bundle
 import tests
 import clean
+import os
 
 let doc = """
 Atomic Dex CI Tools.
