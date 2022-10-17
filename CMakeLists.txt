@@ -11,7 +11,7 @@ include(vcpkg_prerequisites)
 include(qt_prerequisites)
 include(cfg_hash)
 
-project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.5.6)
+project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.5.6.1)
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 
 include(cmake_default_options)
@@ -79,7 +79,7 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(jl777-coins
-        URL https://github.com/KomodoPlatform/coins/archive/master.zip)
+        URL https://github.com/KomodoPlatform/coins/archive/bechless.zip)
 
 #FetchContent_Declare(adex-generics-coins
 #        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
