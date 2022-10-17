@@ -1615,6 +1615,8 @@ namespace atomic_dex
         }
 
         t_balance_request balance_request{.coin = cfg_infos.ticker};
+        SPDLOG_INFO("fetch single balance of ticker named:");
+        SPDLOG_INFO(cfg_infos.ticker);
         nlohmann::json    j = mm2::template_request("my_balance");
         mm2::to_json(j, balance_request);
         batch_array.push_back(j);
@@ -1623,7 +1625,9 @@ namespace atomic_dex
         {
             try
             {
+                SPDLOG_INFO("parse fetch single balance answer");
                 auto answers = mm2::basic_batch_answer(resp);
+                SPDLOG_INFO("fetch single balance answer parsed");
                 if (!answers.contains("error") && !answers[0].contains("error"))
                 {
                     this->process_balance_answer(answers[0]);
