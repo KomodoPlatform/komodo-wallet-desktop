@@ -48,12 +48,12 @@ jobs:
             type: 'debug'
 
           - name: osx-release
-            os: macos-latest
+            os: macos-11
             qt: '5.15.2'
             type: 'release'
 
           - name: osx-debug
-            os: macos-latest
+            os: macos-11
             qt: '5.15.2'
             type: 'debug'
 
