@@ -79,7 +79,7 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(jl777-coins
-        URL https://github.com/KomodoPlatform/coins/archive/parse_repo.zip)
+        URL https://github.com/KomodoPlatform/coins/archive/4d01dfe.zip)
 
 #FetchContent_Declare(adex-generics-coins
 #        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
