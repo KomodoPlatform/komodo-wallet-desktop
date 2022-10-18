@@ -28,38 +28,41 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-            ubuntu-qt-5-15-2,
-            osx-qt-5-15-2,
-            windows-10-qt-5-15-2
+            ubuntu-release,
+            ubuntu-debug,
+            osx-release,
+            osx-debug,
+            windows-release,
+            windows-debug
         ]
 
         include:
-          - name: ubuntu-qt-5-15-2
+          - name: ubuntu-release
             os: ubuntu-latest
             qt: '5.15.2'
             type: 'release'
 
-          - name: ubuntu-qt-5-15-2
+          - name: ubuntu-debug
             os: ubuntu-latest
             qt: '5.15.2'
             type: 'debug'
 
-          - name: osx-qt-5-15-2
+          - name: osx-release
             os: macos-latest
             qt: '5.15.2'
             type: 'release'
 
-          - name: osx-qt-5-15-2
+          - name: osx-debug
             os: macos-latest
             qt: '5.15.2'
             type: 'debug'
 
-          - name: windows-10-qt-5-15-2
+          - name: windows-release
             os: windows-latest
             qt: '5.15.2'
             type: 'release'
 
-          - name: windows-10-qt-5-15-2
+          - name: windows-debug
             os: windows-latest
             qt: '5.15.2'
             type: 'debug'
