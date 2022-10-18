@@ -49,11 +49,6 @@ MultipageModal
     function getCryptoAmount() { return _preparePage.cryptoSendMode ? input_amount.text : equivalentAmount.value }
 
     function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price) {
-        if (address.substring(0,4) == "bc1p" || address.substring(0,4) == "tb1p")
-        {
-            showError(qsTr("Taproot not supported"), "Please enter a standard legacy or segwit address.")
-            return
-        }
         let max = parseFloat(current_ticker_infos.balance) === parseFloat(amount)
 
         // Save for later check
