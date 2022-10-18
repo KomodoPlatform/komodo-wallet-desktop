@@ -196,11 +196,11 @@ jobs:
           #export LDFLAGS=-stdlib=libc++
           export CXX=clang++-12
           export CC=clang-12
-          cd ci_tools_atomic_dex
+          cd ${{ github.workspace }}/ci_tools_atomic_dex
           nimble build -y
 
-          ${{ github.workspace }}/ci_tools_atomic_dex build debug
-          ${{ github.workspace }}/ci_tools_atomic_dex bundle debug
+          ./ci_tools_atomic_dex build debug
+          ./ci_tools_atomic_dex bundle debug
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'
@@ -235,15 +235,16 @@ jobs:
           export PROJECT_ROOT_DIR=${{ github.workspace }}
           export CC=clang
           export CXX=clang++
-          cd ci_tools_atomic_dex
+          cd ${{ github.workspace }}/ci_tools_atomic_dex
           nimble build -y
-          ${{ github.workspace }}/ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
 
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'
         shell: powershell
         run: |
           $Env:QT_VERSION = "${{ matrix.qt }}"
+          cd ${{ github.workspace }}
           .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
       - name: Running Tests (Linux)
@@ -263,7 +264,8 @@ jobs:
           export CC=clang-12
           export PROJECT_ROOT_DIR=${{ github.workspace }}
           echo "Running tests"
-          ${{ github.workspace }}/ci_tools_atomic_dex tests release
+          cd ${{ github.workspace }}/ci_tools_atomic_dex
+          ./ci_tools_atomic_dex tests release
           cd ${{ github.workspace }}/build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
           cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
           #curl https://report.ci/upload.py --output upload.py
@@ -284,6 +286,7 @@ jobs:
           export CXX=clang++
           export PROJECT_ROOT_DIR=${{ github.workspace }}
           echo "Running tests"
+          cd ${{ github.workspace }}/ci_tools_atomic_dex
           #./ci_tools_atomic_dex tests ${{ matrix.type }}
           #cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
           #cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
