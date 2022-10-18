@@ -5,10 +5,10 @@ proc remove_vcpkg()=
         os.removeDir("vcpkg-repo")
 
 proc remove_build()=
-    if os.existsDir("build-Debug"):
-        os.removeDir("build-Debug")
-    if os.existsDir("build-Release"):
-        os.removeDir("build-Release")
+    if os.existsDir("build-debug"):
+        os.removeDir("build-debug")
+    if os.existsDir("build-release"):
+        os.removeDir("build-release")
 
 proc clean*(clean_type: string) =
     echo "Cleaning"

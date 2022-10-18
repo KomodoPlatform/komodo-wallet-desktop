@@ -31,6 +31,12 @@ endif ()
 message(STATUS "VCPKG package manager enabled")
 set(LINUX_DEPLOY_PATH ${PROJECT_ROOT_DIR}/linux_misc/linuxdeployqt-7-x86_64.AppImage)
 
+message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
+message(STATUS "PROJECT_QML_DIR -> ${PROJECT_QML_DIR}")
+message(STATUS "PROJECT_APP_PATH -> ${PROJECT_APP_PATH}")
+message(STATUS "LINUX_DEPLOY_PATH -> ${LINUX_DEPLOY_PATH}")
+message(STATUS "CMAKE_SOURCE_DIR -> ${CMAKE_SOURCE_DIR}")
+
 if (EXISTS ${LINUX_DEPLOY_PATH})
     message(STATUS "linuxdeployqt path is -> ${LINUX_DEPLOY_PATH}")
 else ()

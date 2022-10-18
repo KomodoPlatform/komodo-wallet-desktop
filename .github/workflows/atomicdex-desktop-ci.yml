@@ -28,31 +28,45 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-            ubuntu-qt-5-15-2,
-            osx-qt-5-15-2,
-            windows-10-qt-5-15-2
+            ubuntu-release,
+            ubuntu-debug,
+            osx-release,
+            osx-debug,
+            windows-release,
+            windows-debug
         ]
 
         include:
-          - name: ubuntu-qt-5-15-2
-            os: ubuntu-20.04
+          - name: ubuntu-release
+            os: ubuntu-latest
             qt: '5.15.2'
             type: 'debug'
 
-          - name: osx-qt-5-15-2
+          - name: ubuntu-debug
+            os: ubuntu-latest
+            qt: '5.15.2'
+            type: 'debug'
+
+          - name: osx-release
             os: macos-latest
             qt: '5.15.2'
             type: 'debug'
 
-          - name: windows-10-qt-5-15-2
+          - name: osx-debug
+            os: macos-latest
+            qt: '5.15.2'
+            type: 'debug'
+
+          - name: windows-release
             os: windows-latest
             qt: '5.15.2'
             type: 'debug'
 
-          #- name: osx-qt-5-15-2-dbg
-          #  os: macos-latest
-          #  qt: '5.15.2'
-          #  type: 'debug'
+          - name: windows-debug
+            os: windows-latest
+            qt: '5.15.2'
+            type: 'debug'
+
 
     steps:
       - uses: actions/checkout@v2
@@ -85,7 +99,6 @@ jobs:
           copy src\ccan\ccan\base64\base64.c src\ccan\ccan\base64\base64_.c
           cl /utf-8 /DUSE_ECMULT_STATIC_PRECOMPUTATION /DECMULT_WINDOW_SIZE=15 /DWALLY_CORE_BUILD /DHAVE_CONFIG_H /DSECP256K1_BUILD /I$env:LIBWALLY_DIR\src\wrap_js\windows_config /I$env:LIBWALLY_DIR /I$env:LIBWALLY_DIR\src /I$env:LIBWALLY_DIR\include /I$env:LIBWALLY_DIR\src\ccan /I$env:LIBWALLY_DIR\src\ccan\base64 /I$env:LIBWALLY_DIR\src\secp256k1 /Zi /LD src/aes.c src/anti_exfil.c src/base58.c src/base64.c src/bech32.c src/bip32.c src/bip38.c src/bip39.c src/blech32.c src/ecdh.c src/elements.c src/hex.c src/hmac.c src/internal.c src/mnemonic.c src/pbkdf2.c src/pullpush.c src/psbt.c src/script.c src/scrypt.c src/sign.c src/symmetric.c src/transaction.c src/wif.c src/wordlist.c src/ccan/ccan/crypto/ripemd160/ripemd160.c src/ccan/ccan/crypto/sha256/sha256.c src/ccan/ccan/crypto/sha512/sha512.c src/ccan/ccan/base64/base64_.c src\ccan\ccan\str\hex\hex_.c src/secp256k1/src/secp256k1.c src/secp256k1/src/precomputed_ecmult_gen.c src/secp256k1/src/precomputed_ecmult.c /Fewally.dll
           Copy-Item "${{ github.workspace }}\libwally-core\wally.dll" -Destination "${{ github.workspace }}\wally\wally.dll" -force
-
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
@@ -156,7 +169,7 @@ jobs:
         run: |
           echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
           echo ${{ github.sha }}
-          sudo ./ci_tools_atomic_dex/ci_scripts/linux_script.sh
+          sudo ${{ github.workspace }}/ci_tools_atomic_dex/ci_scripts/linux_script.sh
 
       - name: Upload env variable for vpkg (Linux)
         if: runner.os == 'Linux'
@@ -176,7 +189,7 @@ jobs:
       - name: Install deps (MacOS)
         if: runner.os == 'macOS'
         run: |
-          ./ci_tools_atomic_dex/ci_scripts/osx_script.sh
+          ${{ github.workspace }}/ci_tools_atomic_dex/ci_scripts/osx_script.sh
 
       - name: Upload env variable for vpkg (MacOS)
         if: runner.os == 'macOS'
@@ -191,15 +204,16 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
+          export PROJECT_ROOT_DIR=${{ github.workspace }}
           #export CXXFLAGS=-stdlib=libc++
           #export LDFLAGS=-stdlib=libc++
           export CXX=clang++-12
           export CC=clang-12
-          cd ci_tools_atomic_dex
+          cd ${{ github.workspace }}/ci_tools_atomic_dex
           nimble build -y
 
-          ./ci_tools_atomic_dex build debug
-          ./ci_tools_atomic_dex bundle debug
+          ./ci_tools_atomic_dex build ${{ matrix.type }}
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }}
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'
@@ -231,9 +245,10 @@ jobs:
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export MACOSX_DEPLOYMENT_TARGET=10.13
+          export PROJECT_ROOT_DIR=${{ github.workspace }}
           export CC=clang
           export CXX=clang++
-          cd ci_tools_atomic_dex
+          cd ${{ github.workspace }}/ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
 
@@ -242,6 +257,7 @@ jobs:
         shell: powershell
         run: |
           $Env:QT_VERSION = "${{ matrix.qt }}"
+          cd ${{ github.workspace }}
           .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
       - name: Running Tests (Linux)
@@ -259,9 +275,11 @@ jobs:
           #export LDFLAGS=-stdlib=libc++
           export CXX=clang++-12
           export CC=clang-12
+          export PROJECT_ROOT_DIR=${{ github.workspace }}
           echo "Running tests"
-          ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          cd ${{ github.workspace }}/ci_tools_atomic_dex
+          ./ci_tools_atomic_dex tests ${{ matrix.type }}
+          cd ${{ github.workspace }}/build-${{ matrix.type }}/bin/AntaraAtomicDexTestsAppDir/usr/bin
           cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
           #curl https://report.ci/upload.py --output upload.py
           ls
@@ -279,7 +297,9 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export CC=clang
           export CXX=clang++
+          export PROJECT_ROOT_DIR=${{ github.workspace }}
           echo "Running tests"
+          cd ${{ github.workspace }}/ci_tools_atomic_dex
           #./ci_tools_atomic_dex tests ${{ matrix.type }}
           #cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
           #cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
@@ -303,7 +323,7 @@ jobs:
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'
         run: |
-          ls ./bundled/linux/
+          ls
           echo "artifact_name_zstd=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "artifact_name_appimage=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
@@ -316,7 +336,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zstd }}
-          path: ./bundled/linux/${{ env.target_name_zstd }}
+          path: ${{ github.workspace }}/bundled/linux/${{ env.target_name_zstd }}
           retention-days: 7
 
       - name: Upload bundle artifact (Linux ZIP)
@@ -324,7 +344,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zip }}
-          path: ./bundled/linux/${{ env.target_name_zip }}
+          path: ${{ github.workspace }}/bundled/linux/${{ env.target_name_zip }}
           retention-days: 7
 
       - name: Upload bundle artifact (Linux AppImage)
@@ -332,13 +352,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_appimage }}
-          path: ./bundled/linux/${{ env.target_name_appimage }}
+          path: ${{ github.workspace }}/bundled/linux/${{ env.target_name_appimage }}
           retention-days: 7
 
       - name: Upload env variable for artifacts (macOS)
         if: runner.os == 'macOS'
         run: |
-          ls ./bundled/osx/
+          pwd && ls
           echo "artifact_name_dmg=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
           echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).7z" >> $GITHUB_ENV
 
@@ -347,7 +367,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_dmg }}
-          path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}.dmg
+          path: ${{ github.workspace }}/bundled-${{ matrix.type }}/osx/${{ env.DEX_PROJECT_NAME }}.dmg
           retention-days: 7
 
       - name: Upload artifacts (MacOS installer)
@@ -355,7 +375,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_installer }}
-          path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
+          path: ${{ github.workspace }}/bundled-${{ matrix.type }}/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
           retention-days: 7
 
       - name: Upload env variable for artifacts (Windows)
@@ -370,7 +390,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zip }}
-          path: ./bundled/windows/bin.zip
+          path: ${{ github.workspace }}/bundled/windows/bin.zip
           retention-days: 7
 
       - name: Upload artifacts (Windows installer)
@@ -378,5 +398,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_installer }}
-          path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
+          path: ${{ github.workspace }}/bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
           retention-days: 7
