@@ -14,19 +14,16 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Dependencies Headers
 #include <nlohmann/json.hpp>
 
-//! Project Headers
 #include "utxo.merge.params.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
-    void
-    to_json(nlohmann::json& j, const utxo_merge_params& cfg)
+    void to_json(nlohmann::json& j, const utxo_merge_params& cfg)
     {
         j["merge_at"] = cfg.merge_at;
         j["check_every"] = cfg.check_every;
         j["max_merge_at_once"] = cfg.max_merge_at_once;
     }
-} // namespace mm2::api
+}

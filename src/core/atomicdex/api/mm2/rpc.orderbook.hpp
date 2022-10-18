@@ -22,7 +22,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/orderbook.order.contents.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct orderbook_request
     {
@@ -34,8 +34,8 @@ namespace mm2::api
 
     struct orderbook_answer
     {
-        std::size_t                 askdepth;
-        std::size_t                 biddepth;
+        std::size_t                 askdepth{0};
+        std::size_t                 biddepth{0};
         std::vector<order_contents> asks;
         std::vector<order_contents> bids;
         std::string                 base;
@@ -58,6 +58,6 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_orderbook_request       = ::mm2::api::orderbook_request;
-    using t_orderbook_answer        = ::mm2::api::orderbook_answer;
+    using t_orderbook_request       = mm2::orderbook_request;
+    using t_orderbook_answer        = mm2::orderbook_answer;
 }

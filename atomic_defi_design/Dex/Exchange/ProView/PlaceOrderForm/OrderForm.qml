@@ -68,7 +68,7 @@ ColumnLayout
             left_text: qsTr("Price")
             right_text: right_ticker
             enabled: !(API.app.trading_pg.preffered_order.price !== undefined)
-            color: enabled ? Dex.CurrentTheme.foregroundColor1 : Dex.CurrentTheme.foregroundColor2
+            color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             text: backend_price ? backend_price : General.formatDouble(API.app.trading_pg.cex_price)
             width: parent.width
             height: 41
@@ -201,7 +201,7 @@ ColumnLayout
                 let volume = input_volume.text * 0.50
                 setMinimumAmount(General.formatDouble(volume))
             }
-            fiat_value: General.getFiatText(non_null_volume, left_ticker)
+            fiat_value: General.getFiatText(API.app.trading_pg.min_trade_vol, left_ticker)
             left_label: "10%"
             middle_label: "25%"
             right_label: "50%"

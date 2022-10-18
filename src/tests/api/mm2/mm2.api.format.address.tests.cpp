@@ -14,16 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-// Deps Headers
+//! Deps
+#include "doctest/doctest.h"
 #include <nlohmann/json.hpp>
 
-// Project Headers
-#include "rpc.get.public.key.hpp"
+#include "atomicdex/api/mm2/format.address.hpp"
 
-namespace atomic_dex::mm2
+TEST_CASE("mm2::address_format serialisation")
 {
-    void from_json(const nlohmann::json& json, get_public_key_answer& in)
+    const nlohmann::json     expected_json = R"(
     {
-        json.at("public_key").get_to(in.public_key);
+      "format":"cashaddress",
+      "network":"bchtest"
     }
+    )"_json;
+    atomic_dex::mm2::format_address request{.format = "cashaddress", .network = "bchtest"};
+    nlohmann::json j;
+    
+    atomic_dex::mm2::to_json(j, request);
+    CHECK_EQ(j, expected_json);
 }

@@ -242,6 +242,8 @@ DexPopup
         const change = General.formatFullCrypto("", amount, ticker, "", "", true)
         if (!app.segwit_on)
         {
+            if (amount != 0)
+            {
             newNotification("onBalanceUpdateStatus",
                 {
                     am_i_sender,
@@ -255,11 +257,38 @@ DexPopup
                 qsTr("Your wallet balance changed"),
                 human_date,
                 "open_wallet_page")
+            }
         }
         else
         {
             app.segwit_on = false
         }
+    }
+
+    function onEnablingZCoinStatus(coin, msg, human_date, timestamp)
+    {
+        // Ignore if coin already enabled (e.g. parent chain in batch)
+        if (msg.search("already initialized") > -1)
+        {
+            console.trace()
+            return
+        }
+
+        // Display the notification
+        const title = qsTr(" %1 Enable status", "TICKER").arg(coin)
+
+        newNotification("onEnablingZCoinStatus",
+            {
+                coin,
+                human_date,
+                timestamp
+            },
+            timestamp,
+            title,
+            msg,
+            human_date,
+            "open_log_modal",
+            msg)
     }
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
@@ -301,6 +330,25 @@ DexPopup
             "open_log_modal",
             error)
 
+        toast.show(title, General.time_toast_important_error, error)
+    }
+
+    function onDisablingCoinFailedStatus(coin, error, human_date, timestamp)
+    {
+        const title = qsTr("Failed to disable %1", "TICKER").arg(coin)
+
+        newNotification("onDisablingCoinFailedStatus",
+            {
+                coin,
+                error,
+                human_date,
+                timestamp
+            },
+            timestamp,
+            title,
+            human_date,
+            "open_log_modal",
+            error)
         toast.show(title, General.time_toast_important_error, error)
     }
 
@@ -366,7 +414,9 @@ DexPopup
     {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingZCoinStatus.connect(onEnablingZCoinStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.disablingCoinFailedStatus.connect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
         API.app.notification_mgr.batchFailed.connect(onBatchFailed)
@@ -375,7 +425,9 @@ DexPopup
     {
         API.app.notification_mgr.updateSwapStatus.disconnect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.disconnect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingZCoinStatus.disconnect(onEnablingZCoinStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.disablingCoinFailedStatus.disconnect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
         API.app.notification_mgr.batchFailed.disconnect(onBatchFailed)

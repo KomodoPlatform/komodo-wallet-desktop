@@ -65,6 +65,28 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Install MSVC
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1.4.1
+        
+      - name: Build libwally (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd '${{ github.workspace }}'
+          git clone -b v0.8.5 --recurse-submodules https://github.com/KomodoPlatform/libwally-core.git
+          cd '${{ github.workspace }}\libwally-core'
+          git submodule init
+          git submodule sync --recursive
+          git submodule update --init --recursive
+          Get-ChildItem -Filter build -Recurse -ErrorAction SilentlyContinue
+          $env:LIBWALLY_DIR='${{ github.workspace }}\libwally-core'
+          "$env:LIBWALLY_DIR\tools\msvc\gen_ecmult_static_context.bat"
+          copy src\ccan\ccan\str\hex\hex.c src\ccan\ccan\str\hex\hex_.c
+          copy src\ccan\ccan\base64\base64.c src\ccan\ccan\base64\base64_.c
+          cl /utf-8 /DUSE_ECMULT_STATIC_PRECOMPUTATION /DECMULT_WINDOW_SIZE=15 /DWALLY_CORE_BUILD /DHAVE_CONFIG_H /DSECP256K1_BUILD /I$env:LIBWALLY_DIR\src\wrap_js\windows_config /I$env:LIBWALLY_DIR /I$env:LIBWALLY_DIR\src /I$env:LIBWALLY_DIR\include /I$env:LIBWALLY_DIR\src\ccan /I$env:LIBWALLY_DIR\src\ccan\base64 /I$env:LIBWALLY_DIR\src\secp256k1 /Zi /LD src/aes.c src/anti_exfil.c src/base58.c src/base64.c src/bech32.c src/bip32.c src/bip38.c src/bip39.c src/blech32.c src/ecdh.c src/elements.c src/hex.c src/hmac.c src/internal.c src/mnemonic.c src/pbkdf2.c src/pullpush.c src/psbt.c src/script.c src/scrypt.c src/sign.c src/symmetric.c src/transaction.c src/wif.c src/wordlist.c src/ccan/ccan/crypto/ripemd160/ripemd160.c src/ccan/ccan/crypto/sha256/sha256.c src/ccan/ccan/crypto/sha512/sha512.c src/ccan/ccan/base64/base64_.c src\ccan\ccan\str\hex\hex_.c src/secp256k1/src/secp256k1.c src/secp256k1/src/precomputed_ecmult_gen.c src/secp256k1/src/precomputed_ecmult.c /Fewally.dll
+          Copy-Item "${{ github.workspace }}\libwally-core\wally.dll" -Destination "${{ github.workspace }}\wally\wally.dll" -force
+
+
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2.14.0
@@ -92,7 +114,7 @@ jobs:
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-          python3  -m aqt tool mac tools_ifw 4.4.1 qt.tools.ifw.44 --outputdir ${{ github.workspace }}/Qt
+          python3  -m aqt tool mac tools_ifw 4.4.2 qt.tools.ifw.44 --outputdir ${{ github.workspace }}/Qt
           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.4/bin" >> $GITHUB_PATH
 
       - name: Install QT (Windows)
@@ -110,7 +132,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           python -m pip install --upgrade pip
-          python -m aqt tool windows tools_ifw 4.4.1 qt.tools.ifw.44 --outputdir C:/Qt
+          python -m aqt tool windows tools_ifw 4.4.2 qt.tools.ifw.44 --outputdir C:/Qt
           echo "C:/Qt/Tools/QtInstallerFramework/4.4/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo $env:GITHUB_PATH
           echo $env:PATH

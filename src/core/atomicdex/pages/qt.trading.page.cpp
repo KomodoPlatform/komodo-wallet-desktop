@@ -28,6 +28,7 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/utilities/qt.download.manager.hpp"
 
 //! Constructor / Destructor
 namespace atomic_dex
@@ -91,6 +92,7 @@ namespace atomic_dex
 
         if (to_change)
         {
+            SPDLOG_INFO("set_current_orderbook");
             this->get_orderbook_wrapper()->clear_orderbook();
             this->clear_forms("set_current_orderbook");
         }
@@ -195,8 +197,8 @@ namespace atomic_dex
             }
         }
         nlohmann::json batch;
-        nlohmann::json buy_request = ::mm2::api::template_request("buy");
-        ::mm2::api::to_json(buy_request, req);
+        nlohmann::json buy_request = mm2::template_request("buy");
+        mm2::to_json(buy_request, req);
         batch.push_back(buy_request);
         buy_request["userpass"] = "*******";
 
@@ -352,8 +354,8 @@ namespace atomic_dex
         }
 
         nlohmann::json batch;
-        nlohmann::json sell_request = ::mm2::api::template_request("sell");
-        ::mm2::api::to_json(sell_request, req);
+        nlohmann::json sell_request = mm2::template_request("sell");
+        mm2::to_json(sell_request, req);
         batch.push_back(sell_request);
 
         sell_request["userpass"] = "******";
@@ -925,6 +927,12 @@ namespace atomic_dex
             case TradingErrorGadget::RightParentChainNotEnabled:
                 SPDLOG_WARN("last_trading_error is RightParentChainNotEnabled");
                 break;
+            case TradingErrorGadget::LeftZhtlcChainNotEnabled:
+                SPDLOG_WARN("last_trading_error is LeftZhtlcChainNotEnabled");
+                break;
+            case TradingErrorGadget::RightZhtlcChainNotEnabled:
+                SPDLOG_WARN("last_trading_error is RightZhtlcChainNotEnabled");
+                break;
             default:
                 break;
             }
@@ -1165,8 +1173,8 @@ namespace atomic_dex
         };
 
         nlohmann::json batch;
-        nlohmann::json preimage_request = ::mm2::api::template_request("trade_preimage");
-        ::mm2::api::to_json(preimage_request, req);
+        nlohmann::json preimage_request = mm2::template_request("trade_preimage");
+        mm2::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
         SPDLOG_INFO("trade_preimage request: {}", preimage_request.dump(-1));
@@ -1180,7 +1188,7 @@ namespace atomic_dex
             {
                 auto           answers               = nlohmann::json::parse(body);
                 nlohmann::json answer                = answers[0];
-                auto           trade_preimage_answer = ::mm2::api::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
+                auto           trade_preimage_answer = mm2::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.error.has_value())
                 {
                     auto        error_answer = trade_preimage_answer.error.value();
@@ -1273,6 +1281,15 @@ namespace atomic_dex
                 current_trading_error = TradingError::RightParentChainNotEnoughBalance;
             }
         }
+        else if (!mm2.is_zhtlc_coin_ready(left))
+        {
+            current_trading_error = TradingError::LeftZhtlcChainNotEnabled;
+        }
+        else if (!mm2.is_zhtlc_coin_ready(right))
+        {
+            current_trading_error = TradingError::RightZhtlcChainNotEnabled;
+        }
+
         if (current_trading_error == TradingError::None)
         {
             if (max_balance_without_dust < safe_float(regular_min_taker_vol)) //<! Checking balance < minimal_trading_amount

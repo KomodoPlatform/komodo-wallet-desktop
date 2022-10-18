@@ -170,7 +170,7 @@ Item
                 placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
                 if (API.app.trading_pg.market_mode == MarketMode.Buy)
                 {
-                    app.pairChanged(rel_ticker, coin)
+                    app.pairChanged(coin, rel_ticker)
                 }
                 else
                 {

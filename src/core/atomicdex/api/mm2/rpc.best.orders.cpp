@@ -26,14 +26,16 @@
 #include "atomicdex/api/mm2/rpc.best.orders.hpp"
 
 //! Implementation RPC [best_orders]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const best_orders_request& req)
     {
-        j["coin"]   = req.coin;
-        j["action"] = req.action;
-        j["volume"] = req.volume;
+        SPDLOG_INFO("getting bestorders data...");
+        j["params"]["coin"]   = req.coin;
+        j["params"]["action"] = req.action;
+        j["params"]["request_by"]["type"] = "volume";
+        j["params"]["request_by"]["value"] = req.volume;
     }
 
     void
@@ -45,15 +47,15 @@ namespace mm2::api
         }
         else
         {
-            for (auto&& [key, value]: j.items())
+            for (auto&& [key, value]: j["orders"].items())
             {
-                // SPDLOG_INFO("{} best orders size: {}", key, value.size());
                 //bool hit = false;
                 std::unordered_set<std::string> uuid_visited;
                 for (auto&& cur_order: value)
                 {
                     order_contents contents;
                     contents.rel_coin = key;
+
                     from_json(cur_order, contents);
                     if (uuid_visited.emplace(contents.uuid).second)
                     {
@@ -61,15 +63,9 @@ namespace mm2::api
                     }
                     else
                     {
-                        //hit = true;
                         SPDLOG_WARN("Order with uuid: {} already added - skipping", contents.uuid);
                     }
                 }
-                /*if (hit)
-                {
-                    SPDLOG_WARN("mm2 answer duplicated: {}", value.dump());
-                    hit = false;
-                }*/
             }
         }
     }
@@ -80,4 +76,4 @@ namespace mm2::api
         extract_rpc_json_answer<best_orders_answer_success>(j, answer);
     }
 
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

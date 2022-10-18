@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,25 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+//! Deps
+#include "doctest/doctest.h"
+#include <nlohmann/json.hpp>
 
-#include <QSortFilterProxyModel>
+#include "atomicdex/api/mm2/balance.infos.hpp"
 
-namespace atomic_dex
+TEST_CASE("mm2::balance_infos deserialization")
 {
-    class transactions_proxy_model final : public QSortFilterProxyModel
+    const nlohmann::json json = R"(
     {
-      Q_OBJECT
-
-      public:
-        //! Constructor
-        transactions_proxy_model(QObject* parent);
-
-        //! Destructor
-        ~transactions_proxy_model()  final = default;
-
-      protected:
-        //! Override member functions
-        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
-    };
+       "balances":{
+           "spendable":"0.11398301",
+           "unspendable":"0.00001"
+       }
+    })"_json;
+    atomic_dex::mm2::balance_infos infos;
+    atomic_dex::mm2::from_json(json.at("balances"), infos);
+    CHECK_EQ(infos.spendable, "0.11398301");
+    CHECK_EQ(infos.unspendable, "0.00001");
 }

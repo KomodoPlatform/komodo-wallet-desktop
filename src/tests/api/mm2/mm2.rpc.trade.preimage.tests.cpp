@@ -234,37 +234,37 @@ namespace
                                     })"_json;
 } // namespace
 
-TEST_CASE("mm2::api::preimage_request serialisation")
+TEST_CASE("atomic_dex::mm2::preimage_request serialisation")
 {
     atomic_dex::t_trade_preimage_request request{.base_coin = "KMD", .rel_coin = "BTC", .swap_method = "buy", .volume = "10"};
     nlohmann::json                       j;
-    mm2::api::to_json(j, request);
+    atomic_dex::mm2::to_json(j, request);
     CHECK_EQ(j, g_preimage_request_buy_kmd_btc);
 }
 
-TEST_CASE("mm2::api::coin_fee deserialization")
+TEST_CASE("atomic_dex::mm2::coin_fee deserialization")
 {
-    mm2::api::coin_fee answer;
-    mm2::api::from_json(g_coin_fee_answer, answer);
+    atomic_dex::mm2::coin_fee answer;
+    atomic_dex::mm2::from_json(g_coin_fee_answer, answer);
     CHECK_EQ("0.00042049", answer.amount);
     CHECK_EQ("BTC", answer.coin);
     CHECK_EQ("100000000", answer.amount_fraction.denom);
 }
 
-TEST_CASE("mm2::api::preimage_answer_success deserialization from buy")
+TEST_CASE("atomic_dex::mm2::preimage_answer_success deserialization from buy")
 {
-    mm2::api::trade_preimage_answer_success answer;
-    mm2::api::from_json(g_preimage_answer_success_buy, answer);
+    atomic_dex::mm2::trade_preimage_answer_success answer;
+    atomic_dex::mm2::from_json(g_preimage_answer_success_buy, answer);
     CHECK(answer.taker_fee.has_value());
     CHECK(answer.fee_to_send_taker_fee.has_value());
 }
 
-TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
+TEST_SUITE("atomic_dex::mm2::preimage_answer deserialization test suites")
 {
     TEST_CASE("setprice BTC/RICK")
     {
         atomic_dex::t_trade_preimage_answer answer;
-        mm2::api::from_json(g_preimage_answer_setprice, answer);
+        atomic_dex::mm2::from_json(g_preimage_answer_setprice, answer);
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
         CHECK_FALSE(answer.result.value().fee_to_send_taker_fee.has_value());
@@ -273,7 +273,7 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
     TEST_CASE("buy BTC/RICK")
     {
         atomic_dex::t_trade_preimage_answer answer;
-        mm2::api::from_json(g_preimage_answer_buy, answer);
+        atomic_dex::mm2::from_json(g_preimage_answer_buy, answer);
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
         CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
@@ -282,7 +282,7 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
     TEST_CASE("sell max BTC/RICK")
     {
         atomic_dex::t_trade_preimage_answer answer;
-        mm2::api::from_json(g_preimage_answer_sell_max, answer);
+        atomic_dex::mm2::from_json(g_preimage_answer_sell_max, answer);
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
         CHECK(answer.result.value().fee_to_send_taker_fee.has_value());
@@ -291,7 +291,7 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
     TEST_CASE("setprice ERC20 BAT/RICK")
     {
         atomic_dex::t_trade_preimage_answer answer;
-        mm2::api::from_json(g_preimage_answer_setprice_erc, answer);
+        atomic_dex::mm2::from_json(g_preimage_answer_setprice_erc, answer);
         CHECK(answer.result.has_value());
         CHECK_FALSE(answer.error.has_value());
         CHECK_FALSE(answer.result.value().fee_to_send_taker_fee.has_value());
@@ -323,7 +323,7 @@ TEST_SUITE("mm2::api::preimage_answer deserialization test suites")
     #include "atomicdex/api/mm2/mm2.hpp"
     #include "atomicdex/api/mm2/rpc.trade.preimage.hpp" ///< replace this one by your current rpc file
  */
-SCENARIO("mm2::api::preimage scenario")
+SCENARIO("atomic_dex::mm2::preimage scenario")
 {
     /**
      * Checking that the test context is valid
@@ -335,7 +335,7 @@ SCENARIO("mm2::api::preimage scenario")
     CHECK(batch.is_array());
 
     //! Prepare request template
-    nlohmann::json request_json = ::mm2::api::template_request("trade_preimage");
+    nlohmann::json request_json = atomic_dex::mm2::template_request("trade_preimage");
 
     //! Retrieve mm2 service
     auto& mm2 = g_context->system_manager().get_system<atomic_dex::mm2_service>();
@@ -368,7 +368,7 @@ SCENARIO("mm2::api::preimage scenario")
         CHECK(batch.empty());
 
         //! Give the concrete C++ type - here it's atomic_dex::t_trade_preimage_answer
-        return ::mm2::api::rpc_process_answer_batch<atomic_dex::t_trade_preimage_answer>(answers[0], "trade_preimage");
+        return atomic_dex::mm2::rpc_process_answer_batch<atomic_dex::t_trade_preimage_answer>(answers[0], "trade_preimage");
     };
 
     //! A test with RICK/MORTY
@@ -378,7 +378,7 @@ SCENARIO("mm2::api::preimage scenario")
         atomic_dex::t_trade_preimage_request request{.base_coin = "RICK", .rel_coin = "MORTY", .swap_method = "buy", .volume = "1", .price = "1"};
 
         //! Transform request into json
-        ::mm2::api::to_json(request_json, request);
+        atomic_dex::mm2::to_json(request_json, request);
 
         //! Add it to the batch request
         batch.push_back(request_json);
@@ -406,7 +406,7 @@ SCENARIO("mm2::api::preimage scenario")
     GIVEN("Preparing a wrong request RICK/NONEXISTENT coin")
     {
         atomic_dex::t_trade_preimage_request request{.base_coin = "RICK", .rel_coin = "NONEXISTENT", .swap_method = "buy", .volume = "1"};
-        ::mm2::api::to_json(request_json, request);
+        atomic_dex::mm2::to_json(request_json, request);
         batch.push_back(request_json);
         auto copy_request        = request_json;
         copy_request["userpass"] = "";

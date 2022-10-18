@@ -185,6 +185,7 @@ QtObject {
         switch (type)
         {
             case 'ERC-20':      return getCoinColor("ETH")
+            case 'ZHTLC':       return getCoinColor("ARRR")
             case 'QRC-20':      return getCoinColor("QTUM")
             case 'Smart Chain': return getCoinColor("KMD")
             case 'WALLET ONLY': return "#4D4D4D"
@@ -237,6 +238,7 @@ QtObject {
                                           "AUR": "#0A6C5E",
                                           "AVA": "#5B567F",
                                           "AVAX": "#E84142",
+                                          "AVN": "#33E0CE",
                                           "AXS": "#0055D5",
                                           "BAL": "#4D4D4D",
                                           "BNB": "#F9D987",
@@ -323,6 +325,7 @@ QtObject {
                                           "CRYPTO": "#F58736",
                                           "LABS": "#C1F6E1",
                                           "LCC": "#068210",
+                                          "LNC": "#C3A635",
                                           "MESH": "#0098DA",
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
@@ -383,6 +386,7 @@ QtObject {
                                           "CEL": "#4055A6",
                                           "CELR": "#595959",
                                           "CENNZ": "#2E87F1",
+                                          "CHTA": "#C3A634",
                                           "COMP": "#00DBA3",
                                           "CRO": "#243565",
                                           "CVC": "#3AB03E",
@@ -473,6 +477,7 @@ QtObject {
                                           "YFII": "#FF2A79",
                                           "ZET": "#155169",
                                           "ZIL": "#42BBB9",
+                                          "ZOMBIE": "#72B001",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A",
                                           "VOTE2022": "#7490AA",

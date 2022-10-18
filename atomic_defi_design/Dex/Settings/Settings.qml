@@ -175,8 +175,6 @@ Item {
                 onClicked: view_seed_modal.open()
             }
 
-
-
             HorizontalLine {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin

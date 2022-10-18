@@ -52,7 +52,7 @@ target_compile_definitions(antara_optimize_settings INTERFACE
         $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Linux>>:NDEBUG>
         $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Linux>>:DEBUG>
         $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Darwin>>:NDEBUG>
-        $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Darwin>>:-DEBUG>
+        $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Darwin>>:DEBUG>
         $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:AppleClang>,$<PLATFORM_ID:Darwin>>:NDEBUG>
         $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:AppleClang>,$<PLATFORM_ID:Darwin>>:DEBUG>
         )
