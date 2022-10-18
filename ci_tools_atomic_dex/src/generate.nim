@@ -9,20 +9,11 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
     os.setCurrentDir(os.getEnv("PROJECT_ROOT_DIR"))
     if not os.existsDir(os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name)):
         os.createDir(full_name)
-        echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-        echo os.getCurrentDir()
         echo "creating directory: " & full_name
-        echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
     else:
-        echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-        echo os.getCurrentDir()
         echo "existing directory: " & full_name
-        echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
-    echo os.getEnv("PROJECT_ROOT_DIR")
-    echo os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name)
     os.setCurrentDir(os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name))
-    echo os.getCurrentDir()
 
     assert(os.existsEnv("QT_INSTALL_CMAKE_PATH"))
     var cmd_line = "cmake -GNinja -DCMAKE_BUILD_TYPE=" & build_type & " " & os.getEnv("PROJECT_ROOT_DIR")
