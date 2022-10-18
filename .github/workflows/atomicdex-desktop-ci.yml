@@ -39,20 +39,31 @@ jobs:
             qt: '5.15.2'
             type: 'release'
 
+          - name: ubuntu-qt-5-15-2
+            os: ubuntu-latest
+            qt: '5.15.2'
+            type: 'debug'
+
           - name: osx-qt-5-15-2
             os: macos-latest
             qt: '5.15.2'
             type: 'release'
+
+          - name: osx-qt-5-15-2
+            os: macos-latest
+            qt: '5.15.2'
+            type: 'debug'
 
           - name: windows-10-qt-5-15-2
             os: windows-latest
             qt: '5.15.2'
             type: 'release'
 
-          #- name: osx-qt-5-15-2-dbg
-          #  os: macos-latest
-          #  qt: '5.15.2'
-          #  type: 'debug'
+          - name: windows-10-qt-5-15-2
+            os: windows-latest
+            qt: '5.15.2'
+            type: 'debug'
+
 
     steps:
       - uses: actions/checkout@v2
@@ -199,8 +210,8 @@ jobs:
           cd ${{ github.workspace }}/ci_tools_atomic_dex
           nimble build -y
 
-          ./ci_tools_atomic_dex build debug
-          ./ci_tools_atomic_dex bundle debug
+          ./ci_tools_atomic_dex build ${{ matrix.type }}
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }}
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'
@@ -265,8 +276,8 @@ jobs:
           export PROJECT_ROOT_DIR=${{ github.workspace }}
           echo "Running tests"
           cd ${{ github.workspace }}/ci_tools_atomic_dex
-          ./ci_tools_atomic_dex tests release
-          cd ${{ github.workspace }}/build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          ./ci_tools_atomic_dex tests ${{ matrix.type }}
+          cd ${{ github.workspace }}/build-${{ matrix.type }}/bin/AntaraAtomicDexTestsAppDir/usr/bin
           cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
           #curl https://report.ci/upload.py --output upload.py
           ls

@@ -12,27 +12,31 @@ proc run_tests*(build_type: string, osx_sdk_path: string, compiler_path: string)
         generate_solution(build_type, osx_sdk_path, compiler_path)
 
      var full_name = "build-" & build_type
-     os.setCurrentDir(os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name))
 
      when defined(osx):
         echo os.getCurrentDir()
-        os.setCurrentDir(os.getCurrentDir().joinPath("bin").joinPath(os.getEnv("DEX_PROJECT_NAME") & "_tests.app").joinPath("Contents").joinPath("MacOS"))
-        discard osproc.execCmd("ls")
+        osproc.execCmd("ls")
+        os.setCurrentDir(os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name).joinPath("bin").joinPath(os.getEnv("DEX_PROJECT_NAME") & "_tests.app").joinPath("Contents").joinPath("MacOS"))
+        echo os.getCurrentDir()
+        osproc.execCmd("ls")
         echo "Running AtomicDex Pro Unit tests"
         discard osproc.execCmd("./" & os.getEnv("DEX_PROJECT_NAME") & "_tests --reporters=xml --out=" & os.getEnv("DEX_PROJECT_NAME") & "-tests-result.xml -s")
-        echo "Successfully Generated", os.getEnv("DEX_PROJECT_NAME"), "-tests-result.xml"
+        echo "Successfully Generated ", os.getEnv("DEX_PROJECT_NAME"), "-tests-result.xml"
    
      when defined(linux):
         echo os.getCurrentDir()
-        os.setCurrentDir(os.getCurrentDir().joinPath("bin").joinPath("AntaraAtomicDexTestsAppDir").joinPath("usr").joinPath("bin"))
-        discard osproc.execCmd("ls")
+        osproc.execCmd("ls")
+        os.setCurrentDir(os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name).joinPath("bin").joinPath("AntaraAtomicDexTestsAppDir").joinPath("usr").joinPath("bin"))
+        echo os.getCurrentDir()
+        osproc.execCmd("ls")
         echo "Running AtomicDex Pro Unit tests"
         discard osproc.execCmd("./" & os.getEnv("DEX_PROJECT_NAME") & "_tests --reporters=xml --out=" & os.getEnv("DEX_PROJECT_NAME") & "-tests-result.xml -s")
-        echo "Successfully Generated", os.getEnv("DEX_PROJECT_NAME"), "-tests-result.xml"
+        echo "Successfully Generated ", os.getEnv("DEX_PROJECT_NAME"), "-tests-result.xml"
      
      when defined(windows):
         echo os.getCurrentDir()
-        os.setCurrentDir(os.getCurrentDir().joinPath("bin"))
+        os.setCurrentDir(os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name).joinPath("bin"))
+        echo os.getCurrentDir()
         echo "Running AtomicDex Pro Unit tests"
         discard osproc.execCmd(".\\" & os.getEnv("DEX_PROJECT_NAME") & "_tests --reporters=xml --out=" & os.getEnv("DEX_PROJECT_NAME") & "-tests-result.xml -s")
-        echo "Successfully Generated", os.getEnv("DEX_PROJECT_NAME"), "-tests-result.xml"
+        echo "Successfully Generated ", os.getEnv("DEX_PROJECT_NAME"), "-tests-result.xml"
