@@ -17,14 +17,15 @@ proc run_tests*(build_type: string, osx_sdk_path: string, compiler_path: string)
      when defined(osx):
         echo os.getCurrentDir()
         os.setCurrentDir(os.getCurrentDir().joinPath("bin").joinPath(os.getEnv("DEX_PROJECT_NAME") & "_tests.app").joinPath("Contents").joinPath("MacOS"))
+        discard osproc.execCmd("ls")
         echo "Running AtomicDex Pro Unit tests"
         discard osproc.execCmd("./" & os.getEnv("DEX_PROJECT_NAME") & "_tests --reporters=xml --out=" & os.getEnv("DEX_PROJECT_NAME") & "-tests-result.xml -s")
         echo "Successfully Generated", os.getEnv("DEX_PROJECT_NAME"), "-tests-result.xml"
    
      when defined(linux):
         echo os.getCurrentDir()
-        discard osproc.execCmd("ls")
         os.setCurrentDir(os.getCurrentDir().joinPath("bin").joinPath("AntaraAtomicDexTestsAppDir").joinPath("usr").joinPath("bin"))
+        discard osproc.execCmd("ls")
         echo "Running AtomicDex Pro Unit tests"
         discard osproc.execCmd("./" & os.getEnv("DEX_PROJECT_NAME") & "_tests --reporters=xml --out=" & os.getEnv("DEX_PROJECT_NAME") & "-tests-result.xml -s")
         echo "Successfully Generated", os.getEnv("DEX_PROJECT_NAME"), "-tests-result.xml"
