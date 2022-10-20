@@ -1,16 +1,17 @@
 include(${CMAKE_CURRENT_LIST_DIR}/../../project.metadata.cmake)
 
+message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
 get_filename_component(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR} DIRECTORY)
-if (EXISTS ${PROJECT_ROOT_DIR}/build-Release OR EXISTS ${PROJECT_ROOT_DIR}/build-Debug)
+if (EXISTS ${PROJECT_ROOT_DIR}/build-release OR EXISTS ${PROJECT_ROOT_DIR}/build-debug)
     message(STATUS "from ci tools, readjusting")
     get_filename_component(PROJECT_ROOT_DIR ${PROJECT_ROOT_DIR} DIRECTORY)
 endif ()
-
 message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
-set(PROJECT_QML_DIR ${PROJECT_ROOT_DIR}/atomic_defi_design/Dex)
+
+set(PROJECT_QML_DIR ${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex)
 message(STATUS "PROJECT_QML_DIR -> ${PROJECT_QML_DIR}")
 message(STATUS "bin dir -> ${CMAKE_CURRENT_SOURCE_DIR}/bin")
-set(TARGET_APP_PATH ${PROJECT_ROOT_DIR}/bundled/osx/)
+set(TARGET_APP_PATH ${CMAKE_SOURCE_DIR}/bundled/osx/)
 set(PROJECT_APP_DIR ${DEX_PROJECT_NAME}.app)
 set(PROJECT_APP_PATH ${CMAKE_SOURCE_DIR}/bin/${PROJECT_APP_DIR})
 if (EXISTS ${PROJECT_APP_PATH})
@@ -62,15 +63,15 @@ if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
 
-    message(STATUS "Fixing QtWebEngineProcess signature codesign --force --verify --verbose --sign \"$ENV{MAC_SIGN_IDENTITY}\" --entitlements ${PROJECT_ROOT_DIR}/cmake/install/macos/QtWebEngineProcess.entitlements --options runtime --timestamp ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess")
-    execute_process(COMMAND codesign --force --verify --verbose --sign "$ENV{MAC_SIGN_IDENTITY}" --entitlements ${PROJECT_ROOT_DIR}/cmake/install/macos/QtWebEngineProcess.entitlements --options runtime --timestamp ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess
+    message(STATUS "Fixing QtWebEngineProcess signature codesign --force --verify --verbose --sign \"$ENV{MAC_SIGN_IDENTITY}\" --entitlements ${CMAKE_SOURCE_DIR}/cmake/install/macos/QtWebEngineProcess.entitlements --options runtime --timestamp ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess")
+    execute_process(COMMAND codesign --force --verify --verbose --sign "$ENV{MAC_SIGN_IDENTITY}" --entitlements ${CMAKE_SOURCE_DIR}/cmake/install/macos/QtWebEngineProcess.entitlements --options runtime --timestamp ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
 
     ##-------------------------------------------
     message(STATUS "Packaging the DMG")
-    set(PACKAGER_PATH ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/dmg-packager/package.sh)
+    set(PACKAGER_PATH ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/dmg-packager/package.sh)
     if (EXISTS ${PACKAGER_PATH})
         message(STATUS "packager path is -> ${PACKAGER_PATH}")
     else ()
@@ -87,7 +88,7 @@ if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
 
-    execute_process(COMMAND ${PROJECT_ROOT_DIR}/cmake/install/macos/macos_notarize.sh --asc-public-id=$ENV{ASC_PUBLIC_ID} --app-specific-password=$ENV{APPLE_ATOMICDEX_PASSWORD} --apple-id=$ENV{APPLE_ID} --primary-bundle-id=com.komodoplatform.atomicdex --target-binary=${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg
+    execute_process(COMMAND ${CMAKE_SOURCE_DIR}/cmake/install/macos/macos_notarize.sh --asc-public-id=$ENV{ASC_PUBLIC_ID} --app-specific-password=$ENV{APPLE_ATOMICDEX_PASSWORD} --apple-id=$ENV{APPLE_ID} --primary-bundle-id=com.komodoplatform.atomicdex --target-binary=${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
@@ -111,24 +112,24 @@ else()
     message(STATUS "${DEX_PROJECT_NAME}.7z already created - skipping")
 endif()
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
 
 execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer -s $ENV{MAC_SIGN_IDENTITY}
-        WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
 
-execute_process(COMMAND codesign --deep --force -v -s "$ENV{MAC_SIGN_IDENTITY}" -o runtime --timestamp ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer.app
+execute_process(COMMAND codesign --deep --force -v -s "$ENV{MAC_SIGN_IDENTITY}" -o runtime --timestamp ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer.app
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
 
-execute_process(COMMAND ${PROJECT_ROOT_DIR}/cmake/install/macos/macos_notarize.sh --asc-public-id=$ENV{ASC_PUBLIC_ID} --app-specific-password=$ENV{APPLE_ATOMICDEX_PASSWORD} --apple-id=$ENV{APPLE_ID} --primary-bundle-id=com.komodoplatform.atomicdex --target-binary=${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer.app
+execute_process(COMMAND ${CMAKE_SOURCE_DIR}/cmake/install/macos/macos_notarize.sh --asc-public-id=$ENV{ASC_PUBLIC_ID} --app-specific-password=$ENV{APPLE_ATOMICDEX_PASSWORD} --apple-id=$ENV{APPLE_ID} --primary-bundle-id=com.komodoplatform.atomicdex --target-binary=${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer.app
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
 
-file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer.app DESTINATION ${TARGET_APP_PATH})
+file(COPY ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer.app DESTINATION ${TARGET_APP_PATH})
 
 execute_process(COMMAND ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}_installer.7z ${DEX_PROJECT_NAME}_installer.app
         WORKING_DIRECTORY ${TARGET_APP_PATH}
