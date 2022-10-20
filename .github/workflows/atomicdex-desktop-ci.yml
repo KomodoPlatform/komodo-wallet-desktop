@@ -40,7 +40,7 @@ jobs:
           - name: ubuntu-release
             os: ubuntu-latest
             qt: '5.15.2'
-            type: 'release'
+            type: 'debug'
 
           - name: ubuntu-debug
             os: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
           - name: osx-release
             os: macos-11
             qt: '5.15.2'
-            type: 'release'
+            type: 'debug'
 
           - name: osx-debug
             os: macos-11
@@ -60,7 +60,7 @@ jobs:
           - name: windows-release
             os: windows-latest
             qt: '5.15.2'
-            type: 'release'
+            type: 'debug'
 
           - name: windows-debug
             os: windows-latest

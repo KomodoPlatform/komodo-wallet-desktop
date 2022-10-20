@@ -1615,6 +1615,8 @@ namespace atomic_dex
         }
 
         t_balance_request balance_request{.coin = cfg_infos.ticker};
+        SPDLOG_INFO("fetch single balance of ticker named:");
+        SPDLOG_INFO(cfg_infos.ticker);
         nlohmann::json    j = mm2::template_request("my_balance");
         mm2::to_json(j, balance_request);
         batch_array.push_back(j);
@@ -1623,7 +1625,9 @@ namespace atomic_dex
         {
             try
             {
+                SPDLOG_INFO("parse fetch single balance answer");
                 auto answers = mm2::basic_batch_answer(resp);
+                SPDLOG_INFO("fetch single balance answer parsed");
                 if (!answers.contains("error") && !answers[0].contains("error"))
                 {
                     this->process_balance_answer(answers[0]);
@@ -1646,13 +1650,17 @@ namespace atomic_dex
         SPDLOG_INFO("fetch_infos_thread");
         if (only_tx)
         {
+            SPDLOG_INFO("fetch_infos_thread only tx start");
             batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
+            SPDLOG_INFO("fetch_infos_thread only tx end");
         }
         else
         {
+            SPDLOG_INFO("fetch_infos_thread not only tx start");
             const auto& enabled_coins = get_enabled_coins();
             for (auto&& coin: enabled_coins) { fetch_single_balance(coin); }
             batch_balance_and_tx(is_a_refresh, {}, false, true);
+            SPDLOG_INFO("fetch_infos_thread not only tx end");
         }
     }
 

@@ -103,15 +103,13 @@ namespace atomic_dex
     bool
     portfolio_model::update_currency_values()
     {
-        SPDLOG_INFO("update_currency_values");
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
         const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
         const auto&        provider      = this->m_system_manager.get_system<komodo_prices_provider>();
         const auto         coins         = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         const std::string& currency      = m_config->current_currency;
         const std::string& fiat          = m_config->current_fiat;
-        tf::Executor       executor;
-        tf::Taskflow       taskflow;
+
         for (auto&& [_, coin]: coins)
         {
             if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
@@ -119,47 +117,42 @@ namespace atomic_dex
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 return false;
             }
-            auto update_functor = [coin = std::move(coin), &provider, &mm2_system, &price_service, currency, fiat, this]()
+            const std::string& ticker = coin.ticker;
+            if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly);
+                not res.isEmpty())
             {
-                const std::string& ticker = coin.ticker;
-                if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly);
-                    not res.isEmpty())
+                std::error_code    ec;
+                const QModelIndex& idx                         = res.at(0);
+                const QString      main_currency_balance_value = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
+                update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
+                const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, true));
+                update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
+                const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
+                update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
+                const QString price_provider = QString::fromStdString(provider.get_price_provider(ticker));
+                update_value(PriceProvider, price_provider, idx, *this);
+                int last_price_timestamp = static_cast<int>(provider.get_last_price_timestamp(ticker));
+                update_value(LastPriceTimestamp, last_price_timestamp, idx, *this);
+                QString change24_h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
+                update_value(Change24H, change24_h, idx, *this);
+                const QString balance                           = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
+                auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
+                const QString display                           = QString::fromStdString(coin.ticker) + " (" + balance + ")";
+                update_value(Display, display, idx, *this);
+                // Not a good way to trigger notification, use websocket instead in the future. New was of enabling coins is not compatible.
+                if (is_change_b)
                 {
-                    std::error_code    ec;
-                    const QModelIndex& idx                         = res.at(0);
-                    const QString      main_currency_balance_value = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
-                    update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
-                    const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, true));
-                    update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
-                    const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, false));
-                    update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
-                    const QString price_provider = QString::fromStdString(provider.get_price_provider(ticker));
-                    update_value(PriceProvider, price_provider, idx, *this);
-                    int last_price_timestamp = static_cast<int>(provider.get_last_price_timestamp(ticker));
-                    update_value(LastPriceTimestamp, last_price_timestamp, idx, *this);
-                    QString change24_h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
-                    update_value(Change24H, change24_h, idx, *this);
-                    const QString balance                           = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
-                    auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
-                    const QString display                           = QString::fromStdString(coin.ticker) + " (" + balance + ")";
-                    update_value(Display, display, idx, *this);
-                    // Not a good way to trigger notification, use websocket instead in the future. New was of enabling coins is not compatible.
-                    if (is_change_b)
-                    {
-                        balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
-                    }
-                    QJsonArray trend = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(ticker));
-                    update_value(Trend7D, trend, idx, *this);
-
-                    auto        coin_info          = mm2_system.get_coin_info(ticker);
-                    QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
-                    update_value(ActivationStatus, status, idx, *this);
-                    // SPDLOG_DEBUG("updated currency values of: {}", ticker);
+                    balance_update_handler(prev_balance.toString(), new_balance.toString(), QString::fromStdString(ticker));
                 }
-            };
-            taskflow.emplace(update_functor);
+                QJsonArray trend = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(ticker));
+                update_value(Trend7D, trend, idx, *this);
+        
+                auto        coin_info          = mm2_system.get_coin_info(ticker);
+                QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
+                update_value(ActivationStatus, status, idx, *this);
+                SPDLOG_DEBUG("updated currency values of: {}", ticker);
+            }
         }
-        executor.run(taskflow).wait();
         return true;
     }
 

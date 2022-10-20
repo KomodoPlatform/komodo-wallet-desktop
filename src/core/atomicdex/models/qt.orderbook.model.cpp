@@ -543,17 +543,19 @@ namespace atomic_dex
     {
         auto refresh_functor = [this](const std::vector<mm2::order_contents>& contents)
         {
-            // SPDLOG_INFO("refresh orderbook of size: {}", contents.size());
+            SPDLOG_INFO("refresh orderbook of size: {}", contents.size());
             for (auto&& current_order: contents)
             {
                 if (this->m_orders_id_registry.find(current_order.uuid) != this->m_orders_id_registry.end())
                 {
                     //! Update
+                    SPDLOG_INFO("update order");
                     this->update_order(current_order);
                 }
                 else
                 {
                     //! Insertion
+                    SPDLOG_INFO("insert order");
                     this->initialize_order(current_order);
                 }
             }
@@ -562,6 +564,7 @@ namespace atomic_dex
             std::unordered_set<std::string> to_remove;
             for (auto&& id: this->m_orders_id_registry)
             {
+                SPDLOG_INFO("begin loop {}", id);
                 bool res = std::none_of(begin(contents), end(contents), [id](auto&& contents) { return contents.uuid == id; });
                 //! Need to remove the row
                 if (res)
@@ -569,16 +572,19 @@ namespace atomic_dex
                     auto res_list = this->match(index(0, 0), UUIDRole, QString::fromStdString(id));
                     if (not res_list.empty())
                     {
+                        SPDLOG_INFO("found");
                         if (this->m_current_orderbook_kind == kind::best_orders)
                         {
-                            // SPDLOG_INFO("Removing order with UUID: {}", id);
+                            SPDLOG_INFO("Removing order with UUID: {}", id);
                         }
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
                     }
                 }
+                SPDLOG_INFO("end loop {}", id);
             }
             for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
+            SPDLOG_INFO("end functor");
         };
 
         refresh_functor(orderbook);
