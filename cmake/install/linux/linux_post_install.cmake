@@ -6,7 +6,7 @@ execute_process(COMMAND bash -c "echo -n `git rev-parse --short HEAD`"
         )
 
 get_filename_component(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR} DIRECTORY)
-if (EXISTS ${PROJECT_ROOT_DIR}/build-release OR EXISTS ${PROJECT_ROOT_DIR}/build-debug)
+if (EXISTS ${PROJECT_ROOT_DIR}/build-Release)
     message(STATUS "from ci tools, readjusting")
     get_filename_component(PROJECT_ROOT_DIR ${PROJECT_ROOT_DIR} DIRECTORY)
 endif ()
@@ -29,7 +29,7 @@ else ()
 endif ()
 
 message(STATUS "VCPKG package manager enabled")
-set(LINUX_DEPLOY_PATH ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/linux_misc/linuxdeployqt-7-x86_64.AppImage)
+set(LINUX_DEPLOY_PATH ${PROJECT_ROOT_DIR}/linux_misc/linuxdeployqt-7-x86_64.AppImage)
 
 message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
 message(STATUS "PROJECT_QML_DIR -> ${PROJECT_QML_DIR}")

@@ -12,7 +12,9 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
         echo "creating directory: " & full_name
     else:
         echo "existing directory: " & full_name
+
     os.setCurrentDir(os.getEnv("PROJECT_ROOT_DIR").joinPath(full_name))
+
     assert(os.existsEnv("QT_INSTALL_CMAKE_PATH"))
     var cmd_line = "cmake -GNinja -DCMAKE_BUILD_TYPE=" & build_type & " " & os.getEnv("PROJECT_ROOT_DIR")
     when defined(osx):
