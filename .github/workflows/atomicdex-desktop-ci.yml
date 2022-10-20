@@ -205,6 +205,7 @@ jobs:
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
           export PROJECT_ROOT_DIR=${{ github.workspace }}
+          export BUILD_TYPE=${{ matrix.type }}
           #export CXXFLAGS=-stdlib=libc++
           #export LDFLAGS=-stdlib=libc++
           export CXX=clang++-12
@@ -246,6 +247,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export MACOSX_DEPLOYMENT_TARGET=10.13
           export PROJECT_ROOT_DIR=${{ github.workspace }}
+          export BUILD_TYPE=${{ matrix.type }}
           export CC=clang
           export CXX=clang++
           cd ${{ github.workspace }}/ci_tools_atomic_dex
@@ -276,6 +278,7 @@ jobs:
           export CXX=clang++-12
           export CC=clang-12
           export PROJECT_ROOT_DIR=${{ github.workspace }}
+          export BUILD_TYPE=${{ matrix.type }}
           echo "Running tests"
           cd ${{ github.workspace }}/ci_tools_atomic_dex
           ./ci_tools_atomic_dex tests ${{ matrix.type }}
@@ -298,6 +301,7 @@ jobs:
           export CC=clang
           export CXX=clang++
           export PROJECT_ROOT_DIR=${{ github.workspace }}
+          export BUILD_TYPE=${{ matrix.type }}
           echo "Running tests"
           cd ${{ github.workspace }}/ci_tools_atomic_dex
           #./ci_tools_atomic_dex tests ${{ matrix.type }}

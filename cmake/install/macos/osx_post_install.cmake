@@ -1,7 +1,7 @@
 include(${CMAKE_CURRENT_LIST_DIR}/../../project.metadata.cmake)
 
 get_filename_component(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR} DIRECTORY)
-if (EXISTS ${PROJECT_ROOT_DIR}/build-Release OR EXISTS ${PROJECT_ROOT_DIR}/build-Debug)
+if (EXISTS ${PROJECT_ROOT_DIR}/build-release OR EXISTS ${PROJECT_ROOT_DIR}/build-debug)
     message(STATUS "from ci tools, readjusting")
     get_filename_component(PROJECT_ROOT_DIR ${PROJECT_ROOT_DIR} DIRECTORY)
 endif ()

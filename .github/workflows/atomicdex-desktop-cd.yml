@@ -101,7 +101,7 @@ jobs:
           ./ci_tools_atomic_dex build release
           rm -rf ./vcpkg-repo/downloads
           rm -rf ./vcpkg-repo/buildtrees
-          ls build-Release/bin/AntaraAtomicDexAppDir/usr/bin/atomic_qt
+          ls build-release/bin/AntaraAtomicDexAppDir/usr/bin/atomic_qt
 
       - name: Pack Installer (Linux/Release)
         run: |
@@ -213,7 +213,7 @@ jobs:
           ./ci_tools_atomic_dex build debug
           rm -rf ./vcpkg-repo/downloads
           rm -rf ./vcpkg-repo/buildtrees
-          ls build-Debug/bin/AntaraAtomicDexAppDir/usr/bin/atomic_qt
+          ls build-debug/bin/AntaraAtomicDexAppDir/usr/bin/atomic_qt
 
       - name: Pack Installer (Linux/Debug)
         run: |
