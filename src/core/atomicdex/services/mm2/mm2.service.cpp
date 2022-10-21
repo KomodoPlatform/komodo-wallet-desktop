@@ -1540,10 +1540,22 @@ namespace atomic_dex
             auto answer        = mm2::basic_batch_answer(resp);
             if (answer.is_array())
             {
+                if (answer.size() < 1)
+                {
+                    SPDLOG_ERROR("Answer array did not contain enough elements");
+                    return;
+                }
+
                 auto orderbook_answer = mm2::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
 
                 if (is_a_reset)
                 {
+                    if (answer.size() < 5)
+                    {
+                        SPDLOG_ERROR("Answer array did not contain enough elements");
+                        return;
+                    }
+
                     auto base_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[1], "max_taker_vol");
                     if (base_max_taker_vol_answer.rpc_result_code == 200)
                     {
