@@ -119,7 +119,7 @@ namespace atomic_dex
     void
     auto_update_maker_order_service::internal_update()
     {
-        SPDLOG_INFO("update maker orders");
+        SPDLOG_DEBUG("update maker orders");
         const auto&      mm2  = this->m_system_manager.get_system<mm2_service>();
         orders_and_swaps data = mm2.get_orders_and_swaps();
         auto             cur  = data.orders_and_swaps.cbegin();
@@ -128,7 +128,7 @@ namespace atomic_dex
         {
             if (cur->is_maker)
             {
-                SPDLOG_INFO("Updating order: {}", cur->order_id.toStdString());
+                SPDLOG_DEBUG("Updating order: {}", cur->order_id.toStdString());
                 this->update_order(*cur);
             }
         }
