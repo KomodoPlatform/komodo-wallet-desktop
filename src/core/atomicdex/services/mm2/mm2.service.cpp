@@ -1303,6 +1303,8 @@ namespace atomic_dex
                                                     }
                                                     else
                                                     {
+                                                        // todo(syl): many unused variables.
+                                                        // fix that
                                                         if (z_answers[0].at("result").at("details").contains("UpdatingBlocksCache"))
                                                         {
                                                             event = "UpdatingBlocksCache";
