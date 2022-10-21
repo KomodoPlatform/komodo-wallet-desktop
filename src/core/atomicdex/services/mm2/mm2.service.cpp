@@ -1240,7 +1240,6 @@ namespace atomic_dex
                                             this->m_nb_update_required += 1;
                                             this->dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {tickers[idx]}});
                                             this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "Complete!");
-                                            break;
                                         }
                                         else
                                         {
