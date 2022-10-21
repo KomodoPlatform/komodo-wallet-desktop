@@ -2211,6 +2211,7 @@ namespace atomic_dex
     void
     mm2_service::process_tx_answer(const nlohmann::json& answer_json, std::string ticker)
     {
+        SPDLOG_DEBUG("Process tx answer.");
         mm2::tx_history_answer answer;
         mm2::from_json(answer_json, answer);
         t_tx_state state;
