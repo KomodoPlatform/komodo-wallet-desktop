@@ -1343,6 +1343,8 @@ namespace atomic_dex
                                                             this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
                                                             last_event = event;
                                                         }
+
+                                                        // todo(syl): refactor to a background task
                                                         std::this_thread::sleep_for(2s);
                                                     }
                                                     m_coins_informations[tickers[idx]].activation_status = z_answers[0];
