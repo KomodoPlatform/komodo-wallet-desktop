@@ -122,9 +122,9 @@ namespace atomic_dex
         SPDLOG_DEBUG("update maker orders");
         const auto&      mm2  = this->m_system_manager.get_system<mm2_service>();
         orders_and_swaps data = mm2.get_orders_and_swaps();
-        auto             cur  = data.orders_and_swaps.cbegin();
-        auto             end  = data.orders_and_swaps.cbegin() + data.nb_orders;
-        for (; cur != end; ++cur)
+        auto             cur  = data.orders_and_swaps.begin();
+        auto             end  = data.orders_and_swaps.begin() + data.nb_orders;
+        for (; cur != end && cur != data.orders_and_swaps.end(); ++cur)
         {
             if (cur->is_maker)
             {
