@@ -1274,7 +1274,7 @@ namespace atomic_dex
                                                     web::http::http_response             z_resp      = z_resp_task.get();
                                                     auto                                 z_answers   = mm2::basic_batch_answer(z_resp);
                                                     z_error                                          = z_answers;
-                                                    // SPDLOG_DEBUG("z_answer: {}", z_answers[0].dump(4));
+
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
 
                                                     if (status == "Ready")
