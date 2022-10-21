@@ -106,15 +106,10 @@ namespace atomic_dex
                 .then(
                     []([[maybe_unused]] web::http::http_response resp)
                     {
-                        std::string body = TO_STD_STR(resp.extract_string(true).get());
-                        SPDLOG_INFO("status_code: {}", resp.status_code());
-                        if (resp.status_code() == 200)
+                        if (resp.status_code() != 200)
                         {
-                            SPDLOG_INFO("order resp: {}", body);
-                        }
-                        else
-                        {
-                            SPDLOG_WARN("An error occured during update_maker_order: {}", body);
+                            std::string body = TO_STD_STR(resp.extract_string(true).get());
+                            SPDLOG_ERROR("An error occured during update_maker_order (code: {}): {}", resp.status_code(), body);
                         }
                     })
                 .then(&handle_exception_pplx_task);
