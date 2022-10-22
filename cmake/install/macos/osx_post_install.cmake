@@ -102,9 +102,9 @@ get_filename_component(QT_ROOT_DIR  $ENV{QT_ROOT} DIRECTORY)
 set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.4/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
-    message(STATUS "Generating ${DEX_PROJECT_NAME}.7z with [${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+    message(STATUS "Generating ${DEX_PROJECT_NAME}.7z with [${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_DIR}] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
     execute_process(COMMAND
-            ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app
+            ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_DIR}
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
@@ -112,6 +112,12 @@ else()
     message(STATUS "${DEX_PROJECT_NAME}.7z already created - skipping")
 endif()
 
+execute_process(COMMAND "pwd")
+execute_process(COMMAND "ls")
+message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}")
+execute_process(COMMAND "ls ${CMAKE_CURRENT_SOURCE_DIR}")
+
+message(STATUS "Copying ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z TO ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data")
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
 
 execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer -s $ENV{MAC_SIGN_IDENTITY}
