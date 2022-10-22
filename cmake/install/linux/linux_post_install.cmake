@@ -68,6 +68,9 @@ execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJE
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
 
+message(STATUS "FIND APPIMAGE")
+execute_process(COMMAND find / | grep AppImage)
+
 message(STATUS "Copying ${PROJECT_APP_PATH} to ${TARGET_APP_PATH}/${PROJECT_APP_DIR}")
 file(COPY ${PROJECT_APP_PATH} DESTINATION ${TARGET_APP_PATH})
 execute_process(COMMAND zip -r ${DEX_PROJECT_NAME}-linux-${VERSION_ID}.zip AntaraAtomicDexAppDir
