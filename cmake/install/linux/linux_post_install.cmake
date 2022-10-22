@@ -69,7 +69,7 @@ execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJE
         ECHO_ERROR_VARIABLE)
 
 message(STATUS "FIND APPIMAGE")
-execute_process(COMMAND find / | grep AppImage)
+execute_process(COMMAND find ${PROJECT_ROOT})
 
 message(STATUS "Copying ${PROJECT_APP_PATH} to ${TARGET_APP_PATH}/${PROJECT_APP_DIR}")
 file(COPY ${PROJECT_APP_PATH} DESTINATION ${TARGET_APP_PATH})
