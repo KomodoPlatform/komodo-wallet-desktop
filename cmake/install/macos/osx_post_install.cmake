@@ -108,17 +108,22 @@ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
-    message(STATUS "archivegen output: ${MANIFEST_RESULT} ${ECHO_OUTPUT_VARIABLE} ${ECHO_ERROR_VARIABLE}")
+    message(STATUS "archivegen output: ${ECHO_OUTPUT_VARIABLE} ${ECHO_ERROR_VARIABLE}")
 else()
     message(STATUS "${DEX_PROJECT_NAME}.7z already created - skipping")
 endif()
 
 execute_process(COMMAND "pwd")
 execute_process(COMMAND "ls")
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR")
 message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}")
 execute_process(COMMAND "ls ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR/bin")
 message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}/bin")
-execute_process(COMMAND "ls ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+execute_process(COMMAND "find ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+message(STATUS "FINDFILE")
+find_file(path7z ${DEX_PROJECT_NAME}.7z)
+message(STATUS "path7z: ${path7z}")
 
 message(STATUS "Copying ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z TO ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data")
 
