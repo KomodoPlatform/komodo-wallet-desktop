@@ -84,7 +84,3 @@ execute_process(COMMAND tar --zstd -cf ${DEX_PROJECT_NAME}-linux-${VERSION_ID}.t
         ECHO_ERROR_VARIABLE)
 
 file(COPY ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage DESTINATION ${TARGET_APP_PATH})
-
-message(STATUS "FIND APPIMAGE")
-execute_process(COMMAND find ${PROJECT_ROOT})
-execute_process(COMMAND ls ${TARGET_APP_PATH})
