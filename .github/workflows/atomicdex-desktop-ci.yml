@@ -41,31 +41,37 @@ jobs:
             os: ubuntu-latest
             qt: '5.15.2'
             type: 'Release'
+            host: 'linux'
 
           - name: ubuntu-debug
             os: ubuntu-latest
             qt: '5.15.2'
             type: 'Debug'
+            host: 'linux'
 
           - name: osx-release
             os: macos-11
             qt: '5.15.2'
             type: 'Release'
+            host: 'mac'
 
           - name: osx-debug
             os: macos-11
             qt: '5.15.2'
             type: 'Debug'
+            host: 'mac'
 
           - name: windows-release
             os: windows-latest
             qt: '5.15.2'
             type: 'Release'
+            host: 'windows'
 
           - name: windows-debug
             os: windows-latest
             qt: '5.15.2'
             type: 'Debug'
+            host: 'windows'
 
     steps:
       - uses: actions/checkout@v2
@@ -105,7 +111,7 @@ jobs:
         with:
           version: ${{ matrix.qt }}
           setup-python: 'false'
-          host: 'linux'
+          host: ${{ matrix.host }}
           target: 'desktop'
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
@@ -117,7 +123,7 @@ jobs:
         uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
-          host: 'windows'
+          host: ${{ matrix.host }}
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           dir: 'C:\'
@@ -126,14 +132,14 @@ jobs:
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-          python3  -m aqt tool mac tools_ifw 4.4.2 qt.tools.ifw.44 --outputdir ${{ github.workspace }}/Qt
+          python3  -m aqt tool ${{ matrix.host }} tools_ifw 4.4.2 qt.tools.ifw.44 --outputdir ${{ github.workspace }}/Qt
           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.4/bin" >> $GITHUB_PATH
 
       - name: Install QT IFW (Windows)
         if: runner.os == 'Windows'
         run: |
           python -m pip install --upgrade pip
-          python -m aqt tool windows tools_ifw 4.4.2 qt.tools.ifw.44 --outputdir C:/Qt
+          python -m aqt tool ${{ matrix.host }} tools_ifw 4.4.2 qt.tools.ifw.44 --outputdir C:/Qt
           echo "C:/Qt/Tools/QtInstallerFramework/4.4/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Install nim (Linux)
@@ -225,6 +231,9 @@ jobs:
           export APPLE_ID="${{ secrets.APPLE_ID }}"
           export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
+          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/Qt
+          ls ${{ github.workspace }}/Qt/${{ matrix.qt }}
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export MACOSX_DEPLOYMENT_TARGET=10.13
           export CC=clang
