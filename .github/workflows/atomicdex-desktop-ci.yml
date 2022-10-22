@@ -296,7 +296,7 @@ jobs:
           echo "artifact_name_appimage=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
           echo "target_name_zstd=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "target_name_zip=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
-          echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+          echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
 
       - name: Upload bundle artifact (Linux ZSTD)
         if: runner.os == 'Linux'
