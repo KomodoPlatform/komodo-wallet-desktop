@@ -113,12 +113,29 @@ else()
     message(STATUS "${DEX_PROJECT_NAME}.7z already created - skipping")
 endif()
 
+message(STATUS "ls WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}")
+execute_process(COMMAND ls WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
 message(STATUS "ls WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin")
 execute_process(COMMAND ls WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+
+message(STATUS "ls WORKING_DIRECTORY ${PROJECT_ROOT_DIR}")
+execute_process(COMMAND ls WORKING_DIRECTORY ${PROJECT_ROOT_DIR})
+
+message(STATUS "ls WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/bundled)
+execute_process(COMMAND ls WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/bundled)
 
 message(STATUS "ls WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/bundled/osx")
 execute_process(COMMAND ls WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/bundled/osx)
 
+message(STATUS "ls WORKING_DIRECTORY ${PROJECT_APP_PATH}")
+execute_process(COMMAND ls WORKING_DIRECTORY ${PROJECT_APP_PATH})
+
+message(STATUS "ls WORKING_DIRECTORY ${DEX_PROJECT_NAME}.7z")
+execute_process(COMMAND ls ${DEX_PROJECT_NAME}.7z)
+
+message(STATUS "ls WORKING_DIRECTORY ${DEX_PROJECT_NAME}.app")
+execute_process(COMMAND ls ${DEX_PROJECT_NAME}.app)
 
 
 message(STATUS "Copying ${DEX_PROJECT_NAME}.7z TO ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data")

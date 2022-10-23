@@ -105,8 +105,19 @@ jobs:
           Copy-Item "${{ github.workspace }}\libwally-core\wally.dll" -Destination "${{ github.workspace }}\wally\wally.dll" -force
 
 
+      - name: Install QT (macOS)
+        if: runner.os == 'macOS'
+        uses: KomodoPlatform/install-qt-action@v2.14.0
+        with:
+          version: ${{ matrix.qt }}
+          setup-python: 'false'
+          host: ${{ matrix.host }}
+          target: 'desktop'
+          dir: '${{ github.workspace }}'
+          modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
+
       - name: Install QT (Linux)
-        if: runner.os == 'Linux' || runner.os == 'macOS'
+        if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
@@ -348,10 +359,10 @@ jobs:
           export PATH=$HOME/.nimble/bin:$PATH
           export CXX=clang++-12
           export CC=clang-12
-          echo "Running tests"
-          ./ci_tools_atomic_dex tests ${{ matrix.type }}
-          cd build-${{ matrix.type }}/bin/AntaraAtomicDexTestsAppDir/usr/bin
-          cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
+          #echo "Running tests"
+          #./ci_tools_atomic_dex tests ${{ matrix.type }}
+          #cd build-${{ matrix.type }}/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          #cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
 
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
@@ -371,21 +382,21 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export CC=clang
           export CXX=clang++
-          echo "Running tests"
-          nimble build -y
-          ./ci_tools_atomic_dex tests ${{ matrix.type }}
-          cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
-          cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
+          #echo "Running tests"
+          #nimble build -y
+          #./ci_tools_atomic_dex tests ${{ matrix.type }}
+          #cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
+          #cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
 
       - name: Running Tests (Windows)
         shell: powershell
         continue-on-error: true
         if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         run: |
-          echo "Running tests"
+          #echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
-          cd b\bin
-          ./${{ env.DEX_PROJECT_NAME }}_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
+          #cd b\bin
+          #./${{ env.DEX_PROJECT_NAME }}_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
           #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
