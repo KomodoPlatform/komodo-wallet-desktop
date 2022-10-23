@@ -102,7 +102,8 @@ get_filename_component(QT_ROOT_DIR $ENV{QT_ROOT} DIRECTORY)
 set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.4/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
-    message(STATUS "${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH}")
+    execute_process(COMMAND ls WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+    message(STATUS "Generating ${DEX_PROJECT_NAME}.7z with [${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
     execute_process(COMMAND
             ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH}
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
@@ -112,10 +113,17 @@ else()
     message(STATUS "${DEX_PROJECT_NAME}.7z already created - skipping")
 endif()
 
+message(STATUS "ls WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+execute_process(COMMAND ls WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
-message(STATUS "Copying ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z TO ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data")
+message(STATUS "ls WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/bundled/osx")
+execute_process(COMMAND ls WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/bundled/osx)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
+
+
+message(STATUS "Copying ${DEX_PROJECT_NAME}.7z TO ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data")
+
+file(COPY ${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
 
 execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer -s $ENV{MAC_SIGN_IDENTITY}
         WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx
