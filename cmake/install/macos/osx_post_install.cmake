@@ -102,17 +102,15 @@ get_filename_component(QT_ROOT_DIR $ENV{QT_ROOT} DIRECTORY)
 set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.4/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
-    message(STATUS "${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_DIR}")
+    message(STATUS "${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH}")
     execute_process(COMMAND
-            ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_DIR}
+            ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH}
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE)
 else()
     message(STATUS "${DEX_PROJECT_NAME}.7z already created - skipping")
 endif()
-
-execute_process(COMMAND "find ${PROJECT_ROOT_DIR} -name ${DEX_PROJECT_NAME}")
 
 
 message(STATUS "Copying ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z TO ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data")
