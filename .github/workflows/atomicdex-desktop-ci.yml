@@ -186,6 +186,46 @@ jobs:
           setupOnly: true
           appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
 
+
+      - name: import code signing certificates (macos)
+        if: runner.os == 'macOS'  && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          keychain: ${{ github.run_id }}
+          keychain-password: ${{ github.run_id }}
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+
+      - name: import installer code signing certificates (macos)
+        if: runner.os == 'macOS'  && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          keychain: ${{ github.run_id }}
+          keychain-password: ${{ github.run_id }}
+          create-keychain: false
+          p12-file-base64: ${{ secrets.CERTIFICATES_INSTALLER_P12 }}
+          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+
+
+
+      - name: Build AtomicDEX (MacOS)
+        if: runner.os == 'macOS'
+        run: |
+          export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
+          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
+          export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
+          export APPLE_ID="${{ secrets.APPLE_ID }}"
+          export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export MACOSX_DEPLOYMENT_TARGET=10.13
+          export CC=clang
+          export CXX=clang++
+          cd ci_tools_atomic_dex
+          nimble build -y
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
+
+
       - name: Build AtomicDEX (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -203,44 +243,6 @@ jobs:
           ./ci_tools_atomic_dex build ${{ matrix.type }}
           ./ci_tools_atomic_dex bundle ${{ matrix.type }}
 
-      - name: import code signing certificates (macos)
-        if: runner.os == 'macOS'
-        uses: Apple-Actions/import-codesign-certs@v1
-        with:
-          keychain: ${{ github.run_id }}
-          keychain-password: ${{ github.run_id }}
-          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
-          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
-
-      - name: import installer code signing certificates (macos)
-        if: runner.os == 'macOS'
-        uses: apple-actions/import-codesign-certs@v1
-        with:
-          keychain: ${{ github.run_id }}
-          keychain-password: ${{ github.run_id }}
-          create-keychain: false
-          p12-file-base64: ${{ secrets.CERTIFICATES_INSTALLER_P12 }}
-          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
-
-      - name: Build AtomicDEX (MacOS)
-        if: runner.os == 'macOS'
-        run: |
-          export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
-          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
-          export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
-          export APPLE_ID="${{ secrets.APPLE_ID }}"
-          export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
-          ls ${{ github.workspace }}
-          ls ${{ github.workspace }}/Qt
-          ls ${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export MACOSX_DEPLOYMENT_TARGET=10.13
-          export CC=clang
-          export CXX=clang++
-          cd ci_tools_atomic_dex
-          nimble build -y
-          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
 
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'
@@ -248,55 +250,6 @@ jobs:
         run: |
           $Env:QT_VERSION = "${{ matrix.qt }}"
           .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
-
-      - name: Running Tests (Linux)
-        working-directory: ci_tools_atomic_dex
-        if: runner.os == 'Linux' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
-        run: |
-          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
-          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
-          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
-          export PATH=$HOME/.nimble/bin:$PATH
-          #export CXXFLAGS=-stdlib=libc++
-          #export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-12
-          export CC=clang-12
-          echo "Running tests"
-          ./ci_tools_atomic_dex tests ${{ matrix.type }}
-          cd build-${{ matrix.type }}/bin/AntaraAtomicDexTestsAppDir/usr/bin
-          cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
-
-      - name: Running Tests (MacOS)
-        working-directory: ci_tools_atomic_dex
-        if: runner.os == 'macOS' &&  'KomodoPlatform/atomicDEX-Desktop' == github.repository
-        run: |
-          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
-          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
-          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export CC=clang
-          export CXX=clang++
-          echo "Running tests"
-          ./ci_tools_atomic_dex tests ${{ matrix.type }}
-          cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
-          cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
-          find / | grep ${{ env.DEX_PROJECT_NAME }}.7z
-
-      - name: Running Tests (Windows)
-        shell: powershell
-        if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
-        run: |
-          echo "Running tests"
-          $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
-          cd b\bin
-          ./${{ env.DEX_PROJECT_NAME }}_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
-          #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
-          #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
 
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'
@@ -307,6 +260,8 @@ jobs:
           echo "target_name_zstd=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "target_name_zip=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+
+
 
       - name: Upload bundle artifact (Linux ZSTD)
         if: runner.os == 'Linux'
@@ -359,7 +314,7 @@ jobs:
         run: |
           echo "on_windows"
           echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-installer-$(git rev-parse --short HEAD).exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Upload artifacts (Windows zip)
         if: runner.os == 'Windows'
@@ -376,3 +331,62 @@ jobs:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
           retention-days: 7
+
+
+
+      - name: Running Tests (Linux)
+        working-directory: ci_tools_atomic_dex
+        continue-on-error: true
+        if: runner.os == 'Linux' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        run: |
+          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
+          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
+          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
+          export PATH=$HOME/.nimble/bin:$PATH
+          export CXX=clang++-12
+          export CC=clang-12
+          echo "Running tests"
+          ./ci_tools_atomic_dex tests ${{ matrix.type }}
+          cd build-${{ matrix.type }}/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
+
+      - name: Running Tests (MacOS)
+        working-directory: ci_tools_atomic_dex
+        continue-on-error: true
+        if: runner.os == 'macOS' &&  'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        run: |
+          export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
+          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
+          export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
+          export APPLE_ID="${{ secrets.APPLE_ID }}"
+          export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
+          export MACOSX_DEPLOYMENT_TARGET=10.13
+          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
+          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
+          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export CC=clang
+          export CXX=clang++
+          echo "Running tests"
+          nimble build -y
+          ./ci_tools_atomic_dex tests ${{ matrix.type }}
+          cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
+          cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
+          find / | grep ${{ env.DEX_PROJECT_NAME }}.7z
+
+      - name: Running Tests (Windows)
+        shell: powershell
+        continue-on-error: true
+        if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        run: |
+          echo "Running tests"
+          $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
+          cd b\bin
+          ./${{ env.DEX_PROJECT_NAME }}_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
+          #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
+          #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
