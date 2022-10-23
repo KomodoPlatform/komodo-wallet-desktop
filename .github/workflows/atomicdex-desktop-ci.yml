@@ -284,6 +284,7 @@ jobs:
           ./ci_tools_atomic_dex tests ${{ matrix.type }}
           cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
           cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
+          find / | grep ${{ env.DEX_PROJECT_NAME }}.7z
 
       - name: Running Tests (Windows)
         shell: powershell
