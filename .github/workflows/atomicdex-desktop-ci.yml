@@ -40,12 +40,12 @@ jobs:
           - name: ubuntu-qt-5-15-2
             os: ubuntu-18.04
             qt: '5.15.2'
-            type: 'debug'
+            type: 'release'
 
           - name: ubuntu-debug
             os: ubuntu-latest
             qt: '5.15.2'
-            type: 'debug'
+            type: 'release'
 
           - name: osx-release
             os: macos-11
@@ -60,7 +60,7 @@ jobs:
           - name: windows-release
             os: windows-latest
             qt: '5.15.2'
-            type: 'debug'
+            type: 'release'
 
           - name: windows-debug
             os: windows-latest
@@ -213,8 +213,8 @@ jobs:
           cd ${{ github.workspace }}/ci_tools_atomic_dex
           nimble build -y
 
-          ./ci_tools_atomic_dex build ${{ matrix.type }}
-          ./ci_tools_atomic_dex bundle ${{ matrix.type }}
+          ./ci_tools_atomic_dex build release
+          ./ci_tools_atomic_dex bundle release
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'

@@ -19,5 +19,5 @@ $Env:QT_ROOT = "C:\Qt"
 mkdir b
 cd b
 cmake --version
-cmake -DCMAKE_BUILD_TYPE=Debug -GNinja ../
+cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
 ninja install
