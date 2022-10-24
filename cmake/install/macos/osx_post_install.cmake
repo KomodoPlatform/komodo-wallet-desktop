@@ -274,6 +274,7 @@ execute_process(COMMAND ${IFW_BINDIR}/archivegen ${PROJECT_ROOT_DIR}/ci_tools_at
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
 
+file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer.7z DESTINATION ${TARGET_APP_PATH})
 
 message(STATUS "=@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@=")
 
