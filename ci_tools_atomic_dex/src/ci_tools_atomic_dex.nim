@@ -9,7 +9,6 @@ import build
 import bundle
 import tests
 import clean
-import os
 
 let doc = """
 Atomic Dex CI Tools.
@@ -39,24 +38,24 @@ proc main() =
     download_packages()
   elif args["generate"]:
     if args["release"]:
-      generate_solution("release", $args["--osx_sdk"], $args["--compiler"])
+      generate_solution("Release", $args["--osx_sdk"], $args["--compiler"])
     elif args["debug"]:
-      generate_solution("debug", $args["--osx_sdk"], $args["--compiler"])
+      generate_solution("Debug", $args["--osx_sdk"], $args["--compiler"])
   elif args["build"]:
     if args["release"]:
-      build_atomic_qt("release", $args["--osx_sdk"], $args["--compiler"])
+      build_atomic_qt("Release", $args["--osx_sdk"], $args["--compiler"])
     elif args["debug"]:
-      build_atomic_qt("debug", $args["--osx_sdk"], $args["--compiler"])
+      build_atomic_qt("Debug", $args["--osx_sdk"], $args["--compiler"])
   elif args["bundle"]:
     if args["release"]:
-      bundle("release", $args["--osx_sdk"], $args["--compiler"])
+      bundle("Release", $args["--osx_sdk"], $args["--compiler"])
     elif args["debug"]:
-      bundle("debug", $args["--osx_sdk"], $args["--compiler"])
+      bundle("Debug", $args["--osx_sdk"], $args["--compiler"])
   elif args["tests"]:
     if args["release"]:
-      run_tests("release", $args["--osx_sdk"], $args["--compiler"])
+      run_tests("Release", $args["--osx_sdk"], $args["--compiler"])
     elif args["debug"]:
-      run_tests("debug", $args["--osx_sdk"], $args["--compiler"])
+      run_tests("Debug", $args["--osx_sdk"], $args["--compiler"])
   elif args["clean"]:
     if args["full"]:
       clean("full")
