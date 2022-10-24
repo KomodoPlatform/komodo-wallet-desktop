@@ -37,8 +37,8 @@ jobs:
         ]
 
         include:
-          - name: ubuntu-release
-            os: ubuntu-latest
+          - name: ubuntu-qt-5-15-2
+            os: ubuntu-18.04
             qt: '5.15.2'
             type: 'debug'
 
