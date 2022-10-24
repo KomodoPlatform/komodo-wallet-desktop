@@ -79,7 +79,11 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(jl777-coins
+<<<<<<< HEAD
         URL https://github.com/KomodoPlatform/coins/archive/4d01dfe.zip)
+=======
+        URL https://github.com/KomodoPlatform/coins/archive/bechless.zip)
+>>>>>>> dev
 
 #FetchContent_Declare(adex-generics-coins
 #        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
