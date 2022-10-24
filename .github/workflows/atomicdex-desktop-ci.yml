@@ -42,30 +42,15 @@ jobs:
             qt: '5.15.2'
             type: 'release'
 
-          - name: ubuntu-debug
-            os: ubuntu-latest
-            qt: '5.15.2'
-            type: 'release'
-
-          - name: osx-release
-            os: macos-11
-            qt: '5.15.2'
-            type: 'debug'
-
           - name: osx-debug
             os: macos-11
             qt: '5.15.2'
-            type: 'debug'
+            type: 'release'
 
           - name: windows-release
             os: windows-latest
             qt: '5.15.2'
             type: 'release'
-
-          - name: windows-debug
-            os: windows-latest
-            qt: '5.15.2'
-            type: 'debug'
 
 
     steps:
