@@ -100,6 +100,10 @@ namespace atomic_dex
             {
                 return QLocale::Language::English;
             }
+            else if (current_lang == "es")
+            {
+                return QLocale::Language::Spanish;
+            }
             else if (current_lang == "de")
             {
                 return QLocale::Language::German;
