@@ -749,7 +749,7 @@ QtObject {
         case TradingError.PriceFieldNotFilled:
             return qsTr("Please fill the price field")
         case TradingError.VolumeFieldNotFilled:
-            return qsTr("Please fill the price field")
+            return qsTr("Please fill the volume field")
         case TradingError.LeftZhtlcChainNotEnabled:
             return qsTr("Please wait for %1 to fully activate").arg(left_ticker)
         case TradingError.RightZhtlcChainNotEnabled:

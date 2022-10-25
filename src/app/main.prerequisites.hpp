@@ -323,7 +323,7 @@ handle_settings(QSettings& settings)
 #endif
     create_settings_functor("AutomaticUpdateOrderBot", QVariant(false));
     create_settings_functor("WalletChartsCategory", qint32(WalletChartsCategories::OneMonth));
-    create_settings_functor("AvailableLang", QStringList{"en", "fr", "de", "tr", "ru"});
+    create_settings_functor("AvailableLang", QStringList{"en", "es", "fr", "de", "tr", "ru"});
     create_settings_functor("CurrentLang", QString("en"));
     create_settings_functor("2FA", 0);
     create_settings_functor("MaximumNbCoinsEnabled", 50);
