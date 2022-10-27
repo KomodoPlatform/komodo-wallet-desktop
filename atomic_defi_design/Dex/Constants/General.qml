@@ -606,7 +606,7 @@ QtObject {
     }
 
     function isParentCoin(ticker) {
-        return ["KMD", "ETH", "MATIC", "AVAX", "FTM", "QTUM"].includes(ticker)
+        return ["KMD", "ETH", "MATIC", "AVAX", "FTM", "QTUM", "BNB", "ONE", "KCS"].includes(ticker)
     }
 
     function isTokenType(type) {

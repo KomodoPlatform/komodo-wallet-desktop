@@ -288,6 +288,12 @@ Item
 
     ModalLoader
     {
+        id: gas_info_modal
+        sourceComponent: GasInfoModal {}
+    }
+
+    ModalLoader
+    {
         id: min_trade_modal
         sourceComponent: MinTradeModal {}
     }
