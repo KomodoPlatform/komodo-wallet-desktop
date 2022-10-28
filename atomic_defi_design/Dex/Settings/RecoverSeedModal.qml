@@ -34,7 +34,6 @@ MultipageModal
         }
         else
         {
-            console.log("Incorrect password!")
             _inputPassword.error = true;
             _isPasswordWrong = true;
             return false;
