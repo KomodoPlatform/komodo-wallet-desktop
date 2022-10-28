@@ -282,7 +282,7 @@ Item
     // CEX Rates info
     ModalLoader
     {
-        id: cex_rates_modal
+        id: cex_info_modal
         sourceComponent: CexInfoModal {}
     }
 

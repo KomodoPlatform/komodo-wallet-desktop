@@ -603,7 +603,7 @@ MultipageModal
                     horizontalAlignment: DefaultText.AlignHCenter
                     color: Dex.CurrentTheme.noColor
                     text_value: qsTr("Only use custom fees if you know what you are doing! ") + General.cex_icon
-                    GasInfoTrigger {}
+                    DefaultInfoTrigger { triggerModal: gas_info_modal }
                 }
             }
         }

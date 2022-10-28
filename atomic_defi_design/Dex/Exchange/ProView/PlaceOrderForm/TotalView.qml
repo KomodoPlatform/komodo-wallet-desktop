@@ -28,7 +28,7 @@ ColumnLayout
             font.pixelSize:  14
             font.weight: Font.Normal
             opacity: .6
-            CexInfoTrigger {}
+            DefaultInfoTrigger { triggerModal: cex_info_modal }
         }
 
         DefaultText
