@@ -148,16 +148,6 @@ Item
             Addressbook.Main { }
         }
 
-        Component
-        {
-            id: settings
-
-            Settings
-            {
-                Layout.alignment: Qt.AlignCenter
-            }
-        }
-
         WebEngineView
         {
             id: webEngineView
@@ -282,8 +272,14 @@ Item
     // CEX Rates info
     ModalLoader
     {
-        id: cex_rates_modal
+        id: cex_info_modal
         sourceComponent: CexInfoModal {}
+    }
+
+    ModalLoader
+    {
+        id: gas_info_modal
+        sourceComponent: GasInfoModal {}
     }
 
     ModalLoader
