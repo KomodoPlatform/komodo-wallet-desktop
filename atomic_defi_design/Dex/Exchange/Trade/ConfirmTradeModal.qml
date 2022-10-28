@@ -281,7 +281,7 @@ MultipageModal
                             text_value: "✅ " + (
                                 config_section.is_dpow_configurable
                                 ? '<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">'
-                                + qsTr("dPoW protected") + General.cex_icon +  '</a>'
+                                + qsTr("dPoW protected ") + General.cex_icon +  '</a>'
                                 : qsTr("%1 confirmations for incoming %2 transactions")
                                 .arg(config_section.default_config.required_confirmations || 1).arg(rel_ticker)
                             )

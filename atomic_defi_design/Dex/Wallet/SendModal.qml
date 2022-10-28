@@ -573,15 +573,38 @@ MultipageModal
                 label.wrapMode: Label.NoWrap
             }
 
-            // Custom fees warning
-            DefaultText
+            RowLayout
             {
                 visible: custom_fees_switch.checked
-                font.pixelSize: 14
-                Layout.alignment: Qt.AlignHCenter
-                horizontalAlignment: DefaultText.AlignHCenter
-                color: Dex.CurrentTheme.noColor
-                text_value: qsTr("Only use custom fees if you know what you are doing!")
+                // Custom fees warning
+                DefaultText
+                {
+                    font.pixelSize: 14
+                    Layout.alignment: Qt.AlignHCenter
+                    horizontalAlignment: DefaultText.AlignHCenter
+                    color: Dex.CurrentTheme.noColor
+                }
+
+                DefaultText
+                {
+                    visible: input_custom_fees.visible
+                    font.pixelSize: 14
+                    Layout.alignment: Qt.AlignHCenter
+                    horizontalAlignment: DefaultText.AlignHCenter
+                    color: Dex.CurrentTheme.noColor
+                    text_value: qsTr("Only use custom fees if you know what you are doing! ")
+                }
+
+                DefaultText
+                {
+                    visible: input_custom_fees_gas.visible
+                    font.pixelSize: 14
+                    Layout.alignment: Qt.AlignHCenter
+                    horizontalAlignment: DefaultText.AlignHCenter
+                    color: Dex.CurrentTheme.noColor
+                    text_value: qsTr("Only use custom fees if you know what you are doing! ") + General.cex_icon
+                    DefaultInfoTrigger { triggerModal: gas_info_modal }
+                }
             }
         }
 
@@ -613,7 +636,7 @@ MultipageModal
             // Token coins
             ColumnLayout
             {
-                visible: (General.isSpecialToken(current_ticker_infos) || General.isParentCoin(api_wallet_page.ticker)) && !api_wallet_page.ticker == "KMD"
+                visible: (General.isSpecialToken(current_ticker_infos) || General.isParentCoin(api_wallet_page.ticker)) && api_wallet_page.ticker != "KMD"
 
                 Layout.alignment: Qt.AlignHCenter
 
@@ -627,7 +650,7 @@ MultipageModal
                     Layout.preferredWidth: 380
                     Layout.preferredHeight: 38
 
-                    placeholderText: qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
+                    placeholderText: qsTr("Gas Limit")
                 }
 
                 // Gas price input
