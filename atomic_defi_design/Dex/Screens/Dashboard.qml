@@ -148,16 +148,6 @@ Item
             Addressbook.Main { }
         }
 
-        Component
-        {
-            id: settings
-
-            Settings
-            {
-                Layout.alignment: Qt.AlignCenter
-            }
-        }
-
         WebEngineView
         {
             id: webEngineView
