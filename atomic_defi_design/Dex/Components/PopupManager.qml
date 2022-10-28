@@ -11,7 +11,7 @@ Popup
 
     id: dialog
     width: 420
-    height: _insideColumn.height >  dialog.height ? _insideColumn.height + 82 : dialog.height
+    height: _insideColumn.height > dialog.height ? _insideColumn.height + 82 : dialog.height
     dim: true
     modal: true
     anchors.centerIn: Overlay.overlay
@@ -54,6 +54,7 @@ Popup
     property int standardButtons: Dialog.NoButton
     property string yesButtonText: ""
     property string cancelButtonText: ""
+    property bool showCancelBtn: true
     property bool getText: false
     property bool isPassword: false
     property bool centerAlign: false
@@ -254,6 +255,7 @@ Popup
                     DexAppButton
                     {
                         id: cancelBtn
+                        visible: showCancelBtn
                         text: dialog.cancelButtonText !== "" ? dialog.cancelButtonText : "Cancel"
                         height: 40
                         leftPadding: 20
@@ -273,7 +275,7 @@ Popup
                     {
                         text: dialog.yesButtonText !== "" ? dialog.yesButtonText : "Yes"
                         height: 40
-                        width: cancelBtn.width
+                        width: showCancelBtn ? cancelBtn.width : 90
                         leftPadding: 20
                         rightPadding: 20
                         radius: 18

@@ -257,6 +257,7 @@ SetupPage
                                                     title: qsTr("Wallet status"),
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet deleted successfully"),
                                                     yesButtonText: qsTr("Ok"), titleBold: true,
+                                                    showCancelBtn: false,
                                                     standardButtons: Dialog.Ok
                                                 })
                                                 wallets = API.app.wallet_mgr.get_wallets()
@@ -269,6 +270,7 @@ SetupPage
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),
                                                     warning: true,
                                                     standardButtons: Dialog.Ok, titleBold: true,
+                                                    showCancelBtn: false,
                                                     yesButtonText: qsTr("Ok"),
                                                 })
                                             }
