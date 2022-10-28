@@ -1035,6 +1035,7 @@ namespace atomic_dex
     auto
     mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
+        SPDLOG_DEBUG("batch balance and tx");
         (void)tickers;
         (void)is_during_enabling;
         auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
@@ -2292,6 +2293,7 @@ namespace atomic_dex
     void
     mm2_service::process_balance_answer(const nlohmann::json& answer)
     {
+        SPDLOG_DEBUG("process balance answer");
         t_balance_answer answer_r;
         
         mm2::from_json(answer, answer_r);
