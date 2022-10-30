@@ -389,18 +389,28 @@ QtObject {
         return JSON.stringify(j_obj, null, 4)
     }
 
+    function addressTxUri(coin_info) {
+        if (coin_info.tx_uri == "") return "address/"
+            return coin_info.address_uri
+    }
+
+    function getTxUri(coin_info) {
+        if (coin_info.tx_uri == "") return "tx/"
+        return coin_info.tx_uri
+    }
+
     function getTxExplorerURL(ticker, txid, add_0x=true) {
         if(txid !== '') {
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             const txid_prefix = (add_0x && coin_info.is_erc_family) ? '0x' : ''
-            return coin_info.explorer_url + coin_info.tx_uri + txid_prefix + txid
+            return coin_info.explorer_url + getTxUri(coin_info) + txid_prefix + txid
         }
     }
 
     function getAddressExplorerURL(ticker, address) {
         if(address !== '') {
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-            return coin_info.explorer_url + coin_info.address_uri + address
+            return coin_info.explorer_url + addressTxUri(coin_info) + address
         }
         return ""
     }
