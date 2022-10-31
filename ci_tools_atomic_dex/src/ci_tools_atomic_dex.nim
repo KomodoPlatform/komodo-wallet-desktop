@@ -16,11 +16,11 @@ Atomic Dex CI Tools.
 Usage:
   ci_tools_atomic_dex --install_vcpkg
   ci_tools_atomic_dex --install_dependencies
-  ci_tools_atomic_dex build (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
+  ci_tools_atomic_dex build (Release|Debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
   ci_tools_atomic_dex clean (full|dependencies|build_dir)
-  ci_tools_atomic_dex generate (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
-  ci_tools_atomic_dex bundle (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
-  ci_tools_atomic_dex tests (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
+  ci_tools_atomic_dex generate (Release|Debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
+  ci_tools_atomic_dex bundle (Release|Debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
+  ci_tools_atomic_dex tests (Release|Debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
   ci_tools_atomic_dex --version
   ci_tools_atomic_dex (-h | --help)
 
@@ -32,30 +32,37 @@ Options:
 proc main() =
   let args = docopt(doc, version = "Atomic Dex CI Tools 0.0.1")
   vcpkg_prepare()
+
   if args["--install_vcpkg"]:
     install_vcpkg()
+
   elif args["--install_dependencies"]:
     download_packages()
+
   elif args["generate"]:
-    if args["release"]:
+    if args["Release"]:
       generate_solution("Release", $args["--osx_sdk"], $args["--compiler"])
-    elif args["debug"]:
+    elif args["Debug"]:
       generate_solution("Debug", $args["--osx_sdk"], $args["--compiler"])
+
   elif args["build"]:
-    if args["release"]:
+    if args["Release"]:
       build_atomic_qt("Release", $args["--osx_sdk"], $args["--compiler"])
-    elif args["debug"]:
+    elif args["Debug"]:
       build_atomic_qt("Debug", $args["--osx_sdk"], $args["--compiler"])
+
   elif args["bundle"]:
-    if args["release"]:
+    if args["Release"]:
       bundle("Release", $args["--osx_sdk"], $args["--compiler"])
-    elif args["debug"]:
+    elif args["Debug"]:
       bundle("Debug", $args["--osx_sdk"], $args["--compiler"])
+
   elif args["tests"]:
-    if args["release"]:
+    if args["Release"]:
       run_tests("Release", $args["--osx_sdk"], $args["--compiler"])
-    elif args["debug"]:
+    elif args["Debug"]:
       run_tests("Debug", $args["--osx_sdk"], $args["--compiler"])
+
   elif args["clean"]:
     if args["full"]:
       clean("full")
