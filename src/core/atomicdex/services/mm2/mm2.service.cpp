@@ -1035,7 +1035,6 @@ namespace atomic_dex
     auto
     mm2_service::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
-        SPDLOG_DEBUG("batch balance and tx");
         (void)tickers;
         (void)is_during_enabling;
         auto&& [batch_array, tickers_idx, tokens_to_fetch] = prepare_batch_balance_and_tx(only_tx);
@@ -1631,8 +1630,6 @@ namespace atomic_dex
         }
 
         t_balance_request balance_request{.coin = cfg_infos.ticker};
-        SPDLOG_INFO("fetch single balance of ticker named:");
-        SPDLOG_INFO(cfg_infos.ticker);
         nlohmann::json    j = mm2::template_request("my_balance");
         mm2::to_json(j, balance_request);
         batch_array.push_back(j);
@@ -1641,9 +1638,7 @@ namespace atomic_dex
         {
             try
             {
-                SPDLOG_INFO("parse fetch single balance answer");
                 auto answers = mm2::basic_batch_answer(resp);
-                SPDLOG_INFO("fetch single balance answer parsed");
                 if (!answers.contains("error") && !answers[0].contains("error"))
                 {
                     this->process_balance_answer(answers[0]);
@@ -1663,20 +1658,15 @@ namespace atomic_dex
     void
     mm2_service::fetch_infos_thread(bool is_a_refresh, bool only_tx)
     {
-        SPDLOG_INFO("fetch_infos_thread");
         if (only_tx)
         {
-            SPDLOG_INFO("fetch_infos_thread only tx start");
             batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
-            SPDLOG_INFO("fetch_infos_thread only tx end");
         }
         else
         {
-            SPDLOG_INFO("fetch_infos_thread not only tx start");
             const auto& enabled_coins = get_enabled_coins();
             for (auto&& coin: enabled_coins) { fetch_single_balance(coin); }
             batch_balance_and_tx(is_a_refresh, {}, false, true);
-            SPDLOG_INFO("fetch_infos_thread not only tx end");
         }
     }
 
@@ -2215,7 +2205,6 @@ namespace atomic_dex
     void
     mm2_service::process_tx_answer(const nlohmann::json& answer_json, std::string ticker)
     {
-        SPDLOG_DEBUG("Process tx answer.");
         mm2::tx_history_answer answer;
         mm2::from_json(answer_json, answer);
         t_tx_state state;
@@ -2293,7 +2282,6 @@ namespace atomic_dex
     void
     mm2_service::process_balance_answer(const nlohmann::json& answer)
     {
-        SPDLOG_DEBUG("process balance answer");
         t_balance_answer answer_r;
         
         mm2::from_json(answer, answer_r);
