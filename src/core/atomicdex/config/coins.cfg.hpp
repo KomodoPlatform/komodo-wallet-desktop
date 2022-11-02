@@ -55,7 +55,7 @@ namespace atomic_dex
         bool                                        is_custom_coin{false};
         std::string                                 type;
         std::optional<std::set<CoinType>> other_types;
-        std::vector<std::string>        explorer_url; ///< usefull for transaction, take this url and append transaction id
+        std::string                     explorer_url; ///< usefull for transaction, take this url and append transaction id
         std::string                     tx_uri{"tx/"};
         std::string                     address_url{"address/"};
         std::optional<nlohmann::json>   custom_backup;

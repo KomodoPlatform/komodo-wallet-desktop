@@ -291,7 +291,7 @@ namespace atomic_dex
             obj["is_claimable"]                       = coin_info.is_claimable;
             obj["address"]                            = QString::fromStdString(mm2_system.address(ticker, ec));
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
-            obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url[0]);
+            obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url);
             obj["current_currency_ticker_price"]      = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, true));
             obj["change_24h"]                         = retrieve_change_24h(provider, coin_info, config, m_system_manager);
             const auto& tx_state                      = mm2_system.get_tx_state(ec);
