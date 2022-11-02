@@ -106,15 +106,10 @@ namespace atomic_dex
                 .then(
                     []([[maybe_unused]] web::http::http_response resp)
                     {
-                        std::string body = TO_STD_STR(resp.extract_string(true).get());
-                        SPDLOG_INFO("status_code: {}", resp.status_code());
-                        if (resp.status_code() == 200)
+                        if (resp.status_code() != 200)
                         {
-                            SPDLOG_INFO("order resp: {}", body);
-                        }
-                        else
-                        {
-                            SPDLOG_WARN("An error occured during update_maker_order: {}", body);
+                            std::string body = TO_STD_STR(resp.extract_string(true).get());
+                            SPDLOG_ERROR("An error occured during update_maker_order (code: {}): {}", resp.status_code(), body);
                         }
                     })
                 .then(&handle_exception_pplx_task);
@@ -124,16 +119,16 @@ namespace atomic_dex
     void
     auto_update_maker_order_service::internal_update()
     {
-        SPDLOG_INFO("update maker orders");
+        SPDLOG_DEBUG("update maker orders");
         const auto&      mm2  = this->m_system_manager.get_system<mm2_service>();
         orders_and_swaps data = mm2.get_orders_and_swaps();
-        auto             cur  = data.orders_and_swaps.cbegin();
-        auto             end  = data.orders_and_swaps.cbegin() + data.nb_orders;
-        for (; cur != end; ++cur)
+        auto             cur  = data.orders_and_swaps.begin();
+        auto             end  = data.orders_and_swaps.begin() + data.nb_orders;
+        for (; cur != end && cur != data.orders_and_swaps.end(); ++cur)
         {
             if (cur->is_maker)
             {
-                SPDLOG_INFO("Updating order: {}", cur->order_id.toStdString());
+                SPDLOG_DEBUG("Updating order: {}", cur->order_id.toStdString());
                 this->update_order(*cur);
             }
         }
