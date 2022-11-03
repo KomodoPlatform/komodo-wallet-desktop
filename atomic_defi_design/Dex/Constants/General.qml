@@ -585,6 +585,11 @@ QtObject {
         if (ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
         if (ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
         if (ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
+        if (General.isZhtlc(ticker))
+        {
+            let progress = General.zhtlcActivationProgress(current_ticker_infos.activation_status, ticker)
+            if (progress != 100) return false
+        }
 
         return true
     }
