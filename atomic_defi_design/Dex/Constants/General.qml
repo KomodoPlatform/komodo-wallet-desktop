@@ -579,10 +579,10 @@ QtObject {
     property Timer prevent_coin_disabling: Timer { interval: 5000 }
 
     function canDisable(ticker) {
-        if(prevent_coin_disabling.running)
+        if (prevent_coin_disabling.running)
             return false
 
-        if(ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
+        if (ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
         else if(ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
         else if(ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
 
