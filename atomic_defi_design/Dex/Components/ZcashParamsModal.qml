@@ -89,6 +89,9 @@ Dex.MultipageModal
         Connections
         {
             target: Dex.API.app.zcash_params
+
+            // todo: can be improved.
+            //       put it maybe in the backend ?
             function onCombinedDownloadStatusChanged()
             {
                 let combined_progress = 0
