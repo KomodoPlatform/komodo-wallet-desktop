@@ -73,7 +73,7 @@ RowLayout
         icon.source: Qaterial.Icons.windowClose
 
         onClicked: {
-            if (orders.count == 0 || !API.app.wallet_mgr.log_status()) Qt.quit()
+            if (orders.count === 0 || !API.app.wallet_mgr.log_status()) Qt.quit()
             else app.logout_confirm_modal.open()
         }
     }
