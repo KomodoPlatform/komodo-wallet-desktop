@@ -7,6 +7,7 @@ import Qaterial 1.0 as Qaterial
 import "../../../Components"
 import "../../../Constants"
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 import AtomicDEX.MarketMode 1.0
 
 Widget
@@ -60,7 +61,7 @@ Widget
             anchors.fill: parent
             anchors.centerIn: parent
 
-            DexLabel
+            Dex.Text
             {
                 id: protocolTitle
                 Layout.preferredWidth: parent.width
@@ -163,7 +164,7 @@ Widget
         Layout.preferredWidth: parent.width
 
         // Show errors
-        DefaultText
+        Dex.Text
         {
             id: errors
             visible: errors.text_value !== ""
