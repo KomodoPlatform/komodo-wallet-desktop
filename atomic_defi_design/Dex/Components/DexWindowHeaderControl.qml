@@ -72,7 +72,8 @@ RowLayout
         foregroundColor: Dex.CurrentTheme.foregroundColor
         icon.source: Qaterial.Icons.windowClose
 
-        onClicked: {
+        onClicked: 
+        {
             if (orders.count === 0 || !API.app.wallet_mgr.log_status()) Qt.quit()
             else app.logout_confirm_modal.open()
         }
