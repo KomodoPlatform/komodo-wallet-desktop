@@ -11,6 +11,8 @@ import App 1.0
 
 GradientRectangle
 {
+    property int activation_progress: Dex.General.zhtlcActivationProgress(activation_status, ticker)
+
     width: list_bg.width - list_bg.border.width*2 - 6
     height: 44
     radius: Dex.Style.rectangleCornerRadius + 4
@@ -53,7 +55,7 @@ GradientRectangle
             anchors.centerIn: parent
             anchors.fill: parent
             radius: 15
-            enabled: Dex.General.isZhtlc(ticker) ? Dex.General.zhtlcActivationProgress(activation_status, ticker) != 100 : false
+            enabled: Dex.General.isZhtlc(ticker) ? activation_progress != 100 : false
             visible: enabled
             opacity: .9
             color: Dex.DexTheme.backgroundColor
@@ -63,11 +65,11 @@ GradientRectangle
         {
             anchors.centerIn: parent
             anchors.fill: parent
-            enabled: Dex.General.isZhtlc(ticker) ? Dex.General.zhtlcActivationProgress(activation_status, ticker) != 100 : false
+            enabled: Dex.General.isZhtlc(ticker) ? activation_progress != 100 : false
             visible: enabled
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            text: Dex.General.zhtlcActivationProgress(activation_status, ticker) + "%"
+            text: activation_progress + "%"
             font: Dex.DexTypo.head8
             color: Dex.DexTheme.greenColor
         }

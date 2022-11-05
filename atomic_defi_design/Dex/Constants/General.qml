@@ -80,7 +80,7 @@ QtObject {
         let block_offset = 0
         if (coin == 'ARRR') block_offset = 1900000
 
-        // use range from checkoint block to present
+        // use range from checkpoint block to present
         if (status == "Ready")
         {
             if (details.hasOwnProperty("error"))
@@ -597,7 +597,7 @@ QtObject {
         if (ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
         if (General.isZhtlc(ticker))
         {
-            let progress = General.zhtlcActivationProgress(current_ticker_infos.activation_status, ticker)
+            let progress = General.zhtlcActivationProgress(API.app.wallet_pg.ticker_infos.activation_status, ticker)
             if (progress != 100) return false
         }
 
