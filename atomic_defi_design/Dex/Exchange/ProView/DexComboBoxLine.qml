@@ -18,6 +18,7 @@ RowLayout
     property var details
     property color color: !details ? "white" : Style.getCoinColor(details.ticker)
     property alias bottom_text: bottom_line.text_value
+    property int activation_progress: Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker)
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
@@ -37,7 +38,7 @@ RowLayout
             anchors.centerIn: parent
             anchors.fill: parent
             radius: 15
-            enabled: Dex.General.isZhtlc(details.ticker) ? Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) != 100 : false
+            enabled: Dex.General.isZhtlc(details.ticker) ? activation_progress != 100 : false
             visible: enabled
             opacity: .9
             color: Dex.DexTheme.backgroundColor
@@ -47,11 +48,11 @@ RowLayout
         {
             anchors.centerIn: parent
             anchors.fill: parent
-            enabled: Dex.General.isZhtlc(details.ticker) ? Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) != 100 : false
+            enabled: Dex.General.isZhtlc(details.ticker) ? activation_progress != 100 : false
             visible: enabled
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            text: Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) + "%"
+            text: activation_progress + "%"
             font: Dex.DexTypo.body2
             color: Dex.DexTheme.greenColor
         }
