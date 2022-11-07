@@ -465,6 +465,7 @@ QtObject {
                                           "VET": "#18C6FF",
                                           "VITE": "#007AFF",
                                           "VRM": "#586A7A",
+                                          "VTC": "#049161",
                                           "WSB": "#FEBB84",
                                           "WAVES": "#016BFF",
                                           "WBTC": "#CCCCCC",
