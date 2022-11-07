@@ -85,6 +85,8 @@ namespace atomic_dex
                 !coins.contains(QString::fromStdString(coin_info.fees_ticker)))
             {
                 auto coin_parent_info = mm2.get_coin_info(coin_info.fees_ticker);
+                // todo: why can it be empty when it has been found ?
+                //       refactor coins enabling logic!!!
                 if (coin_parent_info.ticker != "")
                 {
                     if (!coin_parent_info.currently_enabled && !coin_parent_info.active && extra_coins.insert(coin_parent_info.ticker).second)

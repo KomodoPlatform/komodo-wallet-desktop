@@ -4,6 +4,7 @@ import "../Constants"
 import "../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 
 RowLayout
 {
@@ -20,7 +21,7 @@ RowLayout
 
     Item { Layout.fillWidth: !align_left }
 
-    DexRectangle
+    Dex.Rectangle
     {
         width: text_box_width
         height: 30
