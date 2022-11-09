@@ -2077,7 +2077,7 @@ namespace atomic_dex
 
         if (this->m_mm2_running)
         {
-            SPDLOG_INFO("process_orderbook(true)");
+            SPDLOG_DEBUG("process_orderbook(true)");
             process_orderbook(true);
         }
     }
