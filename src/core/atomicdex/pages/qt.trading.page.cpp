@@ -76,6 +76,10 @@ namespace atomic_dex
     void
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
+        if (base.toStdString() == "" || rel.toStdString() == "")
+        {
+            return;
+        }
         if (bool is_wallet_only = m_system_manager.get_system<mm2_service>().get_coin_info(base.toStdString()).wallet_only; is_wallet_only)
         {
             SPDLOG_WARN("{} is wallet only - skipping", base.toStdString());
