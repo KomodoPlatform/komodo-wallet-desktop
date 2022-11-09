@@ -171,7 +171,13 @@ namespace atomic_dex
         }
         if (j.contains("nodes"))
         {
-            cfg.urls = j.at("nodes").get<std::vector<std::string>>();
+            cfg.urls = j.at("nodes").get<std::vector<node>>();
+            std::vector<std::string> url_list;
+            cfg.eth_family_urls = url_list;
+            for (const auto& url : j.at("nodes").get<std::vector<node>>())
+            {
+                cfg.eth_family_urls->push_back(url.url);
+            }
         }
         if (j.contains("allow_slp_unsafe_conf"))
         {

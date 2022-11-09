@@ -646,7 +646,7 @@ namespace atomic_dex
             t_enable_request request
             {
                 .coin_name       = coin_config.ticker,
-                .urls            = coin_config.urls.value_or(std::vector<std::string>{}),
+                .urls            = coin_config.eth_family_urls.value_or(std::vector<std::string>{}),
                 .coin_type       = coin_config.coin_type,
                 .is_testnet      = coin_config.is_testnet.value_or(false),
                 .with_tx_history = false

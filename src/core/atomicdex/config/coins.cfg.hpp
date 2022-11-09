@@ -24,6 +24,7 @@
 #include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/api/mm2/utxo.merge.params.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
+#include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
 namespace atomic_dex
@@ -33,17 +34,20 @@ namespace atomic_dex
         static constexpr const char* erc_gas_stations   = "https://ethgasstation.info/json/ethgasAPI.json";
         static constexpr const char* matic_gas_stations = "https://gasstation-mainnet.matic.network/";
         using electrum_servers                          = std::vector<electrum_server>;
-        using nodes                                     = std::vector<std::string>;
+        using nodes                                     = std::vector<node>;
+        using eth_family_url_list                       = std::vector<std::string>;
+        using bchd_url_list                             = std::vector<std::string>;
         using light_wallet_d_servers                    = std::vector<std::string>; ///< For ZHTLC
         std::string                                 ticker;
         std::optional<std::string>                  alias_ticker{std::nullopt};
         std::string                                 gui_ticker; ///< Ticker displayed in the gui
         std::string                                 name;       ///< nice name
+        std::optional<bool>                         utxo_merge{false};
+        std::optional<bool>                         allow_slp_unsafe_conf;
+        std::optional<nodes>                        urls;
+        std::optional<eth_family_url_list>          eth_family_urls;
+        std::optional<bchd_url_list>                bchd_urls;
         std::optional<electrum_servers>             electrum_urls;
-        std::optional<bool>              utxo_merge{false};
-        std::optional<nodes>            bchd_urls;
-        std::optional<bool>             allow_slp_unsafe_conf;
-        std::optional<nodes>            urls;
         std::optional<light_wallet_d_servers>       z_urls;
         bool                                        is_claimable{false};
         std::string                                 minimal_claim_amount{"0"};
