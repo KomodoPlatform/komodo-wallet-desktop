@@ -132,6 +132,11 @@ namespace
         {
             return;
         }
+        if (tickers.empty())
+        {
+            SPDLOG_DEBUG("Tickers list empty, skipping update_coin_status");
+            return;
+        }
         SPDLOG_INFO("Update coins status to: {} - field_name: {} - tickers: {}", status, field_name, fmt::join(tickers, ", "));
         fs::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
