@@ -203,6 +203,7 @@ namespace
             ofs_custom.write(QString::fromStdString(custom_cfg_data.dump()).toUtf8());
             ofs_custom.close();
         }
+        SPDLOG_DEBUG("Coins file updated to set {}: {} | tickers: [{}]", field_name, status,  fmt::join(tickers, ", "));
     }
 }
 
