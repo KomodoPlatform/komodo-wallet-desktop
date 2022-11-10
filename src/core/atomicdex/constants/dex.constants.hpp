@@ -26,7 +26,6 @@ namespace atomic_dex
         "REVS",
         "SUPERNET",
         "XPM",
-        "XVC",
         "ATOM"
     };
 }
