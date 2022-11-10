@@ -117,6 +117,11 @@ namespace
 
 namespace atomic_dex
 {
+    bool is_wallet_only(std::string ticker)
+    {
+        return std::any_of(g_wallet_only_coins.begin(), g_wallet_only_coins.end(), [ticker](std::string x) { return ticker == x; });
+    }
+
     void
     from_json(const nlohmann::json& j, coin_config& cfg)
     {
@@ -135,7 +140,7 @@ namespace atomic_dex
         cfg.is_claimable         = j.count("is_claimable") > 0;
         cfg.is_custom_coin       = j.contains("is_custom_coin") ? j.at("is_custom_coin").get<bool>() : false;
         cfg.is_testnet           = j.contains("is_testnet") ? j.at("is_testnet").get<bool>() : false;
-        cfg.wallet_only          = j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
+        cfg.wallet_only          = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
 
         if (j.contains("other_types"))
         {
