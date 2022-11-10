@@ -96,7 +96,7 @@ ColumnLayout {
             font: DexTypo.body2
             Layout.fillWidth: true
             wrapMode: DexLabel.Wrap
-            text_value: hintPrefix(hasEnoughCharacters()) + qsTr("At least %n character(s)", "", high_security ? 16 : 1)
+            text_value: hintPrefix(hasEnoughCharacters()) + qsTr("Between %1 and %2 character(s)").arg(high_security ? 16 : 1).arg(General.max_pw_length)
             color: hintColor(hasEnoughCharacters())
         }
         DexLabel {
