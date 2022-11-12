@@ -20,7 +20,7 @@ DexAppTextField
     height: 50
     width: 300
     background.radius: 25
-    max_length: General.max_pw_length
+    max_length: General.max_std_pw_length
     field.echoMode: TextField.Password
     field.font: Qt.font(
     {

@@ -162,7 +162,7 @@ Popup
                         placeholderText: dialog.placeholderText
                         field.placeholderText: ""
                         field.forceFocus: forceFocus
-                        max_length: dialog.isPassword ? General.max_pw_length : 40
+                        max_length: dialog.isPassword ? General.max_std_pw_length : 40
                         field.rightPadding: dialog.isPassword ? 55 : 20
                         field.leftPadding: dialog.isPassword ? 70 : 20
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal

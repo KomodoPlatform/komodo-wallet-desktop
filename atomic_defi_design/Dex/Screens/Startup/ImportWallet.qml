@@ -182,6 +182,7 @@ SetupPage
                 {
                     id: _seedField
                     Layout.fillWidth: true
+                    max_length: General.max_pw_length
                     Layout.preferredHeight: 50
                     leftIcon: Qaterial.Icons.fileKey
                     field.font: DexTypo.body2
