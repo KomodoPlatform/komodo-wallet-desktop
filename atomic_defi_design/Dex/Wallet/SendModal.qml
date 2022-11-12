@@ -276,7 +276,11 @@ MultipageModal
                 placeholderText: qsTr("Address of the recipient")
                 forceFocus: true
                 font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
-                onTextChanged: api_wallet_page.validate_address(text)
+                onTextChanged: 
+                {
+                    text = text.replace(/(\r\n|\n|\r)/gm,"").replace(" ", "")
+                    api_wallet_page.validate_address(text)
+                }
             }
 
             Rectangle

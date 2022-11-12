@@ -26,6 +26,7 @@
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
 
 namespace atomic_dex
 {
@@ -79,4 +80,5 @@ namespace atomic_dex
     void from_json(const nlohmann::json& j, coin_config& cfg);
 
     void print_coins(std::vector<coin_config> coins);
+    bool is_wallet_only(std::string ticker);
 } // namespace atomic_dex
