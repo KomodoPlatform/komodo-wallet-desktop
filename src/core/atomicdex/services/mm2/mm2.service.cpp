@@ -132,6 +132,11 @@ namespace
         {
             return;
         }
+        if (tickers.empty())
+        {
+            SPDLOG_DEBUG("Tickers list empty, skipping update_coin_status");
+            return;
+        }
         SPDLOG_INFO("Update coins status to: {} - field_name: {} - tickers: {}", status, field_name, fmt::join(tickers, ", "));
         fs::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
@@ -198,6 +203,7 @@ namespace
             ofs_custom.write(QString::fromStdString(custom_cfg_data.dump()).toUtf8());
             ofs_custom.close();
         }
+        SPDLOG_DEBUG("Coins file updated to set {}: {} | tickers: [{}]", field_name, status,  fmt::join(tickers, ", "));
     }
 }
 
@@ -429,23 +435,20 @@ namespace atomic_dex
     bool mm2_service::disable_coin(const std::string& ticker, std::error_code& ec)
     {
         coin_config coin_info = get_coin_info(ticker);
-        SPDLOG_INFO("[mm2_service::disable_coin]: {}", ticker);
-
         if (not coin_info.currently_enabled)
         {
-            SPDLOG_INFO("[mm2_service::disable_coin]: {} not currently_enabled", ticker);
+            SPDLOG_DEBUG("[mm2_service::disable_coin]: {} not currently_enabled", ticker);
             return true;
         }
 
         t_disable_coin_request request{.coin = ticker};
 
         auto                   answer = m_mm2_client.rpc_disable_coin(std::move(request));
-        SPDLOG_INFO("mm2_service::disable_coin: {} result: {}", ticker, answer.raw_result);
+        SPDLOG_DEBUG("mm2_service::disable_coin: {} result: {}", ticker, answer.raw_result);
 
         if (answer.error.has_value())
         {
             std::string error = answer.error.value();
-            SPDLOG_INFO("mm2_service::disable_coin: {} error {}", ticker, error);
             if (error.find("such coin") != std::string::npos)
             {
                 ec = dextop_error::disable_unknown_coin;
@@ -2077,7 +2080,7 @@ namespace atomic_dex
 
         if (this->m_mm2_running)
         {
-            SPDLOG_INFO("process_orderbook(true)");
+            SPDLOG_DEBUG("process_orderbook(true)");
             process_orderbook(true);
         }
     }
