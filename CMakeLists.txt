@@ -61,13 +61,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-1e1338d2d-Darwin-Release.zip)
+            URL http://195.201.0.6/fix-derivation-path/mm2-dec487f57-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-1e1338d2d-Linux-Release.zip)
+            URL http://195.201.0.6/fix-derivation-path/mm2-dec487f57-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2.1/mm2-1e1338d2d-Windows_NT-Release.zip)
+            URL http://195.201.0.6/fix-derivation-path/mm2-dec487f57-Windows_NT-Release.zip)
 endif ()
 
 #FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
@@ -79,7 +79,7 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(jl777-coins
-        URL https://github.com/KomodoPlatform/coins/archive/desktop-0.5.7.zip)
+        URL https://github.com/KomodoPlatform/coins/archive/master.zip)
 
 #FetchContent_Declare(adex-generics-coins
 #        URL https://github.com/KomodoPlatform/atomicdex-desktop-generics/archive/main.zip)
