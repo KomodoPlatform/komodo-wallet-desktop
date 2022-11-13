@@ -592,7 +592,7 @@ QtObject {
         if (prevent_coin_disabling.running)
             return false
 
-        if (ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
+        if (ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin || ticker === atomic_app_third_coin) return false
         if (ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
         if (ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
         if (General.isZhtlc(ticker))
