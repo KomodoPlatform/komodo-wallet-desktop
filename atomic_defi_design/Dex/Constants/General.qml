@@ -579,22 +579,35 @@ QtObject {
         return exists(v) && v !== ""
     }
 
-    function isParentCoinNeeded(ticker, type) {
-        for(const c of API.app.portfolio_pg.get_all_enabled_coins())
-            if(c.type === type && c.ticker !== ticker) return true
-
+    function isParentCoinNeeded(ticker, coin_type)
+    {
+        let enabled_coins = API.app.portfolio_pg.get_all_enabled_coins()
+        for (const coin of enabled_coins)
+        {
+            let c_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin)
+            if(c_info.type === coin_type && c_info.ticker !== ticker) return true
+        }
         return false
     }
 
     property Timer prevent_coin_disabling: Timer { interval: 5000 }
 
     function canDisable(ticker) {
-        if (prevent_coin_disabling.running)
-            return false
-
+        if (prevent_coin_disabling.running) return false
         if (ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
         if (ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
+        if (ticker === "MATIC") return !General.isParentCoinNeeded("MATIC", "Matic")
+        if (ticker === "FTM") return !General.isParentCoinNeeded("FTM", "ERC-20")
+        if (ticker === "AVAX") return !General.isParentCoinNeeded("ETH", "AVX-20")
+        if (ticker === "BNB") return !General.isParentCoinNeeded("AVAX", "BEP-20")
+        if (ticker === "ONE") return !General.isParentCoinNeeded("ONE", "HRC-20")
         if (ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
+        if (ticker === "KCS") return !General.isParentCoinNeeded("KCS", "KRC-20")
+        if (ticker === "HT") return !General.isParentCoinNeeded("HT", "HecoChain")
+        if (ticker === "BCH") return !General.isParentCoinNeeded("BCH", "SLP")
+        if (ticker === "UBQ") return !General.isParentCoinNeeded("UBQ", "Ubiq")
+        if (ticker === "MOVR") return !General.isParentCoinNeeded("MOVR", "Moonriver")
+        if (ticker === "GLMR") return !General.isParentCoinNeeded("GLMR", "Moonbeam")
         if (General.isZhtlc(ticker))
         {
             let progress = General.zhtlcActivationProgress(API.app.wallet_pg.ticker_infos.activation_status, ticker)
