@@ -443,6 +443,7 @@ run_app(int argc, char** argv)
     engine.rootContext()->setContextProperty("atomic_app_twitter_url", QString{DEX_TWITTER_URL});
     engine.rootContext()->setContextProperty("atomic_app_primary_coin", QString{DEX_PRIMARY_COIN});
     engine.rootContext()->setContextProperty("atomic_app_secondary_coin", QString{DEX_SECOND_PRIMARY_COIN});
+    engine.rootContext()->setContextProperty("atomic_app_third_coin", QString{DEX_THIRD_PRIMARY_COIN});
     engine.rootContext()->setContextProperty("atomic_qt_utilities", &qt_utilities);
     #if defined(_WIN32) || defined(WIN32)
         engine.rootContext()->setContextProperty("atomic_cfg_file", QString::fromStdWString((atomic_dex::utils::get_current_configs_path() / "cfg.ini").wstring()));
