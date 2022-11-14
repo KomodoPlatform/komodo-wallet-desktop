@@ -114,14 +114,13 @@ namespace atomic_dex
     {
         QString     primary_coin   = QString::fromStdString(g_primary_dex_coin);
         QString     secondary_coin = QString::fromStdString(g_second_primary_dex_coin);
-        QString     third_coin = QString::fromStdString(g_third_primary_dex_coin);
         QStringList coins_copy;
         const auto& mm2 = system_manager_.get_system<mm2_service>();
         for (auto&& coin : coins)
         {
             const auto coin_info       = mm2.get_coin_info(coin.toStdString());
             bool       has_parent_fees = coin_info.has_parent_fees_ticker;
-            if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin && coin != third_coin)
+            if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
                 if (!get_mm2().is_zhtlc_coin_ready(coin.toStdString()))
                 {
@@ -245,10 +244,6 @@ namespace atomic_dex
                 {
                     this->m_secondary_coin_fully_enabled = true;
                 }
-                if (ticker == g_third_primary_dex_coin)
-                {
-                    this->m_third_coin_fully_enabled = true;
-                }
                 to_init.push_back(ticker);
                 std::free((void*)ticker_cstr);
             }
@@ -256,7 +251,7 @@ namespace atomic_dex
             if (not to_init.empty())
             {
                 system_manager_.get_system<portfolio_page>().initialize_portfolio(to_init);
-                if (m_primary_coin_fully_enabled && m_secondary_coin_fully_enabled && m_third_coin_fully_enabled)
+                if (m_primary_coin_fully_enabled && m_secondary_coin_fully_enabled)
                 {
                     if (std::find(to_init.begin(), to_init.end(), g_primary_dex_coin) != to_init.end())
                     {
@@ -497,7 +492,6 @@ namespace atomic_dex
 
         this->m_primary_coin_fully_enabled   = false;
         this->m_secondary_coin_fully_enabled = false;
-        this->m_third_coin_fully_enabled = false;
         system_manager_.get_system<qt_wallet_manager>().set_status("None");
         return fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
     }

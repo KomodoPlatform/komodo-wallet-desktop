@@ -465,7 +465,6 @@ namespace atomic_dex
                     bool        already_send  = false;
                     const auto  first_id      = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
                     const auto  second_id     = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
-                    const auto  third_id      = mm2.get_coin_info(g_third_primary_dex_coin).coinpaprika_id;
                     if (!first_id.empty())
                     {
                         refresh_other_coins_rates(first_id, g_primary_dex_coin, false, 0);
@@ -475,12 +474,7 @@ namespace atomic_dex
                         refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update, 0);
                         already_send = true;
                     }
-                    if (!third_id.empty())
-                    {
-                        refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update, 0);
-                        already_send = true;
-                    }
-                    if (g_primary_dex_coin != "BTC" && g_second_primary_dex_coin != "BTC" && g_third_primary_dex_coin != "BTC")
+                    if (g_primary_dex_coin != "BTC" && g_second_primary_dex_coin != "BTC")
                     {
                         const auto third_id = mm2.get_coin_info("BTC").coinpaprika_id;
                         refresh_other_coins_rates(third_id, "BTC", !already_send, 0);

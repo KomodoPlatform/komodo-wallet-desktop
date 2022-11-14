@@ -102,7 +102,6 @@ namespace atomic_dex
         t_events_actions                      m_event_actions{{false}};
         std::atomic_bool                      m_primary_coin_fully_enabled{false};
         std::atomic_bool                      m_secondary_coin_fully_enabled{false};
-        std::atomic_bool                      m_third_coin_fully_enabled{false};
 
       public:
         application(application& other)  = delete;
