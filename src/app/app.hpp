@@ -100,8 +100,8 @@ namespace atomic_dex
         t_portfolio_coins_to_initialize_queue m_portfolio_queue{g_max_actions_size};
         t_manager_model_registry              m_manager_models;
         t_events_actions                      m_event_actions{{false}};
-        std::atomic_bool                      m_primary_coin_fully_enabled{false};
         std::atomic_bool                      m_secondary_coin_fully_enabled{false};
+        std::atomic_bool                      m_primary_coin_fully_enabled{false};
 
       public:
         application(application& other)  = delete;
