@@ -51,16 +51,16 @@ namespace atomic_dex
         }
     }
 
-    fs::path zcash_params_service::get_zcash_params_folder()
+    std::filesystem::path zcash_params_service::get_zcash_params_folder()
     {
-        fs::path zcash_params_path;
+        std::filesystem::path zcash_params_path;
 #if defined(_WIN32) || defined(WIN32)
         std::wstring out = _wgetenv(L"APPDATA");
-        zcash_params_path = fs::path(out) / "ZcashParams";
+        zcash_params_path = std::filesystem::path(out) / "ZcashParams";
 #elif defined(__APPLE__)
-        zcash_params_path = fs::path(std::getenv("HOME")) / "Library" / "Application Support" / "ZcashParams";
+        zcash_params_path = std::filesystem::path(std::getenv("HOME")) / "Library" / "Application Support" / "ZcashParams";
 #else
-        zcash_params_path = fs::path(std::getenv("HOME")) / (std::string(".zcash-params"));
+        zcash_params_path = std::filesystem::path(std::getenv("HOME")) / (std::string(".zcash-params"));
 #endif
         return zcash_params_path;
     }
@@ -69,11 +69,11 @@ namespace atomic_dex
     {
         m_is_downloading = true;
         using namespace std::chrono_literals;
-        const fs::path folder = this->get_zcash_params_folder();
+        const std::filesystem::path folder = this->get_zcash_params_folder();
 
-        if (not fs::exists(folder))
+        if (not std::filesystem::exists(folder))
         {
-            fs::create_directories(folder);
+            std::filesystem::create_directories(folder);
         }
 
         std::string zcash_params[2] = {
@@ -83,7 +83,7 @@ namespace atomic_dex
 
         for(const std::string &url: zcash_params)
         {
-            std::string filename = atomic_dex::utils::u8string(fs::path(url).filename());
+            std::string filename = atomic_dex::utils::u8string(std::filesystem::path(url).filename());
             if (filename.find("deprecated-sworn-elves") > -1)
             {
                 filename = "sprout-proving.key";

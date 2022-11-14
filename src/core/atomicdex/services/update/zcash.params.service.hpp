@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <filesystem>
+
 #include <QJsonObject>
 #include <QJsonDocument>
 
@@ -63,7 +65,7 @@ namespace atomic_dex
         Q_INVOKABLE   bool                        is_downloading();
         Q_INVOKABLE   QString                     get_combined_download_progress();
         [[nodiscard]] QJsonObject                 get_combined_download_status() const;
-        [[nodiscard]] fs::path                    get_zcash_params_folder();
+        [[nodiscard]] std::filesystem::path       get_zcash_params_folder();
 
       signals:
         void          combinedDownloadStatusChanged();

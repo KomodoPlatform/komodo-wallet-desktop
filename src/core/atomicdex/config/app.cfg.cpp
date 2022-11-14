@@ -33,7 +33,7 @@ namespace
     void
     upgrade_cfg(atomic_dex::cfg& config)
     {
-        fs::path cfg_path = atomic_dex::utils::get_current_configs_path() / "cfg.json";
+        std::filesystem::path cfg_path = atomic_dex::utils::get_current_configs_path() / "cfg.json";
         QFile    file;
         file.setFileName(atomic_dex::std_path_to_qstring(cfg_path));
         file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -87,13 +87,13 @@ namespace atomic_dex
     load_cfg()
     {
         cfg      out;
-        fs::path cfg_path = utils::get_current_configs_path() / "cfg.json";
-        if (not fs::exists(cfg_path))
+        std::filesystem::path cfg_path = utils::get_current_configs_path() / "cfg.json";
+        if (not std::filesystem::exists(cfg_path))
         {
-            fs::path original_cfg_path{ag::core::assets_real_path() / "config" / "cfg.json"};
+            std::filesystem::path original_cfg_path{ag::core::assets_real_path() / "config" / "cfg.json"};
             //! Copy our json to current version
             LOG_PATH_CMP("Copying app cfg: {} to {}", original_cfg_path, cfg_path);
-            fs::copy_file(original_cfg_path, cfg_path, get_override_options());
+            std::filesystem::copy_file(original_cfg_path, cfg_path, std::filesystem::copy_options::overwrite_existing);
         }
 
         QFile file;
