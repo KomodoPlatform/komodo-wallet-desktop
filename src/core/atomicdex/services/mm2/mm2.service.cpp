@@ -34,6 +34,7 @@
 #include "atomicdex/api/mm2/rpc2.init_z_coin.hpp"
 #include "atomicdex/api/mm2/rpc2.init_z_coin_status.hpp"
 #include "atomicdex/config/mm2.cfg.hpp"
+#include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
@@ -235,7 +236,7 @@ namespace atomic_dex
                     for (auto& [key, value]: config_json_data.items())
                     {
                         //! Ensure default coin are marked as active
-                        if (key == DEX_PRIMARY_COIN || key == DEX_SECOND_PRIMARY_COIN)
+                        if (is_default_coin(key))
                         {
                             config_json_data.at(key)["active"] = true;
                         }
