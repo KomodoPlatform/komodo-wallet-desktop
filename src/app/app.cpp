@@ -490,8 +490,8 @@ namespace atomic_dex
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
         wallet_manager.just_set_wallet_name("");
 
-        this->m_secondary_coin_fully_enabled = false;
         this->m_primary_coin_fully_enabled   = false;
+        this->m_secondary_coin_fully_enabled = false;
         system_manager_.get_system<qt_wallet_manager>().set_status("None");
         return fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
     }
