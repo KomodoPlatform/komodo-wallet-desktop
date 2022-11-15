@@ -242,7 +242,7 @@ namespace atomic_dex
                         }
                     }
 
-                    auto   res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
+                    auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
                     return res;
                 }
                 catch (const std::exception& error)
