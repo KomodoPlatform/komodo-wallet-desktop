@@ -600,9 +600,9 @@ QtObject {
         if (ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
         if (ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
         if (ticker === "MATIC") return !General.isParentCoinNeeded("MATIC", "Matic")
-        if (ticker === "FTM") return !General.isParentCoinNeeded("FTM", "ERC-20")
-        if (ticker === "AVAX") return !General.isParentCoinNeeded("ETH", "AVX-20")
-        if (ticker === "BNB") return !General.isParentCoinNeeded("AVAX", "BEP-20")
+        if (ticker === "FTM") return !General.isParentCoinNeeded("FTM", "FTM-20")
+        if (ticker === "AVAX") return !General.isParentCoinNeeded("AVAX", "AVX-20")
+        if (ticker === "BNB") return !General.isParentCoinNeeded("BNB", "BEP-20")
         if (ticker === "ONE") return !General.isParentCoinNeeded("ONE", "HRC-20")
         if (ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
         if (ticker === "KCS") return !General.isParentCoinNeeded("KCS", "KRC-20")
