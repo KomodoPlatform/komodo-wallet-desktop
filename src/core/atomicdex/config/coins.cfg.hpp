@@ -71,10 +71,12 @@ namespace atomic_dex
         bool                            is_segwit_on{false};
         bool                            is_erc_family{false};
         bool                                        is_zhtlc_family{false};
+        bool                                        default_coin{false};
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);
 
     void print_coins(std::vector<coin_config> coins);
     bool is_wallet_only(std::string ticker);
+    bool is_default_coin(std::string ticker);
 } // namespace atomic_dex

@@ -13,6 +13,7 @@ ColumnLayout {
     property bool new_password: true
     property bool double_validation: false
     property string match_password
+    property int max_pw_len: General.max_std_pw_length
     property bool high_security: true
 
     function isValid() {
@@ -96,7 +97,7 @@ ColumnLayout {
             font: DexTypo.body2
             Layout.fillWidth: true
             wrapMode: DexLabel.Wrap
-            text_value: hintPrefix(hasEnoughCharacters()) + qsTr("At least %n character(s)", "", high_security ? 16 : 1)
+            text_value: hintPrefix(hasEnoughCharacters()) + qsTr("Between %1 and %2 character(s)").arg(high_security ? 16 : 1).arg(max_pw_len)
             color: hintColor(hasEnoughCharacters())
         }
         DexLabel {
