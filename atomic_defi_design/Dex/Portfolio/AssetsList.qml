@@ -304,7 +304,10 @@ Dex.DexListView
                 if (!can_change_ticker)
                     return
                 if (mouse.button === Qt.RightButton)
+                {
+                    contextMenu.can_disable = Dex.General.canDisable(ticker)
                     contextMenu.popup()
+                }
                 else
                 {
                     api_wallet_page.ticker = ticker
@@ -314,10 +317,10 @@ Dex.DexListView
 
             onPressAndHold:
             {
-                if (!can_change_ticker)
-                    return
+                if (!can_change_ticker) return
 
                 if (mouse.source === Qt.MouseEventNotSynthesized)
+                    contextMenu.can_disable = Dex.General.canDisable(ticker)
                     contextMenu.popup()
             }
         }

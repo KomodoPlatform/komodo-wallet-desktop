@@ -29,8 +29,15 @@ GradientRectangle
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked:
         {
-            if (mouse.button === Qt.RightButton) context_menu.popup()
-            else api_wallet_page.ticker = ticker
+            if (mouse.button === Qt.RightButton)
+            {
+                context_menu.can_disable = General.canDisable(ticker)
+                context_menu.popup()
+            }
+            else
+            {
+                api_wallet_page.ticker = ticker
+            }
         }
         onPressAndHold: if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
     }
