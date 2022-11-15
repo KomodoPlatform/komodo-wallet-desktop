@@ -181,10 +181,11 @@ namespace atomic_dex
         }
         if (j.contains("nodes"))
         {
+            // Todo: this is bad, we are using 2 times the required memory. Something can be improved here.
             cfg.urls = j.at("nodes").get<std::vector<node>>();
-            std::vector<std::string> url_list;
-            cfg.eth_family_urls = url_list;
-            for (const auto& url : j.at("nodes").get<std::vector<node>>())
+            cfg.eth_family_urls = std::vector<std::string>();
+            cfg.eth_family_urls.value().reserve(cfg.urls.value().size());
+            for (const auto& url : cfg.urls.value())
             {
                 cfg.eth_family_urls->push_back(url.url);
             }
