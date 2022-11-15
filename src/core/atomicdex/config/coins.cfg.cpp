@@ -181,7 +181,14 @@ namespace atomic_dex
         }
         if (j.contains("nodes"))
         {
-            cfg.urls = j.at("nodes").get<std::vector<std::string>>();
+            // Todo: this is bad, we are using 2 times the required memory. Something can be improved here.
+            cfg.urls = j.at("nodes").get<std::vector<node>>();
+            cfg.eth_family_urls = std::vector<std::string>();
+            cfg.eth_family_urls.value().reserve(cfg.urls.value().size());
+            for (const auto& url : cfg.urls.value())
+            {
+                cfg.eth_family_urls->push_back(url.url);
+            }
         }
         if (j.contains("allow_slp_unsafe_conf"))
         {
