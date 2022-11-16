@@ -15,12 +15,13 @@ import "../Screens"
 DexPopup
 {
     id: root
-    property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
 
     width: 406
     height: 526
-    property
-    var default_gradient: Gradient
+    backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+
+    property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
+    property var default_gradient: Gradient
     {
         orientation: Qt.Horizontal
         GradientStop
@@ -34,8 +35,7 @@ DexPopup
             color: Dex.CurrentTheme.gradientButtonPressedEndColor
         }
     }
-    property
-    var default_red_gradient: Gradient
+    property var default_red_gradient: Gradient
     {
         orientation: Qt.Horizontal
         GradientStop
@@ -49,30 +49,31 @@ DexPopup
             color: Dex.CurrentTheme.tradeSellModeSelectorBackgroundColorEnd
         }
     }
-    property
-    var notification_map: [
-    {
-        icon: Qaterial.Icons.arrowTopRight,
-        color: Dex.CurrentTheme.foregroundColor,
-        gradient: default_red_gradient
-    },
-    {
-        icon: Qaterial.Icons.arrowBottomRight,
-        color: Dex.CurrentTheme.foregroundColor,
-        gradient: default_gradient
-    },
-    {
-        icon: Qaterial.Icons.messageOutline,
-        color: Dex.CurrentTheme.foregroundColor,
-        gradient: default_gradient
-    }]
-    backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property var notification_map: 
+    [
+        {
+            icon: Qaterial.Icons.arrowTopRight,
+            color: Dex.CurrentTheme.foregroundColor,
+            gradient: default_red_gradient
+        },
+        {
+            icon: Qaterial.Icons.arrowBottomRight,
+            color: Dex.CurrentTheme.foregroundColor,
+            gradient: default_gradient
+        },
+        {
+            icon: Qaterial.Icons.messageOutline,
+            color: Dex.CurrentTheme.foregroundColor,
+            gradient: default_gradient
+        }
+    ]
 
     function reset()
     {
         notifications_list = []
         root.close()
     }
+
     enum NotificationKind
     {
         Send,
@@ -125,7 +126,6 @@ DexPopup
 
     function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications", long_message = "")
     {
-
         let obj;
         if (title.indexOf("You received") !== -1)
         {
@@ -244,19 +244,20 @@ DexPopup
         {
             if (amount != 0)
             {
-            newNotification("onBalanceUpdateStatus",
-                {
-                    am_i_sender,
-                    amount,
-                    ticker,
+                newNotification(
+                    "onBalanceUpdateStatus",
+                    {
+                        am_i_sender,
+                        amount,
+                        ticker,
+                        human_date,
+                        timestamp
+                    },
+                    timestamp,
+                    am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
+                    qsTr("Your wallet balance changed"),
                     human_date,
-                    timestamp
-                },
-                timestamp,
-                am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
-                qsTr("Your wallet balance changed"),
-                human_date,
-                "open_wallet_page")
+                    "open_wallet_page")
             }
         }
         else
@@ -277,7 +278,8 @@ DexPopup
         // Display the notification
         const title = qsTr(" %1 Enable status", "TICKER").arg(coin)
 
-        newNotification("onEnablingZCoinStatus",
+        newNotification(
+            "onEnablingZCoinStatus",
             {
                 coin,
                 human_date,
@@ -316,7 +318,8 @@ DexPopup
 
         error = check_internet_connection_text + "\n\n" + error
 
-        newNotification("onEnablingCoinFailedStatus",
+        newNotification(
+            "onEnablingCoinFailedStatus",
             {
                 coin,
                 error,
