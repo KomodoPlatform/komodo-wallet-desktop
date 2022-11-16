@@ -656,15 +656,25 @@ Item
             {
                 Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
-                visible: enabled && current_ticker_infos.is_smartchain_test_coin
+                visible:  current_ticker_infos.is_smartchain_test_coin
 
                 DefaultButton
                 {
                     text: qsTr("Faucet")
+                    enabled: activation_progress == 100
                     radius: 18
                     font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
                     anchors.fill: parent
                     onClicked: api_wallet_page.claim_faucet()
+                }
+
+                // Faucet button error icon
+                DefaultAlertIcon
+                {
+                    visible: activation_progress != 100
+                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
 
