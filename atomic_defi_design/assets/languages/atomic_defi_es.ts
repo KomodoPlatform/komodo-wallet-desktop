@@ -219,7 +219,7 @@
     <message>
         <location filename="../../Dex/Addressbook/AddTagPopup.qml" line="45"/>
         <source>+ ADD</source>
-        <translation>#NAME?</translation>
+        <translation>+ Añadir</translation>
     </message>
 </context>
 <context>
@@ -477,7 +477,7 @@
     <message>
         <location filename="../../Dex/Sidebar/Center.qml" line="101"/>
         <source>Address Book</source>
-        <translation>Libreta de direcciones</translation>
+        <translation>Directorio</translation>
     </message>
     <message>
         <location filename="../../Dex/Sidebar/Center.qml" line="113"/>
@@ -1195,7 +1195,7 @@
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="195"/>
         <source>+ Add</source>
-        <translation>#NAME?</translation>
+        <translation>+ Añadir</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="219"/>
@@ -1981,7 +1981,7 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="89"/>
         <source>+ NEW CONTACT</source>
-        <translation>Nuevo contacto</translation>
+        <translation>+ Nuevo contacto</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="110"/>
@@ -2088,7 +2088,7 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
     <message>
         <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="50"/>
         <source>+ ADD</source>
-        <translation>#NAME?</translation>
+        <translation>+ Añadir</translation>
     </message>
 </context>
 <context>
