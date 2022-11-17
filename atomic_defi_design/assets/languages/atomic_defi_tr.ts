@@ -1601,7 +1601,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="240"/>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="248"/>
         <source>i understand</source>
-        <translation type="unfinished">Anlıyorum</translation>
+        <translation type="unfinished">Anladım</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="250"/>
@@ -1621,12 +1621,12 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="234"/>
         <source>Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).&lt;br&gt;&lt;br&gt;To confirm you understand the risk and know what you are doing, type &lt;strong&gt;&apos;I understand&apos;&lt;/strong&gt; in the box below.</source>
-        <translation type="unfinished">Özel çekirdek tümceler, oluşturulmuş bir BIP39 uyumlu çekirdek sözcük grubu veya özel anahtara (WIF).&lt;br&gt;&lt;br&gt; Riski anladığınızı ve ne yaptığınızı bildiğinizi doğrulamak için lütfen aşağıdaki kutuya &lt;strong&gt;&apos;Anlıyorum&apos;&lt;/strong&gt; yazın.</translation>
+        <translation type="unfinished">Özel çekirdek tümceler, oluşturulmuş bir BIP39 uyumlu çekirdek sözcük grubu veya özel anahtara (WIF).&lt;br&gt;&lt;br&gt; Riski anladığınızı ve ne yaptığınızı bildiğinizi doğrulamak için lütfen aşağıdaki kutuya &lt;strong&gt;&apos;Anladım&apos;&lt;/strong&gt; yazın.</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="235"/>
         <source>I understand</source>
-        <translation type="unfinished">Anlıyorum</translation>
+        <translation type="unfinished">Anladım</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="287"/>
