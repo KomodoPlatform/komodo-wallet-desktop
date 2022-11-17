@@ -1613,7 +1613,37 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="240"/>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="248"/>
         <source>i understand</source>
-        <translation type="unfinished">Я понимаю</translation>
+        <translation type="unfinished">Я согласен</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="240"/>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="248"/>
+        <source>я согласен</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="240"/>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="248"/>
+        <source>je comprends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="240"/>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="248"/>
+        <source>entiendo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="240"/>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="248"/>
+        <source>anladım</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="240"/>
+        <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="248"/>
+        <source>ich verstehe</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="250"/>
@@ -1633,12 +1663,12 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="234"/>
         <source>Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).&lt;br&gt;&lt;br&gt;To confirm you understand the risk and know what you are doing, type &lt;strong&gt;&apos;I understand&apos;&lt;/strong&gt; in the box below.</source>
-        <translation>Пользовательские исходные фразы могут быть менее безопасными и их легче взломать, чем сгенерированные исходные фразы или закрытый ключ (WIF), совместимые с BIP39.&lt;br&gt;&lt;br&gt;Чтобы подтвердить, что вы понимаете риск и знаете, что делаете, введите &lt;strong&gt;&apos;Я понимаю&apos;&lt;/strong&gt; в поле ниже.</translation>
+        <translation>Пользовательские исходные фразы могут быть менее безопасными и их легче взломать, чем сгенерированные исходные фразы или закрытый ключ (WIF), совместимые с BIP39.&lt;br&gt;&lt;br&gt;Чтобы подтвердить, что вы понимаете риск и знаете, что делаете, введите &lt;strong&gt;&apos;Я согласен&apos;&lt;/strong&gt; в поле ниже.</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="235"/>
         <source>I understand</source>
-        <translation>Я понимаю</translation>
+        <translation>Я согласен</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="287"/>
