@@ -3475,11 +3475,6 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
         <translation>In die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="atomic_defi_design/qml/Settings/SettingModal.qml" line="322"/>
-        <source></source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="128"/>
         <source>About &amp; Version</source>
         <translation>Über &amp; Version</translation>

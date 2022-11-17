@@ -1925,7 +1925,7 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="198"/>
         <source>START SWAP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Takası başlat</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="62"/>
@@ -1936,12 +1936,12 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="73"/>
         <source>Search contact</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kişileri ara</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="89"/>
         <source>+ NEW CONTACT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Yeni bağlantı</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="110"/>

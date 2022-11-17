@@ -3432,11 +3432,6 @@ Please select a new order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_defi_design/qml/Settings/SettingModal.qml" line="322"/>
-        <source></source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="128"/>
         <source>About &amp; Version</source>
         <translation type="unfinished"></translation>

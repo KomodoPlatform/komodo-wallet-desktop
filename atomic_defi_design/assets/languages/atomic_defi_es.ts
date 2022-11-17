@@ -1948,7 +1948,7 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="89"/>
         <source>+ NEW CONTACT</source>
-        <translation>#ERROR!</translation>
+        <translation>Nuevo contacto</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="110"/>
@@ -3430,11 +3430,6 @@ Please select a new order.</source>
         <location filename="../../Dex/Settings/SettingModal.qml" line="573"/>
         <source>copied to clipboard</source>
         <translation>copiado al portapapeles</translation>
-    </message>
-    <message>
-        <location filename="atomic_defi_design/qml/Settings/SettingModal.qml" line="322"/>
-        <source></source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="128"/>
