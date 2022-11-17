@@ -91,11 +91,13 @@ MultipageModal
 
     function feeIsHigherThanAmount() {
 
-        if(!custom_fees_switch.checked) return false
+        if (!custom_fees_switch.checked) return false
+
+        if (input_amount.text === "") return false
 
         const amount = parseFloat(getCryptoAmount())
 
-        if(General.isSpecialToken(current_ticker_infos)) {
+        if (General.isSpecialToken(current_ticker_infos)) {
             const parent_ticker = General.getFeesTicker(current_ticker_infos)
             const gas_limit = parseFloat(input_custom_fees_gas.text)
             const gas_price = parseFloat(input_custom_fees_gas_price.text)
