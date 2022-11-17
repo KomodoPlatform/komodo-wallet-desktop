@@ -248,7 +248,7 @@
     <message>
         <location filename="../../Dex/Addressbook/AssetFromStandardSelector.qml" line="28"/>
         <source> asset</source>
-        <translation></translation>
+        <translation> activo</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/AssetFromStandardSelector.qml" line="35"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../../Dex/Portfolio/AssetsList.qml" line="200"/>
         <source>Activating: </source>
-        <translation></translation>
+        <translation>Activando: </translation>
     </message>
     <message>
         <location filename="../../Dex/Portfolio/AssetsList.qml" line="283"/>
@@ -1476,7 +1476,7 @@
         <location filename="../../Dex/Constants/General.qml" line="754"/>
         <location filename="../../Dex/Constants/General.qml" line="756"/>
         <source>Please wait for %1 to fully activate</source>
-        <translation></translation>
+        <translation>Espere a que %1 se active por completo</translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="758"/>
@@ -1571,7 +1571,8 @@
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="206"/>
         <source>Your seed is not BIP39 compliant.
 Try again or select &apos;Allow custom seed&apos; to continue.</source>
-        <translation></translation>
+        <translation>Su semilla no cumple con BIP39.
+Vuelva a intentarlo o seleccione &apos;Permitir semilla personalizada&apos; personalizada continúe.</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="239"/>
@@ -1597,7 +1598,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="233"/>
         <source>Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF).&lt;br&gt;&lt;br&gt;To confirm you understand the risk and know what you are doing, type &lt;strong&gt;&apos;I understand&apos;&lt;/strong&gt; in the box below.</source>
-        <translation>Las frases semilla personalizadas pueden ser menos seguras y más fáciles de descifrar que una frase semilla o clave privada (WIF) compatible con BIP39.&lt;br&gt;&lt;br&gt;Para confirmar que comprende el riesgo y sabe lo que está haciendo, escriba &lt;strong&gt; &apos;Entiendo&apos;&lt;/strong&gt; en el cuadro de abajo.</translation>
+        <translation>Las frases semilla personalizadas pueden ser menos seguras y más fáciles de descifrar que una frase semilla o clave privada (WIF) compatible con BIP39.&lt;br&gt;&lt;br&gt;Para confirmar que comprende el riesgo y sabe lo que está haciendo, escriba &lt;strong&gt; &apos;I understand&apos;&lt;/strong&gt; en el cuadro de abajo.</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/ImportWallet.qml" line="234"/>
@@ -1653,7 +1654,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/BestOrder/List.qml" line="35"/>
         <source>Enter volume to see best orders.</source>
-        <translation></translation>
+        <translation>Introduce el volumen para ver los mejores ordenes</translation>
     </message>
 </context>
 <context>
@@ -1661,7 +1662,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="125"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation></translation>
+        <translation>%1 no está habilitado. ¿Desea habilitarlo para poder seleccionar %2 mejores ordenes?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Sí&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="52"/>
@@ -1723,29 +1724,31 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Components/LogoutModal.qml" line="18"/>
         <source>Exit %1 or go to login menu?</source>
-        <translation></translation>
+        <translation>Salga de %1 o vaya al menú de inicio de sesión</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/LogoutModal.qml" line="37"/>
         <source>Warning: You currently have a swap in progress.
 Logging out may result in a failed swap.</source>
-        <translation></translation>
+        <translation>Advertencia: actualmente tiene una operación en curso.
+Cerrar sesión puede resultar en una transacción fallida.</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/LogoutModal.qml" line="43"/>
         <source>Warning: You currently have open maker orders.
 They will be removed from the orderbook until you log in again.</source>
-        <translation></translation>
+        <translation>Advertencia: actualmente tiene órdenes abiertas.
+Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/LogoutModal.qml" line="53"/>
         <source>Login menu</source>
-        <translation></translation>
+        <translation>Menú de inicio de sesión</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/LogoutModal.qml" line="61"/>
         <source>Exit</source>
-        <translation></translation>
+        <translation>Dejar</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/LogoutModal.qml" line="66"/>
@@ -1798,7 +1801,7 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="369"/>
         <source> Contract Address</source>
-        <translation></translation>
+        <translation> Dirección del Contrato</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="436"/>
@@ -1833,7 +1836,7 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="617"/>
         <source> is wallet only</source>
-        <translation></translation>
+        <translation> es solo billetera</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="635"/>
@@ -1875,12 +1878,12 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="962"/>
         <source>Please wait, %1 is %2</source>
-        <translation></translation>
+        <translation>Por favor espera %1 es %2</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="962"/>
         <source>% activated...</source>
-        <translation></translation>
+        <translation>% activado...</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="964"/>
@@ -2082,9 +2085,9 @@ They will be removed from the orderbook until you log in again.</source>
     </message>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="72"/>
-        <source>Could not check new updates because of the following reason: 
+        <source>Could not check new updates for the following reason: 
 %1</source>
-        <translation></translation>
+        <translation>No se pudieron comprobar las nuevas actualizaciones por el siguiente motivo: %1</translation>
     </message>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="88"/>
@@ -2349,7 +2352,7 @@ They will be removed from the orderbook until you log in again.</source>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="278"/>
         <source> %1 Enable status</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>%1 habilitar el estado</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="294"/>
@@ -2366,7 +2369,7 @@ They will be removed from the orderbook until you log in again.</source>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="338"/>
         <source>Failed to disable %1</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>Error al deshabilitar %1</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="357"/>
@@ -2436,17 +2439,17 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="109"/>
         <source>Reduce 1% relative to CEX market price.</source>
-        <translation></translation>
+        <translation>Reducción del 1% en relación con el precio de mercado CEX.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="110"/>
         <source>Use CEX market price.</source>
-        <translation></translation>
+        <translation>Utilice el precio de mercado CEX.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="111"/>
         <source>Increase 1% relative to CEX market price.</source>
-        <translation></translation>
+        <translation>Aumento del 1% en relación con el precio de mercado de CEX.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="126"/>
@@ -2471,17 +2474,17 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="158"/>
         <source>Swap 25% of your tradable balance.</source>
-        <translation></translation>
+        <translation>Usar el 25% de su saldo comercial.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="159"/>
         <source>Swap 50% of your tradable balance.</source>
-        <translation></translation>
+        <translation>Usar el 50% de su saldo comercial.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="160"/>
         <source>Swap 100% of your tradable balance.</source>
-        <translation></translation>
+        <translation>Usar el 100% de su saldo comercial.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="176"/>
@@ -2501,17 +2504,17 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="208"/>
         <source>Minimum accepted trade equals 10% of order volume.</source>
-        <translation></translation>
+        <translation>El comercio mínimo aceptado es igual al 10% del volumen del pedido.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="209"/>
         <source>Minimum accepted trade equals 25% of order volume.</source>
-        <translation></translation>
+        <translation>El comercio mínimo aceptado es igual al 25% del volumen del pedido.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="210"/>
         <source>Minimum accepted trade equals 50% of order volume.</source>
-        <translation></translation>
+        <translation>El comercio mínimo aceptado es igual al 50% del volumen del pedido.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="225"/>
@@ -2666,7 +2669,8 @@ They will be removed from the orderbook until you log in again.</source>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="20"/>
         <source>The selected order does not exist anymore, it might have been matched or canceled, and no order with a better price is available.
 Please select a new order.</source>
-        <translation></translation>
+        <translation>El pedido seleccionado ya no existe, puede haber sido igualado o cancelado, y no hay un pedido con mejor precio disponible.
+Seleccione un nuevo pedido.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="27"/>
@@ -2913,19 +2917,19 @@ Please select a new order.</source>
         <location filename="../../Dex/Wallet/ReceiveModal.qml" line="19"/>
         <source>Receive %1</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>Recibir %1</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/ReceiveModal.qml" line="20"/>
         <source>Only send %1 to this address</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>Enviar solo %1 a esta dirección</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/ReceiveModal.qml" line="37"/>
         <source>%1 address</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>%1 dirección</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/ReceiveModal.qml" line="38"/>
@@ -3111,12 +3115,12 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="54"/>
         <source>Taproot not supported</source>
-        <translation></translation>
+        <translation>Taproot no soportado</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="211"/>
         <source>Failed to Broadcast</source>
-        <translation></translation>
+        <translation>Error al transmitir</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="356"/>
@@ -3210,7 +3214,7 @@ Please select a new order.</source>
         <location filename="../../Dex/Wallet/SendModal.qml" line="785"/>
         <source>%1 address</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>%1 dirección</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="786"/>
@@ -3293,7 +3297,7 @@ Please select a new order.</source>
         <location filename="../../Dex/Wallet/SendResult.qml" line="36"/>
         <source>%1 txid</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>%1 txid</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendResult.qml" line="37"/>
@@ -3310,7 +3314,7 @@ Please select a new order.</source>
         <location filename="../../Dex/Wallet/SendResult.qml" line="56"/>
         <source>%1 address</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>%1 dirección</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendResult.qml" line="64"/>
@@ -3690,7 +3694,7 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="225"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation></translation>
+        <translation>%1 no está habilitado. ¿Desea habilitarlo para poder seleccionar %2 mejores ordenes?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Sí&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -3858,7 +3862,7 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="102"/>
         <source>No! %1 is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is  only stored on the user’s device and never leaves it. You are in full control of your assets.</source>
-        <translation></translation>
+        <translation>¡No! %1 no tiene custodia. Nunca almacenamos datos confidenciales, incluidas sus claves privadas, frases iniciales o PIN. Estos datos solo se almacenan en el dispositivo del usuario y nunca lo abandonan. Usted tiene el control total de sus activos.</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="107"/>
@@ -3870,7 +3874,9 @@ Please select a new order.</source>
         <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds. 
 
 %1 enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
-        <translation></translation>
+        <translation>Otros DEX generalmente solo le permiten intercambiar activos que se basan en una sola red de cadena de bloques, usar tokens de proxy y solo permiten realizar un solo pedido con los mismos fondos.
+
+%1 le permite comerciar de forma nativa en dos redes de cadena de bloques diferentes sin tokens de proxy. También puede realizar varios pedidos con los mismos fondos. Por ejemplo, puede vender 0,1 BTC por KMD, QTUM o VRSC: el primer pedido que se completa automáticamente cancela todos los demás pedidos.</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="115"/>
@@ -3880,7 +3886,7 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="116"/>
         <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
-        <translation></translation>
+        <translation>Varios factores determinan el tiempo de procesamiento de cada intercambio. El tiempo de bloqueo de los activos negociados depende de cada red (Bitcoin suele ser la más lenta). Además, el usuario puede personalizar las preferencias de seguridad. Por ejemplo, (puede pedirle a %1 que considere una transacción KMD como final después de solo 3 confirmaciones, lo que hace que el tiempo de intercambio sea más corto en comparación con esperar un &lt;a href=&quot;https://komodoplatform.com/security-delayed- prueba de trabajo-dpow/"&gt;certificación notarial&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="121"/>
@@ -3898,7 +3904,15 @@ If you go offline, so will your orders, and any that are in progress will fail, 
 When you come back online, your orders will begin to broadcast again at the price you set before you went offline. If there has been significant price movement in the meantime, you might unintentionally offer someone a bargain!
 
 For this reason, we recommend cancelling orders before closing %1, or reviewing and revising your prices when restarting %1.</source>
-        <translation></translation>
+        <translation>Sí. Debe permanecer conectado a Internet y tener su aplicación ejecutándose para completar con éxito cada intercambio atómico (las interrupciones muy breves en la conectividad generalmente están bien). De lo contrario, existe el riesgo de cancelación de la operación si es un creador y el riesgo de pérdida de fondos si es un tomador.
+
+El protocolo de intercambio atómico requiere que ambos participantes permanezcan en línea y monitoreen las cadenas de bloques involucradas para que el proceso permanezca atómico.
+
+Si se desconecta, también lo harán sus pedidos, y cualquiera que esté en curso fallará, lo que provocará una posible pérdida de tarifas comerciales / de transacción, y una espera para que el intercambio se agote y emita un reembolso. También puede afectar negativamente el puntaje de reputación de su billetera para futuras coincidencias comerciales.
+
+Cuando vuelva a estar en línea, sus pedidos comenzarán a transmitirse nuevamente al precio que estableció antes de desconectarse. Si ha habido un movimiento de precios significativo en el ínterin, ¡es posible que involuntariamente le ofrezcas a alguien una ganga!
+
+Por este motivo, recomendamos cancelar los pedidos antes de cerrar %1 o revisar y revisar sus precios al reiniciar %1.</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="135"/>
@@ -3914,7 +3928,13 @@ For this reason, we recommend cancelling orders before closing %1, or reviewing 
 2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
 Network fees can vary greatly depending on your selected trading pair.</source>
-        <translation></translation>
+        <translation>Hay dos categorías de tarifas a tener en cuenta al operar en %1.
+
+1. %1 cobra aproximadamente el 0,13 % (1/777 del volumen de negociación pero no menos de 0,0001) como tarifa de negociación para las órdenes del tomador, y las órdenes del fabricante no tienen tarifas.
+
+2. Tanto los creadores como los tomadores deberán pagar tarifas de red normales a las cadenas de bloques involucradas al realizar transacciones de intercambio atómico.
+
+Las tarifas de la red pueden variar mucho según el par comercial seleccionado.</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="147"/>
@@ -4107,7 +4127,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="247"/>
         <source>%1</source>
-        <translation></translation>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="274"/>
@@ -4246,7 +4266,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../Dex/Wallet/TransactionDetailsModal.qml" line="49"/>
         <source>%1 txid</source>
         <comment>TICKER</comment>
-        <translation></translation>
+        <translation>%1 txid</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/TransactionDetailsModal.qml" line="50"/>
@@ -4449,23 +4469,24 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../Dex/Components/ZcashParamsModal.qml" line="21"/>
         <source>%1 Activation Failed!</source>
-        <translation></translation>
+        <translation>¡Error en la activación de %1!</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/ZcashParamsModal.qml" line="26"/>
         <source>To activate ZHTLC coins, you need to download the Zcash Params.
 This might take a few minutes...</source>
-        <translation></translation>
+        <translation>Para activar las monedas ZHTLC, debe descargar Zcash Params.
+Esto puede tardar unos minutos...</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/ZcashParamsModal.qml" line="67"/>
         <source>Download params &amp; enable coins</source>
-        <translation></translation>
+        <translation>Descargar parámetros &amp; habilitar monedas</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/ZcashParamsModal.qml" line="77"/>
         <source>More Info</source>
-        <translation></translation>
+        <translation>Más información</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/ZcashParamsModal.qml" line="83"/>
@@ -4478,7 +4499,7 @@ This might take a few minutes...</source>
     <message>
         <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="711"/>
         <source>An error has occurred.</source>
-        <translation></translation>
+        <translation>Se ha producido un error.</translation>
     </message>
 </context>
 <context>

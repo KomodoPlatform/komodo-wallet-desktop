@@ -362,7 +362,7 @@
 2006,Dex/NewUpdateModal.qml,,2007,Searching new updates,2008,Suche nach neuen Updates,Buscando nuevas actualizaciones,,
 2011,Dex/NewUpdateModal.qml,,2012,Fetching...,2013,Abrufen…,Buscando...,,
 2019,Dex/NewUpdateModal.qml,,2020,Close,2021,Schließen,Cerrar,,
-2024,Dex/NewUpdateModal.qml,,2025,Could not check new updates because of the following reason: %1,2027,Neue Updates konnten aus folgendem Grund nicht überprüft werden: %1,No se pudieron comprobar nuevas actualizaciones por el siguiente motivo: %1,,
+2024,Dex/NewUpdateModal.qml,,2025,Could not check new updates for the following reason: %1,2027,Neue Updates konnten aus folgendem Grund nicht überprüft werden: %1,No se pudieron comprobar nuevas actualizaciones por el siguiente motivo: %1,,
 2030,Dex/NewUpdateModal.qml,,2031,New version found,2032,Neue Version gefunden,Nueva versión encontrada,,
 2035,Dex/NewUpdateModal.qml,,2036,Mandatory version found,2037,Zwingend notwendige Version gefunden,Versión obligatoria encontrada,,
 2040,Dex/NewUpdateModal.qml,,2041,%1 %2 is available !,2042,%1 %2 ist verfügbar !,%1 ¡%2 está disponible!,,

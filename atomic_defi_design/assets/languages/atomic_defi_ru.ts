@@ -1902,7 +1902,7 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="90"/>
         <source>Trade</source>
-        <translation></translation>
+        <translation>торговля</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="17"/>
@@ -2089,7 +2089,7 @@ They will be removed from the orderbook until you log in again.</source>
     </message>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="72"/>
-        <source>Could not check new updates because of the following reason: 
+        <source>Could not check new updates for the following reason: 
 %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2678,7 +2678,7 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="27"/>
         <source>OK</source>
-        <translation></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -2813,7 +2813,7 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Portfolio/Portfolio.qml" line="253"/>
         <source>(%1/%2)</source>
-        <translation></translation>
+        <translation>(%1/%2)</translation>
     </message>
     <message>
         <location filename="../../Dex/Portfolio/Portfolio.qml" line="129"/>
@@ -3553,11 +3553,6 @@ Please select a new order.</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/SettingModal.qml" line="291"/>
-        <source></source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="515"/>
         <source>View seed and private keys</source>
         <translation>Показать seed-фразу и приватные ключи</translation>
@@ -3711,7 +3706,7 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="56"/>
         <source>Token</source>
-        <translation></translation>
+        <translation>Токен</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubCoinSelector.qml" line="81"/>
@@ -3828,7 +3823,7 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="161"/>
         <source>Filter settings</source>
-        <translation></translation>
+        <translation>Настройки фильтра</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="215"/>
@@ -4120,7 +4115,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="247"/>
         <source>%1</source>
-        <translation></translation>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="274"/>
@@ -4207,7 +4202,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="935"/>
         <source>%2 (%3)</source>
-        <translation></translation>
+        <translation>%2 (%3)</translation>
     </message>
 </context>
 <context>
