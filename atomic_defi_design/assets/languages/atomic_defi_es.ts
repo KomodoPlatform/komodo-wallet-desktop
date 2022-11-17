@@ -790,7 +790,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="284"/>
         <source>dPoW protected </source>
-        <translation type="unfinished"></translation>
+        <translation>dPoW protegida </translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="320"/>
@@ -1113,7 +1113,7 @@
     <message>
         <location filename="../../Dex/Components/DexKeyChecker.qml" line="100"/>
         <source>Between %1 and %2 character(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Entre %1 y %2 carácter(es)</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/DexKeyChecker.qml" line="107"/>
@@ -1353,32 +1353,32 @@
     <message>
         <location filename="../../Dex/Components/GasInfoModal.qml" line="14"/>
         <source>How do I calculate gas?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Cómo calculo la gasolina?</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/GasInfoModal.qml" line="19"/>
         <source>Gas is measured in gwei. Gwei is just a unit of Ether, and is equal to 0.000000001 ETH (or the equivalent platform coin such as AVAX or BNB). The gas price varies over time depending on network congestion.</source>
-        <translation type="unfinished"></translation>
+        <translation>El gas se mide en gwei. Gwei es solo una unidad de Ether y es igual a 0.000000001 ETH (o la moneda de plataforma equivalente como AVAX o BNB). El precio del gas varía con el tiempo dependiendo de la congestión de la red.</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/GasInfoModal.qml" line="24"/>
         <source>The gas limit is how many units of gas (maximum) you allocate to pay for a transaction. The gas required depending on the size of the transaction &amp; data being transmitted.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dex/Components/GasInfoModal.qml" line="29"/>
         <source>A standard transaction not involving contracts uses 21,000 gas units, with any of the limit remaining returned to the source address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Una transacción estándar que no implica contratos utiliza 21.000 unidades de gas, y el límite restante se devuelve a la dirección de origen.</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/GasInfoModal.qml" line="34"/>
         <source>Transactions involving contracts may result in the whole limit being consumed, so be careful not to set it too high.</source>
-        <translation type="unfinished"></translation>
+        <translation>Las transacciones que involucran contratos pueden resultar en que se consuma todo el límite, así que tenga cuidado de no establecerlo demasiado alto.</translation>
     </message>
     <message>
         <location filename="../../Dex/Components/GasInfoModal.qml" line="39"/>
         <source>For more information, read the article at &lt;a href=&quot;https://support.mycrypto.com/how-to/sending/how-to-know-what-gas-limit-to-use&quot;&gt;https://support.mycrypto.com/how-to/sending/how-to-know-what-gas-limit-to-use&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Para obtener más información, lea el artículo en  &lt;a href=&quot;https://support.mycrypto.com/how-to/sending/how-to-know-what-gas-limit-to-use&quot;&gt;https://support.mycrypto.com/how-to/sending/how-to-know-what-gas-limit-to-use&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2795,7 +2795,7 @@ Seleccione un nuevo pedido.</translation>
     <message>
         <location filename="../../Dex/Components/PasswordField.qml" line="97"/>
         <source>Between %1 and %2 character(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Entre %1 y %2 carácter(es)</translation>
     </message>
 </context>
 <context>
@@ -3220,7 +3220,7 @@ Seleccione un nuevo pedido.</translation>
         <location filename="../../Dex/Wallet/SendModal.qml" line="599"/>
         <location filename="../../Dex/Wallet/SendModal.qml" line="609"/>
         <source>Only use custom fees if you know what you are doing! </source>
-        <translation type="unfinished"></translation>
+        <translation>¡Solo use tarifas personalizadas si sabe lo que está haciendo!</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="735"/>
