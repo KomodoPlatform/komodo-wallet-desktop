@@ -562,6 +562,7 @@ MultipageModal
 
         ColumnLayout
         {
+            visible: General.getCustomFeeType(current_ticker_infos)
             Layout.preferredWidth: 380
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 32
@@ -626,7 +627,7 @@ MultipageModal
             // Normal coins, Custom fees input
             AmountField
             {
-                visible: !General.isSpecialToken(current_ticker_infos) && !General.isParentCoin(api_wallet_page.ticker) || api_wallet_page.ticker == "KMD"
+                visible: General.getCustomFeeType(current_ticker_infos) == "UTXO"
 
                 id: input_custom_fees
 
@@ -642,7 +643,7 @@ MultipageModal
             // Token coins
             ColumnLayout
             {
-                visible: (General.isSpecialToken(current_ticker_infos) || General.isParentCoin(api_wallet_page.ticker)) && api_wallet_page.ticker != "KMD"
+                visible: General.getCustomFeeType(current_ticker_infos) == "Gas"
 
                 Layout.alignment: Qt.AlignHCenter
 
