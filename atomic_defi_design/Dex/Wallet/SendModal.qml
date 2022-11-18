@@ -735,7 +735,7 @@ MultipageModal
 
             DefaultButton
             {
-                text: qsTr("Close")
+                text: qsTr("Cancel")
 
                 Layout.alignment: Qt.AlignLeft
                 Layout.preferredWidth: parent.width / 100 * 48

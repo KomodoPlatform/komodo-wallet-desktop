@@ -266,7 +266,7 @@ MultipageModal
             DefaultButton
             {
                 Layout.preferredWidth: 199
-                text: qsTr("Close")
+                text: qsTr("Cancel")
                 radius: 20
                 onClicked: root.close()
             },
