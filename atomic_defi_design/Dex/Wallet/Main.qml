@@ -660,14 +660,40 @@ Item
 
                 DefaultButton
                 {
-                    text: qsTr("Faucet")
                     enabled: activation_progress == 100
+                    anchors.fill: parent
                     radius: 18
-                    font.pixelSize: 16
+                    label.text: qsTr("Faucet")
+                    label.font.pixelSize: 16
                     content.anchors.left: content.parent.left
                     content.anchors.leftMargin: enabled ? 23 : 48
-                    anchors.fill: parent
+                    content.anchors.rightMargin: 23
+
                     onClicked: api_wallet_page.claim_faucet()
+
+                    Row
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: arrow_send.anchors.rightMargin
+
+                        Qaterial.Icon
+                        {
+                            icon: Qaterial.Icons.water
+                            size: 24
+                            anchors.right: parent.right
+                            anchors.leftMargin: iconSize / 2
+                            anchors.rightMargin: iconSize / 2
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "cyan"
+
+                            DefaultTooltip
+                            {
+                                visible: alertArea.containsMouse && tooltipText != ""
+                                text: ""
+                            }
+                        }
+                    }
                 }
 
                 // Faucet button error icon
