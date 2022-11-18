@@ -351,6 +351,19 @@ QtObject {
         return obj
     }
 
+    function getCustomFeeType(ticker_infos)
+    {
+        if (["SLP", "ZHTLC", "Moonbeam", "QRC-20"].includes(ticker_infos.type)) return ""
+        if (!General.isSpecialToken(ticker_infos) && !General.isParentCoin(ticker_infos.ticker) ||  ["KMD"].includes(ticker_infos.ticker))
+        {
+            return "UTXO"
+        }
+        else
+        {
+            return "Gas"
+        }
+    }
+
     function getFeesDetail(fees) {
         return [
             {"label": qsTr("<b>Taker tx fee:</b> "), "fee": fees.base_transaction_fees, "ticker": fees.base_transaction_fees_ticker},
