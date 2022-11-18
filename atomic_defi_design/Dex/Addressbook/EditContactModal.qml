@@ -288,7 +288,7 @@ Dex.MultipageModal
                 Layout.preferredWidth: 199
                 Layout.preferredHeight: 48
                 radius: 18
-                text: qsTr("Close")
+                text: qsTr("Cancel")
                 onClicked: root.close()
             },
 
