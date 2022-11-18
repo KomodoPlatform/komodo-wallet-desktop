@@ -713,6 +713,7 @@ DexPopup
         {
             text: qsTr('Mark all as read')
             height: 40
+            width: 260
             Layout.alignment: Qt.AlignHCenter
             onClicked: root.reset()
         }
