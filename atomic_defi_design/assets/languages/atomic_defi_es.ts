@@ -1209,8 +1209,8 @@
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="291"/>
-        <source>Close</source>
-        <translation>Cerrar</translation>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/EditContactModal.qml" line="302"/>
@@ -1442,92 +1442,92 @@
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="356"/>
+        <location filename="../../Dex/Constants/General.qml" line="369"/>
         <source>&lt;b&gt;Taker tx fee:&lt;/b&gt; </source>
         <translation>&lt;b&gt;Taker tx fee:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="357"/>
+        <location filename="../../Dex/Constants/General.qml" line="370"/>
         <source>&lt;b&gt;Dex tx fee:&lt;/b&gt; </source>
         <translation>&lt;b&gt;Dex tx fee:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="358"/>
+        <location filename="../../Dex/Constants/General.qml" line="371"/>
         <source>&lt;b&gt;Dex fee:&lt;/b&gt; </source>
         <translation>&lt;b&gt;Dex fee:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="359"/>
+        <location filename="../../Dex/Constants/General.qml" line="372"/>
         <source>&lt;b&gt;Maker tx fee:&lt;/b&gt; </source>
         <translation>&lt;b&gt;Maker tx fee:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="364"/>
+        <location filename="../../Dex/Constants/General.qml" line="377"/>
         <source>%1 %2 %3 (%4)</source>
         <translation>%1 %2 %3 (%4)</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="747"/>
+        <location filename="../../Dex/Constants/General.qml" line="760"/>
         <source>Trading Fee</source>
         <translation>Tarifa de Intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="757"/>
+        <location filename="../../Dex/Constants/General.qml" line="770"/>
         <source>Minimum Trading Amount</source>
         <translation>Cantidad Mínima de Intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="768"/>
+        <location filename="../../Dex/Constants/General.qml" line="781"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation>Monedero %1 ya existe</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="777"/>
+        <location filename="../../Dex/Constants/General.qml" line="790"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
         <translation>El saldo de %1 es inferior al monto de las tarifas: %2 %3</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="779"/>
+        <location filename="../../Dex/Constants/General.qml" line="792"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation>El saldo de %1 (después de las tarifas) es inferior al monto mínimo de intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="781"/>
+        <location filename="../../Dex/Constants/General.qml" line="794"/>
         <source>Please fill the price field</source>
         <translation>Por favor complete el campo de precio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="783"/>
+        <location filename="../../Dex/Constants/General.qml" line="796"/>
         <source>Please fill the volume field</source>
         <translation>Complete el campo de volumen</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="785"/>
-        <location filename="../../Dex/Constants/General.qml" line="787"/>
+        <location filename="../../Dex/Constants/General.qml" line="798"/>
+        <location filename="../../Dex/Constants/General.qml" line="800"/>
         <source>Please wait for %1 to fully activate</source>
         <translation>Espere a que %1 se active por completo</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="789"/>
-        <location filename="../../Dex/Constants/General.qml" line="791"/>
+        <location filename="../../Dex/Constants/General.qml" line="802"/>
+        <location filename="../../Dex/Constants/General.qml" line="804"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation>El volumen de %1 es inferior al monto mínimo de intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="793"/>
-        <location filename="../../Dex/Constants/General.qml" line="797"/>
+        <location filename="../../Dex/Constants/General.qml" line="806"/>
+        <location filename="../../Dex/Constants/General.qml" line="810"/>
         <source>%1 needs to be enabled in order to use %2</source>
         <translation>%1 debe habilitarse para usar %2</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="795"/>
-        <location filename="../../Dex/Constants/General.qml" line="799"/>
+        <location filename="../../Dex/Constants/General.qml" line="808"/>
+        <location filename="../../Dex/Constants/General.qml" line="812"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation>se debe rellenar el saldo de %1, se requiere un saldo distinto de cero para pagar el gas de %2 transacciones</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="801"/>
+        <location filename="../../Dex/Constants/General.qml" line="814"/>
         <source>Unknown Error</source>
         <translation>Error Desconocido</translation>
     </message>
@@ -1904,54 +1904,54 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
         <translation>Recompensas</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="663"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="666"/>
         <source>Faucet</source>
         <translation>Grifo</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="703"/>
-        <location filename="../../Dex/Wallet/Main.qml" line="721"/>
-        <location filename="../../Dex/Wallet/Main.qml" line="753"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="729"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="747"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="779"/>
         <source>Public Key</source>
         <translation>Clave Pública</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="753"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="779"/>
         <source>Copied to Clipboard</source>
         <translation>Copiada en el Portapapeles</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="905"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="931"/>
         <source>Loading market data</source>
         <translation>Cargando datos de mercado</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="912"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="938"/>
         <source>There is no chart data for this ticker yet</source>
         <translation>No hay datos de gráficos para este ticker aún</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="969"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="995"/>
         <source>Fetching transactions...</source>
         <translation>Obteniendo transacciones...</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="972"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="998"/>
         <source>Please wait, %1 is %2</source>
         <translation>Por favor espera %1 es %2</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="972"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="998"/>
         <source>% activated...</source>
         <translation>% activado...</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="974"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="1000"/>
         <source>No transactions available</source>
         <translation>No hay transacciones disponibles</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="998"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="1024"/>
         <source>Click to view your address on %1 (%2) block explorer</source>
         <translation>Haga clic para ver su dirección en %1 (%2) explorador de bloques</translation>
     </message>
@@ -3140,162 +3140,162 @@ Seleccione un nuevo pedido.</translation>
 <context>
     <name>SendModal</name>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="176"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="178"/>
         <source>Failed to send</source>
         <translation>Error al enviar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="256"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="258"/>
         <source>Prepare to send </source>
         <translation>Preparar para enviar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="276"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="278"/>
         <source>Address of the recipient</source>
         <translation>Dirección del destinatario</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="374"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="376"/>
         <source>Amount to send</source>
         <translation>Cantidad a enviar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="670"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="673"/>
         <source>Gas price</source>
         <translation>Precio del gas</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="789"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="792"/>
         <source>Recipient&apos;s address</source>
         <translation>Dirección del destinatario</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="344"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="346"/>
         <source>The address has to be mixed case.</source>
         <translation>La dirección debe estar en mayúsculas y minúsculas.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="206"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="208"/>
         <source>Failed to Broadcast</source>
         <translation>Error al transmitir</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="355"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="357"/>
         <source>Fix</source>
         <translation>Arreglar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="409"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="411"/>
         <source>MAX</source>
         <translation>MAX</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="453"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="455"/>
         <source>Fiat amount: Unavailable</source>
         <translation>Cantidad en Fiat: No disponible</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="457"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="459"/>
         <source>Fiat amount: %1</source>
         <translation>Cantidad de Fiat: %1</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="461"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="463"/>
         <source>%1 amount: %2</source>
         <translation>Cantidad de %1: %2</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="540"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="542"/>
         <source>Specify in Fiat</source>
         <translation>Especificar en Fiat</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="541"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="543"/>
         <source>Specify in Crypto</source>
         <translation>Especificar en Crypto</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="576"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="579"/>
         <source>Enable Custom Fees</source>
         <translation>Habilitar Tarifas Personalizadas</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="637"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="640"/>
         <source>Enter the custom fee</source>
         <translation>Ingrese la tarifa personalizada</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="657"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="660"/>
         <source>Gas Limit</source>
         <translation>Límite de gas</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="685"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="688"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
         <translation>Tarifa personalizada no puede ser mayor que la cantidad</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="701"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="704"/>
         <source>Not enough funds.</source>
         <translation>No hay suficientes fondos.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="686"/>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="702"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="689"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="705"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation>Tiene %1</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="599"/>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="609"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="602"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="612"/>
         <source>Only use custom fees if you know what you are doing! </source>
         <translation>¡Solo use tarifas personalizadas si sabe lo que está haciendo!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="735"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="738"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="756"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="759"/>
         <source>Prepare</source>
         <translation>Preparar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="783"/>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="884"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="786"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="887"/>
         <source>Send</source>
         <translation>Enviar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="807"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="810"/>
         <source>%1 address</source>
         <comment>TICKER</comment>
         <translation>%1 dirección</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="808"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="811"/>
         <source>copied to clipboard.</source>
         <translation>copiado al portapapeles.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="815"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="818"/>
         <source>Amount</source>
         <translation>Cantidad</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="833"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="836"/>
         <source>Fees</source>
         <translation>Tarifas</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="850"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="853"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="872"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="875"/>
         <source>Back</source>
         <translation>Atrás</translation>
     </message>
@@ -3987,7 +3987,7 @@ Las tarifas de la red pueden variar mucho según el par comercial seleccionado.<
         <translation>Cambios</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="244"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="245"/>
         <source>Open Logs Folder</source>
         <translation>Abrir Carpeta de Registros</translation>
     </message>
