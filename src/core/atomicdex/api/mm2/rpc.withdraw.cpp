@@ -8,7 +8,7 @@
 //! Our Headers
 #include "rpc.withdraw.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const withdraw_fees& cfg)
@@ -78,4 +78,4 @@ namespace mm2::api
             }
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

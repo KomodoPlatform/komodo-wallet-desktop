@@ -12,16 +12,15 @@ import "../../Constants" as Dex
 Dex.ComboBoxWithSearchBar
 {
     id: control
+
     property var    currentItem: model.index(currentIndex, 0)
     property bool   left_side: false
-    property var    ticker_list
     property string ticker
-    property bool index_changed: false
+    property bool   index_changed: false
     
     height: 60
     enabled: !block_everything
 
-    model: control.ticker_list
     textRole: "ticker"
     valueRole: "ticker"
 
@@ -29,13 +28,11 @@ Dex.ComboBoxWithSearchBar
     popupForceMaxHeight: true
 
     searchBar.visible: true
-    searchBar.searchModel: control.ticker_list
+    searchBar.searchModel: model
 
     delegate: ItemDelegate
     {
         id: _delegate
-        z: 5
-        visible: model.ticker !== "All" 
         width: control.width
         height: visible ? 60 : 0
         highlighted: control.highlightedIndex === index
@@ -66,14 +63,15 @@ Dex.ComboBoxWithSearchBar
         details:
         {
             const idx = currentIndex
-            if(idx === -1) return prev_details
+            if (idx === -1) return prev_details
 
             const new_details = {
                 update_count:           _contentRow.update_count,
                 ticker:                 model.data(model.index(idx, 0), 257),
                 name:                   model.data(model.index(idx, 0), 259),
                 balance:                model.data(model.index(idx, 0), 260),
-                main_currency_balance:  model.data(model.index(idx, 0), 261)
+                main_currency_balance:  model.data(model.index(idx, 0), 261),
+                activation_status:      model.data(model.index(idx, 0), 266)
             }
 
             prev_details = new_details
@@ -83,26 +81,25 @@ Dex.ComboBoxWithSearchBar
         Component.onDestruction: portfolio_mdl.portfolioItemDataChanged.disconnect(forceUpdateDetails)
     }
 
-    onCurrentIndexChanged: {
-        control.index_changed = true
-    }
+    onCurrentIndexChanged: control.index_changed = true
     onCurrentValueChanged:
     {
-        if(control.index_changed) {
+        if (control.index_changed)
+        {
             control.index_changed = false
-            if(currentValue !== undefined)
+            if (currentValue !== undefined)
                 setPair(left_side, currentValue)
         }
-        else {
-            if(currentText.indexOf(ticker) === -1) {
+        else
+        {
+            if (currentText.indexOf(ticker) === -1)
+            {
                 const target_index = indexOfValue(ticker)
-                if(currentIndex !== target_index)
+                if (currentIndex !== target_index)
                     currentIndex = target_index
             }
         }
     }
-    searchBar.onVisibleChanged: if (!visible) { searchBar.textField.text = ""; }
-    searchBar.textField.onTextChanged: {
-        control.ticker_list.setFilterFixedString(searchBar.textField.text)
-    }
+    searchBar.onVisibleChanged: if (!visible) { searchBar.textField.text = "" }
+    searchBar.textField.onTextChanged: control.model.setFilterFixedString(searchBar.textField.text)
 }

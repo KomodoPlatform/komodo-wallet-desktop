@@ -9,10 +9,10 @@
 #include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 #include "atomicdex/api/mm2/generics.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
-    to_json(nlohmann::json& j, const mm2::api::convert_address_request& req)
+    to_json(nlohmann::json& j, const convert_address_request& req)
     {
         j["coin"]              = req.coin;
         j["from"]              = req.from;
@@ -30,4 +30,4 @@ namespace mm2::api
     {
         extract_rpc_json_answer<convert_address_answer_success>(j, answer);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

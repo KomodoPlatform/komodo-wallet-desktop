@@ -6,6 +6,7 @@ import Dex.Themes 1.0 as Dex
 import App 1.0
 
 import "../../../Components"
+import "../../../Constants"
 
 // Content
 ColumnLayout
@@ -15,8 +16,9 @@ ColumnLayout
     property var details
     property var lastEvent
 
-    readonly property
-    var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
+    readonly property var all_events: !details
+                            ? [] : has_error_event
+                            ? details.events.map(e => e.state) : details.success_events
 
     // Is there error in swap json?
     readonly property bool has_error_event:

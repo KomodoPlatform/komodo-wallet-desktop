@@ -22,7 +22,11 @@
     #endif
 #endif
 
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#ifdef DEBUG
+    #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#else
+    #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_INFO
+#endif
 #include <spdlog/async.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -34,9 +38,9 @@
 #endif
 
 #if defined(_WIN32) || defined(WIN32)
-#define LOG_PATH(message, p) SPDLOG_INFO(L"" message, p.wstring());
-#define LOG_PATH_CMP(message, from, to) SPDLOG_INFO(L"" message, from.wstring(), to.wstring());
+    #define LOG_PATH(message, p) SPDLOG_INFO(L"" message, p.wstring());
+    #define LOG_PATH_CMP(message, from, to) SPDLOG_INFO(L"" message, from.wstring(), to.wstring());
 #else
-#define LOG_PATH(message, p) SPDLOG_INFO(message, p.string());
-#define LOG_PATH_CMP(message, from, to) SPDLOG_INFO(message, from.string(), to.string());
+    #define LOG_PATH(message, p) SPDLOG_INFO(message, p.string());
+    #define LOG_PATH_CMP(message, from, to) SPDLOG_INFO(message, from.string(), to.string());
 #endif

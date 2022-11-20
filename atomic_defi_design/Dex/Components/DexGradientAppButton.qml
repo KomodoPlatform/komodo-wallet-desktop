@@ -93,7 +93,7 @@ DexRectangle
         {
             id: _label
             anchors.verticalCenter: parent.verticalCenter
-            font: DexTypo.button
+            font: DexTypo.body2
             text: control.text
             color: enabled ? _controlMouseArea.containsMouse ? _controlMouseArea.containsPress ?
                     Dex.CurrentTheme.gradientButtonTextPressedColor :
@@ -112,6 +112,7 @@ DexRectangle
             anchors.verticalCenter: parent.verticalCenter
         }
     }
+
     DexMouseArea
     {
         id: _controlMouseArea

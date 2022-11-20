@@ -8,10 +8,10 @@
 //! Project Headers
 #include <atomicdex/api/mm2/rpc.update.maker.order.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
-    to_json(nlohmann::json& j, const mm2::api::update_maker_order_request& request)
+    to_json(nlohmann::json& j, const mm2::update_maker_order_request& request)
     {
         j["uuid"]      = request.uuid;
         j["new_price"] = request.new_price;
@@ -41,4 +41,4 @@ namespace mm2::api
             j["rel_nota"] = request.rel_nota.value();
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

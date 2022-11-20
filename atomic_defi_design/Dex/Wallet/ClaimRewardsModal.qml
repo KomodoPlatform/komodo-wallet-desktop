@@ -86,8 +86,11 @@ MultipageModal
         if(root.visible && broadcast_result !== "") {
             root.currentIndex = 1
             postClaim()
+            root.width = 750
         }
     }
+
+    Behavior on width { NumberAnimation { duration: 300 } }
 
     function prepareClaimRewards() {
         if(!can_claim) return
@@ -441,9 +444,9 @@ MultipageModal
     // Result Page
     SendResult
     {
+        address: current_ticker_infos.address
         result: prepare_claim_rewards_result
         tx_hash: broadcast_result
-
         function onClose() { root.close() }
     }
 }

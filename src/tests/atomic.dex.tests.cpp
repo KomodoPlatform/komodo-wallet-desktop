@@ -34,7 +34,7 @@ main(int argc, char** argv)
 
     context.applyCommandLine(argc, argv);
 
-    atomic_dex::kill_executable("mm2");
+    atomic_dex::kill_executable(atomic_dex::g_dex_api);
 
     QStringList  args;
     const int    ac = argc;

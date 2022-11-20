@@ -6,6 +6,7 @@ import Qaterial 1.0 as Qaterial
 
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import "../Constants"
 
 DexAppTextField
 {
@@ -19,7 +20,7 @@ DexAppTextField
     height: 50
     width: 300
     background.radius: 25
-    max_length: 1000
+    max_length: General.max_std_pw_length
     field.echoMode: TextField.Password
     field.font: Qt.font(
     {

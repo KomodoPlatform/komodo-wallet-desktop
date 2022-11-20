@@ -14,7 +14,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/fraction.hpp"
 
-TEST_CASE("mm2::api::fraction deserialisation")
+TEST_CASE("atomic_dex::mm2::fraction deserialisation")
 {
     nlohmann::json fraction_json = R"(
                                     {
@@ -22,8 +22,8 @@ TEST_CASE("mm2::api::fraction deserialisation")
                                         "numer": "333"
                                     }
                                     )"_json;
-    mm2::api::fraction fraction;
-    mm2::api::from_json(fraction_json, fraction);
+    atomic_dex::mm2::fraction fraction;
+    atomic_dex::mm2::from_json(fraction_json, fraction);
 
     CHECK_EQ(fraction.numer, "333");
     CHECK_EQ(fraction.denom, "777");

@@ -21,7 +21,7 @@ Dex.Rectangle
     property string  addressKey
     property string  addressValue
 
-    property var     availableNetworkStandards: ["QRC-20", "ERC-20", "BEP-20", "Smart Chain"]
+    property var     availableNetworkStandards: ["QRC-20", "ERC-20", "BEP-20", "Smart Chain", "SLP"]
 
     // Return the asset type that will be used in the backend to validate the address
     function getTypeForAddressChecker(addressType)
@@ -32,11 +32,11 @@ Dex.Rectangle
             case "BEP-20":      return "BNB"
             case "ERC-20":      return "ETH"
             case "Smart Chain": return "KMD"
-            case "SLP":         return "BCH"
+            case "SLP":         return "USDT-SLP"
         }
 
         let coinInfo = Dex.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(addressType);
-        if (coinInfo.has_parent_fees_ticker)
+        if (coinInfo.has_parent_fees_ticker && coinInfo.type !== "SLP")
             return coinInfo.fees_ticker;
         return addressType
     }
@@ -46,11 +46,11 @@ Dex.Rectangle
     {
         switch (addressType)
         {
-        case "QRC-20":      return true
-        case "BEP-20":      return true
-        case "ERC-20":      return true
-        case "Smart Chain": return true
-        case "SLP":         return true
+            case "QRC-20":      return true
+            case "BEP-20":      return true
+            case "ERC-20":      return true
+            case "Smart Chain": return true
+            case "SLP":         return true
         }
         return false
     }
@@ -156,10 +156,12 @@ Dex.Rectangle
         Dex.Text
         {
             id: invalidAddressValueLabel
-            Layout.fillWidth: true
+            Layout.preferredWidth: 458
+            Layout.preferredHeight: 60
             visible: text !== ""
             color: Dex.CurrentTheme.noColor
-            wrapMode: Dex.Text.Wrap
+            wrapMode: Dex.Text.WordWrap
+            elide: Dex.Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
         }
 
@@ -228,10 +230,12 @@ Dex.Rectangle
             {
                 return
             }
-
-            if (!Dex.API.app.wallet_pg.validate_address_data.is_valid) // Entered address is invalid.
+            
+            let validation_data = Dex.API.app.wallet_pg.validate_address_data
+            if (!validation_data.is_valid) // Entered address is invalid.
             {
-                invalidAddressValueLabel.text = Dex.API.app.wallet_pg.validate_address_data.reason
+                invalidAddressValueLabel.text = validation_data.reason
+                
                 return
             }
 

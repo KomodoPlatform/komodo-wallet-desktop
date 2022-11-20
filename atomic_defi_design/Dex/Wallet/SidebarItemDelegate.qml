@@ -6,15 +6,18 @@ import Qaterial 1.0 as Qaterial
 
 import QtGraphicalEffects 1.0
 import "../Components"
-import "../Constants" as Constants
+import "../Constants" as Dex
 import App 1.0
 
-GradientRectangle {
+GradientRectangle
+{
+    property int activation_progress: Dex.General.zhtlcActivationProgress(activation_status, ticker)
+
     width: list_bg.width - list_bg.border.width*2 - 6
     height: 44
-    radius: Constants.Style.rectangleCornerRadius + 4
+    radius: Dex.Style.rectangleCornerRadius + 4
 
-    start_color: api_wallet_page.ticker === ticker ? DexTheme.buttonColorEnabled : mouse_area.containsMouse ? DexTheme.buttonColorHovered : 'transparent'
+    start_color: api_wallet_page.ticker === ticker ? Dex.DexTheme.buttonColorEnabled : mouse_area.containsMouse ? Dex.DexTheme.buttonColorHovered : 'transparent'
     end_color: 'transparent'
 
     // Click area
@@ -24,23 +27,23 @@ GradientRectangle {
         hoverEnabled: true
 
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: {
-            if(!can_change_ticker) return
-
-            if (mouse.button === Qt.RightButton) context_menu.popup()
-            else api_wallet_page.ticker = ticker
+        onClicked:
+        {
+            if (mouse.button === Qt.RightButton)
+            {
+                context_menu.can_disable = General.canDisable(ticker)
+                context_menu.popup()
+            }
+            else
+            {
+                api_wallet_page.ticker = ticker
+            }
         }
-        onPressAndHold: {
-            if(!can_change_ticker) return
-
-            if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
-        }
+        onPressAndHold: if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
     }
 
     // Right click menu
-    CoinMenu {
-        id: context_menu
-    }
+    CoinMenu { id: context_menu }
 
     readonly property double side_margin: 16
 
@@ -50,9 +53,33 @@ GradientRectangle {
         anchors.left: parent.left
         anchors.leftMargin: side_margin - scrollbar_margin
 
-        source: Constants.General.coinIcon(ticker)
-        width: Constants.Style.textSizeSmall4*2
+        source: Dex.General.coinIcon(ticker)
+        width: Dex.Style.textSizeSmall4*2
         anchors.verticalCenter: parent.verticalCenter
+
+        DexRectangle
+        {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            radius: 15
+            enabled: Dex.General.isZhtlc(ticker) ? activation_progress != 100 : false
+            visible: enabled
+            opacity: .9
+            color: Dex.DexTheme.backgroundColor
+        }
+
+        DexLabel
+        {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            enabled: Dex.General.isZhtlc(ticker) ? activation_progress != 100 : false
+            visible: enabled
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: activation_progress + "%"
+            font: Dex.DexTypo.head8
+            color: Dex.DexTheme.greenColor
+        }
     }
 
     ColumnLayout {
@@ -64,10 +91,10 @@ GradientRectangle {
         DexLabel {
             Layout.alignment: Qt.AlignLeft
             Layout.preferredWidth: 80
-            font: DexTypo.caption
-            wrapMode: DexLabel.WordWrap
+            font: Dex.DexTypo.caption
+            wrapMode: Text.WordWrap
             text_value: mouse_area.containsMouse ? name.replace(" (TESTCOIN)", "") : ticker
-            color: DexTheme.foregroundColor
+            color: Dex.DexTheme.foregroundColor
         }
     }
 }

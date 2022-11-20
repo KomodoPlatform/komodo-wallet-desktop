@@ -81,7 +81,7 @@ namespace atomic_dex
             nlohmann::json               batch                   = nlohmann::json::array();
             std::string                  new_price               = get_new_price_from_order(data, spread);
             nlohmann::json               conf_settings           = data.conf_settings.value_or(nlohmann::json());
-            nlohmann::json               update_maker_order_json = ::mm2::api::template_request("update_maker_order");
+            nlohmann::json               update_maker_order_json = mm2::template_request("update_maker_order");
             t_float_50                   volume                  = safe_float(data.base_amount.toStdString());
             t_float_50                   min_volume              = volume * min_volume_percent;
             t_update_maker_order_request request{
@@ -96,7 +96,7 @@ namespace atomic_dex
                 request.base_confs = conf_settings.at("base_confs").get<std::size_t>();
                 request.rel_confs  = conf_settings.at("rel_confs").get<std::size_t>();
             }
-            ::mm2::api::to_json(update_maker_order_json, request);
+            mm2::to_json(update_maker_order_json, request);
             batch.push_back(update_maker_order_json);
             update_maker_order_json["userpass"] = "";
             SPDLOG_INFO("request: {}", update_maker_order_json.dump(1));
@@ -106,15 +106,10 @@ namespace atomic_dex
                 .then(
                     []([[maybe_unused]] web::http::http_response resp)
                     {
-                        std::string body = TO_STD_STR(resp.extract_string(true).get());
-                        SPDLOG_INFO("status_code: {}", resp.status_code());
-                        if (resp.status_code() == 200)
+                        if (resp.status_code() != 200)
                         {
-                            SPDLOG_INFO("order resp: {}", body);
-                        }
-                        else
-                        {
-                            SPDLOG_WARN("An error occured during update_maker_order: {}", body);
+                            std::string body = TO_STD_STR(resp.extract_string(true).get());
+                            SPDLOG_ERROR("An error occured during update_maker_order (code: {}): {}", resp.status_code(), body);
                         }
                     })
                 .then(&handle_exception_pplx_task);
@@ -124,16 +119,16 @@ namespace atomic_dex
     void
     auto_update_maker_order_service::internal_update()
     {
-        SPDLOG_INFO("update maker orders");
+        SPDLOG_DEBUG("update maker orders");
         const auto&      mm2  = this->m_system_manager.get_system<mm2_service>();
         orders_and_swaps data = mm2.get_orders_and_swaps();
-        auto             cur  = data.orders_and_swaps.cbegin();
-        auto             end  = data.orders_and_swaps.cbegin() + data.nb_orders;
-        for (; cur != end; ++cur)
+        auto             cur  = data.orders_and_swaps.begin();
+        auto             end  = data.orders_and_swaps.begin() + data.nb_orders;
+        for (; cur != end && cur != data.orders_and_swaps.end(); ++cur)
         {
             if (cur->is_maker)
             {
-                SPDLOG_INFO("Updating order: {}", cur->order_id.toStdString());
+                SPDLOG_DEBUG("Updating order: {}", cur->order_id.toStdString());
                 this->update_order(*cur);
             }
         }

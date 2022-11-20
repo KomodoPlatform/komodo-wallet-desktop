@@ -22,7 +22,7 @@
 //! Project Headers
 #include "atomicdex/constants/qt.coins.enums.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Only for erc 20
     struct enable_request
@@ -77,12 +77,8 @@ namespace mm2::api
         const std::string        matic_erc_testnet_fallback_swap_contract_address{"0x73c1Dd989218c3A154C71Fc08Eb55A24Bd2B3A10"};
         const std::string        optimism_erc_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
         const std::string        optimism_erc_fallback_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
-        const std::string        optimism_erc_testnet_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
-        const std::string        optimism_erc_testnet_fallback_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
         const std::string        arbitrum_erc_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
         const std::string        arbitrum_erc_fallback_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
-        const std::string        arbitrum_erc_testnet_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
-        const std::string        arbitrum_erc_testnet_fallback_swap_contract_address{"0x9130b257d37a52e52f21054c4da3450c72f595ce"};
         const std::string        sbch_erc_swap_contract_address{"0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"};
         const std::string        sbch_erc_fallback_swap_contract_address{"0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"};
         const std::string        sbch_erc_testnet_swap_contract_address{"0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"};
@@ -115,10 +111,10 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, const enable_answer& cfg);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_enable_request = ::mm2::api::enable_request;
-    using t_enable_answer  = ::mm2::api::enable_answer;
+    using t_enable_request = mm2::enable_request;
+    using t_enable_answer  = mm2::enable_answer;
 } // namespace atomic_dex

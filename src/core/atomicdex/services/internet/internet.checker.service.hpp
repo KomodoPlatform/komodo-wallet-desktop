@@ -58,7 +58,9 @@ namespace atomic_dex
 
       public:
         //! Constructor
-        explicit internet_service_checker(entt::registry& registry, ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr);
+        explicit internet_service_checker(
+            entt::registry& registry, ag::ecs::system_manager& system_manager,
+            entt::dispatcher& dispatcher, QObject* parent = nullptr);
         ~internet_service_checker()  final = default;
 
         //! Public override

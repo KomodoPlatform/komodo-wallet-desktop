@@ -1,13 +1,15 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
+import bignumberjs 1.0
+
 DefaultRectangle
 {
     id: root
-    property alias source: icon.source
-    property alias ticker: ticker.text
-    property alias fullname: fullname.text
-    property alias amount: amount.text
+    property alias  source: icon.source
+    property alias  ticker: ticker.text
+    property alias  fullname: fullname.text
+    property string amount
 
     width: 260
     height: 66
@@ -51,11 +53,15 @@ DefaultRectangle
 
             DefaultText
             {
-                id: amount
                 Layout.fillWidth: true
                 font.pixelSize: 11
                 horizontalAlignment: Text.AlignLeft
                 wrapMode: Text.NoWrap
+                text:
+                {
+                    BigNumber.config({ DECIMAL_PLACES: 6 })
+                    return new BigNumber(root.amount).toString(10)
+                }
             }
         }
 

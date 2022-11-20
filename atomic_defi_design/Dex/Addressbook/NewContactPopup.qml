@@ -3,28 +3,32 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
 // Project Imports
+import "../Components"
 import "../Constants"
 import Dex.Components 1.0 as Dex
 
 Dex.Popup
 {
     id: root
-
-    width: 250
-    height: 55
-
+    width: parent.width < 180 ? 180 : parent.width
+    height: 88
     onOpened: nameField.forceActiveFocus()
     onClosed: nameField.text = ""
 
-    contentItem: Row
+    contentItem: Column
     {
-        spacing: 4
+        id: new_contact_input
+        anchors.centerIn: parent
+        anchors.fill: parent
+        anchors.margins: 8
+        spacing: 8
 
         Dex.TextField
         {
             id: nameField
-            width: parent.width * 0.6
-            height: parent.height
+            height: 30
+            width: parent.width - 20
+            anchors.horizontalCenter: parent.horizontalCenter
             placeholderText: qsTr("Contact name")
 
             Dex.ToolTip
@@ -39,11 +43,13 @@ Dex.Popup
             }
         }
 
-        Dex.Button
+        DefaultButton
         {
-            width: parent.width * 0.36
-            height: parent.height
+            id: add_contact_btn
+            font: DexTypo.body2
             text: qsTr("+ ADD")
+            height: 30
+            anchors.horizontalCenter: parent.horizontalCenter
             onClicked:
             {
                 if (nameField.text.length === 0)
