@@ -1259,6 +1259,11 @@
         <translation>Изменить лимит</translation>
     </message>
     <message>
+        <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="269"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="89"/>
         <source>Select all assets</source>
         <translation>Выбрать все ассеты</translation>
@@ -1272,11 +1277,6 @@
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="252"/>
         <source>Add a custom asset</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="269"/>
-        <source>Close</source>
-        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="280"/>
@@ -3167,6 +3167,11 @@ Please select a new order.</source>
         <translation>Цена газа</translation>
     </message>
     <message>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="738"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="792"/>
         <source>Recipient&apos;s address</source>
         <translation>Адрес получателя</translation>
@@ -3253,11 +3258,6 @@ Please select a new order.</source>
         <location filename="../../Dex/Wallet/SendModal.qml" line="612"/>
         <source>Only use custom fees if you know what you are doing! </source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="738"/>
-        <source>Close</source>
-        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="759"/>

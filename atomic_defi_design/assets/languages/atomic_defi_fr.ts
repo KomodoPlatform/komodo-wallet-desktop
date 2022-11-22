@@ -1259,6 +1259,11 @@
         <translation>Limiter le nombre d&apos;actifs</translation>
     </message>
     <message>
+        <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="269"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="89"/>
         <source>Select all assets</source>
         <translation>Sélectionnez tous les actifs</translation>
@@ -1272,11 +1277,6 @@
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="252"/>
         <source>Add a custom asset</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="269"/>
-        <source>Close</source>
-        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="280"/>
@@ -3161,6 +3161,11 @@ Please select a new order.</source>
         <translation>Prix ​​du gaz</translation>
     </message>
     <message>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="738"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="792"/>
         <source>Recipient&apos;s address</source>
         <translation>Adresse du destinataire</translation>
@@ -3247,11 +3252,6 @@ Please select a new order.</source>
         <location filename="../../Dex/Wallet/SendModal.qml" line="612"/>
         <source>Only use custom fees if you know what you are doing! </source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="738"/>
-        <source>Close</source>
-        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="759"/>

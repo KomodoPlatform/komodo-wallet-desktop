@@ -10,7 +10,15 @@ namespace atomic_dex
     inline const std::vector<std::string> g_default_coins{
         g_primary_dex_coin,
         g_second_primary_dex_coin,
-        "BTC"
+        "BABYDOGE-BEP20",
+        "BNB",
+        "BONE-ERC20",
+        "BTC",
+        "DOGEDASH-BEP20",
+        "ETH",
+        "LEASH-ERC20",
+        "SHIB-BEP20",
+        "TAMA-BEP20"
     };
     inline const std::vector<std::string> g_wallet_only_coins{
         "ARRR-BEP20",

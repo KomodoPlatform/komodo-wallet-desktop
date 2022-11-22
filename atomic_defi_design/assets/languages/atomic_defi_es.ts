@@ -1275,8 +1275,8 @@
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="269"/>
-        <source>Close</source>
-        <translation>Cerrar</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/EnableCoinModal.qml" line="280"/>
@@ -3165,6 +3165,11 @@ Seleccione un nuevo pedido.</translation>
         <translation>Precio del gas</translation>
     </message>
     <message>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="738"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="792"/>
         <source>Recipient&apos;s address</source>
         <translation>Dirección del destinatario</translation>
@@ -3251,11 +3256,6 @@ Seleccione un nuevo pedido.</translation>
         <location filename="../../Dex/Wallet/SendModal.qml" line="612"/>
         <source>Only use custom fees if you know what you are doing! </source>
         <translation>¡Solo use tarifas personalizadas si sabe lo que está haciendo!</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="738"/>
-        <source>Close</source>
-        <translation>Cerrar</translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/SendModal.qml" line="759"/>
