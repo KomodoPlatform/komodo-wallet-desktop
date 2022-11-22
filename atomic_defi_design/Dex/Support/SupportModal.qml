@@ -241,6 +241,7 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
             DexAppButton
             {
                 id: logs_btn
+                width: 200
                 text: qsTr("Open Logs Folder")
                 onClicked: openLogsFolder()
             }

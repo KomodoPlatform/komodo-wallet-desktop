@@ -121,8 +121,7 @@ ColumnLayout
             Layout.alignment: Qt.AlignHCenter
             text_value: General.cex_icon + " " + qsTr("CEXchange rate")
             font.pixelSize: fontSize
-
-            CexInfoTrigger {}
+            DefaultInfoTrigger { triggerModal: cex_info_modal }
         }
 
         // Price reversed

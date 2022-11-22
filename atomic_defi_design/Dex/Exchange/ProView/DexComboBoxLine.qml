@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Universal 2.15
 
+import "../../Constants" as Dex
 import "../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
@@ -17,6 +18,7 @@ RowLayout
     property var details
     property color color: !details ? "white" : Style.getCoinColor(details.ticker)
     property alias bottom_text: bottom_line.text_value
+    property int activation_progress: Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker)
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
@@ -30,6 +32,30 @@ RowLayout
         Layout.leftMargin: padding
         Layout.topMargin: Layout.leftMargin
         Layout.bottomMargin: Layout.leftMargin
+
+        DexRectangle
+        {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            radius: 15
+            enabled: Dex.General.isZhtlc(details.ticker) ? activation_progress != 100 : false
+            visible: enabled
+            opacity: .9
+            color: Dex.DexTheme.backgroundColor
+        }
+
+        DexLabel
+        {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            enabled: Dex.General.isZhtlc(details.ticker) ? activation_progress != 100 : false
+            visible: enabled
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: activation_progress + "%"
+            font: Dex.DexTypo.body2
+            color: Dex.DexTheme.greenColor
+        }
 
         ColumnLayout
         {

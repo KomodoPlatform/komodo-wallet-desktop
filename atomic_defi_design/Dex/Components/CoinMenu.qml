@@ -9,6 +9,7 @@ Menu {
     Universal.accent: Style.colorQtThemeAccent
     Universal.foreground: Style.colorQtThemeForeground
     Universal.background: Style.colorQtThemeBackground
+    property bool can_disable;
 
     // Ugly but required hack for automatic menu width, otherwise long texts are being cut
     width: {
@@ -28,7 +29,7 @@ Menu {
         id: disable_action
         text: qsTr("Disable %1", "TICKER").arg(ticker)
         onTriggered: API.app.disable_coins([ticker])
-        enabled: General.canDisable(ticker)
+        enabled: can_disable
     }
 
     MenuItem {

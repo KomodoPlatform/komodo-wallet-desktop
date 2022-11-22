@@ -16,6 +16,8 @@ namespace atomic_dex
 
     using t_filtering_infos = filtering_infos;
 
+    // todo: please change the logic of this and its usage in mm2 service and other places.
+    // not happy with the current implementation we can do better
     struct orders_and_swaps
     {
         //! Registries

@@ -3,18 +3,18 @@
 #include <optional>
 #include <string>
 
-//! Deps
 #include <nlohmann/json_fwd.hpp>
 
-//! Our Headers
 #include "transaction.data.hpp"
+#include "paging_options.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct tx_history_request
     {
-        std::string coin;
-        std::size_t limit;
+        std::string                   coin;
+        std::size_t                   limit;
+        std::optional<paging_options> paging_options;
     };
 
     void to_json(nlohmann::json& j, const tx_history_request& cfg);
@@ -80,9 +80,9 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, tx_history_answer& answer);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_tx_history_request = ::mm2::api::tx_history_request;
+    using t_tx_history_request = mm2::tx_history_request;
 }

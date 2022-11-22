@@ -69,7 +69,7 @@ Dex.MultipageModal
 
         Dex.DefaultText
         {
-            text: qsTr("Could not check new updates because of the following reason: \n%1").arg(Dex.API.app.updateCheckerService.updateInfo.status)
+            text: qsTr("Could not check new updates for the following reason: \n%1").arg(Dex.API.app.updateCheckerService.updateInfo.status)
         }
 
         footer:
@@ -157,7 +157,7 @@ Dex.MultipageModal
                 }
                 else
                 {
-                    console.error(Dex.API.app.updateCheckerService.udpateInfo.status)
+                    console.error(Dex.API.app.updateCheckerService.updateInfo.status)
                 }
             }
         }

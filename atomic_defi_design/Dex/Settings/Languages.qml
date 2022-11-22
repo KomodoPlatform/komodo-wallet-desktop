@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
+import "../Screens"
 import App 1.0
 
 
@@ -49,6 +50,9 @@ Grid
                     {
                         API.app.settings_pg.lang = model.modelData;
                         console.info("Switched language to %1".arg(API.app.settings_pg.lang));
+                        menu_list.update()
+                        app.update()
+                        app.pageLoader.item.switchPage(Dashboard.PageType.Portfolio)
                     }
                 }
             }

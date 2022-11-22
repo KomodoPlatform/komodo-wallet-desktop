@@ -91,8 +91,6 @@ TEST_CASE("atomic_dex::utils::get_runtime_coins_path()")
     CHECK(fs::exists(result));
 }
 
-TEST_CASE("atomic_dex::utils::register_logger()") { CHECK_NE(register_logger(), nullptr); }
-
 TEST_CASE("atomic_dex::utils::get_current_configs_path()")
 {
     auto result = get_current_configs_path();

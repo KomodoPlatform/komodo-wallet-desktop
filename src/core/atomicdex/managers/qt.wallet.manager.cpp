@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -299,13 +299,24 @@ namespace atomic_dex
 
             const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
             const fs::path    wallet_cfg_path = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
+            bool  valid_json = false;
 
+            if (fs::exists(wallet_cfg_path))
+            {
+                QFile          ifs;
+                ifs.setFileName(std_path_to_qstring(wallet_cfg_path));
+                ifs.open(QIODevice::ReadOnly | QIODevice::Text);
+                std::string json_data = QString(ifs.readAll()).toUtf8().constData();
+                valid_json = nlohmann::json::accept(json_data);
 
-            if (not fs::exists(wallet_cfg_path))
+                ifs.close();
+            }
+
+            if (!valid_json)
             {
                 const auto  cfg_path = ag::core::assets_real_path() / "config";
                 std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins.json";
-                fs::copy(cfg_path / filename, wallet_cfg_path);
+                fs::copy(cfg_path / filename, wallet_cfg_path, fs::copy_options::overwrite_existing);
             }
 
             const fs::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
