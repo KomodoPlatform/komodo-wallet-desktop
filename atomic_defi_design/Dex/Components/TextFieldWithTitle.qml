@@ -19,6 +19,8 @@ ColumnLayout
 
     property alias title: title_text.text
     property alias field: input_field
+    property alias max_length: input_field.maximumLength
+
     property alias hide_button: hide_button
     property alias hide_button_area: hide_button.mouseArea
 

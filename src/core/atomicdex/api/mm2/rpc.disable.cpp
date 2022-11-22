@@ -8,7 +8,7 @@
 #include "atomicdex/api/mm2/generics.hpp"
 #include "atomicdex/api/mm2/rpc.disable.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void
@@ -29,4 +29,4 @@ namespace mm2::api
     {
         extract_rpc_json_answer<disable_coin_answer_success>(j, resp);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

@@ -16,17 +16,31 @@
 
 #pragma once
 
-// Std Headers
 #include <type_traits>
 
-// Project Headers
+#include <nlohmann/json_fwd.hpp> //> nlohmann::json
+
 #include "../api.call.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     template <typename Rpc>
     concept rpc = requires(Rpc rpc)
     {
-        atomic_dex::api_call<Rpc> && Rpc::is_v2 && std::is_same_v<decltype(Rpc::is_v2), bool>;
+        atomic_dex::api_call<Rpc> && std::is_same_v<decltype(Rpc::is_v2), bool>;
+        rpc.request;
+        rpc.result;
+        rpc.error;
     };
+
+    struct rpc_basic_error_type
+    {
+        std::string error;
+        std::string error_path;
+        std::string error_trace;
+        std::string error_type;
+        std::string error_data;
+    };
+
+    void from_json(const nlohmann::json& j, rpc_basic_error_type& in);
 }

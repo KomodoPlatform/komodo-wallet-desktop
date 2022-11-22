@@ -1,24 +1,16 @@
-//
-// Created by Sztergbaum Roman on 08/06/2021.
-//
-
-//! Deps
 #include <nlohmann/json.hpp>
 
-//! Our Headers
 #include "atomicdex/api/mm2/transaction.data.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
-    void
-    from_json(const nlohmann::json& j, fee_regular_coin& cfg)
+    void from_json(const nlohmann::json& j, fee_regular_coin& cfg)
     {
         j.at("amount").get_to(cfg.amount);
     }
 
-    void
-    from_json(const nlohmann::json& j, fee_erc_coin& cfg)
+    void from_json(const nlohmann::json& j, fee_erc_coin& cfg)
     {
         j.at("coin").get_to(cfg.coin);
         j.at("gas").get_to(cfg.gas);
@@ -26,8 +18,7 @@ namespace mm2::api
         j.at("total_fee").get_to(cfg.total_fee);
     }
 
-    void
-    from_json(const nlohmann::json& j, fee_qrc_coin& cfg)
+    void from_json(const nlohmann::json& j, fee_qrc_coin& cfg)
     {
         j.at("coin").get_to(cfg.coin);
         j.at("gas_limit").get_to(cfg.gas_limit);
@@ -36,8 +27,7 @@ namespace mm2::api
         j.at("total_gas_fee").get_to(cfg.total_gas_fee);
     }
 
-    void
-    from_json(const nlohmann::json& j, fees_data& cfg)
+    void from_json(const nlohmann::json& j, fees_data& cfg)
     {
         if (j.count("amount") == 1)
         {
@@ -56,32 +46,73 @@ namespace mm2::api
         }
     }
 
-    void
-    from_json(const nlohmann::json& j, transaction_data& cfg)
+    void from_json(const nlohmann::json& j, transaction_data& cfg)
     {
         j.at("block_height").get_to(cfg.block_height);
         j.at("coin").get_to(cfg.coin);
-        if (j.contains("confirmations"))
-        {
-            cfg.confirmations = j.at("confirmations").get<std::size_t>();
-        }
-        j.at("fee_details").get_to(cfg.fee_details);
         j.at("from").get_to(cfg.from);
-        if (cfg.from.empty() && cfg.coin == "FIRO")
-        {
-            cfg.from.emplace_back("Lelantusjsplit (Hidden)");
-        }
-        j.at("internal_id").get_to(cfg.internal_id);
+        j.at("to").get_to(cfg.to);
+        j.at("tx_hash").get_to(cfg.tx_hash);
         j.at("my_balance_change").get_to(cfg.my_balance_change);
         j.at("received_by_me").get_to(cfg.received_by_me);
         j.at("spent_by_me").get_to(cfg.spent_by_me);
         j.at("timestamp").get_to(cfg.timestamp);
-        j.at("to").get_to(cfg.to);
-        j.at("total_amount").get_to(cfg.total_amount);
-        j.at("tx_hash").get_to(cfg.tx_hash);
-        j.at("tx_hex").get_to(cfg.tx_hex);
+
+        // internal_id is numeric for ZHTLC - needs conversion
+        //if (j.contains("internal_id"))
+        //{
+        //    cfg.internal_id = j.at("internal_id").get<std::string>();
+        //}
+        if (j.at("timestamp").get<std::size_t>() != 0)
+        {
+            cfg.timestamp = j.at("timestamp").get<std::size_t>();
+        }
+        else
+        {
+            using namespace std::chrono;
+            cfg.timestamp      = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+        }
+
+        if (j.contains("confirmations"))
+        {
+            cfg.confirmations = j.at("confirmations").get<std::size_t>();
+        }
+
+        if (cfg.from.empty())
+        {
+            if (cfg.coin == "FIRO")
+            {
+                cfg.from.emplace_back("Lelantusjsplit (Hidden)");
+            }
+            else
+            {
+                cfg.from.emplace_back("Shielded");
+            }
+        }
+
+        // transaction_fee only in ZHTLC response
+        if (j.contains("transaction_fee"))
+        {
+            cfg.transaction_fee = j.at("transaction_fee").get<std::string>();
+        }
+        else if (j.contains("fee_details"))
+        {
+            j.at("fee_details").get_to(cfg.fee_details);
+        }
+
+        // total_amount not in ZHTLC response
+        if (j.contains("total_amount"))
+        {
+            j.at("total_amount").get_to(cfg.total_amount);
+        }
+
+        // tx_hex not in ZHTLC response
+        if (j.contains("tx_hex"))
+        {
+            j.at("tx_hex").get_to(cfg.tx_hex);
+        }
 
         std::string s         = atomic_dex::utils::to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %H:%M");
         cfg.timestamp_as_date = std::move(s);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

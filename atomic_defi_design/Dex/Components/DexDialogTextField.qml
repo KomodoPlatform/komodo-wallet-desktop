@@ -17,7 +17,7 @@ Item {
     property string rightText: ""
     property string placeholderText: ""
     property int leftWidth: -1
-    readonly property int max_length: 40
+    property int max_length: 40
     property bool error: false
     onErrorChanged: {
         if (error) {

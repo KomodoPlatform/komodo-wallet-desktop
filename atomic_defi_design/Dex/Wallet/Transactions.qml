@@ -5,8 +5,9 @@ import QtQuick.Controls 2.15
 import "../Components"
 import "../Constants"
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 
-DefaultListView
+Dex.ListView
 {
     id: list
 
@@ -18,14 +19,10 @@ DefaultListView
     property real _feeColumnWidth: 225
     property real _dateColumnWidth: 170
 
-    ModalLoader
-    {
-        id: tx_details_modal
-        sourceComponent: TransactionDetailsModal {}
-    }
+    model: transactions_mdl.proxy_mdl
 
     // Row
-    delegate: DexRectangle
+    delegate: Dex.Rectangle
     {
         id: rectangle
         width: list.width
@@ -35,7 +32,7 @@ DefaultListView
         colorAnimation: false
         color: mouse_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
 
-        DexMouseArea
+        Dex.MouseArea
         {
             id: mouse_area
             anchors.fill: parent
@@ -47,14 +44,17 @@ DefaultListView
             }
         }
 
-        RowLayout {
+        RowLayout
+        {
             id: tx_row
             anchors.fill: parent
             anchors.margins: 15
 
-            RowLayout {
+            RowLayout
+            {
                 spacing: 3
                 Layout.preferredWidth: _categoryColumnWidth
+
                 Circle
                 {
                     id: note_tag
@@ -70,7 +70,7 @@ DefaultListView
                 }
 
                 // Description
-                DexLabel
+                Dex.Text
                 {
                     id: description
                     horizontalAlignment: Qt.AlignLeft
@@ -80,7 +80,7 @@ DefaultListView
             }
 
             // Crypto
-            DexLabel
+            Dex.Text
             {
                 id: crypto_amount
                 Layout.preferredWidth: _cryptoColumnWidth
@@ -98,7 +98,7 @@ DefaultListView
             }
 
             // Fiat
-            DexLabel
+            Dex.Text
             {
                 Layout.preferredWidth: _fiatColumnWidth
                 horizontalAlignment: Text.AlignRight
@@ -109,7 +109,7 @@ DefaultListView
             }
 
             // Fee
-            DexLabel
+            Dex.Text
             {
                 Layout.preferredWidth: _feeColumnWidth
                 horizontalAlignment: Text.AlignRight
@@ -120,7 +120,7 @@ DefaultListView
             }
 
             // Date
-            DexLabel
+            Dex.Text
             {
                 Layout.preferredWidth: _dateColumnWidth
                 horizontalAlignment: Text.AlignRight
@@ -129,5 +129,11 @@ DefaultListView
                 privacy: true
             }
         }
+    }
+
+    ModalLoader
+    {
+        id: tx_details_modal
+        sourceComponent: TransactionDetailsModal {}
     }
 }

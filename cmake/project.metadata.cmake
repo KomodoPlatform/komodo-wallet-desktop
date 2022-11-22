@@ -22,8 +22,6 @@ if (APPLE)
 else ()
     set(DEX_APPDATA_FOLDER "shibadex")
 endif ()
-message(STATUS "APPDATA folder is ${DEX_APPDATA_FOLDER}")
-
 if (UNIX AND NOT APPLE)
     set(DEX_LINUX_APP_ID "dex.desktop")
 endif ()
@@ -50,9 +48,25 @@ endif ()
 if (DEFINED ENV{DEX_WEBSITE})
     set(DEX_WEBSITE $ENV{DEX_WEBSITE})
 endif ()
+if (DEFINED ENV{PROJECT_ROOT})
+    set(PROJECT_ROOT $ENV{PROJECT_ROOT})
+else ()
+    set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
+endif ()
+
 
 # Shows project metadata
-message(STATUS "Project Metadata: ${DEX_PROJECT_NAME}.${DEX_DISPLAY_NAME}.${DEX_COMPANY}.${DEX_WEBSITE}")
+message(STATUS "Project Metadata:")
+message(STATUS "DEX_APPDATA_FOLDER --> ${DEX_APPDATA_FOLDER}")
+message(STATUS "CMAKE_BUILD_TYPE --> ${CMAKE_BUILD_TYPE}")
+message(STATUS "DEX_PROJECT_NAME --> ${DEX_PROJECT_NAME}")
+message(STATUS "DEX_DISPLAY_NAME --> ${DEX_DISPLAY_NAME}")
+message(STATUS "DEX_COMPANY --> ${DEX_COMPANY}")
+message(STATUS "DEX_WEBSITE --> ${DEX_WEBSITE}")
+message(STATUS "CMAKE_SOURCE_DIR --> ${CMAKE_SOURCE_DIR}")
+message(STATUS "PROJECT_ROOT --> ${PROJECT_ROOT}")
+
+
 
 # Generates files which need to be configured with custom variables from env/CMake.
 macro(generate_dex_project_metafiles)

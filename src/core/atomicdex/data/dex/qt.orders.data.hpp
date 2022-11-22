@@ -9,7 +9,7 @@
 //! deps
 #include <nlohmann/json.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct order_swaps_data
     {
@@ -88,9 +88,9 @@ namespace mm2::api
         std::optional<QString>        min_volume{std::nullopt};
         std::optional<nlohmann::json> conf_settings{std::nullopt};
     };
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_order_swaps_data = mm2::api::order_swaps_data;
+    using t_order_swaps_data = mm2::order_swaps_data;
 }
