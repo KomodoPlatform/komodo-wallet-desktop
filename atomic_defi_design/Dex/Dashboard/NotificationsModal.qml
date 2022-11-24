@@ -173,7 +173,7 @@ DexPopup
             return notification.params.base_coin + "/" + notification.params.rel_coin + " - " + qsTr("Swap status updated")
         case balanceUpdateStatusNotification:
             const change = General.formatFullCrypto("", notification.params.amount, notification.params.ticker, "", "", true)
-            return am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change)
+            return notification.params.am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change)
         case enablingZCoinStatusNotification:
             return qsTr(" %1 Enable status", "TICKER").arg(notification.params.coin)
         case enablingCoinFailedStatusNotification:
