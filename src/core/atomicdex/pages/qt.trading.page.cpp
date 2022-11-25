@@ -489,7 +489,8 @@ namespace atomic_dex
 
                     if (m_models_actions[orderbook_need_a_reset] && this->m_current_trading_mode == TradingModeGadget::Pro)
                     {
-                        this->set_preferred_settings();
+                        // This goes to a function which looks like it is for bot trading. We dont need to run it at this stage.
+                        // this->set_preferred_settings();
                     }
                     else
                     {

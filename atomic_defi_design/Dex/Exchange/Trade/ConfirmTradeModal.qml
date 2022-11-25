@@ -183,6 +183,27 @@ MultipageModal
 
                 ColumnLayout
                 {
+                    id: fees_error
+                    width: parent.width - 20
+                    anchors.centerIn: parent
+                    visible: root.fees.hasOwnProperty('error')
+
+                    DefaultText
+                    {
+                        text_value: {
+                            if (root.fees.hasOwnProperty('error'))
+                            {
+                                let error = fees["error"].split("] ").slice(-1)
+                                return qsTr("Fees: " + error)
+                            }
+                            return ""
+                        }
+                        Layout.bottomMargin: 8
+                    }
+                }
+
+                ColumnLayout
+                {
                     id: fees_detail
                     width: parent.width - 20
                     anchors.centerIn: parent
