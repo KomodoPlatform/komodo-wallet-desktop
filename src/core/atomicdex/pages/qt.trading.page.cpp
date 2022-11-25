@@ -722,10 +722,6 @@ namespace atomic_dex
             this->cap_volume();
 
             this->get_orderbook_wrapper()->refresh_best_orders();
-            if (!m_price.isEmpty() || m_price != "0")
-            {
-                this->determine_fees();
-            }
         }
     }
 
@@ -1070,7 +1066,6 @@ namespace atomic_dex
                     this->set_volume(QString::fromStdString(m_preferred_order->at("initial_input_volume").get<std::string>()));
                 }
                 this->get_orderbook_wrapper()->refresh_best_orders();
-                this->determine_fees();
                 emit preferredOrderChangeFinished();
             }
         }
@@ -1164,10 +1159,9 @@ namespace atomic_dex
         }
         if (volume == "0")
         {
-            volume = "0.0001";
+            return;
         }
 
-        SPDLOG_DEBUG("get_volume().toStdString(): {}", get_volume().toStdString());
         t_trade_preimage_request req{
             .base_coin = base,
             .rel_coin = rel,
@@ -1181,7 +1175,7 @@ namespace atomic_dex
         mm2::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
-        SPDLOG_DEBUG("trade_preimage request: {}", preimage_request.dump(-1));
+        SPDLOG_DEBUG("trade_preimage request: {}", preimage_request.dump(4));
 
         this->set_preimage_busy(true);
         auto answer_functor = [this, &mm2](web::http::http_response resp)

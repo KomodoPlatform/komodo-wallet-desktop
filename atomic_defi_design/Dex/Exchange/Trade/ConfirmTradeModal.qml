@@ -20,6 +20,23 @@ MultipageModal
     horizontalPadding: 30
     verticalPadding: 30
 
+    Component.onCompleted: {
+        API.app.trading_pg.determine_fees()
+    }
+
+    Connections {
+        target: API.app.trading_pg
+        function onFeesChanged() {
+            // console.log("onFeesChanged::fees: " + JSON.stringify(fees))
+        }
+    }
+    Connections {
+        target: API.app.trading_pg
+        function onPreImageRpcStatusChanged(){
+            // console.log("onPreImageRpcStatusChanged::preimage_rpc_busy: " + API.app.trading_pg.preimage_rpc_busy)
+        }
+    }
+
     MultipageModalContent
     {
         titleText: qsTr("Confirm Exchange Details")
