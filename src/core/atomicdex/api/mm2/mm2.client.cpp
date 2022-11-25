@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <filesystem>
+
 #include <meta/detection/detection.hpp>
 
 #include "enable_slp_rpc.hpp"
