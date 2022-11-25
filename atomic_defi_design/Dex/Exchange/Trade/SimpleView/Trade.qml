@@ -293,10 +293,8 @@ ClipRRect // Trade Card
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
                     anchors.leftMargin: 2
-                    placeholderText: Constants.API.app.trading_pg.max_volume == 0 ?
-                            "Loading wallet..." : typeof selectedOrder !== 'undefined' ?
-                            qsTr("Min: %1").arg(Constants.API.app.trading_pg.min_trade_vol) : qsTr("Enter an amount")
-                    font.pixelSize: Constants.Style.textSizeSmall5
+                    placeholderText: Constants.General.getSimpleFromPlaceholder(selectedTicker, selectedOrder)
+                    font.pixelSize: Constants.Style.textSizeSmall3
                     background: Rectangle { color: swap_from_card.color}
 
                     onTextChanged:
@@ -438,7 +436,14 @@ ClipRRect // Trade Card
                 DefaultBusyIndicator
                 {
                     anchors.centerIn: parent
-                    visible: selectedTicker !== "" && Constants.API.app.trading_pg.max_volume == 0
+                    visible:
+                    {
+                        console.log("selectedTicker: " + selectedTicker)
+                        console.log("Constants.API.app.trading_pg.max_volume: " + Constants.API.app.trading_pg.max_volume)
+                        console.log("_fromValue.placeholderText: " + _fromValue.placeholderText)
+                        console.log("_fromValue.placeholderText.search(Activating): " + _fromValue.placeholderText.search("Activating"))
+                        selectedTicker !== "" && Constants.API.app.trading_pg.max_volume == 0 && _fromValue.placeholderText.search("Activating") == -1
+                    }
                 }
             }
 
@@ -703,35 +708,18 @@ ClipRRect // Trade Card
 
                     function getAlert()
                     {
+                        console.log("_fromValue.text: " + _fromValue.text)
                         var left_ticker = Constants.API.app.trading_pg.market_pairs_mdl.left_selected_coin
                         var right_ticker = Constants.API.app.trading_pg.market_pairs_mdl.right_selected_coin
-                        var right_parent = Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)
-                        var left_parent = Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)
-                        var last_trading_error = Constants.API.app.trading_pg.last_trading_error
-                        var fees_error = Constants.API.app.trading_pg.fees.error
+                        var base_ticker = Constants.API.app.trading_pg.market_pairs_mdl.base_selected_coin
+                        var rel_ticker = Constants.API.app.trading_pg.market_pairs_mdl.rel_selected_coin
+                        var fee_info = Constants.API.app.trading_pg.fees
 
                         if (_fromValue.text === "" || parseFloat(_fromValue.text) === 0)
                             return qsTr("Entered amount must be superior than 0.")
                         if (typeof selectedOrder === 'undefined')
                             return qsTr("You must select an order.")
-                        if (last_trading_error == TradingError.VolumeIsLowerThanTheMinimum)
-                            return qsTr("Entered amount is below the minimum required by this order: %1").arg(selectedOrder.base_min_volume)
-                        if (last_trading_error == TradingError.LeftParentChainNotEnabled)
-                            return qsTr("%1 needs to be enabled in order to use %2").arg(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)).arg(left_ticker)
-                        if (last_trading_error == TradingError.LeftParentChainNotEnoughBalance)
-                            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(left_parent).arg(left_ticker)
-                        if (last_trading_error == TradingError.RightParentChainNotEnabled)
-                            return qsTr("%1 needs to be enabled in order to use %2").arg(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(right_ticker)).arg(right_ticker)
-                        if (last_trading_error == TradingError.RightParentChainNotEnoughBalance)
-                            return qsTr("%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions").arg(right_parent).arg(right_ticker)
-                        if (fees_error) {
-                            let coin = right_ticker
-                            if (fees_error.search(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(left_ticker)) > -1) {
-                                coin = left_ticker
-                            }
-                            return qsTr("%1 balance does not have enough funds to pay the gas of %2 transactions").arg(Constants.API.app.portfolio_pg.global_cfg_mdl.get_parent_coin(coin)).arg(coin)
-                        }
-                        return ""
+                        return Constants.General.getTradingError(last_trading_error, fee_info, base_ticker, rel_ticker, left_ticker, right_ticker)
                     }
 
                     tooltipText: _swapAlert.getAlert()
