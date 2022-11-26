@@ -37,7 +37,6 @@ namespace atomic_dex
     void
     notification_manager::connect_signals() 
     {
-        m_dispatcher.sink<batch_failed>().connect<&notification_manager::on_batch_failed>(*this);
         m_dispatcher.sink<swap_status_notification>().connect<&notification_manager::on_swap_status_notification>(*this);
         m_dispatcher.sink<balance_update_notification>().connect<&notification_manager::on_balance_update_notification>(*this);
         m_dispatcher.sink<enabling_z_coin_status>().connect<&notification_manager::on_enabling_z_coin_status>(*this);
@@ -51,7 +50,6 @@ namespace atomic_dex
     void
     notification_manager::disconnect_signals() 
     {
-        m_dispatcher.sink<batch_failed>().disconnect<&notification_manager::on_batch_failed>(*this);
         m_dispatcher.sink<swap_status_notification>().disconnect<&notification_manager::on_swap_status_notification>(*this);
         m_dispatcher.sink<balance_update_notification>().disconnect<&notification_manager::on_balance_update_notification>(*this);
         m_dispatcher.sink<enabling_coin_failed>().disconnect<&notification_manager::on_enabling_coin_failed>(*this);
@@ -119,14 +117,5 @@ namespace atomic_dex
     notification_manager::on_fatal_notification(const fatal_notification& evt)
     {
         emit fatalNotification(QString::fromStdString(evt.message));
-    }
-
-    void
-    notification_manager::on_batch_failed(const batch_failed& evt)
-    {
-        using namespace std::chrono;
-        qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-        emit batchFailed(QString::fromStdString(evt.reason), QString::fromStdString(evt.from), human_date, timestamp);
     }
 } // namespace atomic_dex

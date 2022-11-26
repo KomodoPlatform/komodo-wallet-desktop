@@ -30,7 +30,6 @@ DexPopup
     readonly property string disablingCoinFailedStatus: "onDisablingCoinFailedStatus"
     readonly property string endpointNonReacheableStatus: "onEndpointNonReacheableStatus"
     readonly property string mismatchCustomCoinConfigurationNotification: "onMismatchCustomCoinConfiguration"
-    readonly property string batchFailedNotification: "onBatchFailed"
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
 
@@ -184,8 +183,6 @@ DexPopup
             return qsTr("Endpoint not reachable")
         case mismatchCustomCoinConfigurationNotification:
             return qsTr("Mismatch at %1 custom asset configuration", "TICKER").arg(notification.params.asset)
-        case batchFailedNotification:
-            return qsTr("Batch %1 failed. Reason: %2").arg(notification.params.from).arg(notification.params.reason)
         }
     }
 
@@ -207,8 +204,6 @@ DexPopup
             return notification.params.base_uri
         case mismatchCustomCoinConfigurationNotification:
             return qsTr("Application needs to be restarted for %1 custom asset.", "TICKER").arg(notification.params.asset)
-        case batchFailedNotification:
-            return notification.params.reason
         }
     }
 
@@ -376,22 +371,6 @@ DexPopup
         toast.show(title, General.time_toast_important_error, "", true, true)
     }
 
-    function onBatchFailed(reason, from, human_date, timestamp)
-    {
-        newNotification(
-            batchFailedNotification,
-            {
-                human_date,
-                timestamp,
-                reason,
-                from
-            },
-            timestamp,
-            human_date)
-
-        toast.show(title, General.time_toast_important_error, reason)
-    }
-
     Component.onCompleted:
     {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
@@ -401,7 +380,6 @@ DexPopup
         API.app.notification_mgr.disablingCoinFailedStatus.connect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
-        API.app.notification_mgr.batchFailed.connect(onBatchFailed)
     }
     
     Component.onDestruction:
@@ -413,7 +391,6 @@ DexPopup
         API.app.notification_mgr.disablingCoinFailedStatus.disconnect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
         API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
-        API.app.notification_mgr.batchFailed.disconnect(onBatchFailed)
     }
 
     SystemTrayIcon

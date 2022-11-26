@@ -68,12 +68,6 @@ namespace atomic_dex
         std::string reason;
     };
 
-    struct batch_failed
-    {
-        std::string from;
-        std::string reason;
-    };
-
     struct mismatch_configuration_custom_coin
     {
         std::string coin;

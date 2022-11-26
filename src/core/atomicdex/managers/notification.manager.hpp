@@ -40,7 +40,6 @@ namespace atomic_dex
         void disconnect_signals() ;
 
         //! Callbacks
-        void on_batch_failed(const batch_failed& evt);;
         void on_swap_status_notification(const swap_status_notification& evt);
         void on_enabling_z_coin_status(const enabling_z_coin_status& evt);
         void on_enabling_coin_failed(const enabling_coin_failed& evt);
