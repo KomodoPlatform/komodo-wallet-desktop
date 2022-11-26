@@ -29,7 +29,6 @@ DexPopup
     readonly property string enablingCoinFailedStatusNotification: "onEnablingCoinFailedStatus"
     readonly property string disablingCoinFailedStatus: "onDisablingCoinFailedStatus"
     readonly property string endpointNonReacheableStatus: "onEndpointNonReacheableStatus"
-    readonly property string mismatchCustomCoinConfigurationNotification: "onMismatchCustomCoinConfiguration"
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
 
@@ -181,8 +180,6 @@ DexPopup
             return qsTr("Failed to disable %1", "TICKER").arg(notification.params.coin)
         case endpointNonReacheableStatus:
             return qsTr("Endpoint not reachable")
-        case mismatchCustomCoinConfigurationNotification:
-            return qsTr("Mismatch at %1 custom asset configuration", "TICKER").arg(notification.params.asset)
         }
     }
 
@@ -202,8 +199,6 @@ DexPopup
             return ""
         case endpointNonReacheableStatus:
             return notification.params.base_uri
-        case mismatchCustomCoinConfigurationNotification:
-            return qsTr("Application needs to be restarted for %1 custom asset.", "TICKER").arg(notification.params.asset)
         }
     }
 
@@ -296,16 +291,6 @@ DexPopup
             return
         }
 
-        // Check if there is mismatch error, ignore this one
-        for (let n of notifications_list)
-        {
-            if (n.event_name === mismatchCustomCoinConfigurationNotification && n.params.asset === coin)
-            {
-                console.trace()
-                return
-            }
-        }
-
         error = check_internet_connection_text + "\n\n" + error
 
         newNotification(
@@ -356,21 +341,6 @@ DexPopup
         toast.show(qsTr("Endpoint not reachable"), General.time_toast_important_error, error)
     }
 
-    function onMismatchCustomCoinConfiguration(asset, human_date, timestamp)
-    {
-        newNotification(
-            mismatchCustomCoinConfigurationNotification,
-            {
-                asset,
-                human_date,
-                timestamp
-            },
-            timestamp,
-            human_date)
-
-        toast.show(title, General.time_toast_important_error, "", true, true)
-    }
-
     Component.onCompleted:
     {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
@@ -379,7 +349,6 @@ DexPopup
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.disablingCoinFailedStatus.connect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
-        API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
     }
     
     Component.onDestruction:
@@ -390,7 +359,6 @@ DexPopup
         API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.disablingCoinFailedStatus.disconnect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
-        API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
     }
 
     SystemTrayIcon
@@ -599,9 +567,6 @@ DexPopup
                                         case enablingCoinFailedStatusNotification:
                                             name = "repeat"
                                             break
-                                        case mismatchCustomCoinConfigurationNotification:
-                                            name = "restart-alert"
-                                            break
                                         default:
                                             name = "check"
                                             break
@@ -628,12 +593,6 @@ DexPopup
                                             removeNotification()
                                             console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
                                             API.app.enable_coins([event_before_removal.params.coin])
-                                            break
-
-                                        case mismatchCustomCoinConfigurationNotification:
-                                            console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
-                                            root.close()
-                                            restart_modal.open()
                                             break
 
                                         default:
