@@ -36,6 +36,36 @@ Widget
         function onPreImageRpcStatusChanged(){
             // console.log("onPreImageRpcStatusChanged::preimage_rpc_busy: " + API.app.trading_pg.preimage_rpc_busy)
         }
+        function onPrefferedOrderChanged(){
+            reset_fees_state()
+        }
+    }
+
+    Connections
+    {
+        target: app
+        function onPairChanged(left, right)
+        {
+            reset_fees_state()
+        }
+    }
+
+    Connections
+    {
+        target: exchange_trade
+        function onOrderSelected()
+        {
+            reset_fees_state()
+        }
+    }
+
+    function reset_fees_state()
+    {
+        show_waiting_for_trade_preimage = false;
+        check_trade_preimage.stop()
+        loop_count = 0
+        API.app.trading_pg.reset_fees()
+        errors.text_value = ""
     }
 
     // Market mode selector
@@ -145,7 +175,10 @@ Widget
                 Layout.preferredWidth: 30
                 Layout.rightMargin: 5
                 foregroundColor: Dex.CurrentTheme.noColor
-                onClicked: API.app.trading_pg.reset_order()
+                onClicked: {
+                    API.app.trading_pg.reset_order()
+                    reset_fees_state()
+                }
 
                 Qaterial.ColorIcon
                 {
@@ -219,7 +252,7 @@ Widget
         radius: 18
         text: qsTr("START SWAP")
         font.weight: Font.Medium
-        enabled: can_submit_trade && !show_waiting_for_trade_preimage
+        enabled: can_submit_trade && !show_waiting_for_trade_preimage && errors.text_value == ""
         onClicked: 
         {
             console.log("Getting fees info...")
@@ -271,15 +304,24 @@ Widget
             console.log("Getting fees info... " + loop_count + "/50")
             if (trade_preimage_ready)
             {
-                show_waiting_for_trade_preimage = false;
-                loop_count = 0;
-                stop();
+                show_waiting_for_trade_preimage = false
+                loop_count = 0
+                stop()
                 confirm_trade_modal.open()
+            }
+            else if (trade_preimage_error != "")
+            {
+                loop_count = 0
+                errors.text_value = trade_preimage_error.toString()
+                show_waiting_for_trade_preimage = false
+                stop()
+
             }
             else if (loop_count > 50)
             {
-                show_waiting_for_trade_preimage = false;
-                trade_preimage_error = "Timed Out"
+                loop_count = 0
+                show_waiting_for_trade_preimage = false
+                trade_preimage_error = "Trade preimage timed out, try again."
                 stop()
             }
         }
