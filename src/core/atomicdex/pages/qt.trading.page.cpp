@@ -1153,12 +1153,17 @@ namespace atomic_dex
         const auto  rel         = market_pair->get_right_selected_coin().toStdString();
         const auto  swap_method = m_market_mode == MarketMode::Sell ? "sell"s : "buy"s;
         std::string volume      = get_volume().toStdString();
+        std::string price       = get_price().toStdString();
 
-        if (base == rel)
+        if (base == rel) // trade_preimage::BaseEqualRel 
         {
             return;
         }
-        if (volume == "0")
+        if (volume == "0") // trade_preimage::VolumeTooLow (can also occur if trade vol + fees is > balance)
+        {
+            return;
+        }
+        if (std::stof(price) < 0.00000001) // trade_preimage::PriceTooLow
         {
             return;
         }
@@ -1168,7 +1173,7 @@ namespace atomic_dex
             .rel_coin = rel,
             .swap_method = swap_method,
             .volume = volume,
-            .price = get_price().toStdString()
+            .price = price
         };
 
         nlohmann::json batch;

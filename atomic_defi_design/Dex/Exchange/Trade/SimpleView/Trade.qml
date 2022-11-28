@@ -944,9 +944,10 @@ ClipRRect // Trade Card
             DefaultBusyIndicator
             {
                 id: fees_busy
-                width: 30
-                height: 30
+                anchors.fill: parent
                 anchors.centerIn: parent
+                indicatorSize: 32
+                indicatorDotSize: 5
                 visible: Constants.API.app.trading_pg.preimage_rpc_busy || _feesList.count == 0
             }
         }

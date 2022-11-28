@@ -20,23 +20,6 @@ MultipageModal
     horizontalPadding: 30
     verticalPadding: 30
 
-    Component.onCompleted: {
-        API.app.trading_pg.determine_fees()
-    }
-
-    Connections {
-        target: API.app.trading_pg
-        function onFeesChanged() {
-            // console.log("onFeesChanged::fees: " + JSON.stringify(fees))
-        }
-    }
-    Connections {
-        target: API.app.trading_pg
-        function onPreImageRpcStatusChanged(){
-            // console.log("onPreImageRpcStatusChanged::preimage_rpc_busy: " + API.app.trading_pg.preimage_rpc_busy)
-        }
-    }
-
     MultipageModalContent
     {
         titleText: qsTr("Confirm Exchange Details")
@@ -186,18 +169,12 @@ MultipageModal
                     id: fees_error
                     width: parent.width - 20
                     anchors.centerIn: parent
-                    visible: root.fees.hasOwnProperty('error')
+                    visible: root.fees.hasOwnProperty('error') // Should be handled before this modal, but leaving here as a fallback
 
                     DefaultText
                     {
-                        text_value: {
-                            if (root.fees.hasOwnProperty('error'))
-                            {
-                                let error = fees["error"].split("] ").slice(-1)
-                                return qsTr("Fees: " + error)
-                            }
-                            return ""
-                        }
+                        width: parent.width
+                        text_value: root.fees.hasOwnProperty('error') ? root.fees["error"].split("] ").slice(-1) : ""
                         Layout.bottomMargin: 8
                     }
                 }
