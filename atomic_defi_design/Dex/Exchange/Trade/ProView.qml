@@ -75,6 +75,7 @@ RowLayout
     Connections
     {
         target: exchange_trade
+        enabled: form.enabled
         function onBuy_sell_rpc_busyChanged()
         {
             if (buy_sell_rpc_busy)
