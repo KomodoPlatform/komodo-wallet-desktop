@@ -19,6 +19,7 @@ MultipageModal
     width: 720
     horizontalPadding: 30
     verticalPadding: 30
+    closePolicy: Popup.NoAutoClose
 
     MultipageModalContent
     {
@@ -406,7 +407,10 @@ MultipageModal
                 leftPadding: 45
                 rightPadding: 45
                 radius: 10
-                onClicked: root.close()
+                onClicked: {
+                    root.close()
+                    API.app.trading_pg.reset_fees()
+                }
             },
 
             Item { Layout.fillWidth: true },
@@ -425,7 +429,8 @@ MultipageModal
                             is_dpow_configurable: config_section.is_dpow_configurable,
                             enable_dpow_confs: enable_dpow_confs.checked,
                             required_confirmation_count: required_confirmation_count.value, },
-                          config_section.default_config)
+                            config_section.default_config)
+                    API.app.trading_pg.reset_fees()
                 }
             },
 
