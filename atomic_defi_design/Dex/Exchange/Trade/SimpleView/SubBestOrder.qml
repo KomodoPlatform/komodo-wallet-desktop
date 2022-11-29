@@ -183,7 +183,7 @@ DexListView
             {
                 Layout.preferredWidth: _quantityColumnSize
                 horizontalAlignment: Text.AlignRight
-                text_value: parseFloat(General.formatDouble(quantity, General.amountPrecision, true)).toFixed(8)
+                text_value: parseFloat(General.formatDouble(rel_max_volume, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
 
