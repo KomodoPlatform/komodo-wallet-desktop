@@ -244,7 +244,7 @@ ClipRRect // Trade Card
                     anchors.verticalCenter: _fromTitle.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 17
-                    text: qsTr("%1").arg(Constants.API.app.trading_pg.max_volume)
+                    text: qsTr("%1").arg(Constants.API.app.trading_pg.max_volume) // This is slow to appear
                     font.pixelSize: Constants.Style.textSizeSmall2
                     elide: Text.ElideRight
                     color: DexTheme.foregroundColorLightColor1
@@ -716,9 +716,9 @@ ClipRRect // Trade Card
                         var fee_info = Constants.API.app.trading_pg.fees
 
                         if (_fromValue.text === "" || parseFloat(_fromValue.text) === 0)
-                            return qsTr("Entered amount must be superior than 0.")
+                            return qsTr("Entered amount must be higher than 0.")
                         if (typeof selectedOrder === 'undefined')
-                            return qsTr("You must select an order.")
+                            return qsTr("Select an order.")
                         return Constants.General.getTradingError(last_trading_error, fee_info, base_ticker, rel_ticker, left_ticker, right_ticker)
                     }
 
