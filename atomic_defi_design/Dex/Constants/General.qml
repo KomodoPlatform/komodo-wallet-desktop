@@ -374,16 +374,10 @@ QtObject {
     }
 
     function getFeesDetailText(feetype, amount, ticker) {
-        return qsTr("%1 %2 %3 (%4)"
-            ).arg(
-                feetype
-            ).arg(
-                formatDouble(amount, 8, false)
-            ).arg(
-                ticker
-            ).arg(
-                General.getFiatText(amount, ticker, false)
-            )
+        if ([feetype, amount, ticker].includes(undefined)) return ""
+        let fiat_text = General.getFiatText(amount, ticker, false)
+        amount = formatDouble(amount, 8, false).toString()
+        return feetype + " " + amount + " " + ticker + " (" + fiat_text + ")"
     }
 
     function arrayExclude(arr, excl) {

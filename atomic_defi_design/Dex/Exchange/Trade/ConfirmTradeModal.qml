@@ -184,7 +184,7 @@ MultipageModal
 
                     Repeater
                     {
-                        model: root.fees.hasOwnProperty('base_transaction_fees_ticker') ? root.fees.total_fees : []
+                        model: root.fees.hasOwnProperty('base_transaction_fees_ticker')  && !API.app.trading_pg.preimage_rpc_busy ? root.fees.total_fees : []
                         delegate: DefaultText
                         {
                             text: General.getFeesDetailText(
