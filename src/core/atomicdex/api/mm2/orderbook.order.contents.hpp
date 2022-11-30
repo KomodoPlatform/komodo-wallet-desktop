@@ -33,7 +33,7 @@ namespace atomic_dex::mm2
         std::string                min_volume;
         std::string                min_volume_fraction_numer;
         std::string                min_volume_fraction_denom;
-        std::string                maxvolume;
+        std::string                max_volume;
         std::string                max_volume_fraction_numer;
         std::string                max_volume_fraction_denom;
         std::string                base_min_volume;

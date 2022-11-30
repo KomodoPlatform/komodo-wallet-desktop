@@ -52,14 +52,11 @@ namespace atomic_dex
         {
             PriceRole = Qt::UserRole + 1, // 257
             CoinRole,
-            QuantityRole,
             TotalRole,
             UUIDRole,
             IsMineRole,
             PriceDenomRole,
             PriceNumerRole,
-            QuantityDenomRole,
-            QuantityNumerRole,
             PercentDepthRole,
             MinVolumeRole,
             EnoughFundsToPayMinVolume,

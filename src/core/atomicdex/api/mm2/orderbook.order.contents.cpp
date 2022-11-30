@@ -75,7 +75,6 @@ namespace atomic_dex::mm2
         ss << "coin: " << coin << " ";
         ss << "address: " << address << " ";
         ss << "price: " << price << " ";
-        ss << "max_volume: " << maxvolume << " ";
         ss << "depth_percent: " << depth_percent << " ";
         ss << "base_max_volume: " << base_max_volume << " ";
         ss << "rel_max_volume: " << rel_max_volume << " ";
