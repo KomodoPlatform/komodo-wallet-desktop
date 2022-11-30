@@ -759,7 +759,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="191"/>
         <source>&lt;b&gt;Total %1 fees:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Total de %1 fees:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Cuota total de %1:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="270"/>
@@ -790,7 +790,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="284"/>
         <source>dPoW protected </source>
-        <translation>dPoW protegida </translation>
+        <translation>Protegido por dPoW </translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="320"/>
@@ -1444,22 +1444,22 @@
     <message>
         <location filename="../../Dex/Constants/General.qml" line="369"/>
         <source>&lt;b&gt;Taker tx fee:&lt;/b&gt; </source>
-        <translation>&lt;b&gt;Taker tx fee:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Cuota de tx del taker:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="370"/>
         <source>&lt;b&gt;Dex tx fee:&lt;/b&gt; </source>
-        <translation>&lt;b&gt;Dex tx fee:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Cuota de tx del Dex:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="371"/>
         <source>&lt;b&gt;Dex fee:&lt;/b&gt; </source>
-        <translation>&lt;b&gt;Dex fee:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Cuota Dex:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="372"/>
         <source>&lt;b&gt;Maker tx fee:&lt;/b&gt; </source>
-        <translation>&lt;b&gt;Maker tx fee:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Cuota tx del maker:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="377"/>
