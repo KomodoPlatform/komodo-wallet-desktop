@@ -37,28 +37,24 @@ namespace atomic_dex
     void
     notification_manager::connect_signals() 
     {
-        m_dispatcher.sink<batch_failed>().connect<&notification_manager::on_batch_failed>(*this);
         m_dispatcher.sink<swap_status_notification>().connect<&notification_manager::on_swap_status_notification>(*this);
         m_dispatcher.sink<balance_update_notification>().connect<&notification_manager::on_balance_update_notification>(*this);
         m_dispatcher.sink<enabling_z_coin_status>().connect<&notification_manager::on_enabling_z_coin_status>(*this);
         m_dispatcher.sink<enabling_coin_failed>().connect<&notification_manager::on_enabling_coin_failed>(*this);
         m_dispatcher.sink<disabling_coin_failed>().connect<&notification_manager::on_disabling_coin_failed>(*this);
         m_dispatcher.sink<endpoint_nonreacheable>().connect<&notification_manager::on_endpoint_nonreacheable>(*this);
-        m_dispatcher.sink<mismatch_configuration_custom_coin>().connect<&notification_manager::on_mismatch_custom_coins_configuration>(*this);
         m_dispatcher.sink<fatal_notification>().connect<&notification_manager::on_fatal_notification>(*this);
     }
 
     void
     notification_manager::disconnect_signals() 
     {
-        m_dispatcher.sink<batch_failed>().disconnect<&notification_manager::on_batch_failed>(*this);
         m_dispatcher.sink<swap_status_notification>().disconnect<&notification_manager::on_swap_status_notification>(*this);
         m_dispatcher.sink<balance_update_notification>().disconnect<&notification_manager::on_balance_update_notification>(*this);
         m_dispatcher.sink<enabling_coin_failed>().disconnect<&notification_manager::on_enabling_coin_failed>(*this);
         m_dispatcher.sink<disabling_coin_failed>().disconnect<&notification_manager::on_disabling_coin_failed>(*this);
         m_dispatcher.sink<enabling_z_coin_status>().disconnect<&notification_manager::on_enabling_z_coin_status>(*this);
         m_dispatcher.sink<endpoint_nonreacheable>().disconnect<&notification_manager::on_endpoint_nonreacheable>(*this);
-        m_dispatcher.sink<mismatch_configuration_custom_coin>().disconnect<&notification_manager::on_mismatch_custom_coins_configuration>(*this);
         m_dispatcher.sink<fatal_notification>().disconnect<&notification_manager::on_fatal_notification>(*this);
     }
 
@@ -106,27 +102,10 @@ namespace atomic_dex
         QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
         emit    endpointNonReacheableStatus(QString::fromStdString(evt.base_uri), human_date, timestamp);
     }
-    void
-    notification_manager::on_mismatch_custom_coins_configuration(const mismatch_configuration_custom_coin& evt)
-    {
-        using namespace std::chrono;
-        qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-        emit    mismatchCustomCoinConfiguration(QString::fromStdString(evt.coin), human_date, timestamp);
-    }
 
     void
     notification_manager::on_fatal_notification(const fatal_notification& evt)
     {
         emit fatalNotification(QString::fromStdString(evt.message));
-    }
-
-    void
-    notification_manager::on_batch_failed(const batch_failed& evt)
-    {
-        using namespace std::chrono;
-        qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-        emit batchFailed(QString::fromStdString(evt.reason), QString::fromStdString(evt.from), human_date, timestamp);
     }
 } // namespace atomic_dex

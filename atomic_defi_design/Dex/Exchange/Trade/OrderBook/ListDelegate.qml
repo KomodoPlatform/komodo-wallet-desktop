@@ -109,9 +109,8 @@ Item
             {
                 orderbook_list.currentIndex = index
 
-                selectOrder(isAsk, coin, price, quantity, price_denom,
-                            price_numer, quantity_denom, quantity_numer,
-                            min_volume, base_min_volume, base_max_volume,
+                selectOrder(isAsk, coin, price, price_denom,
+                            price_numer, min_volume, base_min_volume, base_max_volume,
                             rel_min_volume, rel_max_volume, base_max_volume_denom,
                             base_max_volume_numer, uuid)
 
@@ -189,7 +188,7 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width * 0.37
-                text: { new BigNumber(quantity).toFixed(6) }
+                text: { new BigNumber(rel_max_volume).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 horizontalAlignment: Text.AlignRight

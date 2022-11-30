@@ -283,8 +283,6 @@ namespace atomic_dex
     {
         m_orderbook_clock = std::chrono::high_resolution_clock::now();
         m_info_clock      = std::chrono::high_resolution_clock::now();
-        dispatcher_.sink<zhtlc_enter_enabling>().connect<&mm2_service::on_zhtlc_enter_enabling>(*this);
-        dispatcher_.sink<zhtlc_leave_enabling>().connect<&mm2_service::on_zhtlc_leave_enabling>(*this);
         dispatcher_.sink<gui_enter_trading>().connect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().connect<&mm2_service::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&mm2_service::on_refresh_orderbook>(*this);
@@ -342,8 +340,6 @@ namespace atomic_dex
         dispatcher_.sink<gui_enter_trading>().disconnect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().disconnect<&mm2_service::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().disconnect<&mm2_service::on_refresh_orderbook>(*this);
-        dispatcher_.sink<zhtlc_enter_enabling>().disconnect<&mm2_service::on_zhtlc_enter_enabling>(*this);
-        dispatcher_.sink<zhtlc_leave_enabling>().disconnect<&mm2_service::on_zhtlc_leave_enabling>(*this);
         SPDLOG_INFO("mm2 signals successfully disconnected");
         bool mm2_stopped = false;
         if (m_mm2_running)
@@ -1202,7 +1198,6 @@ namespace atomic_dex
 
     void mm2_service::enable_zhtlc(const t_coins& coins)
     {
-        dispatcher_.trigger<zhtlc_enter_enabling>();
         auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
             t_init_z_coin_request request{
@@ -1320,30 +1315,19 @@ namespace atomic_dex
                                                         if (z_answers[0].at("result").at("details").contains("UpdatingBlocksCache"))
                                                         {
                                                             event = "UpdatingBlocksCache";
-                                                            std::size_t current_scanned_block = z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block");
-                                                            std::size_t latest_block = z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("latest_block");
-                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned", tickers[idx], status, event, current_scanned_block, latest_block);
                                                         }
                                                         else if (z_answers[0].at("result").at("details").contains("BuildingWalletDb"))
                                                         {
                                                             event = "BuildingWalletDb";
-                                                            std::size_t current_scanned_block = z_answers[0].at("result").at("details").at("BuildingWalletDb").at("current_scanned_block");
-                                                            std::size_t latest_block = z_answers[0].at("result").at("details").at("BuildingWalletDb").at("latest_block");
-                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned", tickers[idx], status, event, current_scanned_block, latest_block);
                                                         }
                                                         else
                                                         {
                                                             event = z_answers[0].at("result").at("details").get<std::string>();
-                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
-                                                            // Do we need to handle this? Happens when running init_zcoin_enable twice
-                                                            // {"mmrpc":"2.0","result":{"status":"InProgress","details":{"TemporaryError":"z_rpc:387] UNIQUE constraint failed: blocks.height"}},"id":null}
                                                         }
 
                                                         if (event != last_event)
                                                         {
                                                             SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
-                                                            // After an event change, full activation is just a matter of time (earlier it might fail).
-                                                            // We tag it as activated, so it shows up in portfolio and not enable list.
                                                             if (!m_coins_informations[tickers[idx]].currently_enabled && event != "ActivatingCoin")
                                                             {
                                                                 std::unique_lock lock(m_coin_cfg_mutex);
@@ -1436,7 +1420,6 @@ namespace atomic_dex
                         this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch);
                         update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                     });
-            dispatcher_.trigger<zhtlc_leave_enabling>();
             this->m_nb_update_required += 1;
         };
 
@@ -2079,22 +2062,6 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::on_zhtlc_enter_enabling([[maybe_unused]] const zhtlc_enter_enabling& evt)
-    {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        m_zhtlc_enable_thread_active = true;
-    }
-
-    void
-    mm2_service::on_zhtlc_leave_enabling([[maybe_unused]] const zhtlc_leave_enabling& evt)
-    {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        m_zhtlc_enable_thread_active = false;
-    }
-
-    void
     mm2_service::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading& evt)
     {
         SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
@@ -2136,12 +2103,6 @@ namespace atomic_dex
     mm2_service::is_orderbook_thread_active() const
     {
         return this->m_orderbook_thread_active.load();
-    }
-
-    bool
-    mm2_service::is_zhtlc_enable_thread_active() const
-    {
-        return this->m_zhtlc_enable_thread_active.load();
     }
 
     nlohmann::json

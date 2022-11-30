@@ -104,8 +104,6 @@ namespace atomic_dex
             return QString::fromStdString(m_model_data.at(index.row()).price_fraction_denom);
         case PriceNumerRole:
             return QString::fromStdString(m_model_data.at(index.row()).price_fraction_numer);
-        case QuantityRole:
-            return QString::fromStdString(m_model_data.at(index.row()).maxvolume);
         case TotalRole:
             return QString::fromStdString(m_model_data.at(index.row()).total);
         case UUIDRole:
@@ -114,10 +112,6 @@ namespace atomic_dex
             return m_model_data.at(index.row()).is_mine;
         case PercentDepthRole:
             return QString::fromStdString(m_model_data.at(index.row()).depth_percent);
-        case QuantityDenomRole:
-            return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_denom);
-        case QuantityNumerRole:
-            return QString::fromStdString(m_model_data.at(index.row()).max_volume_fraction_numer);
         case BaseMinVolumeRole:
             return QString::fromStdString(m_model_data.at(index.row()).base_min_volume);
         case BaseMinVolumeDenomRole:
@@ -269,9 +263,6 @@ namespace atomic_dex
         case IsMineRole:
             order.is_mine = value.toBool();
             break;
-        case QuantityRole:
-            order.maxvolume = value.toString().toStdString();
-            break;
         case TotalRole:
             order.total = value.toString().toStdString();
             break;
@@ -280,12 +271,6 @@ namespace atomic_dex
             break;
         case PercentDepthRole:
             order.depth_percent = value.toString().toStdString();
-            break;
-        case QuantityDenomRole:
-            order.max_volume_fraction_denom = value.toString().toStdString();
-            break;
-        case QuantityNumerRole:
-            order.max_volume_fraction_numer = value.toString().toStdString();
             break;
         case CoinRole:
             order.coin = value.toString().toStdString();
@@ -352,14 +337,11 @@ namespace atomic_dex
         return {
             {PriceRole, "price"},
             {CoinRole, "coin"},
-            {QuantityRole, "quantity"},
             {TotalRole, "total"},
             {UUIDRole, "uuid"},
             {IsMineRole, "is_mine"},
             {PriceDenomRole, "price_denom"},
             {PriceNumerRole, "price_numer"},
-            {QuantityDenomRole, "quantity_denom"},
-            {QuantityNumerRole, "quantity_numer"},
             {PercentDepthRole, "depth"},
             {MinVolumeRole, "min_volume"},
             {EnoughFundsToPayMinVolume, "enough_funds_to_pay_min_volume"},
@@ -461,7 +443,6 @@ namespace atomic_dex
             update_value(OrderbookRoles::PriceNumerRole, QString::fromStdString(order.price_fraction_numer), idx, *this);
             update_value(OrderbookRoles::PriceDenomRole, QString::fromStdString(order.price_fraction_denom), idx, *this);
             update_value(OrderbookRoles::IsMineRole, order.is_mine, idx, *this);
-            update_value(OrderbookRoles::QuantityRole, QString::fromStdString(order.maxvolume), idx, *this);
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
             update_value(OrderbookRoles::PercentDepthRole, QString::fromStdString(order.depth_percent), idx, *this);
             update_value(OrderbookRoles::BaseMinVolumeRole, QString::fromStdString(order.base_min_volume), idx, *this);
@@ -488,7 +469,6 @@ namespace atomic_dex
                  OrderbookRoles::PriceNumerRole,
                  OrderbookRoles::PriceDenomRole,
                  OrderbookRoles::IsMineRole,
-                 OrderbookRoles::QuantityRole,
                  OrderbookRoles::TotalRole,
                  OrderbookRoles::PercentDepthRole,
                  OrderbookRoles::BaseMinVolumeRole,
@@ -651,11 +631,8 @@ namespace atomic_dex
             const bool         is_buy     = trading_pg.get_market_mode() == MarketMode::Buy;
             out["coin"]                   = QString::fromStdString(is_buy ? order.rel_coin.value() : order.coin);
             out["price"]                  = QString::fromStdString(order.price);
-            out["quantity"]               = QString::fromStdString(order.maxvolume);
             out["price_denom"]            = QString::fromStdString(order.price_fraction_denom);
             out["price_numer"]            = QString::fromStdString(order.price_fraction_numer);
-            out["quantity_denom"]         = QString::fromStdString(order.max_volume_fraction_denom);
-            out["quantity_numer"]         = QString::fromStdString(order.max_volume_fraction_numer);
             out["min_volume"]             = QString::fromStdString(order.min_volume);
             out["base_min_volume"]        = QString::fromStdString(order.base_min_volume);
             out["base_max_volume"]        = QString::fromStdString(order.base_max_volume);

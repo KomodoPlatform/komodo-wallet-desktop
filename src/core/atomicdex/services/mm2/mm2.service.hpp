@@ -92,7 +92,6 @@ namespace atomic_dex
        //! Atomicity / Threads
        std::atomic_bool m_mm2_running{false};
        std::atomic_bool m_orderbook_thread_active{false};
-       std::atomic_bool m_zhtlc_enable_thread_active{false};
        std::atomic_size_t m_nb_update_required{0};
        std::thread      m_mm2_init_thread;
 
@@ -153,10 +152,6 @@ namespace atomic_dex
        void on_gui_enter_trading(const gui_enter_trading& evt);
 
        void on_gui_leave_trading(const gui_leave_trading& evt);
-
-       void on_zhtlc_enter_enabling(const zhtlc_enter_enabling& evt);
-
-       void on_zhtlc_leave_enabling(const zhtlc_leave_enabling& evt);
 
        //! Spawn mm2 instance with given seed
        void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
@@ -251,7 +246,6 @@ namespace atomic_dex
        [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
 
        [[nodiscard]] bool is_orderbook_thread_active() const;
-       [[nodiscard]] bool is_zhtlc_enable_thread_active() const;
 
        [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const;
 
