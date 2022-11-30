@@ -19,6 +19,7 @@ ClipRRect // Trade Card
 {
     id: _tradeCard
 
+    readonly property var fees: API.app.trading_pg.fees
     property string selectedTicker: API.app.get_balance(left_ticker) > 0 ? left_ticker : ""
     property var    selectedOrder:  undefined
     property bool   best: false
@@ -32,7 +33,6 @@ ClipRRect // Trade Card
         if (typeof selectedOrder !== 'undefined' && selectedOrder.from_best_order) Constants.API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
         else if (typeof selectedOrder !== 'undefined') Constants.API.app.trading_pg.preffered_order = selectedOrder
         else Constants.API.app.trading_pg.reset_order()
-
         Constants.API.app.trading_pg.determine_fees()
     }
 
@@ -65,6 +65,7 @@ ClipRRect // Trade Card
                 return
             if (parseFloat(_fromValue.text) > Constants.API.app.trading_pg.max_volume)
                 _fromValue.text = Constants.API.app.trading_pg.max_volume
+                Constants.API.app.trading_pg.determine_fees()
         }
 
         function onVolumeChanged()
@@ -480,7 +481,7 @@ ClipRRect // Trade Card
 
                 DefaultText // Amount In Fiat
                 {
-                    enabled: parseFloat(_toValue.text) > 0
+                    enabled: parseFloat(_toValue.text) > 0 && _toValue.text != ""
                     anchors.top: _toValue.bottom
                     anchors.topMargin: -3
                     anchors.left: _toValue.left
@@ -914,7 +915,7 @@ ClipRRect // Trade Card
                 }
 
                 enabled: parent.enabled
-                model: Constants.API.app.trading_pg.fees.total_fees
+                model: _tradeCard.fees.hasOwnProperty('base_transaction_fees_ticker') ? _tradeCard.fees.total_fees : []
 
                 delegate: RowLayout
                 {

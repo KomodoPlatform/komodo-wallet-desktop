@@ -94,7 +94,7 @@ namespace atomic_dex
         market_selector_mdl->set_base_selected_coin(m_market_mode == MarketMode::Sell ? base : rel);
         market_selector_mdl->set_rel_selected_coin(m_market_mode == MarketMode::Sell ? rel : base);
 
-        if (to_change)
+        if (to_change && m_current_trading_mode != TradingModeGadget::Simple)
         {
             SPDLOG_DEBUG("set_current_orderbook");
             this->get_orderbook_wrapper()->clear_orderbook();
@@ -1060,11 +1060,6 @@ namespace atomic_dex
                 if (this->m_current_trading_mode == TradingModeGadget::Pro)
                 {
                     this->set_volume(QString::fromStdString(utils::extract_large_float(available_quantity)));
-                }
-                else if (this->m_current_trading_mode == TradingModeGadget::Simple && m_preferred_order->contains("initial_input_volume"))
-                {
-                    SPDLOG_DEBUG("From simple view, using initial_input_volume from selection to use.");
-                    this->set_volume(QString::fromStdString(m_preferred_order->at("initial_input_volume").get<std::string>()));
                 }
                 this->get_orderbook_wrapper()->refresh_best_orders();
                 emit preferredOrderChangeFinished();
