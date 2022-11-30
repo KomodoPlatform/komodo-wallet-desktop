@@ -785,7 +785,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="191"/>
         <source>&lt;b&gt;Total %1 fees:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Toplam %1 işlem giderleri: &lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="284"/>
