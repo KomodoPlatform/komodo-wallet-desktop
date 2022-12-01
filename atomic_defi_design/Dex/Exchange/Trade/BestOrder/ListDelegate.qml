@@ -6,10 +6,10 @@ import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
 import "../../../Constants"
-import Dex.Themes 1.0 as Dex
-import AtomicDEX.MarketMode 1.0
 import App 1.0 as App
+import Dex.Themes 1.0 as Dex
 import Dex.Components 1.0 as Dex
+import AtomicDEX.MarketMode 1.0
 
 Item
 {
@@ -177,7 +177,6 @@ Item
                     app.pairChanged(base_ticker, coin)
                 }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
-                orderSelected()
             }
         }
     }

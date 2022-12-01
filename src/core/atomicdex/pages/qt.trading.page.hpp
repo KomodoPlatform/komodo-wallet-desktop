@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include <boost/lockfree/queue.hpp>
 
 #include <QObject>

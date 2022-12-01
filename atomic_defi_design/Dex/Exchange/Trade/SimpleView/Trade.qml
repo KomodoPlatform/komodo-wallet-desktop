@@ -19,6 +19,7 @@ ClipRRect // Trade Card
 {
     id: _tradeCard
 
+    readonly property var fees: API.app.trading_pg.fees
     property string selectedTicker: API.app.get_balance(left_ticker) > 0 ? left_ticker : ""
     property var    selectedOrder:  undefined
     property bool   best: false
@@ -32,7 +33,6 @@ ClipRRect // Trade Card
         if (typeof selectedOrder !== 'undefined' && selectedOrder.from_best_order) Constants.API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
         else if (typeof selectedOrder !== 'undefined') Constants.API.app.trading_pg.preffered_order = selectedOrder
         else Constants.API.app.trading_pg.reset_order()
-
         Constants.API.app.trading_pg.determine_fees()
     }
 
@@ -65,6 +65,7 @@ ClipRRect // Trade Card
                 return
             if (parseFloat(_fromValue.text) > Constants.API.app.trading_pg.max_volume)
                 _fromValue.text = Constants.API.app.trading_pg.max_volume
+                Constants.API.app.trading_pg.determine_fees()
         }
 
         function onVolumeChanged()
@@ -75,6 +76,7 @@ ClipRRect // Trade Card
 
     Connections
     {
+        enabled: parent.enabled
         target: Constants.API.app.trading_pg.orderbook.bids
 
         function onBetterOrderDetected(newOrder)
@@ -484,7 +486,7 @@ ClipRRect // Trade Card
 
                 DefaultText // Amount In Fiat
                 {
-                    enabled: parseFloat(_toValue.text) > 0
+                    enabled: parseFloat(_toValue.text) > 0 && _toValue.text != ""
                     anchors.top: _toValue.bottom
                     anchors.topMargin: -3
                     anchors.left: _toValue.left
@@ -650,7 +652,7 @@ ClipRRect // Trade Card
 
                 DexGradientAppButton
                 {
-                    enabled: !Constants.API.app.trading_pg.preimage_rpc_busy && !_swapAlert.visible
+                    enabled: parent.enabled && !Constants.API.app.trading_pg.preimage_rpc_busy && !_swapAlert.visible
                     opacity: enabled ? 1 : .6
                     radius: 10
                     anchors.fill: parent
@@ -665,6 +667,7 @@ ClipRRect // Trade Card
 
                     Connections
                     {
+                        enabled: parent.enabled
                         target: exchange_trade
                         function onBuy_sell_rpc_busyChanged()
                         {
@@ -900,7 +903,7 @@ ClipRRect // Trade Card
                 }
 
                 enabled: parent.enabled
-                model: Constants.API.app.trading_pg.fees.total_fees
+                model: _tradeCard.fees.hasOwnProperty('base_transaction_fees_ticker') ? _tradeCard.fees.total_fees : []
 
                 delegate: RowLayout
                 {
@@ -932,9 +935,10 @@ ClipRRect // Trade Card
             DefaultBusyIndicator
             {
                 id: fees_busy
-                width: 30
-                height: 30
+                anchors.fill: parent
                 anchors.centerIn: parent
+                indicatorSize: 32
+                indicatorDotSize: 5
                 visible: Constants.API.app.trading_pg.preimage_rpc_busy || _feesList.count == 0
             }
         }
