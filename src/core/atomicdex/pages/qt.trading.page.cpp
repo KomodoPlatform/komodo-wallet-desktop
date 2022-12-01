@@ -94,7 +94,7 @@ namespace atomic_dex
         market_selector_mdl->set_base_selected_coin(m_market_mode == MarketMode::Sell ? base : rel);
         market_selector_mdl->set_rel_selected_coin(m_market_mode == MarketMode::Sell ? rel : base);
 
-        if (to_change)
+        if (to_change && m_current_trading_mode != TradingModeGadget::Simple)
         {
             SPDLOG_DEBUG("set_current_orderbook");
             this->get_orderbook_wrapper()->clear_orderbook();
@@ -489,7 +489,8 @@ namespace atomic_dex
 
                     if (m_models_actions[orderbook_need_a_reset] && this->m_current_trading_mode == TradingModeGadget::Pro)
                     {
-                        this->set_preferred_settings();
+                        // This goes to a function which looks like it is for bot trading. We dont need to run it at this stage.
+                        // this->set_preferred_settings();
                     }
                     else
                     {
@@ -722,10 +723,6 @@ namespace atomic_dex
             this->cap_volume();
 
             this->get_orderbook_wrapper()->refresh_best_orders();
-            if (!m_price.isEmpty() || m_price != "0")
-            {
-                this->determine_fees();
-            }
         }
     }
 
@@ -1063,7 +1060,18 @@ namespace atomic_dex
             auto available_quantity = m_preferred_order->at("base_max_volume").get<std::string>();
             if (this->m_current_trading_mode == TradingModeGadget::Pro)
             {
-                this->set_volume(QString::fromStdString(utils::extract_large_float(available_quantity)));
+                m_preferred_order->operator[]("capped") = false;
+                this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preferred_order->at("price").get<std::string>()))));
+                this->determine_max_volume();
+                QString min_vol = QString::fromStdString(utils::format_float(safe_float(m_preferred_order->at("base_min_volume").get<std::string>())));
+                this->set_min_trade_vol(min_vol);
+                auto available_quantity = m_preferred_order->at("base_max_volume").get<std::string>();
+                if (this->m_current_trading_mode == TradingModeGadget::Pro)
+                {
+                    this->set_volume(QString::fromStdString(utils::extract_large_float(available_quantity)));
+                }
+                this->get_orderbook_wrapper()->refresh_best_orders();
+                emit preferredOrderChangeFinished();
             }
             else if (this->m_current_trading_mode == TradingModeGadget::Simple && m_preferred_order->contains("initial_input_volume"))
             {
@@ -1157,23 +1165,27 @@ namespace atomic_dex
         const auto  rel         = market_pair->get_right_selected_coin().toStdString();
         const auto  swap_method = m_market_mode == MarketMode::Sell ? "sell"s : "buy"s;
         std::string volume      = get_volume().toStdString();
+        std::string price       = get_price().toStdString();
 
-        if (base == rel)
+        if (base == rel) // trade_preimage::BaseEqualRel 
         {
             return;
         }
-        if (volume == "0")
+        if (volume == "0") // trade_preimage::VolumeTooLow (can also occur if trade vol + fees is > balance)
         {
-            volume = "0.0001";
+            return;
+        }
+        if (std::stof(price) < 0.00000001) // trade_preimage::PriceTooLow
+        {
+            return;
         }
 
-        SPDLOG_DEBUG("get_volume().toStdString(): {}", get_volume().toStdString());
         t_trade_preimage_request req{
             .base_coin = base,
             .rel_coin = rel,
             .swap_method = swap_method,
             .volume = volume,
-            .price = get_price().toStdString()
+            .price = price
         };
 
         nlohmann::json batch;
@@ -1181,7 +1193,7 @@ namespace atomic_dex
         mm2::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
-        SPDLOG_DEBUG("trade_preimage request: {}", preimage_request.dump(-1));
+        SPDLOG_DEBUG("trade_preimage request: {}", preimage_request.dump(4));
 
         this->set_preimage_busy(true);
         auto answer_functor = [this, &mm2](web::http::http_response resp)
