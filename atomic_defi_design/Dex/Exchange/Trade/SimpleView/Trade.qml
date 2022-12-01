@@ -24,7 +24,7 @@ ClipRRect // Trade Card
     readonly property var min_trade_volume: Constants.API.app.trading_pg.min_trade_vol
     readonly property var sell_ticker_balance: parseFloat(API.app.get_balance(left_ticker))
     readonly property bool coin_tradable: selectedTicker !== "" && sell_ticker_balance > 0
-    readonly property bool waiting_for_sell_coin_info: (API.app.trading_pg.max_volume == 0 || !Constants.General.isZhtlcReady(left_ticker)) && sell_ticker_balance != 0
+    readonly property bool waiting_for_sell_coin_info: (max_trade_volume == 0 || !Constants.General.isZhtlcReady(left_ticker)) && sell_ticker_balance != 0
 
     property string selectedTicker: sell_ticker_balance > 0 ? left_ticker : ""
     property var    selectedOrder:  undefined
@@ -295,7 +295,7 @@ ClipRRect // Trade Card
                 AmountField // Amount
                 {
                     id: _fromValue
-                    enabled: !waiting_for_sell_coin_info
+                    enabled: sell_ticker_balance == 0 ? false : waiting_for_sell_coin_info ? false : true
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
