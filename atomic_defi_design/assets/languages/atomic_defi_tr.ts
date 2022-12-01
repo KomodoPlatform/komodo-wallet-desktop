@@ -775,7 +775,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="101"/>
         <source>Trade price is more than 50% different to CEX! Confirm?</source>
-        <translation type="unfinished"></translation>
+        <translation>Takas ücreti CEX ile karşılaştırıldığında %50'den daha fazla farka sahip. Onaylıyor musunuz?</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="162"/>
@@ -790,7 +790,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="284"/>
         <source>dPoW protected </source>
-        <translation type="unfinished"></translation>
+        <translation>dPoW korumalı </translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="320"/>
