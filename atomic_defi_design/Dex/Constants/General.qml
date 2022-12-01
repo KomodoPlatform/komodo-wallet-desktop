@@ -64,11 +64,12 @@ QtObject {
         return coin_info.is_zhtlc_family
     }
 
-    function isZhtlcReady(ticker, progress=100)
+    function isZhtlcReady(ticker)
     {
+        if (!isZhtlc(ticker)) return true
+        let activation_status = API.app.get_zhtlc_status(ticker)
+        let progress = zhtlcActivationProgress(activation_status, ticker)
         if (progress == 100) return true
-        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        if (!coin_info.is_zhtlc_family) return true
         return false
     }
 
@@ -385,30 +386,24 @@ QtObject {
             )
     }
 
-    function getSimpleFromPlaceholder(selectedTicker, selectedOrder) {
-        if (isZhtlc(selectedTicker))
+    function getSimpleFromPlaceholder(selectedTicker, selectedOrder, sell_ticker_balance) {
+        if (sell_ticker_balance == 0)
         {
-            let activation_status = API.app.get_zhtlc_status(selectedTicker)
-            let progress = zhtlcActivationProgress(activation_status, selectedTicker)
-
-            if (!isZhtlcReady(selectedTicker, progress))
-            {
-                return qsTr("Activating %1 (%2%)").arg(atomic_qt_utilities.retrieve_main_ticker(selectedTicker)).arg(progress)
-            }
+            return qsTr("%1 balance is zero").arg(selectedTicker)
         }
-
+        if (!isZhtlcReady(selectedTicker))
+        {
+            return qsTr("Activating %1 (%2%)").arg(atomic_qt_utilities.retrieve_main_ticker(selectedTicker)).arg(progress)
+        }
         if (API.app.trading_pg.max_volume == 0)
         {
             return qsTr("Loading wallet...")
         }
-        else if (typeof selectedOrder !== 'undefined')
+        if (typeof selectedOrder !== 'undefined')
         {
             return qsTr("Min: %1").arg(API.app.trading_pg.min_trade_vol)
         }
-        else
-        {
-            return qsTr("Enter an amount")
-        }
+        return qsTr("Enter an amount")
     }
 
     function arrayExclude(arr, excl) {

@@ -19,8 +19,14 @@ ClipRRect // Trade Card
 {
     id: _tradeCard
 
-    readonly property var fees: API.app.trading_pg.fees
-    property string selectedTicker: API.app.get_balance(left_ticker) > 0 ? left_ticker : ""
+    readonly property var fees: Constants.API.app.trading_pg.fees
+    readonly property var max_trade_volume: Constants.API.app.trading_pg.max_volume
+    readonly property var min_trade_volume: Constants.API.app.trading_pg.min_trade_vol
+    readonly property var sell_ticker_balance: parseFloat(API.app.get_balance(left_ticker))
+    readonly property bool coin_tradable: selectedTicker !== "" && sell_ticker_balance > 0
+    readonly property bool waiting_for_sell_coin_info: (API.app.trading_pg.max_volume == 0 || !Constants.General.isZhtlcReady(left_ticker)) && sell_ticker_balance != 0
+
+    property string selectedTicker: sell_ticker_balance > 0 ? left_ticker : ""
     property var    selectedOrder:  undefined
     property bool   best: false
     property bool   coinSelection: false
@@ -63,8 +69,8 @@ ClipRRect // Trade Card
         {
             if (typeof selectedOrder === 'undefined')
                 return
-            if (parseFloat(_fromValue.text) > Constants.API.app.trading_pg.max_volume)
-                _fromValue.text = Constants.API.app.trading_pg.max_volume
+            if (parseFloat(_fromValue.text) > max_trade_volume)
+                _fromValue.text = max_trade_volume
                 Constants.API.app.trading_pg.determine_fees()
         }
 
@@ -246,7 +252,7 @@ ClipRRect // Trade Card
                     anchors.verticalCenter: _fromTitle.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 17
-                    text: qsTr("%1").arg(Constants.API.app.trading_pg.max_volume) // This is slow to appear
+                    text: qsTr("%1").arg(max_trade_volume) // This is slow to appear
                     font.pixelSize: Constants.Style.textSizeSmall2
                     elide: Text.ElideRight
                     color: DexTheme.foregroundColorLightColor1
@@ -289,13 +295,12 @@ ClipRRect // Trade Card
                 AmountField // Amount
                 {
                     id: _fromValue
-                    enabled: selectedTicker !== ""
-                    visible: enabled
+                    enabled: !waiting_for_sell_coin_info
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
                     anchors.leftMargin: 2
-                    placeholderText: Constants.General.getSimpleFromPlaceholder(selectedTicker, selectedOrder)
+                    placeholderText: Constants.General.getSimpleFromPlaceholder(selectedTicker, selectedOrder, sell_ticker_balance)
                     font.pixelSize: Constants.Style.textSizeSmall3
                     background: Rectangle { color: swap_from_card.color}
 
@@ -311,9 +316,9 @@ ClipRRect // Trade Card
 
                     onFocusChanged:
                     {
-                        if (!focus && parseFloat(text) < parseFloat(Constants.API.app.trading_pg.min_trade_vol))
+                        if (!focus && parseFloat(text) < parseFloat(min_trade_volume))
                         {
-                            text = Constants.API.app.trading_pg.min_trade_vol
+                            text = min_trade_volume
                         }
                     }
                     Component.onCompleted: text = ""
@@ -432,20 +437,13 @@ ClipRRect // Trade Card
                     text: qsTr("MAX")
                     color: Dex.CurrentTheme.foregroundColor2
 
-                    onClicked: _fromValue.text = Constants.API.app.trading_pg.max_volume
+                    onClicked: _fromValue.text = max_trade_volume
                 }
 
                 DefaultBusyIndicator
                 {
                     anchors.centerIn: parent
-                    visible:
-                    {
-                        console.log("selectedTicker: " + selectedTicker)
-                        console.log("Constants.API.app.trading_pg.max_volume: " + Constants.API.app.trading_pg.max_volume)
-                        console.log("_fromValue.placeholderText: " + _fromValue.placeholderText)
-                        console.log("_fromValue.placeholderText.search(Activating): " + _fromValue.placeholderText.search("Activating"))
-                        selectedTicker !== "" && Constants.API.app.trading_pg.max_volume == 0 && _fromValue.placeholderText.search("Activating") == -1
-                    }
+                    visible: waiting_for_sell_coin_info
                 }
             }
 
@@ -712,17 +710,15 @@ ClipRRect // Trade Card
                     function getAlert()
                     {
                         console.log("_fromValue.text: " + _fromValue.text)
-                        var left_ticker = Constants.API.app.trading_pg.market_pairs_mdl.left_selected_coin
                         var right_ticker = Constants.API.app.trading_pg.market_pairs_mdl.right_selected_coin
                         var base_ticker = Constants.API.app.trading_pg.market_pairs_mdl.base_selected_coin
                         var rel_ticker = Constants.API.app.trading_pg.market_pairs_mdl.rel_selected_coin
-                        var fee_info = Constants.API.app.trading_pg.fees
 
                         if (_fromValue.text === "" || parseFloat(_fromValue.text) === 0)
                             return qsTr("Entered amount must be higher than 0.")
                         if (typeof selectedOrder === 'undefined')
                             return qsTr("Select an order.")
-                        return Constants.General.getTradingError(last_trading_error, fee_info, base_ticker, rel_ticker, left_ticker, right_ticker)
+                        return Constants.General.getTradingError(last_trading_error, fees, base_ticker, rel_ticker, left_ticker, right_ticker)
                     }
 
                     tooltipText: _swapAlert.getAlert()

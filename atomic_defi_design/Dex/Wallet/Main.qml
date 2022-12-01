@@ -533,7 +533,7 @@ Item
                 DefaultButton
                 {
                     // Address wont display until activated
-                    enabled: General.isZhtlcReady(api_wallet_page.ticker, activation_progress)
+                    enabled: General.isZhtlcReady(api_wallet_page.ticker)
                     anchors.fill: parent
                     radius: 18
 
@@ -556,7 +556,7 @@ Item
                 // Receive button error icon
                 DefaultAlertIcon
                 {
-                    visible: !General.isZhtlcReady(api_wallet_page.ticker, activation_progress)
+                    visible: !General.isZhtlcReady(api_wallet_page.ticker)
                     tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
