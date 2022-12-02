@@ -755,7 +755,7 @@
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="240"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
-        <translation>Utiliser les paramètres de protection personnalisés pour les transactions%1 entrantes</translation>
+        <translation>Utiliser les paramètres de protection personnalisés pour les transactions %1 entrantes</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="253"/>
@@ -785,7 +785,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="189"/>
         <source>&lt;b&gt;Total %1 fees:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Frais totaux %1: </translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="282"/>
@@ -1443,18 +1443,18 @@
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="369"/>
-        <source>&lt;b&gt;Taxes de transaction du preneur:&lt;/b&gt; </source>
-        <translation type="unfinished"></translation>
+        <source>&lt;b&gt;Taker tx fee:&lt;/b&gt; </source>
+        <translation type="unfinished">Taxes de transaction du preneur: </translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="370"/>
-        <source>&lt;b&gt;Taxes de transaction de DEX:&lt;/b&gt; </source>
-        <translation type="unfinished"></translation>
+        <source>&lt;b&gt;Dex tx fee:&lt;/b&gt; </source>
+        <translation type="unfinished">Taxes de transaction de DEX: </translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="371"/>
-        <source>&lt;b&gt;Taxes de DEX:&lt;/b&gt; </source>
-        <translation type="unfinished"></translation>
+        <source>&lt;b&gt;Dex fee:&lt;/b&gt; </source>
+        <translation type="unfinished">Taxes de DEX: </translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="372"/>
