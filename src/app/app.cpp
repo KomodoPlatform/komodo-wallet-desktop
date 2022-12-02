@@ -22,6 +22,7 @@
 //! QT
 #include <QDebug>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QProcess>
 #include <QSettings>
 #include <QTimer>
@@ -425,6 +426,12 @@ namespace atomic_dex
     const mm2_service& application::get_mm2() const
     {
         return this->system_manager_.get_system<mm2_service>();
+    }
+
+    QJsonObject application::get_zhtlc_status(const QString& coin)
+    {
+        QJsonObject  res = nlohmann_json_object_to_qt_json_object(get_mm2().get_zhtlc_status(coin.toStdString()));
+        return res;
     }
 
     QString application::get_balance(const QString& coin)

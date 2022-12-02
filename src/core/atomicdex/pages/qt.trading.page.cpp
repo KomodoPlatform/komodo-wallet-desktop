@@ -678,7 +678,7 @@ namespace atomic_dex
         {
             this->set_price("0");
             this->set_max_volume("0");
-            m_minimal_trading_amount = "0";
+            m_minimal_trading_amount = "0.00777";
             emit minTradeVolChanged();
             this->set_volume("0");
         }
@@ -1307,6 +1307,10 @@ namespace atomic_dex
             {
                 current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
             }
+            else if (safe_float(m_total_amount.toStdString()) < 0.00777)
+            {
+                current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum;
+            }
             else
             {
                 if (!get_fees().empty())
@@ -1466,6 +1470,11 @@ namespace atomic_dex
             // Commenting out as it might be better to not update if this is the case.
             // If not associated bugs appear as a result, we can delete this.
             // min_trade_vol = get_orderbook_wrapper()->get_current_min_taker_vol();
+        }
+        
+        if (safe_float(min_taker_vol) < 0.00777)
+        {
+            min_trade_vol = "0.00777";
         }
 
         if (min_trade_vol != m_minimal_trading_amount)

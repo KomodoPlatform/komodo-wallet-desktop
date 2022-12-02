@@ -157,7 +157,6 @@ namespace atomic_dex
             {
                 taker_vol_std = "0";
             }
-            // t_float_50 mm2_min_trade_vol = safe_float(trading_pg.get_mm2_min_trade_vol().toStdString());
             t_float_50 taker_vol = safe_float(taker_vol_std);
             i_have_enough_funds  = min_volume_f > 0 && taker_vol > min_volume_f;
             return i_have_enough_funds;

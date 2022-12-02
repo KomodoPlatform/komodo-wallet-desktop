@@ -183,11 +183,13 @@ namespace atomic_dex
 
      public:
        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
-       void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
-       void               remove_custom_coin(const std::string& ticker);
-       [[nodiscard]] bool is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
-       [[nodiscard]] bool is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
-       [[nodiscard]] bool is_zhtlc_coin_ready(const std::string coin) const;
+       void                         add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
+       void                         remove_custom_coin(const std::string& ticker);
+       [[nodiscard]] bool           is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
+       [[nodiscard]] bool           is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
+       [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;
+       [[nodiscard]] nlohmann::json get_zhtlc_status(const std::string coin) const;
+
 
        //! Disable a single coin
        bool disable_coin(const std::string& ticker, std::error_code& ec);

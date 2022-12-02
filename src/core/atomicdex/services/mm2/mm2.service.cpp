@@ -1431,6 +1431,16 @@ namespace atomic_dex
         }
     }
 
+    nlohmann::json mm2_service::get_zhtlc_status(const std::string coin) const
+    {
+        const auto coin_info       = get_coin_info(coin);
+        if (coin_info.is_zhtlc_family)
+        {
+            return coin_info.activation_status;
+        }
+        return {};
+    }
+
     bool mm2_service::is_zhtlc_coin_ready(const std::string coin) const
     {
         const auto coin_info       = get_coin_info(coin);
@@ -1438,6 +1448,7 @@ namespace atomic_dex
         {
             if (coin_info.activation_status.contains("result"))
             {
+                SPDLOG_DEBUG("coin_info.activation_status {} {} :", coin, coin_info.activation_status.dump(4));
                 if (coin_info.activation_status.at("result").contains("status"))
                 {
                     if (coin_info.activation_status.at("result").at("status") == "Ready")
