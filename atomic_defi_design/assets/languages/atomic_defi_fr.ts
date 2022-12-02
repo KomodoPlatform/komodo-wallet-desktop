@@ -775,7 +775,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="100"/>
         <source>Trade price is more than 50% different to CEX! Confirm?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Le prix est supérieur à 50% du prix sur les CEX ! Êtes-vous sûr ?</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="160"/>
@@ -790,7 +790,7 @@
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="282"/>
         <source>dPoW protected </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Protégé par dPoW</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="318"/>
@@ -1443,23 +1443,23 @@
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="369"/>
-        <source>&lt;b&gt;Taker tx fee:&lt;/b&gt; </source>
+        <source>&lt;b&gt;Taxes de transaction du preneur:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="370"/>
-        <source>&lt;b&gt;Dex tx fee:&lt;/b&gt; </source>
+        <source>&lt;b&gt;Taxes de transaction de DEX:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="371"/>
-        <source>&lt;b&gt;Dex fee:&lt;/b&gt; </source>
+        <source>&lt;b&gt;Taxes de DEX:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="372"/>
         <source>&lt;b&gt;Maker tx fee:&lt;/b&gt; </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Taxes de transaction du créateur</translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="754"/>
