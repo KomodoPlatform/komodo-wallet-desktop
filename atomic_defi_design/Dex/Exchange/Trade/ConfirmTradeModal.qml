@@ -73,12 +73,12 @@ MultipageModal
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
 
-                // Large margin Warning
+                // Large margin warning
                 FloatingBackground
                 {
                     Layout.alignment: Qt.AlignCenter
-                    width: 425
-                    height: 30
+                    width: childrenRect.width
+                    height: childrenRect.height
                     color: Style.colorRed2
                     visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
 
@@ -95,14 +95,12 @@ MultipageModal
                             textColor: Style.colorWhite0
                             visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
                             spacing: 2
-                            boxWidth: 20
-                            boxHeight: 20
-                            labelWidth: 400
+                            boxWidth: 16
+                            boxHeight: 16
                             label.wrapMode: Label.NoWrap
                             text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
+                            font: DexTypo.caption
                         }
-
-                        Item { width: 3 }
                     }
                 }
 
@@ -200,7 +198,7 @@ MultipageModal
 
                     Repeater
                     {
-                        model: root.fees.hasOwnProperty('base_transaction_fees_ticker') ? root.fees.total_fees : []
+                        model: root.fees.hasOwnProperty('base_transaction_fees_ticker')  && !API.app.trading_pg.preimage_rpc_busy ? root.fees.total_fees : []
                         delegate: DefaultText
                         {
                             text: General.getFeesDetailText(

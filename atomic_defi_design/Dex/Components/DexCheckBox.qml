@@ -53,7 +53,6 @@ CheckBox
     {
         id: _content
         Layout.alignment: Qt.AlignVCenter
-        Layout.preferredWidth: labelWidth
         height: _label.height
         spacing: 0
 
@@ -63,8 +62,6 @@ CheckBox
             text: control.text
             font: control.font
             color: control.textColor
-            Layout.alignment: Qt.AlignVCenter
-            Layout.fillWidth: true
             verticalAlignment: Text.AlignVCenter
             leftPadding: control.indicator.width + control.spacing
             wrapMode: Label.Wrap
