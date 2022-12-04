@@ -692,7 +692,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="24"/>
         <source>Confirm Multi Order Details</source>
-        <translation>Bestätigen Sie die Details des Mehrfachauftrags</translation>
+        <translation>Bestätigen Sie die Details der Mehrfachorder</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="76"/>
@@ -837,7 +837,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
     <message>
         <location filename="../../Dex/Screens/Dashboard.qml" line="401"/>
         <source>Order Matching</source>
-        <translation type="unfinished">Auftrag wird zusammengeführt</translation>
+        <translation type="unfinished">Order wird zusammengeführt</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Dashboard.qml" line="403"/>
@@ -847,7 +847,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
     <message>
         <location filename="../../Dex/Screens/Dashboard.qml" line="403"/>
         <source>Order Matched</source>
-        <translation type="unfinished">Auftrag wurde zusammengeführt</translation>
+        <translation type="unfinished">Order wurde zusammengeführt</translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Dashboard.qml" line="405"/>
@@ -1704,7 +1704,7 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/BestOrder/List.qml" line="17"/>
         <source>Best Orders</source>
-        <translation>Die günstigsten Aufträge</translation>
+        <translation>Die günstigsten Order</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/BestOrder/List.qml" line="35"/>
@@ -1717,12 +1717,12 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="125"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation>%1 ist nicht aktiviert - Möchten Sie es aktivieren, um die günstigsten Aufträge von %2 auswählen zu können? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Ja&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Nein&lt;/a&gt;</translation>
+        <translation>%1 ist nicht aktiviert - Möchten Sie es aktivieren, um die günstigsten Order von %2 auswählen zu können? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Ja&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Nein&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="52"/>
         <source>This order requires a minimum amount of %1 %2 &lt;br&gt;You don&apos;t have enough funds.&lt;br&gt; %3</source>
-        <translation>Für diesen Auftrag ist ein Mindestbetrag von %1 %2 erforderlich. &lt;br&gt;Ihr Guthaben reicht nicht aus.&lt;br&gt; %3</translation>
+        <translation>Für diese Order ist ein Mindestbetrag von %1 %2 erforderlich. &lt;br&gt;Ihr Guthaben reicht nicht aus.&lt;br&gt; %3</translation>
     </message>
 </context>
 <context>
@@ -1967,7 +1967,7 @@ They will be removed from the orderbook until you log in again.</source>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="48"/>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="100"/>
         <source>Orders</source>
-        <translation type="unfinished">Auftrag</translation>
+        <translation type="unfinished">Order</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="56"/>
@@ -1978,12 +1978,12 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="15"/>
         <source>Place Order</source>
-        <translation type="unfinished">Auftrag platzieren</translation>
+        <translation type="unfinished">Order platzieren</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="117"/>
         <source>Order Selected</source>
-        <translation>Auftrag ausgewählt</translation>
+        <translation>Order ausgewählt</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="199"/>
@@ -2324,7 +2324,7 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="150"/>
         <source>Order Matching</source>
-        <translation>Auftrag wird abgeglichen</translation>
+        <translation>Order wird abgeglichen</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="152"/>
@@ -2334,7 +2334,7 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="152"/>
         <source>Order Matched</source>
-        <translation>Auftrag wurde abgestimmt</translation>
+        <translation>Order wurde abgestimmt</translation>
     </message>
     <message>
         <location filename="../../Dex/Dashboard/NotificationsModal.qml" line="154"/>
@@ -2591,22 +2591,22 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="30"/>
         <source>Order Details</source>
-        <translation>Auftragsdetails</translation>
+        <translation>Orderdetails</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="121"/>
         <source>Order Type</source>
-        <translation>Auftragsart</translation>
+        <translation>Orderart</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="122"/>
         <source>Maker Order</source>
-        <translation>Maker-Auftrag</translation>
+        <translation>Maker-Order</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="122"/>
         <source>Taker Order</source>
-        <translation>Taker-Auftrag</translation>
+        <translation>Taker-Order</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="130"/>
@@ -2642,7 +2642,7 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="258"/>
         <source>Cancel Order</source>
-        <translation>Auftrag Abbrechen</translation>
+        <translation>Order Abbrechen</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="150"/>
@@ -2701,14 +2701,14 @@ They will be removed from the orderbook until you log in again.</source>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="13"/>
         <source>Selected Order Removed</source>
-        <translation>Ausgewählten Auftrag entfernt</translation>
+        <translation>Ausgewählte Order entfernt</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="20"/>
         <source>The selected order does not exist anymore, it might have been matched or canceled, and no order with a better price is available.
 Please select a new order.</source>
-        <translation>Der ausgewählte Auftrag existiert nicht mehr! Er wurde möglicherweise zugeordnet oder storniert und es ist kein Auftrag mit einem besseren Preis verfügbar.
-Bitte wählen Sie einen neuen Auftrag aus.</translation>
+        <translation>Die ausgewählte Order existiert nicht mehr! Sie wurde möglicherweise zugeordnet oder storniert und es ist keine Order mit einem besseren Preis verfügbar.
+Bitte wählen Sie eine neue Order aus.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="27"/>
@@ -2930,12 +2930,12 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Exchange/Trade/ProView.qml" line="89"/>
         <source>Failed to place the order</source>
-        <translation>Der Auftrag konnte nicht platziert werden</translation>
+        <translation>Die Order konnte nicht platziert werden</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/ProView.qml" line="100"/>
         <source>Placed the order</source>
-        <translation>Auftrag platziert</translation>
+        <translation>Order platziert</translation>
     </message>
 </context>
 <context>
@@ -3667,7 +3667,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="225"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
-        <translation>%1 ist nicht aktiviert - Möchten Sie es aktivieren, um die günstigsten Aufträge von %2 auswählen zu können? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Ja&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Nein&lt;/a&gt;</translation>
+        <translation>%1 ist nicht aktiviert - Möchten Sie es aktivieren, um die günstigsten Order von %2 auswählen zu können? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Ja&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Nein&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -3767,7 +3767,7 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="84"/>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="285"/>
         <source>Orders</source>
-        <translation type="unfinished">Auftrag</translation>
+        <translation type="unfinished">Order</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="119"/>
@@ -3847,9 +3847,9 @@ Bitte wählen Sie einen neuen Auftrag aus.</translation>
         <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds. 
 
 %1 enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
-        <translation>Bei anderen DEXs können Sie im Allgemeinen nur Assets handeln, die auf einem einzigen Blockchain-Netzwerk basieren, Proxy-Token verwenden und nur einen einzigen Auftrag mit denselben Geldmitteln aufgeben.
+        <translation>Bei anderen DEXs können Sie im Allgemeinen nur Assets handeln, die auf einem einzigen Blockchain-Netzwerk basieren, Proxy-Token verwenden und nur eine einzige Order mit denselben Geldmitteln aufgeben.
 
-%1 ermöglicht Ihnen den nativen Handel über zwei verschiedene Blockchain-Netzwerke ohne Proxy-Token. Sie können auch mehrere Aufträge mit demselben Guthaben aufgeben. Sie können beispielsweise 0,1 BTC für KMD, QTUM oder VRSC verkaufen – die erste Order, die automatisch ausgeführt wird, storniert alle anderen Orders.</translation>
+%1 ermöglicht Ihnen den nativen Handel über zwei verschiedene Blockchain-Netzwerke ohne Proxy-Token. Sie können auch mehrere Order mit demselben Guthaben aufgeben. Sie können beispielsweise 0,1 BTC für KMD, QTUM oder VRSC verkaufen – die erste Order, die automatisch ausgeführt wird, storniert alle anderen Orders.</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="115"/>
@@ -3877,15 +3877,15 @@ If you go offline, so will your orders, and any that are in progress will fail, 
 When you come back online, your orders will begin to broadcast again at the price you set before you went offline. If there has been significant price movement in the meantime, you might unintentionally offer someone a bargain!
 
 For this reason, we recommend cancelling orders before closing %1, or reviewing and revising your prices when restarting %1.</source>
-        <translation>Ja. Sie müssen mit dem Internet verbunden bleiben und die App ausführen, um jeden Atomic Swap erfolgreich abzuschließen (sehr kurze Verbindungsunterbrechungen sind normalerweise in Ordnung). Andernfalls besteht das Risiko einer Auftragsstornierung, wenn Sie ein Maker sind, und das Risiko eines Geldverlusts, wenn Sie ein Taker sind.
+        <translation>Ja. Sie müssen mit dem Internet verbunden bleiben und die App ausführen, um jeden Atomic Swap erfolgreich abzuschließen (sehr kurze Verbindungsunterbrechungen sind normalerweise in Ordnung). Andernfalls besteht das Risiko einer Orderstornierung, wenn Sie ein Maker sind, und das Risiko eines Geldverlusts, wenn Sie ein Taker sind.
 
 Das Atomic-Swap-Protokoll erfordert, dass beide Teilnehmer online bleiben und die beteiligten Blockchains überwachen, damit der Prozess atomar bleibt.
 
-Wenn Sie offline gehen, werden Ihre offenen und laufenden Aufträge fehlschlagen, was zu einem potenziellen Verlust von Handels-/Transaktionsgebühren und einem Warten auf das Timeout des Swaps und die Ausstellung einer Rückerstattung führen kann. Es kann sich auch negativ auf den Reputationswert Ihrer Brieftasche für zukünftige Handelsabgleiche auswirken.
+Wenn Sie offline gehen, werden Ihre offenen und laufenden Order fehlschlagen, was zu einem potenziellen Verlust von Handels-/Transaktionsgebühren und einem Warten auf das Timeout des Swaps und die Ausstellung einer Rückerstattung führen kann. Es kann sich auch negativ auf den Reputationswert Ihrer Brieftasche für zukünftige Handelsabgleiche auswirken.
 
-Wenn Sie wieder online gehen, werden Ihre Aufträge wieder zu dem Preis übertragen, den Sie festgelegt haben, bevor Sie offline gegangen sind. Wenn es in der Zwischenzeit zu erheblichen Preisbewegungen gekommen ist, könnten Sie jemandem unbeabsichtigt ein Schnäppchen anbieten!
+Wenn Sie wieder online gehen, werden Ihre Order wieder zu dem Preis übertragen, den Sie festgelegt haben, bevor Sie offline gegangen sind. Wenn es in der Zwischenzeit zu erheblichen Preisbewegungen gekommen ist, könnten Sie jemandem unbeabsichtigt ein Schnäppchen anbieten!
 
-Aus diesem Grund empfehlen wir,Aufträge vor dem Schließen von %1 zu stornieren oder Ihre Preise zu überprüfen und zu überarbeiten, wenn Sie %1 neu starten.</translation>
+Aus diesem Grund empfehlen wir, Order vor dem Schließen von %1 zu stornieren oder Ihre Preise zu überprüfen und zu überarbeiten, wenn Sie %1 neu starten.</translation>
     </message>
     <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="135"/>
@@ -4045,7 +4045,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="160"/>
         <source>Instant trading with best orders</source>
-        <translation>Sofortiger Handel mit den besten Aufträgen</translation>
+        <translation>Sofortiger Handel mit den besten Order</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="192"/>
@@ -4080,7 +4080,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="538"/>
         <source>Pick an order</source>
-        <translation>Auftrag auswählen</translation>
+        <translation>Order auswählen</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="621"/>
@@ -4095,7 +4095,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="107"/>
         <source>Better price (%1) found but received quantity (%2) is lower than your current one (%3). Click here to update the selected order.</source>
-        <translation>Besseren Preis (%1) gefunden, aber erhaltene Menge (%2) ist niedriger als Ihre aktuelle (%3). Klicken Sie hier, um den ausgewählten Auftrag zu aktualisieren.</translation>
+        <translation>Besseren Preis (%1) gefunden, aber erhaltene Menge (%2) ist niedriger als Ihre aktuelle (%3). Klicken Sie hier, um den ausgewählte Order zu aktualisieren.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="248"/>
@@ -4125,12 +4125,12 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="677"/>
         <source>Failed to place the order</source>
-        <translation>Der Auftrag konnte nicht platziert werden</translation>
+        <translation>Die Order konnte nicht platziert werden</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="692"/>
         <source>Placed the order</source>
-        <translation>Auftrag platziert</translation>
+        <translation>Order platziert</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="716"/>
@@ -4140,12 +4140,12 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="718"/>
         <source>You must select an order.</source>
-        <translation>Sie müssen einen Auftrag auswählen.</translation>
+        <translation>Sie müssen eine Order auswählen.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="720"/>
         <source>Entered amount is below the minimum required by this order: %1</source>
-        <translation>Der eingegebene Betrag liegt unter dem für diesen Auftrag erforderlichen Mindestbetrag: %1</translation>
+        <translation>Der eingegebene Betrag liegt unter dem für diese Order erforderlichen Mindestbetrag: %1</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="722"/>
@@ -4167,7 +4167,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="865"/>
         <source>No buy orders found for %1.</source>
-        <translation>Keine Kaufaufträge für %1 gefunden.</translation>
+        <translation>Keine Kauforder für %1 gefunden.</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="872"/>
@@ -4215,17 +4215,17 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="133"/>
         <source>Order Book</source>
-        <translation>Auftragsbuch</translation>
+        <translation>Orderbuch</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="137"/>
         <source>Best Orders</source>
-        <translation>Besten Aufträge</translation>
+        <translation>Beste Order</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="141"/>
         <source>Place Order</source>
-        <translation>Auftrag platzieren</translation>
+        <translation>Order platzieren</translation>
     </message>
 </context>
 <context>
@@ -4353,7 +4353,7 @@ Die Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.
     <message>
         <location filename="../../Dex/Exchange/Trade/OrderBook/Vertical.qml" line="14"/>
         <source>Order Book</source>
-        <translation>Auftragsbuch</translation>
+        <translation>Orderbuch</translation>
     </message>
 </context>
 <context>
