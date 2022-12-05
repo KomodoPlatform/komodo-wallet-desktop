@@ -23,6 +23,7 @@
 #include <QVariant>
 #include <QVariantList>
 #include <QCryptographicHash> //> QCryptographicHash::hash, QCryptographicHash::Keccak_256
+#include <filesystem>
 
 #include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
