@@ -490,5 +490,7 @@ QtObject {
                                           "VOTE2022": "#7490AA",
                                           "USBL": "#279553",
                                           "RUNES": "#336699"
+                                          "SIX": "#ed0909"
+                                          "NATURE": "#04cf13"
                                       })
 }
