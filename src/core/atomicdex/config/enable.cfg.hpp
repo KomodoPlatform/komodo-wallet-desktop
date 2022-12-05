@@ -23,14 +23,12 @@
 
 namespace atomic_dex
 {
-    struct electrum_server
+    struct node
     {
-        std::string                url;
-        std::optional<std::string> protocol{"TCP"};
-        std::optional<std::string> ws_url;
-        std::optional<bool>        disable_cert_verification{false};
+        std::string                     url;
+        std::optional<bool>             gui_auth{false};
     };
 
-    void to_json(nlohmann::json& j, const electrum_server& cfg);
-    void from_json(const nlohmann::json& j, electrum_server& cfg);
+    void to_json(nlohmann::json& j, const node& cfg);
+    void from_json(const nlohmann::json& j, node& cfg);
 }

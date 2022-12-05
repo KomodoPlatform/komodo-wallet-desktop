@@ -1690,7 +1690,7 @@ They will be removed from the orderbook until you log in again.</source>
     </message>
     <message>
         <location filename="../../Dex/NewUpdateModal.qml" line="72"/>
-        <source>Could not check new updates because of the following reason: 
+        <source>Could not check new updates for the following reason: 
 %1</source>
     </message>
     <message>
@@ -2787,10 +2787,6 @@ Please select a new order.</source>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="573"/>
         <source>copied to clipboard</source>
-    </message>
-    <message>
-        <location filename="atomic_defi_design/qml/Settings/SettingModal.qml" line="322"/>
-        <source></source>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="128"/>

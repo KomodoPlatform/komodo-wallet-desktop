@@ -15,22 +15,31 @@
  ******************************************************************************/
 
 
-#pragma once
+//! Deps
+#include <nlohmann/json.hpp>
 
-//! STD
-#include <optional>
-#include <string>
+//! Project Headers
+#include "atomicdex/config/enable.cfg.hpp"
 
 namespace atomic_dex
 {
-    struct electrum_server
+    void
+    to_json(nlohmann::json& j, const node& cfg)
     {
-        std::string                url;
-        std::optional<std::string> protocol{"TCP"};
-        std::optional<std::string> ws_url;
-        std::optional<bool>        disable_cert_verification{false};
-    };
+        j["url"] = cfg.url;
+        if (cfg.gui_auth.has_value())
+        {
+            j["gui_auth"] = cfg.gui_auth.value();
+        }
+    }
 
-    void to_json(nlohmann::json& j, const electrum_server& cfg);
-    void from_json(const nlohmann::json& j, electrum_server& cfg);
-}
+    void
+    from_json(const nlohmann::json& j, node& cfg)
+    {
+        j.at("url").get_to(cfg.url);
+        if (j.count("gui_auth") == 1)
+        {
+            cfg.gui_auth = j.at("gui_auth").get<bool>();
+        }
+    }
+} // namespace atomic_dex

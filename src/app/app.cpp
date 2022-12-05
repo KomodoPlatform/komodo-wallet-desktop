@@ -22,6 +22,7 @@
 //! QT
 #include <QDebug>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QProcess>
 #include <QSettings>
 #include <QTimer>
@@ -234,6 +235,7 @@ namespace atomic_dex
             while (not m_portfolio_queue.empty())
             {
                 const char* ticker_cstr = nullptr;
+                bool add_to_init(true);
                 m_portfolio_queue.pop(ticker_cstr);
                 std::string ticker(ticker_cstr);
                 if (ticker == g_primary_dex_coin)
@@ -244,7 +246,17 @@ namespace atomic_dex
                 {
                     this->m_secondary_coin_fully_enabled = true;
                 }
-                to_init.push_back(ticker);
+                //! TODO: figure out why sometimes ZHTLC coins end up in here twice. When they do, without this check it crashes.
+                if (std::find(to_init.begin(), to_init.end(), ticker) != to_init.end()) {
+                    SPDLOG_DEBUG("Ticker {} is already in vector", ticker);
+                    add_to_init = false;
+                }
+                else {
+                    SPDLOG_DEBUG("Ticker {} is not already in vector", ticker);
+                }
+                if (add_to_init) {
+                    to_init.push_back(ticker);
+                }
                 std::free((void*)ticker_cstr);
             }
 
@@ -416,6 +428,12 @@ namespace atomic_dex
         return this->system_manager_.get_system<mm2_service>();
     }
 
+    QJsonObject application::get_zhtlc_status(const QString& coin)
+    {
+        QJsonObject  res = nlohmann_json_object_to_qt_json_object(get_mm2().get_zhtlc_status(coin.toStdString()));
+        return res;
+    }
+
     QString application::get_balance(const QString& coin)
     {
         std::error_code ec;
@@ -490,8 +508,8 @@ namespace atomic_dex
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
         wallet_manager.just_set_wallet_name("");
 
-        this->m_secondary_coin_fully_enabled = false;
         this->m_primary_coin_fully_enabled   = false;
+        this->m_secondary_coin_fully_enabled = false;
         system_manager_.get_system<qt_wallet_manager>().set_status("None");
         return std::filesystem::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
     }

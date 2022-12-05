@@ -182,6 +182,7 @@ SetupPage
                 {
                     id: _seedField
                     Layout.fillWidth: true
+                    max_length: General.max_pw_length
                     Layout.preferredHeight: 50
                     leftIcon: Qaterial.Icons.fileKey
                     field.font: DexTypo.body2
@@ -236,7 +237,7 @@ SetupPage
                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                 validator: (text) =>
                                 {
-                                    if (text.toLowerCase() === qsTr("i understand"))
+                                    if ([qsTr("i understand"), qsTr("я согласен"), qsTr("je comprends"), qsTr("entiendo"), qsTr("anladım"), qsTr("ich verstehe"), ].includes(text.toLowerCase()))
                                     {
                                         allow_custom_seed.checked = true;
                                     }
@@ -244,7 +245,7 @@ SetupPage
                                     {
                                         allow_custom_seed.checked = false;
                                     }
-                                    return text.toLowerCase() === qsTr("i understand")
+                                    return [qsTr("i understand"), qsTr("я согласен"), qsTr("je comprends"), qsTr("entiendo"), qsTr("anladım"), qsTr("ich verstehe"), ].includes(text.toLowerCase())
                                 },
                                 yesButtonText: qsTr("Ok")
                             })

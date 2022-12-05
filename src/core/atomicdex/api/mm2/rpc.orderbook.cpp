@@ -45,7 +45,7 @@ namespace atomic_dex::mm2
             cur_asks.min_volume                 = cur_asks.base_min_volume;
             cur_asks.min_volume_fraction_numer  = cur_asks.base_min_volume_numer;
             cur_asks.min_volume_fraction_denom  = cur_asks.base_min_volume_denom;
-            cur_asks.maxvolume                  = cur_asks.base_max_volume;
+            cur_asks.max_volume                 = cur_asks.base_max_volume;
             cur_asks.max_volume_fraction_numer  = cur_asks.base_max_volume_numer;
             cur_asks.max_volume_fraction_denom  = cur_asks.base_max_volume_denom;
 
@@ -54,10 +54,10 @@ namespace atomic_dex::mm2
                 boost::trim_right_if(cur_asks.price, boost::is_any_of("0"));
                 cur_asks.price = cur_asks.price;
             }
-            cur_asks.maxvolume = atomic_dex::utils::adjust_precision(cur_asks.maxvolume);
-            t_float_50 total_f                  = safe_float(cur_asks.price) * safe_float(cur_asks.maxvolume);
+            cur_asks.max_volume = atomic_dex::utils::adjust_precision(cur_asks.max_volume);
+            t_float_50 total_f                  = safe_float(cur_asks.price) * safe_float(cur_asks.max_volume);
             cur_asks.total                      = atomic_dex::utils::adjust_precision(total_f.str());
-            result_asks_f                       = result_asks_f + safe_float(cur_asks.maxvolume);
+            result_asks_f                       = result_asks_f + safe_float(cur_asks.max_volume);
         }
         answer.asks_total_volume = result_asks_f.str();
 
@@ -67,33 +67,33 @@ namespace atomic_dex::mm2
             cur_bids.min_volume                 = cur_bids.base_min_volume;
             cur_bids.min_volume_fraction_numer  = cur_bids.base_min_volume_numer;
             cur_bids.min_volume_fraction_denom  = cur_bids.base_min_volume_denom;
-            cur_bids.maxvolume                  = cur_bids.base_max_volume;
+            cur_bids.max_volume                 = cur_bids.base_max_volume;
             cur_bids.max_volume_fraction_numer  = cur_bids.base_max_volume_numer;
             cur_bids.max_volume_fraction_denom  = cur_bids.base_max_volume_denom;
-            cur_bids.total                      = cur_bids.maxvolume;
+            cur_bids.total                      = cur_bids.max_volume;
 
             if (cur_bids.price.find('.') != std::string::npos)
             {
                 boost::trim_right_if(cur_bids.price, boost::is_any_of("0"));
                 cur_bids.price = cur_bids.price;
             }
-            cur_bids.maxvolume = atomic_dex::utils::adjust_precision(cur_bids.maxvolume);
-            t_float_50 total_f                  = safe_float(cur_bids.price) * safe_float(cur_bids.maxvolume);
+            cur_bids.max_volume = atomic_dex::utils::adjust_precision(cur_bids.max_volume);
+            t_float_50 total_f                  = safe_float(cur_bids.price) * safe_float(cur_bids.max_volume);
             cur_bids.total                      = atomic_dex::utils::adjust_precision(total_f.str());
-            result_bids_f                       = result_bids_f + safe_float(cur_bids.maxvolume);
+            result_bids_f                       = result_bids_f + safe_float(cur_bids.max_volume);
         }
         answer.bids_total_volume = result_bids_f.str();
 
         for (auto&& cur_asks: answer.asks)
         {
-            t_float_50 percent_f   = safe_float(cur_asks.maxvolume) / result_asks_f;
+            t_float_50 percent_f   = safe_float(cur_asks.max_volume) / result_asks_f;
             cur_asks.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
             // SPDLOG_INFO("cur_asks: {}", cur_asks.to_string());
         }
 
         for (auto&& cur_bids: answer.bids)
         {
-            t_float_50 percent_f   = safe_float(cur_bids.maxvolume) / result_bids_f;
+            t_float_50 percent_f   = safe_float(cur_bids.max_volume) / result_bids_f;
             cur_bids.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
             // SPDLOG_INFO("cur_bids: {}", cur_bids.to_string());
         }

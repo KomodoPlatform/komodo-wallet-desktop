@@ -121,6 +121,10 @@ namespace atomic_dex
     {
         return std::any_of(g_wallet_only_coins.begin(), g_wallet_only_coins.end(), [ticker](std::string x) { return ticker == x; });
     }
+    bool is_default_coin(std::string ticker)
+    {
+        return std::any_of(g_default_coins.begin(), g_default_coins.end(), [ticker](std::string x) { return ticker == x; });
+    }
 
     void
     from_json(const nlohmann::json& j, coin_config& cfg)
@@ -141,6 +145,7 @@ namespace atomic_dex
         cfg.is_custom_coin       = j.contains("is_custom_coin") ? j.at("is_custom_coin").get<bool>() : false;
         cfg.is_testnet           = j.contains("is_testnet") ? j.at("is_testnet").get<bool>() : false;
         cfg.wallet_only          = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
+        cfg.default_coin         = is_default_coin(cfg.ticker);
 
         if (j.contains("other_types"))
         {
@@ -176,7 +181,14 @@ namespace atomic_dex
         }
         if (j.contains("nodes"))
         {
-            cfg.urls = j.at("nodes").get<std::vector<std::string>>();
+            // Todo: this is bad, we are using 2 times the required memory. Something can be improved here.
+            cfg.urls = j.at("nodes").get<std::vector<node>>();
+            cfg.eth_family_urls = std::vector<std::string>();
+            cfg.eth_family_urls.value().reserve(cfg.urls.value().size());
+            for (const auto& url : cfg.urls.value())
+            {
+                cfg.eth_family_urls->push_back(url.url);
+            }
         }
         if (j.contains("allow_slp_unsafe_conf"))
         {

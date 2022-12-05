@@ -533,7 +533,7 @@ Item
                 DefaultButton
                 {
                     // Address wont display until activated
-                    enabled: General.isZhtlcReady(api_wallet_page.ticker, activation_progress)
+                    enabled: General.isZhtlcReady(api_wallet_page.ticker)
                     anchors.fill: parent
                     radius: 18
 
@@ -556,7 +556,7 @@ Item
                 // Receive button error icon
                 DefaultAlertIcon
                 {
-                    visible: !General.isZhtlcReady(api_wallet_page.ticker, activation_progress)
+                    visible: !General.isZhtlcReady(api_wallet_page.ticker)
                     tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
@@ -656,15 +656,51 @@ Item
             {
                 Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
-                visible: enabled && current_ticker_infos.is_smartchain_test_coin
+                visible:  current_ticker_infos.is_smartchain_test_coin
 
                 DefaultButton
                 {
-                    text: qsTr("Faucet")
-                    radius: 18
-                    font.pixelSize: 16
+                    enabled: activation_progress == 100
                     anchors.fill: parent
+                    radius: 18
+                    label.text: qsTr("Faucet")
+                    label.font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
+                    content.anchors.rightMargin: 23
+
                     onClicked: api_wallet_page.claim_faucet()
+
+                    Row
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: arrow_send.anchors.rightMargin
+
+                        Qaterial.Icon
+                        {
+                            icon: Qaterial.Icons.water
+                            size: 24
+                            anchors.right: parent.right
+                            anchors.leftMargin: iconSize / 2
+                            anchors.rightMargin: iconSize / 2
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "cyan"
+
+                            DefaultTooltip
+                            {
+                                visible: alertArea.containsMouse && tooltipText != ""
+                                text: ""
+                            }
+                        }
+                    }
+                }
+
+                // Faucet button error icon
+                DefaultAlertIcon
+                {
+                    visible: activation_progress != 100
+                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
 
