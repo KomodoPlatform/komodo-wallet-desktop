@@ -20,7 +20,7 @@
 //! Project Headers
 #include "format.address.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const format_address& cfg)
@@ -28,4 +28,4 @@ namespace mm2::api
         j["format"] = cfg.format;
         j["network"] = cfg.network;
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

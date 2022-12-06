@@ -64,6 +64,7 @@ SetupPage
         {
             id: _inputPassword
             Layout.alignment: Qt.AlignHCenter
+            max_length: General.max_pw_length
             height: 50
             width: 300
             background.color: Dex.CurrentTheme.floatingBackgroundColor
@@ -113,6 +114,7 @@ SetupPage
         {
             Layout.alignment: Qt.AlignHCenter
             id: _keyChecker
+            max_pw_len: General.max_pw_length
             field: _inputPassword.field
             visible: false
         }

@@ -9,7 +9,10 @@ import "../Components"
 import "../Constants" as Dex
 import App 1.0
 
-GradientRectangle {
+GradientRectangle
+{
+    property int activation_progress: Dex.General.zhtlcActivationProgress(activation_status, ticker)
+
     width: list_bg.width - list_bg.border.width*2 - 6
     height: 44
     radius: Dex.Style.rectangleCornerRadius + 4
@@ -24,23 +27,23 @@ GradientRectangle {
         hoverEnabled: true
 
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: {
-            if(!can_change_ticker) return
-
-            if (mouse.button === Qt.RightButton) context_menu.popup()
-            else api_wallet_page.ticker = ticker
+        onClicked:
+        {
+            if (mouse.button === Qt.RightButton)
+            {
+                context_menu.can_disable = General.canDisable(ticker)
+                context_menu.popup()
+            }
+            else
+            {
+                api_wallet_page.ticker = ticker
+            }
         }
-        onPressAndHold: {
-            if(!can_change_ticker) return
-
-            if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
-        }
+        onPressAndHold: if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
     }
 
     // Right click menu
-    CoinMenu {
-        id: context_menu
-    }
+    CoinMenu { id: context_menu }
 
     readonly property double side_margin: 16
 
@@ -59,7 +62,7 @@ GradientRectangle {
             anchors.centerIn: parent
             anchors.fill: parent
             radius: 15
-            enabled: Dex.General.isZhtlc(ticker) ? Dex.General.zhtlcActivationProgress(activation_status, ticker) != 100 : false
+            enabled: Dex.General.isZhtlc(ticker) ? activation_progress != 100 : false
             visible: enabled
             opacity: .9
             color: Dex.DexTheme.backgroundColor
@@ -69,11 +72,11 @@ GradientRectangle {
         {
             anchors.centerIn: parent
             anchors.fill: parent
-            enabled: Dex.General.isZhtlc(ticker) ? Dex.General.zhtlcActivationProgress(activation_status, ticker) != 100 : false
+            enabled: Dex.General.isZhtlc(ticker) ? activation_progress != 100 : false
             visible: enabled
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            text: Dex.General.zhtlcActivationProgress(activation_status, ticker) + "%"
+            text: activation_progress + "%"
             font: Dex.DexTypo.head8
             color: Dex.DexTheme.greenColor
         }

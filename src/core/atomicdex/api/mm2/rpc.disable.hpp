@@ -6,7 +6,7 @@
 //! JSON FWD
 #include <nlohmann/json_fwd.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct disable_coin_request
     {
@@ -31,10 +31,10 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, disable_coin_answer& resp);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_disable_coin_request = ::mm2::api::disable_coin_request;
-    using t_disable_coin_answer = ::mm2::api::disable_coin_answer;
+    using t_disable_coin_request = mm2::disable_coin_request;
+    using t_disable_coin_answer = mm2::disable_coin_answer;
 }

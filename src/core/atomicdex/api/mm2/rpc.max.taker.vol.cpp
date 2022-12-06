@@ -23,7 +23,7 @@
 #include "atomicdex/utilities/global.utilities.hpp"
 
 //! Implementation RPC [max_taker_vol]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void
@@ -64,4 +64,4 @@ namespace mm2::api
             answer.result.value().coin = j.at("coin").get<std::string>();
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

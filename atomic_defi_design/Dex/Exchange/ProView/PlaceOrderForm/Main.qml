@@ -7,15 +7,66 @@ import Qaterial 1.0 as Qaterial
 import "../../../Components"
 import "../../../Constants"
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 import AtomicDEX.MarketMode 1.0
+import AtomicDEX.TradingError 1.0
 
 Widget
 {
     title: qsTr("Place Order")
+    property int loop_count: 0
+    property bool show_waiting_for_trade_preimage: false;
+    property var fees: API.app.trading_pg.fees
+    property var preimage_rpc_busy: API.app.trading_pg.preimage_rpc_busy
     property string protocolIcon: General.platformIcon(General.coinPlatform(left_ticker))
+    property var trade_preimage_error: fees.hasOwnProperty('error') ? fees["error"].split("] ").slice(-1) : ""
+    readonly property bool trade_preimage_ready: fees.hasOwnProperty('base_transaction_fees_ticker')
+    readonly property bool can_submit_trade: last_trading_error === TradingError.None
 
     margins: 15
     collapsable: false
+
+    Connections {
+        target: API.app.trading_pg
+
+        function onFeesChanged() {
+            // console.log("onFeesChanged::fees: " + JSON.stringify(fees))
+        }
+
+        function onPreImageRpcStatusChanged(){
+            // console.log("onPreImageRpcStatusChanged::preimage_rpc_busy: " + API.app.trading_pg.preimage_rpc_busy)
+        }
+        function onPrefferedOrderChanged(){
+            reset_fees_state()
+        }
+    }
+
+    Connections
+    {
+        target: app
+        function onPairChanged(left, right)
+        {
+            reset_fees_state()
+        }
+    }
+
+    Connections
+    {
+        target: exchange_trade
+        function onOrderSelected()
+        {
+            reset_fees_state()
+        }
+    }
+
+    function reset_fees_state()
+    {
+        show_waiting_for_trade_preimage = false;
+        check_trade_preimage.stop()
+        loop_count = 0
+        API.app.trading_pg.reset_fees()
+        errors.text_value = ""
+    }
 
     // Market mode selector
     RowLayout
@@ -60,7 +111,7 @@ Widget
             anchors.fill: parent
             anchors.centerIn: parent
 
-            DexLabel
+            Dex.Text
             {
                 id: protocolTitle
                 Layout.preferredWidth: parent.width
@@ -124,7 +175,10 @@ Widget
                 Layout.preferredWidth: 30
                 Layout.rightMargin: 5
                 foregroundColor: Dex.CurrentTheme.noColor
-                onClicked: API.app.trading_pg.reset_order()
+                onClicked: {
+                    API.app.trading_pg.reset_order()
+                    reset_fees_state()
+                }
 
                 Qaterial.ColorIcon
                 {
@@ -163,7 +217,7 @@ Widget
         Layout.preferredWidth: parent.width
 
         // Show errors
-        DefaultText
+        Dex.Text
         {
             id: errors
             visible: errors.text_value !== ""
@@ -190,6 +244,7 @@ Widget
 
     DexGradientAppButton
     {
+        id: swap_btn
         height: 40
         Layout.preferredWidth: parent.width - 20
         Layout.alignment: Qt.AlignHCenter
@@ -197,7 +252,78 @@ Widget
         radius: 18
         text: qsTr("START SWAP")
         font.weight: Font.Medium
-        enabled: formBase.can_submit_trade
-        onClicked: confirm_trade_modal.open()
+        enabled: can_submit_trade && !show_waiting_for_trade_preimage && errors.text_value == ""
+        onClicked: 
+        {
+            console.log("Getting fees info...")
+            API.app.trading_pg.determine_fees()
+            show_waiting_for_trade_preimage = true;
+        }
+
+        Item
+        {
+            visible: show_waiting_for_trade_preimage
+            height: parent.height - 10
+            width: parent.width - 10
+            anchors.fill: parent
+            anchors.centerIn: parent
+
+            DefaultBusyIndicator
+            {
+                id: preimage_BusyIndicator
+                anchors.fill: parent
+                anchors.centerIn: parent
+                indicatorSize: 32
+                indicatorDotSize: 5
+            }
+        }
+
+        DexMouseArea
+        {
+            id: areaAlert
+            hoverEnabled: true
+            anchors.fill: parent
+            onClicked: 
+            {
+                console.log("Getting fees info...")
+                API.app.trading_pg.determine_fees()
+                show_waiting_for_trade_preimage = true;
+                check_trade_preimage.start()
+            }
+        }
+    }
+
+    Timer {
+        id: check_trade_preimage
+        interval: 500;
+        running: false;
+        repeat: true;
+        triggeredOnStart: true;
+        onTriggered: {
+            loop_count++;
+            console.log("Getting fees info... " + loop_count + "/50")
+            if (trade_preimage_ready)
+            {
+                show_waiting_for_trade_preimage = false
+                loop_count = 0
+                stop()
+                confirm_trade_modal.open()
+            }
+            else if (trade_preimage_error != "")
+            {
+                loop_count = 0
+                errors.text_value = trade_preimage_error.toString()
+                show_waiting_for_trade_preimage = false
+                stop()
+
+            }
+            else if (loop_count > 50)
+            {
+                loop_count = 0
+                show_waiting_for_trade_preimage = false
+                trade_preimage_error = "Trade preimage timed out, try again."
+                stop()
+            }
+        }
     }
 }

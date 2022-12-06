@@ -28,31 +28,50 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-            ubuntu-qt-5-15-2,
-            osx-qt-5-15-2,
-            windows-10-qt-5-15-2
+            ubuntu-release,
+            ubuntu-debug,
+            osx-release,
+            osx-debug,
+            windows-release,
+            windows-debug
         ]
 
         include:
-          - name: ubuntu-qt-5-15-2
-            os: ubuntu-18.04
+          - name: ubuntu-release
+            os: ubuntu-20.04
             qt: '5.15.2'
-            type: 'release'
+            type: 'Release'
+            host: 'linux'
 
-          - name: osx-qt-5-15-2
-            os: macos-latest
+          - name: ubuntu-debug
+            os: ubuntu-20.04
             qt: '5.15.2'
-            type: 'release'
+            type: 'Debug'
+            host: 'linux'
 
-          - name: windows-10-qt-5-15-2
+          - name: osx-release
+            os: macos-11
+            qt: '5.15.2'
+            type: 'Release'
+            host: 'mac'
+
+          - name: osx-debug
+            os: macos-11
+            qt: '5.15.2'
+            type: 'Debug'
+            host: 'mac'
+
+          - name: windows-release
             os: windows-latest
             qt: '5.15.2'
-            type: 'release'
+            type: 'Release'
+            host: 'windows'
 
-          #- name: osx-qt-5-15-2-dbg
-          #  os: macos-latest
-          #  qt: '5.15.2'
-          #  type: 'debug'
+          - name: windows-debug
+            os: windows-latest
+            qt: '5.15.2'
+            type: 'Debug'
+            host: 'windows'
 
     steps:
       - uses: actions/checkout@v2
@@ -65,55 +84,74 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Install MSVC
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1.4.1
+        
+      - name: Build libwally (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd '${{ github.workspace }}'
+          git clone -b v0.8.5 --recurse-submodules https://github.com/KomodoPlatform/libwally-core.git
+          cd '${{ github.workspace }}\libwally-core'
+          git submodule init
+          git submodule sync --recursive
+          git submodule update --init --recursive
+          $env:LIBWALLY_DIR='${{ github.workspace }}\libwally-core'
+          "$env:LIBWALLY_DIR\tools\msvc\gen_ecmult_static_context.bat"
+          copy src\ccan\ccan\str\hex\hex.c src\ccan\ccan\str\hex\hex_.c
+          copy src\ccan\ccan\base64\base64.c src\ccan\ccan\base64\base64_.c
+          cl /utf-8 /DUSE_ECMULT_STATIC_PRECOMPUTATION /DECMULT_WINDOW_SIZE=15 /DWALLY_CORE_BUILD /DHAVE_CONFIG_H /DSECP256K1_BUILD /I$env:LIBWALLY_DIR\src\wrap_js\windows_config /I$env:LIBWALLY_DIR /I$env:LIBWALLY_DIR\src /I$env:LIBWALLY_DIR\include /I$env:LIBWALLY_DIR\src\ccan /I$env:LIBWALLY_DIR\src\ccan\base64 /I$env:LIBWALLY_DIR\src\secp256k1 /Zi /LD src/aes.c src/anti_exfil.c src/base58.c src/base64.c src/bech32.c src/bip32.c src/bip38.c src/bip39.c src/blech32.c src/ecdh.c src/elements.c src/hex.c src/hmac.c src/internal.c src/mnemonic.c src/pbkdf2.c src/pullpush.c src/psbt.c src/script.c src/scrypt.c src/sign.c src/symmetric.c src/transaction.c src/wif.c src/wordlist.c src/ccan/ccan/crypto/ripemd160/ripemd160.c src/ccan/ccan/crypto/sha256/sha256.c src/ccan/ccan/crypto/sha512/sha512.c src/ccan/ccan/base64/base64_.c src\ccan\ccan\str\hex\hex_.c src/secp256k1/src/secp256k1.c src/secp256k1/src/precomputed_ecmult_gen.c src/secp256k1/src/precomputed_ecmult.c /Fewally.dll
+          Copy-Item "${{ github.workspace }}\libwally-core\wally.dll" -Destination "${{ github.workspace }}\wally\wally.dll" -force
+
+
+      - name: Install QT (macOS)
+        if: runner.os == 'macOS'
+        uses: KomodoPlatform/install-qt-action@v2.14.0
+        with:
+          version: ${{ matrix.qt }}
+          setup-python: 'false'
+          host: ${{ matrix.host }}
+          target: 'desktop'
+          dir: '${{ github.workspace }}'
+          modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
+
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
           setup-python: 'false'
-          host: 'linux'
+          host: ${{ matrix.host }}
           target: 'desktop'
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
 
-      - name: Install QT (MacOS)
-        if: runner.os == 'macOS'
-        uses: KomodoPlatform/install-qt-action@v2.14.0
-        with:
-          version: ${{ matrix.qt }}
-          setup-python: 'false'
-          host: 'mac'
-          target: 'desktop'
-          dir: '${{ github.workspace }}'
-          modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
-
-      - name: Install QT IFW (MacOS)
-        if: runner.os == 'macOS'
-        run: |
-          python3  -m aqt tool mac tools_ifw 4.4.1 qt.tools.ifw.44 --outputdir ${{ github.workspace }}/Qt
-          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.4/bin" >> $GITHUB_PATH
-
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
         uses: KomodoPlatform/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt }}
-          host: 'windows'
+          host: ${{ matrix.host }}
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
+      - name: Install QT IFW (MacOS)
+        if: runner.os == 'macOS'
+        run: |
+          python3  -m aqt tool ${{ matrix.host }} tools_ifw 4.5.0 qt.tools.ifw.45 --outputdir ${{ github.workspace }}/Qt
+          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.5/bin" >> $GITHUB_PATH
+
       - name: Install QT IFW (Windows)
         if: runner.os == 'Windows'
         run: |
           python -m pip install --upgrade pip
-          python -m aqt tool windows tools_ifw 4.4.1 qt.tools.ifw.44 --outputdir C:/Qt
-          echo "C:/Qt/Tools/QtInstallerFramework/4.4/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo $env:GITHUB_PATH
-          echo $env:PATH
+          python -m aqt tool ${{ matrix.host }} tools_ifw 4.5.0 qt.tools.ifw.45 --outputdir C:/Qt
+          echo "C:/Qt/Tools/QtInstallerFramework/4.5/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Install nim (Linux)
         if: runner.os == 'Linux'
@@ -126,7 +164,6 @@ jobs:
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
-          ls /home/runner/.choosenim/toolchains
           chmod +x /home/runner/.choosenim/toolchains/nim-1.4.8/bin/*
 
       - name: Install deps (Linux)
@@ -135,21 +172,6 @@ jobs:
           echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
           echo ${{ github.sha }}
           sudo ./ci_tools_atomic_dex/ci_scripts/linux_script.sh
-
-      - name: Upload env variable for vpkg (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          #echo "CXXFLAGS=-stdlib=libc++" >> $GITHUB_ENV
-          #echo "LDFLAGS=-stdlib=libc++" >> $GITHUB_ENV
-          echo "CXX=clang++-12" >> $GITHUB_ENV
-          echo "CC=clang-12" >> $GITHUB_ENV
-
-      - name: vcpkg deps (All)
-        uses: KomodoPlatform/run-vcpkg@v7
-        with:
-          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          setupOnly: true
-          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
 
       - name: Install deps (MacOS)
         if: runner.os == 'macOS'
@@ -162,25 +184,22 @@ jobs:
           echo "CXX=/usr/local/opt/llvm/bin/clang++" >> $GITHUB_ENV
           echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENV
 
-      - name: Build AtomicDEX (Linux)
+      - name: Upload env variable for vpkg (Linux)
         if: runner.os == 'Linux'
         run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
-          export PATH=$HOME/.nimble/bin:$PATH
-          #export CXXFLAGS=-stdlib=libc++
-          #export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-12
-          export CC=clang-12
-          cd ci_tools_atomic_dex
-          nimble build -y
+          echo "CXX=clang++-12" >> $GITHUB_ENV
+          echo "CC=clang-12" >> $GITHUB_ENV
 
-          ./ci_tools_atomic_dex build release
-          ./ci_tools_atomic_dex bundle release
+      - name: vcpkg deps (All)
+        uses: KomodoPlatform/run-vcpkg@v7
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          setupOnly: true
+          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
+
 
       - name: import code signing certificates (macos)
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS'  && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         uses: Apple-Actions/import-codesign-certs@v1
         with:
           keychain: ${{ github.run_id }}
@@ -189,7 +208,7 @@ jobs:
           p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
       - name: import installer code signing certificates (macos)
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS'  && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         uses: apple-actions/import-codesign-certs@v1
         with:
           keychain: ${{ github.run_id }}
@@ -197,6 +216,8 @@ jobs:
           create-keychain: false
           p12-file-base64: ${{ secrets.CERTIFICATES_INSTALLER_P12 }}
           p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+
+
 
       - name: Build AtomicDEX (MacOS)
         if: runner.os == 'macOS'
@@ -215,20 +236,10 @@ jobs:
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
 
-      - name: Build AtomicDEX (Windows)
-        if: runner.os == 'Windows'
-        shell: powershell
-        run: |
-          $Env:QT_VERSION = "${{ matrix.qt }}"
-          .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
-      - name: Running Tests (Linux)
-        working-directory: ci_tools_atomic_dex
-        if: runner.os == 'Linux' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+      - name: Build AtomicDEX (Linux)
+        if: runner.os == 'Linux'
         run: |
-          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
-          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
-          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
@@ -237,57 +248,31 @@ jobs:
           #export LDFLAGS=-stdlib=libc++
           export CXX=clang++-12
           export CC=clang-12
-          echo "Running tests"
-          ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
-          cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
-          #curl https://report.ci/upload.py --output upload.py
-          ls
-          #python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
-          #echo "Uploading tests on Linux finished"
+          cd ci_tools_atomic_dex
+          nimble build -y
 
-      - name: Running Tests (MacOS)
-        working-directory: ci_tools_atomic_dex
-        if: runner.os == 'macOS' &&  'KomodoPlatform/atomicDEX-Desktop' == github.repository
-        run: |
-          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
-          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
-          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export CC=clang
-          export CXX=clang++
-          echo "Running tests"
-          #./ci_tools_atomic_dex tests ${{ matrix.type }}
-          #cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
-          #cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
-          #curl https://report.ci/upload.py --output upload.py
-          ls
-          #python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS ${{ matrix.type }}]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
-          #echo "Uploading tests on OSX finished"
+          ./ci_tools_atomic_dex build ${{ matrix.type }}
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }}
 
-      - name: Running Tests (Windows)
+
+      - name: Build AtomicDEX (Windows)
+        if: runner.os == 'Windows'
         shell: powershell
-        if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
         run: |
-          echo "Running tests"
-          $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
-          cd b\bin
-          ./${{ env.DEX_PROJECT_NAME }}_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
-          #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
-          #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"
+          $Env:QT_VERSION = "${{ matrix.qt }}"
+          .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'
         run: |
-          ls ./bundled/linux/
           echo "artifact_name_zstd=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "artifact_name_appimage=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
           echo "target_name_zstd=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "target_name_zip=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
-          echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+          echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+
+
 
       - name: Upload bundle artifact (Linux ZSTD)
         if: runner.os == 'Linux'
@@ -316,7 +301,6 @@ jobs:
       - name: Upload env variable for artifacts (macOS)
         if: runner.os == 'macOS'
         run: |
-          ls ./bundled/osx/
           echo "artifact_name_dmg=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
           echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).7z" >> $GITHUB_ENV
 
@@ -341,7 +325,7 @@ jobs:
         run: |
           echo "on_windows"
           echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "artifact_name_installer=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-installer-$(git rev-parse --short HEAD).exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Upload artifacts (Windows zip)
         if: runner.os == 'Windows'
@@ -358,3 +342,61 @@ jobs:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
           retention-days: 7
+
+
+
+      - name: Running Tests (Linux)
+        working-directory: ci_tools_atomic_dex
+        continue-on-error: true
+        if: runner.os == 'Linux' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        run: |
+          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
+          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
+          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
+          export PATH=$HOME/.nimble/bin:$PATH
+          export CXX=clang++-12
+          export CC=clang-12
+          #echo "Running tests"
+          #./ci_tools_atomic_dex tests ${{ matrix.type }}
+          #cd build-${{ matrix.type }}/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          #cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
+
+      - name: Running Tests (MacOS)
+        working-directory: ci_tools_atomic_dex
+        continue-on-error: true
+        if: runner.os == 'macOS' &&  'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        run: |
+          export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
+          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
+          export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
+          export APPLE_ID="${{ secrets.APPLE_ID }}"
+          export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
+          export MACOSX_DEPLOYMENT_TARGET=10.13
+          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
+          export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
+          export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export CC=clang
+          export CXX=clang++
+          #echo "Running tests"
+          #nimble build -y
+          #./ci_tools_atomic_dex tests ${{ matrix.type }}
+          #cd build-${{ matrix.type }}/bin/${{ env.DEX_PROJECT_NAME }}_tests.app/Contents/MacOS
+          #cat ${{ env.DEX_PROJECT_NAME }}-tests-result.xml
+
+      - name: Running Tests (Windows)
+        shell: powershell
+        continue-on-error: true
+        if: runner.os == 'Windows' && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
+        run: |
+          #echo "Running tests"
+          $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
+          #cd b\bin
+          #./${{ env.DEX_PROJECT_NAME }}_tests.exe --reporters=xml --out=${{ env.DEX_PROJECT_NAME }}-tests-result.xml -s
+          #Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
+          #python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='${{ env.DEX_PROJECT_NAME }}-tests-result.xml' --framework=doctest --merge ".*"

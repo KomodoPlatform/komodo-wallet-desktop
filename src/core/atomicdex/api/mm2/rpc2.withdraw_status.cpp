@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc2.withdraw_status.hpp"
 
 //! Implementation 2.0 RPC [withdraw_status]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void to_json(nlohmann::json& j, const withdraw_status_request& request)
@@ -41,4 +41,4 @@ namespace mm2::api
             answer.result = j.at("result").at("details").at("result").get<transaction_data>();
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

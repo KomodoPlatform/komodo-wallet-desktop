@@ -3,8 +3,6 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
-import AtomicDEX.MarketMode 1.0
-import AtomicDEX.TradingError 1.0
 import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
@@ -23,7 +21,6 @@ ColumnLayout
     readonly property int input_height: 70
     readonly property int subfield_margin: 5
 
-    readonly property bool can_submit_trade: last_trading_error === TradingError.None
 
     // Will move to backend: Minimum Fee
     function getMaxBalance()
@@ -201,7 +198,7 @@ ColumnLayout
                 let volume = input_volume.text * 0.50
                 setMinimumAmount(General.formatDouble(volume))
             }
-            fiat_value: General.getFiatText(non_null_volume, left_ticker)
+            fiat_value: General.getFiatText(API.app.trading_pg.min_trade_vol, left_ticker)
             left_label: "10%"
             middle_label: "25%"
             right_label: "50%"

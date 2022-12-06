@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,16 +14,32 @@
  *                                                                            *
  ******************************************************************************/
 
-// Deps Headers
+
+//! Deps
 #include <nlohmann/json.hpp>
 
-// Project Headers
-#include "rpc.get.public.key.hpp"
+//! Project Headers
+#include "atomicdex/config/enable.cfg.hpp"
 
-namespace mm2::api
+namespace atomic_dex
 {
-    void from_json(const nlohmann::json& json, get_public_key_answer& in)
+    void
+    to_json(nlohmann::json& j, const node& cfg)
     {
-        json.at("public_key").get_to(in.public_key);
+        j["url"] = cfg.url;
+        if (cfg.gui_auth.has_value())
+        {
+            j["gui_auth"] = cfg.gui_auth.value();
+        }
     }
-}
+
+    void
+    from_json(const nlohmann::json& j, node& cfg)
+    {
+        j.at("url").get_to(cfg.url);
+        if (j.count("gui_auth") == 1)
+        {
+            cfg.gui_auth = j.at("gui_auth").get<bool>();
+        }
+    }
+} // namespace atomic_dex

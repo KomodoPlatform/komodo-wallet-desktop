@@ -14,25 +14,21 @@
  *                                                                            *
  ******************************************************************************/
 
+
 #pragma once
 
-#include <QSortFilterProxyModel>
+//! STD
+#include <optional>
+#include <string>
 
 namespace atomic_dex
 {
-    class transactions_proxy_model final : public QSortFilterProxyModel
+    struct node
     {
-      Q_OBJECT
-
-      public:
-        //! Constructor
-        transactions_proxy_model(QObject* parent);
-
-        //! Destructor
-        ~transactions_proxy_model()  final = default;
-
-      protected:
-        //! Override member functions
-        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+        std::string                     url;
+        std::optional<bool>             gui_auth{false};
     };
+
+    void to_json(nlohmann::json& j, const node& cfg);
+    void from_json(const nlohmann::json& j, node& cfg);
 }

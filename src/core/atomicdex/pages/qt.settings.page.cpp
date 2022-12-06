@@ -25,6 +25,8 @@
 #include <boost/algorithm/string/case_conv.hpp>
 
 // Project Headers
+#include "atomicdex/api/mm2/get_public_key_rpc.hpp"
+#include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/models/qt.global.coins.cfg.model.hpp"
@@ -35,7 +37,6 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
-#include "atomicdex/api/mm2/rpc.get.public.key.hpp"
 
 namespace
 {
@@ -99,6 +100,10 @@ namespace atomic_dex
             else if (current_lang == "en")
             {
                 return QLocale::Language::English;
+            }
+            else if (current_lang == "es")
+            {
+                return QLocale::Language::Spanish;
             }
             else if (current_lang == "de")
             {
@@ -394,7 +399,7 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["gui_coin"]          = ticker;
                     out["adex_cfg"][ticker]["name"]              = body_json.at("qrc20").at("name").get<std::string>();
                     out["adex_cfg"][ticker]["coingecko_id"]      = coingecko_id.toStdString();
-                    out["adex_cfg"][ticker]["explorer_url"]      = nlohmann::json::array({"https://explorer.qtum.org/"});
+                    out["adex_cfg"][ticker]["explorer_url"]      = "https://explorer.qtum.org/";
                     out["adex_cfg"][ticker]["type"]              = "QRC-20";
                     out["adex_cfg"][ticker]["active"]            = true;
                     out["adex_cfg"][ticker]["currently_enabled"] = false;
@@ -423,7 +428,7 @@ namespace atomic_dex
             this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
             this->set_fetching_custom_token_data_busy(false);
         };
-        mm2::api::async_process_rpc_get(::mm2::api::g_qtum_proxy_http_client, "qrc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+        mm2::async_process_rpc_get(mm2::g_qtum_proxy_http_client, "qrc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void settings_page::process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type)
@@ -437,17 +442,17 @@ namespace atomic_dex
             {
             case CoinTypeGadget::QRC20:
                 return std::make_tuple(
-                    &::mm2::api::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
+                    &mm2::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
             case CoinTypeGadget::ERC20:
                 return std::make_tuple(
-                    &::mm2::api::g_etherscan_proxy_http_client, "/api/v1/token_infos/erc20/"s + contract_address.toStdString(), "ERC20"s, "ETH"s, "ERC-20"s,
+                    &mm2::g_etherscan_proxy_http_client, "/api/v1/token_infos/erc20/"s + contract_address.toStdString(), "ERC20"s, "ETH"s, "ERC-20"s,
                     "ETH"s, "ERC20"s);
             case CoinTypeGadget::BEP20:
                 return std::make_tuple(
-                    &::mm2::api::g_etherscan_proxy_http_client, "/api/v1/token_infos/bep20/"s + contract_address.toStdString(), "BEP20"s, "BNB"s, "BEP-20"s,
+                    &mm2::g_etherscan_proxy_http_client, "/api/v1/token_infos/bep20/"s + contract_address.toStdString(), "BEP20"s, "BNB"s, "BEP-20"s,
                     "BNB"s, "ERC20"s);
             default:
-                return std::make_tuple(&::mm2::api::g_etherscan_proxy_http_client, ""s, ""s, ""s, ""s, ""s, ""s);
+                return std::make_tuple(&mm2::g_etherscan_proxy_http_client, ""s, ""s, ""s, ""s, ""s, ""s);
             }
         };
         auto&& [endpoint, url, type, platform, adex_platform, parent_chain, parent_type] = retrieve_functor_url();
@@ -502,7 +507,7 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["name"]              = name_lowercase;
                     out["adex_cfg"][ticker]["coingecko_id"]      = coingecko_id.toStdString();
                     const auto& coin_info                        = mm2.get_coin_info(parent_chain);
-                    out["adex_cfg"][ticker]["nodes"]             = coin_info.urls.value_or(std::vector<std::string>());
+                    out["adex_cfg"][ticker]["nodes"]             = coin_info.urls.value_or(std::vector<node>());
                     out["adex_cfg"][ticker]["explorer_url"]      = coin_info.explorer_url;
                     out["adex_cfg"][ticker]["type"]              = adex_platform;
                     out["adex_cfg"][ticker]["active"]            = true;
@@ -520,7 +525,7 @@ namespace atomic_dex
             this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
             this->set_fetching_custom_token_data_busy(false);
         };
-        ::mm2::api::async_process_rpc_get(*endpoint, "token_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+        mm2::async_process_rpc_get(*endpoint, "token_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void settings_page::submit()
@@ -573,8 +578,8 @@ namespace atomic_dex
             const auto     coins   = cfg_mdl->get_enabled_coins();
             for (auto&& [coin, coin_cfg]: coins)
             {
-                ::mm2::api::show_priv_key_request req{.coin = coin};
-                nlohmann::json                    req_json = ::mm2::api::template_request("show_priv_key");
+                mm2::show_priv_key_request req{.coin = coin};
+                nlohmann::json                    req_json = mm2::template_request("show_priv_key");
                 to_json(req_json, req);
                 batch.push_back(req_json);
             }
@@ -589,7 +594,7 @@ namespace atomic_dex
                     SPDLOG_WARN("Priv keys fetched, those are sensitive data.");
                     for (auto&& answer: answers)
                     {
-                        auto       show_priv_key_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::show_priv_key_answer>(answer, "show_priv_key");
+                        auto       show_priv_key_answer = mm2::rpc_process_answer_batch<mm2::show_priv_key_answer>(answer, "show_priv_key");
                         auto*      portfolio_mdl        = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
                         const auto idx                  = portfolio_mdl->match(
                                              portfolio_mdl->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(show_priv_key_answer.coin), 1,
@@ -607,7 +612,7 @@ namespace atomic_dex
             };
             mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor);
         }
-        return {QString::fromStdString(seed), QString::fromStdString(::mm2::api::get_rpc_password())};
+        return {QString::fromStdString(seed), QString::fromStdString(mm2::get_rpc_password())};
     }
 
     QString settings_page::get_version()
@@ -622,7 +627,7 @@ namespace atomic_dex
 
     QString settings_page::get_mm2_version()
     {
-        return QString::fromStdString(::mm2::api::rpc_version());
+        return QString::fromStdString(mm2::rpc_version());
     }
 
     QString settings_page::get_export_folder()
@@ -633,9 +638,12 @@ namespace atomic_dex
     void settings_page::fetchPublicKey()
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
-        auto  get_pub_key_rpc_callback = [this](auto pub_key_answ)
+        auto  get_pub_key_rpc_callback = [this](auto pub_key_rpc)
         {
-            public_key = QString::fromStdString(pub_key_answ.public_key);
+            if (pub_key_rpc.error)
+                public_key = tr("An error has occurred.");
+            else
+                public_key = QString::fromStdString(pub_key_rpc.result->public_key);
             fetching_public_key = false;
             emit publicKeyChanged();
             emit fetchingPublicKeyChanged();
@@ -644,6 +652,6 @@ namespace atomic_dex
         fetching_public_key = true;
         emit fetchingPublicKeyChanged();
 
-        mm2_system.get_mm2_client().process_rpc_async<::mm2::api::get_public_key>(get_pub_key_rpc_callback);
+        mm2_system.get_mm2_client().process_rpc_async<atomic_dex::mm2::get_public_key_rpc>(get_pub_key_rpc_callback);
     }
 } // namespace atomic_dex

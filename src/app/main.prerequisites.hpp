@@ -162,17 +162,34 @@ clean_previous_run()
     atomic_dex::kill_executable(atomic_dex::g_dex_api);
 }
 
-static void
-init_logging()
+static void init_logging()
 {
-    auto logger = atomic_dex::utils::register_logger();
-    if (spdlog::get("log_mt") == nullptr)
-    {
-        spdlog::register_logger(logger);
-        spdlog::set_default_logger(logger);
-        spdlog::set_level(spdlog::level::trace);
-        spdlog::set_pattern("[%T] [%^%l%$] [%s:%#] [%t]: %v");
-    }
+    constexpr size_t qsize_spdlog             = 10240;
+    constexpr size_t spdlog_thread_count      = 2;
+    constexpr size_t spdlog_max_file_size     = 7777777;
+    constexpr size_t spdlog_max_file_rotation = 3;
+
+    fs::path path = atomic_dex::utils::get_atomic_dex_current_log_file();
+    spdlog::init_thread_pool(qsize_spdlog, spdlog_thread_count);
+    auto tp = spdlog::thread_pool();
+    auto stdout_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+
+#if defined(_WIN32) || defined(WIN32)
+    auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.wstring(), spdlog_max_file_size, spdlog_max_file_rotation);
+#else
+    auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.string(), spdlog_max_file_size, spdlog_max_file_rotation);
+#endif
+
+    std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
+    auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
+    spdlog::register_logger(logger);
+    spdlog::set_default_logger(logger);
+#ifdef DEBUG
+    spdlog::set_level(spdlog::level::trace);
+#else
+    spdlog::set_level(spdlog::level::info);
+#endif
+    spdlog::set_pattern("[%T] [%^%l%$] [%s:%#] [%t]: %v");
 }
 
 static void
@@ -323,7 +340,7 @@ handle_settings(QSettings& settings)
 #endif
     create_settings_functor("AutomaticUpdateOrderBot", QVariant(false));
     create_settings_functor("WalletChartsCategory", qint32(WalletChartsCategories::OneMonth));
-    create_settings_functor("AvailableLang", QStringList{"en", "fr", "de", "tr", "ru"});
+    create_settings_functor("AvailableLang", QStringList{"en", "es", "fr", "de", "tr", "ru"});
     create_settings_functor("CurrentLang", QString("en"));
     create_settings_functor("2FA", 0);
     create_settings_functor("MaximumNbCoinsEnabled", 50);

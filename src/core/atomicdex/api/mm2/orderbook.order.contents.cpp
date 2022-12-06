@@ -25,7 +25,7 @@
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     from_json(const nlohmann::json& j, order_contents& contents)
@@ -75,7 +75,6 @@ namespace mm2::api
         ss << "coin: " << coin << " ";
         ss << "address: " << address << " ";
         ss << "price: " << price << " ";
-        ss << "max_volume: " << maxvolume << " ";
         ss << "depth_percent: " << depth_percent << " ";
         ss << "base_max_volume: " << base_max_volume << " ";
         ss << "rel_max_volume: " << rel_max_volume << " ";
@@ -83,4 +82,4 @@ namespace mm2::api
         ss << "rel_min_volume: " << rel_min_volume << " ";
         return ss.str();
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

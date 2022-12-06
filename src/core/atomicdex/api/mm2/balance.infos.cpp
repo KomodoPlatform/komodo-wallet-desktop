@@ -20,7 +20,7 @@
 // Project Headers
 #include "balance.infos.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     from_json(const nlohmann::json& j, balance_infos& answer)
@@ -28,4 +28,4 @@ namespace mm2::api
         answer.spendable = j.at("spendable").get<std::string>();
         answer.unspendable = j.at("unspendable").get<std::string>();
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

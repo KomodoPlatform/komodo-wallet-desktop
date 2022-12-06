@@ -1,6 +1,6 @@
 #include "atomicdex/api/mm2/generic.error.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void from_json(const nlohmann::json& j, generic_answer_error& res)
     {
@@ -10,4 +10,4 @@ namespace mm2::api
         j.at("error_type").get_to(res.error_type);
         j.at("error_data").get_to(res.error_data);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

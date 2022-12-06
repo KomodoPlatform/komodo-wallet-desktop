@@ -481,6 +481,7 @@ Qaterial.Dialog
                                                             text: qsTr("2FA disabled successfully"),
                                                             yesButtonText: qsTr("Ok"),
                                                             titleBold: true,
+                                                            showCancelBtn: false,
                                                             standardButtons: Dialog.Ok
                                                         })
                                                         atomic_settings2.setValue("2FA", 0)
@@ -495,6 +496,7 @@ Qaterial.Dialog
                                                             warning: true,
                                                             standardButtons: Dialog.Ok,
                                                             titleBold: true,
+                                                            showCancelBtn: false,
                                                             yesButtonText: qsTr("Ok"),
                                                         })
                                                         checked = true

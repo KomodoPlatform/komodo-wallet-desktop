@@ -19,7 +19,7 @@
 #include <string>
 #include <nlohmann/json_fwd.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct format_address
     {

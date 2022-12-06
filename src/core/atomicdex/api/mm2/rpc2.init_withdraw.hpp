@@ -22,7 +22,7 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct init_withdraw_fees
     {
@@ -50,7 +50,7 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_init_withdraw_request = ::mm2::api::init_withdraw_request;
-    using t_init_withdraw_fees    = ::mm2::api::init_withdraw_fees;
-    using t_init_withdraw_answer  = ::mm2::api::init_withdraw_answer;
+    using t_init_withdraw_request = mm2::init_withdraw_request;
+    using t_init_withdraw_fees    = mm2::init_withdraw_fees;
+    using t_init_withdraw_answer  = mm2::init_withdraw_answer;
 } // namespace atomic_dex

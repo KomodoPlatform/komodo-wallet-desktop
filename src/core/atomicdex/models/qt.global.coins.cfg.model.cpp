@@ -37,7 +37,7 @@ namespace
             {"name", QString::fromStdString(coin.name)},
             {"type", QString::fromStdString(coin.type)},
             {"nomics_id", QString::fromStdString(coin.nomics_id)},
-            {"explorer_url", QJsonArray::fromStringList(atomic_dex::vector_std_string_to_qt_string_list(coin.explorer_url))},
+            {"explorer_url", QString::fromStdString(coin.explorer_url)},
             {"tx_uri", QString::fromStdString(coin.tx_uri)},
             {"address_uri", QString::fromStdString(coin.address_url)},
             {"is_custom_coin", coin.is_custom_coin},
@@ -217,8 +217,7 @@ namespace atomic_dex
     }
 
     template <typename TArray>
-    void
-    global_coins_cfg_model::update_status(const TArray& tickers, bool status) 
+    void global_coins_cfg_model::update_status(const TArray& tickers, bool status)
     {
         auto update_functor = [this, status](QModelIndexList res, [[maybe_unused]] const QString& ticker) {
             // SPDLOG_INFO("Changing Active/CurrentlyEnabled status to {} for ticker {}", status, ticker.toStdString());

@@ -299,7 +299,6 @@ namespace atomic_dex
 
             const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
             const fs::path    wallet_cfg_path = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
-
             bool  valid_json = false;
 
             if (fs::exists(wallet_cfg_path))

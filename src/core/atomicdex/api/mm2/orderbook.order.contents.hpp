@@ -21,7 +21,7 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct order_contents
     {
@@ -33,7 +33,7 @@ namespace mm2::api
         std::string                min_volume;
         std::string                min_volume_fraction_numer;
         std::string                min_volume_fraction_denom;
-        std::string                maxvolume;
+        std::string                max_volume;
         std::string                max_volume_fraction_numer;
         std::string                max_volume_fraction_denom;
         std::string                base_min_volume;
@@ -61,10 +61,10 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, order_contents& contents);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_order_contents  = ::mm2::api::order_contents;
+    using t_order_contents  = mm2::order_contents;
     using t_orders_contents = std::vector<t_order_contents>;
 } // namespace atomic_dex

@@ -40,7 +40,7 @@ Column
                 font.pixelSize: Style.textSizeSmall1
                 width: parent.width
                 wrapMode: Text.Wrap
-                CexInfoTrigger {}
+                DefaultInfoTrigger { triggerModal: cex_info_modal }
             }
         }
 

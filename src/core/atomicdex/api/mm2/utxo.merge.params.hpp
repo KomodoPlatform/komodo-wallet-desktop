@@ -18,7 +18,7 @@
 
 #include <nlohmann/json_fwd.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct utxo_merge_params
     {
@@ -29,8 +29,3 @@ namespace mm2::api
 
     void to_json(nlohmann::json& j, const utxo_merge_params& cfg);
 }
-
-namespace atomic_dex
-{
-    using t_utxo_merge_params = ::mm2::api::utxo_merge_params;
-} // namespace atomic_dex

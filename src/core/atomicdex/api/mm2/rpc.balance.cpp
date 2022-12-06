@@ -21,7 +21,7 @@
 #include "atomicdex/api/mm2/rpc.balance.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const balance_request& cfg)
@@ -37,4 +37,4 @@ namespace mm2::api
         cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
         j.at("coin").get_to(cfg.coin);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
