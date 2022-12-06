@@ -93,13 +93,21 @@ Item
     {
         if (!General.initialized_orderbook_pair)
         {
-            General.initialized_orderbook_pair = true
-            API.app.trading_pg.set_current_orderbook(General.default_base,
+            if (API.app.trading_pg.current_trading_mode == TradingMode.Pro)
+            {
+                API.app.trading_pg.set_current_orderbook(General.default_base,
                                                      General.default_rel)
+            }
+            else
+            {
+                API.app.trading_pg.set_current_orderbook(General.default_rel,
+                                                     General.default_base)
+            }
+            General.initialized_orderbook_pair = true
         }
         setPair(true, ticker)
-        // triggers chart reload
-        app.pairChanged(base_ticker, rel_ticker)
+        // triggers chart reload (why the duplication?)
+        // app.pairChanged(base_ticker, rel_ticker)
     }
 
     function setPair(is_left_side, changed_ticker, is_swap=false) {
