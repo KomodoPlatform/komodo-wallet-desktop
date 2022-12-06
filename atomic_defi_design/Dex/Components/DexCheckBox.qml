@@ -26,15 +26,25 @@ CheckBox
         id: _indicator
         anchors.verticalCenter: control.verticalCenter
 
-        implicitWidth: 26
-        implicitHeight: 26
-        radius: 20
+        implicitWidth: 20
+        implicitHeight: 20
+        radius: 4
 
         gradient: Gradient
         {
             orientation: Gradient.Horizontal
             GradientStop { position: 0.1; color: Dex.CurrentTheme.checkBoxGradientStartColor }
             GradientStop { position: 0.6; color: Dex.CurrentTheme.checkBoxGradientEndColor }
+        }
+
+        DefaultImage {
+            id: check_icon
+            x: (parent.width - width) / 2
+            y: (parent.height - height) / 2
+            width: parent.width - 6
+            height: parent.height - 6
+            source: General.image_path + "white_check.svg"
+            visible: control.checkState === Qt.Checked
         }
 
         DefaultRectangle
