@@ -37,7 +37,6 @@ MultipageModal
 
                 PairItemBadge
                 {
-                    source: General.coinIcon(!base_ticker ? atomic_app_primary_coin : base_ticker)
                     ticker: base_ticker
                     fullname: General.coinName(base_ticker)
                     amount: base_amount
@@ -54,7 +53,6 @@ MultipageModal
 
                 PairItemBadge
                 {
-                    source: General.coinIcon(!rel_ticker ? atomic_app_primary_coin : rel_ticker)
                     ticker: rel_ticker
                     fullname: General.coinName(rel_ticker)
                     amount: rel_amount
