@@ -366,7 +366,7 @@ Item
                 return Dex.CurrentTheme.sidebarLineTextHovered
             case "failed":
             default:
-                return DexTheme.redColor
+                return DexTheme.warningColor
         }
     }
 

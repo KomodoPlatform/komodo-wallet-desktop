@@ -118,8 +118,8 @@ QtObject {
 
     property bool portfolioPieGradient: false
 
-    property color senderColorStart: redColor
-    property color receiverColorStart: greenColor
+    property color senderColorStart: warningColor
+    property color receiverColorStart: okColor
 
 
 
@@ -131,7 +131,6 @@ QtObject {
     property color dexBoxBackgroundColor: backgroundDarkColor6
 
     property color hightlightColor: accentDarkColor3
-    property color hoverColor: buttonColorHovered
     property color modalStepColor: accentColor
     property color modelStepBorderColor: hightlightColor
 
@@ -174,8 +173,8 @@ QtObject {
     property color colorScrollbarGradient1: Style.colorScrollbarGradient1
     property color colorScrollbarGradient2: Style.colorScrollbarGradient2
 
-    property color greenColor: Dex.CurrentTheme.okColor
-    property color redColor: Dex.CurrentTheme.noColor
+    property color okColor: Dex.CurrentTheme.okColor
+    property color warningColor: Dex.CurrentTheme.warningColor
 
     // Widget settings 
 
@@ -359,7 +358,7 @@ QtObject {
     function getValueColor(v) {
         v = parseFloat(v)
         if(v !== 0)
-            return v > 0 ? greenColor : redColor
+            return v > 0 ? okColor : warningColor
 
         return Style.colorWhite4
     }

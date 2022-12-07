@@ -335,7 +335,7 @@ SetupPage
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
                     Layout.fillWidth: true
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     height: warning_texts.height + 20
                     radius: 20
 
@@ -457,7 +457,7 @@ SetupPage
                     DefaultText
                     {
                         text_value: text_error
-                        color: Dex.CurrentTheme.noColor
+                        color: Dex.CurrentTheme.warningColor
                         visible: text !== ''
                     }
 
@@ -664,7 +664,7 @@ SetupPage
                     DefaultText
                     {
                         text_value: guess_text_error
-                        color: Dex.CurrentTheme.noColor
+                        color: Dex.CurrentTheme.warningColor
                         visible: input_seed_word.error
                         DexVisibleBehavior on visible
                         {}
@@ -742,7 +742,7 @@ SetupPage
                 DefaultText
                 {
                     text_value: text_error
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     visible: text !== ''
                 }
             }

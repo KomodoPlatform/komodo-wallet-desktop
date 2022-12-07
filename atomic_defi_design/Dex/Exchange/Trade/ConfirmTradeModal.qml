@@ -215,7 +215,7 @@ MultipageModal
                         width: parent.width
                         horizontalAlignment: DefaultText.AlignHCenter
                         font: DexTypo.caption
-                        color: Dex.CurrentTheme.noColor
+                        color: Dex.CurrentTheme.warningColor
                         text_value: General.getTradingError(
                                         last_trading_error,
                                         curr_fee_info,

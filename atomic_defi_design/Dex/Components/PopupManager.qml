@@ -348,7 +348,7 @@ Popup
                     topInset: 0
                     opacity: enabled ? 1 : .6
                     enabled: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? true : dialog.enableAcceptButton
-                    backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? DexTheme.redColor : DexTheme.accentColor
+                    backgroundColor: DialogButtonBox.buttonRole === DialogButtonBox.RejectRole ? 'transparent' : dialog.warning ? DexTheme.warningColor : DexTheme.accentColor
                     property alias cursorShape: mouseArea.cursorShape
                     Component.onCompleted:
                     {

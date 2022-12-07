@@ -112,7 +112,7 @@ Item
                                 verticalAlignment: Text.AlignVCenter
                                 text: activation_progress + "%"
                                 font: DexTypo.head8
-                                color: DexTheme.greenColor
+                                color: DexTheme.okColor
                             }
                         }
 

@@ -69,7 +69,7 @@
   "sidebarLineTextHovered": "#8B6900FF",
 
   "okColor": "#74fbeeFF",
-  "noColor": "#d13990FF",
+  "warningColor": "#d13990FF",
 
   "senderColorStart": "#F85757FF",
   "receiverColorStart": "#845FEFFF",

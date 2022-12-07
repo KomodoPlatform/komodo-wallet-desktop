@@ -159,7 +159,7 @@ Dex.Rectangle
             Layout.preferredWidth: 458
             Layout.preferredHeight: 60
             visible: text !== ""
-            color: Dex.CurrentTheme.noColor
+            color: Dex.CurrentTheme.warningColor
             wrapMode: Dex.Text.WordWrap
             elide: Dex.Text.ElideRight
             horizontalAlignment: Text.AlignHCenter

@@ -98,7 +98,7 @@ SetupPage
             Layout.alignment: Qt.AlignHCenter
             height: 14
             text: _isPasswordWrong ? qsTr("Incorrect Password") : ""
-            color: Dex.CurrentTheme.noColor
+            color: Dex.CurrentTheme.warningColor
         }
 
         GradientButton

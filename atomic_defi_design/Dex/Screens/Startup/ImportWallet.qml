@@ -205,7 +205,7 @@ SetupPage
                     id: _seedError
                     visible: _seedField.error
                     text: qsTr("Your seed is not BIP39 compliant.\nTry again or select 'Allow custom seed' to continue.")
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     Layout.preferredWidth: parent.width - 40
                     font: DexTypo.body2
                 }
@@ -267,7 +267,7 @@ SetupPage
                     DefaultText
                     {
                         text_value: text_error
-                        color: Dex.CurrentTheme.noColor
+                        color: Dex.CurrentTheme.warningColor
                         visible: text !== ''
                     }
 
@@ -364,7 +364,7 @@ SetupPage
                 DefaultText
                 {
                     text_value: text_error
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     visible: text !== ''
                 }
             }

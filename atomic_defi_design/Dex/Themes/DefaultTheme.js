@@ -105,7 +105,7 @@ function getHardcoded()
         addressBookTagColors: ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 
         okColor: "#00C058FF",
-        noColor: "#E52167FF",
+        warningColor: "#E52167FF",
       
         senderColorStart: "#F85757FF",
         receiverColorStart: "#845FEFFF",

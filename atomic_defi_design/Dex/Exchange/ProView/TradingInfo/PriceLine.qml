@@ -72,7 +72,7 @@ ColumnLayout
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
             Layout.alignment: Qt.AlignHCenter
-            color: parseFloat(cexPriceDiff) <= 0 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.noColor
+            color: parseFloat(cexPriceDiff) <= 0 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.warningColor
             text_value: (parseFloat(cexPriceDiff) > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(General.limitDigits(cexPriceDiff)) + "</b>")
             font.pixelSize: fontSize
         }
@@ -92,7 +92,7 @@ ColumnLayout
                 height: 6
 
                 start_color: Dex.CurrentTheme.okColor
-                end_color: Dex.CurrentTheme.noColor
+                end_color: Dex.CurrentTheme.warningColor
 
                 AnimatedRectangle {
                     width: 4

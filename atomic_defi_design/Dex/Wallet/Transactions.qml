@@ -93,7 +93,7 @@ Dex.ListView
 
                 }
                 font.pixelSize: description.font.pixelSize
-                color: am_i_sender ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+                color: am_i_sender ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
                 privacy: true
             }
 

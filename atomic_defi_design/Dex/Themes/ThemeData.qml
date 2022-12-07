@@ -109,7 +109,7 @@ QtObject
 
     // Colors used to tell when something is good or wrong.
     property color  okColor
-    property color  noColor
+    property color  warningColor
 
     property color  senderColorStart
     property color  receiverColorStart

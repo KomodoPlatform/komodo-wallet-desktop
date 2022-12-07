@@ -206,7 +206,7 @@ DexListView
             {
                 Layout.preferredWidth: _cexRateColumnSize
                 horizontalAlignment: Text.AlignRight
-                color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.redColor : DexTheme.greenColor
+                color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.warningColor : DexTheme.okColor
                 text_value: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             }
 

@@ -163,7 +163,7 @@ Widget
             DefaultText
             {
                 Layout.leftMargin: 15
-                color: Dex.CurrentTheme.noColor
+                color: Dex.CurrentTheme.warningColor
                 text: qsTr("Order Selected")
             }
 
@@ -174,7 +174,7 @@ Widget
                 Layout.preferredHeight: parent.height
                 Layout.preferredWidth: 30
                 Layout.rightMargin: 5
-                foregroundColor: Dex.CurrentTheme.noColor
+                foregroundColor: Dex.CurrentTheme.warningColor
                 onClicked: {
                     API.app.trading_pg.reset_order()
                     reset_fees_state()
@@ -184,7 +184,7 @@ Widget
                 {
                     anchors.centerIn: parent
                     iconSize: 16
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     source: Qaterial.Icons.close
                 }
             }
@@ -196,7 +196,7 @@ Widget
             anchors.fill: parent
             radius: 8
             color: 'transparent'
-            border.color: Dex.CurrentTheme.noColor
+            border.color: Dex.CurrentTheme.warningColor
         }
     }
 
@@ -225,7 +225,7 @@ Widget
             anchors.centerIn: parent
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Style.textSizeSmall4
-            color: Dex.CurrentTheme.noColor
+            color: Dex.CurrentTheme.warningColor
             text_value: General.getTradingError(
                             last_trading_error,
                             curr_fee_info,
