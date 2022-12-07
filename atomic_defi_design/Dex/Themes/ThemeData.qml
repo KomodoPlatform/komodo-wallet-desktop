@@ -33,6 +33,7 @@ QtObject
     property color  gradientButtonTextHoveredColor
     property color  gradientButtonTextPressedColor
 
+    property color  checkBoxTickColor
     property color  checkBoxGradientStartColor
     property color  checkBoxGradientEndColor
 
@@ -69,6 +70,8 @@ QtObject
     property color  textFieldActiveBackgroundColor
     property color  textFieldPrefixColor
     property color  textFieldSuffixColor
+
+    property color  tickerBadgeBackgroundColor
 
     property color  chartTradingLineBackgroundColor
     property color  chartTradingLineColor

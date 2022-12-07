@@ -34,6 +34,7 @@ function getHardcoded()
         gradientButtonTextHoveredColor: "#FFFFFFFF",
         gradientButtonTextPressedColor: "#FFFFFFFF",
 
+        checkBoxTickColor: "#000000FF",
         checkBoxGradientStartColor: "#8892EBFF",
         checkBoxGradientEndColor: "#9DD4F3FF",
 
@@ -70,6 +71,8 @@ function getHardcoded()
         textFieldActiveBackgroundColor: "#F3F5F6CC",
         textFieldPrefixColor: "#45607894",
         textFieldSuffixColor: "#456078FF",
+
+        tickerBadgeBackgroundColor: "#D5DCF8FF",
 
         chartTradingLineBackgroundColor: "#C5F2EFFF",
         chartTradingLineColor: "#53EBD7FF",

@@ -31,8 +31,9 @@
     "gradientButtonTextHoveredColor": "#FFFFFFFF",
     "gradientButtonTextPressedColor": "#FFFFFFFF",
 
-    "checkBoxGradientStartColor": "#8892EBFF",
-    "checkBoxGradientEndColor": "#9DD4F3FF",
+    "checkBoxTickColor": "#FFFFFFFF",
+    "checkBoxGradientStartColor": "#6673E3FF",
+    "checkBoxGradientEndColor": "#5EBBF0FF",
 
     "switchGradientStartColor": "#1D80B0FF",
     "switchGradientEndColor": "#5B69E6FF",
@@ -66,7 +67,9 @@
     "textFieldBackgroundColor": "#313555FF",
     "textFieldActiveBackgroundColor": "#313555CC",
     "textFieldPrefixColor": "#8790B2FF",
-    "textFieldSuffixColor": "#456078FF#",
+    "textFieldSuffixColor": "#456078FF",
+
+    "tickerBadgeBackgroundColor": "#202337FF",
 
     "chartTradingLineBackgroundColor": "#24283dFF",
     "chartTradingLineColor": "#74fbeeFF",

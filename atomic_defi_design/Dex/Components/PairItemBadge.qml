@@ -4,10 +4,12 @@ import QtQuick.Layouts 1.15
 import bignumberjs 1.0
 
 import "../Constants"
+import Dex.Themes 1.0 as Dex
 
 DefaultRectangle
 {
     id: root
+    property alias  source: icon.source
     property alias  ticker: ticker.text
     property alias  fullname: fullname.text
     property string amount
@@ -15,6 +17,7 @@ DefaultRectangle
     width: 260
     height: 66
     radius: 10
+    color: Dex.CurrentTheme.tickerBadgeBackgroundColor
 
     RowLayout
     {

@@ -118,6 +118,7 @@ ThemeData
         gradientButtonTextHoveredColor      = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonTextHoveredColor || defaultTheme.gradientButtonTextHoveredColor);
         gradientButtonTextPressedColor      = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonTextPressedColor || defaultTheme.gradientButtonTextPressedColor);
 
+        checkBoxTickColor                   = Dex.Color.argbStrFromRgbaStr(themeData.checkBoxTickColor || defaultTheme.checkBoxTickColor);
         checkBoxGradientStartColor          = Dex.Color.argbStrFromRgbaStr(themeData.checkBoxGradientStartColor || defaultTheme.checkBoxGradientStartColor);
         checkBoxGradientEndColor            = Dex.Color.argbStrFromRgbaStr(themeData.checkBoxGradientEndColor || defaultTheme.checkBoxGradientEndColor);
 
@@ -154,6 +155,8 @@ ThemeData
         textFieldActiveBackgroundColor      = Dex.Color.argbStrFromRgbaStr(themeData.textFieldActiveBackgroundColor || defaultTheme.textFieldActiveBackgroundColor);
         textFieldPrefixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldPrefixColor || defaultTheme.textFieldPrefixColor);
         textFieldSuffixColor                = Dex.Color.argbStrFromRgbaStr(themeData.textFieldSuffixColor || defaultTheme.textFieldSuffixColor);
+
+        tickerBadgeBackgroundColor                = Dex.Color.argbStrFromRgbaStr(themeData.tickerBadgeBackgroundColor || defaultTheme.tickerBadgeBackgroundColor);
 
         chartTradingLineBackgroundColor     = Dex.Color.argbStrFromRgbaStr(themeData.chartTradingLineBackgroundColor || defaultTheme.chartTradingLineBackgroundColor);
         chartTradingLineColor               = Dex.Color.argbStrFromRgbaStr(themeData.chartTradingLineColor || defaultTheme.chartTradingLineColor);
@@ -240,6 +243,7 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonTextHoveredColor : %1".arg(gradientButtonTextHoveredColor));
         console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonTextPressedColor : %1".arg(gradientButtonTextPressedColor));
 
+        console.info("Dex.Themes.CurrentTheme.printValues.checkBoxTickColor : %1".arg(checkBoxTickColor));
         console.info("Dex.Themes.CurrentTheme.printValues.checkBoxGradientStartColor : %1".arg(checkBoxGradientStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.checkBoxGradientEndColor : %1".arg(checkBoxGradientEndColor));
 
@@ -275,6 +279,8 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldBackgroundColor : %1".arg(textFieldBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldPrefixColor : %1".arg(textFieldPrefixColor));
         console.info("Dex.Themes.CurrentTheme.printValues.textFieldSuffixColor : %1".arg(textFieldSuffixColor));
+
+        console.info("Dex.Themes.CurrentTheme.printValues.tickerBadgeBackgroundColor : %1".arg(tickerBadgeBackgroundColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.chartTradingLineBackgroundColor : %1".arg(chartTradingLineBackgroundColor));
         console.info("Dex.Themes.CurrentTheme.printValues.chartTradingLineColor : %1".arg(chartTradingLineColor));
