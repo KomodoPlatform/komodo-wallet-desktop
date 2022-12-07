@@ -34,6 +34,7 @@ function getHardcoded()
         gradientButtonTextHoveredColor: "#FFFFFFFF",
         gradientButtonTextPressedColor: "#FFFFFFFF",
 
+        checkBoxTickColor: "#000000FF",
         checkBoxGradientStartColor: "#8892EBFF",
         checkBoxGradientEndColor: "#9DD4F3FF",
 

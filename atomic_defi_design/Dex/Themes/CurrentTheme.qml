@@ -118,6 +118,7 @@ ThemeData
         gradientButtonTextHoveredColor      = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonTextHoveredColor || defaultTheme.gradientButtonTextHoveredColor);
         gradientButtonTextPressedColor      = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonTextPressedColor || defaultTheme.gradientButtonTextPressedColor);
 
+        checkBoxTickColor                   = Dex.Color.argbStrFromRgbaStr(themeData.checkBoxTickColor || defaultTheme.checkBoxTickColor);
         checkBoxGradientStartColor          = Dex.Color.argbStrFromRgbaStr(themeData.checkBoxGradientStartColor || defaultTheme.checkBoxGradientStartColor);
         checkBoxGradientEndColor            = Dex.Color.argbStrFromRgbaStr(themeData.checkBoxGradientEndColor || defaultTheme.checkBoxGradientEndColor);
 
@@ -240,6 +241,7 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonTextHoveredColor : %1".arg(gradientButtonTextHoveredColor));
         console.info("Dex.Themes.CurrentTheme.printValues.gradientButtonTextPressedColor : %1".arg(gradientButtonTextPressedColor));
 
+        console.info("Dex.Themes.CurrentTheme.printValues.checkBoxTickColor : %1".arg(checkBoxTickColor));
         console.info("Dex.Themes.CurrentTheme.printValues.checkBoxGradientStartColor : %1".arg(checkBoxGradientStartColor));
         console.info("Dex.Themes.CurrentTheme.printValues.checkBoxGradientEndColor : %1".arg(checkBoxGradientEndColor));
 
