@@ -90,18 +90,14 @@ QtObject {
 
     property color headTextColor: accentColor
 
-    property color proviewItemBoxBackgroundColor: dexBoxBackgroundColor
+    property color proviewItemBoxBackgroundColor: backgroundDarkColor6
     property color proviewItemBoxBorderColor: 'transparent'
     property color proviewItemBoxTitleColor: headTextColor
     property color proviewItemBoxIconColor: accentColor
     property int proviewItemBoxBorderWidth: 0
 
     property color comboBoxBorderColor: rectangleBorderColor
-    property color comboBoxBackgroundColor: dexBoxBackgroundColor
-
-
-    property bool walletSidebarShadowVisibility: true
-    property color walletSidebarLeftBorderColor: backgroundColorDeep
+    property color comboBoxBackgroundColor: backgroundDarkColor6
 
 
     property color leftSidebarBorderColor: rectangleBorderColor
@@ -126,10 +122,6 @@ QtObject {
     // Old Theme
     property string chartTheme: Style.dark_theme ? "dark" : "light"
     
-    property color backgroundDarkColor2: backgroundDarkColor2
-    property color backgroundColorDeep: backgroundDarkColor2
-    property color dexBoxBackgroundColor: backgroundDarkColor6
-
     property color hightlightColor: accentDarkColor3
     property color modalStepColor: accentColor
     property color modelStepBorderColor: hightlightColor

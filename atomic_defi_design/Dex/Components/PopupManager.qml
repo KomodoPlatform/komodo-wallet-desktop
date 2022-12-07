@@ -338,7 +338,7 @@ Popup
                 topPadding: 25
                 background: Rectangle
                 {
-                    color: DexTheme.dexBoxBackgroundColor
+                    color: DexTheme.backgroundDarkColor6
                 }
                 delegate: Qaterial.Button
                 {

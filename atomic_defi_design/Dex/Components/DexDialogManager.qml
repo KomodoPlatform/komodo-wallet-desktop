@@ -18,7 +18,7 @@ Popup {
     Overlay.modal: Item {
         DexRectangle {
             anchors.fill: parent
-            color: Qt.darker(DexTheme.dexBoxBackgroundColor)
+            color: Qt.darker(DexTheme.backgroundDarkColor6)
             opacity: .8
         }
     }
@@ -128,7 +128,7 @@ Popup {
                         height: 45
                         error: false
                         visible: dialog.getText
-                        defaultBorderColor: DexTheme.dexBoxBackgroundColor
+                        defaultBorderColor: DexTheme.backgroundDarkColor6
                         background.border.width: 1
                         field.font: DexTypo.body2
                         placeholderText: dialog.placeholderText
@@ -215,7 +215,7 @@ Popup {
                 onReset: dialog.reset()
                 topPadding: 25
                 background: Rectangle {
-                    color: DexTheme.dexBoxBackgroundColor
+                    color: DexTheme.backgroundDarkColor6
                 }
                 delegate: Qaterial.Button {
                     id: _dialogManagerButton
