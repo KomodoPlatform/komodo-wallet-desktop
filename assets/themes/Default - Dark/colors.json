@@ -93,10 +93,10 @@
     "sidebarLineTextHovered": "#2C87B9FF",
     "sidebarLineTextSelected": "#FFFFFFFF",
 
-    "tradeBuyModeSelectorBackgroundColorStart": "#6A4DE3FF",
-    "tradeBuyModeSelectorBackgroundColorEnd": "#2279F1FF",
-    "tradeSellModeSelectorBackgroundColorStart": "#E52167FF",
-    "tradeSellModeSelectorBackgroundColorEnd": "#E216A9FF",
+    "tradeBuyModeSelectorBackgroundColorStart": "#E52167FF",
+    "tradeBuyModeSelectorBackgroundColorEnd": "#CD0F53FF",
+    "tradeSellModeSelectorBackgroundColorStart": "#0F713CFF",
+    "tradeSellModeSelectorBackgroundColorEnd": "#037B3AFF",
     "tradeMarketModeSelectorNotSelectedBackgroundColor": "#89B6FF21",
 
     "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
