@@ -4,15 +4,13 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
-import App 1.0 as App 
-
 QtObject {
     id: _font
 
     property real fontDensity: 1.0
 
     property real languageDensity: {
-        switch (App.API.app.settings_pg.lang) {
+        switch (General.getLanguage()) {
             case "en":
                 return 0.99999
             case "fr":
