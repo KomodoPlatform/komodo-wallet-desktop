@@ -117,24 +117,7 @@ QtObject {
     property color senderColorStart: warningColor
     property color receiverColorStart: okColor
 
-
-
-    // Old Theme
-    property string chartTheme: Style.dark_theme ? "dark" : "light"
-    
-    property color hightlightColor: accentDarkColor3
-    property color modalStepColor: accentColor
-    property color modelStepBorderColor: hightlightColor
-
-    property int sidebarShadowRadius: 32
-    property real sideBarAnimationDuration: Style.animationDuration
-
-    property color chartTradingLineColor: Dex.CurrentTheme.chartTradingLineColor
-    property color chartTradingLineBackgroundColor: Dex.CurrentTheme.chartTradingLineBackgroundColor
-    property color lineChartColor: accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
-
-    property color busyIndicatorColor: Dex.CurrentTheme.busyIndicatorColor
 
     // Button
     property color buttonColorDisabled: Dex.CurrentTheme.buttonColorDisabled
