@@ -102,7 +102,10 @@ QtObject
     property color  tradeBuyModeSelectorBackgroundColorEnd
     property color  tradeSellModeSelectorBackgroundColorStart
     property color  tradeSellModeSelectorBackgroundColorEnd
-    property color  tradeMarketModeSelectorNotSelectedBackgroundColor
+
+    // Inputs styling
+    property color  inputModifierBackgroundColor
+    property color  inputPasswordBackgroundColor
 
     // Address book page related
     property var    addressBookTagColors

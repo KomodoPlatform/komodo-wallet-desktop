@@ -100,7 +100,8 @@ function getHardcoded()
         tradeBuyModeSelectorBackgroundColorEnd: "#2279F1FF",
         tradeSellModeSelectorBackgroundColorStart: "#E52167FF",
         tradeSellModeSelectorBackgroundColorEnd: "#E216A9FF",
-        tradeMarketModeSelectorNotSelectedBackgroundColor: "#89B6FF21",
+        inputModifierBackgroundColor: "#89B6FF21",
+        inputPasswordBackgroundColor: "#A9BDDCFF",
 
         addressBookTagColors: ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 

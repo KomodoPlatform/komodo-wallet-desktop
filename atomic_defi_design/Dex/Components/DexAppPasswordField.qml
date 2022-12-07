@@ -14,7 +14,7 @@ DexAppTextField
 
     property bool forceFocus: false
     property string leftIcon: Qaterial.Icons.keyVariant
-    property color leftIconColor: Dex.CurrentTheme.foregroundColor
+    property color leftIconColor: Dex.CurrentTheme.inputPasswordBackgroundColor
     property alias hideFieldButton: _hideFieldButton
 
     height: 50

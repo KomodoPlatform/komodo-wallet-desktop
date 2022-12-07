@@ -184,7 +184,9 @@ ThemeData
         tradeBuyModeSelectorBackgroundColorEnd              = Dex.Color.argbStrFromRgbaStr(themeData.tradeBuyModeSelectorBackgroundColorEnd || defaultTheme.tradeBuyModeSelectorBackgroundColorEnd);
         tradeSellModeSelectorBackgroundColorStart           = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorStart || defaultTheme.tradeSellModeSelectorBackgroundColorStart);
         tradeSellModeSelectorBackgroundColorEnd             = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorEnd || defaultTheme.tradeSellModeSelectorBackgroundColorEnd);
-        tradeMarketModeSelectorNotSelectedBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.tradeMarketModeSelectorNotSelectedBackgroundColor || defaultTheme.tradeMarketModeSelectorNotSelectedBackgroundColor);
+
+        inputModifierBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputModifierBackgroundColor || defaultTheme.inputModifierBackgroundColor);
+        inputPasswordBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputPasswordBackgroundColor || defaultTheme.inputPasswordBackgroundColor);
 
         addressBookTagColors = themeData.addressBookTagColors || defaultTheme.addressBookTagColors
         for (var i = 0; i < addressBookTagColors.length; i++)
@@ -308,7 +310,7 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.tradeBuyModeSelectorBackgroundColorEnd : %1".arg(tradeBuyModeSelectorBackgroundColorEnd));
         console.info("Dex.Themes.CurrentTheme.printValues.tradeSellModeSelectorBackgroundColorStart : %1".arg(tradeSellModeSelectorBackgroundColorStart));
         console.info("Dex.Themes.CurrentTheme.printValues.tradeSellModeSelectorBackgroundColorEnd : %1".arg(tradeSellModeSelectorBackgroundColorEnd));
-        console.info("Dex.Themes.CurrentTheme.printValues.tradeMarketModeSelectorNotSelectedBackgroundColor : %1".arg(tradeMarketModeSelectorNotSelectedBackgroundColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.inputModifierBackgroundColor : %1".arg(inputModifierBackgroundColor));
 
         console.info("Dex.Themes.CurrentTheme.printValues.addressBookTagColors : %1".arg(addressBookTagColors));
 
