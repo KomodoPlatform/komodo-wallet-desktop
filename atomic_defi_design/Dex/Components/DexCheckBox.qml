@@ -47,6 +47,13 @@ CheckBox
             visible: control.checkState === Qt.Checked
         }
 
+        DefaultColorOverlay
+        {
+            anchors.fill: check_icon
+            source: check_icon
+            color: Dex.CurrentTheme.checkBoxTickColor
+        }
+
         DefaultRectangle
         {
             visible: !control.checked
