@@ -126,7 +126,7 @@ QtObject {
     // Old Theme
     property string chartTheme: Style.dark_theme ? "dark" : "light"
     
-    property color surfaceColor: backgroundDarkColor2
+    property color backgroundDarkColor2: backgroundDarkColor2
     property color backgroundColorDeep: backgroundDarkColor2
     property color dexBoxBackgroundColor: backgroundDarkColor6
 

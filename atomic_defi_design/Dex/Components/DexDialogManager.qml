@@ -56,7 +56,7 @@ Popup {
         DexRectangle {
             anchors.fill: parent
             radius: 4
-            color: DexTheme.surfaceColor
+            color: DexTheme.backgroundDarkColor2
         }
     }
 
@@ -155,7 +155,7 @@ Popup {
                                 anchors.centerIn: parent
                                 iconSize: 19
                                 source: Qaterial.Icons.keyVariant
-                                color: DexTheme.surfaceColor
+                                color: DexTheme.backgroundDarkColor2
                             }
 
                         }
