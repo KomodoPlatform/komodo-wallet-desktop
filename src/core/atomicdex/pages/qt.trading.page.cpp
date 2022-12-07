@@ -678,7 +678,7 @@ namespace atomic_dex
         {
             this->set_price("0");
             this->set_max_volume("0");
-            m_minimal_trading_amount = "0.00777";
+            m_minimal_trading_amount = "0.0001";
             emit minTradeVolChanged();
             this->set_volume("0");
         }
@@ -1057,21 +1057,11 @@ namespace atomic_dex
             this->determine_max_volume();
             QString min_vol = QString::fromStdString(utils::format_float(safe_float(m_preferred_order->at("base_min_volume").get<std::string>())));
             this->set_min_trade_vol(min_vol);
-            auto available_quantity = m_preferred_order->at("base_max_volume").get<std::string>();
+
             if (this->m_current_trading_mode == TradingModeGadget::Pro)
             {
-                m_preferred_order->operator[]("capped") = false;
-                this->set_price(QString::fromStdString(utils::format_float(safe_float(m_preferred_order->at("price").get<std::string>()))));
-                this->determine_max_volume();
-                QString min_vol = QString::fromStdString(utils::format_float(safe_float(m_preferred_order->at("base_min_volume").get<std::string>())));
-                this->set_min_trade_vol(min_vol);
                 auto available_quantity = m_preferred_order->at("base_max_volume").get<std::string>();
-                if (this->m_current_trading_mode == TradingModeGadget::Pro)
-                {
-                    this->set_volume(QString::fromStdString(utils::extract_large_float(available_quantity)));
-                }
-                this->get_orderbook_wrapper()->refresh_best_orders();
-                emit preferredOrderChangeFinished();
+                this->set_volume(QString::fromStdString(utils::extract_large_float(available_quantity)));
             }
             else if (this->m_current_trading_mode == TradingModeGadget::Simple && m_preferred_order->contains("initial_input_volume"))
             {
@@ -1273,6 +1263,7 @@ namespace atomic_dex
         const bool        has_preferred_order      = m_preferred_order.has_value();
         const bool        is_selected_min_max =
             has_preferred_order && m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>();
+        SPDLOG_DEBUG("rel_min_taker_vol: {}", rel_min_taker_vol);
         if (left_cfg.has_parent_fees_ticker && left_cfg.ticker != "QTUM")
         {
             const auto left_fee_cfg = mm2.get_coin_info(left_cfg.fees_ticker);
@@ -1324,7 +1315,7 @@ namespace atomic_dex
             {
                 current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
             }
-            else if (safe_float(m_total_amount.toStdString()) < 0.00777)
+            else if (safe_float(m_total_amount.toStdString()) < safe_float(rel_min_taker_vol))
             {
                 current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum;
             }
@@ -1473,25 +1464,16 @@ namespace atomic_dex
         //! KMD<->DOGE Buy -> base_min_vol, sell base_min_vol ->
         //! base_min_vol -> 0.0001 KMD
         //! rel_min_vol -> 10 DOGE
-        const auto& min_taker_vol = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
+        t_float_50   min_trade_vol_f         = safe_float(min_trade_vol.toStdString());
+        const auto&  current_min_taker_vol   = get_orderbook_wrapper()->get_current_min_taker_vol().toStdString();
+        t_float_50   current_min_taker_vol_f = safe_float(current_min_taker_vol);
+        const auto&  base_min_taker_vol      = get_orderbook_wrapper()->get_base_min_taker_vol().toStdString();
+        t_float_50   base_min_taker_vol_f    = safe_float(base_min_taker_vol);
 
-        if (t_float_50 min_vol_f = safe_float(min_taker_vol); safe_float(min_trade_vol.toStdString()) <= min_vol_f)
+        if (min_trade_vol_f < base_min_taker_vol_f)
         {
-            min_trade_vol = QString::fromStdString(min_taker_vol);
-        }
-
-        if (safe_float(get_orderbook_wrapper()->get_current_min_taker_vol().toStdString()) > safe_float(min_trade_vol.toStdString()))
-        {
-            SPDLOG_WARN("Spurious min_diff detected - (not) overriding immediately (using get_orderbook_wrapper()->get_current_min_taker_vol())");
-            // TODO: Sometimes this ends up returning a higher value than expected.
-            // Commenting out as it might be better to not update if this is the case.
-            // If not associated bugs appear as a result, we can delete this.
-            // min_trade_vol = get_orderbook_wrapper()->get_current_min_taker_vol();
-        }
-        
-        if (safe_float(min_taker_vol) < 0.00777)
-        {
-            min_trade_vol = "0.00777";
+            min_trade_vol = QString::fromStdString(base_min_taker_vol);
+            min_trade_vol_f = base_min_taker_vol_f;
         }
 
         if (min_trade_vol != m_minimal_trading_amount)
