@@ -46,7 +46,11 @@ RowLayout
     property alias bestOrders: bestOrders
     property alias placeOrderForm: placeOrderForm
 
-    function selectOrder(is_asks, coin, price, price_denom, price_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
+    function selectOrder(
+        is_asks, coin, price, price_denom, 
+        price_numer, min_volume, base_min_volume, base_max_volume, 
+        rel_min_volume, rel_max_volume, base_max_volume_denom, 
+        base_max_volume_numer, uuid)
     {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 

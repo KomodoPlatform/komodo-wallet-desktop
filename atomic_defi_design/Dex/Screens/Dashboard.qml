@@ -82,7 +82,20 @@ Item
 
     Layout.fillWidth: true
 
-    onCurrentPageChanged: sidebar.currentLineType = currentPage
+    onCurrentPageChanged: {
+        sidebar.currentLineType = currentPage
+        if (currentPage == Dashboard.PageType.DEX)
+        {
+            if (API.app.trading_pg.current_trading_mode == TradingMode.Pro)
+            {
+                API.app.trading_pg.set_pair(false, api_wallet_page.ticker)
+            }
+            else
+            {
+                API.app.trading_pg.set_pair(true, api_wallet_page.ticker)
+            }
+        }
+    }
 
     SupportPage.SupportModal { id: support_modal }
 
