@@ -100,9 +100,6 @@ namespace atomic_dex::utils
     std::string
     u8string(const std::filesystem::path& p)
     {
-#if defined(PREFER_BOOST_FILESYSTEM)
-        return p.string();
-#else
         auto res = p.u8string();
 
         auto functor = [](auto&& r) {
@@ -116,7 +113,6 @@ namespace atomic_dex::utils
           }
         };
         return functor(res);
-#endif
     }
 
     std::filesystem::path
