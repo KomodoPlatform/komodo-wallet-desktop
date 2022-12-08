@@ -28,10 +28,16 @@ Item
     DefaultRectangle
     {
         id: background
-        anchors.right: parent.right
+        radius: 0
         width: parent.width
-
         height: parent.height
+        anchors.right: parent.right
+        anchors.rightMargin : - border.width
+        anchors.topMargin : - border.width
+        anchors.bottomMargin:  - border.width
+        anchors.leftMargin: - border.width
+        border.width: 0
+        color: 'transparent'
 
         // Panel contents
         Item

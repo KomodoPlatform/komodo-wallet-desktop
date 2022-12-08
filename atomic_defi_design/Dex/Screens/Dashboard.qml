@@ -116,6 +116,7 @@ Item
         }
     }
 
+
     // Right side
     AnimatedRectangle
     {
@@ -123,6 +124,18 @@ Item
         height: parent.height
         x: sidebar.width
         border.color: 'transparent'
+
+        Rectangle
+        {
+            radius: 0
+            anchors.fill: parent
+            anchors.rightMargin : - border.width
+            anchors.bottomMargin:  - border.width
+            anchors.leftMargin: - border.width
+            border.width: 1
+            border.color: Dex.CurrentTheme.lineSeparatorColor
+            color: 'transparent'
+        }
 
         // Modals
         ModalLoader
