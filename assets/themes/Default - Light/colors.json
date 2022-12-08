@@ -90,10 +90,10 @@
     "sidebarLineTextHovered": "#2C87B9FF",
     "sidebarLineTextSelected": "#FFFFFFFF",
 
-    "tradeBuyModeSelectorBackgroundColorStart": "#E52167FF",
-    "tradeBuyModeSelectorBackgroundColorEnd": "#CD0F53FF",
-    "tradeSellModeSelectorBackgroundColorStart": "#0F713CFF",
-    "tradeSellModeSelectorBackgroundColorEnd": "#037B3AFF",
+    "tradeSellModeSelectorBackgroundColorStart": "#E52167FF",
+    "tradeSellModeSelectorBackgroundColorEnd": "#CD0F53FF",
+    "tradeBuyModeSelectorBackgroundColorStart": "#0F713CFF",
+    "tradeBuyModeSelectorBackgroundColorEnd": "#037B3AFF",
 
     "inputModifierBackgroundColor": "#89B6FF21",
     "inputPasswordBackgroundColor": "#A9BDDCFF",
