@@ -121,6 +121,7 @@
 
     "okColor": "#00C058FF",
     "warningColor": "#E52167FF",
+    "swapIconColor": "#005FBEFF",
 
     "senderColorStart": "#F85757FF",
     "receiverColorStart": "#845FEFFF",

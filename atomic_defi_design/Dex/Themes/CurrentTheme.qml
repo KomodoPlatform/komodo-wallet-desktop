@@ -208,13 +208,14 @@ ThemeData
             addressBookTagColors[i] = Dex.Color.argbStrFromRgbaStr(addressBookTagColors[i])
         }
 
-        okColor                             = Dex.Color.argbStrFromRgbaStr(themeData.okColor || defaultTheme.okColor);
-        warningColor                             = Dex.Color.argbStrFromRgbaStr(themeData.warningColor || defaultTheme.warningColor);
+        okColor                     = Dex.Color.argbStrFromRgbaStr(themeData.okColor || defaultTheme.okColor);
+        warningColor                = Dex.Color.argbStrFromRgbaStr(themeData.warningColor || defaultTheme.warningColor);
+        swapIconColor               = Dex.Color.argbStrFromRgbaStr(themeData.swapIconColor || defaultTheme.swapIconColor);
 
-        senderColorStart                        = Dex.Color.argbStrFromRgbaStr(themeData.senderColorStart || defaultTheme.senderColorStart);
-        receiverColorStart                      = Dex.Color.argbStrFromRgbaStr(themeData.receiverColorStart || defaultTheme.receiverColorStart);
+        senderColorStart            = Dex.Color.argbStrFromRgbaStr(themeData.senderColorStart || defaultTheme.senderColorStart);
+        receiverColorStart          = Dex.Color.argbStrFromRgbaStr(themeData.receiverColorStart || defaultTheme.receiverColorStart);
 
-        lineSeparatorColor                  = Dex.Color.argbStrFromRgbaStr(themeData.lineSeparatorColor || defaultTheme.lineSeparatorColor);
+        lineSeparatorColor          = Dex.Color.argbStrFromRgbaStr(themeData.lineSeparatorColor || defaultTheme.lineSeparatorColor);
     }
 
     function loadLogo(themeName)

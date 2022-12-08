@@ -432,11 +432,11 @@ Item
                     enabled: General.canSend(api_wallet_page.ticker, activation_progress)
                     anchors.fill: parent
                     radius: 18
-
                     label.text: qsTr("Send")
                     label.font.pixelSize: 16
                     content.anchors.left: content.parent.left
                     content.anchors.leftMargin: enabled ? 23 : 48
+                    content.anchors.rightMargin: 23
 
                     onClicked:
                     {
@@ -444,13 +444,19 @@ Item
                         else enable_fees_coin_modal.open()
                     }
 
-                    TransactionArrow
+                    Row
                     {
-                        id: arrow_send
-                        amISender: true
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
-                        anchors.rightMargin: 19
+                        anchors.rightMargin: 23
+
+                        Qaterial.Icon
+                        {
+                            icon: Qaterial.Icons.arrowTopRight
+                            size: 24
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: Dex.CurrentTheme.warningColor
+                        }
                     }
                 }
 
@@ -544,12 +550,19 @@ Item
 
                     onClicked: receive_modal.open()
 
-                    TransactionArrow
+                    Row
                     {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
-                        anchors.rightMargin: 19
-                        amISender: false
+                        anchors.rightMargin: 23
+
+                        Qaterial.Icon
+                        {
+                            icon: Qaterial.Icons.arrowBottomRight
+                            size: 24
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: Dex.CurrentTheme.okColor
+                        }
                     }
                 }
 
@@ -592,21 +605,17 @@ Item
                     {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
-                        anchors.rightMargin: arrow_send.anchors.rightMargin
-                        spacing: 2
+                        anchors.rightMargin: 23
 
-                        TransactionArrow
+                        Qaterial.Icon
                         {
-                            amISender: true
+                            icon: Qaterial.Icons.swapHorizontal
+                            size: 28
                             anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        TransactionArrow
-                        {
-                            amISender: false
-                            anchors.verticalCenter: parent.verticalCenter
+                            color: Dex.CurrentTheme.swapIconColor
                         }
                     }
+
                 }
 
                 // Swap button error icon
@@ -675,23 +684,14 @@ Item
                     {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
-                        anchors.rightMargin: arrow_send.anchors.rightMargin
+                        anchors.rightMargin: 23
 
                         Qaterial.Icon
                         {
                             icon: Qaterial.Icons.water
                             size: 24
-                            anchors.right: parent.right
-                            anchors.leftMargin: iconSize / 2
-                            anchors.rightMargin: iconSize / 2
                             anchors.verticalCenter: parent.verticalCenter
                             color: "cyan"
-
-                            DefaultTooltip
-                            {
-                                visible: alertArea.containsMouse && tooltipText != ""
-                                text: ""
-                            }
                         }
                     }
                 }

@@ -19,7 +19,7 @@
     "buttonSecondaryColorEnabled":  "#F0F6FFFF",
     "buttonSecondaryColorHovered":  "#D7E7FFFF",
     "buttonSecondaryColorPressed":  "#B8D2F9FF",
-    
+
     "gradientButtonStartColor": "#5A68E6FF",
     "gradientButtonEndColor": "#4986EAAB",
     "gradientButtonDisabledStartColor": "#CDD0F6FF",
@@ -117,6 +117,7 @@
 
     "okColor": "#00C058FF",
     "warningColor": "#E52167FF",
+    "swapIconColor": "#005FBEFF",
 
     "senderColorStart": "#F85757FF",
     "receiverColorStart": "#845FEFFF",

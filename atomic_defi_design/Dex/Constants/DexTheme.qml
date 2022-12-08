@@ -133,7 +133,7 @@ QtObject {
     property color buttonSecondaryColorEnabled: Dex.CurrentTheme.buttonSecondaryColorEnabled
     property color buttonSecondaryColorHovered: Dex.CurrentTheme.buttonSecondaryColorHovered
     property color buttonSecondaryColorPressed: Dex.CurrentTheme.buttonSecondaryColorPressed
-    
+
     property color buttonGradientEnabled1: DexTheme.buttonColorEnabled
     property color buttonGradientEnabled2: DexTheme.buttonColorEnabled
     property color buttonGradientTextEnabled: DexTheme.foregroundColor
@@ -155,6 +155,7 @@ QtObject {
 
     property color okColor: Dex.CurrentTheme.okColor
     property color warningColor: Dex.CurrentTheme.warningColor
+    property color swapIconColor: Dex.CurrentTheme.swapIconColor
 
     // Widget settings 
 

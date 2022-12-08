@@ -22,6 +22,7 @@ DexRectangle
     property int    verticalPadding: 2
     property int    horizontalPadding: 2
     property int    iconSize: _label.font.pixelSize + 2
+    property color  iconColor: _label.color
 
     property color btnPressedColor:  Dex.CurrentTheme.buttonColorPressed
     property color btnHoveredColor:  Dex.CurrentTheme.buttonColorHovered
