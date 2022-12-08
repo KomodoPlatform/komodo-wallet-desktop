@@ -361,6 +361,7 @@ DexWindow
                         else if (Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark)
                             return Qaterial.Icons.whiteBalanceSunny;
                     }
+                    return Qaterial.Icons.moonWaningCrescent;
                 }
 
                 onClicked: {

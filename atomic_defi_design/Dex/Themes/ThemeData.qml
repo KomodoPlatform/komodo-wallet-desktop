@@ -112,6 +112,10 @@ QtObject
     property color  inputLeftIconColor
     property color  inputLeftIconBackgroundColor
 
+    property color  listItemOddBackground
+    property color  listItemEvenBackground
+    property color  listItemHoveredBackground
+
     // Address book page related
     property var    addressBookTagColors
 

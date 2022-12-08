@@ -20,6 +20,7 @@ import "../Support" as SupportPage
 import "../Screens"
 import "../Addressbook" as Addressbook
 import Dex.Themes 1.0 as Dex
+import AtomicDEX.TradingMode 1.0
 
 Item
 {

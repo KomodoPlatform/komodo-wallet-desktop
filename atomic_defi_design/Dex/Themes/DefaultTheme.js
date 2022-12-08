@@ -102,12 +102,16 @@ function getHardcoded()
         tradeSellModeSelectorBackgroundColorEnd:   "#E216A9FF",
 
         inputModifierBackgroundColor: "#89B6FF21",
-        inputFieldBackgroundColor:    "#A9BDDCFF",
-        inputFieldBorderColor:        "#28272EFF",
-        inputPlaceholderTextColor:    "#A9A9A9FF",
-        inputRightIconColor:          "#A9A9A9FF",
+        inputFieldBackgroundColor:    "#313555FF",
+        inputFieldBorderColor:        "#20233788",
+        inputPlaceholderTextColor:    "#FFFFFFFF",
+        inputRightIconColor:          "#FFFFFFFF",
         inputLeftIconColor:           "#FFFFFFFF",
-        inputLeftIconBackgroundColor: "#1C1B24FF",
+        inputLeftIconBackgroundColor: "#202337FF",
+
+        listItemOddBackground:     "#202337FF",
+        listItemEvenBackground:    "#24273DFF",
+        listItemHoveredBackground: "#4068B9FF",
 
         addressBookTagColors: ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 

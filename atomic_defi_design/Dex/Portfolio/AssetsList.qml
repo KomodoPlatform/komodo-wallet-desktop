@@ -96,13 +96,13 @@ Dex.DexListView
 
     delegate: Rectangle
     {
-        property color _idleColor: index % 2 === 1 ? Dex.CurrentTheme.backgroundColor : Dex.CurrentTheme.innerBackgroundColor
+        property color _idleColor: index % 2 === 1 ? Dex.CurrentTheme.listItemOddBackground : Dex.CurrentTheme.listItemEvenBackground
         property int   activation_progress: Dex.General.zhtlcActivationProgress(activation_status, ticker)
 
         width: list.width
         height: _assetRowHeight
 
-        color: mouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : _idleColor
+        color: mouseArea.containsMouse ? Dex.CurrentTheme.listItemHoveredBackground : _idleColor
 
         RowLayout
         {

@@ -186,13 +186,16 @@ ThemeData
         tradeSellModeSelectorBackgroundColorEnd             = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorEnd || defaultTheme.tradeSellModeSelectorBackgroundColorEnd);
 
         inputModifierBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputModifierBackgroundColor || defaultTheme.inputModifierBackgroundColor);
-        inputFieldBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputFieldBackgroundColor || defaultTheme.inputFieldBackgroundColor);
-
-        inputFieldBorderColor               = Dex.Color.argbStrFromRgbaStr(themeData.inputFieldBorderColor || defaultTheme.inputFieldBorderColor);
+        inputFieldBackgroundColor      = Dex.Color.argbStrFromRgbaStr(themeData.inputFieldBackgroundColor || defaultTheme.inputFieldBackgroundColor);
+        inputFieldBorderColor          = Dex.Color.argbStrFromRgbaStr(themeData.inputFieldBorderColor || defaultTheme.inputFieldBorderColor);
         inputPlaceholderTextColor      = Dex.Color.argbStrFromRgbaStr(themeData.inputPlaceholderTextColor || defaultTheme.inputPlaceholderTextColor);
         inputRightIconColor            = Dex.Color.argbStrFromRgbaStr(themeData.inputRightIconColor || defaultTheme.inputRightIconColor);
         inputLeftIconColor             = Dex.Color.argbStrFromRgbaStr(themeData.inputLeftIconColor || defaultTheme.inputLeftIconColor);
         inputLeftIconBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputLeftIconBackgroundColor || defaultTheme.inputLeftIconBackgroundColor);
+
+        listItemOddBackground       = Dex.Color.argbStrFromRgbaStr(themeData.listItemOddBackground || defaultTheme.listItemOddBackground);
+        listItemEvenBackground      = Dex.Color.argbStrFromRgbaStr(themeData.listItemEvenBackground || defaultTheme.listItemEvenBackground);
+        listItemHoveredBackground   = Dex.Color.argbStrFromRgbaStr(themeData.listItemHoveredBackground || defaultTheme.listItemHoveredBackground);
 
         addressBookTagColors = themeData.addressBookTagColors || defaultTheme.addressBookTagColors
         for (var i = 0; i < addressBookTagColors.length; i++)

@@ -107,6 +107,11 @@
     "inputLeftIconColor":           "#FFFFFFFF",
     "inputLeftIconBackgroundColor": "#202337FF",
 
+    "listItemOddBackground": "#202337FF",
+    "listItemEvenBackground": "#24273DFF",
+    "listItemHoveredBackground": "#4068B9FF",
+
+
     "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 
     "okColor": "#00C058FF",
