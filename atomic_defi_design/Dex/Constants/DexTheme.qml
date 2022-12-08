@@ -129,6 +129,11 @@ QtObject {
     property color buttonColorTextEnabled: Dex.CurrentTheme.buttonTextEnabledColor
     property color buttonColorTextPressed: Dex.CurrentTheme.buttonTextPressedColor
 
+    property color buttonSecondaryColorDisabled: Dex.CurrentTheme.buttonSecondaryColorDisabled
+    property color buttonSecondaryColorEnabled: Dex.CurrentTheme.buttonSecondaryColorEnabled
+    property color buttonSecondaryColorHovered: Dex.CurrentTheme.buttonSecondaryColorHovered
+    property color buttonSecondaryColorPressed: Dex.CurrentTheme.buttonSecondaryColorPressed
+    
     property color buttonGradientEnabled1: DexTheme.buttonColorEnabled
     property color buttonGradientEnabled2: DexTheme.buttonColorEnabled
     property color buttonGradientTextEnabled: DexTheme.foregroundColor

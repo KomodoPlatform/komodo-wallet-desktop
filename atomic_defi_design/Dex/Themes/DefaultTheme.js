@@ -21,6 +21,11 @@ function getHardcoded()
         buttonTextHoveredColor: "#000000FF",
         buttonTextPressedColor: "#000000FF",
 
+        buttonSecondaryColorDisabled: "#D8E3F8FF",
+        buttonSecondaryColorEnabled: "#F0F6FFFF",
+        buttonSecondaryColorHovered: "#D7E7FFFF",
+        buttonSecondaryColorPressed: "#B8D2F9FF",
+
         gradientButtonStartColor: "#5A68E6FF",
         gradientButtonEndColor: "#4986EAAB",
         gradientButtonDisabledStartColor: "#CDD0F6FF",

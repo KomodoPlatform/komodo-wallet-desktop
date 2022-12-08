@@ -105,6 +105,11 @@ ThemeData
         buttonTextHoveredColor              = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextHoveredColor || defaultTheme.buttonTextHoveredColor);
         buttonTextPressedColor              = Dex.Color.argbStrFromRgbaStr(themeData.buttonTextPressedColor || defaultTheme.buttonTextPressedColor);
 
+        buttonSecondaryColorDisabled        = Dex.Color.argbStrFromRgbaStr(themeData.buttonSecondaryColorDisabled || defaultTheme.buttonSecondaryColorDisabled);
+        buttonSecondaryColorEnabled         = Dex.Color.argbStrFromRgbaStr(themeData.buttonSecondaryColorEnabled || defaultTheme.buttonSecondaryColorEnabled);
+        buttonSecondaryColorHovered         = Dex.Color.argbStrFromRgbaStr(themeData.buttonSecondaryColorHovered || defaultTheme.buttonSecondaryColorHovered);
+        buttonSecondaryColorPressed         = Dex.Color.argbStrFromRgbaStr(themeData.buttonSecondaryColorPressed || defaultTheme.buttonSecondaryColorPressed);
+
         gradientButtonStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonStartColor || defaultTheme.gradientButtonStartColor);
         gradientButtonEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonEndColor || defaultTheme.gradientButtonEndColor);
         gradientButtonDisabledStartColor    = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonDisabledStartColor || defaultTheme.gradientButtonDisabledStartColor);

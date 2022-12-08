@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 import Qaterial 1.0 as Qaterial
 
 import "../Components"
-import "../Constants" as Constants
+import "../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 import Dex.Components 1.0 as Dex
@@ -127,17 +127,15 @@ Item
                     Layout.preferredWidth: 140
                     radius: 18
                     spacing: 2
-                    font: Qt.font({
-                        pixelSize: 9 * DexTypo.fontDensity,
-                        letterSpacing: 1.25,
-                        capitalization: Font.AllUppercase,
-                        family: DexTypo.fontFamily,
-                        weight: Font.Normal
-                    })
-                    text: qsTr("Add asset")
+                    label.font: DexTypo.overLine
+                    text: qsTr("ADD CRYPTO")
                     iconSource: Qaterial.Icons.plus
                     leftPadding: 3
                     rightPadding: 3
+                    btnPressedColor: Dex.CurrentTheme.buttonSecondaryColorPressed
+                    btnHoveredColor: Dex.CurrentTheme.buttonSecondaryColorHovered
+                    btnEnabledColor: Dex.CurrentTheme.buttonSecondaryColorEnabled
+                    btnDisabledColor: Dex.CurrentTheme.buttonSecondaryColorDisabled
 
                 }
             }
