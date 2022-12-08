@@ -98,11 +98,11 @@
     "inputModifierBackgroundColor": "#89B6FF21",
     "inputFieldBackgroundColor":    "#F3F5F6FF",
 
-    "inputFieldBorderColor":        "#A9BDDCFF",
+    "inputFieldBorderColor":        "#DCE8FD88",
     "inputPlaceholderTextColor":    "#456078FF",
     "inputRightIconColor":          "#456078FF",
     "inputLeftIconColor":           "#456078FF",
-    "inputLeftIconBackgroundColor": "#F0F2FFFF",
+    "inputLeftIconBackgroundColor": "#DCE8FDFF",
 
     "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 

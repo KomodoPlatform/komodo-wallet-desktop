@@ -319,11 +319,14 @@ SetupPage
                         width: 60
                         radius: 20
                         anchors.verticalCenter: parent.verticalCenter
+                        color: Dex.CurrentTheme.inputLeftIconBackgroundColor
+
                         Qaterial.ColorIcon
                         {
                             anchors.centerIn: parent
                             iconSize: 19
                             source: Qaterial.Icons.wallet
+                            color: Dex.CurrentTheme.inputLeftIconColor
                         }
                     }
                 }

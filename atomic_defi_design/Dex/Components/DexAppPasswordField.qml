@@ -42,7 +42,6 @@ DexAppTextField
         width: 60
         radius: 20
         color: Dex.CurrentTheme.inputLeftIconBackgroundColor
-        border.color: Dex.CurrentTheme.inputFieldBorderColor
         border.width: _inputPassword.focus ? 2 : 0
 
         anchors.verticalCenter: parent.verticalCenter

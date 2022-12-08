@@ -172,6 +172,7 @@ SetupPage
                             anchors.centerIn: parent
                             iconSize: 19
                             source: Qaterial.Icons.wallet
+                            color: Dex.CurrentTheme.inputLeftIconColor
                         }
                     }
                 }
