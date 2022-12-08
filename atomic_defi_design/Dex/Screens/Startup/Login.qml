@@ -67,7 +67,6 @@ SetupPage
             max_length: General.max_pw_length
             height: 50
             width: 300
-            background.color: Dex.CurrentTheme.floatingBackgroundColor
             forceFocus: true
             field.onTextChanged: { _isPasswordWrong = false }
             field.onAccepted:
@@ -88,9 +87,6 @@ SetupPage
                     return false;
                 }
             }
-
-            leftIconColor: Dex.CurrentTheme.foregroundColor
-            hideFieldButton.icon.color: Dex.CurrentTheme.foregroundColor
         }
 
         DexLabel

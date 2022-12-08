@@ -96,12 +96,18 @@ function getHardcoded()
         sidebarLineTextHovered: "#2C87B9FF",
         sidebarLineTextSelected: "#FFFFFFFF",
 
-        tradeBuyModeSelectorBackgroundColorStart: "#6A4DE3FF",
-        tradeBuyModeSelectorBackgroundColorEnd: "#2279F1FF",
+        tradeBuyModeSelectorBackgroundColorStart:  "#6A4DE3FF",
+        tradeBuyModeSelectorBackgroundColorEnd:    "#2279F1FF",
         tradeSellModeSelectorBackgroundColorStart: "#E52167FF",
-        tradeSellModeSelectorBackgroundColorEnd: "#E216A9FF",
+        tradeSellModeSelectorBackgroundColorEnd:   "#E216A9FF",
+
         inputModifierBackgroundColor: "#89B6FF21",
-        inputPasswordBackgroundColor: "#A9BDDCFF",
+        inputFieldBackgroundColor:    "#A9BDDCFF",
+        inputFieldBorderColor:        "#28272EFF",
+        inputPlaceholderTextColor:    "#A9A9A9FF",
+        inputRightIconColor:          "#A9A9A9FF",
+        inputLeftIconColor:           "#FFFFFFFF",
+        inputLeftIconBackgroundColor: "#1C1B24FF",
 
         addressBookTagColors: ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 

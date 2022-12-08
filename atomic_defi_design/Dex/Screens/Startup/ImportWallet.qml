@@ -166,14 +166,12 @@ SetupPage
                         height: 40
                         width: 60
                         radius: 20
-                        color: Dex.CurrentTheme.accentColor
                         anchors.verticalCenter: parent.verticalCenter
                         Qaterial.ColorIcon
                         {
                             anchors.centerIn: parent
                             iconSize: 19
                             source: Qaterial.Icons.wallet
-                            color: Dex.CurrentTheme.foregroundColor
                         }
                     }
                 }
@@ -306,7 +304,7 @@ SetupPage
                 DexAppPasswordField
                 {
                     id: _inputPassword
-                    field.font: DexTypo.body2
+                    field.placeholderText: qsTr("Enter password")
                     Layout.fillWidth: true
                     Layout.preferredHeight: 50
                     field.onAccepted: trySubmit()
@@ -324,7 +322,6 @@ SetupPage
                 DexAppPasswordField
                 {
                     id: _inputPasswordConfirm
-                    field.font: DexTypo.body2
                     field.placeholderText: qsTr("Enter the same password to confirm")
                     Layout.fillWidth: true
                     Layout.preferredHeight: 50

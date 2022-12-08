@@ -318,14 +318,12 @@ SetupPage
                         height: 40
                         width: 60
                         radius: 20
-                        color: Dex.CurrentTheme.accentColor
                         anchors.verticalCenter: parent.verticalCenter
                         Qaterial.ColorIcon
                         {
                             anchors.centerIn: parent
                             iconSize: 19
                             source: Qaterial.Icons.wallet
-                            color: Dex.CurrentTheme.foregroundColor
                         }
                     }
                 }
@@ -685,6 +683,7 @@ SetupPage
                     id: _inputPassword
                     Layout.fillWidth: true
                     Layout.preferredHeight: 50
+                    field.placeholderText: qsTr("Enter password")
                     field.onAccepted: _keyChecker.isValid() ? eula_modal.open() : undefined
                 }
 

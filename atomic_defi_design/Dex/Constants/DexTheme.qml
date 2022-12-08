@@ -157,24 +157,6 @@ QtObject {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Old
 
     function setQaterialStyle() {

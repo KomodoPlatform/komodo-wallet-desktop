@@ -91,12 +91,18 @@
     "sidebarLineTextSelected": "#FFFFFFFF",
 
     "tradeSellModeSelectorBackgroundColorStart": "#E52167FF",
-    "tradeSellModeSelectorBackgroundColorEnd": "#CD0F53FF",
-    "tradeBuyModeSelectorBackgroundColorStart": "#0F713CFF",
-    "tradeBuyModeSelectorBackgroundColorEnd": "#037B3AFF",
+    "tradeSellModeSelectorBackgroundColorEnd":   "#CD0F53FF",
+    "tradeBuyModeSelectorBackgroundColorStart":  "#0F713CFF",
+    "tradeBuyModeSelectorBackgroundColorEnd":    "#037B3AFF",
 
     "inputModifierBackgroundColor": "#89B6FF21",
-    "inputPasswordBackgroundColor": "#A9BDDCFF",
+    "inputFieldBackgroundColor":    "#F3F5F6FF",
+
+    "inputFieldBorderColor":        "#A9BDDCFF",
+    "inputPlaceholderTextColor":    "#456078FF",
+    "inputRightIconColor":          "#456078FF",
+    "inputLeftIconColor":           "#456078FF",
+    "inputLeftIconBackgroundColor": "#F0F2FFFF",
 
     "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 

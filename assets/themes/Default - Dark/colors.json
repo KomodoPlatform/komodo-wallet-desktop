@@ -1,6 +1,6 @@
 {
     "accentColor": "#2C3D66FF",
-    "foregroundColor": "#ffffffFF",
+    "foregroundColor": "#FFFFFFFF",
     "foregroundColor2": "#7A8EA1FF",
     "foregroundColor3": "#ABC0D3FF",
     "backgroundColor": "#202337FF",
@@ -14,9 +14,9 @@
     "buttonColorHovered": "#4068B929",
     "buttonColorPressed": "#2932546C",
     "buttonTextDisabledColor": "#444444FF",
-    "buttonTextEnabledColor": "#ffffffFF",
-    "buttonTextHoveredColor": "#ffffffFF",
-    "buttonTextPressedColor": "#ffffffFF",
+    "buttonTextEnabledColor": "#FFFFFFFF",
+    "buttonTextHoveredColor": "#FFFFFFFF",
+    "buttonTextPressedColor": "#FFFFFFFF",
 
     "gradientButtonStartColor": "#4986EAAD",
     "gradientButtonEndColor": "#5A68E6FF",
@@ -94,12 +94,18 @@
     "sidebarLineTextSelected": "#FFFFFFFF",
 
     "tradeSellModeSelectorBackgroundColorStart": "#E52167FF",
-    "tradeSellModeSelectorBackgroundColorEnd": "#CD0F53FF",
-    "tradeBuyModeSelectorBackgroundColorStart": "#0F713CFF",
-    "tradeBuyModeSelectorBackgroundColorEnd": "#037B3AFF",
+    "tradeSellModeSelectorBackgroundColorEnd":   "#CD0F53FF",
+    "tradeBuyModeSelectorBackgroundColorStart":  "#0F713CFF",
+    "tradeBuyModeSelectorBackgroundColorEnd":    "#037B3AFF",
 
     "inputModifierBackgroundColor": "#89B6FF21",
-    "inputPasswordBackgroundColor": "#24273DFF",
+    "inputFieldBackgroundColor":    "#313555FF",
+
+    "inputFieldBorderColor":        "#24273DFF",
+    "inputPlaceholderTextColor":    "#FFFFFFFF",
+    "inputRightIconColor":          "#FFFFFFFF",
+    "inputLeftIconColor":           "#FFFFFFFF",
+    "inputLeftIconBackgroundColor": "#2C3D66FF",
 
     "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 

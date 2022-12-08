@@ -105,7 +105,12 @@ QtObject
 
     // Inputs styling
     property color  inputModifierBackgroundColor
-    property color  inputPasswordBackgroundColor
+    property color  inputFieldBackgroundColor
+    property color  inputFieldBorderColor
+    property color  inputPlaceholderTextColor
+    property color  inputRightIconColor
+    property color  inputLeftIconColor
+    property color  inputLeftIconBackgroundColor
 
     // Address book page related
     property var    addressBookTagColors

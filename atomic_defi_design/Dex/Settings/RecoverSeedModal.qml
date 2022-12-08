@@ -69,10 +69,7 @@ MultipageModal
             Layout.margins: 20
             Layout.alignment: Qt.AlignHCenter
             field.onAccepted: tryViewKeysAndSeed()
-            leftIconColor: Dex.CurrentTheme.foregroundColor
             field.onTextChanged: { _isPasswordWrong = false }
-            background.color: Dex.CurrentTheme.accentColor            
-            hideFieldButton.icon.color: Dex.CurrentTheme.foregroundColor
         }
 
         DexLabel

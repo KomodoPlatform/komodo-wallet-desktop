@@ -186,7 +186,13 @@ ThemeData
         tradeSellModeSelectorBackgroundColorEnd             = Dex.Color.argbStrFromRgbaStr(themeData.tradeSellModeSelectorBackgroundColorEnd || defaultTheme.tradeSellModeSelectorBackgroundColorEnd);
 
         inputModifierBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputModifierBackgroundColor || defaultTheme.inputModifierBackgroundColor);
-        inputPasswordBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputPasswordBackgroundColor || defaultTheme.inputPasswordBackgroundColor);
+        inputFieldBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputFieldBackgroundColor || defaultTheme.inputFieldBackgroundColor);
+
+        inputFieldBorderColor               = Dex.Color.argbStrFromRgbaStr(themeData.inputFieldBorderColor || defaultTheme.inputFieldBorderColor);
+        inputPlaceholderTextColor      = Dex.Color.argbStrFromRgbaStr(themeData.inputPlaceholderTextColor || defaultTheme.inputPlaceholderTextColor);
+        inputRightIconColor            = Dex.Color.argbStrFromRgbaStr(themeData.inputRightIconColor || defaultTheme.inputRightIconColor);
+        inputLeftIconColor             = Dex.Color.argbStrFromRgbaStr(themeData.inputLeftIconColor || defaultTheme.inputLeftIconColor);
+        inputLeftIconBackgroundColor   = Dex.Color.argbStrFromRgbaStr(themeData.inputLeftIconBackgroundColor || defaultTheme.inputLeftIconBackgroundColor);
 
         addressBookTagColors = themeData.addressBookTagColors || defaultTheme.addressBookTagColors
         for (var i = 0; i < addressBookTagColors.length; i++)
