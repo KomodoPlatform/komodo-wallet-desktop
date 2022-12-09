@@ -17,8 +17,8 @@ MultipageModal
     id: root
     readonly property var fees: API.app.trading_pg.fees
     width: 720
-    horizontalPadding: 30
-    verticalPadding: 30
+    horizontalPadding: 20
+    verticalPadding: 20
     closePolicy: Popup.NoAutoClose
 
     MultipageModalContent
@@ -95,6 +95,7 @@ MultipageModal
                             spacing: 2
                             boxWidth: 16
                             boxHeight: 16
+                            boxRadius: 8
                             label.wrapMode: Label.NoWrap
                             text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
                             font: DexTypo.caption
