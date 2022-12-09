@@ -66,7 +66,7 @@ Item
                     Layout.preferredHeight: 38
 
                     textField.placeholderText: qsTr("Search")
-                    //forceFocus: true
+                    forceFocus: true
                     searchModel: portfolio_coins
                 }
 

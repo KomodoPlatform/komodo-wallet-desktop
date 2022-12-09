@@ -118,16 +118,22 @@ Dex.Rectangle
                 showAssetStandards: useStandardsCheckBox.checked
             }
 
-            Dex.DefaultCheckBox
-            {
-                id: useStandardsCheckBox
-                Layout.preferredWidth: 150
-                Layout.fillHeight: true
-                Layout.leftMargin: 4
-                boxWidth: 22
-                boxHeight: 22
-                text: qsTr("Use standard network address")
-                font: Dex.DexTypo.caption
+            RowLayout {
+                id: rowLayout
+                spacing: 4
+                Dex.DefaultCheckBox
+                {
+                    id: useStandardsCheckBox
+                    Layout.preferredWidth: 30
+                    Layout.fillHeight: true
+                    Layout.leftMargin: 4
+                }
+                Dex.DefaultText {
+                    Layout.minimumWidth: 120
+                    Layout.maximumWidth: 120
+                    text: qsTr("Use standard network address")
+                    font: Dex.DexTypo.caption
+                }
             }
         }
 

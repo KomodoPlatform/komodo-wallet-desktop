@@ -372,7 +372,7 @@ MultipageModal
                                     DefaultText
                                     {
                                         id: publicAddress
-                                        text: model.public_address
+                                        text: model.public_address != 'Invalid Ticker' ? model.public_address : "Please wait for " + model.name + " to fully activate..."
                                         font: model.public_address.length > 70 ? DexTypo.body4 : DexTypo.body3
                                     }
                                 }
