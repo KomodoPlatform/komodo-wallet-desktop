@@ -105,7 +105,7 @@ MultipageModalContent
     // Buttons
     footer:
     [
-        DexButton
+        DexCancelButton
         {
             Layout.fillWidth: true
             text: qsTr("Close")

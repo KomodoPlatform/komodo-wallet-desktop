@@ -23,6 +23,11 @@
     "buttonSecondaryColorHovered":  "#4068B929",
     "buttonSecondaryColorPressed":  "#2932546C",
 
+    "buttonCancelColorDisabled": "#28375AFF",
+    "buttonCancelColorEnabled":  "#293254FF",
+    "buttonCancelColorHovered":  "#4068B929",
+    "buttonCancelColorPressed":  "#2932546C",
+
     "gradientButtonStartColor": "#4986EAAD",
     "gradientButtonEndColor": "#5A68E6FF",
     "gradientButtonDisabledStartColor": "#5A68E64D",

@@ -733,7 +733,7 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
 
-            DefaultButton
+            DexCancelButton
             {
                 text: qsTr("Cancel")
 

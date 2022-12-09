@@ -115,14 +115,12 @@ SetupPage
             visible: false
         }
 
-        DexAppButton
+        DexCancelButton
         {
             text: qsTr("Cancel")
-            color: containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
             height: 25
             radius: 20
             width: 100
-            border.color: 'transparent'
             Layout.alignment: Qt.AlignHCenter
             font: Qt.font(
             {

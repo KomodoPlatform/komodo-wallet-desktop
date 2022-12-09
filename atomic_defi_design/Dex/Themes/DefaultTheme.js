@@ -26,6 +26,11 @@ function getHardcoded()
         buttonSecondaryColorHovered: "#D7E7FFFF",
         buttonSecondaryColorPressed: "#B8D2F9FF",
 
+        buttonCancelColorDisabled: "#D8E3F8FF",
+        buttonCancelColorEnabled: "#F0F6FFFF",
+        buttonCancelColorHovered: "#D7E7FFFF",
+        buttonCancelColorPressed: "#B8D2F9FF",
+
         gradientButtonStartColor: "#5A68E6FF",
         gradientButtonEndColor: "#4986EAAB",
         gradientButtonDisabledStartColor: "#CDD0F6FF",

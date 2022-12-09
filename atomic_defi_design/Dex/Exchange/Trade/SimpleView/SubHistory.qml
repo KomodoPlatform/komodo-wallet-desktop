@@ -252,7 +252,7 @@ Item
                         anchors.fill: parent
                         spacing: 15
 
-                        DefaultButton
+                        DexCancelButton
                         {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter

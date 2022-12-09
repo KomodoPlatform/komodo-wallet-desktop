@@ -176,7 +176,7 @@ Dex.Rectangle
             Layout.topMargin: 10
             Layout.fillWidth: true
 
-            Dex.Button
+            Dex.CancelButton
             {
                 Layout.preferredWidth: 116
                 Layout.preferredHeight: 38
@@ -301,7 +301,7 @@ Dex.Rectangle
                     },
 
                     // Cancel button
-                    Dex.Button
+                    Dex.CancelButton
                     {
                         Layout.rightMargin: 5
                         text: qsTr("Cancel")

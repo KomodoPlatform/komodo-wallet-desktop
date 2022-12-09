@@ -85,7 +85,7 @@ MultipageModal
         {
             Layout.preferredWidth: parent.width
             Layout.topMargin: 30
-            DefaultButton
+            DexCancelButton
             {
                 text: qsTr("Cancel")
                 Layout.preferredWidth: parent.width / 100 * 48

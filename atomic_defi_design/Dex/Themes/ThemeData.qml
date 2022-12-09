@@ -25,6 +25,11 @@ QtObject
     property color  buttonSecondaryColorHovered
     property color  buttonSecondaryColorPressed
 
+    property color  buttonCancelColorDisabled
+    property color  buttonCancelColorEnabled
+    property color  buttonCancelColorHovered
+    property color  buttonCancelColorPressed
+
     property color  gradientButtonStartColor
     property color  gradientButtonEndColor
     property color  gradientButtonDisabledStartColor

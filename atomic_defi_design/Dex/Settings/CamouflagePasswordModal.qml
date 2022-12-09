@@ -78,7 +78,7 @@ MultipageModal
         // Buttons
         footer:
         [
-            DexAppButton
+            DexCancelButton
             {
                 text: qsTr("Cancel")
                 leftPadding: 40

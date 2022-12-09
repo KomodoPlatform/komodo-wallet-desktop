@@ -110,6 +110,11 @@ ThemeData
         buttonSecondaryColorHovered         = Dex.Color.argbStrFromRgbaStr(themeData.buttonSecondaryColorHovered || defaultTheme.buttonSecondaryColorHovered);
         buttonSecondaryColorPressed         = Dex.Color.argbStrFromRgbaStr(themeData.buttonSecondaryColorPressed || defaultTheme.buttonSecondaryColorPressed);
 
+        buttonCancelColorDisabled           = Dex.Color.argbStrFromRgbaStr(themeData.buttonCancelColorDisabled || defaultTheme.buttonCancelColorDisabled);
+        buttonCancelColorEnabled            = Dex.Color.argbStrFromRgbaStr(themeData.buttonCancelColorEnabled || defaultTheme.buttonCancelColorEnabled);
+        buttonCancelColorHovered            = Dex.Color.argbStrFromRgbaStr(themeData.buttonCancelColorHovered || defaultTheme.buttonCancelColorHovered);
+        buttonCancelColorPressed            = Dex.Color.argbStrFromRgbaStr(themeData.buttonCancelColorPressed || defaultTheme.buttonCancelColorPressed);
+
         gradientButtonStartColor            = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonStartColor || defaultTheme.gradientButtonStartColor);
         gradientButtonEndColor              = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonEndColor || defaultTheme.gradientButtonEndColor);
         gradientButtonDisabledStartColor    = Dex.Color.argbStrFromRgbaStr(themeData.gradientButtonDisabledStartColor || defaultTheme.gradientButtonDisabledStartColor);
