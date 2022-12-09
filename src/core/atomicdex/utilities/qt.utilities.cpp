@@ -81,7 +81,7 @@ namespace atomic_dex
     }
 
     QString
-    std_path_to_qstring(const fs::path& path)
+    std_path_to_qstring(const std::filesystem::path& path)
     {
         QString out;
 #if defined(_WIN32) || defined(WIN32)
@@ -112,10 +112,10 @@ namespace atomic_dex
     qt_utilities::get_themes_list() const 
     {
         QStringList    out;
-        const fs::path theme_path = atomic_dex::utils::get_themes_path();
-        for (auto&& cur: fs::directory_iterator(theme_path)) 
+        const std::filesystem::path theme_path = atomic_dex::utils::get_themes_path();
+        for (auto&& cur: std::filesystem::directory_iterator(theme_path)) 
         {
-            if (!fs::exists(cur.path() / "colors.json")) continue;
+            if (!std::filesystem::exists(cur.path() / "colors.json")) continue;
 
             out << std_path_to_qstring(cur.path().filename()); 
         }
@@ -126,8 +126,8 @@ namespace atomic_dex
     qt_utilities::save_theme(const QString& filename, const QVariantMap& theme_object, bool overwrite)
     {
         bool     result    = true;
-        fs::path file_path = atomic_dex::utils::get_themes_path() / filename.toStdString() / "colors.json";
-        if (!overwrite && fs::exists(file_path))
+        std::filesystem::path file_path = atomic_dex::utils::get_themes_path() / filename.toStdString() / "colors.json";
+        if (!overwrite && std::filesystem::exists(file_path))
         {
             result = false;
         }
@@ -150,8 +150,8 @@ namespace atomic_dex
         using namespace std::string_literals;
         
         // Loads color scheme.
-        fs::path file_path = atomic_dex::utils::get_themes_path() / theme_name.toStdString() / "colors.json";
-        if (fs::exists(file_path))
+        std::filesystem::path file_path = atomic_dex::utils::get_themes_path() / theme_name.toStdString() / "colors.json";
+        if (std::filesystem::exists(file_path))
         {
             LOG_PATH("load theme: {}", file_path);
             QFile file;
