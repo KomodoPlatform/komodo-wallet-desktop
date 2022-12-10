@@ -115,6 +115,18 @@ Item {
                 }
             }
 
+            DefaultButton
+            {
+                visible: !root.is_history
+                enabled: list_model.length > 0
+                Layout.preferredHeight: 29
+                radius: 7
+                label.font: DexTypo.body2
+                text: qsTr("Cancel All")
+                iconSource: Qaterial.Icons.close
+                onClicked: API.app.trading_pg.orders.cancel_order(list_model_proxy.get_filtered_ids())
+            }
+
             DefaultText
             {
                 color: Dex.CurrentTheme.foregroundColor2
@@ -142,18 +154,6 @@ Item {
                     label.font: DexTypo.body2
                     text: qsTr("Apply Filter")
                     onClicked: list_model_proxy.apply_all_filtering()
-                }
-
-                DefaultButton
-                {
-                    visible: !root.is_history
-                    enabled: API.app.orders_mdl.length > 0
-                    Layout.preferredHeight: 29
-                    radius: 7
-                    label.font: DexTypo.body2
-                    text: qsTr("Cancel All")
-                    iconSource: Qaterial.Icons.close
-                    onClicked: API.app.trading_pg.orders.cancel_order(list_model_proxy.get_filtered_ids())
                 }
             }
 

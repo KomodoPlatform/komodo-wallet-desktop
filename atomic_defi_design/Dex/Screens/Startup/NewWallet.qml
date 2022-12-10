@@ -569,7 +569,8 @@ SetupPage
                                     width: (_insideFlow2.width - 30) / 4
                                     text: modelData ?? ""
                                     radius: 20
-                                    color: Dex.CurrentTheme.accentColor
+                                    btnEnabledColor: Dex.CurrentTheme.buttonColorEnabled
+                                    btnHoveredColor: Dex.CurrentTheme.accentColor
                                     font: DexTypo.body2
 
                                     onClicked:
@@ -610,9 +611,9 @@ SetupPage
                     {
                         x: 5
                         height: 40
-                        width: 60
+                        width: 50
                         radius: 20
-                        color: Dex.CurrentTheme.accentColor
+                        color: Dex.CurrentTheme.inputLeftIconBackgroundColor
                         anchors.verticalCenter: parent.verticalCenter
 
                         DefaultText
