@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <filesystem>
+
 #include <meta/detection/detection.hpp>
 
 #include "enable_slp_rpc.hpp"
@@ -130,7 +132,7 @@ namespace atomic_dex::mm2
         catch (const std::exception& error)
         {
             SPDLOG_ERROR(
-                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(),
+                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string(), error.what(),
                 rpc_command, body);
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();

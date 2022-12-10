@@ -188,7 +188,7 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width * 0.37
-                text: { new BigNumber(rel_max_volume).toFixed(6) }
+                text: { new BigNumber(base_max_volume).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 horizontalAlignment: Text.AlignRight

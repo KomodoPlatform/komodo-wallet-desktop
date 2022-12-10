@@ -31,7 +31,7 @@ TEST_CASE("generate all coinpaprika possibilities")
     }
 
     std::unordered_set<std::string> visited;
-    fs::path                        cfg_path = antara::gaming::core::assets_real_path() / "config" / "0.4.2-coins.json";
+    std::filesystem::path                        cfg_path = antara::gaming::core::assets_real_path() / "config" / "0.4.2-coins.json";
     std::ifstream                   ifs(cfg_path.string());
     nlohmann::json                  j;
     ifs >> j;

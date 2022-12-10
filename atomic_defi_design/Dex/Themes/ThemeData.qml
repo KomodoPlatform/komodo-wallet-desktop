@@ -33,6 +33,7 @@ QtObject
     property color  gradientButtonTextHoveredColor
     property color  gradientButtonTextPressedColor
 
+    property color  checkBoxTickColor
     property color  checkBoxGradientStartColor
     property color  checkBoxGradientEndColor
 

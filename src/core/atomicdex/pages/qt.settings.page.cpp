@@ -44,10 +44,10 @@ namespace
     {
         if (not icon_filepath.isEmpty())
         {
-            const fs::path& suffix = fs::path(icon_filepath.toStdString()).extension();
-            fs::copy_file(
-                icon_filepath.toStdString(), fs::path(icons_path_directory.toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
-                get_override_options());
+            const std::filesystem::path& suffix = std::filesystem::path(icon_filepath.toStdString()).extension();
+            std::filesystem::copy_file(
+                icon_filepath.toStdString(), std::filesystem::path(icons_path_directory.toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
+                std::filesystem::copy_options::overwrite_existing);
         }
     }
 } // anonymous namespace
@@ -561,7 +561,7 @@ namespace atomic_dex
             }
         }
         using namespace std::string_literals;
-        const fs::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+        const std::filesystem::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
