@@ -203,7 +203,6 @@ Dex.DexListView
                     return parseFloat(balance).toFixed(8)
                 }
 
-                color: text_value == parseFloat(balance).toFixed(8) ? Qt.darker(Dex.DexTheme.foregroundColor, 0.8) : Dex.DexTheme.warningColor
                 privacy: true
             }
 
@@ -217,8 +216,6 @@ Dex.DexListView
 
                 font: Dex.DexTypo.body2
                 text_value: Dex.General.formatFiat("", main_currency_balance, Dex.API.app.settings_pg.current_currency)
-
-                color: Qt.darker(Dex.DexTheme.foregroundColor, 0.8)
                 privacy: true
             }
 
@@ -252,7 +249,6 @@ Dex.DexListView
 
                 text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
                                                    Dex.API.app.settings_pg.current_currency, 6)
-                color: Dex.DexTheme.colorThemeDarkLight
             }
 
             Item // Price Provider
