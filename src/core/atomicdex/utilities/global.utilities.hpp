@@ -81,6 +81,8 @@ namespace atomic_dex::utils
 
     std::filesystem::path get_atomic_dex_config_folder();
 
+    nlohmann::json read_json_file(std::filesystem::path filepath);
+
     //std::string minimal_trade_amount_str();
 
     //const t_float_50 minimal_trade_amount();

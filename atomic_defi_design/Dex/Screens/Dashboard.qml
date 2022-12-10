@@ -109,7 +109,7 @@ Item
             if (API.app.portfolio_pg.portfolio_mdl.length > atomic_settings2.value("MaximumNbCoinsEnabled")) {
                 open()
                 onTimerEnded = () => {
-                    API.app.settings_pg.reset_coin_cfg()
+                    API.app.reset_coin_cfg()
                 }
             }
         }
