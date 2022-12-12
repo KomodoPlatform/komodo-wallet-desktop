@@ -115,7 +115,7 @@ SetupPage
             visible: false
         }
 
-        DexCancelButton
+        CancelButton
         {
             text: qsTr("Cancel")
             height: 25

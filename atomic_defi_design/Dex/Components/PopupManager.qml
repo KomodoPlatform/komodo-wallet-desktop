@@ -254,7 +254,7 @@ Popup
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: parent.width - 80
-                    DexCancelButton
+                    CancelButton
                     {
                         id: cancelBtn
                         visible: showCancelBtn

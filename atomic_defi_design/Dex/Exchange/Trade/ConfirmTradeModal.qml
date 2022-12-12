@@ -397,7 +397,7 @@ MultipageModal
         [
             Item { Layout.fillWidth: true },
 
-            DexCancelButton
+            CancelButton
             {
                 text: qsTr("Cancel")
                 padding: 10

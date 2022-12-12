@@ -32,7 +32,7 @@ MultipageModal
                     close()
                 }
             }
-            DexCancelButton
+            CancelButton
             {
                 Layout.fillWidth: true
                 text: qsTr("Cancel")

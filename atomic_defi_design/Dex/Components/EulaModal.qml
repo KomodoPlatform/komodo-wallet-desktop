@@ -82,7 +82,7 @@ MultipageModal
                 Layout.alignment: Qt.AlignRight
 
 
-                DexCancelButton
+                CancelButton
                 {
                     text: close_only ? qsTr("Close") : qsTr("Cancel")
                     radius: 18

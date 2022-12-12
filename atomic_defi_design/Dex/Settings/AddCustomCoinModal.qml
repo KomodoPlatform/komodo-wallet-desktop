@@ -146,7 +146,7 @@ MultipageModal
         // Buttons
         footer:
         [
-            DexCancelButton
+            CancelButton
             {
                 text: qsTr("Cancel")
                 Layout.preferredWidth: 220

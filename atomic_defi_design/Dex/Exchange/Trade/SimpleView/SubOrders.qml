@@ -245,7 +245,7 @@ Item
                     {
                         anchors.fill: parent
                         spacing: 15
-                        DexCancelButton
+                        CancelButton
                         {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter

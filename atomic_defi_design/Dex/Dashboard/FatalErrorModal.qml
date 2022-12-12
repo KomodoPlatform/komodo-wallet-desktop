@@ -32,7 +32,7 @@ MultipageModal {
         }
 
         footer: [
-            DexCancelButton {
+            CancelButton {
                 Layout.fillWidth: true
                 text: qsTr("Close")
                 onClicked: root.close()
