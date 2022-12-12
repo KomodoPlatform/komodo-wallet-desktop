@@ -143,14 +143,14 @@ jobs:
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
         run: |
-          python3  -m aqt tool ${{ matrix.host }} tools_ifw 4.5.0 qt.tools.ifw.45 --outputdir ${{ github.workspace }}/Qt
+          python3  -m aqt tool ${{ matrix.host }} tools_ifw 4.5.1 qt.tools.ifw.45 --outputdir ${{ github.workspace }}/Qt
           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.5/bin" >> $GITHUB_PATH
 
       - name: Install QT IFW (Windows)
         if: runner.os == 'Windows'
         run: |
           python -m pip install --upgrade pip
-          python -m aqt tool ${{ matrix.host }} tools_ifw 4.5.0 qt.tools.ifw.45 --outputdir C:/Qt
+          python -m aqt tool ${{ matrix.host }} tools_ifw 4.5.1 qt.tools.ifw.45 --outputdir C:/Qt
           echo "C:/Qt/Tools/QtInstallerFramework/4.5/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Install nim (Linux)
