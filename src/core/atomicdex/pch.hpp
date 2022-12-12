@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "atomicdex/utilities/fs.prerequisites.hpp"
+#include <cstddef>
 
 constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
 

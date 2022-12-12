@@ -53,11 +53,11 @@ namespace
             using namespace std::string_literals;
             SPDLOG_DEBUG("checking for reconfiguration");
 
-            fs::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
+            std::filesystem::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
             std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
-            fs::path    precedent_version_cfg_path = cfg_path / filename;
+            std::filesystem::path    precedent_version_cfg_path = cfg_path / filename;
 
-            if (fs::exists(precedent_version_cfg_path))
+            if (std::filesystem::exists(precedent_version_cfg_path))
             {
                 //! There is a precedent configuration file
                 SPDLOG_INFO("There is a precedent configuration file, upgrading the new one with precedent settings");
@@ -71,7 +71,7 @@ namespace
                 precedent_config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
 
                 //! New cfg to ifs
-                fs::path actual_version_filepath = cfg_path / (std::string(atomic_dex::get_raw_version()) + "-coins."s + wallet_name + ".json"s);
+                std::filesystem::path actual_version_filepath = cfg_path / (std::string(atomic_dex::get_raw_version()) + "-coins."s + wallet_name + ".json"s);
                 LOG_PATH("opening file: {}", actual_version_filepath);
                 QFile actual_version_ifs;
                 actual_version_ifs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
@@ -110,8 +110,8 @@ namespace
                 ofs.write(QString::fromStdString(actual_config_data.dump()).toUtf8());
 
                 //! Delete old cfg
-                fs_error_code ec;
-                fs::remove(precedent_version_cfg_path, ec);
+                std::error_code ec;
+                std::filesystem::remove(precedent_version_cfg_path, ec);
                 if (ec)
                 {
                     SPDLOG_ERROR("error: {}", ec.message());
@@ -139,10 +139,10 @@ namespace
             return;
         }
         SPDLOG_INFO("Update coins status to: {} - field_name: {} - tickers: {}", status, field_name, fmt::join(tickers, ", "));
-        fs::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
+        std::filesystem::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         std::string custom_tokens_filename = "custom-tokens." + wallet_name + ".json";
-        fs::path    custom_tokens_filepath = cfg_path / custom_tokens_filename;
+        std::filesystem::path    custom_tokens_filepath = cfg_path / custom_tokens_filename;
 
         QFile ifs;
         ifs.setFileName(atomic_dex::std_path_to_qstring((cfg_path / filename)));
@@ -151,7 +151,7 @@ namespace
         nlohmann::json config_json_data;
         nlohmann::json custom_cfg_data;
 
-        if (fs::exists(custom_tokens_filepath.c_str()))
+        if (std::filesystem::exists(custom_tokens_filepath.c_str()))
         {
             QFile ifs_custom;
             ifs_custom.setFileName(atomic_dex::std_path_to_qstring(custom_tokens_filepath));
@@ -221,7 +221,7 @@ namespace atomic_dex
         std::string custom_tokens_filename = "custom-tokens." + m_current_wallet_name + ".json";
 
         LOG_PATH("Retrieving Wallet information of {}", (cfg_path / filename));
-        auto retrieve_cfg_functor = [](fs::path path) -> std::unordered_map<std::string, atomic_dex::coin_config>
+        auto retrieve_cfg_functor = [](std::filesystem::path path) -> std::unordered_map<std::string, atomic_dex::coin_config>
         {
             if (exists(path))
             {
@@ -1676,7 +1676,7 @@ namespace atomic_dex
     {
         this->m_balance_factor = utils::determine_balance_factor(with_pin_cfg);
         SPDLOG_DEBUG("balance factor is: {}", m_balance_factor);
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
         this->dispatcher_.trigger<coin_cfg_parsed>(this->retrieve_coins_informations());
         this->dispatcher_.trigger<force_update_providers>();
@@ -1687,7 +1687,7 @@ namespace atomic_dex
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
         nlohmann::to_json(json_cfg, cfg);
-        fs::path mm2_cfg_path = (fs::temp_directory_path() / "MM2.json");
+        std::filesystem::path mm2_cfg_path = (std::filesystem::temp_directory_path() / "MM2.json");
 
         QFile ofs;
         ofs.setFileName(std_path_to_qstring(mm2_cfg_path));
@@ -1726,14 +1726,14 @@ namespace atomic_dex
                     {
                         SPDLOG_ERROR("MM2 not started correctly");
                         //! TODO: emit mm2_failed_initialization
-                        fs::remove(mm2_cfg_path);
+                        std::filesystem::remove(mm2_cfg_path);
                         return;
                     }
                     std::this_thread::sleep_for(1s);
                 }
 
                 // m_mm2_client.connect_client();
-                fs::remove(mm2_cfg_path);
+                std::filesystem::remove(mm2_cfg_path);
                 SPDLOG_INFO("mm2 is initialized");
                 dispatcher_.trigger<mm2_initialized>();
                 enable_default_coins();
@@ -2075,7 +2075,7 @@ namespace atomic_dex
     void
     mm2_service::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading& evt)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
 
         m_orderbook_thread_active = true;
     }
@@ -2083,7 +2083,7 @@ namespace atomic_dex
     void
     mm2_service::on_gui_leave_trading([[maybe_unused]] const gui_leave_trading& evt)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
         m_orderbook_thread_active = false;
     }
 
@@ -2313,12 +2313,12 @@ namespace atomic_dex
         if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.begin().key()))
         {
             SPDLOG_DEBUG("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
-            fs::path       cfg_path  = utils::get_atomic_dex_config_folder();
+            std::filesystem::path       cfg_path  = utils::get_atomic_dex_config_folder();
             std::string    filename  = "custom-tokens." + m_current_wallet_name + ".json";
-            fs::path       file_path = cfg_path / filename;
+            std::filesystem::path       file_path = cfg_path / filename;
             nlohmann::json config_json_data;
 
-            if (fs::exists(file_path))
+            if (std::filesystem::exists(file_path))
             {
                 SPDLOG_DEBUG("reading contents of custom tokens cfg");
                 QFile ifs;
@@ -2342,7 +2342,7 @@ namespace atomic_dex
         }
         if (not raw_coin_cfg_json.empty() && not is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
         {
-            const fs::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+            const std::filesystem::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
             SPDLOG_DEBUG("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
             QFile ifs;
             ifs.setFileName(std_path_to_qstring(mm2_cfg_path));
@@ -2391,7 +2391,7 @@ namespace atomic_dex
         if (is_this_ticker_present_in_normal_cfg(ticker))
         {
             SPDLOG_DEBUG("remove it from custom cfg: {}", ticker);
-            fs::path    cfg_path = utils::get_atomic_dex_config_folder();
+            std::filesystem::path    cfg_path = utils::get_atomic_dex_config_folder();
             std::string filename = "custom-tokens." + m_current_wallet_name + ".json";
             QFile       ifs;
             ifs.setFileName(std_path_to_qstring((cfg_path / filename)));
@@ -2423,7 +2423,7 @@ namespace atomic_dex
         if (is_this_ticker_present_in_raw_cfg(ticker))
         {
             SPDLOG_DEBUG("remove it from mm2 cfg: {}", ticker);
-            fs::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+            std::filesystem::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
             QFile    ifs;
             ifs.setFileName(std_path_to_qstring(mm2_cfg_path));
             ifs.open(QIODevice::ReadOnly | QIODevice::Text);

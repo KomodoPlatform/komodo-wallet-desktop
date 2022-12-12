@@ -245,8 +245,6 @@ Item {
                             id: hide_zero_balance_checkbox
 
                             spacing: 2
-                            boxWidth: 24
-                            boxHeight: 24
 
                             label.wrapMode: Label.NoWrap
                             label.font.pixelSize: 14

@@ -346,7 +346,7 @@ namespace atomic_dex
 
     application::application(QObject* pParent) : QObject(pParent)
     {
-        fs::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
+        std::filesystem::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
         #if defined(_WIN32) || defined(WIN32)
             this->entity_registry_.set<QSettings>(QString::fromStdWString(settings_path.wstring()), QSettings::IniFormat);
         #else
@@ -511,7 +511,7 @@ namespace atomic_dex
         this->m_primary_coin_fully_enabled   = false;
         this->m_secondary_coin_fully_enabled = false;
         system_manager_.get_system<qt_wallet_manager>().set_status("None");
-        return fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
+        return std::filesystem::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
     }
 
     void application::connect_signals()

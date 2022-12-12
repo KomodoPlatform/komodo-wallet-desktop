@@ -278,7 +278,7 @@ namespace atomic_dex
     void
     orders_proxy_model::export_csv_visible_history(const QString& path)
     {
-        const fs::path csv_path = path.toStdString();
+        const std::filesystem::path csv_path = path.toStdString();
         SPDLOG_INFO("exporting csv with path: {}", csv_path.string());
         std::ofstream ofs(csv_path.string(), std::ios::out | std::ios::trunc);
         int           nb_items = this->rowCount();
