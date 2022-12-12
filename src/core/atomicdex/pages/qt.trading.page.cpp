@@ -200,6 +200,7 @@ namespace atomic_dex
                 req.selected_order_use_input_volume = true;
             }
         }
+        
         nlohmann::json batch;
         nlohmann::json buy_request = mm2::template_request("buy");
         mm2::to_json(buy_request, req);
@@ -313,6 +314,7 @@ namespace atomic_dex
         }
 
         auto max_taker_vol_json_obj = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
+        
         if (is_selected_order)
         {
             SPDLOG_DEBUG(
@@ -364,6 +366,7 @@ namespace atomic_dex
 
         sell_request["userpass"] = "******";
         SPDLOG_DEBUG("sell request: {}", sell_request.dump(4));
+
         //! Answer
         auto answer_functor = [this](web::http::http_response resp)
         {
@@ -482,6 +485,7 @@ namespace atomic_dex
             {
                 std::error_code    ec;
                 t_orderbook_answer result = mm2_system.get_orderbook(ec);
+                
                 if (!ec)
                 {
                     auto* wrapper = get_orderbook_wrapper();
@@ -601,6 +605,7 @@ namespace atomic_dex
             const auto* market_selector_mdl = get_market_pairs_mdl();
             set_current_orderbook(market_selector_mdl->get_left_selected_coin(), market_selector_mdl->get_right_selected_coin());
             emit marketModeChanged();
+            
             if (m_market_mode == MarketMode::Buy)
             {
                 this->get_orderbook_wrapper()->get_best_orders()->get_orderbook_proxy()->sort(0, Qt::AscendingOrder);
@@ -625,6 +630,7 @@ namespace atomic_dex
         {
             price = "0";
         }
+        
         if (m_price != price)
         {
             m_price = std::move(price);
@@ -682,6 +688,7 @@ namespace atomic_dex
             emit minTradeVolChanged();
             this->set_volume("0");
         }
+        
         this->set_total_amount("0");
         this->set_trading_error(TradingError::None);
         this->m_preferred_order  = std::nullopt;
@@ -1189,7 +1196,7 @@ namespace atomic_dex
         auto answer_functor = [this, &mm2](web::http::http_response resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
-            SPDLOG_DEBUG("trade_preimage answer received: {}", body);
+            SPDLOG_INFO("[determine_fees] trade_preimage answer received: {}", body);
             if (resp.status_code() == web::http::status_codes::OK)
             {
                 auto           answers               = nlohmann::json::parse(body);
@@ -1202,6 +1209,7 @@ namespace atomic_dex
                     fees["error"] = QString::fromStdString(error_answer);
                     this->set_fees(fees);
                 }
+                
                 if (trade_preimage_answer.result.has_value())
                 {
                     auto        success_answer = trade_preimage_answer.result.value();
@@ -1222,7 +1230,6 @@ namespace atomic_dex
                     //! We are always in buy or sell mode, in this case show the fees
                     fees["fee_to_send_taker_fee"]        = QString::fromStdString(utils::adjust_precision(success_answer.fee_to_send_taker_fee.value().amount));
                     fees["fee_to_send_taker_fee_ticker"] = QString::fromStdString(success_answer.fee_to_send_taker_fee.value().coin);
-
 
                     for (auto&& cur: success_answer.total_fees)
                     {
@@ -1263,7 +1270,7 @@ namespace atomic_dex
         const bool        has_preferred_order      = m_preferred_order.has_value();
         const bool        is_selected_min_max =
             has_preferred_order && m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>();
-        SPDLOG_DEBUG("rel_min_taker_vol: {}", rel_min_taker_vol);
+        
         if (left_cfg.has_parent_fees_ticker && left_cfg.ticker != "QTUM")
         {
             const auto left_fee_cfg = mm2.get_coin_info(left_cfg.fees_ticker);
@@ -1339,6 +1346,7 @@ namespace atomic_dex
         const auto* market_selector = get_market_pairs_mdl();
         const auto& base            = market_selector->get_left_selected_coin();
         const auto& rel             = market_selector->get_right_selected_coin();
+        
         if (auto cex_price = QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString())); cex_price != m_cex_price)
         {
             m_cex_price = std::move(cex_price);
@@ -1540,6 +1548,7 @@ namespace atomic_dex
         t_float_50 spread             = settings.value("Spread", 1.0).toDouble();
         t_float_50 min_volume_percent = settings.value("MinVolume", 10.0).toDouble() / 100; ///< min volume is always 10% of the order or more
         settings.endGroup();
+        
         if (!is_disabled)
         {
             SPDLOG_WARN("{}/{} have trading settings - using them", left.toStdString(), right.toStdString());

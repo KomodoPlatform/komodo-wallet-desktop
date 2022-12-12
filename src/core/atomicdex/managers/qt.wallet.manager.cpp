@@ -308,7 +308,6 @@ namespace atomic_dex
                 ifs.open(QIODevice::ReadOnly | QIODevice::Text);
                 std::string json_data = QString(ifs.readAll()).toUtf8().constData();
                 valid_json = nlohmann::json::accept(json_data);
-
                 ifs.close();
             }
 

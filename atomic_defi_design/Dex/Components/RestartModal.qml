@@ -29,7 +29,6 @@ MultipageModal
             console.log("Restarting the application...")
             _restartTimer.stop()
             onTimerEnded()
-            API.app.restart()
         }
     }
 
