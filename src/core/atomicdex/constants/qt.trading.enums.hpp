@@ -52,10 +52,10 @@ namespace atomic_dex
         {
             None                                     = 0,
             TotalFeesNotEnoughFunds                  = 1, ///< Not enough to pay any kind of fees
-            BalanceIsLessThanTheMinimalTradingAmount = 2, ///< max_trading_vol < 0.00777
+            BalanceIsLessThanTheMinimalTradingAmount = 2, ///< max_trading_vol < min_trade_amount
             PriceFieldNotFilled                      = 3, ///< Price empty or 0
             VolumeFieldNotFilled                     = 4, ///< Volume empty or 0
-            VolumeIsLowerThanTheMinimum              = 5, ///< Volume field < 0.00777
+            VolumeIsLowerThanTheMinimum              = 5, ///< Volume field < min_trade_amount
             ReceiveVolumeIsLowerThanTheMinimum       = 6,
             LeftParentChainNotEnabled                = 7,
             LeftParentChainNotEnoughBalance          = 8,

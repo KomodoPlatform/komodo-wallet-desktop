@@ -113,7 +113,7 @@ namespace atomic_dex
         QString                                m_max_volume{"0"};
         QString                                m_total_amount{"0.00777"};
         QString                                m_cex_price{"0"};
-        QString                                m_minimal_trading_amount{"0.00777"};
+        QString                                m_minimal_trading_amount{"0.0001"};
         std::optional<nlohmann::json>          m_preferred_order;
         boost::synchronized_value<QVariantMap> m_fees;
         bool                                   m_skip_taker{false};
