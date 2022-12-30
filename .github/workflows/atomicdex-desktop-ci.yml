@@ -115,6 +115,7 @@ jobs:
           target: 'desktop'
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
+          cache: true
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
@@ -128,6 +129,7 @@ jobs:
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
+          cache: true
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
@@ -139,6 +141,7 @@ jobs:
           arch: 'win64_msvc2019_64'
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
+          cache: true
 
       - name: Install QT IFW (MacOS)
         if: runner.os == 'macOS'
