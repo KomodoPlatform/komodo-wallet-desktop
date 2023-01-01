@@ -170,6 +170,13 @@ jobs:
           chmod +x /home/runner/.choosenim/toolchains/nim-1.4.8/bin/*
 
       - name: Install deps (Linux)
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: build-essential libgl1-mesa-dev ninja-build curl wget zstd software-properties-common lsb-release libpulse-dev libtool autoconf unzip libssl-dev libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb1-dev libxcb-keysyms1-dev libxcb-render-util0-dev libxcb-xinerama0 libgstreamer-plugins-base1.0-dev git
+          version: 1.0
+          execute_install_scripts: true
+
+      - name: Install deps (Linux)
         if: runner.os == 'Linux'
         run: |
           echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
