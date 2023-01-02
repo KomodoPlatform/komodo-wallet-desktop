@@ -92,7 +92,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           cd '${{ github.workspace }}'
-          git clone -b master --recurse-submodules https://github.com/ElementsProject/libwally-core.git
+          git clone -b v0.8.5 --recurse-submodules https://github.com/KomodoPlatform/libwally-core.git
           cd '${{ github.workspace }}\libwally-core'
           git submodule init
           git submodule sync --recursive
@@ -237,7 +237,7 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.15.sdk --compiler=clang++
-
+          
 
 
       - name: Build AtomicDEX (Linux)
