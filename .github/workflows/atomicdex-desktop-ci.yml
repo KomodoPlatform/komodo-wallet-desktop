@@ -107,54 +107,41 @@ jobs:
 
       - name: Install QT (macOS)
         if: runner.os == 'macOS'
-        uses: KomodoPlatform/install-qt-action@v2.14.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
-          setup-python: 'false'
           host: ${{ matrix.host }}
-          target: 'desktop'
           dir: '${{ github.workspace }}'
+          target: 'desktop'
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
+          tools: 'tools_ifw'
+          setup-python: 'false'
           cache: true
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: KomodoPlatform/install-qt-action@v2.14.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
-          setup-python: 'false'
           host: ${{ matrix.host }}
-          target: 'desktop'
           dir: '${{ github.workspace }}'
+          target: 'desktop'
           modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
-          aqtversion: '==0.8'
-          py7zrversion: '==0.6'
+          setup-python: 'false'
           cache: true
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: KomodoPlatform/install-qt-action@v2.14.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
           host: ${{ matrix.host }}
-          target: 'desktop'
-          arch: 'win64_msvc2019_64'
           dir: 'C:\'
+          target: 'desktop'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
+          tools: 'tools_ifw'
+          arch: 'win64_msvc2019_64'
           cache: true
-
-      - name: Install QT IFW (MacOS)
-        if: runner.os == 'macOS'
-        run: |
-          python3  -m aqt tool ${{ matrix.host }} tools_ifw 4.5.1 qt.tools.ifw.45 --outputdir ${{ github.workspace }}/Qt
-          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.5/bin" >> $GITHUB_PATH
-
-      - name: Install QT IFW (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          python -m pip install --upgrade pip
-          python -m aqt tool ${{ matrix.host }} tools_ifw 4.5.1 qt.tools.ifw.45 --outputdir C:/Qt
-          echo "C:/Qt/Tools/QtInstallerFramework/4.5/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Install nim (Linux)
         if: runner.os == 'Linux'
@@ -204,8 +191,8 @@ jobs:
         uses: lukka/run-vcpkg@v10
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          setupOnly: true
           appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
+          vcpkgJsonGlob: '**/vcpkg.json'
 
 
       - name: import code signing certificates (macos)
