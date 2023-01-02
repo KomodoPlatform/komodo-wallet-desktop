@@ -86,7 +86,7 @@ jobs:
 
       - name: Install MSVC
         if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1.4.1
+        uses: ilammy/msvc-dev-cmd@v1.12.0
         
       - name: Build libwally (Windows)
         if: runner.os == 'Windows'
