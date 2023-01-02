@@ -222,6 +222,7 @@ jobs:
           xcrun --sdk macosx --show-sdk-path
           export SDK_PATH=$(xcrun --sdk macosx --show-sdk-path)
           ls /Applications/Xcode_13.2.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+          echo $HOME/sdk
           ls $HOME/sdk
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
@@ -235,7 +236,8 @@ jobs:
           export CXX=clang++
           cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/$SDK_PATH --compiler=clang++
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.15.sdk --compiler=clang++
+          
 
 
       - name: Build AtomicDEX (Linux)
