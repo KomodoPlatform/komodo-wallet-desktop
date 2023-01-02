@@ -74,7 +74,7 @@ jobs:
             host: 'windows'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
@@ -237,7 +237,7 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.15.sdk --compiler=clang++
-          
+
 
 
       - name: Build AtomicDEX (Linux)
@@ -279,7 +279,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux ZSTD)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_zstd }}
           path: ./bundled/linux/${{ env.target_name_zstd }}
@@ -287,7 +287,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/linux/${{ env.target_name_zip }}
@@ -295,7 +295,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux AppImage)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_appimage }}
           path: ./bundled/linux/${{ env.target_name_appimage }}
@@ -309,7 +309,7 @@ jobs:
 
       - name: Upload artifacts (MacOS dmg)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_dmg }}
           path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}.dmg
@@ -317,7 +317,7 @@ jobs:
 
       - name: Upload artifacts (MacOS installer)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
@@ -332,7 +332,7 @@ jobs:
 
       - name: Upload artifacts (Windows zip)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/windows/bin.zip
@@ -340,7 +340,7 @@ jobs:
 
       - name: Upload artifacts (Windows installer)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
