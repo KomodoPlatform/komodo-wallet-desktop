@@ -113,7 +113,7 @@ jobs:
           host: ${{ matrix.host }}
           dir: '${{ github.workspace }}'
           target: 'desktop'
-          modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
+          modules: 'qtcharts debug_info qtwebengine'
           tools: 'tools_ifw'
           setup-python: 'false'
           cache: true
@@ -126,7 +126,7 @@ jobs:
           host: ${{ matrix.host }}
           dir: '${{ github.workspace }}'
           target: 'desktop'
-          modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
+          modules: 'qtcharts debug_info qtwebengine'
           setup-python: 'false'
           cache: true
 
@@ -138,7 +138,7 @@ jobs:
           host: ${{ matrix.host }}
           dir: 'C:\'
           target: 'desktop'
-          modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
+          modules: 'qtcharts debug_info qtwebengine'
           tools: 'tools_ifw'
           arch: 'win64_msvc2019_64'
           cache: true
