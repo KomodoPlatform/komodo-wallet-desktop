@@ -2,6 +2,31 @@
 
 sudo apt-get update  # prevents repo404 errors on apt-remove below
 sudo apt-get remove php* msodbcsql17 mysql*
+sudo apt-get update
+sudo ACCEPT_EULA=Y apt-get upgrade -y
+# base deps
+sudo apt-get install build-essential \
+                    libgl1-mesa-dev \
+                    ninja-build \
+                    curl \
+                    wget \
+                    zstd \
+                    software-properties-common \
+                    lsb-release \
+                    libpulse-dev \
+                    libtool \
+                    autoconf \
+                    unzip \
+                    libssl-dev \
+                    libxkbcommon-x11-0 \
+                    libxcb-icccm4 \
+                    libxcb-image0 \
+                    libxcb1-dev \
+                    libxcb-keysyms1-dev \
+                    libxcb-render-util0-dev \
+                    libxcb-xinerama0 \
+                    libgstreamer-plugins-base1.0-dev \
+                    git -y
                     
 # get llvm
 wget https://apt.llvm.org/llvm.sh
