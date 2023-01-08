@@ -74,19 +74,19 @@ jobs:
             host: 'windows'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
 
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
       - name: Install MSVC
         if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1.4.1
+        uses: ilammy/msvc-dev-cmd@v1.12.0
         
       - name: Build libwally (Windows)
         if: runner.os == 'Windows'
@@ -107,64 +107,54 @@ jobs:
 
       - name: Install QT (macOS)
         if: runner.os == 'macOS'
-        uses: KomodoPlatform/install-qt-action@v2.14.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
-          setup-python: 'false'
           host: ${{ matrix.host }}
-          target: 'desktop'
           dir: '${{ github.workspace }}'
-          modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
+          target: 'desktop'
+          modules: 'qtcharts debug_info qtwebengine'
+          tools: 'tools_ifw'
+          setup-python: 'false'
+          cache: true
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: KomodoPlatform/install-qt-action@v2.14.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
-          setup-python: 'false'
           host: ${{ matrix.host }}
-          target: 'desktop'
           dir: '${{ github.workspace }}'
-          modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
-          aqtversion: '==0.8'
-          py7zrversion: '==0.6'
+          target: 'desktop'
+          modules: 'qtcharts debug_info qtwebengine'
+          setup-python: 'false'
+          cache: true
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: KomodoPlatform/install-qt-action@v2.14.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
           host: ${{ matrix.host }}
-          target: 'desktop'
-          arch: 'win64_msvc2019_64'
           dir: 'C:\'
-          modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
-
-      - name: Install QT IFW (MacOS)
-        if: runner.os == 'macOS'
-        run: |
-          python3  -m aqt tool ${{ matrix.host }} tools_ifw 4.5.1 qt.tools.ifw.45 --outputdir ${{ github.workspace }}/Qt
-          echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.5/bin" >> $GITHUB_PATH
-
-      - name: Install QT IFW (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          python -m pip install --upgrade pip
-          python -m aqt tool ${{ matrix.host }} tools_ifw 4.5.1 qt.tools.ifw.45 --outputdir C:/Qt
-          echo "C:/Qt/Tools/QtInstallerFramework/4.5/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          target: 'desktop'
+          modules: 'qtcharts debug_info qtwebengine'
+          tools: 'tools_ifw'
+          arch: 'win64_msvc2019_64'
+          cache: true
 
       - name: Install nim (Linux)
         if: runner.os == 'Linux'
         run: |
           export DEBIAN_FRONTEND=noninteractive
           export SHELL=/bin/bash
-          echo "CHOOSENIM_CHOOSE_VERSION=1.4.8" >> $GITHUB_ENV
-          export CHOOSENIM_CHOOSE_VERSION=1.4.8
+          echo "CHOOSENIM_CHOOSE_VERSION=1.6.10" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.6.10
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
-          chmod +x /home/runner/.choosenim/toolchains/nim-1.4.8/bin/*
+          chmod +x /home/runner/.choosenim/toolchains/nim-1.6.10/bin/*
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
@@ -191,11 +181,11 @@ jobs:
           echo "CC=clang-12" >> $GITHUB_ENV
 
       - name: vcpkg deps (All)
-        uses: KomodoPlatform/run-vcpkg@v7
+        uses: lukka/run-vcpkg@v10
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          setupOnly: true
           appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
+          vcpkgJsonGlob: 'vcpkg.json'
 
 
       - name: import code signing certificates (macos)
@@ -222,6 +212,11 @@ jobs:
       - name: Build AtomicDEX (MacOS)
         if: runner.os == 'macOS'
         run: |
+          xcrun --sdk macosx --show-sdk-path
+          export SDK_PATH=$(xcrun --sdk macosx --show-sdk-path)
+          ls /Applications/Xcode_13.2.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+          echo $HOME/sdk
+          ls $HOME/sdk
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
           export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
@@ -235,6 +230,7 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.15.sdk --compiler=clang++
+
 
 
       - name: Build AtomicDEX (Linux)
@@ -276,7 +272,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux ZSTD)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_zstd }}
           path: ./bundled/linux/${{ env.target_name_zstd }}
@@ -284,7 +280,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/linux/${{ env.target_name_zip }}
@@ -292,7 +288,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux AppImage)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_appimage }}
           path: ./bundled/linux/${{ env.target_name_appimage }}
@@ -306,7 +302,7 @@ jobs:
 
       - name: Upload artifacts (MacOS dmg)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_dmg }}
           path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}.dmg
@@ -314,7 +310,7 @@ jobs:
 
       - name: Upload artifacts (MacOS installer)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
@@ -329,7 +325,7 @@ jobs:
 
       - name: Upload artifacts (Windows zip)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/windows/bin.zip
@@ -337,7 +333,7 @@ jobs:
 
       - name: Upload artifacts (Windows installer)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
