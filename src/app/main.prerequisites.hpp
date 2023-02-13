@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2023 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -180,15 +180,15 @@ static void init_logging()
     auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.string(), spdlog_max_file_size, spdlog_max_file_rotation);
 #endif
 
+#if defined(DEBUG) || defined(_WIN32) || defined(WIN32)
     std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
+#else
+    std::vector<spdlog::sink_ptr> sinks{rotating_sink};
+#endif
     auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
     spdlog::register_logger(logger);
     spdlog::set_default_logger(logger);
-#ifdef DEBUG
     spdlog::set_level(spdlog::level::trace);
-#else
-    spdlog::set_level(spdlog::level::info);
-#endif
     spdlog::set_pattern("[%T] [%^%l%$] [%s:%#] [%t]: %v");
 }
 
@@ -352,10 +352,10 @@ inline int
 run_app(int argc, char** argv)
 {
 #if !defined(ATOMICDEX_HOT_RELOAD)
-    SPDLOG_INFO("Installing qt_message_handler");
+    SPDLOG_DEBUG("Installing qt_message_handler");
     qInstallMessageHandler(&qt_message_handler);
 #endif
-    SPDLOG_INFO(
+    SPDLOG_DEBUG(
         "SSL: {} {} {}", QSslSocket::supportsSsl(), QSslSocket::sslLibraryBuildVersionString().toStdString(),
         QSslSocket::sslLibraryVersionString().toStdString());
 
