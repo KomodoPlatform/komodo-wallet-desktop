@@ -576,18 +576,15 @@ QtObject {
     }
 
     function getMinTradeAmount() {
-        /*if (API.app.trading_pg.market_mode == MarketMode.Buy) {
-            return API.app.trading_pg.orderbook.rel_min_taker_vol
-        }*/
-        return API.app.trading_pg.min_trade_vol
+        return formatDouble(API.app.trading_pg.min_trade_vol, 8, false).toString()
     }
 
     function getReversedMinTradeAmount() {
-            if (API.app.trading_pg.market_mode == MarketMode.Buy) {
-               return API.app.trading_pg.min_trade_vol
-            }
-            return API.app.trading_pg.orderbook.rel_min_taker_vol
+        if (API.app.trading_pg.market_mode == MarketMode.Buy) {
+           return getMinTradeAmount()
         }
+        return formatDouble(API.app.trading_pg.orderbook.rel_min_taker_vol, 8, false).toString()
+    }
 
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {

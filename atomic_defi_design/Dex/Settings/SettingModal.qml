@@ -292,7 +292,7 @@ Qaterial.Dialog
                                             restart_modal.open()
                                             restart_modal.item.onTimerEnded = () =>
                                             {
-                                                API.app.settings_pg.reset_coin_cfg()
+                                                API.app.reset_coin_cfg()
                                             }
                                         }
                                     })

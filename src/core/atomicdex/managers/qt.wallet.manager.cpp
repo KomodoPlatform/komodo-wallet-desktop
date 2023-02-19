@@ -39,11 +39,11 @@ namespace atomic_dex
         using namespace std::string_literals;
         if (wallet_name == "")
         {
-            fs::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
+            std::filesystem::remove(utils::get_atomic_dex_config_folder() / "default.wallet");
             return;
         }
 
-        fs::path path = (utils::get_atomic_dex_config_folder() / "default.wallet"s);
+        std::filesystem::path path = (utils::get_atomic_dex_config_folder() / "default.wallet"s);
         QFile out;
         out.setFileName(std_path_to_qstring(path));
         out.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
@@ -70,17 +70,17 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
-            const fs::path    seed_path          = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
-            const fs::path    wallet_object_path = utils::get_atomic_dex_export_folder() / (wallet_name.toStdString() + ".wallet.json"s);
+            const std::filesystem::path    seed_path          = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+            const std::filesystem::path    wallet_object_path = utils::get_atomic_dex_export_folder() / (wallet_name.toStdString() + ".wallet.json"s);
             const std::string wallet_cfg_file    = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
-            const fs::path    wallet_cfg_path    = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
+            const std::filesystem::path    wallet_cfg_path    = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
 
 
-            if (not fs::exists(wallet_cfg_path))
+            if (not std::filesystem::exists(wallet_cfg_path))
             {
                 const auto  cfg_path = ag::core::assets_real_path() / "config";
                 std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins.json";
-                fs::copy(cfg_path / filename, wallet_cfg_path);
+                std::filesystem::copy(cfg_path / filename, wallet_cfg_path);
             }
 
             // Encrypt seed
@@ -110,7 +110,7 @@ namespace atomic_dex
     {
         QStringList out;
 
-        for (auto&& p: fs::directory_iterator((utils::get_atomic_dex_config_folder())))
+        for (auto&& p: std::filesystem::directory_iterator((utils::get_atomic_dex_config_folder())))
         {
             if (p.path().extension().string() == ".seed")
             {
@@ -128,7 +128,7 @@ namespace atomic_dex
     bool
     qt_wallet_manager::is_there_a_default_wallet()
     {
-        return fs::exists(utils::get_atomic_dex_config_folder() / "default.wallet");
+        return std::filesystem::exists(utils::get_atomic_dex_config_folder() / "default.wallet");
     }
 
     QString
@@ -137,7 +137,7 @@ namespace atomic_dex
         if (is_there_a_default_wallet())
         {
             QFile ifs;
-            fs::path path = (utils::get_atomic_dex_config_folder() / "default.wallet");
+            std::filesystem::path path = (utils::get_atomic_dex_config_folder() / "default.wallet");
             ifs.setFileName(std_path_to_qstring(path));
             ifs.open(QIODevice::ReadOnly | QIODevice::Text);
             QString out = ifs.readAll();
@@ -152,7 +152,7 @@ namespace atomic_dex
     qt_wallet_manager::delete_wallet(const QString& wallet_name)
     {
         using namespace std::string_literals;
-        return fs::remove(utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
+        return std::filesystem::remove(utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
     }
 
     bool
@@ -169,7 +169,7 @@ namespace atomic_dex
             }
         }
         using namespace std::string_literals;
-        const fs::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+        const std::filesystem::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
@@ -184,7 +184,7 @@ namespace atomic_dex
     {
         SPDLOG_INFO("Loading wallet configuration: {}", wallet_name);
         using namespace std::string_literals;
-        const fs::path wallet_object_path = utils::get_atomic_dex_export_folder() / (wallet_name + ".wallet.json"s);
+        const std::filesystem::path wallet_object_path = utils::get_atomic_dex_export_folder() / (wallet_name + ".wallet.json"s);
         QFile          ifs;
         ifs.setFileName(std_path_to_qstring(wallet_object_path));
         ifs.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -212,7 +212,7 @@ namespace atomic_dex
     {
         SPDLOG_INFO("update_wallet_cfg");
         using namespace std::string_literals;
-        const fs::path wallet_object_path = utils::get_atomic_dex_export_folder() / (m_wallet_cfg.name + ".wallet.json"s);
+        const std::filesystem::path wallet_object_path = utils::get_atomic_dex_export_folder() / (m_wallet_cfg.name + ".wallet.json"s);
         QFile ofs;
         ofs.setFileName(std_path_to_qstring(wallet_object_path));
         ofs.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
@@ -298,17 +298,16 @@ namespace atomic_dex
             using namespace std::string_literals;
 
             const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
-            const fs::path    wallet_cfg_path = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
+            const std::filesystem::path    wallet_cfg_path = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
             bool  valid_json = false;
 
-            if (fs::exists(wallet_cfg_path))
+            if (std::filesystem::exists(wallet_cfg_path))
             {
                 QFile          ifs;
                 ifs.setFileName(std_path_to_qstring(wallet_cfg_path));
                 ifs.open(QIODevice::ReadOnly | QIODevice::Text);
                 std::string json_data = QString(ifs.readAll()).toUtf8().constData();
                 valid_json = nlohmann::json::accept(json_data);
-
                 ifs.close();
             }
 
@@ -316,10 +315,10 @@ namespace atomic_dex
             {
                 const auto  cfg_path = ag::core::assets_real_path() / "config";
                 std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins.json";
-                fs::copy(cfg_path / filename, wallet_cfg_path, fs::copy_options::overwrite_existing);
+                std::filesystem::copy(cfg_path / filename, wallet_cfg_path, std::filesystem::copy_options::overwrite_existing);
             }
 
-            const fs::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+            const std::filesystem::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
             auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
             if (ec == dextop_error::corrupted_file_or_wrong_password)
             {

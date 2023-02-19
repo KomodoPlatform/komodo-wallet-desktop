@@ -1,13 +1,13 @@
 import os
 
 proc remove_vcpkg()=
-    if os.existsDir("vcpkg-repo"):
+    if os.dirExists("vcpkg-repo"):
         os.removeDir("vcpkg-repo")
 
 proc remove_build()=
-    if os.existsDir("build-Debug"):
+    if os.dirExists("build-Debug"):
         os.removeDir("build-Debug")
-    if os.existsDir("build-Release"):
+    if os.dirExists("build-Release"):
         os.removeDir("build-Release")
 
 proc clean*(clean_type: string) =

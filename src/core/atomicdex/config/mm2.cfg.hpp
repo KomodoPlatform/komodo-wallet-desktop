@@ -38,7 +38,7 @@ namespace atomic_dex
         //std::vector<std::string> seednodes{"195.201.91.96", "195.201.91.53", "168.119.174.126", "46.4.78.11", "46.4.87.18"};
         //std::vector<std::string> seednodes{"46.4.78.11", "46.4.87.18"};
 #ifdef _WIN32
-        std::string userhome{utils::u8string(fs::path(_wgetenv(L"HOMEPATH")))};
+        std::string userhome{utils::u8string(std::filesystem::path(_wgetenv(L"HOMEPATH")))};
 #else
         std::string userhome{std::getenv("HOME")};
 #endif

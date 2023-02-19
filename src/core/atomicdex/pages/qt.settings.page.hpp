@@ -108,7 +108,6 @@ namespace atomic_dex
         Q_INVOKABLE void                        process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type);
         Q_INVOKABLE void                        process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath);
         Q_INVOKABLE void                        submit();
-        Q_INVOKABLE void                        reset_coin_cfg();
         Q_INVOKABLE QStringList                 retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE static QString              get_mm2_version();
         Q_INVOKABLE static QString              get_log_folder();
