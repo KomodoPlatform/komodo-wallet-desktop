@@ -39,6 +39,6 @@ namespace atomic_dex
     constexpr const char*
     get_precedent_raw_version()
     {
-        return "0.5.6.1";
+        return "0.5.5";
     }
 } // namespace atomic_dex

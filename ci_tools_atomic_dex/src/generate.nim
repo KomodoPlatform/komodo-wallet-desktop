@@ -6,7 +6,7 @@ import dependencies
 proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path: string) =
     download_packages()
     var full_name = "build-" & build_type 
-    if not os.existsDir(os.getCurrentDir().joinPath(full_name)):
+    if not os.dirExists(os.getCurrentDir().joinPath(full_name)):
         echo "creating directory: " & full_name 
         os.createDir(full_name)
     else:
