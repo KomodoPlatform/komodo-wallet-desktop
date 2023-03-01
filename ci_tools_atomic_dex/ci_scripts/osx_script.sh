@@ -10,7 +10,7 @@ brew install autoconf \
             automake \
             pkgconfig \
             wget \
-            nim@1.6.10 \
+            nim \
             ninja \
             gnu-sed \
             coreutils \
