@@ -16,7 +16,7 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
     var cmd_line = "cmake -GNinja -DCMAKE_BUILD_TYPE=" &  build_type & " " &
                     os.getCurrentDir().parentDir().parentDir()
     when defined(osx):
-        if not osx_sdk_path.isNil() and osx_sdk_path != "nil":
-            cmd_line = cmd_line & " -DCMAKE_OSX_SYSROOT=" & osx_sdk_path & " -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 -DPREFER_BOOST_FILESYSTEM=ON"
+        if os.dirExists(osx_sdk_path):
+            cmd_line = cmd_line & " -DCMAKE_OSX_SYSROOT=" & osx_sdk_path & " -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15"
     echo "cmd line: " & cmd_line
     discard execCmd(cmd_line)
