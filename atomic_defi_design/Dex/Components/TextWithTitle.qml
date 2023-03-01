@@ -5,6 +5,7 @@ import App 1.0
 
 ComponentWithTitle {
     property alias text: text.text_value
+    property alias text_font: text.font
     property alias value_color: text.color
     property alias privacy: text.privacy
 

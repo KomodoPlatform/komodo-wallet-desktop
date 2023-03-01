@@ -3,6 +3,9 @@ import QtQuick 2.15          //> Item
 import QtQuick.Layouts 1.15  //> RowLayout
 import QtQuick.Controls 2.15 //> ItemDelegate
 
+// 3rdParty
+import Qaterial 1.0 as Qaterial
+
 import App 1.0
 
 //! Project Imports
@@ -10,165 +13,204 @@ import "../../../Components" //> MultipageModal
 import "../../../Constants" as Constants  //> API
 import Dex.Themes 1.0 as Dex
 
-DefaultListView
+DexListView
 {
     id: _listBestOrdersView
+    model: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl
+    enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
+    onVisibleChanged: currentLeftToken = _tradeCard.selectedTicker
 
     property var    tradeCard
     property var    selectedOrder
     property bool best: true
     property string currentLeftToken // The token we wanna sell
 
-    property int    _rowWidth: width - 20
-    property int    _rowHeight: 50
-    property int    _tokenColumnSize: 60
-    property int    _quantityColumnSize: 100
-    property int    _quantityInBaseColumnSize: 100
-    property int    _fiatVolumeColumnSize: 50
-    property int    _cexRateColumnSize: 50
+    property int    _rowWidth: width
+    property int    _rowHeight: 40
+    property int    _tokenColumnSize: 90
+    property int    _quantityColumnSize: 90
+    property int    _quantityInBaseColumnSize: 120
+    property int    _fiatVolumeColumnSize: 80
+    property int    _cexRateColumnSize: 60
 
-    enabled: !Constants.API.app.trading_pg.orderbook.best_orders_busy
-    model: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
     cacheBuffer: 40
     clip: true
 
-    Connections
+    header: DexRectangle // Best orders list header
     {
-        target: _tradeCard
-        function onBestChanged()
-        {
-            Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
-            positionViewAtBeginning()
-        }
-    }
-
-    onVisibleChanged: currentLeftToken = _tradeCard.selectedTicker
-
-    header: DefaultRectangle // Best orders list header
-    {
+        id: header_row
         width: _rowWidth
         height: _rowHeight
         z: 2
+        radius: 0
+        border.width: 0
         color: Dex.CurrentTheme.floatingBackgroundColor
 
-        MouseArea { anchors.fill: parent }
         RowLayout                   // Order Columns Name
         {
-            anchors.verticalCenter: parent.verticalCenter
             anchors.fill: parent
-            spacing: 2
-            DefaultText             // "Token" Header
+            anchors.margins: 5
+            anchors.verticalCenter: parent.verticalCenter
+
+            DexLabel             // "Token" Header
             {
                 Layout.preferredWidth: _tokenColumnSize
-                text: qsTr("Token")
+                horizontalAlignment: Text.AlignLeft
+
+                text_value: qsTr("Token")
                 font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DefaultText             // "Available Quantity" Header
+
+            DexLabel             // "Available Quantity" Header
             {
+                id: qty_header
+
                 Layout.preferredWidth: _quantityColumnSize
-                text: qsTr("Available Quantity")
+                horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("Available Quantity")
                 font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DefaultText             // "Available Quantity (in BASE)" header
+
+            DexLabel             // "Available Quantity (in BASE)" header
             {
+                id: base_qty_header
+
                 Layout.preferredWidth: _quantityInBaseColumnSize
-                text: qsTr("Available Quantity (in %1)").arg(currentLeftToken)
+                horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("Available Quantity (in %1)").arg(currentLeftToken)
                 font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DefaultText             // "Fiat Volume" column header
+
+            DexLabel             // "Fiat Volume" column header
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
-                text: qsTr("Fiat Volume")
+                horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("Fiat Volume")
                 font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
-            DefaultText             // "CEX Rate" column header
+
+            DexLabel             // "CEX Rate" column header
             {
                 Layout.preferredWidth: _cexRateColumnSize
-                text: qsTr("CEX Rate")
+                horizontalAlignment: Text.AlignRight
+
+                text_value: qsTr("CEX Rate")
                 font.family: Constants.Style.font_family
                 font.bold: true
                 font.pixelSize: 12
                 font.weight: Font.Bold
             }
         }
+
+        MouseArea { anchors.fill: parent }
     }
 
-    delegate: ItemDelegate // Order Line
+    delegate: DexRectangle // Order Line
     {
         property bool _isCoinEnabled: Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
 
         width: _rowWidth
         height: _rowHeight
+        radius: 0
+        border.width: 0
+        colorAnimation: false
+        color: mouse_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
+
+        DexMouseArea
+        {
+            id: mouse_area
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked:
+            {
+                if (!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
+                {
+                    _tooltip.open()
+                }
+                else
+                {
+                    _listBestOrdersView.tradeCard.best = false
+                    _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
+                }
+            }
+        }
 
         HorizontalLine { width: parent.width; opacity: .5 }
 
         RowLayout                   // Order Info
         {
-            anchors.verticalCenter: parent.verticalCenter
             anchors.fill: parent
+
             RowLayout                           // Order Token
             {
                 property int _iconWidth: 24
-
                 Layout.preferredWidth: _tokenColumnSize
-                DefaultImage                         // Order Token Icon
+
+                DexImage                         // Order Token Icon
                 {
                     Layout.preferredWidth: parent._iconWidth
                     Layout.preferredHeight: 24
-
                     source: General.coinIcon(coin)
-                    opacity: !_isCoinEnabled? .1 : 1
+                    opacity: !_isCoinEnabled? .3 : 1
                 }
-                DefaultText                          // Order Token Name
+
+                DexLabel                          // Order Token Name
                 {
-                    id: _tokenName
                     Layout.preferredWidth: _tokenColumnSize - parent._iconWidth
-                    text: coin
+                    text_value: coin
                     font.pixelSize: 14
                 }
             }
 
-            DefaultText                         // Order Available Quantity
+            DexLabel                         // Order Available Quantity
             {
                 Layout.preferredWidth: _quantityColumnSize
-                text: parseFloat(General.formatDouble(quantity, General.amountPrecision, true)).toFixed(8)
+                horizontalAlignment: Text.AlignRight
+                text_value: parseFloat(General.formatDouble(quantity, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
 
-            DefaultText                         // Order Available Quantity In BASE
+            DexLabel                         // Order Available Quantity In BASE
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
-                text: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
+                horizontalAlignment: Text.AlignRight
+                text_value: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
             }
 
-            DefaultText                         // Order Fiat Volume
+            DexLabel                         // Order Fiat Volume
             {
                 Layout.preferredWidth: _fiatVolumeColumnSize
-                text: price_fiat+Constants.API.app.settings_pg.current_fiat_sign
+                horizontalAlignment: Text.AlignRight
+                text_value: parseFloat(price_fiat).toFixed(2)+Constants.API.app.settings_pg.current_fiat_sign
             }
 
-            DefaultText
+            DexLabel
             {
                 Layout.preferredWidth: _cexRateColumnSize
+                horizontalAlignment: Text.AlignRight
                 color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.redColor : DexTheme.greenColor
-                text: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
+                text_value: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
             }
-            DefaultTooltip
+
+            DexTooltip
             {
                 id: _tooltip
 
@@ -181,7 +223,7 @@ DefaultListView
                 contentItem: DexLabelUnlinked
                 {
                     text_value: qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin)
-                    wrapMode: DefaultText.Wrap
+                    wrapMode: DexLabel.Wrap
                     width: 250
                     onLinkActivated:
                     {
@@ -230,17 +272,15 @@ DefaultListView
                 delay: 200
             }
         }
-        onClicked:
+    }
+
+    Connections
+    {
+        target: _tradeCard
+        function onBestChanged()
         {
-            if (!Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled)
-            {
-                _tooltip.open()
-            }
-            else
-            {
-                _listBestOrdersView.tradeCard.best = false
-                _listBestOrdersView.selectedOrder = { "coin": coin, "uuid": uuid, "price": price, "base_min_volume": base_min_volume, "base_max_volume": base_max_volume, "from_best_order": true }
-            }
+            Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
+            positionViewAtBeginning()
         }
     }
 }

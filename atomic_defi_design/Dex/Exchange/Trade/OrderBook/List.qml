@@ -13,28 +13,31 @@ Item
 
     property bool isAsk
     property bool isVertical: false
+    width: parent.width
+    height: parent.height
 
     ListView
     {
-        id: orderList
-        anchors.fill: parent
+        id: orderbook_list
+        width: parent.width
+        height: parent.height
         model: isAsk ? API.app.trading_pg.orderbook.asks.proxy_mdl : API.app.trading_pg.orderbook.bids.proxy_mdl
         clip: true
         reuseItems: true
         spacing: 8
 
-        onContentHeightChanged :
+        onContentHeightChanged:
         {
             if (isVertical) _tm.start();
         }
 
         delegate: Item
         {
-            width: orderList.width
+            width: orderbook_list.width
             height: 24
+
             ListDelegate
             {
-                anchors.centerIn: parent
                 width: parent.width
                 height: parent.height
                 isAsk: _control.isAsk ? true : false
@@ -47,7 +50,7 @@ Item
             interval: 2000
             onTriggered:
             {
-                orderList.positionViewAtEnd()
+                orderbook_list.positionViewAtEnd()
             }
         }
     }

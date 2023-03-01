@@ -13,21 +13,52 @@ ComboBox
 {
     id: control
 
+    property alias radius: bg_rect.radius
+    property color comboBoxBackgroundColor: Dex.CurrentTheme.comboBoxBackgroundColor
+    property color popupBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property color highlightedBackgroundColor: Dex.CurrentTheme.comboBoxDropdownItemHighlightedColor
+    property color mainBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
+    property string currentTicker: "All"
     property var dropdownLineText: m => textRole === "" ?
                                        m.modelData : !m.modelData ?
                                            m[textRole] : m.modelData[textRole]
-    property string currentTicker: "All"
-    property color  backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-    property color  popupBackgroundColor: Dex.CurrentTheme.floatingBackgroundColor
 
+    // Combobox Dropdown Button Background
+    background: DexRectangle
+    {
+        id: bg_rect
+        implicitHeight: 40
+        color: comboBoxBackgroundColor
+        radius: 20
+    }
+
+    contentItem: DexLabel
+    {
+        leftPadding: 10
+        verticalAlignment: Text.AlignVCenter
+        width: bg_rect.width - leftPadding
+        height: bg_rect.height
+        text: control.currentTicker
+        elide: Text.ElideRight
+        wrapMode: Text.NoWrap
+    }
+
+    // Each dropdown item
     delegate: ItemDelegate
     {
+        id: combo_item
         width: control.width + 50
         highlighted: control.highlightedIndex === index
-        contentItem: DefaultText 
+
+        contentItem: DexLabel
         {
             text_value: control.currentTicker
             color: Dex.CurrentTheme.foregroundColor
+        }
+
+        background: DexRectangle {
+            anchors.fill: combo_item
+            color: combo_item.highlighted ? highlightedBackgroundColor : mainBackgroundColor
         }
     }
 
@@ -39,35 +70,15 @@ ComboBox
         icon: Qaterial.Icons.chevronDown
     }
 
-    contentItem: DefaultText
-    {
-        leftPadding: 10
-        verticalAlignment: Text.AlignVCenter
-        width: _background.width - leftPadding
-        height: _background.height
-        text: control.currentTicker
-        elide: Text.ElideRight
-        wrapMode: Text.NoWrap
-    }
-
-    background: DefaultRectangle
-    {
-        id: _background
-
-        implicitHeight: 40
-        colorAnimation: false
-        color: control.backgroundColor
-        radius: 20
-    }
-
+    // Dropdown itself
     popup: Popup
     {
-        id: comboPopup
-
-        readonly property double max_height: 350
+        id: combo_popup
+        readonly property double max_height: 450
 
         width: control.width
-        height: Math.min(contentItem.implicitHeight, popup.max_height) + 20
+        height: Math.min(contentItem.implicitHeight, max_height) + 20
+
         padding: 1
 
         contentItem: ColumnLayout
@@ -79,13 +90,20 @@ ComboBox
                 id: input_coin_filter
                 placeholderText: qsTr("Search")
 
-                background: DefaultRectangle
+                font.pixelSize: 16
+                Layout.fillWidth: true
+                Layout.leftMargin: 0
+                Layout.preferredHeight: 40
+                Layout.rightMargin: 2
+                Layout.topMargin: Layout.leftMargin
+
+                background: DexRectangle
                 {
                     anchors.fill: parent
                     anchors.topMargin: -5
                     anchors.rightMargin: -1
-                    radius: 20
-                    color: control.popupBackgroundColor
+                    radius: control.radius
+                    color: control.mainBackgroundColor
                 }
 
                 onTextChanged: control.model.setFilterFixedString(text)
@@ -110,17 +128,8 @@ ComboBox
                     }
                 }
 
-
-
-                font.pixelSize: 16
-                Layout.fillWidth: true
-                Layout.leftMargin: 0
-                Layout.preferredHeight: 40
-                Layout.rightMargin: 2
-                Layout.topMargin: Layout.leftMargin
                 Keys.onDownPressed: control.incrementCurrentIndex()
                 Keys.onUpPressed: control.decrementCurrentIndex()
-
                 Keys.onPressed:
                 {
                     if (event.key === Qt.Key_Return)
@@ -135,11 +144,13 @@ ComboBox
                     }
                 }
             }
+
             Item
             {
                 Layout.maximumHeight: popup.max_height - 100
                 Layout.fillWidth: true
                 implicitHeight: popup_list_view.contentHeight + 5
+
                 DexListView
                 {
                     id: popup_list_view
@@ -148,11 +159,15 @@ ComboBox
                     anchors.fill: parent
                     anchors.bottomMargin: 10
                     anchors.rightMargin: 2
+                    clip: true
+
+                    visibleBackground: true
+
                     highlight: DefaultRectangle
                     {
                         radius: 0
                     }
-                    clip: true
+
                     delegate: ItemDelegate
                     {
                         width: control.width + 50
@@ -165,30 +180,13 @@ ComboBox
                         background: DefaultRectangle
                         {
                             colorAnimation: false
-                            color: popup_list_view.currentIndex === index ? Dex.CurrentTheme.buttonColorHovered : control.popupBackgroundColor
+                            color: popup_list_view.currentIndex === index ? Dex.CurrentTheme.buttonColorHovered : control.mainBackgroundColor
                         }
 
                         onClicked:
                         {
                             control.currentTicker = ticker
                             popup.close()
-                        }
-                    }
-
-                    ScrollBar.vertical: ScrollBar
-                    {
-                        anchors.right: popup_list_view.right
-                        anchors.rightMargin: 2
-                        width: 7
-                        background: DefaultRectangle
-                        {
-                            radius: 12
-                            color: Dex.CurrentTheme.scrollBarBackgroundColor
-                        }
-                        contentItem: DefaultRectangle
-                        {
-                            radius: 12
-                            color: Dex.CurrentTheme.scrollBarIndicatorColor
                         }
                     }
 
@@ -204,12 +202,12 @@ ComboBox
 
         background: DefaultRectangle
         {
-            y: -5
-            radius: 20
-            colorAnimation: false
             width: parent.width
             height: parent.height
+            radius: control.radius
             color: control.popupBackgroundColor
+            colorAnimation: false
+            border.width: 1
         }
     }
 

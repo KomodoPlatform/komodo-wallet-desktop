@@ -6,7 +6,7 @@
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     struct validate_address_request
     {
@@ -33,11 +33,11 @@ namespace mm2::api
     };
 
     void from_json(const nlohmann::json& j, validate_address_answer& answer);
-} // namespace mm2::api
+} // namespace atomic_dex::mm2
 
 namespace atomic_dex
 {
-    using t_validate_address_request        = ::mm2::api::validate_address_request;
-    using t_validate_address_answer         = ::mm2::api::validate_address_answer;
-    using t_validate_address_answer_success = ::mm2::api::validate_address_answer_success;
+    using t_validate_address_request        = mm2::validate_address_request;
+    using t_validate_address_answer         = mm2::validate_address_answer;
+    using t_validate_address_answer_success = mm2::validate_address_answer_success;
 } // namespace atomic_dex

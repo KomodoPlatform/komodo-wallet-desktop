@@ -61,6 +61,8 @@ namespace atomic_dex
             LeftParentChainNotEnoughBalance          = 8,
             RightParentChainNotEnoughBalance         = 9,
             RightParentChainNotEnabled               = 10,
+            LeftZhtlcChainNotEnabled                 = 11,
+            RightZhtlcChainNotEnabled                = 12,
         };
 
         Q_ENUM(TradingErrorEnum)

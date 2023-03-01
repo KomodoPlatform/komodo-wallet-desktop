@@ -41,7 +41,7 @@ MultipageModal
                 contentWidth: eula_text.width - 10
                 contentHeight: eula_text.height
 
-                DexLabel
+                DefaultText
                 {
                     id: eula_text
                     font: DexTypo.body1
@@ -53,17 +53,21 @@ MultipageModal
         }
 
         // Checkboxes
-        DexCheckBox
+        DefaultCheckBox
         {
             id: accept_eula
+            Layout.preferredWidth: parent.width
             visible: !close_only
+            labelWidth: eula_rect.width - 80
             text: qsTr("Accept EULA")
         }
 
-        DexCheckBox
+        DefaultCheckBox
         {
             id: accept_tac
+            Layout.preferredWidth: parent.width
             visible: !close_only
+            labelWidth: eula_rect.width - 80
             text: qsTr("Accept Terms and Conditions")
         }
 

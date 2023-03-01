@@ -27,6 +27,7 @@ namespace atomic_dex
     {
         std::string                url;
         std::optional<std::string> protocol{"TCP"};
+        std::optional<std::string> ws_url;
         std::optional<bool>        disable_cert_verification{false};
     };
 

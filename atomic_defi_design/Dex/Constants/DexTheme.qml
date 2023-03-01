@@ -118,8 +118,8 @@ QtObject {
 
     property bool portfolioPieGradient: false
 
-    property color arrowUpColor: redColor
-    property color arrowDownColor: greenColor
+    property color senderColorStart: redColor
+    property color receiverColorStart: greenColor
 
 
 
@@ -142,6 +142,8 @@ QtObject {
     property color chartTradingLineBackgroundColor: Dex.CurrentTheme.chartTradingLineBackgroundColor
     property color lineChartColor: accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
+
+    property color busyIndicatorColor: Dex.CurrentTheme.busyIndicatorColor
 
     // Button
     property color buttonColorDisabled: Dex.CurrentTheme.buttonColorDisabled
@@ -216,15 +218,6 @@ QtObject {
 
     readonly property int animationDuration: 125
 
-    readonly property int textSizeVerySmall1: 1
-    readonly property int textSizeVerySmall2: 2
-    readonly property int textSizeVerySmall3: 3
-    readonly property int textSizeVerySmall4: 4
-    readonly property int textSizeVerySmall5: 5
-    readonly property int textSizeVerySmall6: 6
-    readonly property int textSizeVerySmall7: 7
-    readonly property int textSizeVerySmall8: 8
-    readonly property int textSizeVerySmall9: 9
     readonly property int textSizeSmall: 10
     readonly property int textSizeSmall1: 11
     readonly property int textSizeSmall2: 12
@@ -322,10 +315,6 @@ QtObject {
     readonly property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
     readonly property string colorInnerBackground:  dark_theme ? colorTheme7 : colorTheme7
 
-    readonly property string colorGradient1:  dark_theme ? colorTheme9 : colorTheme9
-    readonly property string colorGradient2:  dark_theme ? colorTheme5 : colorTheme5
-    readonly property string colorGradient3:  dark_theme ? "#24283D" : "#24283D"
-    readonly property string colorGradient4:  dark_theme ? "#0D0F21" : "#0D0F21"
     readonly property string colorDropShadowLight:  dark_theme ? "#216975a4" : "#21FFFFFF"
     readonly property string colorDropShadowLight2:  dark_theme ? "#606975a4" : "#60FFFFFF"
     readonly property string colorDropShadowDark:  dark_theme ? "#FF050615" : "#BECDE2"
@@ -354,59 +343,18 @@ QtObject {
     readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#DDDDDD"
     readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#EFEFEF"
 
-    readonly property string colorChartText:  dark_theme ? "#405366" : "#B5B9C1"
-    readonly property string colorChartLegendLine:  dark_theme ? "#3F5265" : "#BDC0C8"
-    readonly property string colorChartGrid:  dark_theme ? "#202333" : "#E6E8ED"
-    readonly property string colorChartLineText:  dark_theme ? "#405366" : "#FFFFFF"
-
-    readonly property string colorChartMA1:  dark_theme ? "#5BC6FA" : "#5BC6FA"
-    readonly property string colorChartMA2:  dark_theme ? "#F1D17F" : "#F1D17F"
-
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
 
-    readonly property string colorBusyIndicator:  dark_theme ? "#405ff9" : "#405ff9"
 
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
     readonly property string colorTextDisabled: dark_theme ? Style.colorWhite8 : "#B5B9C1"
-    readonly property var colorButtonDisabled: ({
-          "default": Style.colorTheme9,
-          "primary": Style.colorGreen3,
-          "danger": Style.colorRed3
-        })
-    readonly property var colorButtonHovered: ({
-          "default": Style.colorTheme6,
-          "primary": Style.colorGreen,
-          "danger": Style.colorRed
-        })
-    readonly property var colorButtonEnabled: ({
-          "default": Style.colorRectangle,
-          "primary": Style.colorGreen2,
-          "danger": Style.colorRed2
-        })
-    readonly property var colorButtonTextDisabled: ({
-          "default": Style.colorWhite8,
-          "primary": Style.colorWhite13,
-          "danger": Style.colorWhite13
-        })
-    readonly property var colorButtonTextHovered: ({
-          "default": Style.colorText,
-          "primary": Style.colorWhite11,
-          "danger": Style.colorWhite11
-        })
-    readonly property var colorButtonTextEnabled: ({
-          "default": Style.colorText,
-          "primary": Style.colorWhite11,
-          "danger": Style.colorWhite11
-        })
+
     readonly property string colorPlaceholderText: Style.colorWhite9
     readonly property string colorSelectedText: Style.colorTheme9
     readonly property string colorSelection: Style.colorGreen2
 
     readonly property string colorTrendingLine: dark_theme ? Style.colorGreen : "#37a6ef"
-    readonly property string colorTrendingUnderLine: dark_theme ? Style.colorGradient3 : "#e3f2fd"
-
-    readonly property string modalValueColor: colorWhite4
 
     function getValueColor(v) {
         v = parseFloat(v)
@@ -530,6 +478,7 @@ QtObject {
                                           "WBTC": "#CCCCCC",
                                           "YFI": "#006BE6",
                                           "ZRX": "#302C2C",
-                                          "UNI": "#FF007A"
+                                          "UNI": "#FF007A",
+                                          "RUNES": "#336699"
                                       })
 }

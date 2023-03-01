@@ -20,7 +20,7 @@ MultipageModal {
 
         DefaultText {
             id: message
-
+            width: parent.width
             text_value: claiming_faucet_rpc_result && claiming_faucet_rpc_result.message ?
                             claiming_faucet_rpc_result.message : ""
         }

@@ -11,6 +11,7 @@ Item
     property string top_arrow_ticker
     property string bottom_arrow_ticker
     property bool   hovered: false
+    property color  color: Dex.CurrentTheme.foregroundColor
 
     implicitWidth: 20
     implicitHeight: 50
@@ -19,6 +20,6 @@ Item
     {
         anchors.centerIn: parent
         source: Qaterial.Icons.swapHorizontal
-        color: Dex.CurrentTheme.foregroundColor
+        color: root.color
     }
 }

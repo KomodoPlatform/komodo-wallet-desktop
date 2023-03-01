@@ -63,6 +63,8 @@ namespace atomic_dex
             break;
         case orders_model::UnixTimestampRole:
             return left_data.toULongLong() < right_data.toULongLong();
+        case orders_model::PaymentLockRole:
+            break;
         case orders_model::OrderIdRole:
             break;
         case orders_model::OrderStatusRole:

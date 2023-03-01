@@ -21,54 +21,51 @@
 //! Project Headers
 #include "atomicdex/api/mm2/orderbook.order.contents.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/pages/qt.trading.page.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     from_json(const nlohmann::json& j, order_contents& contents)
     {
-        //SPDLOG_INFO("contents: {}", j.dump(4));
+
         j.at("coin").get_to(contents.coin);
-        j.at("address").get_to(contents.address);
-        j.at("price").get_to(contents.price);
-        // contents.price = t_float_50(contents.price).str(8, std::ios_base::fixed);
-        j.at("price_fraction").at("numer").get_to(contents.price_fraction_numer);
-        j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
-        j.at("max_volume_fraction").at("numer").get_to(contents.max_volume_fraction_numer);
-        j.at("max_volume_fraction").at("denom").get_to(contents.max_volume_fraction_denom);
+        if (j.at("address").contains("address_data"))
+        {
+            j.at("address").at("address_data").get_to(contents.address);
+        }
+        else
+        {
+            contents.address = "Shielded";
+        }
 
-        j.at("base_min_volume_fraction").at("numer").get_to(contents.base_min_volume_numer);
-        j.at("base_min_volume_fraction").at("denom").get_to(contents.base_min_volume_denom);
-        j.at("base_max_volume_fraction").at("numer").get_to(contents.base_max_volume_numer);
-        j.at("base_max_volume_fraction").at("denom").get_to(contents.base_max_volume_denom);
-        j.at("rel_min_volume_fraction").at("numer").get_to(contents.rel_min_volume_numer);
-        j.at("rel_min_volume_fraction").at("denom").get_to(contents.rel_min_volume_denom);
-        j.at("rel_max_volume_fraction").at("numer").get_to(contents.rel_max_volume_numer);
-        j.at("rel_max_volume_fraction").at("denom").get_to(contents.rel_max_volume_denom);
-
-        j.at("maxvolume").get_to(contents.maxvolume);
         j.at("pubkey").get_to(contents.pubkey);
-        j.at("age").get_to(contents.age);
-        j.at("zcredits").get_to(contents.zcredits);
         j.at("uuid").get_to(contents.uuid);
         j.at("is_mine").get_to(contents.is_mine);
-        if (j.contains("min_volume"))
-        {
-            contents.min_volume = j.at("min_volume").get<std::string>();
-        }
 
-        if (contents.price.find('.') != std::string::npos)
-        {
-            boost::trim_right_if(contents.price, boost::is_any_of("0"));
-            contents.price = contents.price;
-        }
-        j.at("base_max_volume").get_to(contents.base_max_volume);
-        j.at("base_min_volume").get_to(contents.base_min_volume);
-        j.at("rel_max_volume").get_to(contents.rel_max_volume);
-        j.at("rel_min_volume").get_to(contents.rel_min_volume);
-        contents.maxvolume = atomic_dex::utils::adjust_precision(contents.maxvolume);
-        t_float_50 total_f = safe_float(contents.price) * safe_float(contents.maxvolume);
-        contents.total     = atomic_dex::utils::adjust_precision(total_f.str());
+        j.at("price").at("decimal").get_to(contents.price);
+        j.at("price").at("fraction").at("numer").get_to(contents.price_fraction_numer);
+        j.at("price").at("fraction").at("denom").get_to(contents.price_fraction_denom);
+
+        j.at("base_min_volume").at("decimal").get_to(contents.base_min_volume);
+        j.at("base_min_volume").at("fraction").at("numer").get_to(contents.base_min_volume_numer);
+        j.at("base_min_volume").at("fraction").at("denom").get_to(contents.base_min_volume_denom);
+        j.at("base_max_volume").at("decimal").get_to(contents.base_max_volume);
+        j.at("base_max_volume").at("fraction").at("numer").get_to(contents.base_max_volume_numer);
+        j.at("base_max_volume").at("fraction").at("denom").get_to(contents.base_max_volume_denom);
+
+        j.at("rel_min_volume").at("decimal").get_to(contents.rel_min_volume);
+        j.at("rel_min_volume").at("fraction").at("numer").get_to(contents.rel_min_volume_numer);
+        j.at("rel_min_volume").at("fraction").at("denom").get_to(contents.rel_min_volume_denom);
+        j.at("rel_max_volume").at("decimal").get_to(contents.rel_max_volume);
+        j.at("rel_max_volume").at("fraction").at("numer").get_to(contents.rel_max_volume_numer);
+        j.at("rel_max_volume").at("fraction").at("denom").get_to(contents.rel_max_volume_denom);
+
+        // Not in v2 RPC
+        // j.at("age").get_to(contents.age);
+        // j.at("zcredits").get_to(contents.zcredits);
     }
 
     std::string
@@ -86,4 +83,4 @@ namespace mm2::api
         ss << "rel_min_volume: " << rel_min_volume << " ";
         return ss.str();
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

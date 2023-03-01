@@ -3,49 +3,51 @@
 function getHardcoded()
 {
     return {
-        accentColor: "#F0F2FF",
-        foregroundColor: "#456078",
-        foregroundColor2: "#7A8EA1",
+        accentColor: "#F0F2FFFF",
+        foregroundColor: "#456078FF",
+        foregroundColor2: "#7A8EA1FF",
         foregroundColor3: "#8FA0B1B2",
-        backgroundColor: "#FCFCFC",
-        backgroundColorDeep: "#FCFCFC",
+        backgroundColor: "#FCFCFCFF",
+        backgroundColorDeep: "#FCFCFCFF",
 
-        buttonColorDisabled: "#D8E3F8",
-        buttonColorEnabled: "#F0F6FF",
-        buttonColorHovered: "#D7E7FF",
-        buttonColorPressed: "#B8D2F9",
-        buttonTextDisabledColor: "#000000",
-        buttonTextEnabledColor: "#000000",
-        buttonTextHoveredColor: "#000000",
-        buttonTextPressedColor: "#000000",
+        busyIndicatorColor: "#4986EAFF",
 
-        gradientButtonStartColor: "#5A68E6",
+        buttonColorDisabled: "#D8E3F8FF",
+        buttonColorEnabled: "#F0F6FFFF",
+        buttonColorHovered: "#D7E7FFFF",
+        buttonColorPressed: "#B8D2F9FF",
+        buttonTextDisabledColor: "#000000FF",
+        buttonTextEnabledColor: "#000000FF",
+        buttonTextHoveredColor: "#000000FF",
+        buttonTextPressedColor: "#000000FF",
+
+        gradientButtonStartColor: "#5A68E6FF",
         gradientButtonEndColor: "#4986EAAB",
-        gradientButtonDisabledStartColor: "#CDD0F6",
-        gradientButtonDisabledEndColor: "#DAE5F9",
-        gradientButtonHoveredStartColor: "#5A68E6",
-        gradientButtonHoveredEndColor: "#5A68E6",
-        gradientButtonPressedStartColor: "#6A4DE3",
-        gradientButtonPressedEndColor: "#6A4DE3",
-        gradientButtonTextEnabledColor: "#FFF",
-        gradientButtonTextDisabledColor: "#FFF",
-        gradientButtonTextHoveredColor: "#FFF",
-        gradientButtonTextPressedColor: "#FFF",
+        gradientButtonDisabledStartColor: "#CDD0F6FF",
+        gradientButtonDisabledEndColor: "#DAE5F9FF",
+        gradientButtonHoveredStartColor: "#5A68E6FF",
+        gradientButtonHoveredEndColor: "#5A68E6FF",
+        gradientButtonPressedStartColor: "#6A4DE3FF",
+        gradientButtonPressedEndColor: "#6A4DE3FF",
+        gradientButtonTextEnabledColor: "#FFFFFFFF",
+        gradientButtonTextDisabledColor: "#FFFFFFFF",
+        gradientButtonTextHoveredColor: "#FFFFFFFF",
+        gradientButtonTextPressedColor: "#FFFFFFFF",
 
-        checkBoxGradientStartColor: "#8892EB",
-        checkBoxGradientEndColor: "#9DD4F3",
+        checkBoxGradientStartColor: "#8892EBFF",
+        checkBoxGradientEndColor: "#9DD4F3FF",
 
-        switchGradientStartColor: "#8892EB",
-        switchGradientEndColor: "#9DD4F3",
-        switchGradientStartColor2: "#FFF",
-        switchGradientEndColor2: "#FFF",
+        switchGradientStartColor: "#8892EBFF",
+        switchGradientEndColor: "#9DD4F3FF",
+        switchGradientStartColor2: "#FFFFFFFF",
+        switchGradientEndColor2: "#FFFFFFFF",
 
         comboBoxBackgroundColor: "#FFFFFFFF",
         comboBoxArrowsColor: "#456078FF",
         comboBoxDropdownItemHighlightedColor: "#456078FF",
 
-        modalPageCounterGradientStartColor: "#9DD4F3",
-        modalPageCounterGradientEndColor: "#9DD4F3",
+        modalPageCounterGradientStartColor: "#9DD4F3FF",
+        modalPageCounterGradientEndColor: "#9DD4F3FF",
 
         notifPopupBackgroundColor: "#EDF4FFFF",
         notifPopupTextColor: "#456078FF",
@@ -57,38 +59,38 @@ function getHardcoded()
         scrollBarIndicatorColor: "#DBE0E4FF",
         scrollBarBackgroundColor: "#93A3B1FF",
 
-        tabSelectedColor: "#DCE8FD",
+        tabSelectedColor: "#DCE8FDFF",
 
-        textDisabledColor: "#C5CFD8",
-        textSelectionColor: "#14BCA6FF",
-        textPlaceholderColor: "#91A8E8",
-        textSelectedColor: "#f9f9fb",
+        textDisabledColor: "#C5CFD8FF",
+        textSelectionColor: "#4986EAFF",
+        textPlaceholderColor: "#91A8E8FF",
+        textSelectedColor: "#f9f9fbFF",
 
         textFieldBackgroundColor: "#F3F5F6FF",
         textFieldActiveBackgroundColor: "#F3F5F6CC",
         textFieldPrefixColor: "#45607894",
         textFieldSuffixColor: "#456078FF",
 
-        chartTradingLineBackgroundColor: "#C5F2EF",
-        chartTradingLineColor: "#53EBD7",
+        chartTradingLineBackgroundColor: "#C5F2EFFF",
+        chartTradingLineColor: "#53EBD7FF",
 
-        innerBackgroundColor: "#edf4ff",
+        innerBackgroundColor: "#EDF4FFFF",
 
-        floatingBackgroundColor: "#edf4ff",
+        floatingBackgroundColor: "#EDF4FFFF",
 
         rangeSliderBackgroundColor: "#5A68E6FF",
         rangeSliderDistanceColor: "#4986EA3B",
         rangeSliderIndicatorBackgroundStartColor: "#5A68E6FF",
         rangeSliderIndicatorBackgroundEndColor: "#4986EAAD",
 
-        loginWalletIconColorStart: "#5A68E6FF",
-        loginWalletIconColorEnd: "#4986EAAD",
+        userIconColorStart: "#5A68E6FF",
+        userIconColorEnd: "#4986EAAD",
 
-        sidebarBgColor: "#FCFCFC",
-        sidebarVersionTextColor: "#456078",
-        sidebarCursorStartColor: "#5A68E6",
-        sidebarCursorEndColor: "#2CB9F000",
-        sidebarLineTextHovered: "#2C87B9",
+        sidebarBgColor: "#FCFCFCFF",
+        sidebarVersionTextColor: "#456078FF",
+        sidebarCursorStartColor: "#5A68E6FF",
+        sidebarCursorEndColor: "#2CB9F000FF",
+        sidebarLineTextHovered: "#2C87B9FF",
         sidebarLineTextSelected: "#FFFFFFFF",
 
         tradeBuyModeSelectorBackgroundColorStart: "#6A4DE3FF",
@@ -97,12 +99,17 @@ function getHardcoded()
         tradeSellModeSelectorBackgroundColorEnd: "#E216A9FF",
         tradeMarketModeSelectorNotSelectedBackgroundColor: "#89B6FF21",
 
-        okColor: "#00C058",
-        noColor: "#E52167",
+        addressBookTagColors: ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 
-        arrowUpColor: "#F85757",
-        arrowDownColor: "#845FEF",
+        okColor: "#00C058FF",
+        noColor: "#E52167FF",
+      
+        senderColorStart: "#F85757FF",
+        receiverColorStart: "#845FEFFF",
 
-        lineSeparatorColor: "#CDD3DC"
+        arrowUpColor: "#F85757FF",
+        arrowDownColor: "#845FEFFF",
+
+        lineSeparatorColor: "#CDD3DCFF"
     }
 }

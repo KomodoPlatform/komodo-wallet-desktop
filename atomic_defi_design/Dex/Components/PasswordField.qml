@@ -7,6 +7,7 @@ import App 1.0
 ColumnLayout {
     property alias title: pw.title
     property alias field: pw.field
+    property int max_pw_len: General.max_std_pw_length
     property bool hide_hint: false
     property bool new_password: true
     property string match_password
@@ -58,6 +59,7 @@ ColumnLayout {
         title: qsTr("Password")
         field.placeholderText: qsTr("Enter your wallet password")
         field.validator: RegExpValidator { regExp: General.reg_pass_input }
+        max_length: max_pw_len
     }
 
     ColumnLayout {
@@ -92,7 +94,7 @@ ColumnLayout {
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text_value: hintPrefix(hasEnoughCharacters()) + qsTr("At least %n character(s)", "", high_security ? 16 : 1)
+            text_value: hintPrefix(hasEnoughCharacters()) + qsTr("Between %1 and %2 character(s)").arg(high_security ? 16 : 1).arg(max_pw_len)
             color: hintColor(hasEnoughCharacters())
         }
         DefaultText {

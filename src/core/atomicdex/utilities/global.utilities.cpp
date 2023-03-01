@@ -17,11 +17,6 @@
 
 namespace
 {
-    constexpr size_t g_qsize_spdlog             = 10240;
-    constexpr size_t g_spdlog_thread_count      = 2;
-    constexpr size_t g_spdlog_max_file_size     = 7777777;
-    constexpr size_t g_spdlog_max_file_rotation = 3;
-
     std::string
     dex_sha256(const std::string& str)
     {
@@ -230,32 +225,6 @@ namespace atomic_dex::utils
         const auto fs_raw_mm2_shared_folder = get_atomic_dex_data_folder() / get_raw_version() / "configs";
         create_if_doesnt_exist(fs_raw_mm2_shared_folder);
         return fs_raw_mm2_shared_folder;
-    }
-
-    std::shared_ptr<spdlog::logger>
-    register_logger()
-    {
-        //! Log Initialization
-        fs::path path = atomic_dex::utils::get_atomic_dex_current_log_file();
-        spdlog::init_thread_pool(g_qsize_spdlog, g_spdlog_thread_count);
-        auto tp            = spdlog::thread_pool();
-        auto stdout_sink   = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-
-#if defined(_WIN32) || defined(WIN32)
-        auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.wstring(), g_spdlog_max_file_size, g_spdlog_max_file_rotation);
-#else
-        auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.string(), g_spdlog_max_file_size, g_spdlog_max_file_rotation);
-#endif
-
-        std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
-        auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
-        spdlog::register_logger(logger);
-        spdlog::set_default_logger(logger);
-        spdlog::set_level(spdlog::level::trace);
-        spdlog::set_pattern("[%T] [%^%l%$] [%s:%#] [%t]: %v");
-        SPDLOG_INFO("Logger successfully initialized");
-
-        return logger;
     }
 
     std::string

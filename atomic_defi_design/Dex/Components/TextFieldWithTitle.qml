@@ -9,6 +9,8 @@ import Dex.Themes 1.0 as Dex
 ColumnLayout
 {
     id: control
+    Layout.fillWidth: true
+    Layout.fillHeight: true
 
     property bool copyable: false
     property bool hidable: false
@@ -17,8 +19,10 @@ ColumnLayout
 
     property alias title: title_text.text
     property alias field: input_field
+    property alias max_length: input_field.maximumLength
+
     property alias hide_button: hide_button
-    property alias hide_button_area: hide_button.mouse_area
+    property alias hide_button_area: hide_button.mouseArea
 
     // Local
     function reset()
@@ -38,7 +42,7 @@ ColumnLayout
             visible: text !== ''
         }
 
-        DexLabel
+        DefaultText
         {
             visible: required && input_field.text === ''
             font.pixelSize: Style.textSizeSmall2

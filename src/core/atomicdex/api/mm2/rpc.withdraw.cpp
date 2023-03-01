@@ -8,7 +8,7 @@
 //! Our Headers
 #include "rpc.withdraw.hpp"
 
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     void
     to_json(nlohmann::json& j, const withdraw_fees& cfg)
@@ -22,6 +22,12 @@ namespace mm2::api
         else if (cfg.type == "Qrc20Gas")
         {
             j["gas_limit"] = cfg.gas_limit.value_or(40);
+            j["gas_price"] = std::stoi(cfg.gas_price.value());
+        }
+        else if (cfg.type == "otherGas")
+        {
+            j["type"] = "EthGas";
+            j["gas"]       = cfg.gas_limit.value_or(55000);
             j["gas_price"] = std::stoi(cfg.gas_price.value());
         }
         else
@@ -72,4 +78,4 @@ namespace mm2::api
             }
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

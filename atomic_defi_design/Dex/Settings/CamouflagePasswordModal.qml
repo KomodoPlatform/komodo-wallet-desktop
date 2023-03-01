@@ -6,19 +6,20 @@ import "../Components"
 import "../Constants"
 import App 1.0
 
-MultipageModal {
+MultipageModal
+{
     id: root
 
     width: 800
 
-    onClosed: {
-        input_password_suffix.reset()
-    }
+    onClosed: input_password_suffix.reset()
 
-    MultipageModalContent {
+    MultipageModalContent
+    {
         titleText: qsTr("Setup Camouflage Password")
 
-        FloatingBackground {
+        FloatingBackground
+        {
             id: warning_bg
             Layout.alignment: Qt.AlignHCenter
             Layout.bottomMargin: 10
@@ -26,22 +27,25 @@ MultipageModal {
             width: parent.width - 5
             height: warning_texts.height + 20
 
-            Column {
+            Column
+            {
                 id: warning_texts
                 anchors.centerIn: parent
                 width: parent.width
                 spacing: 10
 
-                DefaultText {
+                DefaultText
+                {
                     width: parent.width - 40
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     text_value: qsTr("Camouflage Password is a secret password for emergency situations.")
-                    font: DexTypo.head6
+                    font: DexTypo.subtitle2
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     width: parent.width - 40
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -49,7 +53,8 @@ MultipageModal {
                     text_value: qsTr("Using it to login will display your balance lower than it actually is.")
                 }
 
-                DefaultText {
+                DefaultText
+                {
                     width: parent.width - 40
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -59,7 +64,8 @@ MultipageModal {
             }
         }
 
-        PasswordForm {
+        PasswordForm
+        {
             id: input_password_suffix
             Layout.fillWidth: true
             field_title: qsTr("Password suffix")
@@ -70,24 +76,26 @@ MultipageModal {
         }
 
         // Buttons
-        footer: [
-            DexAppButton {
+        footer:
+        [
+            DexAppButton
+            {
                 text: qsTr("Cancel")
                 leftPadding: 40
                 rightPadding: 40
                 radius: 20
                 onClicked: root.close()
             },
-            Item {
-                Layout.fillWidth: true
-            },
-            DexAppOutlineButton {
+            Item { Layout.fillWidth: true },
+            DexAppOutlineButton
+            {
                 text: qsTr("Save")
                 leftPadding: 40
                 rightPadding: 40
                 radius: 20
                 enabled: input_password_suffix.isValid()
-                onClicked: {
+                onClicked:
+                {
                     API.app.wallet_mgr.set_emergency_password(input_password_suffix.field.text)
                     root.close()
                 }

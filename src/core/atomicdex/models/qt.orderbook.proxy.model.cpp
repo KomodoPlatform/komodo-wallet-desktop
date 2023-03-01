@@ -171,12 +171,10 @@ namespace atomic_dex
                 const auto  volume = provider.get_total_volume(utils::retrieve_main_ticker(ticker));
                 if (coin_info.ticker.empty() || coin_info.wallet_only) //< this means it's not present in our cfg - skipping
                 {
-                    SPDLOG_WARN("{} excluded empty", coin_info.ticker);
                     return false;
                 }
                 if (is_cex_id_available && (rates > 100 || fiat_price <= 0 || ((safe_float(volume) < limit) && coin_info.coin_type != CoinType::SmartChain)))
                 {
-                    SPDLOG_WARN("{} excluded rates/fiat {} {} {}", coin_info.ticker, rates.str(), fiat_price.str(), volume);
                     return false;
                 }
                 break;

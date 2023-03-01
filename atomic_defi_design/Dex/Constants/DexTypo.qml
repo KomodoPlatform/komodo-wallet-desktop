@@ -8,7 +8,9 @@ import App 1.0 as App
 
 QtObject {
     id: _font
+
     property real fontDensity: 1.0
+
     property real languageDensity: {
         switch (App.API.app.settings_pg.lang) {
             case "en":
@@ -24,6 +26,7 @@ QtObject {
         }
     }
     property string fontFamily: "Ubuntu"
+
     property font head1: Qt.font({
         pixelSize: 96 * fontDensity,
         letterSpacing: -1.5,
@@ -66,6 +69,12 @@ QtObject {
         family: fontFamily,
         weight: Font.Medium
     })
+    property font head8: Qt.font({
+        pixelSize: 16 * fontDensity,
+        letterSpacing: 0.15,
+        family: fontFamily,
+        weight: Font.Medium
+    })
     property font subtitle1: Qt.font({
         pixelSize: 16 * fontDensity,
         letterSpacing: 0.15,
@@ -90,6 +99,25 @@ QtObject {
         family: fontFamily,
         weight: Font.Normal
     })
+    property font body3: Qt.font({
+        pixelSize: 12 * fontDensity,
+        letterSpacing: 0.25,
+        family: fontFamily,
+        weight: Font.Normal
+    })
+    property font body4: Qt.font({
+        pixelSize: 11 * fontDensity,
+        letterSpacing: 0.2,
+        family: fontFamily,
+        weight: Font.Normal
+    })
+    property font underline14: Qt.font({
+        pixelSize: 14 * fontDensity,
+        letterSpacing: 0.25,
+        family: fontFamily,
+        weight: Font.Normal,
+        underline: true
+    })
     property font button: Qt.font({
         pixelSize: 16 * fontDensity,
         letterSpacing: 1.25,
@@ -109,9 +137,21 @@ QtObject {
         family: fontFamily,
         weight: Font.Normal
     })
+    property font subtitle3: Qt.font({
+        pixelSize: 16 * fontDensity,
+        letterSpacing: 0.1,
+        family: fontFamily,
+        weight: 500
+    })
     property font monoSpace: Qt.font({
         pixelSize: 14 * fontDensity,
         letterSpacing: 0,
+        family: "Courier",
+        weight: Font.Normal
+    })
+    property font monoSmall: Qt.font({
+        pixelSize: 14 * fontDensity,
+        letterSpacing: 0.4,
         family: "Courier",
         weight: Font.Normal
     })

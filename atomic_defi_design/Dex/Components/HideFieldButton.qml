@@ -3,7 +3,7 @@ import "../Constants"
 import App 1.0
 
 DefaultImage {
-    property alias mouse_area: mouse_area
+    property alias mouseArea: mouseArea
     property bool use_default_behaviour: true
     source: General.image_path + "dashboard-eye" + (hiding ? "" : "-hide") + ".svg"
     visible: hidable
@@ -13,10 +13,10 @@ DefaultImage {
     anchors.verticalCenter: parent.verticalCenter
     antialiasing: true
 
-    opacity: mouse_area.containsMouse ? Style.hoverOpacity : 1
+    opacity: mouseArea.containsMouse ? Style.hoverOpacity : 1
 
     DefaultMouseArea {
-        id: mouse_area
+        id: mouseArea
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         height: input_field.height; width: input_field.height
 

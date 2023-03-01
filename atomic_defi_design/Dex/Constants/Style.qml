@@ -32,15 +32,6 @@ QtObject {
 
     readonly property int animationDuration: 125
 
-    readonly property int textSizeVerySmall1: 1
-    readonly property int textSizeVerySmall2: 2
-    readonly property int textSizeVerySmall3: 3
-    readonly property int textSizeVerySmall4: 4
-    readonly property int textSizeVerySmall5: 5
-    readonly property int textSizeVerySmall6: 6
-    readonly property int textSizeVerySmall7: 7
-    readonly property int textSizeVerySmall8: 8
-    readonly property int textSizeVerySmall9: 9
     readonly property int textSizeSmall: 10
     readonly property int textSizeSmall1: 11
     readonly property int textSizeSmall2: 12
@@ -138,10 +129,6 @@ QtObject {
     property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
     readonly property string colorInnerBackground:  dark_theme ? colorTheme7 : colorTheme7
 
-    readonly property string colorGradient1:  dark_theme ? colorTheme9 : colorTheme9
-    readonly property string colorGradient2:  dark_theme ? colorTheme5 : colorTheme5
-    readonly property string colorGradient3:  dark_theme ? "#24283D" : "#24283D"
-    readonly property string colorGradient4:  dark_theme ? "#0D0F21" : "#0D0F21"
     readonly property string colorDropShadowLight:  dark_theme ? "#216975a4" : "#21FFFFFF"
     readonly property string colorDropShadowLight2:  dark_theme ? "#606975a4" : "#60FFFFFF"
     readonly property string colorDropShadowDark:  dark_theme ? "#FF050615" : "#BECDE2"
@@ -172,58 +159,18 @@ QtObject {
     readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#DDDDDD"
     readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#EFEFEF"
 
-    readonly property string colorChartText:  dark_theme ? "#405366" : "#B5B9C1"
-    readonly property string colorChartLegendLine:  dark_theme ? "#3F5265" : "#BDC0C8"
-    readonly property string colorChartGrid:  dark_theme ? "#202333" : "#E6E8ED"
-    readonly property string colorChartLineText:  dark_theme ? "#405366" : "#FFFFFF"
-
-    readonly property string colorChartMA1:  dark_theme ? "#5BC6FA" : "#5BC6FA"
-    readonly property string colorChartMA2:  dark_theme ? "#F1D17F" : "#F1D17F"
-
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
 
 
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
     readonly property string colorTextDisabled: dark_theme ? Style.colorWhite8 : "#B5B9C1"
-    readonly property var colorButtonDisabled: ({
-          "default": Style.colorTheme9,
-          "primary": Style.colorGreen3,
-          "danger": Style.colorRed3
-        })
-    readonly property var colorButtonHovered: ({
-          "default": Style.colorTheme6,
-          "primary": Style.colorGreen,
-          "danger": Style.colorRed
-        })
-    readonly property var colorButtonEnabled: ({
-          "default": Style.colorRectangle,
-          "primary": Style.colorGreen2,
-          "danger": Style.colorRed2
-        })
-    readonly property var colorButtonTextDisabled: ({
-          "default": Style.colorWhite8,
-          "primary": Style.colorWhite13,
-          "danger": Style.colorWhite13
-        })
-    readonly property var colorButtonTextHovered: ({
-          "default": Style.colorText,
-          "primary": Style.colorWhite11,
-          "danger": Style.colorWhite11
-        })
-    readonly property var colorButtonTextEnabled: ({
-          "default": Style.colorText,
-          "primary": Style.colorWhite11,
-          "danger": Style.colorWhite11
-        })
+
     readonly property string colorPlaceholderText: Style.colorWhite9
     readonly property string colorSelectedText: Style.colorTheme9
     readonly property string colorSelection: Style.colorGreen2
 
     readonly property string colorTrendingLine: dark_theme ? Style.colorGreen : "#37a6ef"
-    readonly property string colorTrendingUnderLine: dark_theme ? Style.colorGradient3 : "#e3f2fd"
-
-    readonly property string modalValueColor: colorWhite4
 
     function getValueColor(v) {
         v = parseFloat(v)
@@ -238,6 +185,7 @@ QtObject {
         switch (type)
         {
             case 'ERC-20':      return getCoinColor("ETH")
+            case 'ZHTLC':       return getCoinColor("ARRR")
             case 'QRC-20':      return getCoinColor("QTUM")
             case 'Smart Chain': return getCoinColor("KMD")
             case 'WALLET ONLY': return "#4D4D4D"
@@ -279,15 +227,18 @@ QtObject {
 
     readonly property var colorCoin: ({
                                           "ABY": "#8B0D10",
+                                          "ACTN": "#E84142",
                                           "ADA": "#214D78",
                                           "ADX": "#1B75BC",
                                           "ANKR": "#2075E8",
+                                          "APE": "#0052F2",
                                           "ARPA": "#CCD9E2",
                                           "ARRR": "#C7A34C",
                                           "ATOM": "#474B6C",
                                           "AUR": "#0A6C5E",
                                           "AVA": "#5B567F",
                                           "AVAX": "#E84142",
+                                          "AVN": "#33E0CE",
                                           "AXS": "#0055D5",
                                           "BAL": "#4D4D4D",
                                           "BNB": "#F9D987",
@@ -318,11 +269,17 @@ QtObject {
                                           "GALA": "#011B36",
                                           "GLEEC": "#8C41FF",
                                           "GRMS": "#12B690",
+                                          "GLM": "#0050E6",
                                           "GMS": "#0BFBE2",
+                                          "GMT": "#E9CB7B",
+                                          "GMX": "#07A9E6",
                                           "GRS": "#377E96",
                                           "GRT": "#6E54DB",
+                                          "GST": "#D7D7D7",
                                           "IOTA": "#404040",
+                                          "ILNF": "#28873b",
                                           "IC": "#72009D",
+                                          "JST": "#B41514",
                                           "JSTR": "#627EEA",
                                           "DOGE": "#C3A634",
                                           "ETC": "#328432",
@@ -346,6 +303,8 @@ QtObject {
                                           "FLUX": "#2B61D1",
                                           "FIRO": "#BB2100",
                                           "LBC": "#00775C",
+                                          "LDO": "#F69988",
+                                          "LOOM": "#48BEFF",
                                           "LTC": "#BFBBBB",
                                           "LUNA": "#FFD83D",
                                           "LYNX": "#0071BA",
@@ -369,6 +328,7 @@ QtObject {
                                           "CRYPTO": "#F58736",
                                           "LABS": "#C1F6E1",
                                           "LCC": "#068210",
+                                          "LNC": "#C3A635",
                                           "MESH": "#0098DA",
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
@@ -378,17 +338,21 @@ QtObject {
                                           "NZDS": "#1B3044",
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
+                                          "MC": "#E16428",
                                           "MCL": "#EA0000",
+                                          "ILNSW": "#28873B",
                                           "MM": "#F5B700",
                                           "CCL": "#FFE400",
                                           "BET": "#F69B57",
                                           "JCHF": "#D80027",
                                           "JEUR": "#003399",
                                           "JGBP": "#C8102E",
+                                          "JJPY": "#BC002D",
                                           "JRT": "#5EFC84",
                                           "SUPERNET": "#F69B57",
                                           "REVS": "#F69B57",
-                                          "ILN": "#523170",
+                                          "EILN": "#1ADEC9",
+                                          "ILN": "#814EB1",
                                           "VRSC": "#3164D3",
                                           "WCN": "#E49F00",
                                           "WWCN": "#E49F00",
@@ -426,6 +390,7 @@ QtObject {
                                           "CEL": "#4055A6",
                                           "CELR": "#595959",
                                           "CENNZ": "#2E87F1",
+                                          "CHTA": "#C3A634",
                                           "COMP": "#00DBA3",
                                           "CRO": "#243565",
                                           "CVC": "#3AB03E",
@@ -455,6 +420,7 @@ QtObject {
                                           "MKR": "#1BAF9F",
                                           "MINDS": "#687DE3",
                                           "NEAR": "#595959",
+                                          "NENG": "#BFBBBB",
                                           "NEXO": "#A3B3D6",
                                           "NVC": "#FCF96D",
                                           "NYAN": "#008CE7",                                          
@@ -462,6 +428,7 @@ QtObject {
                                           "OMG": "#595959",
                                           "ONE": "#00BEEE",
                                           "ONT": "#2692AF",
+                                          "PND": "#EBD430",
                                           "POWR": "#05BCAA",
                                           "PPC": "#46BC60",
                                           "PRUX": "#FF8000",
@@ -487,6 +454,7 @@ QtObject {
                                           "SYS": "#0084C7",
                                           "TEL": "#1BD8FF",
                                           "TKL": "#536E93",
+                                          "TON": "#0088CC",
                                           "TRC": "#096432",
                                           "TRX": "#F30031",
                                           "TSL": "#64B082",
@@ -494,11 +462,15 @@ QtObject {
                                           "UNO": "#2F87BB",
                                           "UST": "#5493F7",
                                           "VAL": "#1EEC84",
+                                          "VET": "#18C6FF",
                                           "VITE": "#007AFF",
                                           "VRM": "#586A7A",
+                                          "VTC": "#049161",
                                           "WSB": "#FEBB84",
+                                          "WAVES": "#016BFF",
                                           "WBTC": "#CCCCCC",
                                           "WHIVE": "#FFCC00",
+                                          "WOO": "#595959",
                                           "XEC": "#273498",
                                           "XEP": "#0277E5",
                                           "XLM": "#737373",
@@ -512,8 +484,11 @@ QtObject {
                                           "YFII": "#FF2A79",
                                           "ZET": "#155169",
                                           "ZIL": "#42BBB9",
+                                          "ZOMBIE": "#72B001",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A",
-                                          "USBL": "#279553"
+                                          "VOTE2022": "#7490AA",
+                                          "USBL": "#279553",
+                                          "RUNES": "#336699"
                                       })
 }
