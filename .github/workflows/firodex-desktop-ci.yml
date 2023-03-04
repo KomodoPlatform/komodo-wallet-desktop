@@ -257,6 +257,7 @@ jobs:
         shell: powershell
         run: |
           $Env:QT_VERSION = "${{ matrix.qt }}"
+          $Env:CMAKE_BUILD_TYPE = "${{ matrix.type }}"
           .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
       - name: Upload env variable for artifacts (Linux)
