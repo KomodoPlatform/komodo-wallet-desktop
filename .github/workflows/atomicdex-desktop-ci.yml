@@ -185,7 +185,7 @@ jobs:
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
-          vcpkgJsonGlob: 'vcpkg.json'
+          #vcpkgJsonGlob: 'vcpkg.json'
 
 
       - name: import code signing certificates (macos)
