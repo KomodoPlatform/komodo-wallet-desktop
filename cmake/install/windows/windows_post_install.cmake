@@ -74,12 +74,12 @@ message(STATUS "Creating Installer")
 set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.5/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${DEX_PROJECT_NAME}.7z)
-	message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ls ${CMAKE_CURRENT_SOURCE_DIR}")
+	message(STATUS "Contents of folder: ls ${CMAKE_CURRENT_SOURCE_DIR}")
 	execute_process(COMMAND ls "${CMAKE_CURRENT_SOURCE_DIR}")
-	message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ls ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+	message(STATUS "Contents of folder: ls ${CMAKE_CURRENT_SOURCE_DIR}/bin")
 	execute_process(COMMAND ls "${CMAKE_CURRENT_SOURCE_DIR}/bin")
-	message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ls ${PROJECT_APP_PATH}")
-	execute_process(COMMAND ls "${PROJECT_APP_PATH}")
+	message(STATUS "Contents of folder: ls ${CMAKE_CURRENT_SOURCE_DIR}/bundled")
+	execute_process(COMMAND ls "${CMAKE_CURRENT_SOURCE_DIR}/bundled")
 	message(STATUS "command is: [${IFW_BINDIR}/archivegen.exe ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH} WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/bundled]")
 	execute_process(COMMAND
 		${IFW_BINDIR}/archivegen.exe ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH}
@@ -94,6 +94,9 @@ else()
 	message(STATUS "${DEX_PROJECT_NAME}.7z already exists skipping")
 endif()
 
+message(STATUS "Contents of folder: ls ${PROJECT_APP_PATH}")
+execute_process(COMMAND ls "${PROJECT_APP_PATH}")
+
 file(COPY ${PROJECT_ROOT_DIR}/bundled/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data)
 
 execute_process(COMMAND ${IFW_BINDIR}/binarycreator.exe -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer.exe
@@ -101,3 +104,8 @@ execute_process(COMMAND ${IFW_BINDIR}/binarycreator.exe -c ./config/config.xml -
 	ECHO_OUTPUT_VARIABLE
 	ECHO_ERROR_VARIABLE)
 file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/${DEX_PROJECT_NAME}_installer.exe DESTINATION ${TARGET_APP_PATH})
+
+message(STATUS "Contents of folder: ls ${TARGET_APP_PATH}")
+execute_process(COMMAND ls "${TARGET_APP_PATH}")
+
+message(STATUS "===== Windows Post Install Complete =====")
