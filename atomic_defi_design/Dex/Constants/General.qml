@@ -64,12 +64,12 @@ QtObject {
         return coin_info.is_zhtlc_family
     }
 
-    function isZhtlcReady(ticker, progress=100)
+    function isZhtlcReady(ticker)
     {
+        if (!isZhtlc(ticker)) return true
+        let activation_status = API.app.get_zhtlc_status(ticker)
+        let progress = zhtlcActivationProgress(activation_status, ticker)
         if (progress == 100) return true
-        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        if (!coin_info.is_zhtlc_family) return true
-        console.log("Progress: " + progress)
         return false
     }
 
@@ -374,16 +374,30 @@ QtObject {
     }
 
     function getFeesDetailText(feetype, amount, ticker) {
-        return qsTr("%1 %2 %3 (%4)"
-            ).arg(
-                feetype
-            ).arg(
-                formatDouble(amount, 8, false)
-            ).arg(
-                ticker
-            ).arg(
-                General.getFiatText(amount, ticker, false)
-            )
+        if ([feetype, amount, ticker].includes(undefined)) return ""
+        let fiat_text = General.getFiatText(amount, ticker, false)
+        amount = formatDouble(amount, 8, false).toString()
+        return feetype + " " + amount + " " + ticker + " (" + fiat_text + ")"
+    }
+
+    function getSimpleFromPlaceholder(selectedTicker, selectedOrder, sell_ticker_balance) {
+        if (sell_ticker_balance == 0)
+        {
+            return qsTr("%1 balance is zero").arg(selectedTicker)
+        }
+        if (!isZhtlcReady(selectedTicker))
+        {
+            return qsTr("Activating %1 (%2%)").arg(atomic_qt_utilities.retrieve_main_ticker(selectedTicker)).arg(progress)
+        }
+        if (API.app.trading_pg.max_volume == 0)
+        {
+            return qsTr("Loading wallet...")
+        }
+        if (typeof selectedOrder !== 'undefined')
+        {
+            return qsTr("Min: %1").arg(API.app.trading_pg.min_trade_vol)
+        }
+        return qsTr("Enter an amount")
     }
 
     function arrayExclude(arr, excl) {
@@ -557,18 +571,15 @@ QtObject {
     }
 
     function getMinTradeAmount() {
-        /*if (API.app.trading_pg.market_mode == MarketMode.Buy) {
-            return API.app.trading_pg.orderbook.rel_min_taker_vol
-        }*/
-        return API.app.trading_pg.min_trade_vol
+        return formatDouble(API.app.trading_pg.min_trade_vol, 8, false).toString()
     }
 
     function getReversedMinTradeAmount() {
-            if (API.app.trading_pg.market_mode == MarketMode.Buy) {
-               return API.app.trading_pg.min_trade_vol
-            }
-            return API.app.trading_pg.orderbook.rel_min_taker_vol
+        if (API.app.trading_pg.market_mode == MarketMode.Buy) {
+           return getMinTradeAmount()
         }
+        return formatDouble(API.app.trading_pg.orderbook.rel_min_taker_vol, 8, false).toString()
+    }
 
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
@@ -786,6 +797,10 @@ QtObject {
         switch(error) {
         case TradingError.None:
             return ""
+        case TradingError.LeftZhtlcChainNotEnabled:
+            return qsTr("Please wait for %1 to fully activate").arg(left_ticker)
+        case TradingError.RightZhtlcChainNotEnabled:
+            return qsTr("Please wait for %1 to fully activate").arg(right_ticker)
         case TradingError.TotalFeesNotEnoughFunds:
             return qsTr("%1 balance is lower than the fees amount: %2 %3").arg(fee_info.error_fees.coin).arg(fee_info.error_fees.required_balance).arg(fee_info.error_fees.coin)
         case TradingError.BalanceIsLessThanTheMinimalTradingAmount:
@@ -794,10 +809,6 @@ QtObject {
             return qsTr("Please fill the price field")
         case TradingError.VolumeFieldNotFilled:
             return qsTr("Please fill the volume field")
-        case TradingError.LeftZhtlcChainNotEnabled:
-            return qsTr("Please wait for %1 to fully activate").arg(left_ticker)
-        case TradingError.RightZhtlcChainNotEnabled:
-            return qsTr("Please wait for %1 to fully activate").arg(right_ticker)
         case TradingError.VolumeIsLowerThanTheMinimum:
             return qsTr("%1 volume is lower than minimum trade amount").arg(API.app.trading_pg.market_pairs_mdl.left_selected_coin) + " : " + General.getMinTradeAmount()
         case TradingError.ReceiveVolumeIsLowerThanTheMinimum:

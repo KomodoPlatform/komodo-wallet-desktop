@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2023 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -120,7 +120,7 @@ connect_signals_handler()
 {
     SPDLOG_INFO("connecting signal SIGABRT to the signal handler");
 #if defined(linux) || defined(__APPLE__)
-    if (fs::exists("./backtrace.dump"))
+    if (std::filesystem::exists("./backtrace.dump"))
     {
         // there is a backtrace
         std::ifstream ifs("./backtrace.dump");
@@ -130,7 +130,7 @@ connect_signals_handler()
 
         // cleaning up
         ifs.close();
-        fs::remove("./backtrace.dump");
+        std::filesystem::remove("./backtrace.dump");
     }
 #endif
     std::signal(SIGABRT, &signal_handler);
@@ -169,7 +169,7 @@ static void init_logging()
     constexpr size_t spdlog_max_file_size     = 7777777;
     constexpr size_t spdlog_max_file_rotation = 3;
 
-    fs::path path = atomic_dex::utils::get_atomic_dex_current_log_file();
+    std::filesystem::path path = atomic_dex::utils::get_atomic_dex_current_log_file();
     spdlog::init_thread_pool(qsize_spdlog, spdlog_thread_count);
     auto tp = spdlog::thread_pool();
     auto stdout_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
@@ -180,15 +180,15 @@ static void init_logging()
     auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.string(), spdlog_max_file_size, spdlog_max_file_rotation);
 #endif
 
+#if defined(DEBUG) || defined(_WIN32) || defined(WIN32)
     std::vector<spdlog::sink_ptr> sinks{stdout_sink, rotating_sink};
+#else
+    std::vector<spdlog::sink_ptr> sinks{rotating_sink};
+#endif
     auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
     spdlog::register_logger(logger);
     spdlog::set_default_logger(logger);
-#ifdef DEBUG
     spdlog::set_level(spdlog::level::trace);
-#else
-    spdlog::set_level(spdlog::level::info);
-#endif
     spdlog::set_pattern("[%T] [%^%l%$] [%s:%#] [%t]: %v");
 }
 
@@ -242,7 +242,7 @@ init_timezone_db()
     try
     {
         using namespace std::string_literals;
-        auto install_db_tz_path = std::make_unique<fs::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
+        auto install_db_tz_path = std::make_unique<std::filesystem::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
         date::set_install(install_db_tz_path->string());
         SPDLOG_INFO("Timezone db successfully initialized");
     }
@@ -256,49 +256,49 @@ init_timezone_db()
 static void
 setup_default_themes()
 {
-    const fs::path theme_path = atomic_dex::utils::get_themes_path();
-    fs::path       original_theme_path{ag::core::assets_real_path() / "themes"};
-    fs_error_code  ec;
+    const std::filesystem::path theme_path = atomic_dex::utils::get_themes_path();
+    std::filesystem::path       original_theme_path{ag::core::assets_real_path() / "themes"};
+    std::error_code ec;
 
     LOG_PATH_CMP("Checking for setup default themes - theme_path: {} original_theme_path: {}", theme_path, original_theme_path);
     LOG_PATH("copying default themes into directory: {}", theme_path);
-    //fs::remove_all(theme_path);
-    fs::copy(original_theme_path, theme_path,  fs::copy_options::recursive | fs::copy_options::overwrite_existing, ec);
+    //std::filesystem::remove_all(theme_path);
+    std::filesystem::copy(original_theme_path, theme_path,  std::filesystem::copy_options::recursive | std::filesystem::copy_options::overwrite_existing, ec);
     if (ec)
     {
-        SPDLOG_ERROR("fs::error: {}", ec.message());
+        SPDLOG_ERROR("std::filesystem::error: {}", ec.message());
     }
 
     ec.clear();
 
     //! Logo
     {
-        const fs::path logo_path = atomic_dex::utils::get_logo_path();
-        fs::path       original_logo_path{ag::core::assets_real_path() / "logo"};
+        const std::filesystem::path logo_path = atomic_dex::utils::get_logo_path();
+        std::filesystem::path       original_logo_path{ag::core::assets_real_path() / "logo"};
 
         LOG_PATH_CMP("Checking for setup default logo - logo_path: {} original_logo_path: {}", logo_path, original_logo_path);
-        //fs::remove_all(logo_path);
-        fs::copy(original_logo_path, logo_path, fs::copy_options::recursive | fs::copy_options::overwrite_existing, ec);
+        //std::filesystem::remove_all(logo_path);
+        std::filesystem::copy(original_logo_path, logo_path, std::filesystem::copy_options::recursive | std::filesystem::copy_options::overwrite_existing, ec);
         LOG_PATH("copying default logo into directory: {}", logo_path);
         if (ec)
         {
-            SPDLOG_ERROR("fs::error: {}", ec.message());
+            SPDLOG_ERROR("std::filesystem::error: {}", ec.message());
         }
     }
 }
 
 static void
-check_settings_reconfiguration(const fs::path& path)
+check_settings_reconfiguration(const std::filesystem::path& path)
 {
     SPDLOG_INFO("Checking for settings ini reconfiguration");
     using namespace atomic_dex::utils;
     using namespace atomic_dex;
-    const fs::path previous_path = get_atomic_dex_data_folder() / get_precedent_raw_version() / "configs" / "cfg.ini";
-    if (fs::exists(previous_path) && !fs::exists(path))
+    const std::filesystem::path previous_path = get_atomic_dex_data_folder() / get_precedent_raw_version() / "configs" / "cfg.ini";
+    if (std::filesystem::exists(previous_path) && !std::filesystem::exists(path))
     {
-        fs_error_code ec;
+        std::error_code ec;
         LOG_PATH_CMP("Copying {} to {}", previous_path, path);
-        fs::copy(previous_path, path, ec);
+        std::filesystem::copy(previous_path, path, ec);
         if (ec)
         {
             SPDLOG_ERROR("error occured when copying previous cfg.ini : {}", ec.message());
@@ -306,7 +306,7 @@ check_settings_reconfiguration(const fs::path& path)
 
         SPDLOG_INFO("Deleting previous cfg after reconfiguring it");
         ec.clear();
-        fs::remove_all(get_atomic_dex_data_folder() / get_precedent_raw_version(), ec);
+        std::filesystem::remove_all(get_atomic_dex_data_folder() / get_precedent_raw_version(), ec);
         if (ec)
         {
             SPDLOG_ERROR("error occured when deleting previous path");
@@ -352,10 +352,10 @@ inline int
 run_app(int argc, char** argv)
 {
 #if !defined(ATOMICDEX_HOT_RELOAD)
-    SPDLOG_INFO("Installing qt_message_handler");
+    SPDLOG_DEBUG("Installing qt_message_handler");
     qInstallMessageHandler(&qt_message_handler);
 #endif
-    SPDLOG_INFO(
+    SPDLOG_DEBUG(
         "SSL: {} {} {}", QSslSocket::supportsSsl(), QSslSocket::sslLibraryBuildVersionString().toStdString(),
         QSslSocket::sslLibraryVersionString().toStdString());
 
@@ -364,11 +364,11 @@ run_app(int argc, char** argv)
     qputenv("QT_ENABLE_GLYPH_CACHE_WORKAROUND", "1");
     qputenv("QML_USE_GLYPHCACHE_WORKAROUND", "1");
 
-    fs::path old_path    = fs::path(std::getenv("HOME")) / ".atomic_qt";
-    fs::path target_path = atomic_dex::utils::get_atomic_dex_data_folder();
-    SPDLOG_INFO("{} exists -> {}", old_path.string(), fs::exists(old_path));
-    SPDLOG_INFO("{} exists -> {}", target_path.string(), fs::exists(target_path));
-    if (fs::exists(old_path) && !fs::exists(target_path))
+    std::filesystem::path old_path    = std::filesystem::path(std::getenv("HOME")) / ".atomic_qt";
+    std::filesystem::path target_path = atomic_dex::utils::get_atomic_dex_data_folder();
+    SPDLOG_INFO("{} exists -> {}", old_path.string(), std::filesystem::exists(old_path));
+    SPDLOG_INFO("{} exists -> {}", target_path.string(), std::filesystem::exists(target_path));
+    if (std::filesystem::exists(old_path) && !std::filesystem::exists(target_path))
     {
         SPDLOG_INFO("Renaming: {} to {}", old_path.string(), target_path.string());
         QDir dir;
@@ -386,7 +386,7 @@ run_app(int argc, char** argv)
     init_sodium();
     clean_previous_run();
     setup_default_themes();
-    fs::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
+    std::filesystem::path settings_path = (atomic_dex::utils::get_current_configs_path() / "cfg.ini");
     check_settings_reconfiguration(settings_path);
     init_dpi();
 

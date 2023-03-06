@@ -3,10 +3,11 @@ import QtQuick.Layouts 1.15
 
 import bignumberjs 1.0
 
+import "../Constants"
+
 DefaultRectangle
 {
     id: root
-    property alias  source: icon.source
     property alias  ticker: ticker.text
     property alias  fullname: fullname.text
     property string amount
@@ -31,6 +32,7 @@ DefaultRectangle
             Layout.preferredWidth: 35
             Layout.preferredHeight: 35
             Layout.alignment: Qt.AlignVCenter
+            source: General.coinIcon(root.ticker)
         }
 
         Item { Layout.fillWidth: true }

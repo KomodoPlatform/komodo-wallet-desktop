@@ -92,7 +92,6 @@ namespace atomic_dex
        //! Atomicity / Threads
        std::atomic_bool m_mm2_running{false};
        std::atomic_bool m_orderbook_thread_active{false};
-       std::atomic_bool m_zhtlc_enable_thread_active{false};
        std::atomic_size_t m_nb_update_required{0};
        std::thread      m_mm2_init_thread;
 
@@ -154,10 +153,6 @@ namespace atomic_dex
 
        void on_gui_leave_trading(const gui_leave_trading& evt);
 
-       void on_zhtlc_enter_enabling(const zhtlc_enter_enabling& evt);
-
-       void on_zhtlc_leave_enabling(const zhtlc_leave_enabling& evt);
-
        //! Spawn mm2 instance with given seed
        void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
 
@@ -188,11 +183,13 @@ namespace atomic_dex
 
      public:
        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
-       void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
-       void               remove_custom_coin(const std::string& ticker);
-       [[nodiscard]] bool is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
-       [[nodiscard]] bool is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
-       [[nodiscard]] bool is_zhtlc_coin_ready(const std::string coin) const;
+       void                         add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
+       void                         remove_custom_coin(const std::string& ticker);
+       [[nodiscard]] bool           is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
+       [[nodiscard]] bool           is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
+       [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;
+       [[nodiscard]] nlohmann::json get_zhtlc_status(const std::string coin) const;
+
 
        //! Disable a single coin
        bool disable_coin(const std::string& ticker, std::error_code& ec);
@@ -251,7 +248,6 @@ namespace atomic_dex
        [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
 
        [[nodiscard]] bool is_orderbook_thread_active() const;
-       [[nodiscard]] bool is_zhtlc_enable_thread_active() const;
 
        [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const;
 

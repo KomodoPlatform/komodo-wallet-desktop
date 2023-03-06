@@ -46,18 +46,19 @@ RowLayout
     property alias bestOrders: bestOrders
     property alias placeOrderForm: placeOrderForm
 
-    function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
+    function selectOrder(
+        is_asks, coin, price, price_denom, 
+        price_numer, min_volume, base_min_volume, base_max_volume, 
+        rel_min_volume, rel_max_volume, base_max_volume_denom, 
+        base_max_volume_numer, uuid)
     {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         API.app.trading_pg.preffered_order = {
             "coin": coin,
             "price": price,
-            "quantity": quantity,
             "price_denom": price_denom,
             "price_numer": price_numer,
-            "quantity_denom": quantity_denom,
-            "quantity_numer": quantity_numer,
             "min_volume": min_volume,
             "base_min_volume": base_min_volume,
             "base_max_volume": base_max_volume,
@@ -75,6 +76,7 @@ RowLayout
     Connections
     {
         target: exchange_trade
+        enabled: form.enabled
         function onBuy_sell_rpc_busyChanged()
         {
             if (buy_sell_rpc_busy)

@@ -24,8 +24,8 @@ namespace atomic_dex
     inline constexpr std::size_t g_key_len = crypto_secretstream_xchacha20poly1305_KEYBYTES;
     using t_password_key                   = std::array<unsigned char, g_key_len>;
     t_password_key derive_password(const std::string& password, std::error_code& ec);
-    void           encrypt(const fs::path& target_path, const char* mnemonic, const unsigned char* key);
-    std::string    decrypt(const fs::path& encrypted_file_path, const unsigned char* key, std::error_code& ec);
+    void           encrypt(const std::filesystem::path& target_path, const char* mnemonic, const unsigned char* key);
+    std::string    decrypt(const std::filesystem::path& encrypted_file_path, const unsigned char* key, std::error_code& ec);
     bool           is_valid_generated_rpc_password(const std::string& pass);
     std::string    gen_random_password();
     const char*    get_regex_password_policy();

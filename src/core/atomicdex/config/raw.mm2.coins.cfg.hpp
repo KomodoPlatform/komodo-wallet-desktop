@@ -10,7 +10,6 @@
 
 //! Project
 #include "atomicdex/api/mm2/mm2.constants.hpp"
-#include "atomicdex/utilities/fs.prerequisites.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
@@ -243,14 +242,14 @@ namespace atomic_dex
     {
         SPDLOG_INFO("parse_raw_mm2_coins_file");
         t_mm2_raw_coins_registry out;
-        fs::path                 file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
-        if (not fs::exists(file_path))
+        std::filesystem::path                 file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+        if (not std::filesystem::exists(file_path))
         {
-            fs::path original_mm2_coins_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
+            std::filesystem::path original_mm2_coins_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
             //! Copy our json to current version
             LOG_PATH_CMP("Copying mm2 coins cfg: {} to {}", original_mm2_coins_path, file_path);
 
-            fs::copy_file(original_mm2_coins_path, file_path, get_override_options());
+            std::filesystem::copy_file(original_mm2_coins_path, file_path, std::filesystem::copy_options::overwrite_existing);
         }
 
         QFile file;

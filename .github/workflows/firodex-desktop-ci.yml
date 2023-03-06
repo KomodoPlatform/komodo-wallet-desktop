@@ -271,6 +271,14 @@ jobs:
 
 
 
+      - name: Upload bundle artifact (Linux ZSTD)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.artifact_name_zstd }}
+          path: ./bundled/linux/${{ env.target_name_zstd }}
+          retention-days: 7
+
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v3

@@ -28,8 +28,9 @@
     "gradientButtonTextHoveredColor": "#FFF",
     "gradientButtonTextPressedColor": "#FFF",
 
-    "checkBoxGradientStartColor": "#BA2A45FF",
-    "checkBoxGradientEndColor": "#BA2A45FF",
+    "checkBoxTickColor": "#FFFFFFFF",
+    "checkBoxGradientStartColor": "#6673E3FF",
+    "checkBoxGradientEndColor": "#5EBBF0FF",
 
     "switchGradientStartColor": "#BA2A45FF",
     "switchGradientEndColor": "#ECB6BEFF",
