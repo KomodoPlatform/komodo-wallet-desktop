@@ -52,6 +52,12 @@ if (DEFINED ENV{PROJECT_ROOT})
 else ()
     set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
 endif ()
+if (DEFINED ENV{CMAKE_BUILD_TYPE})
+    set(CMAKE_BUILD_TYPE $ENV{CMAKE_BUILD_TYPE})
+endif ()
+if (DEFINED ENV{PROJECT_QML_DIR})
+    set(PROJECT_QML_DIR $ENV{PROJECT_QML_DIR})
+endif ()
 
 
 # Shows project metadata
