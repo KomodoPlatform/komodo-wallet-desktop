@@ -328,7 +328,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name_zip }}
-          path: ./bundled/windows/bin.zip
+          path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}.zip
           retention-days: 7
 
       - name: Upload artifacts (Windows installer)
