@@ -1,7 +1,7 @@
 # Default project values
 set(DEX_API "mm2")
-set(DEX_RPCPORT 7783)
-set(DEX_RPC "http://127.0.0.1:7783")
+set(DEX_RPCPORT 7762)
+set(DEX_RPC "http://127.0.0.1:7762")
 set(DEX_PROJECT_NAME "atomicdex-desktop")
 set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
 set(DEX_MAINTENANCE_TOOL_NAME "AtomicDEX Maintenance Tool")
@@ -51,6 +51,12 @@ if (DEFINED ENV{PROJECT_ROOT})
     set(PROJECT_ROOT $ENV{PROJECT_ROOT})
 else ()
     set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
+endif ()
+if (DEFINED ENV{CMAKE_BUILD_TYPE})
+    set(CMAKE_BUILD_TYPE $ENV{CMAKE_BUILD_TYPE})
+endif ()
+if (DEFINED ENV{PROJECT_QML_DIR})
+    set(PROJECT_QML_DIR $ENV{PROJECT_QML_DIR})
 endif ()
 
 

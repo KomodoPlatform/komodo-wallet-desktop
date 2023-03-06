@@ -63,7 +63,7 @@ namespace
                 SPDLOG_INFO("There is a precedent configuration file, upgrading the new one with precedent settings");
 
                 //! Old cfg to ifs
-                LOG_PATH("opening file: {}", precedent_version_cfg_path);
+                LOG_PATH("opening previous version coins file: {}", precedent_version_cfg_path);
                 QFile ifs;
                 ifs.setFileName(atomic_dex::std_path_to_qstring(precedent_version_cfg_path));
                 ifs.open(QIODevice::Text | QIODevice::ReadOnly);
@@ -72,7 +72,7 @@ namespace
 
                 //! New cfg to ifs
                 std::filesystem::path actual_version_filepath = cfg_path / (std::string(atomic_dex::get_raw_version()) + "-coins."s + wallet_name + ".json"s);
-                LOG_PATH("opening file: {}", actual_version_filepath);
+                LOG_PATH("opening new version coins file: {}", actual_version_filepath);
                 QFile actual_version_ifs;
                 actual_version_ifs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
                 actual_version_ifs.open(QIODevice::Text | QIODevice::ReadOnly);
@@ -97,13 +97,13 @@ namespace
                     }
                 }
 
-                LOG_PATH("closing file: {}", precedent_version_cfg_path);
+                LOG_PATH("closing old version coins file: {}", precedent_version_cfg_path);
                 ifs.close();
-                LOG_PATH("closing file: {}", actual_version_filepath);
+                LOG_PATH("closing new version coins file: {}", actual_version_filepath);
                 actual_version_ifs.close();
 
                 //! Write contents
-                LOG_PATH("opening file: {}", actual_version_filepath);
+                LOG_PATH("opening new version file: {}", actual_version_filepath);
                 QFile ofs;
                 ofs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
                 ofs.open(QIODevice::Text | QIODevice::WriteOnly);
@@ -116,7 +116,7 @@ namespace
                 {
                     SPDLOG_ERROR("error: {}", ec.message());
                 }
-                LOG_PATH("closing file: {}", actual_version_filepath);
+                LOG_PATH("closing new version file: {}", actual_version_filepath);
                 ofs.close();
             }
         }
