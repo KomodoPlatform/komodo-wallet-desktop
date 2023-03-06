@@ -10,17 +10,17 @@ Component.prototype.createOperations = function()
     if (installer.value("os") === "win") {
 		// Start Menu Shortcut
         component.addOperation("CreateShortcut",
-                               "@DEX_TARGET_DIR@/@DEX_PROJECT_NAME@.exe",
+                               "@DEX_TARGET_DIR@/bin/@DEX_PROJECT_NAME@.exe",
                                "@DEX_START_MENU_DIR@/@DEX_DISPLAY_NAME@.lnk",
-                               "workingDirectory=@DEX_TARGET_DIR@",
+                               "workingDirectory=@DEX_TARGET_DIR@/bin",
                                "iconPath=@DEX_ICON_DIR@", "iconId=0",
                                "description=Start @DEX_DISPLAY_NAME@");
 
         // Desktop Shortcut
         component.addOperation("CreateShortcut",
-                               "@DEX_TARGET_DIR@/@DEX_PROJECT_NAME@.exe",
+                               "@DEX_TARGET_DIR@/bin/@DEX_PROJECT_NAME@.exe",
                                "@DEX_DESKTOP_DIR@/@DEX_DISPLAY_NAME@.lnk",
-                               "workingDirectory=@DEX_TARGET_DIR@",
+                               "workingDirectory=@DEX_TARGET_DIR@/bin",
                                "iconPath=@DEX_ICON_DIR@", "iconId=0",
                                "description=Start @DEX_DISPLAY_NAME@");
 
