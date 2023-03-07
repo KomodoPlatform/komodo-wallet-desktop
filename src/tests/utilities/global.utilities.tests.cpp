@@ -35,14 +35,14 @@ TEST_CASE("atomic_dex::utils::get_atomic_dex_logs_folder()")
 {
     auto result = get_atomic_dex_logs_folder();
     CHECK_FALSE(result.string().empty());
-    CHECK(fs::exists(result));
+    CHECK(std::filesystem::exists(result));
 }
 
 TEST_CASE("atomic_dex::utils::get_atomic_dex_current_log_file()")
 {
     auto result = get_atomic_dex_current_log_file();
     CHECK_FALSE(result.string().empty());
-    CHECK_FALSE(fs::exists(result));
+    CHECK_FALSE(std::filesystem::exists(result));
 }
 
 TEST_CASE("atomic_dex::utils::adjust_precision()")
@@ -54,12 +54,12 @@ TEST_CASE("atomic_dex::utils::adjust_precision()")
 
 TEST_CASE("atomic_dex::utils::create_if_doesnt_exist()")
 {
-    fs::path tmp_path = fs::temp_directory_path() / "fake_dir";
-    CHECK_FALSE(fs::exists(tmp_path));
+    std::filesystem::path tmp_path = std::filesystem::temp_directory_path() / "fake_dir";
+    CHECK_FALSE(std::filesystem::exists(tmp_path));
     CHECK(create_if_doesnt_exist(tmp_path));
-    CHECK(fs::exists(tmp_path));
-    fs::remove(tmp_path);
-    CHECK_FALSE(fs::exists(tmp_path));
+    CHECK(std::filesystem::exists(tmp_path));
+    std::filesystem::remove(tmp_path);
+    CHECK_FALSE(std::filesystem::exists(tmp_path));
 }
 
 TEST_CASE("atomic_dex::utils::determine_balance_factor()")
@@ -81,21 +81,21 @@ TEST_CASE("atomic_dex::utils::get_atomic_dex_addressbook_folder()")
 {
     auto result = get_atomic_dex_addressbook_folder();
     CHECK_FALSE(result.string().empty());
-    CHECK(fs::exists(result));
+    CHECK(std::filesystem::exists(result));
 }
 
 TEST_CASE("atomic_dex::utils::get_runtime_coins_path()")
 {
     auto result = get_runtime_coins_path();
     CHECK_FALSE(result.string().empty());
-    CHECK(fs::exists(result));
+    CHECK(std::filesystem::exists(result));
 }
 
 TEST_CASE("atomic_dex::utils::get_current_configs_path()")
 {
     auto result = get_current_configs_path();
     CHECK_FALSE(result.string().empty());
-    CHECK(fs::exists(result));
+    CHECK(std::filesystem::exists(result));
 }
 
 TEST_CASE("atomic_dex::utils::retrieve_main_ticker()")
@@ -120,7 +120,7 @@ TEST_CASE("generate_random_password")
 {
     using namespace std::string_literals;
     std::wstring other_path = L"C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s;
-    fs::path cur_path = other_path;
+    std::filesystem::path cur_path = other_path;
     CHECK_EQ(u8string(other_path), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);
     CHECK_EQ(u8string(cur_path), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);
     CHECK_EQ(to_utf8(cur_path.wstring().c_str()), "C:\\Users\\Антон\\AppData\\Roaming\\atomic_qt\\0.4.3\\configs\\coins.json"s);

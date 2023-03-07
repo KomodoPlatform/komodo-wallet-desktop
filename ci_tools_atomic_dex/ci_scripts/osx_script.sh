@@ -2,9 +2,6 @@
 
 brew update
 
-brew tap-new $USER/local-nim
-brew extract --version=1.4.8 nim $USER/local-nim
-
 brew unlink libtool
 wget https://raw.githubusercontent.com/Homebrew/homebrew-core/0fbd6e24c4122e18ade1ec6c5916cb21de14f352/Formula/libtool.rb
 brew install libtool.rb
@@ -13,7 +10,7 @@ brew install autoconf \
             automake \
             pkgconfig \
             wget \
-            nim@1.4.8 \
+            nim \
             ninja \
             gnu-sed \
             coreutils \
@@ -23,7 +20,7 @@ brew install autoconf \
 pip3 install yq
 export CC=clang
 export CXX=clang++
-export MACOSX_DEPLOYMENT_TARGET=10.14
+export MACOSX_DEPLOYMENT_TARGET=10.15
 
 # get curl
 #git clone https://github.com/KomodoPlatform/curl.git

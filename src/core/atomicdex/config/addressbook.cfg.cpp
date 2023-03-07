@@ -26,8 +26,8 @@ namespace atomic_dex
 {
     nlohmann::json load_addressbook_cfg(const std::string& wallet_name)
     {
-        const fs::path source_folder{utils::get_atomic_dex_addressbook_folder()};
-        const fs::path in_path      {source_folder / wallet_name};
+        const std::filesystem::path source_folder{utils::get_atomic_dex_addressbook_folder()};
+        const std::filesystem::path in_path      {source_folder / wallet_name};
         QFile          ifs;
         QString        content;
         nlohmann::json out;
@@ -59,8 +59,8 @@ namespace atomic_dex
     
     void update_addressbook_cfg(const nlohmann::json& in, const std::string& wallet_name)
     {
-        const fs::path      out_folder{utils::get_atomic_dex_addressbook_folder()};
-        const fs::path      out_path  {out_folder / wallet_name};
+        const std::filesystem::path      out_folder{utils::get_atomic_dex_addressbook_folder()};
+        const std::filesystem::path      out_path  {out_folder / wallet_name};
         QFile output;
 
         utils::create_if_doesnt_exist(out_folder);

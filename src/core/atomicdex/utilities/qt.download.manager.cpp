@@ -30,7 +30,7 @@ namespace atomic_dex
     }
 
     void
-    qt_downloader::do_download(const QUrl& url, std::string filename, fs::path folder)
+    qt_downloader::do_download(const QUrl& url, std::string filename, std::filesystem::path folder)
     {
         m_download_filename            = filename;
         m_download_status.insert("filename", QString::fromStdString(filename));
@@ -97,7 +97,7 @@ namespace atomic_dex
         return m_download_reply;
     }
 
-    fs::path
+    std::filesystem::path
     qt_downloader::get_last_download_path() const
     {
         return m_download_path;

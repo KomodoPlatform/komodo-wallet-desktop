@@ -53,17 +53,17 @@ namespace
             using namespace std::string_literals;
             SPDLOG_DEBUG("checking for reconfiguration");
 
-            fs::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
+            std::filesystem::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
             std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
-            fs::path    precedent_version_cfg_path = cfg_path / filename;
+            std::filesystem::path    precedent_version_cfg_path = cfg_path / filename;
 
-            if (fs::exists(precedent_version_cfg_path))
+            if (std::filesystem::exists(precedent_version_cfg_path))
             {
                 //! There is a precedent configuration file
                 SPDLOG_INFO("There is a precedent configuration file, upgrading the new one with precedent settings");
 
                 //! Old cfg to ifs
-                LOG_PATH("opening file: {}", precedent_version_cfg_path);
+                LOG_PATH("opening previous version coins file: {}", precedent_version_cfg_path);
                 QFile ifs;
                 ifs.setFileName(atomic_dex::std_path_to_qstring(precedent_version_cfg_path));
                 ifs.open(QIODevice::Text | QIODevice::ReadOnly);
@@ -71,8 +71,8 @@ namespace
                 precedent_config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
 
                 //! New cfg to ifs
-                fs::path actual_version_filepath = cfg_path / (std::string(atomic_dex::get_raw_version()) + "-coins."s + wallet_name + ".json"s);
-                LOG_PATH("opening file: {}", actual_version_filepath);
+                std::filesystem::path actual_version_filepath = cfg_path / (std::string(atomic_dex::get_raw_version()) + "-coins."s + wallet_name + ".json"s);
+                LOG_PATH("opening new version coins file: {}", actual_version_filepath);
                 QFile actual_version_ifs;
                 actual_version_ifs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
                 actual_version_ifs.open(QIODevice::Text | QIODevice::ReadOnly);
@@ -97,26 +97,26 @@ namespace
                     }
                 }
 
-                LOG_PATH("closing file: {}", precedent_version_cfg_path);
+                LOG_PATH("closing old version coins file: {}", precedent_version_cfg_path);
                 ifs.close();
-                LOG_PATH("closing file: {}", actual_version_filepath);
+                LOG_PATH("closing new version coins file: {}", actual_version_filepath);
                 actual_version_ifs.close();
 
                 //! Write contents
-                LOG_PATH("opening file: {}", actual_version_filepath);
+                LOG_PATH("opening new version file: {}", actual_version_filepath);
                 QFile ofs;
                 ofs.setFileName(atomic_dex::std_path_to_qstring(actual_version_filepath));
                 ofs.open(QIODevice::Text | QIODevice::WriteOnly);
                 ofs.write(QString::fromStdString(actual_config_data.dump()).toUtf8());
 
                 //! Delete old cfg
-                fs_error_code ec;
-                fs::remove(precedent_version_cfg_path, ec);
+                std::error_code ec;
+                std::filesystem::remove(precedent_version_cfg_path, ec);
                 if (ec)
                 {
                     SPDLOG_ERROR("error: {}", ec.message());
                 }
-                LOG_PATH("closing file: {}", actual_version_filepath);
+                LOG_PATH("closing new version file: {}", actual_version_filepath);
                 ofs.close();
             }
         }
@@ -139,28 +139,14 @@ namespace
             return;
         }
         SPDLOG_INFO("Update coins status to: {} - field_name: {} - tickers: {}", status, field_name, fmt::join(tickers, ", "));
-        fs::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
+        std::filesystem::path    cfg_path               = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename               = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         std::string custom_tokens_filename = "custom-tokens." + wallet_name + ".json";
-        fs::path    custom_tokens_filepath = cfg_path / custom_tokens_filename;
+        std::filesystem::path    custom_tokens_filepath = cfg_path / custom_tokens_filename;
 
-        QFile ifs;
-        ifs.setFileName(atomic_dex::std_path_to_qstring((cfg_path / filename)));
-        ifs.open(QIODevice::ReadOnly | QIODevice::Text);
+        nlohmann::json config_json_data = atomic_dex::utils::read_json_file(cfg_path / filename);
+        nlohmann::json custom_cfg_data = atomic_dex::utils::read_json_file(custom_tokens_filepath);
 
-        nlohmann::json config_json_data;
-        nlohmann::json custom_cfg_data;
-
-        if (fs::exists(custom_tokens_filepath.c_str()))
-        {
-            QFile ifs_custom;
-            ifs_custom.setFileName(atomic_dex::std_path_to_qstring(custom_tokens_filepath));
-            ifs_custom.open(QIODevice::ReadOnly | QIODevice::Text);
-            custom_cfg_data = nlohmann::json::parse(QString(ifs_custom.readAll()).toStdString());
-            ifs_custom.close();
-        }
-
-        config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
         {
             std::shared_lock lock(registry_mtx);
             for (auto&& ticker: tickers)
@@ -184,8 +170,6 @@ namespace
                 }
             }
         }
-
-        ifs.close();
 
         //! Write contents
         QFile ofs;
@@ -221,7 +205,7 @@ namespace atomic_dex
         std::string custom_tokens_filename = "custom-tokens." + m_current_wallet_name + ".json";
 
         LOG_PATH("Retrieving Wallet information of {}", (cfg_path / filename));
-        auto retrieve_cfg_functor = [](fs::path path) -> std::unordered_map<std::string, atomic_dex::coin_config>
+        auto retrieve_cfg_functor = [](std::filesystem::path path) -> std::unordered_map<std::string, atomic_dex::coin_config>
         {
             if (exists(path))
             {
@@ -283,8 +267,6 @@ namespace atomic_dex
     {
         m_orderbook_clock = std::chrono::high_resolution_clock::now();
         m_info_clock      = std::chrono::high_resolution_clock::now();
-        dispatcher_.sink<zhtlc_enter_enabling>().connect<&mm2_service::on_zhtlc_enter_enabling>(*this);
-        dispatcher_.sink<zhtlc_leave_enabling>().connect<&mm2_service::on_zhtlc_leave_enabling>(*this);
         dispatcher_.sink<gui_enter_trading>().connect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().connect<&mm2_service::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&mm2_service::on_refresh_orderbook>(*this);
@@ -342,8 +324,6 @@ namespace atomic_dex
         dispatcher_.sink<gui_enter_trading>().disconnect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().disconnect<&mm2_service::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().disconnect<&mm2_service::on_refresh_orderbook>(*this);
-        dispatcher_.sink<zhtlc_enter_enabling>().disconnect<&mm2_service::on_zhtlc_enter_enabling>(*this);
-        dispatcher_.sink<zhtlc_leave_enabling>().disconnect<&mm2_service::on_zhtlc_leave_enabling>(*this);
         SPDLOG_INFO("mm2 signals successfully disconnected");
         bool mm2_stopped = false;
         if (m_mm2_running)
@@ -1202,7 +1182,6 @@ namespace atomic_dex
 
     void mm2_service::enable_zhtlc(const t_coins& coins)
     {
-        dispatcher_.trigger<zhtlc_enter_enabling>();
         auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
             t_init_z_coin_request request{
@@ -1320,30 +1299,19 @@ namespace atomic_dex
                                                         if (z_answers[0].at("result").at("details").contains("UpdatingBlocksCache"))
                                                         {
                                                             event = "UpdatingBlocksCache";
-                                                            std::size_t current_scanned_block = z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("current_scanned_block");
-                                                            std::size_t latest_block = z_answers[0].at("result").at("details").at("UpdatingBlocksCache").at("latest_block");
-                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned", tickers[idx], status, event, current_scanned_block, latest_block);
                                                         }
                                                         else if (z_answers[0].at("result").at("details").contains("BuildingWalletDb"))
                                                         {
                                                             event = "BuildingWalletDb";
-                                                            std::size_t current_scanned_block = z_answers[0].at("result").at("details").at("BuildingWalletDb").at("current_scanned_block");
-                                                            std::size_t latest_block = z_answers[0].at("result").at("details").at("BuildingWalletDb").at("latest_block");
-                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}] {}/{} blocks scanned", tickers[idx], status, event, current_scanned_block, latest_block);
                                                         }
                                                         else
                                                         {
                                                             event = z_answers[0].at("result").at("details").get<std::string>();
-                                                            // SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
-                                                            // Do we need to handle this? Happens when running init_zcoin_enable twice
-                                                            // {"mmrpc":"2.0","result":{"status":"InProgress","details":{"TemporaryError":"z_rpc:387] UNIQUE constraint failed: blocks.height"}},"id":null}
                                                         }
 
                                                         if (event != last_event)
                                                         {
                                                             SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
-                                                            // After an event change, full activation is just a matter of time (earlier it might fail).
-                                                            // We tag it as activated, so it shows up in portfolio and not enable list.
                                                             if (!m_coins_informations[tickers[idx]].currently_enabled && event != "ActivatingCoin")
                                                             {
                                                                 std::unique_lock lock(m_coin_cfg_mutex);
@@ -1410,7 +1378,15 @@ namespace atomic_dex
                                     idx += 1;
                                 }
 
-                                for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }
+                                if (!to_remove.empty())
+                                {
+                                    std::vector<std::string> disable_coins;
+                                    for (auto&& t: to_remove) {
+                                        tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end());
+                                        disable_coins.push_back(t);
+                                    }
+                                    update_coin_status(this->m_current_wallet_name, disable_coins, false, m_coins_informations, m_coin_cfg_mutex);
+                                }
 
                                 if (!tickers.empty())
                                 {
@@ -1436,7 +1412,6 @@ namespace atomic_dex
                         this->handle_exception_pplx_task(previous_task, "batch_enable_coins", batch);
                         update_coin_status(this->m_current_wallet_name, tickers, false, m_coins_informations, m_coin_cfg_mutex);
                     });
-            dispatcher_.trigger<zhtlc_leave_enabling>();
             this->m_nb_update_required += 1;
         };
 
@@ -1448,6 +1423,16 @@ namespace atomic_dex
         }
     }
 
+    nlohmann::json mm2_service::get_zhtlc_status(const std::string coin) const
+    {
+        const auto coin_info       = get_coin_info(coin);
+        if (coin_info.is_zhtlc_family)
+        {
+            return coin_info.activation_status;
+        }
+        return {};
+    }
+
     bool mm2_service::is_zhtlc_coin_ready(const std::string coin) const
     {
         const auto coin_info       = get_coin_info(coin);
@@ -1455,6 +1440,7 @@ namespace atomic_dex
         {
             if (coin_info.activation_status.contains("result"))
             {
+                SPDLOG_DEBUG("coin_info.activation_status {} {} :", coin, coin_info.activation_status.dump(4));
                 if (coin_info.activation_status.at("result").contains("status"))
                 {
                     if (coin_info.activation_status.at("result").at("status") == "Ready")
@@ -1682,7 +1668,7 @@ namespace atomic_dex
     {
         this->m_balance_factor = utils::determine_balance_factor(with_pin_cfg);
         SPDLOG_DEBUG("balance factor is: {}", m_balance_factor);
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
         this->dispatcher_.trigger<coin_cfg_parsed>(this->retrieve_coins_informations());
         this->dispatcher_.trigger<force_update_providers>();
@@ -1693,7 +1679,7 @@ namespace atomic_dex
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
         nlohmann::to_json(json_cfg, cfg);
-        fs::path mm2_cfg_path = (fs::temp_directory_path() / "MM2.json");
+        std::filesystem::path mm2_cfg_path = (std::filesystem::temp_directory_path() / "MM2.json");
 
         QFile ofs;
         ofs.setFileName(std_path_to_qstring(mm2_cfg_path));
@@ -1732,14 +1718,14 @@ namespace atomic_dex
                     {
                         SPDLOG_ERROR("MM2 not started correctly");
                         //! TODO: emit mm2_failed_initialization
-                        fs::remove(mm2_cfg_path);
+                        std::filesystem::remove(mm2_cfg_path);
                         return;
                     }
                     std::this_thread::sleep_for(1s);
                 }
 
                 // m_mm2_client.connect_client();
-                fs::remove(mm2_cfg_path);
+                std::filesystem::remove(mm2_cfg_path);
                 SPDLOG_INFO("mm2 is initialized");
                 dispatcher_.trigger<mm2_initialized>();
                 enable_default_coins();
@@ -2079,25 +2065,9 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::on_zhtlc_enter_enabling([[maybe_unused]] const zhtlc_enter_enabling& evt)
-    {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        m_zhtlc_enable_thread_active = true;
-    }
-
-    void
-    mm2_service::on_zhtlc_leave_enabling([[maybe_unused]] const zhtlc_leave_enabling& evt)
-    {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        m_zhtlc_enable_thread_active = false;
-    }
-
-    void
     mm2_service::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading& evt)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
 
         m_orderbook_thread_active = true;
     }
@@ -2105,7 +2075,7 @@ namespace atomic_dex
     void
     mm2_service::on_gui_leave_trading([[maybe_unused]] const gui_leave_trading& evt)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
         m_orderbook_thread_active = false;
     }
 
@@ -2136,12 +2106,6 @@ namespace atomic_dex
     mm2_service::is_orderbook_thread_active() const
     {
         return this->m_orderbook_thread_active.load();
-    }
-
-    bool
-    mm2_service::is_zhtlc_enable_thread_active() const
-    {
-        return this->m_zhtlc_enable_thread_active.load();
     }
 
     nlohmann::json
@@ -2341,22 +2305,12 @@ namespace atomic_dex
         if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.begin().key()))
         {
             SPDLOG_DEBUG("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
-            fs::path       cfg_path  = utils::get_atomic_dex_config_folder();
-            std::string    filename  = "custom-tokens." + m_current_wallet_name + ".json";
+            std::filesystem::path       cfg_path  = utils::get_atomic_dex_config_folder();
+            std::string    filename  = "custom-tokens." + m_current_wallet_name + ".json"; 
             fs::path       file_path = cfg_path / filename;
-            nlohmann::json config_json_data;
 
-            if (fs::exists(file_path))
-            {
-                SPDLOG_DEBUG("reading contents of custom tokens cfg");
-                QFile ifs;
-                ifs.setFileName(std_path_to_qstring(file_path));
-                ifs.open(QIODevice::Text | QIODevice::ReadOnly);
-
-                //! Read Contents
-                config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
-                ifs.close();
-            }
+            SPDLOG_DEBUG("reading contents of custom tokens cfg");
+            nlohmann::json config_json_data = atomic_dex::utils::read_json_file(file_path);
 
             //! Modify contents
             config_json_data[coin_cfg_json.begin().key()] = coin_cfg_json.at(coin_cfg_json.begin().key());
@@ -2370,15 +2324,13 @@ namespace atomic_dex
         }
         if (not raw_coin_cfg_json.empty() && not is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
         {
-            const fs::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
-            SPDLOG_DEBUG("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
+            const fs::path coins_json_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+            SPDLOG_DEBUG("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), coins_json_path.string());
             QFile ifs;
-            ifs.setFileName(std_path_to_qstring(mm2_cfg_path));
+            ifs.setFileName(std_path_to_qstring(coins_json_path));
             ifs.open(QIODevice::ReadOnly | QIODevice::Text);
-            nlohmann::json config_json_data;
-
             //! Read Contents
-            config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
+            nlohmann::json config_json_data = atomic_dex::utils::read_json_file(coins_json_path);
 
             //! Modify contents
             config_json_data.push_back(raw_coin_cfg_json);
@@ -2388,7 +2340,7 @@ namespace atomic_dex
 
             //! Write contents
             QFile ofs;
-            ofs.setFileName(std_path_to_qstring(mm2_cfg_path));
+            ofs.setFileName(std_path_to_qstring(coins_json_path));
             ofs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
             ofs.write(QString::fromStdString(config_json_data.dump()).toUtf8());
             ofs.close();
@@ -2419,26 +2371,17 @@ namespace atomic_dex
         if (is_this_ticker_present_in_normal_cfg(ticker))
         {
             SPDLOG_DEBUG("remove it from custom cfg: {}", ticker);
-            fs::path    cfg_path = utils::get_atomic_dex_config_folder();
+            std::filesystem::path    cfg_path = utils::get_atomic_dex_config_folder();
             std::string filename = "custom-tokens." + m_current_wallet_name + ".json";
-            QFile       ifs;
-            ifs.setFileName(std_path_to_qstring((cfg_path / filename)));
-            ifs.open(QIODevice::ReadOnly | QIODevice::Text);
-            nlohmann::json config_json_data;
 
 
-            //! Read Contents
-            config_json_data = nlohmann::json::parse(QString(ifs.readAll()).toStdString());
-
+            SPDLOG_DEBUG("reading contents of custom tokens cfg");
+            nlohmann::json config_json_data = atomic_dex::utils::read_json_file(cfg_path / filename);
             {
                 std::unique_lock lock(m_coin_cfg_mutex);
                 this->m_coins_informations.erase(ticker);
             }
-
             config_json_data.erase(config_json_data.find(ticker));
-
-            //! Close
-            ifs.close();
 
             //! Write contents
             QFile ofs;
@@ -2451,9 +2394,9 @@ namespace atomic_dex
         if (is_this_ticker_present_in_raw_cfg(ticker))
         {
             SPDLOG_DEBUG("remove it from mm2 cfg: {}", ticker);
-            fs::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+            fs::path coins_json_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
             QFile    ifs;
-            ifs.setFileName(std_path_to_qstring(mm2_cfg_path));
+            ifs.setFileName(std_path_to_qstring(coins_json_path));
             ifs.open(QIODevice::ReadOnly | QIODevice::Text);
             nlohmann::json config_json_data;
 
@@ -2469,7 +2412,7 @@ namespace atomic_dex
 
             //! Write contents
             QFile ofs;
-            ofs.setFileName(std_path_to_qstring(mm2_cfg_path));
+            ofs.setFileName(std_path_to_qstring(coins_json_path));
             ofs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
             ofs.write(QString::fromStdString(config_json_data.dump()).toUtf8());
             ofs.close();

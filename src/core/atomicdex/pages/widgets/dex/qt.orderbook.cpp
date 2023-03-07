@@ -38,7 +38,6 @@ namespace
             // If cur_min_volume in the UI < base_min_vol_threshold override
             if (cur_min_volume_f < base_min_vol_threshold)
             {
-                // SPDLOG_INFO("cur_min_taker_vol: {}", cur_taker_vol.toStdString());
                 trading_pg.set_min_trade_vol(cur_taker_vol);
             }
         }
@@ -194,11 +193,8 @@ namespace atomic_dex
             t_order_contents   order     = m_best_orders->get_order_content(idx);
             out["coin"]                  = QString::fromStdString(is_buy ? order.rel_coin.value() : order.coin);
             out["price"]                 = QString::fromStdString(order.price);
-            out["quantity"]              = QString::fromStdString(order.maxvolume);
             out["price_denom"]           = QString::fromStdString(order.price_fraction_denom);
             out["price_numer"]           = QString::fromStdString(order.price_fraction_numer);
-            out["quantity_denom"]        = QString::fromStdString(order.max_volume_fraction_denom);
-            out["quantity_numer"]        = QString::fromStdString(order.max_volume_fraction_numer);
             out["min_volume"]            = QString::fromStdString(order.min_volume);
             out["base_min_volume"]       = QString::fromStdString(order.base_min_volume);
             out["base_max_volume"]       = QString::fromStdString(order.base_max_volume);

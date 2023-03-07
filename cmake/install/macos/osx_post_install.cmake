@@ -102,8 +102,7 @@ get_filename_component(QT_ROOT_DIR $ENV{QT_ROOT} DIRECTORY)
 set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.5/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
-    execute_process(COMMAND ls WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-    message(STATUS "Generating ${DEX_PROJECT_NAME}.7z with [${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${DEX_PROJECT_NAME}.app] from directory: ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+    message(STATUS "command is: [${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin]")
     execute_process(COMMAND
             ${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH}
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin

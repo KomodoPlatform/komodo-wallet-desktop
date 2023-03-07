@@ -19,6 +19,7 @@ MultipageModal
     width: 720
     horizontalPadding: 30
     verticalPadding: 30
+    closePolicy: Popup.NoAutoClose
 
     MultipageModalContent
     {
@@ -36,7 +37,6 @@ MultipageModal
 
                 PairItemBadge
                 {
-                    source: General.coinIcon(!base_ticker ? atomic_app_primary_coin : base_ticker)
                     ticker: base_ticker
                     fullname: General.coinName(base_ticker)
                     amount: base_amount
@@ -53,7 +53,6 @@ MultipageModal
 
                 PairItemBadge
                 {
-                    source: General.coinIcon(!rel_ticker ? atomic_app_primary_coin : rel_ticker)
                     ticker: rel_ticker
                     fullname: General.coinName(rel_ticker)
                     amount: rel_amount
@@ -72,12 +71,12 @@ MultipageModal
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
 
-                // Large margin Warning
+                // Large margin warning
                 FloatingBackground
                 {
                     Layout.alignment: Qt.AlignCenter
-                    width: 425
-                    height: 30
+                    width: childrenRect.width
+                    height: childrenRect.height
                     color: Style.colorRed2
                     visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
 
@@ -94,14 +93,12 @@ MultipageModal
                             textColor: Style.colorWhite0
                             visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
                             spacing: 2
-                            boxWidth: 20
-                            boxHeight: 20
-                            labelWidth: 400
+                            boxWidth: 16
+                            boxHeight: 16
                             label.wrapMode: Label.NoWrap
                             text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
+                            font: DexTypo.caption
                         }
-
-                        Item { width: 3 }
                     }
                 }
 
@@ -166,6 +163,21 @@ MultipageModal
 
                 ColumnLayout
                 {
+                    id: fees_error
+                    width: parent.width - 20
+                    anchors.centerIn: parent
+                    visible: root.fees.hasOwnProperty('error') // Should be handled before this modal, but leaving here as a fallback
+
+                    DefaultText
+                    {
+                        width: parent.width
+                        text_value: root.fees.hasOwnProperty('error') ? root.fees["error"].split("] ").slice(-1) : ""
+                        Layout.bottomMargin: 8
+                    }
+                }
+
+                ColumnLayout
+                {
                     id: fees_detail
                     width: parent.width - 20
                     anchors.centerIn: parent
@@ -184,7 +196,7 @@ MultipageModal
 
                     Repeater
                     {
-                        model: root.fees.hasOwnProperty('base_transaction_fees_ticker') ? root.fees.total_fees : []
+                        model: root.fees.hasOwnProperty('base_transaction_fees_ticker')  && !API.app.trading_pg.preimage_rpc_busy ? root.fees.total_fees : []
                         delegate: DefaultText
                         {
                             text: General.getFeesDetailText(
@@ -391,7 +403,10 @@ MultipageModal
                 leftPadding: 45
                 rightPadding: 45
                 radius: 10
-                onClicked: root.close()
+                onClicked: {
+                    root.close()
+                    API.app.trading_pg.reset_fees()
+                }
             },
 
             Item { Layout.fillWidth: true },
@@ -410,7 +425,8 @@ MultipageModal
                             is_dpow_configurable: config_section.is_dpow_configurable,
                             enable_dpow_confs: enable_dpow_confs.checked,
                             required_confirmation_count: required_confirmation_count.value, },
-                          config_section.default_config)
+                            config_section.default_config)
+                    API.app.trading_pg.reset_fees()
                 }
             },
 

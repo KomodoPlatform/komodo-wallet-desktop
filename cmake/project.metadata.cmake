@@ -1,7 +1,7 @@
 # Default project values
 set(DEX_API "mm2")
-set(DEX_RPCPORT 7783)
-set(DEX_RPC "http://127.0.0.1:7783")
+set(DEX_RPCPORT 7762)
+set(DEX_RPC "http://127.0.0.1:7762")
 set(DEX_PROJECT_NAME "atomicdex-desktop")
 set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
 set(DEX_MAINTENANCE_TOOL_NAME "AtomicDEX Maintenance Tool")
@@ -10,8 +10,8 @@ set(DEX_WEBSITE "https://atomicdex.io/")
 set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
 set(DEX_DISCORD "https://komodoplatform.com/discord")
 set(DEX_TWITTER "https://twitter.com/AtomicDEX")
-set(DEX_PRIMARY_COIN "KMD")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
-set(DEX_SECOND_PRIMARY_COIN "LTC")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
+set(DEX_PRIMARY_COIN "LTC")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
+set(DEX_SECOND_PRIMARY_COIN "KMD")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 set(DEX_REPOSITORY_OWNER ${DEX_COMPANY})
 set(DEX_REPOSITORY_NAME "atomicDEX-Desktop")
@@ -51,6 +51,12 @@ if (DEFINED ENV{PROJECT_ROOT})
     set(PROJECT_ROOT $ENV{PROJECT_ROOT})
 else ()
     set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
+endif ()
+if (DEFINED ENV{CMAKE_BUILD_TYPE})
+    set(CMAKE_BUILD_TYPE $ENV{CMAKE_BUILD_TYPE})
+endif ()
+if (DEFINED ENV{PROJECT_QML_DIR})
+    set(PROJECT_QML_DIR $ENV{PROJECT_QML_DIR})
 endif ()
 
 
