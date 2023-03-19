@@ -1,20 +1,24 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: "[FEATURE REQUEST]: "
+about: Something missing? Got a cool idea? Let us know!
+title: "[FR]: "
 labels: ''
 assignees: ''
 
 ---
 
 **Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+What problem does your suggestion solve? E.g. It would be more convenient if [...]
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+
+**Describe your solution**
+A clear and concise description of how your solution could be implemented.
+
 
 **Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+Have you considered any alternative approaches to solving to the problem?
+
 
 **Additional context**
-Add any other context or screenshots about the feature request here.
+For visual features, screenshots are great to include.
+If your request is similar to a feature frm a different app, please include a link.

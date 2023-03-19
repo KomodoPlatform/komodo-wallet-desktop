@@ -14,6 +14,7 @@ ScrollBar
     policy: scrollbar_visible ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     property bool visibleBackground: true
     width: 6
+
     contentItem: Item
     {
         DexRectangle
@@ -29,7 +30,6 @@ ScrollBar
     background: Item
     {
         width: 6
-        x: 0
         DexRectangle
         {
             visible: control.visibleBackground

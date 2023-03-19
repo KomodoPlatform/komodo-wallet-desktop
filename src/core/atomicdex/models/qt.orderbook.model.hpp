@@ -52,14 +52,11 @@ namespace atomic_dex
         {
             PriceRole = Qt::UserRole + 1, // 257
             CoinRole,
-            QuantityRole,
             TotalRole,
             UUIDRole,
             IsMineRole,
             PriceDenomRole,
             PriceNumerRole,
-            QuantityDenomRole,
-            QuantityNumerRole,
             PercentDepthRole,
             MinVolumeRole,
             EnoughFundsToPayMinVolume,
@@ -105,8 +102,8 @@ namespace atomic_dex
         void betterOrderDetected(QVariantMap order_object);
 
       private:
-        void        initialize_order(const ::mm2::api::order_contents& order);
-        void        update_order(const ::mm2::api::order_contents& order);
+        void        initialize_order(const mm2::order_contents& order);
+        void        update_order(const mm2::order_contents& order);
         QVariantMap get_order_from_uuid(QString uuid);
         void        check_for_better_order(trading_page& trading_pg, const QVariantMap& preferred_order, std::string uuid);
 

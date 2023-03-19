@@ -7,6 +7,7 @@ import Dex.Themes 1.0 as Dex
 ToolTip
 {
     id: control
+    property bool background_visible: true
 
     contentItem: DexLabel
     {
@@ -17,6 +18,7 @@ ToolTip
 
     background: FloatingBackground
     {
+        visible: background_visible
         color: Dex.CurrentTheme.accentColor
     }
 }

@@ -12,7 +12,7 @@
 #include "rpc.recover.funds.hpp"
 #include "rpc.hpp"
 
-namespace atomic_dex
+namespace atomic_dex::mm2
 {
     class ENTT_API mm2_client
     {
@@ -28,8 +28,10 @@ namespace atomic_dex
         //! API
         pplx::task<web::http::http_response> async_rpc_batch_standalone(nlohmann::json batch_array);
 
-        template <mm2::api::rpc Rpc>
-        void process_rpc_async(const std::function<void(typename Rpc::expected_answer_type)>& on_rpc_processed);
+        template <rpc Rpc>
+        void process_rpc_async(const std::function<void(Rpc)>& on_rpc_processed);
+        template <rpc Rpc>
+        void process_rpc_async(typename Rpc::expected_request_type request, const std::function<void(Rpc)>& on_rpc_processed);
 
         //! Synced
         template <typename TRequest, typename TAnswer>

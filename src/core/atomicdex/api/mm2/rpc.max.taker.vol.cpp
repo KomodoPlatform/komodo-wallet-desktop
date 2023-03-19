@@ -23,7 +23,7 @@
 #include "atomicdex/utilities/global.utilities.hpp"
 
 //! Implementation RPC [max_taker_vol]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void
@@ -42,7 +42,8 @@ namespace mm2::api
     {
         j.at("denom").get_to(cfg.denom);
         j.at("numer").get_to(cfg.numer);
-        //SPDLOG_INFO("max: {}", j.dump(4));
+        // SPDLOG_INFO("max: {}", j.dump(4));
+
         t_rational rat(boost::multiprecision::cpp_int(cfg.numer), boost::multiprecision::cpp_int(cfg.denom));
         t_float_50 res = rat.convert_to<t_float_50>();
         cfg.decimal    = atomic_dex::utils::extract_large_float(res.str(50));
@@ -63,4 +64,4 @@ namespace mm2::api
             answer.result.value().coin = j.at("coin").get<std::string>();
         }
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

@@ -21,7 +21,7 @@ t_http_client_ptr     g_komodolive_client{std::make_unique<t_http_client>(FROM_S
 TEST_CASE("generate all coinpaprika possibilities")
 {
 #if defined(__APPLE__)
-    const auto     resp      = ::mm2::api::async_process_rpc_get(g_komodolive_client, "tickers", "/ticker").get();
+    const auto     resp      = atomic_dex::mm2::async_process_rpc_get(g_komodolive_client, "tickers", "/ticker").get();
     std::string    body      = TO_STD_STR(resp.extract_string(true).get());
     nlohmann::json j_metrics = nlohmann::json::parse(body);
     nlohmann::json metrics   = nlohmann::json::object();
@@ -31,7 +31,7 @@ TEST_CASE("generate all coinpaprika possibilities")
     }
 
     std::unordered_set<std::string> visited;
-    fs::path                        cfg_path = antara::gaming::core::assets_real_path() / "config" / "0.4.2-coins.json";
+    std::filesystem::path                        cfg_path = antara::gaming::core::assets_real_path() / "config" / "0.4.2-coins.json";
     std::ifstream                   ifs(cfg_path.string());
     nlohmann::json                  j;
     ifs >> j;

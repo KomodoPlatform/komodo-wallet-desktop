@@ -12,32 +12,43 @@ MultipageModal
 
     function reset() { }
 
-    width: 600
+    width: 800
 
     MultipageModalContent
     {
-        titleText: qsTr("Receive")
+        titleText: qsTr("Receive %1", "TICKER").arg(api_wallet_page.ticker)
+        subtitleText: qsTr("Only send %1 to this address", "TICKER").arg(api_wallet_page.ticker)
+        titleAlignment: Qt.AlignHCenter
+        subtitleAlignment: Qt.AlignHCenter
+        topMarginAfterTitle: 15
 
-        TextEditWithTitle
+        TextEditWithCopy
         {
-            title: qsTr("Only send %1 to this address:", "TICKER").arg(api_wallet_page.ticker)
-            text: current_ticker_infos.address
-            label.font.pixelSize: 13
-            copy: true
-            privacy: true
-            onCopyNotificationTitle: qsTr("%1 address".arg(api_wallet_page.ticker))
+            text_value: current_ticker_infos.address
+            font_size: 13
+            text_box_width:
+            {
+                let char_len = current_ticker_infos.address.length
+                if (char_len > 70) return 560
+                if (char_len > 50) return 450
+                if (char_len > 40) return 400
+                return 300
+            }
+            onCopyNotificationTitle: qsTr("%1 address", "TICKER").arg(api_wallet_page.ticker)
             onCopyNotificationMsg: qsTr("copied to clipboard.")
+            privacy: true
         }
 
         DefaultImage
         {
-            Layout.topMargin: 20
+            Layout.topMargin: 15
+            Layout.bottomMargin: 15
             Layout.alignment: Qt.AlignHCenter
 
             source: current_ticker_infos.qrcode_address
 
-            sourceSize.width: 300
-            sourceSize.height: 300
+            sourceSize.width: 350
+            sourceSize.height: 350
         }
 
         // Buttons

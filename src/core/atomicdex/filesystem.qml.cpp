@@ -19,6 +19,6 @@ namespace atomic_dex
 
     bool filesystem::exists(QString path)
     {
-        return fs::exists(path.toStdString());
+        return std::filesystem::exists(path.toStdString());
     }
 }

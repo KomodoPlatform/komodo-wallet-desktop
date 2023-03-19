@@ -48,8 +48,6 @@ namespace atomic_dex
         {
         case orderbook_model::PriceRole:
             return safe_float(left_data.toString().toStdString()) < safe_float(right_data.toString().toStdString());
-        case orderbook_model::QuantityRole:
-            break;
         case orderbook_model::TotalRole:
             break;
         case orderbook_model::UUIDRole:
@@ -61,10 +59,6 @@ namespace atomic_dex
         case orderbook_model::PriceNumerRole:
             break;
         case orderbook_model::PercentDepthRole:
-            break;
-        case orderbook_model::QuantityDenomRole:
-            break;
-        case orderbook_model::QuantityNumerRole:
             break;
         case orderbook_model::CoinRole:
             break;
@@ -171,12 +165,10 @@ namespace atomic_dex
                 const auto  volume = provider.get_total_volume(utils::retrieve_main_ticker(ticker));
                 if (coin_info.ticker.empty() || coin_info.wallet_only) //< this means it's not present in our cfg - skipping
                 {
-                    SPDLOG_WARN("{} excluded empty", coin_info.ticker);
                     return false;
                 }
                 if (is_cex_id_available && (rates > 100 || fiat_price <= 0 || ((safe_float(volume) < limit) && coin_info.coin_type != CoinType::SmartChain)))
                 {
-                    SPDLOG_WARN("{} excluded rates/fiat {} {} {}", coin_info.ticker, rates.str(), fiat_price.str(), volume);
                     return false;
                 }
                 break;

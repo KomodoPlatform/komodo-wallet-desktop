@@ -90,7 +90,7 @@ namespace atomic_dex
     }
 
     void
-    addressbook_model::remove_contact(const QString& name)
+    addressbook_model::removeContact(const QString& name)
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         auto  res              = match(index(0), NameRole, name, 1, Qt::MatchFlag::MatchExactly);
@@ -105,7 +105,7 @@ namespace atomic_dex
         }
     }
     
-    bool addressbook_model::add_contact(const QString& name)
+    bool addressbook_model::addContact(const QString& name)
     {
         auto& addrbook_manager = m_system_manager.get_system<addressbook_manager>();
         

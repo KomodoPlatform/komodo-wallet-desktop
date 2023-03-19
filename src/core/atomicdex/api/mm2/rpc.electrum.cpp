@@ -21,24 +21,39 @@
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 
 //! Implementation RPC [electrum]
-namespace mm2::api
+namespace atomic_dex::mm2
 {
     //! Serialization
     void
     to_json(nlohmann::json& j, const electrum_request& cfg)
     {
         j["coin"]       = cfg.coin_name;
-        j["servers"]    = cfg.servers;
         j["tx_history"] = cfg.with_tx_history;
+
+        if (!cfg.servers.empty())
+        {
+            j["servers"] = cfg.servers;
+        }
+
         if (cfg.coin_type == CoinType::QRC20)
         {
             j["swap_contract_address"] = cfg.is_testnet ? cfg.testnet_qrc_swap_contract_address : cfg.mainnet_qrc_swap_contract_address;
             j["fallback_swap_contract"] = cfg.is_testnet ? cfg.testnet_fallback_qrc_swap_contract_address : cfg.mainnet_fallback_qrc_swap_contract_address;
         }
-        if (cfg.address_format.has_value()) {
+
+        if (cfg.bchd_urls.has_value()) {
+            j["bchd_urls"] = cfg.bchd_urls.value();
+            j["allow_slp_unsafe_conf"] = cfg.allow_slp_unsafe_conf.value_or(false);
+        }
+
+        if (cfg.address_format.has_value())
+        {
             j["address_format"] = cfg.address_format.value();
         }
-        //SPDLOG_INFO("electrum: {}", j.dump());
+        if (cfg.merge_params.has_value())
+        {
+            j["utxo_merge_params"] = cfg.merge_params.value();
+        }
     }
 
     //! Deserialization
@@ -49,4 +64,4 @@ namespace mm2::api
         j.at("balance").get_to(cfg.balance);
         j.at("result").get_to(cfg.result);
     }
-} // namespace mm2::api
+} // namespace atomic_dex::mm2

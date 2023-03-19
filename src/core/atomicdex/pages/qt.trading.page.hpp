@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,13 +16,11 @@
 
 #pragma once
 
-//! Deps
+#include <string>
 #include <boost/lockfree/queue.hpp>
 
-//! QT
 #include <QObject>
 
-//! Project Headers
 #include "atomicdex/constants/qt.actions.hpp"
 #include "atomicdex/constants/qt.trading.enums.hpp"
 #include "atomicdex/events/events.hpp"
@@ -36,11 +34,9 @@ namespace atomic_dex
 {
     class trading_page final : public QObject, public ag::ecs::pre_update_system<trading_page>
     {
-      private:
-        //! Q_Object definition
         Q_OBJECT
 
-        //! Q Properties definitions
+        // Q Properties definitions
         Q_PROPERTY(qt_orderbook_wrapper* orderbook READ get_orderbook_wrapper NOTIFY orderbookChanged)
         Q_PROPERTY(market_pairs* market_pairs_mdl READ get_market_pairs_mdl NOTIFY marketPairsChanged)
         Q_PROPERTY(qt_orders_widget* orders READ get_orders_widget NOTIFY ordersWidgetChanged)
@@ -48,7 +44,7 @@ namespace atomic_dex
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
         Q_PROPERTY(bool preimage_rpc_busy READ is_preimage_busy WRITE set_preimage_busy NOTIFY preImageRpcStatusChanged)
 
-        //! Trading logic
+        // Trading logic Q properties
         Q_PROPERTY(MarketMode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
         Q_PROPERTY(TradingError last_trading_error READ get_trading_error WRITE set_trading_error NOTIFY tradingErrorChanged)
         Q_PROPERTY(TradingMode current_trading_mode READ get_current_trading_mode WRITE set_current_trading_mode NOTIFY tradingModeChanged)
@@ -65,7 +61,6 @@ namespace atomic_dex
         Q_PROPERTY(QString cex_price READ get_cex_price NOTIFY cexPriceChanged)
         Q_PROPERTY(QString cex_price_reversed READ get_cex_price_reversed NOTIFY cexPriceReversedChanged)
         Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
-        // Q_PROPERTY(QString mm2_min_trade_vol READ get_mm2_min_trade_vol NOTIFY mm2MinTradeVolChanged)
         Q_PROPERTY(QString min_trade_vol READ get_min_trade_vol WRITE set_min_trade_vol NOTIFY minTradeVolChanged)
         Q_PROPERTY(bool invalid_cex_price READ get_invalid_cex_price NOTIFY invalidCexPriceChanged)
         Q_PROPERTY(bool skip_taker READ get_skip_taker WRITE set_skip_taker NOTIFY skipTakerChanged)
@@ -116,9 +111,9 @@ namespace atomic_dex
         QString                                m_price{"0"};
         QString                                m_volume{"0"};
         QString                                m_max_volume{"0"};
-        QString                                m_total_amount{"0"};
+        QString                                m_total_amount{"0.00777"};
         QString                                m_cex_price{"0"};
-        QString                                m_minimal_trading_amount{"0"};
+        QString                                m_minimal_trading_amount{"0.0001"};
         std::optional<nlohmann::json>          m_preferred_order;
         boost::synchronized_value<QVariantMap> m_fees;
         bool                                   m_skip_taker{false};
@@ -189,7 +184,6 @@ namespace atomic_dex
         [[nodiscard]] QString             get_price_reversed() const;
         [[nodiscard]] QString             get_price() const;
         void                              set_price(QString price);
-        //[[nodiscard]] QString      get_mm2_min_trade_vol() const;
         [[nodiscard]] QString         get_min_trade_vol() const;
         void                          set_min_trade_vol(QString min_trade_vol);
         [[nodiscard]] QString         get_volume() const;

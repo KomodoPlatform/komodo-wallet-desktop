@@ -9,7 +9,7 @@ import Qaterial 1.0 as Qaterial
 //! Project Imports
 import "../../../Components"
 import "../../../Constants"  as Constants 
-import "../Orders" as Orders
+import "../../ProView/TradingInfo" as Orders
 import "Main.js" as Main
 import App 1.0
 import Dex.Themes 1.0 as Dex

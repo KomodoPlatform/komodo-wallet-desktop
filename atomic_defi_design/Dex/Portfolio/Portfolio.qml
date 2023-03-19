@@ -122,7 +122,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                DexLabel
+                DefaultText
                 {
                     font: DexTypo.head6
                     anchors.verticalCenter: parent.verticalCenter
@@ -143,11 +143,11 @@ Item {
 
                     DexGradientAppButton
                     {
-                        width: 150
                         height: 40
                         iconSource: Qaterial.Icons.plus
                         radius: 15
-                        padding: 5
+                        padding: 25
+                        font: DexTypo.body2
                         text: qsTr("ADD ASSET")
                         onClicked: enable_coin_modal.open()
                     }
@@ -211,14 +211,13 @@ Item {
 
             // Filters (search and balance)
             Item {
-                width: parent.width
+                width: parent.parent.width - 80
+                anchors.horizontalCenter: parent.horizontalCenter
                 height: 30
                 visible: true
 
                 Item {
                     anchors.fill: parent
-                    anchors.leftMargin: 40
-                    anchors.rightMargin: 40
                     anchors.topMargin: 5
 
                     RowLayout {
@@ -226,6 +225,7 @@ Item {
 
                         SearchField
                         {
+                            id: coinSearchField
                             Layout.alignment: Qt.AlignVCenter
                             Layout.preferredWidth: 206
                             Layout.preferredHeight: 42
@@ -240,12 +240,17 @@ Item {
                             Layout.fillWidth: true
                         }
 
-                        DexCheckBox
+                        DefaultCheckBox
                         {
-                            Layout.alignment: Qt.AlignVCenter
+                            id: hide_zero_balance_checkbox
+
+                            spacing: 2
+
+                            label.wrapMode: Label.NoWrap
+                            label.font.pixelSize: 14
                             text: qsTr("Show only coins with balance") + " <b>%1</b>".arg(qsTr("(%1/%2)").arg(coinsList.count).arg(portfolio_mdl.length))
                             textColor: Dex.CurrentTheme.foregroundColor2
-                            label.font.pixelSize: 14
+
                             checked: portfolio_coins.with_balance
                             onCheckedChanged: portfolio_coins.with_balance = checked
                             Component.onDestruction: portfolio_coins.with_balance = false

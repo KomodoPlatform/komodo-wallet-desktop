@@ -1,11 +1,10 @@
 {
     "accentColor": "#212020",
     "foregroundColor": "#ffffff",
-    "foregroundColor2": "#7A8EA1FF",
-    "foregroundColor3": "#ABC0D3FF",
-    "backgroundColor": "#161515",
-    "secondBackgroundColor": "#1F1E1E",
+    "backgroundColor": "#1F1E1E",
     "backgroundColorDeep": "#1F1E1E",
+
+    "busyIndicatorColor": "#EB1C2EAF",
 
     "buttonColorDisabled": "#3E34349A",
     "buttonColorEnabled": "#3E3434",
@@ -13,8 +12,8 @@
     "buttonColorPressed": "#3E34342A",
     "buttonTextDisabledColor": "#444444",
     "buttonTextEnabledColor": "#ffffff",
-    "buttonTextHoveredColor": "#ffffff",
-    "buttonTextPressedColor": "#ffffff",
+    "buttonTextHoveredColor": "#7A8EA1FF",
+    "buttonTextPressedColor": "#ABC0D3FF",
 
     "gradientButtonStartColor": "#9B1C2EFF",
     "gradientButtonEndColor": "#EE5C78FF",
@@ -29,8 +28,9 @@
     "gradientButtonTextHoveredColor": "#FFF",
     "gradientButtonTextPressedColor": "#FFF",
 
-    "checkBoxGradientStartColor": "#BA2A45FF",
-    "checkBoxGradientEndColor": "#BA2A45FF",
+    "checkBoxTickColor": "#FFFFFFFF",
+    "checkBoxGradientStartColor": "#6673E3FF",
+    "checkBoxGradientEndColor": "#5EBBF0FF",
 
     "switchGradientStartColor": "#BA2A45FF",
     "switchGradientEndColor": "#ECB6BEFF",
@@ -66,8 +66,8 @@
     "textFieldPrefixColor": "#FFFFFFFF",
     "textFieldSuffixColor": "#FFFFFFFF",
 
-    "chartTradingLineBackgroundColor": "#24283d",
-    "chartTradingLineColor": "#74fbee",
+    "chartTradingLineBackgroundColor": "#24283dFF",
+    "chartTradingLineColor": "#74fbeeFF",
 
     "innerBackgroundColor": "#1F1E1E",
 
@@ -78,8 +78,9 @@
     "rangeSliderIndicatorBackgroundStartColor": "#EE5C78FF",
     "rangeSliderIndicatorBackgroundEndColor": "#EE5C78FF",
 
-    "loginWalletIconColorStart": "#9B1C2E",
-    "loginWalletIconColorEnd": "#EE5C78",
+    "userIconColorStart": "#9B1C2E",
+    "userIconColorEnd": "#EE5C78",
+    
     "sidebarBgColor": "#161515FF",
     "sidebarVersionTextColor": "#878787FF",
     "sidebarCursorStartColor": "#BA2A45",
@@ -93,11 +94,16 @@
     "tradeSellModeSelectorBackgroundColorEnd": "#F48EA1FF",
     "tradeMarketModeSelectorNotSelectedBackgroundColor": "#89B6FF21",
 
-    "okColor": "#00C058",
-    "noColor": "#E52167",
+    "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 
-    "arrowUpColor": "#F85757",
-    "arrowDownColor": "#845FEF",
+    "okColor": "#00C058FF",
+    "noColor": "#E52167FF",
+
+    "senderColorStart": "#F85757FF",
+    "receiverColorStart": "#845FEFFF",
+
+    "arrowUpColor": "#F85757FF",
+    "arrowDownColor": "#845FEFFF",
 
     "lineSeparatorColor": "#65656542"
 }

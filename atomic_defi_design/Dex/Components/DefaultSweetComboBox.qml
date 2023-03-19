@@ -1,3 +1,4 @@
 import QtQuick 2.15
 
-DexSweetComboBox { }
+DexSweetComboBox
+{}

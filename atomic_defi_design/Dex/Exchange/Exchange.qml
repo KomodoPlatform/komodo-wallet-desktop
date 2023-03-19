@@ -28,24 +28,9 @@ Item
 
     Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
 
-    ColumnLayout
+    Trade
     {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-
+        id: trade
         anchors.fill: parent
-        anchors.topMargin: 20
-
-        spacing: layout_margin
-
-        Trade
-        {
-            id: trade
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.bottomMargin: layout_margin
-            Layout.rightMargin: Layout.bottomMargin
-        }
-
     }
 }
