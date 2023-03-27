@@ -99,7 +99,7 @@ MouseArea
                         standardButtons: Dialog.Yes | Dialog.Cancel,
                         closePolicy: Popup.NoAutoClose,
                         warning: true,
-                        iconColor: Dex.CurrentTheme.noColor,
+                        iconColor: Dex.CurrentTheme.warningColor,
                         isPassword: true,
                         placeholderText: qsTr("Type password"),
                         yesButtonText: qsTr("Confirm"),

@@ -1,6 +1,6 @@
 {
     "accentColor": "#2C3D66FF",
-    "foregroundColor": "#ffffffFF",
+    "foregroundColor": "#FFFFFFFF",
     "foregroundColor2": "#7A8EA1FF",
     "foregroundColor3": "#ABC0D3FF",
     "backgroundColor": "#202337FF",
@@ -14,9 +14,19 @@
     "buttonColorHovered": "#4068B929",
     "buttonColorPressed": "#2932546C",
     "buttonTextDisabledColor": "#444444FF",
-    "buttonTextEnabledColor": "#ffffffFF",
-    "buttonTextHoveredColor": "#ffffffFF",
-    "buttonTextPressedColor": "#ffffffFF",
+    "buttonTextEnabledColor": "#FFFFFFFF",
+    "buttonTextHoveredColor": "#FFFFFFFF",
+    "buttonTextPressedColor": "#FFFFFFFF",
+
+    "buttonSecondaryColorDisabled": "#28375AFF",
+    "buttonSecondaryColorEnabled":  "#293254FF",
+    "buttonSecondaryColorHovered":  "#4068B929",
+    "buttonSecondaryColorPressed":  "#2932546C",
+
+    "buttonCancelColorDisabled": "#28375AFF",
+    "buttonCancelColorEnabled":  "#293254FF",
+    "buttonCancelColorHovered":  "#4068B929",
+    "buttonCancelColorPressed":  "#2932546C",
 
     "gradientButtonStartColor": "#4986EAAD",
     "gradientButtonEndColor": "#5A68E6FF",
@@ -67,7 +77,9 @@
     "textFieldBackgroundColor": "#313555FF",
     "textFieldActiveBackgroundColor": "#313555CC",
     "textFieldPrefixColor": "#8790B2FF",
-    "textFieldSuffixColor": "#456078FF#",
+    "textFieldSuffixColor": "#456078FF",
+
+    "tickerBadgeBackgroundColor": "#202337FF",
 
     "chartTradingLineBackgroundColor": "#24283dFF",
     "chartTradingLineColor": "#74fbeeFF",
@@ -91,16 +103,30 @@
     "sidebarLineTextHovered": "#2C87B9FF",
     "sidebarLineTextSelected": "#FFFFFFFF",
 
-    "tradeBuyModeSelectorBackgroundColorStart": "#6A4DE3FF",
-    "tradeBuyModeSelectorBackgroundColorEnd": "#2279F1FF",
     "tradeSellModeSelectorBackgroundColorStart": "#E52167FF",
-    "tradeSellModeSelectorBackgroundColorEnd": "#E216A9FF",
-    "tradeMarketModeSelectorNotSelectedBackgroundColor": "#89B6FF21",
+    "tradeSellModeSelectorBackgroundColorEnd":   "#CD0F53FF",
+    "tradeBuyModeSelectorBackgroundColorStart":  "#0F713CFF",
+    "tradeBuyModeSelectorBackgroundColorEnd":    "#037B3AFF",
+
+    "inputModifierBackgroundColor": "#89B6FF21",
+    "inputFieldBackgroundColor":    "#313555FF",
+
+    "inputFieldBorderColor":        "#20233788",
+    "inputPlaceholderTextColor":    "#FFFFFFFF",
+    "inputRightIconColor":          "#FFFFFFFF",
+    "inputLeftIconColor":           "#FFFFFFFF",
+    "inputLeftIconBackgroundColor": "#202337FF",
+
+    "listItemOddBackground": "#202337FF",
+    "listItemEvenBackground": "#24273DFF",
+    "listItemHoveredBackground": "#4068B9FF",
+
 
     "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
 
     "okColor": "#00C058FF",
-    "noColor": "#E52167FF",
+    "warningColor": "#E52167FF",
+    "swapIconColor": "#005FBEFF",
 
     "senderColorStart": "#F85757FF",
     "receiverColorStart": "#845FEFFF",

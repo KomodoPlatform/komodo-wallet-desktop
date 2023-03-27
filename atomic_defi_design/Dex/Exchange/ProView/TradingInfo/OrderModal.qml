@@ -289,7 +289,7 @@ MultipageModal
                 Layout.fillWidth: true
             },
 
-            DefaultButton
+            CancelButton
             {
                 id: close_order_button
                 text: qsTr("Close")

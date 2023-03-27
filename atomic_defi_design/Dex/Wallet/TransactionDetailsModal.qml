@@ -56,7 +56,7 @@ MultipageModal
         {
             title: qsTr("Amount")
             text: !details ? "" : General.formatCrypto(!details.am_i_sender, details.amount, api_wallet_page.ticker, details.amount_fiat, API.app.settings_pg.current_currency)
-            value_color: !details ? "white" : details.am_i_sender ?  Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+            value_color: !details ? "white" : details.am_i_sender ?  Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
             privacy: true
             label.font.pixelSize: 13
         }
@@ -66,7 +66,7 @@ MultipageModal
         {
             title: qsTr("Fees")
             text: !details ? "" : General.formatCrypto(parseFloat(details.fees) < 0, Math.abs(parseFloat(details.fees)), current_ticker_infos.fee_ticker, details.fees_amount_fiat, API.app.settings_pg.current_currency)
-            value_color: !details ? "white" : parseFloat(details.fees) > 0 ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+            value_color: !details ? "white" : parseFloat(details.fees) > 0 ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
             privacy: true
             label.font.pixelSize: 13
         }
@@ -147,7 +147,7 @@ MultipageModal
         // Buttons
         footer:
         [
-            DefaultButton
+            CancelButton
             {
                 Layout.fillWidth: true
                 text: qsTr("Close")

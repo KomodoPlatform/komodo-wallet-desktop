@@ -165,7 +165,7 @@ Dex.Rectangle
             Layout.preferredWidth: 458
             Layout.preferredHeight: 60
             visible: text !== ""
-            color: Dex.CurrentTheme.noColor
+            color: Dex.CurrentTheme.warningColor
             wrapMode: Dex.Text.WordWrap
             elide: Dex.Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
@@ -176,7 +176,7 @@ Dex.Rectangle
             Layout.topMargin: 10
             Layout.fillWidth: true
 
-            Dex.Button
+            Dex.CancelButton
             {
                 Layout.preferredWidth: 116
                 Layout.preferredHeight: 38
@@ -301,7 +301,7 @@ Dex.Rectangle
                     },
 
                     // Cancel button
-                    Dex.Button
+                    Dex.CancelButton
                     {
                         Layout.rightMargin: 5
                         text: qsTr("Cancel")

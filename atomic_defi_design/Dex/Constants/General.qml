@@ -58,6 +58,11 @@ QtObject {
         return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_wallet_only
     }
 
+    function getLanguage()
+    {
+        return API.app.settings_pg.lang
+    }
+
     function isZhtlc(ticker)
     {
         const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)

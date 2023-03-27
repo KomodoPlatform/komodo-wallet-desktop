@@ -20,6 +20,7 @@ import "../Support" as SupportPage
 import "../Screens"
 import "../Addressbook" as Addressbook
 import Dex.Themes 1.0 as Dex
+import AtomicDEX.TradingMode 1.0
 
 Item
 {
@@ -115,6 +116,7 @@ Item
         }
     }
 
+
     // Right side
     AnimatedRectangle
     {
@@ -122,6 +124,18 @@ Item
         height: parent.height
         x: sidebar.width
         border.color: 'transparent'
+
+        Rectangle
+        {
+            radius: 0
+            anchors.fill: parent
+            anchors.rightMargin : - border.width
+            anchors.bottomMargin:  - border.width
+            anchors.leftMargin: - border.width
+            border.width: 1
+            border.color: Dex.CurrentTheme.lineSeparatorColor
+            color: 'transparent'
+        }
 
         // Modals
         ModalLoader
@@ -366,7 +380,7 @@ Item
                 return Dex.CurrentTheme.sidebarLineTextHovered
             case "failed":
             default:
-                return DexTheme.redColor
+                return DexTheme.warningColor
         }
     }
 

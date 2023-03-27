@@ -342,7 +342,7 @@ MultipageModal
                 Layout.preferredWidth: 320
 
                 wrapMode: Label.Wrap
-                color: Dex.CurrentTheme.noColor
+                color: Dex.CurrentTheme.warningColor
                 text_value: qsTr("The address has to be mixed case.")
             }
 
@@ -589,7 +589,7 @@ MultipageModal
                     font.pixelSize: 14
                     Layout.alignment: Qt.AlignHCenter
                     horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                 }
 
                 DefaultText
@@ -598,7 +598,7 @@ MultipageModal
                     font.pixelSize: 14
                     Layout.alignment: Qt.AlignHCenter
                     horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     text_value: qsTr("Only use custom fees if you know what you are doing! ")
                 }
 
@@ -608,7 +608,7 @@ MultipageModal
                     font.pixelSize: 14
                     Layout.alignment: Qt.AlignHCenter
                     horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     text_value: qsTr("Only use custom fees if you know what you are doing! ") + General.cex_icon
                     DefaultInfoTrigger { triggerModal: gas_info_modal }
                 }
@@ -699,7 +699,7 @@ MultipageModal
             wrapMode: Label.Wrap
             visible: !fee_error.visible && !hasFunds()
 
-            color: Dex.CurrentTheme.noColor
+            color: Dex.CurrentTheme.warningColor
 
             text_value: qsTr("Not enough funds.") + "\n"
                       + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
@@ -733,7 +733,7 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
 
-            DefaultButton
+            CancelButton
             {
                 text: qsTr("Cancel")
 

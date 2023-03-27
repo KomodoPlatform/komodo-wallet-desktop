@@ -17,8 +17,8 @@ MultipageModal
     id: root
     readonly property var fees: API.app.trading_pg.fees
     width: 720
-    horizontalPadding: 30
-    verticalPadding: 30
+    horizontalPadding: 20
+    verticalPadding: 20
     closePolicy: Popup.NoAutoClose
 
     MultipageModalContent
@@ -95,6 +95,7 @@ MultipageModal
                             spacing: 2
                             boxWidth: 16
                             boxHeight: 16
+                            boxRadius: 8
                             label.wrapMode: Label.NoWrap
                             text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
                             font: DexTypo.caption
@@ -215,7 +216,7 @@ MultipageModal
                         width: parent.width
                         horizontalAlignment: DefaultText.AlignHCenter
                         font: DexTypo.caption
-                        color: Dex.CurrentTheme.noColor
+                        color: Dex.CurrentTheme.warningColor
                         text_value: General.getTradingError(
                                         last_trading_error,
                                         curr_fee_info,
@@ -396,7 +397,7 @@ MultipageModal
         [
             Item { Layout.fillWidth: true },
 
-            DefaultButton
+            CancelButton
             {
                 text: qsTr("Cancel")
                 padding: 10

@@ -54,7 +54,7 @@ RowLayout
             verticalAlignment: Text.AlignVCenter
             text: activation_progress + "%"
             font: Dex.DexTypo.body2
-            color: Dex.DexTheme.greenColor
+            color: Dex.DexTheme.okColor
         }
 
         ColumnLayout
