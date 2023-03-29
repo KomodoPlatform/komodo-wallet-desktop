@@ -211,15 +211,6 @@ QtObject {
         }
     }
 
-    function getCoinTypeTextColor(type)
-    {
-        switch (type)
-        {
-            case 'BEP-20':      return '#232323'
-            default:            return '#F9F9F9'
-        }
-    }
-
     function getCoinColor(ticker) {
         const c = colorCoin[atomic_qt_utilities.retrieve_main_ticker(ticker)]
         return c || Style.colorTheme2
