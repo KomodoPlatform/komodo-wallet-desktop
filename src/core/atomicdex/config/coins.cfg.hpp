@@ -39,43 +39,43 @@ namespace atomic_dex
         using eth_family_url_list                       = std::vector<std::string>;
         using bchd_url_list                             = std::vector<std::string>;
         using light_wallet_d_servers                    = std::vector<std::string>; ///< For ZHTLC
-        std::string                                 ticker;
-        std::optional<std::string>                  alias_ticker{std::nullopt};
-        std::string                                 gui_ticker; ///< Ticker displayed in the gui
-        std::string                                 name;       ///< nice name
-        std::optional<bool>                         utxo_merge{false};
-        std::optional<bool>                         allow_slp_unsafe_conf;
-        std::optional<nodes>                        urls;
-        std::optional<eth_family_url_list>          eth_family_urls;
-        std::optional<bchd_url_list>                bchd_urls;
-        std::optional<electrum_servers>             electrum_urls;
-        std::optional<light_wallet_d_servers>       z_urls;
-        bool                                        is_claimable{false};
-        std::string                                 minimal_claim_amount{"0"};
-        bool                                        currently_enabled{false};
-        bool                                        active{false};
-        std::string                                 coinpaprika_id{"test-coin"};
-        std::string                                 coingecko_id{"test-coin"};
-        std::string                                 nomics_id{"test-coin"};
-        bool                                        is_custom_coin{false};
-        std::string                                 type;
-        std::optional<std::set<CoinType>> other_types;
-        std::string                     explorer_url; ///< usefull for transaction, take this url and append transaction id
-        std::string                     tx_uri{"tx/"};
-        std::string                     address_url{"address/"};
-        std::optional<nlohmann::json>   custom_backup;
-        nlohmann::json                              activation_status;
-        std::optional<bool>             is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
-        CoinType                        coin_type;
-        bool                            checked{false};
-        bool                            wallet_only{false};
-        bool                            has_parent_fees_ticker{false}; ///< True if parent fees is different from current ticker eg: ERC20 tokens
-        std::string                     fees_ticker;
-        bool                            segwit{false};
-        bool                            is_segwit_on{false};
-        bool                            is_erc_family{false};
-        bool                                        is_zhtlc_family{false};
-        bool                                        default_coin{false};
+        std::string                                       ticker;
+        std::string                                       fees_ticker;
+        std::string                                       gui_ticker; ///< Ticker displayed in the gui
+        std::string                                       name;       ///< nice name
+        std::string                                       type;
+        std::string                                       coinpaprika_id{"test-coin"};
+        std::string                                       coingecko_id{"test-coin"};
+        std::string                                       nomics_id{"test-coin"};
+        std::string                                       explorer_url;
+        std::string                                       tx_uri{"tx/"};
+        std::string                                       address_url{"address/"};
+        std::string                                       minimal_claim_amount{"0"};
+        std::optional<std::string>                        alias_ticker{std::nullopt};
+        CoinType                                          coin_type;
+        std::optional<std::set<CoinType>>                 other_types;
+        std::optional<electrum_servers>                   electrum_urls;
+        std::optional<nodes>                              urls;
+        std::optional<light_wallet_d_servers>             z_urls;
+        std::optional<eth_family_url_list>                eth_family_urls;
+        std::optional<bchd_url_list>                      bchd_urls;
+        nlohmann::json                                    activation_status;
+        std::optional<nlohmann::json>                     custom_backup;
+        std::optional<bool>                               allow_slp_unsafe_conf;
+        std::optional<bool>                               is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
+        std::optional<bool>                               utxo_merge{false};
+        bool                                              segwit{false};
+        bool                                              is_segwit_on{false};
+        bool                                              active{false};
+        bool                                              checked{false};
+        bool                                              wallet_only{false};
+        bool                                              is_claimable{false};
+        bool                                              is_custom_coin{false};
+        bool                                              currently_enabled{false};
+        bool                                              has_parent_fees_ticker{false}; ///< True if parent fees is different from current ticker eg: ERC20 tokens
+        bool                                              is_erc_family{false};
+        bool                                              is_zhtlc_family{false};
+        bool                                              default_coin{false};
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);
