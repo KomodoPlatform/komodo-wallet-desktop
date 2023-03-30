@@ -206,7 +206,7 @@ namespace atomic_dex
                 m_enabled_coins[cur.ticker] = cur;
             }
         }
-        cfg.push_back(coin_config{.ticker = "All", .currently_enabled = true, .active = true});
+        cfg.push_back(coin_config{.ticker = "All", .active = true, .currently_enabled = true});
         SPDLOG_INFO("Initializing global coin cfg model with size {}", cfg.size());
         set_checked_nb(0);
         beginResetModel();
