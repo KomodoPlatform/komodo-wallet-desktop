@@ -192,11 +192,11 @@ namespace atomic_dex::mm2
 
     template <typename TRequest, typename TAnswer>
     TAnswer
-    mm2_client::process_rpc(TRequest&& request, std::string rpc_command)
+    mm2_client::process_rpc(TRequest&& request, std::string rpc_command, bool is_v2)
     {
         SPDLOG_DEBUG("Processing rpc call: {}", rpc_command);
 
-        nlohmann::json json_data = mm2::template_request(rpc_command);
+        nlohmann::json json_data = mm2::template_request(rpc_command, is_v2);
 
         mm2::to_json(json_data, request);
 
@@ -209,6 +209,12 @@ namespace atomic_dex::mm2
         rpc_request.set_body(json_data.dump());
         auto resp = generate_client().request(rpc_request).get();
         return rpc_process_answer<TAnswer>(resp, rpc_command);
+    }
+
+    t_init_z_coin_cancel_answer
+    mm2_client::rpc_init_z_coin_cancel(t_init_z_coin_cancel_request&& request)
+    {
+        return process_rpc<t_init_z_coin_cancel_request, t_init_z_coin_cancel_answer>(std::forward<t_init_z_coin_cancel_request>(request), "task::enable_z_coin::cancel", true);
     }
 
     t_disable_coin_answer

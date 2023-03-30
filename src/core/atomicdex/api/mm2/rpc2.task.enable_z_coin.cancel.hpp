@@ -14,28 +14,47 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
+#pragma once
+
+// Std Headers
+#include <optional>
+
+// Deps Headers
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc2.init_z_coin.hpp"
+#include "generic.error.hpp"
 
-//! Implementation 2.0 RPC [init_z_coin]
 namespace atomic_dex::mm2
 {
-    //! Serialization
-    void to_json(nlohmann::json& j, const init_z_coin_request& request)
+    struct init_z_coin_cancel_request
     {
-        j["params"]["ticker"]                                                          = request.coin_name;
-        j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
-        j["params"]["activation_params"]["mode"]["rpc_data"]["electrum_servers"]       = request.servers;
-        j["params"]["activation_params"]["mode"]["rpc_data"]["light_wallet_d_servers"] = request.z_urls;
-        j["params"]["tx_history"]                                                      = request.with_tx_history;
-    }
+        int         task_id;
+    };
 
-    //! Deserialization
-    void from_json(const nlohmann::json& j, init_z_coin_answer& answer)
+    void to_json(nlohmann::json& j, const init_z_coin_cancel_request& request);
+
+    struct init_z_coin_cancel_answer_success
     {
-        j.at("task_id").get_to(answer.task_id);
-    }
-} // namespace atomic_dex::mm2
+        std::string result;
+    };
+
+    void from_json(const nlohmann::json& j, init_z_coin_cancel_answer_success& answer);
+
+    struct init_z_coin_cancel_answer
+    {
+        std::optional<init_z_coin_cancel_answer_success> result;
+        std::optional<generic_answer_error>              error;
+        std::string                                      raw_result;      ///< internal
+        int                                              rpc_result_code; ///< internal
+    };
+
+    void from_json(const nlohmann::json& j, init_z_coin_cancel_answer& answer);
+}
+
+namespace atomic_dex
+{
+    using t_init_z_coin_cancel_request         = mm2::init_z_coin_cancel_request;
+    using t_init_z_coin_cancel_answer          = mm2::init_z_coin_cancel_answer;
+    using t_init_z_coin_cancel_answer_success  = mm2::init_z_coin_cancel_answer_success;
+} // namespace atomic_dex
