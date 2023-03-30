@@ -82,14 +82,19 @@ QtObject {
     {
         let progress = 100
         if (!activation_status.hasOwnProperty("result")) return progress
+        console.log("[zhtlcActivationProgress]: " + JSON.stringify(activation_status))
         let status = activation_status.result.status
         let details = activation_status.result.details
 
         let block_offset = 0
-        if (coin == 'ARRR') block_offset = 1900000
+        if (coin == 'ARRR') block_offset = 2000000
 
         // use range from checkpoint block to present
-        if (status == "Ready")
+        if (!status)
+        {
+            return -1
+        }
+        else if (status == "Ok")
         {
             if (details.hasOwnProperty("error"))
                 console.log("[zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
