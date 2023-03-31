@@ -44,7 +44,6 @@
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
-#include "atomicdex/services/price/oracle/band.provider.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
 namespace
@@ -502,7 +501,6 @@ namespace atomic_dex
         system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
         system_manager_.create_system<orderbook_scanner_service>(system_manager_);
-        //system_manager_.create_system<band_oracle_price_service>();
         //system_manager_.create_system<coinpaprika_provider>(system_manager_);
         //system_manager_.create_system<coingecko_provider>(system_manager_);
         system_manager_.create_system<komodo_prices_provider>();
