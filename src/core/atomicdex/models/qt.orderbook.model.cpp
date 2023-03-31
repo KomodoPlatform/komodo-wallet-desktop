@@ -364,6 +364,7 @@ namespace atomic_dex
     void
     orderbook_model::reset_orderbook(const t_orders_contents& orderbook)
     {
+        SPDLOG_DEBUG("[orderbook_model::reset_orderbook]");
         if (!orderbook.empty())
         {
             SPDLOG_INFO(
@@ -374,6 +375,13 @@ namespace atomic_dex
         m_orders_id_registry.clear();
         for (auto&& order: m_model_data)
         {
+            // Maybe adding a suffix for segwit entries could avoid this?
+            // Working so far, but needs more testing to see if there are ripple effects due to the uuid suffix.
+            // Early tests confirm order selection and placing do not appear to be negatively affected.
+            if (order.coin.find("-segwit") != std::string::npos)
+            {
+                order.uuid = order.uuid + "-segwit";
+            }
             if (this->m_orders_id_registry.find(order.uuid) == m_orders_id_registry.end())
             {
                 this->m_orders_id_registry.emplace(order.uuid);
@@ -381,6 +389,8 @@ namespace atomic_dex
         }
         this->endResetModel();
         emit lengthChanged();
+        // This assert was causing a crash due to duplicated UUIDs being filtered out for orders that exist for both segwit and non-segwit of a coin,
+        // because bestorders response will add duplicate entries (one for each address format) to the response.
         assert(m_model_data.size() == m_orders_id_registry.size());
     }
 

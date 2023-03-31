@@ -82,7 +82,7 @@ QtObject {
     {
         let progress = 100
         if (!activation_status.hasOwnProperty("result")) return progress
-        console.log("[zhtlcActivationProgress]: " + JSON.stringify(activation_status))
+        console.log("["+coin+"] [zhtlcActivationProgress]: " + JSON.stringify(activation_status))
         let status = activation_status.result.status
         let details = activation_status.result.details
 
@@ -97,7 +97,7 @@ QtObject {
         else if (status == "Ok")
         {
             if (details.hasOwnProperty("error"))
-                console.log("[zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
+                console.log("["+coin+"] [zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
         }
         else if (status == "InProgress")
         {
@@ -116,7 +116,7 @@ QtObject {
             else if (details.hasOwnProperty("RequestingBalance")) progress = 98
             else progress = 5
         }
-        else console.log("[zhtlcActivationProgress] Unexpected status: " + status)
+        else console.log("["+coin+"] [zhtlcActivationProgress] Unexpected status: " + status)
         return progress
     }
 

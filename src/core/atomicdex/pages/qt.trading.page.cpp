@@ -488,28 +488,37 @@ namespace atomic_dex
                 
                 if (!ec)
                 {
+                    SPDLOG_INFO("[process_action::post_process_orderbook_finished]");
                     auto* wrapper = get_orderbook_wrapper();
                     m_models_actions[orderbook_need_a_reset] ? wrapper->reset_orderbook(result) : wrapper->refresh_orderbook(result);
 
                     if (m_models_actions[orderbook_need_a_reset] && this->m_current_trading_mode == TradingModeGadget::Pro)
                     {
+                        SPDLOG_INFO(">>>> [(m_models_actions[orderbook_need_a_reset] && this->m_current_trading_mode == TradingModeGadget::Pro)] this->set_preferred_settings()");
                         // This goes to a function which looks like it is for bot trading. We dont need to run it at this stage.
-                        // this->set_preferred_settings();
+                        this->set_preferred_settings();
                     }
                     else
                     {
                         const auto base_max_taker_vol = safe_float(wrapper->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                        SPDLOG_INFO("[base_max_taker_vol]: {}", wrapper->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
                         auto       rel_max_taker      = wrapper->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
+                        SPDLOG_INFO("[rel_max_taker]: {}", wrapper->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+
                         if (rel_max_taker.empty())
                         {
                             rel_max_taker = "0";
                         }
+
                         const auto rel_max_taker_vol = safe_float(rel_max_taker);
                         t_float_50 min_vol           = safe_float(m_minimal_trading_amount.toStdString());
+                        SPDLOG_INFO("[min_vol]: {}", m_minimal_trading_amount.toStdString());
+
                         auto       adjust_functor    = [this, wrapper]()
                         {
                             if (m_post_clear_forms && this->m_current_trading_mode == TradingModeGadget::Pro)
                             {
+                                SPDLOG_INFO("[m_post_clear_forms && this->m_current_trading_mode == TradingModeGadget::Pro]:");
                                 this->determine_max_volume();
                                 this->set_volume(get_max_volume());
                                 this->set_min_trade_vol(wrapper->get_current_min_taker_vol());
@@ -519,6 +528,7 @@ namespace atomic_dex
                         if ((m_market_mode == MarketMode::Buy && rel_max_taker_vol > 0 && min_vol <= 0) ||
                             (m_market_mode == MarketMode::Sell && base_max_taker_vol > 0 && min_vol <= 0))
                         {
+                            SPDLOG_INFO("[adjust_functor()]: Adjusting....");
                             adjust_functor();
                         }
                     }

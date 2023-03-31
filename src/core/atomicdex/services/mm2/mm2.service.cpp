@@ -1267,9 +1267,12 @@ namespace atomic_dex
                                                     z_error                                          = z_answers;
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
+                                                    SPDLOG_DEBUG("{} status : {}", tickers[idx], status);
+                                                    SPDLOG_DEBUG("{} activation status response [{}]", tickers[idx], z_answers[0].dump());
 
-                                                    if (status == "Ready")
+                                                    if (status == "Ok")
                                                     {
+                                                        SPDLOG_DEBUG("{} activation ready...", tickers[idx]);
                                                         m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                         if (z_answers[0].at("result").at("details").contains("error"))
                                                         {
@@ -1308,6 +1311,7 @@ namespace atomic_dex
                                                         {
                                                             event = z_answers[0].at("result").at("details").get<std::string>();
                                                         }
+                                                        SPDLOG_DEBUG("{} activation event [{}]", event, tickers[idx]);
 
                                                         if (event != last_event)
                                                         {
@@ -1353,8 +1357,7 @@ namespace atomic_dex
                                                         // Either we force disable here, or schedule to check on it later
                                                         // If this happens, address will be "Invalid" and balance will be zero.
                                                         // We could save this ticker in a list to try `enable_z_coin_status` again on it periodically until complete.
-
-                                                        SPDLOG_DEBUG("Exited zhtlc enable loop after 1000 tries");
+                                                        SPDLOG_DEBUG("Exited {} enable loop after 1000 tries ", tickers[idx]);
                                                         SPDLOG_DEBUG(
                                                             "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                                             tickers.size(), answers.size()
@@ -1365,6 +1368,7 @@ namespace atomic_dex
                                                     }
                                                     else
                                                     {
+                                                        SPDLOG_DEBUG("{} enable loop complete!", tickers[idx]);
                                                         this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "Complete!");
                                                     }
                                                 }
@@ -1380,11 +1384,13 @@ namespace atomic_dex
 
                                 if (!to_remove.empty())
                                 {
+                                    SPDLOG_DEBUG("Removing coins which failed activation...");
                                     std::vector<std::string> disable_coins;
                                     for (auto&& t: to_remove) {
                                         tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end());
                                         disable_coins.push_back(t);
                                     }
+                                    SPDLOG_DEBUG("Updating coins status...");
                                     update_coin_status(this->m_current_wallet_name, disable_coins, false, m_coins_informations, m_coin_cfg_mutex);
                                 }
 
@@ -1393,6 +1399,7 @@ namespace atomic_dex
                                     dispatcher_.trigger<coin_fully_initialized>(tickers);
                                     if (tickers.size() == 1)
                                     {
+                                        SPDLOG_DEBUG("Init balance for {}...", tickers[0]);
                                         fetch_single_balance(get_coin_info(tickers[0]));
                                     }
                                     this->m_nb_update_required += 1;
@@ -1480,6 +1487,7 @@ namespace atomic_dex
         return m_coins_informations.contains(ticker);
     }
 
+    // [smk] Only called by trading_page::process_action()
     t_orderbook_answer mm2_service::get_orderbook(t_mm2_ec& ec) const
     {
         auto&& [base, rel]          = this->m_synchronized_ticker_pair.get();
@@ -1500,7 +1508,7 @@ namespace atomic_dex
 
     nlohmann::json mm2_service::prepare_batch_orderbook(bool is_a_reset)
     {
-        // SPDLOG_INFO("is_a_reset: {}", is_a_reset);
+        SPDLOG_INFO("[prepare_batch_orderbook] is_a_reset: {}", is_a_reset);
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
         if (rel.empty())
             return nlohmann::json::array();

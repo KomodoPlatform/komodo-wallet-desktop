@@ -54,7 +54,7 @@ RowLayout
     {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
-        API.app.trading_pg.preffered_order = {
+        let selected_order = {
             "coin": coin,
             "price": price,
             "price_denom": price_denom,
@@ -68,6 +68,9 @@ RowLayout
             "base_max_volume_numer": base_max_volume_numer,
             "uuid": uuid
         }
+
+        API.app.trading_pg.preffered_order = selected_order
+        console.log("selected_order: " + JSON.parse(selected_order))
 
         // Shows place order form in case it has been hidden in the settings.
         placeOrderForm.visible = true
