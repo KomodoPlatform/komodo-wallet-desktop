@@ -20,23 +20,23 @@
 //! Project Headers
 #include "atomicdex/api/mm2/rpc2.task.enable_z_coin.cancel.hpp"
 
-//! Implementation 2.0 RPC [init_z_coin_cancel]
+//! Implementation 2.0 RPC [enable_z_coin_cancel]
 namespace atomic_dex::mm2
 {
     //! Serialization
-    void to_json(nlohmann::json& j, const init_z_coin_cancel_request& request)
+    void to_json(nlohmann::json& j, const enable_z_coin_cancel_request& request)
     {
         j["params"]["task_id"] = request.task_id;
     }
 
     //! Deserialization
-    void from_json(const nlohmann::json& j, init_z_coin_cancel_answer_success& answer)
+    void from_json(const nlohmann::json& j, enable_z_coin_cancel_answer_success& answer)
     {
         answer.result = j.at("result").get<std::string>();
     }
 
     void
-    from_json(const nlohmann::json& j, init_z_coin_cancel_answer& answer)
+    from_json(const nlohmann::json& j, enable_z_coin_cancel_answer& answer)
     {
         if (j.count("error") >= 1)
         {
@@ -46,7 +46,7 @@ namespace atomic_dex::mm2
         {
             if (j.contains("result") && j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
             {
-                answer.result = j.get<init_z_coin_cancel_answer_success>();
+                answer.result = j.get<enable_z_coin_cancel_answer_success>();
             }
         }
     }

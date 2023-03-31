@@ -20,17 +20,17 @@
 //! Project Headers
 #include "atomicdex/api/mm2/rpc2.task.enable_z_coin.status.hpp"
 
-//! Implementation 2.0 RPC [init_z_coin_status]
+//! Implementation 2.0 RPC [enable_z_coin_status]
 namespace atomic_dex::mm2
 {
     //! Serialization
-    void to_json(nlohmann::json& j, const init_z_coin_status_request& request)
+    void to_json(nlohmann::json& j, const enable_z_coin_status_request& request)
     {
         j["params"]["task_id"] = request.task_id;
     }
 
     //! Deserialization
-    void from_json(const nlohmann::json& j, init_z_coin_status_answer_success& answer)
+    void from_json(const nlohmann::json& j, enable_z_coin_status_answer_success& answer)
     {
         j.at("result").at("status").get_to(answer.status);     // [InProgress, Ready]
         j.at("result").at("details").get_to(answer.details);
@@ -62,7 +62,7 @@ namespace atomic_dex::mm2
     }
 
     void
-    from_json(const nlohmann::json& j, init_z_coin_status_answer& answer)
+    from_json(const nlohmann::json& j, enable_z_coin_status_answer& answer)
     {
         if (j.count("error") >= 1)
         {
@@ -72,7 +72,7 @@ namespace atomic_dex::mm2
         {
             if (j.contains("result") && j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
             {
-                answer.result = j.at("result").get<init_z_coin_status_answer_success>();
+                answer.result = j.at("result").get<enable_z_coin_status_answer_success>();
             }
         }
     }

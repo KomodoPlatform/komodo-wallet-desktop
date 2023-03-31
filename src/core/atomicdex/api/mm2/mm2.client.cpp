@@ -211,10 +211,10 @@ namespace atomic_dex::mm2
         return rpc_process_answer<TAnswer>(resp, rpc_command);
     }
 
-    t_init_z_coin_cancel_answer
-    mm2_client::rpc_init_z_coin_cancel(t_init_z_coin_cancel_request&& request)
+    t_enable_z_coin_cancel_answer
+    mm2_client::rpc_enable_z_coin_cancel(t_enable_z_coin_cancel_request&& request)
     {
-        return process_rpc<t_init_z_coin_cancel_request, t_init_z_coin_cancel_answer>(std::forward<t_init_z_coin_cancel_request>(request), "task::enable_z_coin::cancel", true);
+        return process_rpc<t_enable_z_coin_cancel_request, t_enable_z_coin_cancel_answer>(std::forward<t_enable_z_coin_cancel_request>(request), "task::enable_z_coin::cancel", true);
     }
 
     t_disable_coin_answer

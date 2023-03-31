@@ -20,11 +20,11 @@
 //! Project Headers
 #include "atomicdex/api/mm2/rpc2.task.enable_z_coin.init.hpp"
 
-//! Implementation 2.0 RPC [init_z_coin]
+//! Implementation 2.0 RPC [enable_z_coin]
 namespace atomic_dex::mm2
 {
     //! Serialization
-    void to_json(nlohmann::json& j, const init_z_coin_request& request)
+    void to_json(nlohmann::json& j, const enable_z_coin_request& request)
     {
         j["params"]["ticker"]                                                          = request.coin_name;
         j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
@@ -34,7 +34,7 @@ namespace atomic_dex::mm2
     }
 
     //! Deserialization
-    void from_json(const nlohmann::json& j, init_z_coin_answer& answer)
+    void from_json(const nlohmann::json& j, enable_z_coin_answer& answer)
     {
         j.at("task_id").get_to(answer.task_id);
     }

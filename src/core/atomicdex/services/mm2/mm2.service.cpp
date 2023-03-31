@@ -1184,7 +1184,7 @@ namespace atomic_dex
     {
         auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
-            t_init_z_coin_request request{
+            t_enable_z_coin_request request{
                 .coin_name            = coin_info.ticker,
                 .servers              = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
                 .z_urls               = coin_info.z_urls.value_or(std::vector<std::string>{}),
@@ -1192,7 +1192,7 @@ namespace atomic_dex
                 .is_testnet           = coin_info.is_testnet.value_or(false),
                 .with_tx_history      = false}; // Tx history not yet ready for ZHTLC
 
-            nlohmann::json j = mm2::template_request("init_z_coin", true);
+            nlohmann::json j = mm2::template_request("task::enable_z_coin::init", true);
             mm2::to_json(j, request);
             nlohmann::json batch = nlohmann::json::array();
             batch.push_back(j);
@@ -1250,11 +1250,11 @@ namespace atomic_dex
                                                 static std::size_t z_nb_try      = 0;
                                                 nlohmann::json     z_error       = nlohmann::json::array();
                                                 nlohmann::json     z_batch_array = nlohmann::json::array();
-                                                t_init_z_coin_status_request z_request{.task_id = task_id};
+                                                t_enable_z_coin_status_request z_request{.task_id = task_id};
 
-                                                SPDLOG_DEBUG("{} init_z_coin Task ID: {}", tickers[idx], task_id);
+                                                SPDLOG_DEBUG("{} enable_z_coin Task ID: {}", tickers[idx], task_id);
 
-                                                nlohmann::json j = mm2::template_request("init_z_coin_status", true);
+                                                nlohmann::json j = mm2::template_request("task::enable_z_coin::status", true);
                                                 mm2::to_json(j, z_request);
                                                 z_batch_array.push_back(j);
                                                 std::string last_event = "none";
@@ -1352,7 +1352,7 @@ namespace atomic_dex
                                                         // There could be no error message if scanning takes too long.
                                                         // Either we force disable here, or schedule to check on it later
                                                         // If this happens, address will be "Invalid" and balance will be zero.
-                                                        // We could save this ticker in a list to try `init_z_coin_status` again on it periodically until complete.
+                                                        // We could save this ticker in a list to try `enable_z_coin_status` again on it periodically until complete.
 
                                                         SPDLOG_DEBUG("Exited zhtlc enable loop after 1000 tries");
                                                         SPDLOG_DEBUG(
