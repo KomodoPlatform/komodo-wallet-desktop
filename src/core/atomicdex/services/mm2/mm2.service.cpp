@@ -1103,30 +1103,56 @@ namespace atomic_dex
         }
         else
         {
-            std::string     method = "my_tx_history";
             std::size_t     limit =  5000;
             bool            requires_v2 = false;
-            if (coin_info.is_zhtlc_family)
+            std::string     method = "my_tx_history";
+            if (coin_info.coin_type == CoinTypeGadget::SLP || coin_info.ticker == "tBCH" || coin_info.ticker == "BCH")
             {
                 requires_v2 = true;
-                limit = 50;
-                method = "z_coin_tx_history";
+                t_tx_history_request request{.coin = ticker, .limit = limit};
+                nlohmann::json       j = mm2::template_request(method, requires_v2);
+                mm2::to_json(j, request);
+                batch_array.push_back(j);
             }
-            else if (coin_info.coin_type == CoinTypeGadget::SLP || coin_info.ticker == "tBCH" || coin_info.ticker == "BCH")
+            else if (coin_info.is_zhtlc_family)
             {
-                requires_v2 = true;
+                // Don't request balance / history if not completely activated.
+                if (coin_info.activation_status.at("result").at("status") == "Ok")
+                {
+                    limit = 50;
+                    requires_v2 = true;
+                    method = "z_coin_tx_history";
+                    t_tx_history_request request{.coin = ticker, .limit = limit};
+                    nlohmann::json       j = mm2::template_request(method, requires_v2);
+                    mm2::to_json(j, request);
+                    batch_array.push_back(j);
+                }
+            }
+            else
+            {
+                t_tx_history_request request{.coin = ticker, .limit = limit};
+                nlohmann::json       j = mm2::template_request(method, requires_v2);
+                mm2::to_json(j, request);
+                batch_array.push_back(j);
             }
 
-            t_tx_history_request request{.coin = ticker, .limit = limit};
-            nlohmann::json       j = mm2::template_request(method, requires_v2);
-            mm2::to_json(j, request);
-            batch_array.push_back(j);
         }
 
         if (not only_tx)
         {
             for (auto&& coin : enabled_coins)
             {
+                coin_info = get_coin_info(ticker);
+
+                if (coin_info.is_zhtlc_family)
+                {
+                    // Don't request balance / history if not completely activated.
+                    if (coin_info.activation_status.at("result").at("status") != "Ok")
+                    {
+                        continue;
+                    }
+                }
+
                 if (is_pin_cfg_enabled())
                 {
                     std::shared_lock lock(m_balance_mutex); ///< shared_lock
@@ -1447,10 +1473,10 @@ namespace atomic_dex
         {
             if (coin_info.activation_status.contains("result"))
             {
-                SPDLOG_DEBUG("coin_info.activation_status {} {} :", coin, coin_info.activation_status.dump(4));
+                // SPDLOG_DEBUG("coin_info.activation_status {} {} :", coin, coin_info.activation_status.dump(4));
                 if (coin_info.activation_status.at("result").contains("status"))
                 {
-                    if (coin_info.activation_status.at("result").at("status") == "Ready")
+                    if (coin_info.activation_status.at("result").at("status") == "Ok")
                     {
                         if (coin_info.activation_status.at("result").contains("details"))
                         {

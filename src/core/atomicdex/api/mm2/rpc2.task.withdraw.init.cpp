@@ -18,20 +18,20 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc2.init_withdraw.hpp"
+#include "atomicdex/api/mm2/rpc2.task.withdraw.init.hpp"
 
-//! Implementation 2.0 RPC [init_withdraw]
+//! Implementation 2.0 RPC [withdraw_init]
 namespace atomic_dex::mm2
 {
     void
-    to_json(nlohmann::json& j, const init_withdraw_fees& request)
+    to_json(nlohmann::json& j, const withdraw_init_fees& request)
     {
         j["type"]   = request.type;
         j["amount"] = request.amount.value();
     }
 
     //! Serialization
-    void to_json(nlohmann::json& j, const init_withdraw_request& request)
+    void to_json(nlohmann::json& j, const withdraw_init_request& request)
     {
         nlohmann::json obj = nlohmann::json::object();
 
@@ -48,7 +48,7 @@ namespace atomic_dex::mm2
     }
 
     //! Deserialization
-    void from_json(const nlohmann::json& j, init_withdraw_answer& answer)
+    void from_json(const nlohmann::json& j, withdraw_init_answer& answer)
     {
         j.at("task_id").get_to(answer.task_id);
     }

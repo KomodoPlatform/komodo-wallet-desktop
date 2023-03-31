@@ -27,6 +27,7 @@ namespace atomic_dex::mm2
     void to_json(nlohmann::json& j, const enable_z_coin_status_request& request)
     {
         j["params"]["task_id"] = request.task_id;
+        j["params"]["forget_if_finished"] = false;
     }
 
     //! Deserialization

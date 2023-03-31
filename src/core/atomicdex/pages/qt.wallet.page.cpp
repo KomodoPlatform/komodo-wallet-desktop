@@ -15,8 +15,8 @@
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
 #include "atomicdex/api/mm2/rpc.withdraw.hpp"
-#include "atomicdex/api/mm2/rpc2.init_withdraw.hpp"
-#include "atomicdex/api/mm2/rpc2.withdraw_status.hpp"
+#include "atomicdex/api/mm2/rpc2.task.withdraw.init.hpp"
+#include "atomicdex/api/mm2/rpc2.task.withdraw.status.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
@@ -289,7 +289,6 @@ namespace atomic_dex
             obj["has_parent_fees_ticker"]             = coin_info.has_parent_fees_ticker;
             obj["fees_ticker"]                        = QString::fromStdString(coin_info.fees_ticker);
             obj["is_claimable"]                       = coin_info.is_claimable;
-            obj["address"]                            = QString::fromStdString(mm2_system.address(ticker, ec));
             obj["minimal_balance_for_asking_rewards"] = QString::fromStdString(coin_info.minimal_claim_amount);
             obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url);
             obj["current_currency_ticker_price"]      = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, true));
@@ -299,15 +298,26 @@ namespace atomic_dex
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["activation_status"]                  = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(provider.get_ticker_historical(ticker));
-            obj["fee_ticker"]              = QString::fromStdString(coin_info.fees_ticker);
-            obj["blocks_left"]             = static_cast<qint64>(tx_state.blocks_left);
-            obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
-            obj["current_block"]           = static_cast<qint64>(tx_state.current_block);
-            obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY" || coin_info.ticker == "ZOMBIE";
+            obj["fee_ticker"]                         = QString::fromStdString(coin_info.fees_ticker);
+            obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
+            obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
+            obj["current_block"]                      = static_cast<qint64>(tx_state.current_block);
+            obj["is_smartchain_test_coin"]            = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY" || coin_info.ticker == "ZOMBIE";
+
             std::error_code   ec;
-            qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
-            std::string       svg = qr0.toSvgString(2);
-            obj["qrcode_address"] = QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
+            if (!mm2_system.is_zhtlc_coin_ready(coin_info.ticker))
+            {
+                obj["address"]        = "activating";
+                obj["qrcode_address"] = "";
+
+            }
+            else
+            {
+                obj["address"]        = QString::fromStdString(mm2_system.address(ticker, ec));
+                qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
+                std::string       svg = qr0.toSvgString(2);
+                obj["qrcode_address"] = QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
+            }
         }
         return obj;
     }
@@ -507,20 +517,20 @@ namespace atomic_dex
 
         if (coin_info.is_zhtlc_family)
         {
-            t_init_withdraw_request init_withdraw_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .max = max};
+            t_withdraw_init_request withdraw_init_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .max = max};
 
             if (with_fees)
             {
                 qDebug() << fees_data;
                 auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
-                init_withdraw_req.fees = t_init_withdraw_fees{
+                withdraw_init_req.fees = t_withdraw_init_fees{
                     .type      = "UtxoFixed",
                     .amount    = json_fees.at("fees_amount").get<std::string>()
                 };
             }
-            nlohmann::json json_data = mm2::template_request("init_withdraw", true);
+            nlohmann::json json_data = mm2::template_request("task::withdraw::init", true);
 
-            mm2::to_json(json_data, init_withdraw_req);
+            mm2::to_json(json_data, withdraw_init_req);
 
             batch.push_back(json_data);
             std::string amount_std = amount.toStdString();
@@ -553,7 +563,7 @@ namespace atomic_dex
                             QString            z_status;
                             t_withdraw_status_request z_request{.task_id = task_id};
 
-                            nlohmann::json j = mm2::template_request("withdraw_status", true);
+                            nlohmann::json j = mm2::template_request("task::withdraw::status", true);
                             mm2::to_json(j, z_request);
                             z_batch_array.push_back(j);
 
@@ -565,13 +575,13 @@ namespace atomic_dex
                                 z_status = QString::fromStdString(z_answers[0].at("result").at("status").get<std::string>());
 
                                 SPDLOG_DEBUG("[{}/120] Waiting for {} withdraw status [{}]...", z_nb_try, ticker, z_status.toUtf8().constData());
-                                if (z_status == "Ready")
+                                if (z_status == "Ok")
                                 {
                                     break;
                                 }
                                 else
                                 {
-                                    set_withdraw_status("Generating transaction... ");
+                                    set_withdraw_status("Generating transaction");
                                 }
                                 std::this_thread::sleep_for(2s);
                                 z_nb_try += 1;
@@ -596,9 +606,9 @@ namespace atomic_dex
                                 }
                                 else
                                 {
-                                    auto           withdraw_answer      = mm2::rpc_process_answer_batch<t_withdraw_status_answer>(z_error[0], "withdraw_status");
+                                    auto           withdraw_answer      = mm2::rpc_process_answer_batch<t_withdraw_status_answer>(z_error[0], "task::withdraw::status");
                                     nlohmann::json j_out                = nlohmann::json::object();
-                                    j_out["withdraw_answer"]            = z_error[0]["result"]["details"]["result"];
+                                    j_out["withdraw_answer"]            = z_error[0]["result"]["details"];
                                     j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
 
                                     // Add total amount in fiat currency.

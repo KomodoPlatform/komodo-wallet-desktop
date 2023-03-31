@@ -41,8 +41,8 @@ namespace atomic_dex::mm2
         template <typename RpcReturnType>
         RpcReturnType rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);
 
-        t_disable_coin_answer          rpc_disable_coin(t_disable_coin_request&& request);
-        t_recover_funds_of_swap_answer rpc_recover_funds(t_recover_funds_of_swap_request&& request);
+        t_disable_coin_answer            rpc_disable_coin(t_disable_coin_request&& request);
+        t_recover_funds_of_swap_answer   rpc_recover_funds(t_recover_funds_of_swap_request&& request);
         t_enable_z_coin_cancel_answer    rpc_enable_z_coin_cancel(t_enable_z_coin_cancel_request&& request);
     };
 } // namespace atomic_dex

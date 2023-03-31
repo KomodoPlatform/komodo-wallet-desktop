@@ -24,33 +24,33 @@
 
 namespace atomic_dex::mm2
 {
-    struct init_withdraw_fees
+    struct withdraw_init_fees
     {
         std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
         std::optional<std::string> amount;    ///< Utxo only
     };
 
-    struct init_withdraw_request
+    struct withdraw_init_request
     {
         std::string                               coin;
         std::string                               to;
         std::string                               amount;
-        std::optional<init_withdraw_fees>         fees{std::nullopt}; ///< ignored if std::nullopt
+        std::optional<withdraw_init_fees>         fees{std::nullopt}; ///< ignored if std::nullopt
         bool                                      max{false};
     };
 
-    struct init_withdraw_answer
+    struct withdraw_init_answer
     {
         int         task_id;
     };
 
-    void to_json(nlohmann::json& j, const init_withdraw_request& request);
-    void from_json(const nlohmann::json& j, init_withdraw_answer& answer);
+    void to_json(nlohmann::json& j, const withdraw_init_request& request);
+    void from_json(const nlohmann::json& j, withdraw_init_answer& answer);
 }
 
 namespace atomic_dex
 {
-    using t_init_withdraw_request = mm2::init_withdraw_request;
-    using t_init_withdraw_fees    = mm2::init_withdraw_fees;
-    using t_init_withdraw_answer  = mm2::init_withdraw_answer;
+    using t_withdraw_init_request = mm2::withdraw_init_request;
+    using t_withdraw_init_fees    = mm2::withdraw_init_fees;
+    using t_withdraw_init_answer  = mm2::withdraw_init_answer;
 } // namespace atomic_dex
