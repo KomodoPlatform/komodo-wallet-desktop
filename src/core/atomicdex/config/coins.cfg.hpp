@@ -36,10 +36,12 @@ namespace atomic_dex
         static constexpr const char* matic_gas_stations = "https://gasstation-mainnet.matic.network/";
         using electrum_servers                          = std::vector<electrum_server>;
         using nodes                                     = std::vector<node>;
+        using url_list                                  = std::vector<std::string>;
         using eth_family_url_list                       = std::vector<std::string>;
         using bchd_url_list                             = std::vector<std::string>;
         using light_wallet_d_servers                    = std::vector<std::string>; ///< For ZHTLC
         std::string                                       ticker;
+        std::string                                       parent_coin;
         std::string                                       fees_ticker;
         std::string                                       gui_ticker; ///< Ticker displayed in the gui
         std::string                                       name;       ///< nice name
@@ -56,6 +58,7 @@ namespace atomic_dex
         std::optional<std::set<CoinType>>                 other_types;
         std::optional<electrum_servers>                   electrum_urls;
         std::optional<nodes>                              urls;
+        std::optional<url_list>                           rpc_urls;
         std::optional<light_wallet_d_servers>             z_urls;
         std::optional<eth_family_url_list>                eth_family_urls;
         std::optional<bchd_url_list>                      bchd_urls;

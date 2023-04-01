@@ -105,6 +105,14 @@ namespace
         {
             return CoinType::RSK;
         }
+        if (coin_type == "TENDERMINT")
+        {
+            return CoinType::TENDERMINT;
+        }
+        if (coin_type == "TENDERMINTTOKEN")
+        {
+            return CoinType::TENDERMINTTOKEN;
+        }
         if (coin_type == "ZHTLC")
         {
             return CoinType::ZHTLC;
@@ -137,6 +145,7 @@ namespace atomic_dex
         j.at("explorer_url").get_to(cfg.explorer_url);
 
         cfg.gui_ticker           = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
+        cfg.parent_coin          = j.contains("parent_coin") ? j.at("parent_coin").get<std::string>() : cfg.ticker;
         cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
         cfg.coinpaprika_id       = j.contains("coinpaprika_id") ? j.at("coinpaprika_id").get<std::string>() : "test-coin";
         cfg.coingecko_id         = j.contains("coingecko_id") ? j.at("coingecko_id").get<std::string>() : "test-coin";
@@ -188,6 +197,16 @@ namespace atomic_dex
             for (const auto& url : cfg.urls.value())
             {
                 cfg.eth_family_urls->push_back(url.url);
+            }
+        }
+        if (j.contains("rpc_urls"))
+        {
+            auto rpc_urls_obj = j.at("rpc_urls").get<std::vector<node>>();
+            std::vector<std::string> rpc_urls_list;
+            cfg.rpc_urls = rpc_urls_list;
+            for (const auto& url : rpc_urls_obj)
+            {
+                cfg.rpc_urls->push_back(url.url);
             }
         }
         if (j.contains("allow_slp_unsafe_conf"))
@@ -307,6 +326,14 @@ namespace atomic_dex
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "tBCH" : "BCH";
+            break;
+        case CoinType::TENDERMINT:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.parent_coin;
+            break;
+        case CoinType::TENDERMINTTOKEN:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.parent_coin;
             break;
         case CoinType::ZHTLC:
             cfg.has_parent_fees_ticker = false;
