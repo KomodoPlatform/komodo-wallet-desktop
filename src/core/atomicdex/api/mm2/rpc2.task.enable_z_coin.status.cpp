@@ -49,15 +49,15 @@ namespace atomic_dex::mm2
 
         if (j.at("result").at("details").contains("result"))
         {
-            answer.coin = j.at("result").at("details").at("result").at("ticker").get<std::string>();
-            answer.current_block = j.at("result").at("details").at("result").at("current_block").get<std::string>();
+            answer.coin = j.at("result").at("details").at("ticker").get<std::string>();
+            answer.current_block = j.at("result").at("details").at("current_block").get<std::string>();
 
-            if (j.at("result").at("details").at("result").contains("wallet_balance"))
+            if (j.at("result").at("details").contains("wallet_balance"))
             {
-                answer.wallet_type = j.at("result").at("details").at("result").at("wallet_balance").at("wallet_type").get<std::string>();
-                answer.address = j.at("result").at("details").at("result").at("wallet_balance").at("address").get<std::string>();
-                answer.spendable_balance = j.at("result").at("details").at("result").at("wallet_balance").at("balance").at("spendable").get<std::string>();
-                answer.unspendable_balance = j.at("result").at("details").at("result").at("wallet_balance").at("balance").at("unspendable").get<std::string>();
+                answer.wallet_type = j.at("result").at("details").at("wallet_balance").at("wallet_type").get<std::string>();
+                answer.address = j.at("result").at("details").at("wallet_balance").at("address").get<std::string>();
+                answer.spendable_balance = j.at("result").at("details").at("wallet_balance").at("balance").at("spendable").get<std::string>();
+                answer.unspendable_balance = j.at("result").at("details").at("wallet_balance").at("balance").at("unspendable").get<std::string>();
             }
         }
     }

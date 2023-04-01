@@ -413,6 +413,13 @@ namespace atomic_dex
         return destination;
     }
 
+    void mm2_service::enable_z_coin_cancel(const std::int8_t task_id)
+    {
+        t_enable_z_coin_cancel_request request{.task_id = task_id};
+        auto                                answer = m_mm2_client.rpc_enable_z_coin_cancel(std::move(request));
+        SPDLOG_INFO("mm2_service::enable_z_coin_cancel: [task_id {}]  result: {}", task_id, answer.raw_result);
+    }
+
     bool mm2_service::disable_coin(const std::string& ticker, std::error_code& ec)
     {
         coin_config coin_info = get_coin_info(ticker);

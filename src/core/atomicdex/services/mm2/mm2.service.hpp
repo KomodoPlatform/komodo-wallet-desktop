@@ -176,7 +176,7 @@ namespace atomic_dex
        void enable_slp_testnet_coin(coin_config coin_config);
        void enable_slp_testnet_coins(const t_coins& coins);
        void enable_zhtlc(const t_coins& coins);
-       
+
        // Balances processing functions
        void process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc);    // Called after enabling SLP coins along tBCH/BCH.
        void process_balance_answer(const mm2::enable_slp_rpc& rpc);                // Called after enabling an SLP coin.
@@ -190,6 +190,9 @@ namespace atomic_dex
        [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;
        [[nodiscard]] nlohmann::json get_zhtlc_status(const std::string coin) const;
 
+
+       //! Cancel zhtlc activation
+       void enable_z_coin_cancel(const std::int8_t task_id);
 
        //! Disable a single coin
        bool disable_coin(const std::string& ticker, std::error_code& ec);
