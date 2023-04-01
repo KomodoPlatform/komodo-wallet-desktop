@@ -45,6 +45,10 @@ namespace atomic_dex::mm2
         obj["amount"] = cfg.amount;
         obj["to"]     = cfg.to;
         obj["max"]    = cfg.max;
+        if (cfg.memo.has_value())
+        {
+            obj["memo"] = cfg.memo.value();
+        }
         if (cfg.fees.has_value())
         {
             obj["fee"] = cfg.fees.value();
