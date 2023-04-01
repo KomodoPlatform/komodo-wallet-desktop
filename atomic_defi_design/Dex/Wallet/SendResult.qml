@@ -84,9 +84,6 @@ MultipageModalContent
 
         text:
         {
-            console.log("result: ")
-            console.log(JSON.stringify(result))
-            console.log("=========================")
             result.withdraw_answer.memo
         }
     }
