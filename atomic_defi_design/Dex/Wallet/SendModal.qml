@@ -48,7 +48,7 @@ MultipageModal
 
     function getCryptoAmount() { return _preparePage.cryptoSendMode ? input_amount.text : equivalentAmount.value }
 
-    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price) {
+    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price, memo="") {
         let max = parseFloat(current_ticker_infos.balance) === parseFloat(amount)
 
         // Save for later check
@@ -62,7 +62,7 @@ MultipageModal
             gas_price,
             gas_limit: gas_limit === "" ? 0 : parseInt(gas_limit)
         }
-        api_wallet_page.send(address, amount, max, with_fees, fees_info)
+        api_wallet_page.send(address, amount, max, with_fees, fees_info, memo)
     }
 
     function sendCoin() {
@@ -359,6 +359,30 @@ MultipageModal
             }
 
             Item { Layout.fillWidth: true }
+        }
+
+        DefaultRectangle
+        {
+            visible: General.is_coin_with_memo(current_ticker_infos)
+            enabled: !root.segwit && !root.is_send_busy
+
+            Layout.preferredWidth: 500
+            Layout.preferredHeight: 44
+            Layout.alignment: Qt.AlignHCenter
+
+            color: input_memo.background.color
+            radius: input_memo.background.radius
+
+            DefaultTextField
+            {
+                id: input_memo
+
+                width: 470
+                height: 44
+                placeholderText: qsTr("Enter memo")
+                forceFocus: true
+                font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
+            }
         }
 
         // Amount to send
@@ -758,8 +782,16 @@ MultipageModal
 
                 text: qsTr("Prepare")
 
-                onClicked: prepareSendCoin(input_address.text, getCryptoAmount(), custom_fees_switch.checked, input_custom_fees.text,
-                                           General.isSpecialToken(current_ticker_infos), input_custom_fees_gas.text, input_custom_fees_gas_price.text)
+                onClicked: prepareSendCoin(
+                    input_address.text,
+                    getCryptoAmount(),
+                    custom_fees_switch.checked,
+                    input_custom_fees.text,
+                    General.isSpecialToken(current_ticker_infos),
+                    input_custom_fees_gas.text,
+                    input_custom_fees_gas_price.text,
+                    input_memo.text
+                )
             }
         }
 
