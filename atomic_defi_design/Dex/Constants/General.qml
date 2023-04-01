@@ -58,6 +58,10 @@ QtObject {
         return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_wallet_only
     }
 
+    function is_coin_with_memo(coin_info) {
+        return coin_info.has_memos
+    }
+
     function getLanguage()
     {
         return API.app.settings_pg.lang

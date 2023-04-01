@@ -73,6 +73,7 @@ namespace atomic_dex
         bool                                              checked{false};
         bool                                              wallet_only{false};
         bool                                              is_claimable{false};
+        bool                                              has_memos{false};
         bool                                              is_custom_coin{false};
         bool                                              currently_enabled{false};
         bool                                              has_parent_fees_ticker{false}; ///< True if parent fees is different from current ticker eg: ERC20 tokens

@@ -330,15 +330,18 @@ namespace atomic_dex
         case CoinType::TENDERMINT:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.parent_coin;
+            cfg.has_memos              = true;
             break;
         case CoinType::TENDERMINTTOKEN:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.parent_coin;
+            cfg.has_memos              = true;
             break;
         case CoinType::ZHTLC:
             cfg.has_parent_fees_ticker = false;
             cfg.is_zhtlc_family        = true;
             cfg.fees_ticker            = cfg.ticker;
+            cfg.has_memos              = true;
             break;
         case CoinType::Invalid:
             cfg.has_parent_fees_ticker = false;
