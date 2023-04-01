@@ -26,7 +26,7 @@
 #include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
-#include "atomicdex/api/mm2/rpc.withdraw.hpp"
+#include "atomicdex/api/mm2/rpc2.withdraw.hpp"
 #include "atomicdex/api/mm2/rpc2.task.withdraw.status.hpp"
 #include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
