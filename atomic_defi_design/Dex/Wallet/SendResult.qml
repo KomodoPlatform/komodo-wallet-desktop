@@ -76,6 +76,21 @@ MultipageModalContent
         }
     }
 
+    // Memo
+    TextEditWithTitle
+    {
+        title: qsTr("Memo")
+        visible: result.withdraw_answer.memo
+
+        text:
+        {
+            console.log("result: ")
+            console.log(JSON.stringify(result))
+            console.log("=========================")
+            result.withdraw_answer.memo
+        }
+    }
+
     // Fees
     TextEditWithTitle
     {

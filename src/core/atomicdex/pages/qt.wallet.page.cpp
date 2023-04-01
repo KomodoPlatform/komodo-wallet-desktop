@@ -517,7 +517,7 @@ namespace atomic_dex
 
         if (coin_info.is_zhtlc_family)
         {
-            t_withdraw_init_request withdraw_init_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .max = max};
+            t_withdraw_init_request withdraw_init_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .memo = memo.toStdString(), .max = max};
 
             if (with_fees)
             {

@@ -25,7 +25,9 @@ MultipageModal
 
     readonly property var default_send_result: ({ has_error: false, error_message: "",
                                                     withdraw_answer: {
-                                                        total_amount_fiat: "", tx_hex: "", date: "", "fee_details": { total_fee: "" }
+                                                        total_amount_fiat: "", tx_hex: "",
+                                                        memo: "", date: "",
+                                                        "fee_details": { total_fee: "" }
                                                     },
                                                     explorer_url: "", max: false })
     property var send_result: default_send_result
@@ -50,7 +52,6 @@ MultipageModal
 
     function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price, memo="") {
         let max = parseFloat(current_ticker_infos.balance) === parseFloat(amount)
-
         // Save for later check
         async_param_max = max
 
@@ -82,6 +83,7 @@ MultipageModal
         send_result = default_send_result
         input_address.text = ""
         input_amount.text = ""
+        input_memo.text = ""
         input_custom_fees.text = ""
         input_custom_fees_gas.text = ""
         input_custom_fees_gas_price.text = ""
@@ -361,30 +363,6 @@ MultipageModal
             Item { Layout.fillWidth: true }
         }
 
-        DefaultRectangle
-        {
-            visible: General.is_coin_with_memo(current_ticker_infos)
-            enabled: !root.segwit && !root.is_send_busy
-
-            Layout.preferredWidth: 500
-            Layout.preferredHeight: 44
-            Layout.alignment: Qt.AlignHCenter
-
-            color: input_memo.background.color
-            radius: input_memo.background.radius
-
-            DefaultTextField
-            {
-                id: input_memo
-
-                width: 470
-                height: 44
-                placeholderText: qsTr("Enter memo")
-                forceFocus: true
-                font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
-            }
-        }
-
         // Amount to send
         AmountField
         {
@@ -581,6 +559,31 @@ MultipageModal
                         equivalentAmount.value = temp;
                     }
                 }
+            }
+        }
+
+        // Memo
+        DefaultRectangle
+        {
+            visible: General.isCoinWithMemo(api_wallet_page.ticker)
+            enabled: !root.segwit && !root.is_send_busy
+
+            Layout.preferredWidth: 500
+            Layout.preferredHeight: 44
+            Layout.alignment: Qt.AlignHCenter
+
+            color: input_memo.background.color
+            radius: input_memo.background.radius
+
+            DefaultTextField
+            {
+                id: input_memo
+
+                width: 470
+                height: 44
+                placeholderText: qsTr("Enter memo")
+                forceFocus: true
+                font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
             }
         }
 
@@ -860,6 +863,14 @@ MultipageModal
                     API.app.settings_pg.current_fiat
                 )
             }
+        }
+
+        // Memo
+        TextEditWithTitle
+        {
+            title: qsTr("Memo")
+            visible: input_memo.text != ""
+            text: input_memo.text
         }
 
         // Fees

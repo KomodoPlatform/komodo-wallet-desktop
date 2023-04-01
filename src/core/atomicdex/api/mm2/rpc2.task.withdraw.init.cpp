@@ -40,6 +40,10 @@ namespace atomic_dex::mm2
         obj["params"]["amount"]      = request.amount;
         obj["params"]["max"]         = request.max;
 
+        if (request.memo.has_value())
+        {
+            obj["params"]["memo"] = request.memo.value();
+        }
         if (request.fees.has_value())
         {
             obj["params"]["fee"] = request.fees.value();

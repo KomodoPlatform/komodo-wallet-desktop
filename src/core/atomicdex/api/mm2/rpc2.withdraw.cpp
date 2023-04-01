@@ -41,26 +41,19 @@ namespace atomic_dex::mm2
     {
         nlohmann::json obj = nlohmann::json::object();
 
-        obj["coin"]   = cfg.coin;
-        obj["amount"] = cfg.amount;
-        obj["to"]     = cfg.to;
-        obj["max"]    = cfg.max;
+        obj["params"]["coin"]   = cfg.coin;
+        obj["params"]["amount"] = cfg.amount;
+        obj["params"]["to"]     = cfg.to;
+        obj["params"]["max"]    = cfg.max;
         if (cfg.memo.has_value())
         {
-            obj["memo"] = cfg.memo.value();
+            obj["params"]["memo"] = cfg.memo.value();
         }
         if (cfg.fees.has_value())
         {
-            obj["fee"] = cfg.fees.value();
+            obj["params"]["fee"] = cfg.fees.value();
         }
-        if (j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
-        {
-            j["params"] = obj;
-        }
-        else
-        {
-            j.update(obj);
-        }
+        j.update(obj);
     }
 
     void
@@ -72,14 +65,7 @@ namespace atomic_dex::mm2
         }
         else
         {
-            if (j.contains("result") && j.contains("mmrpc") && j.at("mmrpc").get<std::string>() == "2.0")
-            {
-                answer.result = j.at("result").get<transaction_data>();
-            }
-            else
-            {
-                answer.result = j.get<transaction_data>();
-            }
+            answer.result = j.at("result").get<transaction_data>();
         }
     }
 } // namespace atomic_dex::mm2

@@ -36,6 +36,7 @@ namespace atomic_dex::mm2
         std::string                               to;
         std::string                               amount;
         std::optional<withdraw_init_fees>         fees{std::nullopt}; ///< ignored if std::nullopt
+        std::optional<std::string>                memo;               ///< memo for zhtlc
         bool                                      max{false};
     };
 
