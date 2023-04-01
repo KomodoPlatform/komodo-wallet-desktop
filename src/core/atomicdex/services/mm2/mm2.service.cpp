@@ -301,7 +301,7 @@ namespace atomic_dex
                 }
                 if (!tickers.empty())
                 {
-                    SPDLOG_INFO("coin_status_update required, {}", m_nb_update_required);
+                    SPDLOG_DEBUG("coin_status_update required, {}", m_nb_update_required);
                     update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
                 }
                 m_nb_update_required -= 1;
