@@ -28,6 +28,8 @@
 #include "atomicdex/constants/dex.constants.hpp"
 #include "rpc.hpp"
 #include "rpc.tx.history.hpp"
+#include "rpc2.enable_tendermint_token.hpp"
+#include "rpc2.enable_tendermint_with_assets.hpp"
 
 namespace
 {
@@ -160,6 +162,8 @@ namespace atomic_dex::mm2
     template void mm2_client::process_rpc_async<get_public_key_rpc>(const std::function<void(get_public_key_rpc)>&);
     template void mm2_client::process_rpc_async<enable_slp_rpc>(const std::function<void(enable_slp_rpc)>&);
     template void mm2_client::process_rpc_async<enable_bch_with_tokens_rpc>(const std::function<void(enable_bch_with_tokens_rpc)>&);
+    template void mm2_client::process_rpc_async<enable_tendermint_token_rpc>(const std::function<void(enable_tendermint_token_rpc)>&);
+    template void mm2_client::process_rpc_async<enable_tendermint_with_assets_rpc>(const std::function<void(enable_tendermint_with_assets_rpc)>&);
     template void mm2_client::process_rpc_async<my_tx_history_rpc>(const std::function<void(my_tx_history_rpc)>&);
     template void mm2_client::process_rpc_async<my_tx_history_v1_rpc>(const std::function<void(my_tx_history_v1_rpc)>&);
     

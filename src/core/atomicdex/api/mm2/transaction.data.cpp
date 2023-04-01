@@ -94,11 +94,10 @@ namespace atomic_dex::mm2
                 cfg.memo = j.at("memo").get<std::string>();
             }
             catch (const std::exception& ex)
-            {   
+            {
                 cfg.memo = "";
                 //SPDLOG_ERROR("Error parsing memo: {}", ex.what());
             }
-            
         }
 
         if (cfg.from.empty())

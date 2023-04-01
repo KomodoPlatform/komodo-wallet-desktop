@@ -59,10 +59,7 @@ QtObject {
     }
 
     function isCoinWithMemo(ticker) {
-        console.log("Getting memo info for " + ticker)
         const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        console.log(coin_info.has_memos)
-        console.log("=========================")
         return coin_info.has_memos
     }
 
