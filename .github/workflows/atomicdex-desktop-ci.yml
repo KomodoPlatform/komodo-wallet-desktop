@@ -22,7 +22,6 @@ env:
   RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\atomicDEX-Desktop\ci_tools_atomic_dex\vcpkg-repo
   VCPKG_ROOT: ${{ github.workspace }}\atomicDEX-Desktop\ci_tools_atomic_dex\vcpkg-repo
 
-
 jobs:
 
   ci-flow:
@@ -83,6 +82,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
+
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v2
+
+      - name: Env
+        run: |
+          # ACTIONS_RUNTIME_TOKEN, ACTIONS_RUNTIME_URL should be exposed
+          env|sort
 
       - name: Setup Python
         uses: actions/setup-python@v4
