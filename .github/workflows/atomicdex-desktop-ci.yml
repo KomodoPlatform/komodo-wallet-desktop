@@ -184,7 +184,6 @@ jobs:
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
           vcpkgJsonGlob: 'vcpkg.json'
 
 
