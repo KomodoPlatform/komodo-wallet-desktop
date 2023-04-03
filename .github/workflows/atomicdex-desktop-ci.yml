@@ -22,6 +22,7 @@ env:
   RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\atomicDEX-Desktop\ci_tools_atomic_dex\vcpkg-repo
   VCPKG_ROOT: ${{ github.workspace }}\atomicDEX-Desktop\ci_tools_atomic_dex\vcpkg-repo
 
+
 jobs:
 
   ci-flow:
@@ -188,6 +189,9 @@ jobs:
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          vcpkgJsonGlob: 'vcpkg.json'
+          appendedCacheKey: vcpkginstall
+
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'  && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
