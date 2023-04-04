@@ -115,16 +115,6 @@ QtObject {
         return progress
     }
 
-    function getNomicsId(ticker) {
-        if(ticker === "" || ticker === "All" || ticker===undefined) {
-            return ""
-        } else {
-            const nomics_id = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).nomics_id
-            if (nomics_id == 'test-coin') return ""
-            return nomics_id
-        }
-    }
-
     function coinContractAddress(ticker) {
         var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
         if (cfg.hasOwnProperty('protocol')) {

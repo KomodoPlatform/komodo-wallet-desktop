@@ -79,25 +79,26 @@ Widget
             ColumnLayout
             {
                 Layout.fillHeight: true
+                Layout.fillWidth: true
                 spacing: 10
                 // Chart
                 Chart
                 {
                     id: chart
                     Layout.topMargin: 20
-                    Layout.leftMargin: 28
-                    Layout.rightMargin: 28
+                    Layout.leftMargin: 15
+                    Layout.rightMargin: 15
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 310
-
+                    Layout.fillHeight: true
+                    Layout.minimumWidth : 465
                 }
 
                 PriceLineSimplified
                 {
                     id: price_line
                     Layout.bottomMargin: 20
-                    Layout.leftMargin: 28
-                    Layout.rightMargin: 28
+                    Layout.leftMargin: 20
+                    Layout.rightMargin: 20
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
