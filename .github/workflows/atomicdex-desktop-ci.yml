@@ -83,13 +83,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
 
-      - name: Expose GitHub Runtime
+      - name: Expose GitHub Runtime Env
         uses: crazy-max/ghaction-github-runtime@v2
-
-      - name: Env
-        run: |
-          # ACTIONS_RUNTIME_TOKEN, ACTIONS_RUNTIME_URL should be exposed
-          env|sort
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -197,8 +192,6 @@ jobs:
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           vcpkgJsonGlob: 'vcpkg.json'
-          appendedCacheKey: vcpkginstall
-
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'  && 'KomodoPlatform/atomicDEX-Desktop' == github.repository
