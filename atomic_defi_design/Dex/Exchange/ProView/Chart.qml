@@ -20,7 +20,7 @@ Item
     function loadChart(right_ticker, left_ticker, force = false, source="livecoinwatch")
     {
 
-        // <script defer src="https://www.livecoinwatch.com/static/lcw-widget.js"></script> <div class="livecoinwatch-widget-1" lcw-coin="BTC" lcw-base="USD" lcw-secondary="BTC" lcw-period="d" lcw-color-tx="#ffffff" lcw-color-pr="#58c7c5" lcw-color-bg="#1f2434" lcw-border-w="1" ></div>
+        // <script defer src="https://www.livecoinwatch.com/static/lcw-widget.js"></script> <div class="livecoinwatch-widget-1" lcw-coin="BTC" lcw-base="USD" lcw-secondary="BTC" lcw-period="w" lcw-color-tx="#ffffff" lcw-color-pr="#58c7c5" lcw-color-bg="#1f2434" lcw-border-w="1" ></div>
 
         let chart_html = ""
         let symbol = ""
@@ -28,10 +28,6 @@ Item
         let widget_y = 150
         let scale_x = root.width / widget_x
         let scale_y = root.height / widget_y
-        console.log("chart_x", widget_x)
-        console.log("chart_y", widget_y)
-        console.log("root.width", root.width)
-        console.log("root.height", root.height)
         
 
         if (source == "livecoinwatch")
@@ -55,12 +51,10 @@ Item
                     }
                 </style>
                 <script defer src="https://www.livecoinwatch.com/static/lcw-widget.js"></script>
-                <div class="livecoinwatch-widget-1" lcw-coin="${right_ticker}" lcw-base="${left_ticker}" lcw-secondary="USDC" lcw-period="d" lcw-color-tx="#ffffff" lcw-color-pr="#58c7c5" lcw-color-bg="#1f2434" lcw-border-w="1" ></div>
+                <div class="livecoinwatch-widget-1" lcw-coin="${right_ticker}" lcw-base="${left_ticker}" lcw-secondary="USDC" lcw-period="w" lcw-color-tx="#ffffff" lcw-color-pr="#58c7c5" lcw-color-bg="#1f2434" lcw-border-w="1" ></div>
                 `
             }
         }
-        console.log(chart_html)
-
         if (chart_html == "")
         {
             const pair = atomic_qt_utilities.retrieve_main_ticker(left_ticker) + "/" + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
