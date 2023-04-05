@@ -12,6 +12,7 @@ import "../../ProView"
 
 Widget
 {
+    width: 495
     property alias currentIndex: tabView.currentIndex
 
     title: qsTr("Trading Information")
@@ -63,10 +64,10 @@ Widget
 
     Rectangle
     {
-        Layout.fillWidth: true
         Layout.fillHeight: true
         color: Dex.CurrentTheme.floatingBackgroundColor
         radius: 10
+        Layout.preferredWidth: 495
 
         Qaterial.SwipeView
         {
@@ -86,12 +87,11 @@ Widget
                 {
                     id: chart
                     Layout.topMargin: 20
-                    Layout.leftMargin: 15
-                    Layout.rightMargin: 15
-                    Layout.fillWidth: true
+                    Layout.leftMargin: 10
+                    Layout.rightMargin: 10
                     Layout.fillHeight: true
-                    Layout.minimumWidth: 465
-                    Layout.minimumHeight: 180
+                    Layout.minimumWidth: 470
+                    Layout.minimumHeight: 200
                 }
 
                 PriceLineSimplified
