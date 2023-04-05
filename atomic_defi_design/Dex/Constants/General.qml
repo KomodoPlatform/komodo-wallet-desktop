@@ -37,6 +37,19 @@ QtObject {
         }
     }
 
+    function coinWithoutSuffix(ticker)
+    {
+        console.log("coinWithoutSuffix: " + ticker)
+        if (ticker.search("-") > -1)
+        {
+            return ticker.split("-")[0]
+        }
+        else
+        {
+            return ticker
+        }
+    }
+
     function coinName(ticker) {
         if(ticker === "" || ticker === "All" || ticker===undefined) {
             return ""

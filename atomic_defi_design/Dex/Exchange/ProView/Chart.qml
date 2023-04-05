@@ -42,6 +42,8 @@ Item
                     webEngineViewPlaceHolder.visible = true
                     return
                 }
+                right_ticker = General.coinWithoutSuffix(right_ticker)
+                left_ticker = General.coinWithoutSuffix(left_ticker)
                 chart_html = `
                 <style>
                     body { margin: auto; }
