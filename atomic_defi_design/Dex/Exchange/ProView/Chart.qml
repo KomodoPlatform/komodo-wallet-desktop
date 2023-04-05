@@ -28,7 +28,6 @@ Item
         let widget_y = 150
         let scale_x = root.width / widget_x
         let scale_y = root.height / widget_y
-        
 
         if (source == "livecoinwatch")
         {
@@ -42,8 +41,13 @@ Item
                     webEngineViewPlaceHolder.visible = true
                     return
                 }
-                right_ticker = General.coinWithoutSuffix(right_ticker)
-                left_ticker = General.coinWithoutSuffix(left_ticker)
+                right_ticker = General.getChartTicker(right_ticker)
+                left_ticker = General.getChartTicker(left_ticker)
+                if (left_ticker == "" || right_ticker == "")
+                {
+                    pair_supported = false
+                    return
+                }
                 chart_html = `
                 <style>
                     body { margin: auto; }
@@ -57,6 +61,8 @@ Item
                 `
             }
         }
+        // console.log(chart_html)
+
         if (chart_html == "")
         {
             const pair = atomic_qt_utilities.retrieve_main_ticker(left_ticker) + "/" + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
