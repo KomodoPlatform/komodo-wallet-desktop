@@ -36,6 +36,7 @@ namespace
             {"ticker", QString::fromStdString(coin.ticker)},
             {"name", QString::fromStdString(coin.name)},
             {"type", QString::fromStdString(coin.type)},
+            {"livecoinwatch_id", QString::fromStdString(coin.livecoinwatch_id)},
             {"explorer_url", QString::fromStdString(coin.explorer_url)},
             {"tx_uri", QString::fromStdString(coin.tx_uri)},
             {"address_uri", QString::fromStdString(coin.address_url)},
