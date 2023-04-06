@@ -15,6 +15,7 @@ Item
     readonly property string theme: Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark ? "dark" : "light"
     property string loaded_symbol
     property bool pair_supported: false
+    property string selected_testcoin
     onPair_supportedChanged: if (!pair_supported) webEngineViewPlaceHolder.visible = false
 
     function loadChart(right_ticker, left_ticker, force = false, source="livecoinwatch")
@@ -31,21 +32,29 @@ Item
 
         if (source == "livecoinwatch")
         {
+            selected_testcoin = ""
+            if (General.is_testcoin(left_ticker))
+            {
+                pair_supported = false
+                selected_testcoin = left_ticker
+                return
+            }
+            if (General.is_testcoin(right_ticker))
+            {
+                pair_supported = false
+                selected_testcoin = right_ticker
+                return
+            }
+
+            right_ticker = General.getChartTicker(right_ticker)
+            left_ticker = General.getChartTicker(left_ticker)
             if (right_ticker != "" && left_ticker != "")
             {
-                symbol = right_ticker+"-"+left_ticker
-
                 pair_supported = true
+                symbol = right_ticker+"-"+left_ticker
                 if (symbol === loaded_symbol && !force)
                 {
                     webEngineViewPlaceHolder.visible = true
-                    return
-                }
-                right_ticker = General.getChartTicker(right_ticker)
-                left_ticker = General.getChartTicker(left_ticker)
-                if (left_ticker == "" || right_ticker == "")
-                {
-                    pair_supported = false
                     return
                 }
                 chart_html = `
@@ -159,8 +168,16 @@ Item
 
         DefaultText
         {
-            visible: !pair_supported
-            text_value: qsTr("There is no chart data for this pair yet")
+            visible: !pair_supported && selected_testcoin == ""
+            text_value: qsTr("There is no chart data for this pair")
+            Layout.topMargin: 30
+            Layout.alignment: Qt.AlignCenter
+        }
+
+        DefaultText
+        {
+            visible: !pair_supported && selected_testcoin != ""
+            text_value: qsTr("There is no chart data for %1 (testcoin) pairs").arg(selected_testcoin)
             Layout.topMargin: 30
             Layout.alignment: Qt.AlignCenter
         }

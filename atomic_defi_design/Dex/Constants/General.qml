@@ -37,39 +37,14 @@ QtObject {
         }
     }
 
-
-    function getChartExcludeList(ticker)
-    {
-        let coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        let exclude_list = ["RICK", "MORTY", "ZOMBIE"]
-        if (ticker.search("TEST") > -1 || ticker.search("t") == 0 || coin_info.is_testnet)
-        {
-            exclude_list.push(ticker)
-        }
-        return exclude_list
-    }
-
-
     function getChartTicker(ticker)
     {
-        ticker = coinWithoutSuffix(ticker)
-        let exclude_list = getChartExcludeList(ticker)
-        let redefine_list = {}
-        if (exclude_list.includes(ticker))
-        {
-            return ""
-        }
-        if (redefine_list.hasOwnProperty(ticker))
-        {
-            return redefine_list[ticker]
-        }
-        return ticker        
+        let coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.livecoinwatch_id
     }
-
 
     function coinWithoutSuffix(ticker)
     {
-        console.log("coinWithoutSuffix: " + ticker)
         if (ticker.search("-") > -1)
         {
             return ticker.split("-")[0]
@@ -78,6 +53,12 @@ QtObject {
         {
             return ticker
         }
+    }
+
+    function is_testcoin(ticker)
+    {
+        let coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.is_testnet
     }
 
     function coinName(ticker) {
