@@ -46,12 +46,12 @@ Item
                 return
             }
 
-            right_ticker = General.getChartTicker(right_ticker)
-            left_ticker = General.getChartTicker(left_ticker)
-            if (right_ticker != "" && left_ticker != "")
+            let rel_ticker = General.getChartTicker(right_ticker)
+            let base_ticker = General.getChartTicker(left_ticker)
+            if (rel_ticker != "" && base_ticker != "")
             {
                 pair_supported = true
-                symbol = right_ticker+"-"+left_ticker
+                symbol = rel_ticker+"-"+base_ticker
                 if (symbol === loaded_symbol && !force)
                 {
                     webEngineViewPlaceHolder.visible = true
@@ -66,7 +66,7 @@ Item
                     }
                 </style>
                 <script defer src="https://www.livecoinwatch.com/static/lcw-widget.js"></script>
-                <div class="livecoinwatch-widget-1" lcw-coin="${right_ticker}" lcw-base="${left_ticker}" lcw-secondary="USDC" lcw-period="w" lcw-color-tx="#ffffff" lcw-color-pr="#58c7c5" lcw-color-bg="#1f2434" lcw-border-w="1" ></div>
+                <div class="livecoinwatch-widget-1" lcw-coin="${rel_ticker}" lcw-base="${base_ticker}" lcw-secondary="USDC" lcw-period="w" lcw-color-tx="#ffffff" lcw-color-pr="#58c7c5" lcw-color-bg="#1f2434" lcw-border-w="1" ></div>
                 `
             }
         }
