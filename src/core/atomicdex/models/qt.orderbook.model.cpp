@@ -374,6 +374,10 @@ namespace atomic_dex
         m_orders_id_registry.clear();
         for (auto&& order: m_model_data)
         {
+            if (order.coin.find("-segwit") != std::string::npos)
+            {
+                order.uuid = order.uuid + "-segwit";
+            }
             if (this->m_orders_id_registry.find(order.uuid) == m_orders_id_registry.end())
             {
                 this->m_orders_id_registry.emplace(order.uuid);
