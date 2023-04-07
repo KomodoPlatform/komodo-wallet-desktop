@@ -11,7 +11,7 @@ ComboBox
 {
     id: control
 
-    property int    radius: 20
+    property int    radius: 10
     property int    popupWidth: width
     property int    popupMaxHeight: 450
     property bool   popupForceMaxHeight: false
