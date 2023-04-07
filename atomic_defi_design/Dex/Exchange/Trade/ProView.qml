@@ -111,8 +111,8 @@ RowLayout
     {
         Layout.alignment: Qt.AlignTop
 
-        Layout.minimumWidth: selectors.visible || tradingInfo.visible ? 480 : -1
-        Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 735
+        Layout.minimumWidth: selectors.visible || tradingInfo.visible ? 495 : -1
+        Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 495
         Layout.fillWidth: true
 
         Layout.fillHeight: true
