@@ -37,6 +37,30 @@ QtObject {
         }
     }
 
+    function getChartTicker(ticker)
+    {
+        let coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.livecoinwatch_id
+    }
+
+    function coinWithoutSuffix(ticker)
+    {
+        if (ticker.search("-") > -1)
+        {
+            return ticker.split("-")[0]
+        }
+        else
+        {
+            return ticker
+        }
+    }
+
+    function is_testcoin(ticker)
+    {
+        let coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.is_testnet
+    }
+
     function coinName(ticker) {
         if(ticker === "" || ticker === "All" || ticker===undefined) {
             return ""
@@ -113,16 +137,6 @@ QtObject {
         }
         else console.log("[zhtlcActivationProgress] Unexpected status: " + status)
         return progress
-    }
-
-    function getNomicsId(ticker) {
-        if(ticker === "" || ticker === "All" || ticker===undefined) {
-            return ""
-        } else {
-            const nomics_id = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).nomics_id
-            if (nomics_id == 'test-coin') return ""
-            return nomics_id
-        }
     }
 
     function coinContractAddress(ticker) {
