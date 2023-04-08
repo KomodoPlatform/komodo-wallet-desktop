@@ -51,6 +51,7 @@ DexRectangle
         ColumnLayout
         {
             spacing: 2
+            anchors.verticalCenter: parent.verticalCenter
 
             Dex.Text
             {
