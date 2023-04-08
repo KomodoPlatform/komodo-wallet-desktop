@@ -184,30 +184,30 @@ QtObject {
     {
         switch (type)
         {
-            case 'ERC-20':      return getCoinColor("ETH")
-            case 'ZHTLC':       return getCoinColor("ARRR")
-            case 'QRC-20':      return getCoinColor("QTUM")
-            case 'Smart Chain': return getCoinColor("KMD")
+            case 'ERC-20':      return colorCoin["ETH"]
+            case 'ZHTLC':       return colorCoin["ARRR"]
+            case 'QRC-20':      return colorCoin["QTUM"]
+            case 'Smart Chain': return colorCoin["KMD"]
             case 'WALLET ONLY': return "#4D4D4D"
-            case 'UTXO':        return getCoinColor("BTC")
-            case 'BEP-20':      return getCoinColor("BNB")
-            case 'SLP':         return getCoinColor("BCH")
-            case 'IDO':         return getCoinColor("TKL")
-            case 'Matic':       return getCoinColor("MATIC")
+            case 'UTXO':        return colorCoin["BTC"]
+            case 'BEP-20':      return colorCoin["BNB"]
+            case 'SLP':         return colorCoin["BCH"]
+            case 'IDO':         return colorCoin["TKL"]
+            case 'Matic':       return colorCoin["MATIC"]
             case 'Optimism':    return "#BB2100"
-            case 'Arbitrum':    return getCoinColor("ETH")
-            case 'AVX-20':      return getCoinColor("AVAX")
-            case 'FTM-20':      return getCoinColor("FTM")
-            case 'HRC-20':      return getCoinColor("ONE")
-            case 'Ubiq':        return getCoinColor("UBQ")
-            case 'KRC-20':      return getCoinColor("KCS")
-            case 'Moonriver':   return getCoinColor("MOVR")
-            case 'Moonbeam':    return getCoinColor("GLMR")
-            case 'HecoChain':   return getCoinColor("HECO")
-            case 'SmartBCH':    return getCoinColor("SBCH")
-            case 'Ethereum Classic':  return getCoinColor("ETC")
-            case 'RSK Smart Bitcoin': return getCoinColor("BTC")
-            default:            return getCoinColor("BTC")
+            case 'Arbitrum':    return colorCoin["ETH"]
+            case 'AVX-20':      return colorCoin["AVAX"]
+            case 'FTM-20':      return colorCoin["FTM"]
+            case 'HRC-20':      return colorCoin["ONE"]
+            case 'Ubiq':        return colorCoin["UBQ"]
+            case 'KRC-20':      return colorCoin["KCS"]
+            case 'Moonriver':   return colorCoin["MOVR"]
+            case 'Moonbeam':    return colorCoin["GLMR"]
+            case 'HecoChain':   return colorCoin["HECO"]
+            case 'SmartBCH':    return colorCoin["SBCH"]
+            case 'Ethereum Classic':  return colorCoin["ETC"]
+            case 'RSK Smart Bitcoin': return colorCoin["BTC"]
+            default:            return colorCoin["BTC"]
         }
     }
 
@@ -221,8 +221,17 @@ QtObject {
     }
 
     function getCoinColor(ticker) {
-        const c = colorCoin[atomic_qt_utilities.retrieve_main_ticker(ticker)]
-        return c || Style.colorTheme2
+        let info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        let color = getCoinTypeTextColor(info.type)
+        if (colorCoin.hasOwnProperty(info.type))
+        {
+            color = colorCoin[info.type]
+        }
+        else if (colorCoin.hasOwnProperty(atomic_qt_utilities.retrieve_main_ticker(ticker)))
+        {
+            color = colorCoin[atomic_qt_utilities.retrieve_main_ticker(ticker)]
+        }
+        return color
     }
 
     readonly property var colorCoin: ({
@@ -297,7 +306,7 @@ QtObject {
                                           "RVN": "#384182",
                                           "SAND": "#05C1F4",
                                           "CADC": "#FF6666",
-                                          "DGB": "#006AD2",
+                                          "DGB": "#0b77e1",
                                           "DIA": "#B94897",
                                           "DOT": "#E80082",
                                           "FLUX": "#2B61D1",
@@ -334,7 +343,7 @@ QtObject {
                                           "MONA": "#DEC799",
                                           "MOVR": "#52CCC9",
                                           "GLMR": "#F6007C",
-                                          "NMC": "#186C9D",
+                                          "NMC": "#2286c0",
                                           "NZDS": "#1B3044",
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
@@ -372,7 +381,7 @@ QtObject {
                                           "REN": "#595959",
                                           "SMTF": "#F75836",
                                           "SUSHI": "#E25DA8",
-                                          "TRYB": "#0929AA",
+                                          "TRYB": "#5c74d6",
                                           "TUSD": "#2E3181",
                                           "AWC": "#31A5F6",
                                           "VRA": "#D70A41",
@@ -392,7 +401,7 @@ QtObject {
                                           "CENNZ": "#2E87F1",
                                           "CHTA": "#C3A634",
                                           "COMP": "#00DBA3",
-                                          "CRO": "#243565",
+                                          "CRO": "#445790",
                                           "CVC": "#3AB03E",
                                           "CVT": "#4B0082",
                                           "PIC": "#04D9FF",
@@ -487,7 +496,6 @@ QtObject {
                                           "ZOMBIE": "#72B001",
                                           "ZRX": "#302C2C",
                                           "UNI": "#FF007A",
-                                          "VOTE2022": "#7490AA",
                                           "USBL": "#279553",
                                           "RUNES": "#336699",
                                           "SIX": "#ed0909",
