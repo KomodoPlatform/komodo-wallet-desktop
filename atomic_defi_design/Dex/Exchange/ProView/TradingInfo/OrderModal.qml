@@ -14,8 +14,9 @@ MultipageModal
     id: root
 
     property var details
-    horizontalPadding: 60
-    verticalPadding: 40
+    width: 720
+    horizontalPadding: 40
+    verticalPadding: 30
 
     onDetailsChanged: { if (!details) root.close() }
     onOpened:
@@ -55,15 +56,13 @@ MultipageModal
                 Layout.preferredHeight: 60
                 Layout.preferredWidth: 60
             },
-
+            
             RowLayout
             {
                 id: dex_pair_badges
-                Layout.fillWidth: true
                 Layout.preferredHeight: 70
-                Layout.preferredWidth: 480
+                Layout.fillWidth: true
 
-                Item { Layout.fillWidth: true }
 
                 PairItemBadge
                 {
@@ -93,7 +92,6 @@ MultipageModal
                     Layout.preferredHeight: 70
                 }
 
-                Item { Layout.fillWidth: true }
             },
 
             DefaultText

@@ -26,7 +26,7 @@ DexRectangle
     property alias bottom_text: bottom_line.text_value
     Layout.fillHeight: true
     Layout.fillWidth: true
-    Layout.leftMargin: 20
+    Layout.leftMargin: 10
     Layout.rightMargin: 20
 
     RowLayout
@@ -40,13 +40,13 @@ DexRectangle
         {
             id: icon
             source: General.coinIcon(ticker)
-            Layout.preferredWidth: 52
-            Layout.preferredHeight: 52
+            Layout.preferredWidth: 40
+            Layout.preferredHeight: 40
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
             Layout.leftMargin: 20
             Layout.rightMargin: 10
-            Layout.topMargin: 9
-            Layout.bottomMargin: 9
+            Layout.topMargin: 0
+            Layout.bottomMargin: 0
         }
         ColumnLayout
         {
