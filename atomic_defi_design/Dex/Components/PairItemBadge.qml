@@ -51,7 +51,7 @@ DexRectangle
         ColumnLayout
         {
             spacing: 2
-            anchors.verticalCenter: parent.verticalCenter
+            Layout.alignment: Qt.AlignVCenter
 
             Dex.Text
             {
