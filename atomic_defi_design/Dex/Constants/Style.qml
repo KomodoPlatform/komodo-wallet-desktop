@@ -282,6 +282,6 @@ QtObject {
                                           "MATIC": "#804EE1",
                                           "ONE": "#00BEEE",
                                           "SBCH": "#74dd54",
-                                          "UBQ": "#00EB90",
+                                          "UBQ": "#00EB90"
                                       })
 }
