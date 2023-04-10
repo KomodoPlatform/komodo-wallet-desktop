@@ -66,7 +66,7 @@ Item
                     }
                 </style>
                 <script defer src="https://www.livecoinwatch.com/static/lcw-widget.js"></script>
-                <div class="livecoinwatch-widget-1" lcw-coin="${rel_ticker}" lcw-base="${base_ticker}" lcw-secondary="USDC" lcw-period="w" lcw-color-tx="#ffffff" lcw-color-pr="#58c7c5" lcw-color-bg="${Dex.CurrentTheme.backgroundColor}" lcw-border-w="0" lcw-digits="8" ></div>
+                <div class="livecoinwatch-widget-1" lcw-coin="${rel_ticker}" lcw-base="${base_ticker}" lcw-secondary="USDC" lcw-period="w" lcw-color-tx="${Dex.CurrentTheme.foregroundColor}" lcw-color-pr="#58c7c5" lcw-color-bg="${Dex.CurrentTheme.comboBoxBackgroundColor}" lcw-border-w="0" lcw-digits="8" ></div>
                 `
             }
         }
