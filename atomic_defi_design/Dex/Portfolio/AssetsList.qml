@@ -165,7 +165,7 @@ Dex.DexListView
                     text: model.type
                     font: Dex.DexTypo.overLine
                     opacity: .7
-                    color: Dex.Style.getCoinTypeColor(model.type)
+                    color: Dex.Style.getCoinColor(ticker)
 
                     Dex.DexLabel
                     {

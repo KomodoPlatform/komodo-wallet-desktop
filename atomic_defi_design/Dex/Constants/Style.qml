@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick 2.15
 import Qaterial 1.0 as Qaterial
+import Dex.Themes 1.0 as Dex
 
 QtObject {
     function setQaterialStyle() {
@@ -65,7 +66,7 @@ QtObject {
     readonly property double hoverLightMultiplier: 1.5
     readonly property double hoverOpacity: 0.6
 
-    property bool dark_theme: true
+    property bool dark_theme: Dex.CurrentTheme.getColorMode() === Dex.CurrentTheme.ColorMode.Dark
 
 
     function applyOpacity(hex, opacity="00") {
@@ -184,30 +185,31 @@ QtObject {
     {
         switch (type)
         {
-            case 'ERC-20':      return colorCoin["ETH"]
-            case 'ZHTLC':       return colorCoin["ARRR"]
-            case 'QRC-20':      return colorCoin["QTUM"]
-            case 'Smart Chain': return colorCoin["KMD"]
-            case 'WALLET ONLY': return "#4D4D4D"
-            case 'UTXO':        return colorCoin["BTC"]
-            case 'BEP-20':      return colorCoin["BNB"]
-            case 'SLP':         return colorCoin["BCH"]
-            case 'IDO':         return colorCoin["TKL"]
-            case 'Matic':       return colorCoin["MATIC"]
-            case 'Optimism':    return "#BB2100"
-            case 'Arbitrum':    return colorCoin["ETH"]
-            case 'AVX-20':      return colorCoin["AVAX"]
-            case 'FTM-20':      return colorCoin["FTM"]
-            case 'HRC-20':      return colorCoin["ONE"]
-            case 'Ubiq':        return colorCoin["UBQ"]
-            case 'KRC-20':      return colorCoin["KCS"]
-            case 'Moonriver':   return colorCoin["MOVR"]
-            case 'Moonbeam':    return colorCoin["GLMR"]
-            case 'HecoChain':   return colorCoin["HECO"]
-            case 'SmartBCH':    return colorCoin["SBCH"]
-            case 'Ethereum Classic':  return colorCoin["ETC"]
-            case 'RSK Smart Bitcoin': return colorCoin["BTC"]
-            default:            return colorCoin["BTC"]
+            case 'IDO':               return dark_theme ? colorCoinDark["IDO"] : colorCoin["IDO"]
+            case 'AVX-20':            return dark_theme ? colorCoinDark["AVAX"] : colorCoin["AVAX"]
+            case 'ZHTLC':             return dark_theme ? colorCoinDark["ARRR"] : colorCoin["ARRR"]
+            case 'COSMOS':            return dark_theme ? colorCoinDark["ATOM"] : colorCoin["ATOM"]
+            case 'SLP':               return dark_theme ? colorCoinDark["BCH"] : colorCoin["BCH"]
+            case 'BEP-20':            return dark_theme ? colorCoinDark["BNB"] : colorCoin["BNB"]
+            case 'RSK Smart Bitcoin': return dark_theme ? colorCoinDark["UTXO"] : colorCoin["UTXO"]
+            case 'UTXO':              return dark_theme ? colorCoinDark["UTXO"] : colorCoin["UTXO"]
+            case 'Ethereum Classic':  return dark_theme ? colorCoinDark["ETC"] : colorCoin["ETC"]
+            case 'Arbitrum':          return dark_theme ? colorCoinDark["ETH"] : colorCoin["ETH"]
+            case 'ERC-20':            return dark_theme ? colorCoinDark["ETH"] : colorCoin["ETH"]
+            case 'FTM-20':            return dark_theme ? colorCoinDark["FTM"] : colorCoin["FTM"]
+            case 'Moonbeam':          return dark_theme ? colorCoinDark["GLMR"] : colorCoin["GLMR"]
+            case 'HecoChain':         return dark_theme ? colorCoinDark["HECO"] : colorCoin["HECO"]
+            case 'QRC-20':            return dark_theme ? colorCoinDark["QTUM"] : colorCoin["QTUM"]
+            case 'KRC-20':            return dark_theme ? colorCoinDark["KCS"] : colorCoin["KCS"]
+            case 'Smart Chain':       return dark_theme ? colorCoinDark["KMD"] : colorCoin["KMD"]
+            case 'Matic':             return dark_theme ? colorCoinDark["MATIC"] : colorCoin["MATIC"]
+            case 'Moonriver':         return dark_theme ? colorCoinDark["MOVR"] : colorCoin["MOVR"]
+            case 'HRC-20':            return dark_theme ? colorCoinDark["ONE"] : colorCoin["ONE"]
+            case 'SmartBCH':          return dark_theme ? colorCoinDark["SBCH"] : colorCoin["SBCH"]
+            case 'Ubiq':              return dark_theme ? colorCoinDark["UBQ"] : colorCoin["UBQ"]
+            case 'Optimism':          return "#BB2100"
+            case 'WALLET ONLY':       return dark_theme ? colorCoinDark["WALLET ONLY"] : colorCoin["WALLET ONLY"] 
+            default:                  return dark_theme ? colorCoinDark["default"] : colorCoin["default"] 
         }
     }
 
@@ -224,41 +226,46 @@ QtObject {
     {
         switch (type)
         {
-            case 'IDO':               return "#536E93"
-            case 'AVX-20':            return colorCoin["AVAX"]
-            case 'ZHTLC':             return colorCoin["ARRR"]
-            case 'COSMOS':            return colorCoin["ATOM"]
-            case 'SLP':               return colorCoin["BCH"]
-            case 'BEP-20':            return colorCoin["BNB"]
-            case 'RSK Smart Bitcoin': return colorCoin["BTC"]
-            case 'UTXO':              return colorCoin["BTC"]
-            case 'Ethereum Classic':  return colorCoin["ETC"]
-            case 'Arbitrum':          return colorCoin["ETH"]
-            case 'ERC-20':            return colorCoin["ETH"]
-            case 'FTM-20':            return colorCoin["FTM"]
-            case 'Moonbeam':          return colorCoin["GLMR"]
-            case 'HecoChain':         return colorCoin["HECO"]
-            case 'QRC-20':            return colorCoin["QTUM"]
-            case 'KRC-20':            return colorCoin["KCS"]
-            case 'Smart Chain':       return colorCoin["KMD"]
-            case 'Matic':             return colorCoin["MATIC"]
-            case 'Moonriver':         return colorCoin["MOVR"]
-            case 'HRC-20':            return colorCoin["ONE"]
-            case 'SmartBCH':          return colorCoin["SBCH"]
-            case 'Ubiq':              return colorCoin["UBQ"]
+            case 'IDO':               return dark_theme ? colorCoinDark["IDO"] : colorCoin["IDO"]
+            case 'AVX-20':            return dark_theme ? colorCoinDark["AVAX"] : colorCoin["AVAX"]
+            case 'ZHTLC':             return dark_theme ? colorCoinDark["ARRR"] : colorCoin["ARRR"]
+            case 'COSMOS':            return dark_theme ? colorCoinDark["ATOM"] : colorCoin["ATOM"]
+            case 'SLP':               return dark_theme ? colorCoinDark["BCH"] : colorCoin["BCH"]
+            case 'BEP-20':            return dark_theme ? colorCoinDark["BNB"] : colorCoin["BNB"]
+            case 'RSK Smart Bitcoin': return dark_theme ? colorCoinDark["UTXO"] : colorCoin["UTXO"]
+            case 'UTXO':              return dark_theme ? colorCoinDark["UTXO"] : colorCoin["UTXO"]
+            case 'Ethereum Classic':  return dark_theme ? colorCoinDark["ETC"] : colorCoin["ETC"]
+            case 'Arbitrum':          return dark_theme ? colorCoinDark["ETH"] : colorCoin["ETH"]
+            case 'ERC-20':            return dark_theme ? colorCoinDark["ETH"] : colorCoin["ETH"]
+            case 'FTM-20':            return dark_theme ? colorCoinDark["FTM"] : colorCoin["FTM"]
+            case 'Moonbeam':          return dark_theme ? colorCoinDark["GLMR"] : colorCoin["GLMR"]
+            case 'HecoChain':         return dark_theme ? colorCoinDark["HECO"] : colorCoin["HECO"]
+            case 'QRC-20':            return dark_theme ? colorCoinDark["QTUM"] : colorCoin["QTUM"]
+            case 'KRC-20':            return dark_theme ? colorCoinDark["KCS"] : colorCoin["KCS"]
+            case 'Smart Chain':       return dark_theme ? colorCoinDark["KMD"] : colorCoin["KMD"]
+            case 'Matic':             return dark_theme ? colorCoinDark["MATIC"] : colorCoin["MATIC"]
+            case 'Moonriver':         return dark_theme ? colorCoinDark["MOVR"] : colorCoin["MOVR"]
+            case 'HRC-20':            return dark_theme ? colorCoinDark["ONE"] : colorCoin["ONE"]
+            case 'SmartBCH':          return dark_theme ? colorCoinDark["SBCH"] : colorCoin["SBCH"]
+            case 'Ubiq':              return dark_theme ? colorCoinDark["UBQ"] : colorCoin["UBQ"]
             case 'Optimism':          return "#BB2100"
-            case 'WALLET ONLY':       return "#4D4D4D"
-            default:                  return dark_theme ? "#FFFFFF" : "#456078"
+            case 'WALLET ONLY':       return dark_theme ? colorCoinDark["WALLET ONLY"] : colorCoin["WALLET ONLY"] 
+            default:                  return dark_theme ? colorCoinDark["default"] : colorCoin["default"] 
         }
     }
 
     function getCoinColor(ticker) {
         let info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        if (!info.type) { return dark_theme ? colorCoin["default"] : colorCoinDark["default"] }
         let color = getCoinGroupTextColor(info.type)
         let base_ticker = atomic_qt_utilities.retrieve_main_ticker(ticker)
-        if (colorCoin.hasOwnProperty(base_ticker))
+        if (colorCoin.hasOwnProperty(base_ticker) && !dark_theme)
         {
-            color = colorCoin[base_ticker]
+            return colorCoin[base_ticker]
+        }
+        if (colorCoinDark.hasOwnProperty(base_ticker) && dark_theme)
+        {
+            return colorCoinDark[base_ticker]
         }
         return color
     }
@@ -267,9 +274,8 @@ QtObject {
                                           "ARRR": "#C7A34C",
                                           "ATOM": "#963b9a",
                                           "AVAX": "#E84142",
-                                          "BNB": "#f0900b",
+                                          "BNB": "#b35900",
                                           "BCH": "#8DC351",
-                                          "BTC": "#E9983C",
                                           "ETC": "#328432",
                                           "ETH": "#687DE3",
                                           "FTM": "#13B5EC",
@@ -277,11 +283,40 @@ QtObject {
                                           "GLMR": "#F6007C",
                                           "QTUM": "#2E9AD0",
                                           "KCS": "#25AF90",
-                                          "KMD": "#7490AA",
+                                          "KMD": "#2d4f86",
                                           "MOVR": "#52CCC9",
                                           "MATIC": "#804EE1",
                                           "ONE": "#00BEEE",
                                           "SBCH": "#74dd54",
-                                          "UBQ": "#00EB90"
+                                          "UBQ": "#00EB90",
+                                          "UTXO": "#349d5f",
+                                          "default": "#2f2f2f",
+                                          "IDO": "#536E93",
+                                          "WALLET ONLY": "#404040"
+                                      })
+
+    readonly property var colorCoinDark: ({
+                                          "ARRR": "#C7A34C",
+                                          "ATOM": "#963b9a",
+                                          "AVAX": "#E84142",
+                                          "BNB": "#ffc266",
+                                          "BCH": "#8DC351",
+                                          "ETC": "#328432",
+                                          "ETH": "#687DE3",
+                                          "FTM": "#13B5EC",
+                                          "HECO": "#00953F",                             
+                                          "GLMR": "#F6007C",
+                                          "QTUM": "#2E9AD0",
+                                          "KCS": "#25AF90",
+                                          "KMD": "#799bd2",
+                                          "MOVR": "#52CCC9",
+                                          "MATIC": "#804EE1",
+                                          "ONE": "#00BEEE",
+                                          "SBCH": "#74dd54",
+                                          "UBQ": "#00EB90",
+                                          "UTXO": "#349d5f",
+                                          "default": "#c8c8c8",
+                                          "IDO": "#536E93",
+                                          "WALLET ONLY": "#cccccc"
                                       })
 }
