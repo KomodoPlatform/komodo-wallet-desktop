@@ -32,8 +32,13 @@ QtObject {
             {
                 return coin_icons_path + ticker.toString().toLowerCase().replace('-', '_') + ".png"
             }
+            if (['SMART CHAIN'].indexOf(ticker) >= 0)
+            {
+                return coin_icons_path + ticker.toString().toLowerCase().replace(' ', '_') + ".png"
+            }
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-            return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + atomic_qt_utilities.retrieve_main_ticker(ticker.toString()).toLowerCase() + ".png"
+            let icon = atomic_qt_utilities.retrieve_main_ticker(ticker.toString()).toLowerCase() + ".png"
+            return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + icon
         }
     }
 

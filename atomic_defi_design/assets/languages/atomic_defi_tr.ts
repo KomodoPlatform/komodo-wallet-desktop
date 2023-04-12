@@ -4,53 +4,53 @@
 <context>
     <name>AddAddressForm</name>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="129"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="134"/>
         <source>Use standard network address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="139"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="145"/>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="144"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="150"/>
         <source>This key already exists.</source>
         <translation type="unfinished">Bu anahtar zaten mevcut.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="153"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="159"/>
         <source>Address</source>
         <translation type="unfinished">Adres</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="178"/>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="301"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="184"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="307"/>
         <source>Cancel</source>
         <translation type="unfinished">İptal</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="192"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="198"/>
         <source>Convert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="192"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="198"/>
         <source>Edit</source>
         <translation type="unfinished">Düzenle</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="192"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="198"/>
         <source>Add</source>
         <translation type="unfinished">Ekle</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="280"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="286"/>
         <source>You need to enable %1 before adding this kind of address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="288"/>
+        <location filename="../../Dex/Addressbook/AddAddressForm.qml" line="294"/>
         <source>Enable</source>
         <translation type="unfinished">Etkinleştir</translation>
     </message>
@@ -307,7 +307,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Portfolio/AssetsList.qml" line="283"/>
+        <location filename="../../Dex/Portfolio/AssetsList.qml" line="279"/>
         <source>Price provider is: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -501,14 +501,19 @@
 <context>
     <name>Chart</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="140"/>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="168"/>
         <source>Loading market data</source>
         <translation type="unfinished">Piyasa bilgisi yükleniyor</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="146"/>
-        <source>There is no chart data for this pair yet</source>
-        <translation type="unfinished">Bu parite için henüz grafik verisi yok</translation>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="174"/>
+        <source>There is no chart data for this pair</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="182"/>
+        <source>There is no chart data for %1 (testcoin) pairs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -737,78 +742,78 @@
         <translation>Al-Sat Detaylarını Onayla</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="108"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="121"/>
         <source>This swap request can not be undone and is a final event!</source>
         <translation>Bu takas isteği geri döndürülemez!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="282"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="295"/>
         <source>Security configuration</source>
         <translation>Güvenlik yapılandırması</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="268"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="281"/>
         <source>Read more about dPoW</source>
         <translation>dPoW hakkında daha fazla bilgi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="254"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="267"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
         <translation>%1 işlemleri için özel güvenlik ayarları kullan</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="267"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="280"/>
         <source>Enable Komodo dPoW security</source>
         <translation>Komodo dPoW güvenliğini etkinleştir</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="297"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="310"/>
         <source>%1 confirmations for incoming %2 transactions</source>
         <translation>Gelen %2 işlemleri için %1 onay</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="115"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="128"/>
         <source>This transaction can take up to 60 mins - DO NOT close this application!</source>
         <translation>Bu işlem 60 dakikayı bulabilir - Programı KAPATMAYINIZ!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="99"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="112"/>
         <source>Trade price is more than 50% different to CEX! Confirm?</source>
         <translation>Takas ücreti CEX ile karşılaştırıldığında %50&apos;den daha fazla farka sahip. Onaylıyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="159"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="172"/>
         <source>Loading fees...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="203"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="216"/>
         <source>&lt;b&gt;Total %1 fees:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Toplam %1 işlem giderleri: &lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="296"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="309"/>
         <source>dPoW protected </source>
         <translation>dPoW korumalı </translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="332"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="345"/>
         <source>Required Confirmations</source>
         <translation>Gereken Onaylar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="374"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="387"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
         <translation>Uyarı, bu atomik takas dPoW korumalı değil!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="401"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="414"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="416"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="429"/>
         <source>Confirm</source>
         <translation>Onayla</translation>
     </message>
@@ -824,182 +829,182 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="108"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="101"/>
         <source>The current number of enabled coins does not match your configuration specification. Your assets configuration will be reset.</source>
         <translation>Etkinleştirilmiş koinlerin mevcut sayısı yapılandırma ayarlarınızla eşleşmiyor. Varlık yapılandırmanız sıfırlanacak.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="415"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="421"/>
         <source>Matching</source>
         <translation>Eşleşiyor</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="415"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="421"/>
         <source>Order Matching</source>
         <translation>Emir Eşleşiyor</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="417"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="423"/>
         <source>Matched</source>
         <translation>Eşleşti</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="417"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="423"/>
         <source>Order Matched</source>
         <translation>Emir Eşleşti</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="419"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="425"/>
         <source>Ongoing</source>
         <translation>Devam ediyor</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="419"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="425"/>
         <source>Swap Ongoing</source>
         <translation>Takas Devam Ediyor</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="421"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="427"/>
         <source>Successful</source>
         <translation>Başarılı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="421"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="427"/>
         <source>Swap Successful</source>
         <translation>Takas Başarılı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="423"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="429"/>
         <source>Refunding</source>
         <translation>Geri ödeniyor</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="425"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="431"/>
         <source>Failed</source>
         <translation>Başarısız</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="425"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="431"/>
         <source>Swap Failed</source>
         <translation>Takas Başarısız</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="427"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="433"/>
         <source>Unknown</source>
         <translation>Bilinmiyor</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="427"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="433"/>
         <source>Unknown State</source>
         <translation>Bilinmeyen durum</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="441"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="447"/>
         <source>Started</source>
         <translation>Başlatıldı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="443"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="449"/>
         <source>Negotiated</source>
         <translation>Pazarlık yapıldı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="445"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="451"/>
         <source>Taker fee sent</source>
         <translation>Alıcı ücreti gönderildi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="447"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="453"/>
         <source>Maker payment received</source>
         <translation>Yapıcı ödemesi alındı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="449"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="455"/>
         <source>Maker payment wait confirm started</source>
         <translation>Yapıcı ödemesi bekleme onayı başladı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="451"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="457"/>
         <source>Maker payment validated and confirmed</source>
         <translation>Yapıcı ödemesi doğrulandı ve onaylandı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="453"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="459"/>
         <source>Taker payment sent</source>
         <translation>Alıcı ödemesi gönderildi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="455"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="461"/>
         <source>Taker payment spent</source>
         <translation>Alıcı ödemesi harcandı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="457"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="463"/>
         <source>Maker payment spent</source>
         <translation>Yapıcı ödemesi harcandı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="459"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="465"/>
         <source>Finished</source>
         <translation>Tamamlandı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="461"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="467"/>
         <source>Start failed</source>
         <translation>Başlatılamadı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="463"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="469"/>
         <source>Negotiate failed</source>
         <translation>Pazarlık başarısız</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="465"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="471"/>
         <source>Taker fee validate failed</source>
         <translation>Alıcı ücreti doğrulanamadı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="467"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="473"/>
         <source>Maker payment transaction failed</source>
         <translation>Yapıcı ödeme işlemi başarısız</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="469"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="475"/>
         <source>Maker payment Data send failed</source>
         <translation>Yapıcı ödeme verileri gönderilemedi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="471"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="477"/>
         <source>Maker payment wait confirm failed</source>
         <translation>Yapıcı ödemesi bekleme onayı başarısız</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="473"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="479"/>
         <source>Taker payment validate failed</source>
         <translation>Alıcı ödemesi doğrulanamadı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="475"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="481"/>
         <source>Taker payment wait confirm failed</source>
         <translation>Alıcı ödemesi bekleme onayı başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="477"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="483"/>
         <source>Taker payment spend failed</source>
         <translation>Alıcı ödeme harcaması başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="479"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="485"/>
         <source>Maker payment wait refund started</source>
         <translation>Yapıcı ödemesi bekleme iadesi başladı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="481"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="487"/>
         <source>Maker payment refunded</source>
         <translation>Yapıcı ödemesi iade edildi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Dashboard.qml" line="483"/>
+        <location filename="../../Dex/Screens/Dashboard.qml" line="489"/>
         <source>Maker payment refund failed</source>
         <translation>Yapıcı ödeme iadesi başarısız</translation>
     </message>
@@ -1384,14 +1389,14 @@
 <context>
     <name>General</name>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="323"/>
+        <location filename="../../Dex/Constants/General.qml" line="342"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n gün</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="333"/>
+        <location filename="../../Dex/Constants/General.qml" line="352"/>
         <source>%nd</source>
         <comment>day</comment>
         <translation>
@@ -1399,7 +1404,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="334"/>
+        <location filename="../../Dex/Constants/General.qml" line="353"/>
         <source>%nh</source>
         <comment>hours</comment>
         <translation>
@@ -1407,7 +1412,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="335"/>
+        <location filename="../../Dex/Constants/General.qml" line="354"/>
         <source>%nm</source>
         <comment>minutes</comment>
         <translation>
@@ -1415,7 +1420,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="336"/>
+        <location filename="../../Dex/Constants/General.qml" line="355"/>
         <source>%ns</source>
         <comment>seconds</comment>
         <translation>
@@ -1423,7 +1428,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="337"/>
+        <location filename="../../Dex/Constants/General.qml" line="356"/>
         <source>%nms</source>
         <comment>milliseconds</comment>
         <translation>
@@ -1431,117 +1436,117 @@
         </translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="338"/>
+        <location filename="../../Dex/Constants/General.qml" line="357"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="374"/>
+        <location filename="../../Dex/Constants/General.qml" line="393"/>
         <source>&lt;b&gt;Taker tx fee:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="375"/>
+        <location filename="../../Dex/Constants/General.qml" line="394"/>
         <source>&lt;b&gt;Dex tx fee:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="376"/>
+        <location filename="../../Dex/Constants/General.qml" line="395"/>
         <source>&lt;b&gt;Dex fee:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="377"/>
+        <location filename="../../Dex/Constants/General.qml" line="396"/>
         <source>&lt;b&gt;Maker tx fee:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="391"/>
+        <location filename="../../Dex/Constants/General.qml" line="410"/>
         <source>%1 balance is zero</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="395"/>
+        <location filename="../../Dex/Constants/General.qml" line="414"/>
         <source>Activating %1 (%2%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="399"/>
+        <location filename="../../Dex/Constants/General.qml" line="418"/>
         <source>Loading wallet...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="403"/>
+        <location filename="../../Dex/Constants/General.qml" line="422"/>
         <source>Min: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="405"/>
+        <location filename="../../Dex/Constants/General.qml" line="424"/>
         <source>Enter an amount</source>
         <translation type="unfinished">Bir miktar gir</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="779"/>
+        <location filename="../../Dex/Constants/General.qml" line="795"/>
         <source>Trading Fee</source>
         <translation>Takas Ücreti</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="789"/>
+        <location filename="../../Dex/Constants/General.qml" line="805"/>
         <source>Minimum Trading Amount</source>
         <translation>Minimum Takas Hacmi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="800"/>
+        <location filename="../../Dex/Constants/General.qml" line="816"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation>%1 cüzdanı zaten mevcut</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="813"/>
+        <location filename="../../Dex/Constants/General.qml" line="829"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
         <translation>%1 bakiye ücret tutarının altında: %2 %3</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="815"/>
+        <location filename="../../Dex/Constants/General.qml" line="831"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation>Takas edilebilir (ücretlerden sonra)%1 bakiyesi minimum işlem ücretinden düşük</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="817"/>
+        <location filename="../../Dex/Constants/General.qml" line="833"/>
         <source>Please fill the price field</source>
         <translation>Lütfen fiyat alanını doldurun</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="819"/>
+        <location filename="../../Dex/Constants/General.qml" line="835"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="809"/>
-        <location filename="../../Dex/Constants/General.qml" line="811"/>
+        <location filename="../../Dex/Constants/General.qml" line="825"/>
+        <location filename="../../Dex/Constants/General.qml" line="827"/>
         <source>Please wait for %1 to fully activate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="821"/>
-        <location filename="../../Dex/Constants/General.qml" line="823"/>
+        <location filename="../../Dex/Constants/General.qml" line="837"/>
+        <location filename="../../Dex/Constants/General.qml" line="839"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation>%1 hacmi, minimum işlem ücretinden düşük</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="825"/>
-        <location filename="../../Dex/Constants/General.qml" line="829"/>
+        <location filename="../../Dex/Constants/General.qml" line="841"/>
+        <location filename="../../Dex/Constants/General.qml" line="845"/>
         <source>%1 needs to be enabled in order to use %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="827"/>
-        <location filename="../../Dex/Constants/General.qml" line="831"/>
+        <location filename="../../Dex/Constants/General.qml" line="843"/>
+        <location filename="../../Dex/Constants/General.qml" line="847"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="833"/>
+        <location filename="../../Dex/Constants/General.qml" line="849"/>
         <source>Unknown Error</source>
         <translation>Bilinmeyen Hata</translation>
     </message>
@@ -1738,9 +1743,14 @@ Try again or select &apos;Allow custom seed&apos; to continue.</source>
 <context>
     <name>ListDelegate</name>
     <message>
-        <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="125"/>
+        <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="126"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
         <translation> %1 etkin değil - En iyi %2 siparişini seçebilmesi için etkinleştirmek istiyor musunuz ? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Evet&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Hayır&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="127"/>
+        <source> %1 is not enabled - Please enable it through the coin activation menu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="52"/>
@@ -1870,11 +1880,6 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="312"/>
-        <source>Porfolio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Dex/Wallet/Main.qml" line="369"/>
         <source> Contract Address</source>
         <translation type="unfinished"></translation>
@@ -1905,9 +1910,15 @@ They will be removed from the orderbook until you log in again.</source>
         <translation>Al</translation>
     </message>
     <message>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="100"/>
         <location filename="../../Dex/Wallet/Main.qml" line="597"/>
         <source>Swap</source>
         <translation>Takasla</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Wallet/Main.qml" line="312"/>
+        <source>Portfolio</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Wallet/Main.qml" line="626"/>
@@ -1972,29 +1983,24 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="90"/>
-        <source>Trade</source>
-        <translation>Al Sat</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="17"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="18"/>
         <source>Trading Information</source>
         <translation type="unfinished">Al Sat Bilgisi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="40"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="41"/>
         <source>Chart</source>
         <translation type="unfinished">Grafik</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="48"/>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="100"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="49"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="110"/>
         <source>Orders</source>
         <translation>Emirler</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="56"/>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="110"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="57"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="120"/>
         <source>History</source>
         <translation>Tarihçe</translation>
     </message>
@@ -2122,17 +2128,17 @@ They will be removed from the orderbook until you log in again.</source>
 <context>
     <name>NewContactPopup</name>
     <message>
-        <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="32"/>
+        <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="34"/>
         <source>Contact name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="41"/>
+        <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="43"/>
         <source>This contact name already exists.</source>
         <translation type="unfinished">Bu kişi adı zaten mevcut.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="50"/>
+        <location filename="../../Dex/Addressbook/NewContactPopup.qml" line="52"/>
         <source>+ ADD</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2289,32 +2295,32 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished">Seed kelimeleriniz önemlidir - bu yüzden doğru olduğundan emin olmak istiyoruz. Cüzdanınızı istediğiniz zaman kolayca kurtarabileceğinizden emin olmak için seed kelimeleriniz hakkında üç farklı soru soracağız.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="602"/>
+        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="603"/>
         <source>Enter the </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="602"/>
+        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="603"/>
         <source>word</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="648"/>
+        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="649"/>
         <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="689"/>
+        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="690"/>
         <source>Enter password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="707"/>
+        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="708"/>
         <source>Enter the same password to confirm</source>
         <translation type="unfinished">Doğrulamak için aynı parolayı giriniz</translation>
     </message>
     <message>
-        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="731"/>
+        <location filename="../../Dex/Screens/Startup/NewWallet.qml" line="732"/>
         <source>Continue</source>
         <translation type="unfinished">Devam</translation>
     </message>
@@ -2498,14 +2504,14 @@ They will be removed from the orderbook until you log in again.</source>
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="125"/>
-        <source>Amount to sell</source>
-        <translation>Satılacak miktar</translation>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="123"/>
+        <source>Send</source>
+        <translation type="unfinished">Gönder</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="125"/>
-        <source>Amount to receive</source>
-        <translation>Alınacak miktar</translation>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="123"/>
+        <source>Receive</source>
+        <translation type="unfinished">Al</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="154"/>
@@ -2587,11 +2593,6 @@ They will be removed from the orderbook until you log in again.</source>
         <source>Increase 1% relative to CEX market price.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="123"/>
-        <source>Volume</source>
-        <translation>Hacim</translation>
-    </message>
 </context>
 <context>
     <name>OrderLine</name>
@@ -2612,114 +2613,104 @@ They will be removed from the orderbook until you log in again.</source>
 <context>
     <name>OrderModal</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="30"/>
-        <source>Swap Details</source>
-        <translation>Takas Detayları</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="30"/>
-        <source>Order Details</source>
-        <translation>Emir Detayları</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="119"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="117"/>
         <source>Order Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="120"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="118"/>
         <source>Maker Order</source>
         <translation>Yapıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="120"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="118"/>
         <source>Taker Order</source>
         <translation>Alıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="128"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="126"/>
         <source>Refund State</source>
         <translation>Geri Ödeme Durumu</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="129"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="127"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
         <translation>Takas işlemi başarısız oldu, ancak otomatik geri ödeme süreci başladı. Lütfen bekleyin ve ödemenizi geri alana kadar uygulamayı açık tutun</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="138"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="136"/>
         <source>Date</source>
         <translation>Tarih</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="242"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="240"/>
         <source>Recover Funds</source>
         <translation>Fon Kurtar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="242"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="240"/>
         <source>Refunding...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="267"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="265"/>
         <source>View on Explorer</source>
         <translation>Explorer&apos;da Göster</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="256"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="254"/>
         <source>Cancel Order</source>
         <translation>Emri İptal Et</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="189"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="187"/>
         <source>Error ID</source>
         <translation>Hata ID</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="148"/>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="154"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="146"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="152"/>
         <source>Swap ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="161"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="159"/>
         <source>Maker Payment Sent Transaction ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="161"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="159"/>
         <source>Maker Payment Spent Transaction ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="168"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="166"/>
         <source>Maker Payment TXID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="175"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="173"/>
         <source>Taker Payment Spent Transaction ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="175"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="173"/>
         <source>Taker Payment Sent Transaction ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="181"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="179"/>
         <source>Taker Payment TXID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="199"/>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="204"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="197"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="202"/>
         <source>Error Log</source>
         <translation>Hata Kaydı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="295"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="293"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
@@ -2746,43 +2737,43 @@ Please select a new order.</source>
 <context>
     <name>OrdersPage</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="216"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="218"/>
         <source>From</source>
         <translation>Gönderen</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="229"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="231"/>
         <source>To</source>
         <translation>Alan</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="143"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="111"/>
         <source>Apply Filter</source>
         <translation>Filtreyi Uygula</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="99"/>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="123"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="120"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="123"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="120"/>
         <source>Date</source>
         <translation type="unfinished">Tarih</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="110"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="134"/>
         <source>Export CSV</source>
         <translation>CSV&apos;yi dışa aktar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="154"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="149"/>
         <source>Cancel All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="258"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrdersPage.qml" line="260"/>
         <source>Please choose the CSV export name and location</source>
         <translation>Lütfen CSV dışa aktarma adını ve konumunu seçin</translation>
     </message>
@@ -2864,12 +2855,12 @@ Please select a new order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Portfolio/Portfolio.qml" line="253"/>
+        <location filename="../../Dex/Portfolio/Portfolio.qml" line="251"/>
         <source>Show only coins with balance</source>
         <translation>Sadece bakiyesi olan koinleri göster</translation>
     </message>
     <message>
-        <location filename="../../Dex/Portfolio/Portfolio.qml" line="253"/>
+        <location filename="../../Dex/Portfolio/Portfolio.qml" line="251"/>
         <source>(%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3101,17 +3092,17 @@ Please select a new order.</source>
 <context>
     <name>RestartModal</name>
     <message>
-        <location filename="../../Dex/Components/RestartModal.qml" line="39"/>
+        <location filename="../../Dex/Components/RestartModal.qml" line="38"/>
         <source>Applying the changes...</source>
         <translation>Değişiklikler uygulanıyor...</translation>
     </message>
     <message>
-        <location filename="../../Dex/Components/RestartModal.qml" line="56"/>
+        <location filename="../../Dex/Components/RestartModal.qml" line="55"/>
         <source>Restarting the application...</source>
         <translation>Uygulama yeniden başlatılıyor...</translation>
     </message>
     <message>
-        <location filename="../../Dex/Components/RestartModal.qml" line="56"/>
+        <location filename="../../Dex/Components/RestartModal.qml" line="55"/>
         <source>Restarting the application. %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3641,12 +3632,12 @@ Please select a new order.</source>
 <context>
     <name>Sidebar</name>
     <message>
-        <location filename="../../Dex/Wallet/Sidebar.qml" line="62"/>
+        <location filename="../../Dex/Wallet/Sidebar.qml" line="68"/>
         <source>Search</source>
         <translation type="unfinished">Ara</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Sidebar.qml" line="131"/>
+        <location filename="../../Dex/Wallet/Sidebar.qml" line="137"/>
         <source>ADD CRYPTO</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3679,9 +3670,14 @@ Please select a new order.</source>
         <translation>CEX Oranı</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="226"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="227"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
         <translation> %1 etkin değil - En iyi %2 siparişini seçebilmesi için etkinleştirmek istiyor musunuz ? &lt;br&gt;&lt;a href=&apos;#&apos;&gt;Evet&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Hayır&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="228"/>
+        <source> %1 is not enabled - Please enable it through the coin activation menu</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3779,7 +3775,7 @@ Please select a new order.</source>
     <name>SubOrders</name>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="84"/>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="285"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="286"/>
         <source>Orders</source>
         <translation>Emirler</translation>
     </message>
@@ -3824,12 +3820,12 @@ Please select a new order.</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="261"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="262"/>
         <source>Apply filter</source>
         <translation>Filtreyi uygula</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="297"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/SubOrders.qml" line="298"/>
         <source>No results found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4034,6 +4030,19 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     </message>
 </context>
 <context>
+    <name>TotalView</name>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/TotalView.qml" line="63"/>
+        <source>Receive %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/TotalView.qml" line="63"/>
+        <source>Send %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Trade</name>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="158"/>
@@ -4204,7 +4213,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../Dex/Portfolio/TradingViewChart.qml" line="132"/>
         <source>There is no chart data for this ticker yet</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Henüz bu hisse senedi için grafik verisi yok</translation>
     </message>
 </context>
 <context>
@@ -4448,7 +4457,7 @@ This might take a few minutes...</source>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="712"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="644"/>
         <source>An error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4524,7 +4533,7 @@ This might take a few minutes...</source>
         <translation>Çıkış</translation>
     </message>
     <message>
-        <location filename="../../Dex/main.qml" line="263"/>
+        <location filename="../../Dex/main.qml" line="264"/>
         <source>Balance</source>
         <translation>Bakiye</translation>
     </message>
