@@ -77,16 +77,13 @@ Dex.ComboBoxWithSearchBar
         }
     }
 
-    contentItem: Item
+    contentItem: AssetRow
     {
-        AssetRow
-        {
-            id: _contentRow
+        id: _contentRow
 
-            anchors.left: parent.left
-            anchors.leftMargin: 13
-            anchors.verticalCenter: parent.verticalCenter
-        }
+        anchors.left: parent.left
+        anchors.leftMargin: 13
+        anchors.verticalCenter: parent.verticalCenter
     }
 
     onCurrentIndexChanged:
