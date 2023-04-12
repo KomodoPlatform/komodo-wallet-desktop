@@ -32,7 +32,7 @@ QtObject {
             {
                 return coin_icons_path + ticker.toString().toLowerCase().replace('-', '_') + ".png"
             }
-            if (['SMART CHAIN'].indexOf(ticker) >= 0)
+            if (['Smart Chain'].indexOf(ticker) >= 0)
             {
                 return coin_icons_path + ticker.toString().toLowerCase().replace(' ', '_') + ".png"
             }
