@@ -80,7 +80,7 @@ DexPopup
                 app.pageLoader.item.switchPage(Dashboard.PageType.DEX)
                 break
             case "open_log_modal":
-                showError(notification.getTitle(), notification.long_message)
+                showError(getNotificationTitle(notification), notification.long_message)
                 break
             default:
                 console.warn("Unknown notification click action", notification.click_action)

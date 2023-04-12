@@ -120,9 +120,9 @@ ColumnLayout
             width: parent.width
             height: 41
             radius: 18
-            left_text: qsTr("Volume")
+            left_text: sell_mode ? qsTr("Send") : qsTr("Receive") 
             right_text: left_ticker
-            placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
+            placeholderText: "0" 
             text: API.app.trading_pg.volume
             onTextChanged: setVolume(text)
         }
