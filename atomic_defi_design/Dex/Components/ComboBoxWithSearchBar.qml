@@ -24,8 +24,7 @@ ComboBox
     background: Rectangle
     {
         id: bg
-        implicitWidth: control.width
-        implicitHeight: control.height
+        anchors.fill: parent
         color: control.backgroundColor
         radius: control.radius
     }
