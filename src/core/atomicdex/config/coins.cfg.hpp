@@ -48,7 +48,7 @@ namespace atomic_dex
         std::string                                       type;
         std::string                                       coinpaprika_id{"test-coin"};
         std::string                                       coingecko_id{"test-coin"};
-        std::string                                       nomics_id{"test-coin"};
+        std::string                                       livecoinwatch_id{"test-coin"};
         std::string                                       explorer_url;
         std::string                                       tx_uri{"tx/"};
         std::string                                       address_url{"address/"};

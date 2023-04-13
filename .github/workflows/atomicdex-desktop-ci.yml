@@ -17,6 +17,10 @@ env:
   DEX_DISPLAY_NAME: "AtomicDex Desktop"
   DEX_COMPANY: "KomodoPlatform"
   DEX_WEBSITE: "https://atomicdex.io/"
+  VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
+  VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
+  RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\atomicDEX-Desktop\ci_tools_atomic_dex\vcpkg-repo
+  VCPKG_ROOT: ${{ github.workspace }}\atomicDEX-Desktop\ci_tools_atomic_dex\vcpkg-repo
 
 jobs:
 
@@ -78,6 +82,9 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
+
+      - name: Expose GitHub Runtime Env
+        uses: crazy-max/ghaction-github-runtime@v2
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -181,12 +188,10 @@ jobs:
           echo "CC=clang-12" >> $GITHUB_ENV
 
       - name: vcpkg deps (All)
-        uses: lukka/run-vcpkg@v10
+        uses: lukka/run-vcpkg@v11
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
           vcpkgJsonGlob: 'vcpkg.json'
-
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'  && 'KomodoPlatform/atomicDEX-Desktop' == github.repository

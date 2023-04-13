@@ -32,9 +32,38 @@ QtObject {
             {
                 return coin_icons_path + ticker.toString().toLowerCase().replace('-', '_') + ".png"
             }
+            if (['Smart Chain'].indexOf(ticker) >= 0)
+            {
+                return coin_icons_path + ticker.toString().toLowerCase().replace(' ', '_') + ".png"
+            }
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-            return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + atomic_qt_utilities.retrieve_main_ticker(ticker.toString()).toLowerCase() + ".png"
+            let icon = atomic_qt_utilities.retrieve_main_ticker(ticker.toString()).toLowerCase() + ".png"
+            return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + icon
         }
+    }
+
+    function getChartTicker(ticker)
+    {
+        let coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.livecoinwatch_id
+    }
+
+    function coinWithoutSuffix(ticker)
+    {
+        if (ticker.search("-") > -1)
+        {
+            return ticker.split("-")[0]
+        }
+        else
+        {
+            return ticker
+        }
+    }
+
+    function is_testcoin(ticker)
+    {
+        let coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.is_testnet
     }
 
     function coinName(ticker) {
@@ -123,16 +152,6 @@ QtObject {
         }
         else console.log("["+coin+"] [zhtlcActivationProgress] Unexpected status: " + status)
         return progress
-    }
-
-    function getNomicsId(ticker) {
-        if(ticker === "" || ticker === "All" || ticker===undefined) {
-            return ""
-        } else {
-            const nomics_id = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).nomics_id
-            if (nomics_id == 'test-coin') return ""
-            return nomics_id
-        }
     }
 
     function coinContractAddress(ticker) {

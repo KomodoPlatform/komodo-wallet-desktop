@@ -309,7 +309,7 @@ Item
                         DefaultText
                         {
                             id: portfolio_title
-                            text_value: qsTr("Porfolio")
+                            text_value: qsTr("Portfolio")
                             Layout.alignment: Qt.AlignHCenter
                             color: headerTitleColor
                             font.pixelSize: headerTitleFont

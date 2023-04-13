@@ -161,7 +161,7 @@ namespace
                 }
                 if (field_name == "active")
                 {
-                    SPDLOG_INFO("ticker: {} status active: {}", ticker, status);
+                    SPDLOG_DEBUG("ticker: {} status active: {}", ticker, status);
                     registry[ticker].active = status;
                 }
                 else if (field_name == "is_segwit_on")

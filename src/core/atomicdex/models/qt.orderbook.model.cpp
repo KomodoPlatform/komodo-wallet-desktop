@@ -375,6 +375,7 @@ namespace atomic_dex
         m_orders_id_registry.clear();
         for (auto&& order: m_model_data)
         {
+
             // Maybe adding a suffix for segwit entries could avoid this?
             // Working so far, but needs more testing to see if there are ripple effects due to the uuid suffix.
             // Early tests confirm order selection and placing do not appear to be negatively affected.

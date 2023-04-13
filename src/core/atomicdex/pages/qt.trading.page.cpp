@@ -981,7 +981,7 @@ namespace atomic_dex
     bool
     trading_page::set_pair(bool is_left_side, const QString& changed_ticker)
     {
-        SPDLOG_INFO("Changed ticker: {}", changed_ticker.toStdString());
+        // SPDLOG_DEBUG("Changed ticker: {}", changed_ticker.toStdString());
         const auto* market_pair = get_market_pairs_mdl();
         auto        base        = market_pair->get_left_selected_coin();
         auto        rel         = market_pair->get_right_selected_coin();
