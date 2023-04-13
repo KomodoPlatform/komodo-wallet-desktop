@@ -622,8 +622,8 @@ DexPopup
         }
 
         OutlineButton
-        {
-            text: qsTr('Mark all as read')
+        {            
+            text: notifications_list.length !== 0 ? qsTr('Mark all as read') : qsTr('Close')
             height: 40
             width: 260
             Layout.alignment: Qt.AlignHCenter
