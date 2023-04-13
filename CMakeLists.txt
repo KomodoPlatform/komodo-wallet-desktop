@@ -60,13 +60,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/v1.0.1-beta/mm2-6bb79b3d8-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/v1.0.2-beta/mm2-fa745617d-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/v1.0.1-beta/mm2-6bb79b3d8-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/v1.0.2-beta/mm2-fa745617d-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/v1.0.1-beta/mm2-6bb79b3d8-Win64.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/v1.0.2-beta/mm2-fa745617d-Win64.zip)
 endif ()
 
 #FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
