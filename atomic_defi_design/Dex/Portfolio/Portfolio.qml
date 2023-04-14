@@ -148,7 +148,7 @@ Item {
                         radius: 15
                         padding: 25
                         font: DexTypo.body2
-                        text: qsTr("ADD ASSET")
+                        text: qsTr("ADD CRYPTO")
                         onClicked: enable_coin_modal.open()
                     }
                 }

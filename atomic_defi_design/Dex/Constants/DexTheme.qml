@@ -90,18 +90,14 @@ QtObject {
 
     property color headTextColor: accentColor
 
-    property color proviewItemBoxBackgroundColor: dexBoxBackgroundColor
+    property color proviewItemBoxBackgroundColor: backgroundDarkColor6
     property color proviewItemBoxBorderColor: 'transparent'
     property color proviewItemBoxTitleColor: headTextColor
     property color proviewItemBoxIconColor: accentColor
     property int proviewItemBoxBorderWidth: 0
 
     property color comboBoxBorderColor: rectangleBorderColor
-    property color comboBoxBackgroundColor: dexBoxBackgroundColor
-
-
-    property bool walletSidebarShadowVisibility: true
-    property color walletSidebarLeftBorderColor: backgroundColorDeep
+    property color comboBoxBackgroundColor: backgroundDarkColor6
 
 
     property color leftSidebarBorderColor: rectangleBorderColor
@@ -118,32 +114,10 @@ QtObject {
 
     property bool portfolioPieGradient: false
 
-    property color senderColorStart: redColor
-    property color receiverColorStart: greenColor
+    property color senderColorStart: warningColor
+    property color receiverColorStart: okColor
 
-
-
-    // Old Theme
-    property string chartTheme: Style.dark_theme ? "dark" : "light"
-    
-    property color surfaceColor: backgroundDarkColor2
-    property color backgroundColorDeep: backgroundDarkColor2
-    property color dexBoxBackgroundColor: backgroundDarkColor6
-
-    property color hightlightColor: accentDarkColor3
-    property color hoverColor: buttonColorHovered
-    property color modalStepColor: accentColor
-    property color modelStepBorderColor: hightlightColor
-
-    property int sidebarShadowRadius: 32
-    property real sideBarAnimationDuration: Style.animationDuration
-
-    property color chartTradingLineColor: Dex.CurrentTheme.chartTradingLineColor
-    property color chartTradingLineBackgroundColor: Dex.CurrentTheme.chartTradingLineBackgroundColor
-    property color lineChartColor: accentColor
     property color chartGridLineColor: Qt.rgba(255,255,255,0.4)
-
-    property color busyIndicatorColor: Dex.CurrentTheme.busyIndicatorColor
 
     // Button
     property color buttonColorDisabled: Dex.CurrentTheme.buttonColorDisabled
@@ -154,6 +128,16 @@ QtObject {
     property color buttonColorTextHovered: Dex.CurrentTheme.buttonTextHoveredColor
     property color buttonColorTextEnabled: Dex.CurrentTheme.buttonTextEnabledColor
     property color buttonColorTextPressed: Dex.CurrentTheme.buttonTextPressedColor
+
+    property color buttonSecondaryColorDisabled: Dex.CurrentTheme.buttonSecondaryColorDisabled
+    property color buttonSecondaryColorEnabled: Dex.CurrentTheme.buttonSecondaryColorEnabled
+    property color buttonSecondaryColorHovered: Dex.CurrentTheme.buttonSecondaryColorHovered
+    property color buttonSecondaryColorPressed: Dex.CurrentTheme.buttonSecondaryColorPressed
+
+    property color buttonCancelColorDisabled: Dex.CurrentTheme.buttonCancelColorDisabled
+    property color buttonCancelColorEnabled: Dex.CurrentTheme.buttonCancelColorEnabled
+    property color buttonCancelColorHovered: Dex.CurrentTheme.buttonCancelColorHovered
+    property color buttonCancelColorPressed: Dex.CurrentTheme.buttonCancelColorPressed
 
     property color buttonGradientEnabled1: DexTheme.buttonColorEnabled
     property color buttonGradientEnabled2: DexTheme.buttonColorEnabled
@@ -174,30 +158,13 @@ QtObject {
     property color colorScrollbarGradient1: Style.colorScrollbarGradient1
     property color colorScrollbarGradient2: Style.colorScrollbarGradient2
 
-    property color greenColor: Dex.CurrentTheme.okColor
-    property color redColor: Dex.CurrentTheme.noColor
+    property color okColor: Dex.CurrentTheme.okColor
+    property color warningColor: Dex.CurrentTheme.warningColor
+    property color swapIconColor: Dex.CurrentTheme.swapIconColor
 
     // Widget settings 
 
     property int rectangleRadius: Style.rectangleCornerRadius
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -359,7 +326,7 @@ QtObject {
     function getValueColor(v) {
         v = parseFloat(v)
         if(v !== 0)
-            return v > 0 ? greenColor : redColor
+            return v > 0 ? okColor : warningColor
 
         return Style.colorWhite4
     }

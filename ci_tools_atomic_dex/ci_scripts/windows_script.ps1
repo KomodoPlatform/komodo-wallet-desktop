@@ -25,5 +25,5 @@ Get-Item -Path "coins\icons\*.png" | Move-Item -Destination "atomic_defi_design\
 mkdir b
 cd b
 
-cmake -DCMAKE_BUILD_TYPE=Release -GNinja ../
+Invoke-Expression "cmake -DCMAKE_BUILD_TYPE=$Env:CMAKE_BUILD_TYPE -GNinja ../"
 ninja install

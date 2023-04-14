@@ -10,7 +10,7 @@ namespace atomic_dex
     inline const std::vector<std::string> g_default_coins{
         g_primary_dex_coin,
         g_second_primary_dex_coin,
-        "KIP0001",
+        "VOTE2023",
         "BTC"
     };
     inline const std::vector<std::string> g_wallet_only_coins{
@@ -31,7 +31,8 @@ namespace atomic_dex
         "REVS",
         "SUPERNET",
         "XPM",
-        "KIP0001",
+        "BTC-segwit",
+        "VOTE2023",
         "ATOM"
     };
 }

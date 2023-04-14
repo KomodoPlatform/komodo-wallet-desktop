@@ -140,7 +140,7 @@ namespace atomic_dex
         cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
         cfg.coinpaprika_id       = j.contains("coinpaprika_id") ? j.at("coinpaprika_id").get<std::string>() : "test-coin";
         cfg.coingecko_id         = j.contains("coingecko_id") ? j.at("coingecko_id").get<std::string>() : "test-coin";
-        cfg.nomics_id            = j.contains("nomics_id") ? j.at("nomics_id").get<std::string>() : "test-coin";
+        cfg.livecoinwatch_id    = j.contains("livecoinwatch_id") ? j.at("livecoinwatch_id").get<std::string>() : "test-coin";
         cfg.is_claimable         = j.count("is_claimable") > 0;
         cfg.is_custom_coin       = j.contains("is_custom_coin") ? j.at("is_custom_coin").get<bool>() : false;
         cfg.is_testnet           = j.contains("is_testnet") ? j.at("is_testnet").get<bool>() : false;

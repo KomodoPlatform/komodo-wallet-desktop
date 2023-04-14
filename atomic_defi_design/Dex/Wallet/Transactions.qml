@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import Qaterial 1.0 as Qaterial
 
 import "../Components"
 import "../Constants"
@@ -30,7 +31,7 @@ Dex.ListView
         radius: 0
         border.width: 0
         colorAnimation: false
-        color: mouse_area.containsMouse ? Dex.CurrentTheme.buttonColorHovered : 'transparent'
+        color: mouse_area.containsMouse ? Dex.CurrentTheme.listItemHoveredBackground : 'transparent'
 
         Dex.MouseArea
         {
@@ -63,10 +64,13 @@ Dex.ListView
                     visible: transaction_note !== ""
                 }
 
-                TransactionArrow
+
+                Qaterial.Icon
                 {
                     id: received_icon
-                    amISender: am_i_sender ? true : false
+                    size: 16
+                    icon: am_i_sender ? Qaterial.Icons.arrowTopRight : Qaterial.Icons.arrowBottomRight
+                    color: am_i_sender ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
                 }
 
                 // Description
@@ -93,7 +97,7 @@ Dex.ListView
 
                 }
                 font.pixelSize: description.font.pixelSize
-                color: am_i_sender ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+                color: am_i_sender ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
                 privacy: true
             }
 

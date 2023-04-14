@@ -283,7 +283,7 @@ Dex.MultipageModal
 
         footer:
         [
-            Dex.Button
+            Dex.CancelButton
             {
                 Layout.preferredWidth: 199
                 Layout.preferredHeight: 48

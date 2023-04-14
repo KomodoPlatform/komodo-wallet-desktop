@@ -56,7 +56,7 @@ namespace atomic_dex
         bool                                        active{false};
         std::string                                 coinpaprika_id{"test-coin"};
         std::string                                 coingecko_id{"test-coin"};
-        std::string                                 nomics_id{"test-coin"};
+        std::string                                 livecoinwatch_id{"test-coin"};
         bool                                        is_custom_coin{false};
         std::string                                 type;
         std::optional<std::set<CoinType>> other_types;
