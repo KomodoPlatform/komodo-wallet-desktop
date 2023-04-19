@@ -177,9 +177,9 @@ namespace atomic_dex
 
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
-        if (s >= 2min)
+        if (s >= 5min)
         {
-            SPDLOG_INFO("2min spend - refreshing provider");
+            SPDLOG_INFO("[global_price_service::update()] - 5min elapsed, updating providers");
             this->on_force_update_providers({});
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
