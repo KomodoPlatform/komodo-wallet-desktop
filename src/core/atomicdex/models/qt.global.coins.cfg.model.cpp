@@ -309,6 +309,12 @@ namespace atomic_dex
     }
 
     global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_ewt_proxy() const
+    {
+        return m_proxies[CoinType::EWT];
+    }
+
+    global_coins_cfg_proxy_model*
     global_coins_cfg_model::get_all_bep20_proxy() const
     {
         return m_proxies[CoinType::BEP20];
