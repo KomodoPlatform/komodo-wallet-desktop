@@ -42,6 +42,7 @@ Item
     Layout.fillHeight: true
     Layout.fillWidth: true
 
+    // TODO: Move this section for the coin summary bar at the top to its own component
     ColumnLayout
     {
         id: wallet_layout
@@ -970,13 +971,15 @@ Item
                         GradientStop { position: 1; color: Dex.CurrentTheme.backgroundColor }
                     }
                 }
-
+                
+                // Transactions history table
                 Transactions
                 {
                     width: parent.width
                     height: parent.height
                 }
 
+                // Placeholder if no tx history available, or being fetched.
                 ColumnLayout
                 {
                     visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
@@ -1011,6 +1014,7 @@ Item
                         visible: api_wallet_page.tx_fetching_busy
                     }
 
+                    // When no tx history available, or being fetched, show a button to open the explorer.
                     DefaultText
                     {
                         id: explorerLink
