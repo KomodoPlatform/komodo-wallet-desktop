@@ -136,6 +136,20 @@ namespace atomic_dex
         emit onLangChanged();
     }
 
+    bool atomic_dex::settings_page::is_spamfilter_enabled() const
+    {
+        return m_config.spamfilter_enabled;
+    }
+
+    void settings_page::set_spamfilter_enabled(bool is_enabled)
+    {
+        if (m_config.spamfilter_enabled != is_enabled)
+        {
+            change_spamfilter_status(m_config, is_enabled);
+            emit onSpamFilterEnabledChanged();
+        }
+    }
+
     bool atomic_dex::settings_page::is_notification_enabled() const
     {
         return m_config.notification_enabled;

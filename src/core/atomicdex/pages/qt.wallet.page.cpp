@@ -977,14 +977,22 @@ namespace atomic_dex
         if (!evt.with_error && QString::fromStdString(evt.ticker) == get_current_ticker())
         {
             std::error_code ec;
+            const auto& settings         = m_system_manager.get_system<settings_page>();
             t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
             t_transactions  to_init;
-            for (auto&& cur_tx: transactions)
+            if (settings.is_spamfilter_enabled())
             {
-                if (safe_float(cur_tx.total_amount) != 0)
+                for (auto&& cur_tx: transactions)
                 {
-                    to_init.push_back(cur_tx);
+                    if (safe_float(cur_tx.total_amount) != 0)
+                    {
+                        to_init.push_back(cur_tx);
+                    }
                 }
+            }
+            else
+            {
+                to_init = transactions;
             }
             if (m_transactions_mdl->rowCount() == 0)
             {
