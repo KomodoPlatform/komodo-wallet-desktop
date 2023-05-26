@@ -71,7 +71,7 @@ MultipageModal
             text_box_width: 600
             text_value: !details ? "" : details.tx_hash
             linkURL: !details ? "" :General.getTxExplorerURL(api_wallet_page.ticker, details.tx_hash, false)
-            onCopyNotificationTitle: qsTr("%1 txid", "TICKER").arg(api_wallet_page.ticker)
+            onCopyNotificationTitle:  qsTr("%1 txid", "TICKER").arg(api_wallet_page.ticker)
             onCopyNotificationMsg: qsTr("copied to clipboard.")
             privacy: true
         }
@@ -103,7 +103,7 @@ MultipageModal
             model: !details ? [] :
                     details.from
             linkURL: !details ? "" :General.getAddressExplorerURL(api_wallet_page.ticker, details.from)
-            onCopyNotificationTitle: qsTr("From address")
+            onCopyNotificationTitle: is_spam ? "" : qsTr("From address")
         }
 
         AddressList
@@ -117,7 +117,7 @@ MultipageModal
                     :  details.to.length > 1
                     ? General.getAddressExplorerURL(api_wallet_page.ticker, General.arrayExclude(details.to, details.from[0]))
                     : General.getAddressExplorerURL(api_wallet_page.ticker, details.to)
-            onCopyNotificationTitle: qsTr("To address")
+            onCopyNotificationTitle: is_spam ? "" : qsTr("To address")
         }
 
         // Date
