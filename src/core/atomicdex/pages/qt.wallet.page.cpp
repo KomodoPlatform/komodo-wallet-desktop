@@ -107,11 +107,11 @@ namespace atomic_dex
         return QString::fromStdString(mm2_system.get_current_ticker());
     }
 
-    void wallet_page::set_current_ticker(const QString& ticker)
+    void wallet_page::set_current_ticker(const QString& ticker, bool force)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         auto  coin_info  = mm2_system.get_coin_info(ticker.toStdString());
-        if (mm2_system.set_current_ticker(ticker.toStdString()))
+        if (mm2_system.set_current_ticker(ticker.toStdString()) || force)
         {
             SPDLOG_INFO("new ticker: {}", ticker.toStdString());
             m_transactions_mdl->reset();

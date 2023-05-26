@@ -30,7 +30,7 @@ namespace atomic_dex
         // Getters/Setters
         [[nodiscard]] transactions_model* get_transactions_mdl() const;
         [[nodiscard]] QString             get_current_ticker() const;
-        void                              set_current_ticker(const QString& ticker);
+        void                              set_current_ticker(const QString& ticker, bool force = false);
         [[nodiscard]] QVariant            get_ticker_infos() const;
         [[nodiscard]] bool                is_broadcast_busy() const;
         void                              set_broadcast_busy(bool status);
