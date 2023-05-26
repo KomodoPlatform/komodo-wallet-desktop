@@ -18,6 +18,7 @@ MultipageModal
     function reset() { }
 
     property var details
+    property bool is_spam: !details ? false : details.amount == 0
 
     onClosed:
     {
@@ -28,6 +29,30 @@ MultipageModal
     MultipageModalContent
     {
         titleText: qsTr("Transaction Details")
+
+        // Warning for spam/poison transactions
+        DefaultText
+        {
+            id: warning_text
+            visible: is_spam
+            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
+            wrapMode: Label.Wrap
+            color: Style.colorOrange
+            text_value: qsTr("This transaction has been identified as a potential address poisoning attack.")
+        }
+
+        // Warning for spam/poison transactions
+        DefaultText
+        {
+            id: warning_text2
+            visible: is_spam
+            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
+            wrapMode: Label.Wrap
+            color: Style.colorOrange
+            text_value: qsTr("Please see the Support FAQ for more information.")
+        }
 
         // Transaction Hash
         TitleText
