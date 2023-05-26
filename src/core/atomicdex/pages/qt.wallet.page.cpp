@@ -978,15 +978,23 @@ namespace atomic_dex
         {
             std::error_code ec;
             t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
+            t_transactions  to_init;
+            for (auto&& cur_tx: transactions)
+            {
+                if (safe_float(cur_tx.total_amount) != 0)
+                {
+                    to_init.push_back(cur_tx);
+                }
+            }
             if (m_transactions_mdl->rowCount() == 0)
             {
                 //! insert all transactions
-                m_transactions_mdl->init_transactions(transactions);
+                m_transactions_mdl->init_transactions(to_init);
             }
             else
             {
                 //! Update tx (only unconfirmed) or insert (new tx)
-                m_transactions_mdl->update_or_insert_transactions(transactions);
+                m_transactions_mdl->update_or_insert_transactions(to_init);
             }
             if (ec)
             {
