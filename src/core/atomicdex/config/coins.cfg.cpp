@@ -33,6 +33,10 @@ namespace
         {
             return CoinType::ERC20;
         }
+        if (coin_type == "EWT")
+        {
+            return CoinType::EWT;
+        }
         if (coin_type == "UTXO")
         {
             return CoinType::UTXO;
@@ -247,6 +251,11 @@ namespace atomic_dex
         case CoinType::Arbitrum:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = "ETH-ARB20";
+            cfg.is_erc_family          = true;
+            break;
+        case CoinType::EWT:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = "EWT";
             cfg.is_erc_family          = true;
             break;
         case CoinType::AVX20:

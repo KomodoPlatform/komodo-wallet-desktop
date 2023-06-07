@@ -39,6 +39,8 @@ namespace atomic_dex::mm2
         const std::string        etc_erc_testnet_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
         const std::string        etc_erc_fallback_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
         const std::string        etc_erc_testnet_fallback_swap_contract_address{"0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"};
+        const std::string        ewt_erc_swap_contract_address{"0x304896fc2F242f13dd852b412E7B60C5F495B79c"};
+        const std::string        ewt_erc_fallback_swap_contract_address{"0x304896fc2F242f13dd852b412E7B60C5F495B79c"};
         const std::string        ubiq_erc_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        ubiq_erc_fallback_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};
         const std::string        ubiq_erc_testnet_swap_contract_address{"0x9130b257D37A52E52F21054c4DA3450c72f595CE"};

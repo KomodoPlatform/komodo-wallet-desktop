@@ -56,7 +56,7 @@ namespace atomic_dex
         {
             m_actions_queue.push(trading_actions::post_process_orderbook_finished);
             m_models_actions[orderbook_need_a_reset] = evt.is_a_reset;
-            //determine_max_volume();
+            determine_max_volume();
         }
     }
 } // namespace atomic_dex

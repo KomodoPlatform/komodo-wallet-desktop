@@ -107,11 +107,11 @@ namespace atomic_dex
         return QString::fromStdString(mm2_system.get_current_ticker());
     }
 
-    void wallet_page::set_current_ticker(const QString& ticker)
+    void wallet_page::set_current_ticker(const QString& ticker, bool force)
     {
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
         auto  coin_info  = mm2_system.get_coin_info(ticker.toStdString());
-        if (mm2_system.set_current_ticker(ticker.toStdString()))
+        if (mm2_system.set_current_ticker(ticker.toStdString()) || force)
         {
             SPDLOG_INFO("new ticker: {}", ticker.toStdString());
             m_transactions_mdl->reset();
@@ -977,16 +977,32 @@ namespace atomic_dex
         if (!evt.with_error && QString::fromStdString(evt.ticker) == get_current_ticker())
         {
             std::error_code ec;
+            const auto& settings         = m_system_manager.get_system<settings_page>();
             t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
+            t_transactions  to_init;
+            if (settings.is_spamfilter_enabled())
+            {
+                for (auto&& cur_tx: transactions)
+                {
+                    if (safe_float(cur_tx.total_amount) != 0)
+                    {
+                        to_init.push_back(cur_tx);
+                    }
+                }
+            }
+            else
+            {
+                to_init = transactions;
+            }
             if (m_transactions_mdl->rowCount() == 0)
             {
                 //! insert all transactions
-                m_transactions_mdl->init_transactions(transactions);
+                m_transactions_mdl->init_transactions(to_init);
             }
             else
             {
                 //! Update tx (only unconfirmed) or insert (new tx)
-                m_transactions_mdl->update_or_insert_transactions(transactions);
+                m_transactions_mdl->update_or_insert_transactions(to_init);
             }
             if (ec)
             {
