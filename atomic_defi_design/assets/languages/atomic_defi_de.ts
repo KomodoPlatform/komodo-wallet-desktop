@@ -495,8 +495,8 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
     </message>
     <message>
         <location filename="../../Dex/Components/CexInfoModal.qml" line="20"/>
-        <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
-        <translation>Mit dem Symbol ⓘ gekennzeichnete Marktdaten (Kurse, Charts etc.) stammen aus Drittquellen.&lt;br&gt;&lt;br&gt;Die Daten stammen von &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; und &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle unterstützte Paare:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Letzte Referenz (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
+        <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.</source>
+        <translation>Mit dem Symbol ⓘ gekennzeichnete Marktdaten (Kurse, Charts etc.) stammen aus Drittquellen.&lt;br&gt;&lt;br&gt;Die Daten stammen von &lt;a href=&quot;https://coingecko.com&quot;&gt;CoinGecko&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
