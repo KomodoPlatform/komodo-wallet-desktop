@@ -448,7 +448,6 @@ namespace atomic_dex
         {
             //! ID Found, update !
             const QModelIndex& idx                  = res.at(0);
-            const auto         uuid_to_be_updated   = this->data(idx, OrderbookRoles::UUIDRole).toString().toStdString();
             auto&& [_, new_price, is_price_changed] = update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
             update_value(OrderbookRoles::PriceNumerRole, QString::fromStdString(order.price_fraction_numer), idx, *this);
             update_value(OrderbookRoles::PriceDenomRole, QString::fromStdString(order.price_fraction_denom), idx, *this);
