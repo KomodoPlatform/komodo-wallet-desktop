@@ -213,6 +213,7 @@ namespace atomic_dex
         {
             cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
         }
+        // Explorer url suffixes
         if (j.contains("explorer_tx_url"))
         {
             j.at("explorer_tx_url").get_to(cfg.tx_uri);
@@ -221,6 +222,33 @@ namespace atomic_dex
         {
             j.at("explorer_address_url").get_to(cfg.address_url);
         }
+        // Swap contract addresses
+        if (j.contains("swap_contract_address"))
+        {
+            cfg.swap_contract_address = j.at("swap_contract_address").get<std::string>();
+        }
+        if (j.contains("fallback_swap_contract_address"))
+        {
+            cfg.fallback_swap_contract_address = j.at("fallback_swap_contract_address").get<std::string>();
+        }
+        // Gas station urls
+        if (j.contains("gas_station_url"))
+        {
+            cfg.gas_station_url = j.at("gas_station_url").get<std::string>();
+        }
+        if (j.contains("matic_gas_station_url"))
+        {
+            cfg.matic_gas_station_url = j.at("matic_gas_station_url").get<std::string>();
+        }
+        if (j.contains("testnet_matic_gas_station_url"))
+        {
+            cfg.testnet_matic_gas_station_url = j.at("testnet_matic_gas_station_url").get<std::string>();
+        }
+        if (j.contains("matic_gas_station_decimals"))
+        {
+            cfg.matic_gas_station_decimals = j.at("matic_gas_station_decimals").get<std::size_t>();
+        }
+
 
         switch (cfg.coin_type)
         {
