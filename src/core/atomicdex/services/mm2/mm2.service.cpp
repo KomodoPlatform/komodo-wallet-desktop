@@ -164,10 +164,6 @@ namespace
                     SPDLOG_DEBUG("ticker: {} status active: {}", ticker, status);
                     registry[ticker].active = status;
                 }
-                else if (field_name == "is_segwit_on")
-                {
-                    registry[ticker].is_segwit_on = status;
-                }
             }
         }
 
@@ -774,12 +770,6 @@ namespace atomic_dex
                 .is_testnet      = coin_config.is_testnet.value_or(false),
                 .with_tx_history = true
             };
-            
-            if (coin_config.segwit && coin_config.is_segwit_on)
-            {
-                request.address_format                   = nlohmann::json::object();
-                request.address_format.value()["format"] = "segwit";
-            }
             if (coin_config.utxo_merge.value_or(false))
             {
                 mm2::utxo_merge_params  merge_params{.merge_at = 250, .check_every = 300, .max_merge_at_once = 125};
@@ -2705,8 +2695,4 @@ namespace atomic_dex
         }
     }
 
-    void mm2_service::change_segwit_status(std::string ticker, bool status)
-    {
-        update_coin_status(this->m_current_wallet_name, {ticker}, status, m_coins_informations, m_coin_cfg_mutex, "is_segwit_on");
-    }
 } // namespace atomic_dex

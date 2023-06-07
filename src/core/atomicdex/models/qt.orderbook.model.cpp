@@ -362,7 +362,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::reset_orderbook(const t_orders_contents& orderbook)
+    orderbook_model::reset_orderbook(const t_orders_contents& orderbook, bool is_bestorders)
     {
         SPDLOG_DEBUG("[orderbook_model::reset_orderbook]");
         if (!orderbook.empty())
@@ -528,7 +528,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::refresh_orderbook(const t_orders_contents& orderbook)
+    orderbook_model::refresh_orderbook(const t_orders_contents& orderbook, bool is_bestorders)
     {
         auto refresh_functor = [this](const std::vector<mm2::order_contents>& contents)
         {

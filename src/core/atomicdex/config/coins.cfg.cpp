@@ -222,14 +222,7 @@ namespace atomic_dex
         if (j.contains("light_wallet_d_servers"))
         {
             cfg.z_urls = j.at("light_wallet_d_servers").get<std::vector<std::string>>();
-        }
-        if (j.contains("is_segwit_on"))
-        {
-            cfg.segwit = true;
-            j.at("is_segwit_on").get_to(cfg.is_segwit_on);
-            SPDLOG_INFO("coin: {} support segwit with current_segwit mode: {}", cfg.ticker, cfg.is_segwit_on);
-        }
-        if (j.contains("alias_ticker"))
+        }        if (j.contains("alias_ticker"))
         {
             cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
         }

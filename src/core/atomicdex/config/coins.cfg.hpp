@@ -68,7 +68,6 @@ namespace atomic_dex
         std::optional<bool>                               is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
         std::optional<bool>                               utxo_merge{false};
         bool                                              segwit{false};
-        bool                                              is_segwit_on{false};
         bool                                              active{false};
         bool                                              checked{false};
         bool                                              wallet_only{false};
