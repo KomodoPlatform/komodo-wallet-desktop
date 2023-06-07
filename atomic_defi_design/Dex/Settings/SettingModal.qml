@@ -205,6 +205,7 @@ Qaterial.Dialog
                             topPadding: 10
                             spacing: 15
 
+                            // Notifications toggle
                             RowLayout
                             {
                                 width: parent.width - 30
@@ -229,6 +230,32 @@ Qaterial.Dialog
                                 }
                             }
 
+                            // Spam filter toggle
+                            RowLayout
+                            {
+                                width: parent.width - 30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+
+                                DexLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
+                                    text: qsTr("Hide Poison Transactions in History")
+                                }
+
+                                Item { Layout.fillWidth: true }
+
+                                DexSwitch
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Component.onCompleted: checked = API.app.settings_pg.spamfilter_enabled
+                                    onCheckedChanged: API.app.settings_pg.spamfilter_enabled = checked
+                                }
+                            }
+
+                            // Max Coins Dropdown
                             RowLayout
                             {
                                 width: parent.width - 30
