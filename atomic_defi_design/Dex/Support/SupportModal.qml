@@ -29,7 +29,7 @@ Qaterial.Dialog
     topPadding: 30
     bottomPadding: 30
     anchors.centerIn: parent
-
+    
     dim: true
     modal: true
     title: "Support"
@@ -140,6 +140,19 @@ For this reason, we recommend cancelling orders before closing %1, or reviewing 
 2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
 Network fees can vary greatly depending on your selected trading pair.").arg(API.app_name)
+                }
+
+                // TODO: Update link to the KP blog when relevent article available.
+                FAQLine
+                {
+                    title: qsTr("I see a transaction in my wallet that was marked as 'poison'. What does this mean?")
+                    text: qsTr('Address poisoning is a relatively new tye of phishing attack, where a malicious actor aims to trick you into sending funds to an address that you did not intend to send funds to.
+
+This is often done by sending a zero value transaction to your wallet from an address which looks very similar to your actual address, with the exact same letters at the start and end. This transaction will then appear in your transaction history, with the scammer hoping you will mistake the fake address for your own and send funds to it.
+
+To protect you from this, %1 will mark any transaction that it detects as potentially being a poison transaction with a "poison" label. You should always be careful to confirm any address you send funds to is correct.
+
+There is a toggle in settings where you can turn on/off the display of these transactions.').arg(API.app_name)
                 }
 
                 FAQLine

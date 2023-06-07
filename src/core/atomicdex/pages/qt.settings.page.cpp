@@ -32,6 +32,7 @@
 #include "atomicdex/models/qt.global.coins.cfg.model.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
+#include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
@@ -134,6 +135,25 @@ namespace atomic_dex
         this->m_qml_engine->retranslate();
         SPDLOG_INFO("Successfully loaded {} translation in {}.qm", new_lang.toStdString(), path.toStdString());
         emit onLangChanged();
+    }
+
+    bool atomic_dex::settings_page::is_spamfilter_enabled() const
+    {
+        return m_config.spamfilter_enabled;
+    }
+
+    void settings_page::set_spamfilter_enabled(bool is_enabled)
+    {
+        if (m_config.spamfilter_enabled != is_enabled)
+        {
+            
+            auto& mm2       = m_system_manager.get_system<mm2_service>();
+            auto& wallet_pg = m_system_manager.get_system<wallet_page>();
+            QString ticker  = QString::fromStdString(mm2.get_current_ticker());
+            change_spamfilter_status(m_config, is_enabled);
+            emit onSpamFilterEnabledChanged();
+            wallet_pg.set_current_ticker(ticker, true);
+        }
     }
 
     bool atomic_dex::settings_page::is_notification_enabled() const

@@ -62,6 +62,13 @@ namespace atomic_dex::mm2
             j["fallback_swap_contract"] = cfg.arbitrum_erc_fallback_swap_contract_address;
             break;
         }
+        case CoinType::EWT:
+        {
+            j["urls"]                  = cfg.urls;
+            j["swap_contract_address"] = cfg.ewt_erc_swap_contract_address;
+            j["fallback_swap_contract"] = cfg.ewt_erc_fallback_swap_contract_address;
+            break;
+        }
         case CoinType::BEP20:
         {
             j["swap_contract_address"]  = cfg.is_testnet ? cfg.bnb_testnet_swap_contract_address : cfg.bnb_swap_contract_address;
