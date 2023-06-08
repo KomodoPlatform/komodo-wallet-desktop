@@ -28,7 +28,6 @@ namespace atomic_dex::mm2
     to_json(nlohmann::json& j, const enable_request& cfg)
     {
         j["coin"] = cfg.coin_name;
-
         switch (cfg.coin_type)
         {
         case CoinType::ERC20:
@@ -43,7 +42,10 @@ namespace atomic_dex::mm2
         default:
             j["urls"]                   = cfg.urls;
             j["swap_contract_address"]  = cfg.swap_contract_address;
-            j["fallback_swap_contract"] = cfg.fallback_swap_contract_address;
+            if (cfg.fallback_swap_contract_address.has_value())
+            {
+                j["fallback_swap_contract"] = cfg.fallback_swap_contract_address.value();
+            }
             break;
         }
 

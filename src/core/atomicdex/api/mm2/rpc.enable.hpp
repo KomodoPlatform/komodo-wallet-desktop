@@ -17,6 +17,7 @@
 #pragma once
 
 //! Deps
+#include <optional>
 #include <nlohmann/json_fwd.hpp>
 
 //! Project Headers
@@ -27,18 +28,18 @@ namespace atomic_dex::mm2
     //! Only for erc 20
     struct enable_request
     {
-        std::string              coin_name;
-        std::vector<std::string> urls;
-        CoinType                 coin_type;
-        bool                     is_testnet{false};
-        const std::string        swap_contract_address;
-        const std::string        fallback_swap_contract_address;
-        const std::size_t        matic_gas_station_decimals{9};
-        std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
-        std::string              matic_gas_station_url{"https://gasstation-mainnet.matic.network/"};
-        std::string              testnet_matic_gas_station_url{"https://gasstation-mumbai.matic.today/"};
-        std::string              type; ///< QRC-20 ?
-        bool                     with_tx_history{true};
+        std::string                 coin_name;
+        std::vector<std::string>    urls;
+        CoinType                    coin_type;
+        bool                        is_testnet{false};
+        const std::string           swap_contract_address;
+        std::optional<std::string>  fallback_swap_contract_address{std::nullopt};
+        const std::size_t           matic_gas_station_decimals{9};
+        std::string                 gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
+        std::string                 matic_gas_station_url{"https://gasstation-mainnet.matic.network/"};
+        std::string                 testnet_matic_gas_station_url{"https://gasstation-mumbai.matic.today/"};
+        std::string                 type; ///< QRC-20 ?
+        bool                        with_tx_history{true};
     };
 
     void to_json(nlohmann::json& j, const enable_request& cfg);
