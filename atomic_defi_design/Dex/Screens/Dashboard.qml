@@ -279,6 +279,7 @@ Item
         enabled: loader.status === Loader.Ready
 
         onLineSelected: currentPage = lineType;
+        onAddCryptoClicked: enable_coin_modal.open()
         onSettingsClicked: setting_modal.open()
         onSupportClicked: support_modal.open()
     }

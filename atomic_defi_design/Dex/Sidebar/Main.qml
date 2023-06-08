@@ -26,6 +26,7 @@ Item
     signal lineSelected(var lineType)
     signal settingsClicked()
     signal supportClicked()
+    signal addCryptoClicked()
     signal privacySwitched(var checked)
     signal expanded(var isExpanded)
     signal expandStarted(var isExpanding)
@@ -121,6 +122,7 @@ Item
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 62
 
+            onAddCryptoClicked: root.addCryptoClicked()
             onSettingsClicked: root.settingsClicked()
             onSupportClicked: root.supportClicked()
         }
