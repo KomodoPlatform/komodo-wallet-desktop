@@ -399,6 +399,17 @@ namespace atomic_dex
         return true;
     }
 
+    QString
+    portfolio_model::coin_balance(QString coin)
+    {
+        auto res = this->match(this->index(0, 0), TickerRole, coin, 1, Qt::MatchFlag::MatchExactly);
+        // assert(not res.empty());
+        if (not res.empty())
+        {
+            return QString(this->data(res.at(0), BalanceRole).toString());
+        }
+    }
+
     void
     portfolio_model::disable_coins(const QStringList& coins)
     {
