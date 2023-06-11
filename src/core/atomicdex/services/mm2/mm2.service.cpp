@@ -637,12 +637,8 @@ namespace atomic_dex
             {
                 request.fallback_swap_contract_address = coin_config.fallback_swap_contract_address;
             }
-
-            
             nlohmann::json j = mm2::template_request("enable");
-            
             mm2::to_json(j, request);
-            SPDLOG_INFO("enable coin: {} {}", request.coin_name, j.dump());
             batch_array.push_back(j);
         }
         m_mm2_client.async_rpc_batch_standalone(batch_array)
@@ -753,6 +749,14 @@ namespace atomic_dex
                 
                 mm2::to_json(json_merge_params, merge_params);
                 request.merge_params = json_merge_params;
+            }
+            if (coin_config.swap_contract_address.value_or("") != "")
+            {
+                request.swap_contract_address = coin_config.swap_contract_address;
+            }
+            if (coin_config.fallback_swap_contract_address.value_or("") != "")
+            {
+                request.fallback_swap_contract_address = coin_config.fallback_swap_contract_address;
             }
             mm2::to_json(j, request);
             batch_array.push_back(j);

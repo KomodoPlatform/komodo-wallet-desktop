@@ -32,8 +32,8 @@ namespace atomic_dex::mm2
         CoinType                                     coin_type;
         bool                                         is_testnet{false};
         bool                                         with_tx_history{true};
-        const std::string                            swap_contract_address;
-        const std::optional<std::string>             fallback_swap_contract_address{std::nullopt};
+        std::optional<std::string>                   swap_contract_address{std::nullopt};
+        std::optional<std::string>                   fallback_swap_contract_address{std::nullopt};
         std::optional<nlohmann::json>                address_format;
         std::optional<nlohmann::json>                merge_params;
         std::optional<std::vector<std::string>>      bchd_urls;
