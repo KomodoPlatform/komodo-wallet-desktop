@@ -16,6 +16,7 @@ env:
   DEX_PROJECT_NAME: "atomicdex-desktop"
   DEX_DISPLAY_NAME: "AtomicDex Desktop"
   DEX_COMPANY: "KomodoPlatform"
+  DEX_VERSION: "0.5.8"
   DEX_WEBSITE: "https://atomicdex.io/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite

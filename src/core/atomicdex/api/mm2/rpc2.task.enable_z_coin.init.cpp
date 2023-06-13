@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,31 +14,28 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+//! Deps
+#include <nlohmann/json.hpp>
 
-namespace atomic_dex
+//! Project Headers
+#include "atomicdex/api/mm2/rpc2.task.enable_z_coin.init.hpp"
+
+//! Implementation 2.0 RPC [enable_z_coin]
+namespace atomic_dex::mm2
 {
-    constexpr const char*
-    get_version()
+    //! Serialization
+    void to_json(nlohmann::json& j, const enable_z_coin_request& request)
     {
-        return "0.5.8-beta";
+        j["params"]["ticker"]                                                          = request.coin_name;
+        j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
+        j["params"]["activation_params"]["mode"]["rpc_data"]["electrum_servers"]       = request.servers;
+        j["params"]["activation_params"]["mode"]["rpc_data"]["light_wallet_d_servers"] = request.z_urls;
+        j["params"]["tx_history"]                                                      = request.with_tx_history;
     }
 
-    constexpr int
-    get_num_version() noexcept
+    //! Deserialization
+    void from_json(const nlohmann::json& j, enable_z_coin_answer& answer)
     {
-        return 57;
+        j.at("task_id").get_to(answer.task_id);
     }
-
-    constexpr const char*
-    get_raw_version()
-    {
-        return "0.5.8";
-    }
-
-    constexpr const char*
-    get_precedent_raw_version()
-    {
-        return "0.5.7.2";
-    }
-} // namespace atomic_dex
+} // namespace atomic_dex::mm2

@@ -110,6 +110,14 @@ namespace
         {
             return CoinType::RSK;
         }
+        if (coin_type == "TENDERMINT")
+        {
+            return CoinType::TENDERMINT;
+        }
+        if (coin_type == "TENDERMINTTOKEN")
+        {
+            return CoinType::TENDERMINTTOKEN;
+        }
         if (coin_type == "ZHTLC")
         {
             return CoinType::ZHTLC;
@@ -142,8 +150,10 @@ namespace atomic_dex
         cfg.coin_type = get_coin_type_from_str(cfg.type);
         j.at("active").get_to(cfg.active);
         j.at("explorer_url").get_to(cfg.explorer_url);
+        cfg.has_memos            = false;
 
         cfg.gui_ticker           = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
+        cfg.parent_coin          = j.contains("parent_coin") ? j.at("parent_coin").get<std::string>() : cfg.ticker;
         cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
         cfg.coinpaprika_id       = j.contains("coinpaprika_id") ? j.at("coinpaprika_id").get<std::string>() : "test-coin";
         cfg.coingecko_id         = j.contains("coingecko_id") ? j.at("coingecko_id").get<std::string>() : "test-coin";
@@ -191,6 +201,16 @@ namespace atomic_dex
             cfg.eth_family_urls.value().reserve(cfg.urls.value().size());
             for (const auto& url: cfg.urls.value()) { cfg.eth_family_urls->push_back(url.url); }
         }
+        if (j.contains("rpc_urls"))
+        {
+            auto rpc_urls_obj = j.at("rpc_urls").get<std::vector<node>>();
+            std::vector<std::string> rpc_urls_list;
+            cfg.rpc_urls = rpc_urls_list;
+            for (const auto& url : rpc_urls_obj)
+            {
+                cfg.rpc_urls->push_back(url.url);
+            }
+        }
         if (j.contains("allow_slp_unsafe_conf"))
         {
             cfg.allow_slp_unsafe_conf = j.at("allow_slp_unsafe_conf").get<bool>();
@@ -199,14 +219,7 @@ namespace atomic_dex
         if (j.contains("light_wallet_d_servers"))
         {
             cfg.z_urls = j.at("light_wallet_d_servers").get<std::vector<std::string>>();
-        }
-        if (j.contains("is_segwit_on"))
-        {
-            cfg.segwit = true;
-            j.at("is_segwit_on").get_to(cfg.is_segwit_on);
-            SPDLOG_INFO("coin: {} support segwit with current_segwit mode: {}", cfg.ticker, cfg.is_segwit_on);
-        }
-        if (j.contains("alias_ticker"))
+        }        if (j.contains("alias_ticker"))
         {
             cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
         }
@@ -342,10 +355,21 @@ namespace atomic_dex
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "tBCH" : "BCH";
             break;
+        case CoinType::TENDERMINT:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.parent_coin;
+            cfg.has_memos              = true;
+            break;
+        case CoinType::TENDERMINTTOKEN:
+            cfg.has_parent_fees_ticker = true;
+            cfg.fees_ticker            = cfg.parent_coin;
+            cfg.has_memos              = true;
+            break;
         case CoinType::ZHTLC:
             cfg.has_parent_fees_ticker = false;
             cfg.is_zhtlc_family        = true;
             cfg.fees_ticker            = cfg.ticker;
+            cfg.has_memos              = true;
             break;
         case CoinType::Invalid:
             cfg.has_parent_fees_ticker = false;
