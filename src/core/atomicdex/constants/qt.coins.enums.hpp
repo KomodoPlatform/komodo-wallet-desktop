@@ -52,11 +52,13 @@ namespace atomic_dex
             EthereumClassic = 18,
             RSK             = 19,
             ZHTLC           = 20,
-            EWT             = 21,
-            Disabled        = 22,
-            Invalid         = 23,
-            All             = 24,
-            Size            = 25
+            TENDERMINT      = 21,
+            TENDERMINTTOKEN = 22,
+            EWT             = 23,
+            Disabled        = 24,
+            Invalid         = 25,
+            All             = 26,
+            Size            = 27
         };
 
         Q_ENUM(CoinTypeEnum)

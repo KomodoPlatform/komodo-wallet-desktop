@@ -18,7 +18,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc2.withdraw_status.hpp"
+#include "atomicdex/api/mm2/rpc2.task.withdraw.status.hpp"
 
 //! Implementation 2.0 RPC [withdraw_status]
 namespace atomic_dex::mm2
@@ -27,6 +27,7 @@ namespace atomic_dex::mm2
     void to_json(nlohmann::json& j, const withdraw_status_request& request)
     {
         j["params"]["task_id"] = request.task_id;
+        j["params"]["forget_if_finished"] = false;
     }
 
     //! Deserialization
@@ -38,7 +39,7 @@ namespace atomic_dex::mm2
         }
         else
         {
-            answer.result = j.at("result").at("details").at("result").get<transaction_data>();
+            answer.result = j.at("result").at("details").get<transaction_data>();
         }
     }
 } // namespace atomic_dex::mm2

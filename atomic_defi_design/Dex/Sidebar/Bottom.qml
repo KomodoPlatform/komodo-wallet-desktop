@@ -11,6 +11,7 @@ MouseArea
 {
     id: root
 
+    signal addCryptoClicked()
     signal supportClicked()
     signal settingsClicked()
 
@@ -27,6 +28,7 @@ MouseArea
             if (isExpanded) waitForSidebarExpansionAnimation.start();
             else
             {
+                addCryptoLine.label.opacity = 0;
                 settingsLine.label.opacity = 0;
                 supportLine.label.opacity = 0;
                 privacyLine.label.opacity = 0;
@@ -37,7 +39,7 @@ MouseArea
     NumberAnimation
     {
         id: waitForSidebarExpansionAnimation
-        targets: [settingsLine.label, supportLine.label, privacyLine.label]
+        targets: [addCryptoLine.label, settingsLine.label, supportLine.label, privacyLine.label]
         properties: "opacity"
         duration: 200
         from: 0
@@ -48,7 +50,7 @@ MouseArea
     NumberAnimation
     {
         id: labelsOpacityAnimation
-        targets: [settingsLine.label, supportLine.label, privacyLine.label]
+        targets: [addCryptoLine.label, settingsLine.label, supportLine.label, privacyLine.label]
         properties: "opacity"
         duration: 350
         from: 0.0
@@ -60,6 +62,15 @@ MouseArea
         anchors.fill: parent
         FigurativeLine
         {
+            id: addCryptoLine
+
+            Layout.fillWidth: true
+            label.text: isExpanded ? qsTr("Add Crypto") : ""
+            icon.source: General.image_path + "bank-plus.svg"
+            onClicked: addCryptoClicked()
+        }
+        FigurativeLine
+        {
             id: settingsLine
 
             Layout.fillWidth: true
@@ -67,7 +78,6 @@ MouseArea
             icon.source: General.image_path + "menu-settings-white.svg"
             onClicked: settingsClicked()
         }
-
         FigurativeLine
         {
             id: supportLine

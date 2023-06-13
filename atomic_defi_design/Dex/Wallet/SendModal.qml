@@ -18,14 +18,13 @@ MultipageModal
 
     property bool needFix: false
     property bool errorView: false
-    property bool segwit: false
-    property bool segwit_success: false
-    property var segwit_callback
     property var address_data
 
     readonly property var default_send_result: ({ has_error: false, error_message: "",
                                                     withdraw_answer: {
-                                                        total_amount_fiat: "", tx_hex: "", date: "", "fee_details": { total_fee: "" }
+                                                        total_amount_fiat: "", tx_hex: "",
+                                                        memo: "", date: "",
+                                                        "fee_details": { total_fee: "" }
                                                     },
                                                     explorer_url: "", max: false })
     property var send_result: default_send_result
@@ -48,9 +47,8 @@ MultipageModal
 
     function getCryptoAmount() { return _preparePage.cryptoSendMode ? input_amount.text : equivalentAmount.value }
 
-    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price) {
+    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price, memo="") {
         let max = parseFloat(current_ticker_infos.balance) === parseFloat(amount)
-
         // Save for later check
         async_param_max = max
 
@@ -62,7 +60,7 @@ MultipageModal
             gas_price,
             gas_limit: gas_limit === "" ? 0 : parseInt(gas_limit)
         }
-        api_wallet_page.send(address, amount, max, with_fees, fees_info)
+        api_wallet_page.send(address, amount, max, with_fees, fees_info, memo)
     }
 
     function sendCoin() {
@@ -82,6 +80,7 @@ MultipageModal
         send_result = default_send_result
         input_address.text = ""
         input_amount.text = ""
+        input_memo.text = ""
         input_custom_fees.text = ""
         input_custom_fees_gas.text = ""
         input_custom_fees_gas_price.text = ""
@@ -154,11 +153,6 @@ MultipageModal
 
     onClosed:
     {
-        if (segwit)
-        {
-            segwit_callback()
-        }
-        segwit = false
         reset()
     }
 
@@ -260,7 +254,7 @@ MultipageModal
 
         DefaultRectangle
         {
-            enabled: !root.segwit && !root.is_send_busy
+            enabled: !root.is_send_busy
 
             Layout.preferredWidth: 500
             Layout.preferredHeight: 44
@@ -560,6 +554,31 @@ MultipageModal
             }
         }
 
+        // Memo
+        DefaultRectangle
+        {
+            visible: General.isCoinWithMemo(api_wallet_page.ticker)
+            enabled: !root.is_send_busy
+
+            Layout.preferredWidth: 500
+            Layout.preferredHeight: 44
+            Layout.alignment: Qt.AlignHCenter
+
+            color: input_memo.background.color
+            radius: input_memo.background.radius
+
+            DefaultTextField
+            {
+                id: input_memo
+
+                width: 470
+                height: 44
+                placeholderText: qsTr("Enter memo")
+                forceFocus: true
+                font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
+            }
+        }
+
         ColumnLayout
         {
             visible: General.getCustomFeeType(current_ticker_infos)
@@ -758,8 +777,16 @@ MultipageModal
 
                 text: qsTr("Prepare")
 
-                onClicked: prepareSendCoin(input_address.text, getCryptoAmount(), custom_fees_switch.checked, input_custom_fees.text,
-                                           General.isSpecialToken(current_ticker_infos), input_custom_fees_gas.text, input_custom_fees_gas_price.text)
+                onClicked: prepareSendCoin(
+                    input_address.text,
+                    getCryptoAmount(),
+                    custom_fees_switch.checked,
+                    input_custom_fees.text,
+                    General.isSpecialToken(current_ticker_infos),
+                    input_custom_fees_gas.text,
+                    input_custom_fees_gas_price.text,
+                    input_memo.text
+                )
             }
         }
 
@@ -828,6 +855,14 @@ MultipageModal
                     API.app.settings_pg.current_fiat
                 )
             }
+        }
+
+        // Memo
+        TextEditWithTitle
+        {
+            title: qsTr("Memo")
+            visible: input_memo.text != ""
+            text: input_memo.text
         }
 
         // Fees
@@ -906,7 +941,6 @@ MultipageModal
 
         function onClose()
         {
-            if (root.segwit) root.segwit_success = true
             root.close()
         }
     }
