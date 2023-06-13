@@ -23,7 +23,8 @@
 
 namespace
 {
-    CoinType get_coin_type_from_str(const std::string& coin_type)
+    CoinType
+    get_coin_type_from_str(const std::string& coin_type)
     {
         if (coin_type == "QRC-20")
         {
@@ -117,15 +118,17 @@ namespace
         return CoinType::Invalid;
         // throw std::invalid_argument{"Undefined given coin type."};
     }
-}
+} // namespace
 
 namespace atomic_dex
 {
-    bool is_wallet_only(std::string ticker)
+    bool
+    is_wallet_only(std::string ticker)
     {
         return std::any_of(g_wallet_only_coins.begin(), g_wallet_only_coins.end(), [ticker](std::string x) { return ticker == x; });
     }
-    bool is_default_coin(std::string ticker)
+    bool
+    is_default_coin(std::string ticker)
     {
         return std::any_of(g_default_coins.begin(), g_default_coins.end(), [ticker](std::string x) { return ticker == x; });
     }
@@ -144,23 +147,20 @@ namespace atomic_dex
         cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
         cfg.coinpaprika_id       = j.contains("coinpaprika_id") ? j.at("coinpaprika_id").get<std::string>() : "test-coin";
         cfg.coingecko_id         = j.contains("coingecko_id") ? j.at("coingecko_id").get<std::string>() : "test-coin";
-        cfg.livecoinwatch_id    = j.contains("livecoinwatch_id") ? j.at("livecoinwatch_id").get<std::string>() : "test-coin";
+        cfg.livecoinwatch_id     = j.contains("livecoinwatch_id") ? j.at("livecoinwatch_id").get<std::string>() : "test-coin";
         cfg.is_claimable         = j.count("is_claimable") > 0;
         cfg.is_custom_coin       = j.contains("is_custom_coin") ? j.at("is_custom_coin").get<bool>() : false;
         cfg.is_testnet           = j.contains("is_testnet") ? j.at("is_testnet").get<bool>() : false;
-        cfg.wallet_only          = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
-        cfg.default_coin         = is_default_coin(cfg.ticker);
+        cfg.wallet_only  = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
+        cfg.default_coin = is_default_coin(cfg.ticker);
 
         if (j.contains("other_types"))
         {
             std::vector<std::string> other_types;
-            
+
             j.at("other_types").get_to(other_types);
             cfg.other_types = std::set<CoinType>();
-            for (const auto& other_type : other_types)
-            {
-                cfg.other_types->emplace(get_coin_type_from_str(other_type));
-            }
+            for (const auto& other_type: other_types) { cfg.other_types->emplace(get_coin_type_from_str(other_type)); }
         }
         if (j.contains("utxo_merge"))
         {
@@ -186,13 +186,10 @@ namespace atomic_dex
         if (j.contains("nodes"))
         {
             // Todo: this is bad, we are using 2 times the required memory. Something can be improved here.
-            cfg.urls = j.at("nodes").get<std::vector<node>>();
+            cfg.urls            = j.at("nodes").get<std::vector<node>>();
             cfg.eth_family_urls = std::vector<std::string>();
             cfg.eth_family_urls.value().reserve(cfg.urls.value().size());
-            for (const auto& url : cfg.urls.value())
-            {
-                cfg.eth_family_urls->push_back(url.url);
-            }
+            for (const auto& url: cfg.urls.value()) { cfg.eth_family_urls->push_back(url.url); }
         }
         if (j.contains("allow_slp_unsafe_conf"))
         {
@@ -213,6 +210,7 @@ namespace atomic_dex
         {
             cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
         }
+        // Explorer url suffixes
         if (j.contains("explorer_tx_url"))
         {
             j.at("explorer_tx_url").get_to(cfg.tx_uri);
@@ -221,6 +219,33 @@ namespace atomic_dex
         {
             j.at("explorer_address_url").get_to(cfg.address_url);
         }
+        // Swap contract addresses
+        if (j.contains("swap_contract_address"))
+        {
+            cfg.swap_contract_address = j["swap_contract_address"];
+        }
+        if (j.contains("fallback_swap_contract_address"))
+        {
+            cfg.fallback_swap_contract_address = j["fallback_swap_contract_address"];
+        }
+        // Gas station urls
+        if (j.contains("gas_station_url"))
+        {
+            cfg.gas_station_url = j.at("gas_station_url").get<std::string>();
+        }
+        if (j.contains("matic_gas_station_url"))
+        {
+            cfg.matic_gas_station_url = j.at("matic_gas_station_url").get<std::string>();
+        }
+        if (j.contains("testnet_matic_gas_station_url"))
+        {
+            cfg.testnet_matic_gas_station_url = j.at("testnet_matic_gas_station_url").get<std::string>();
+        }
+        if (j.contains("matic_gas_station_decimals"))
+        {
+            cfg.matic_gas_station_decimals = j.at("matic_gas_station_decimals").get<std::size_t>();
+        }
+
 
         switch (cfg.coin_type)
         {
@@ -333,13 +358,12 @@ namespace atomic_dex
         }
     }
 
-    void print_coins(std::vector<coin_config> coins)
+    void
+    print_coins(std::vector<coin_config> coins)
     {
         std::stringstream ss;
         ss << "[";
-        for (auto&& coin: coins) {
-            ss << coin.ticker << " ";
-        }
+        for (auto&& coin: coins) { ss << coin.ticker << " "; }
         ss << "]";
         SPDLOG_INFO("{}", ss.str());
     }

@@ -626,14 +626,18 @@ namespace atomic_dex
         {
             t_enable_request request
             {
-                .coin_name       = coin_config.ticker,
-                .urls            = coin_config.eth_family_urls.value_or(std::vector<std::string>{}),
-                .coin_type       = coin_config.coin_type,
-                .is_testnet      = coin_config.is_testnet.value_or(false),
-                .with_tx_history = false
+                .coin_name                       = coin_config.ticker,
+                .urls                            = coin_config.eth_family_urls.value_or(std::vector<std::string>{}),
+                .coin_type                       = coin_config.coin_type,
+                .is_testnet                      = coin_config.is_testnet.value_or(false),
+                .swap_contract_address           = coin_config.swap_contract_address.value_or(""),
+                .with_tx_history                 = false
             };
+            if (coin_config.fallback_swap_contract_address.value_or("") != "")
+            {
+                request.fallback_swap_contract_address = coin_config.fallback_swap_contract_address;
+            }
             nlohmann::json j = mm2::template_request("enable");
-            
             mm2::to_json(j, request);
             batch_array.push_back(j);
         }
@@ -745,6 +749,14 @@ namespace atomic_dex
                 
                 mm2::to_json(json_merge_params, merge_params);
                 request.merge_params = json_merge_params;
+            }
+            if (coin_config.swap_contract_address.value_or("") != "")
+            {
+                request.swap_contract_address = coin_config.swap_contract_address;
+            }
+            if (coin_config.fallback_swap_contract_address.value_or("") != "")
+            {
+                request.fallback_swap_contract_address = coin_config.fallback_swap_contract_address;
             }
             mm2::to_json(j, request);
             batch_array.push_back(j);

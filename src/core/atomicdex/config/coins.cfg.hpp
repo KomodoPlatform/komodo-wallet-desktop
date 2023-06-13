@@ -41,6 +41,12 @@ namespace atomic_dex
         using light_wallet_d_servers                    = std::vector<std::string>; ///< For ZHTLC
         std::string                                 ticker;
         std::optional<std::string>                  alias_ticker{std::nullopt};
+        std::optional<std::string>                  swap_contract_address{std::nullopt};
+        std::optional<std::string>                  fallback_swap_contract_address{std::nullopt};
+        std::optional<std::size_t>                  matic_gas_station_decimals{std::nullopt};
+        std::optional<std::string>                  gas_station_url{std::nullopt};
+        std::optional<std::string>                  matic_gas_station_url{std::nullopt};
+        std::optional<std::string>                  testnet_matic_gas_station_url{std::nullopt};
         std::string                                 gui_ticker; ///< Ticker displayed in the gui
         std::string                                 name;       ///< nice name
         std::optional<bool>                         utxo_merge{false};
@@ -59,21 +65,21 @@ namespace atomic_dex
         std::string                                 livecoinwatch_id{"test-coin"};
         bool                                        is_custom_coin{false};
         std::string                                 type;
-        std::optional<std::set<CoinType>> other_types;
-        std::string                     explorer_url; ///< usefull for transaction, take this url and append transaction id
-        std::string                     tx_uri{"tx/"};
-        std::string                     address_url{"address/"};
-        std::optional<nlohmann::json>   custom_backup;
+        std::optional<std::set<CoinType>>           other_types;
+        std::string                                 explorer_url; ///< usefull for transaction, take this url and append transaction id
+        std::string                                 tx_uri{"tx/"};
+        std::string                                 address_url{"address/"};
+        std::optional<nlohmann::json>               custom_backup;
         nlohmann::json                              activation_status;
-        std::optional<bool>             is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
-        CoinType                        coin_type;
-        bool                            checked{false};
-        bool                            wallet_only{false};
-        bool                            has_parent_fees_ticker{false}; ///< True if parent fees is different from current ticker eg: ERC20 tokens
-        std::string                     fees_ticker;
-        bool                            segwit{false};
-        bool                            is_segwit_on{false};
-        bool                            is_erc_family{false};
+        std::optional<bool>                         is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
+        CoinType                                    coin_type;
+        bool                                        checked{false};
+        bool                                        wallet_only{false};
+        bool                                        has_parent_fees_ticker{false}; ///< True if parent fees is different from current ticker eg: ERC20 tokens
+        std::string                                 fees_ticker;
+        bool                                        segwit{false};
+        bool                                        is_segwit_on{false};
+        bool                                        is_erc_family{false};
         bool                                        is_zhtlc_family{false};
         bool                                        default_coin{false};
     };
