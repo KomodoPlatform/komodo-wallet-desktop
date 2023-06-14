@@ -180,6 +180,8 @@ namespace atomic_dex
 
     bool application::has_coins_with_balance()
     {
+        // TODO: Does this ignore test coins?
+        // Simple view on fresh wallet with only test coins from faucet returns `no tradable assets`
         auto* portfolio_page = get_portfolio_page();
         auto* portfolio_mdl = portfolio_page->get_portfolio();
         auto portfolio_data = portfolio_mdl->get_underlying_data();

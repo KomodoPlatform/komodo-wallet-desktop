@@ -595,7 +595,7 @@ Item
             {
                 Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
-                visible:  current_ticker_infos.is_smartchain_test_coin
+                visible:  current_ticker_infos.is_faucet_coin
 
                 DefaultButton
                 {
