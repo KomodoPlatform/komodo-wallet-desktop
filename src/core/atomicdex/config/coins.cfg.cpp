@@ -140,6 +140,11 @@ namespace atomic_dex
     {
         return std::any_of(g_default_coins.begin(), g_default_coins.end(), [ticker](std::string x) { return ticker == x; });
     }
+    bool
+    is_faucet_coin(std::string ticker)
+    {
+        return std::any_of(g_faucet_coins.begin(), g_faucet_coins.end(), [ticker](std::string x) { return ticker == x; });
+    }
 
     void
     from_json(const nlohmann::json& j, coin_config& cfg)
@@ -151,7 +156,6 @@ namespace atomic_dex
         j.at("active").get_to(cfg.active);
         j.at("explorer_url").get_to(cfg.explorer_url);
         cfg.has_memos            = false;
-
         cfg.gui_ticker           = j.contains("gui_coin") ? j.at("gui_coin").get<std::string>() : cfg.ticker;
         cfg.parent_coin          = j.contains("parent_coin") ? j.at("parent_coin").get<std::string>() : cfg.ticker;
         cfg.minimal_claim_amount = cfg.is_claimable ? j.at("minimal_claim_amount").get<std::string>() : "0";
@@ -161,8 +165,9 @@ namespace atomic_dex
         cfg.is_claimable         = j.count("is_claimable") > 0;
         cfg.is_custom_coin       = j.contains("is_custom_coin") ? j.at("is_custom_coin").get<bool>() : false;
         cfg.is_testnet           = j.contains("is_testnet") ? j.at("is_testnet").get<bool>() : false;
-        cfg.wallet_only  = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
-        cfg.default_coin = is_default_coin(cfg.ticker);
+        cfg.wallet_only          = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
+        cfg.default_coin         = is_default_coin(cfg.ticker);
+        cfg.is_faucet_coin       = is_faucet_coin(cfg.ticker);
 
         if (j.contains("other_types"))
         {

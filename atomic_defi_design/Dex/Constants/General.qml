@@ -87,6 +87,11 @@ QtObject {
         return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_wallet_only
     }
 
+    function isFaucetCoin(ticker)
+    {
+        return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_faucet_coin
+    }
+
     function isCoinWithMemo(ticker) {
         const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
         return coin_info.has_memos

@@ -267,7 +267,7 @@ namespace atomic_dex
             {"blocks_left", 1},
             {"transactions_left", 0},
             {"current_block", 1},
-            {"is_smartchain_test_coin", false},
+            {"is_faucet_coin", false},
             {"qrcode_address", ""},
             {"segwit_supported", false}};
         std::error_code ec;
@@ -300,7 +300,7 @@ namespace atomic_dex
             obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
             obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
             obj["current_block"]                      = static_cast<qint64>(tx_state.current_block);
-            obj["is_smartchain_test_coin"]            = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY" || coin_info.ticker == "ZOMBIE";
+            obj["is_faucet_coin"]                     = coin_info.is_faucet_coin;
 
             std::error_code   ec;
             if (!mm2_system.is_zhtlc_coin_ready(coin_info.ticker))
