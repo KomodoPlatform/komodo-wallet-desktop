@@ -21,18 +21,29 @@ Dex.Rectangle
     property string  addressKey
     property string  addressValue
 
-    property var     availableNetworkStandards: ["QRC-20", "ERC-20", "BEP-20", "Smart Chain", "SLP"]
-
+    property var     availableNetworkStandards: [
+        "QRC-20", "ERC-20", "BEP-20", "Smart Chain", "SLP",
+        "PLG-20", "KRC-20", "AVX-20", "FTM-20", "HRC-20",
+        "HCO-20", "MOVR-20", "GLMR-20"
+    ]
     // Return the asset type that will be used in the backend to validate the address
     function getTypeForAddressChecker(addressType)
     {
         switch (addressType)
         {
-            case "QRC-20":      return "QTUM"
-            case "BEP-20":      return "BNB"
-            case "ERC-20":      return "ETH"
-            case "Smart Chain": return "KMD"
-            case "SLP":         return "USDT-SLP"
+            case "BEP-20":       return "BNB"
+            case "ERC-20":       return "ETH"
+            case "QRC-20":       return "QTUM"
+            case "Smart Chain":  return "KMD"
+            case "PLG-20":       return "MATIC"
+            case "KRC-20":       return "KCS"
+            case "AVX-20":       return "AVAX"
+            case "FTM-20":       return "FTM"
+            case "HRC-20":       return "ONE"
+            case "HCO-20":       return "HC"
+            case "MOVR-20":      return "MOVR"
+            case "GLMR-20":      return "GLMR"
+            case "SLP":          return "USDT-SLP"
         }
 
         let coinInfo = Dex.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(addressType);
@@ -44,15 +55,7 @@ Dex.Rectangle
     // Tells if the given address type represents a network standard address (e.g. BEP-20)
     function isNetworkStandard(addressType)
     {
-        switch (addressType)
-        {
-            case "QRC-20":      return true
-            case "BEP-20":      return true
-            case "ERC-20":      return true
-            case "Smart Chain": return true
-            case "SLP":         return true
-        }
-        return false
+        return availableNetworkStandards.indexOf(addressType) !== -1
     }
 
     signal cancel()

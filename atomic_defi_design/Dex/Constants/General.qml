@@ -36,6 +36,26 @@ QtObject {
             {
                 return coin_icons_path + ticker.toString().toLowerCase().replace(' ', '_') + ".png"
             }
+            if (['AVX-20'].indexOf(ticker) >= 0 )
+            {
+                return coin_icons_path + "avax.png"
+            }
+            if (['PLG-20'].indexOf(ticker) >= 0 )
+            {
+                return coin_icons_path + "matic.png"
+            }
+            if (['KRC-20'].indexOf(ticker) >= 0 )
+            {
+                return coin_icons_path + "kcs.png"
+            }
+            if (['HRC-20'].indexOf(ticker) >= 0 )
+            {
+                return coin_icons_path + "one.png"
+            }
+            if (['HCO-20'].indexOf(ticker) >= 0 )
+            {
+                return coin_icons_path + "ht.png"
+            }
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             let icon = atomic_qt_utilities.retrieve_main_ticker(ticker.toString()).toLowerCase() + ".png"
             return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + icon
@@ -709,9 +729,15 @@ QtObject {
 
     function getParentCoin(type) {
         if(type === "ERC-20") return "ETH"
-        else if(type === "PLG-20") return "MATIC"
         else if(type === "AVX-20") return "AVAX"
+        else if(type === "BEP-20") return "BNB"
+        else if(type === "PLG-20") return "MATIC"
+        else if(type === "KRC-20") return "KRC"
         else if(type === "FTM-20") return "FTM"
+        else if(type === "HCO-20") return "HC"
+        else if(type === "MOVR-20") return "MOVR"
+        else if(type === "GLMR-20") return "GLMR"
+        else if(type === "HRC-20") return "ONE"
         else if(type === "QRC-20") return "QTUM"
         else if(type === "Smart Chain") return "KMD"
         return "?"

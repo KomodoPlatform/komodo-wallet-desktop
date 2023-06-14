@@ -293,7 +293,7 @@ Item
                                     anchors.verticalCenter: parent.verticalCenter
                                     width: 25
                                     height: 25
-                                    source: Dex.General.coinIcon(address_type.toLowerCase())
+                                    source: Dex.General.coinIcon(address_type)
                                 }
 
                                 Dex.Text
