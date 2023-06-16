@@ -258,7 +258,7 @@ QtObject {
 
     function getCoinColor(ticker) {
         let info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        if (!info.type) { return dark_theme ? colorCoin["default"] : colorCoinDark["default"] }
+        if (!info.type) { return colorWhite3 }
         let color = getCoinGroupTextColor(info.type)
         let base_ticker = atomic_qt_utilities.retrieve_main_ticker(ticker)
         if (colorCoin.hasOwnProperty(base_ticker) && !dark_theme)

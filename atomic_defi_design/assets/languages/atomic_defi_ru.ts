@@ -522,6 +522,14 @@
     </message>
 </context>
 <context>
+    <name>ClaimFaucetResultModal</name>
+    <message>
+        <location filename="../../Dex/Wallet/ClaimFaucetResultModal.qml" line="31"/>
+        <source>Close</source>
+        <translation type="unfinished">Закрыть</translation>
+    </message>
+</context>
+<context>
     <name>ClaimRewardsModal</name>
     <message>
         <location filename="../../Dex/Wallet/ClaimRewardsModal.qml" line="80"/>
