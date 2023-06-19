@@ -36,8 +36,24 @@ namespace atomic_dex::mm2
         }
         case CoinType::Matic:
         {
-            j["gas_station_url"]        = cfg.is_testnet ? cfg.testnet_matic_gas_station_url : cfg.matic_gas_station_url;
-            j["gas_station_decimals"]   = cfg.matic_gas_station_decimals;
+            if (cfg.is_testnet)
+            {
+                if (cfg.testnet_matic_gas_station_url.has_value())
+                {
+                    j["gas_station_url"]        = cfg.testnet_matic_gas_station_url.value();
+                }
+            }
+            else
+            {
+                if (cfg.matic_gas_station_url.has_value())
+                {
+                    j["gas_station_url"]        = cfg.matic_gas_station_url.value();
+                }
+            }
+            if (cfg.matic_gas_station_decimals.has_value())
+            {
+                j["gas_station_decimals"]   = cfg.matic_gas_station_decimals.value();
+            }
         }
         default:
             j["urls"]                   = cfg.urls;

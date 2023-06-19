@@ -34,11 +34,11 @@ namespace atomic_dex::mm2
         bool                        is_testnet{false};
         const std::string           swap_contract_address;
         std::optional<std::string>  fallback_swap_contract_address{std::nullopt};
-        const std::size_t           matic_gas_station_decimals{9};
+        std::optional<std::size_t>  matic_gas_station_decimals{9};
         std::string                 gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
-        std::string                 matic_gas_station_url{"https://gasstation-mainnet.matic.network/"};
-        std::string                 testnet_matic_gas_station_url{"https://gasstation-mumbai.matic.today/"};
-        std::string                 type; ///< QRC-20 ?
+        std::optional<std::string>  matic_gas_station_url{std::nullopt};
+        std::optional<std::string>  testnet_matic_gas_station_url{std::nullopt};
+        std::optional<std::string>  type; ///< QRC-20 ?
         bool                        with_tx_history{true};
     };
 
