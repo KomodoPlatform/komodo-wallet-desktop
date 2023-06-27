@@ -14,42 +14,44 @@
  *                                                                            *
  ******************************************************************************/
 
+#pragma once
+
+#include <optional>
+#include <string>
+
 //! Deps
-#include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
 
-//! Project Headers
-#include "atomicdex/api/mm2/rpc2.init_withdraw.hpp"
-
-//! Implementation 2.0 RPC [init_withdraw]
 namespace atomic_dex::mm2
 {
-    void
-    to_json(nlohmann::json& j, const init_withdraw_fees& request)
+    struct withdraw_init_fees
     {
-        j["type"]   = request.type;
-        j["amount"] = request.amount.value();
-    }
+        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
+        std::optional<std::string> amount;    ///< Utxo only
+    };
 
-    //! Serialization
-    void to_json(nlohmann::json& j, const init_withdraw_request& request)
+    struct withdraw_init_request
     {
-        nlohmann::json obj = nlohmann::json::object();
+        std::string                               coin;
+        std::string                               to;
+        std::string                               amount;
+        std::optional<withdraw_init_fees>         fees{std::nullopt}; ///< ignored if std::nullopt
+        std::optional<std::string>                memo;               ///< memo for zhtlc
+        bool                                      max{false};
+    };
 
-        obj["params"]["coin"]        = request.coin;
-        obj["params"]["to"]          = request.to;
-        obj["params"]["amount"]      = request.amount;
-        obj["params"]["max"]         = request.max;
-
-        if (request.fees.has_value())
-        {
-            obj["params"]["fee"] = request.fees.value();
-        }
-        j.update(obj);
-    }
-
-    //! Deserialization
-    void from_json(const nlohmann::json& j, init_withdraw_answer& answer)
+    struct withdraw_init_answer
     {
-        j.at("task_id").get_to(answer.task_id);
-    }
-} // namespace atomic_dex::mm2
+        int         task_id;
+    };
+
+    void to_json(nlohmann::json& j, const withdraw_init_request& request);
+    void from_json(const nlohmann::json& j, withdraw_init_answer& answer);
+}
+
+namespace atomic_dex
+{
+    using t_withdraw_init_request = mm2::withdraw_init_request;
+    using t_withdraw_init_fees    = mm2::withdraw_init_fees;
+    using t_withdraw_init_answer  = mm2::withdraw_init_answer;
+} // namespace atomic_dex

@@ -28,7 +28,7 @@
 
 namespace atomic_dex::mm2
 {
-    struct init_z_coin_request
+    struct enable_z_coin_request
     {
         std::string                               coin_name;
         std::vector<atomic_dex::electrum_server>  servers;
@@ -38,17 +38,17 @@ namespace atomic_dex::mm2
         bool                                      with_tx_history{false};  // Not yet in API
     };
 
-    struct init_z_coin_answer
+    struct enable_z_coin_answer
     {
         int         task_id;
     };
 
-    void to_json(nlohmann::json& j, const init_z_coin_request& request);
-    void from_json(const nlohmann::json& j, init_z_coin_answer& answer);
+    void to_json(nlohmann::json& j, const enable_z_coin_request& request);
+    void from_json(const nlohmann::json& j, enable_z_coin_answer& answer);
 }
 
 namespace atomic_dex
 {
-    using t_init_z_coin_request = mm2::init_z_coin_request;
-    using t_init_z_coin_answer = mm2::init_z_coin_answer;
+    using t_enable_z_coin_request = mm2::enable_z_coin_request;
+    using t_enable_z_coin_answer = mm2::enable_z_coin_answer;
 } // namespace atomic_dex

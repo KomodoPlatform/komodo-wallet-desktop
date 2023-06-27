@@ -234,28 +234,20 @@ DexPopup
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp)
     {
-        
-        if (!app.segwit_on)
+        if (amount != 0)
         {
-            if (amount != 0)
-            {
-                newNotification(
-                    balanceUpdateStatusNotification,
-                    {
-                        am_i_sender,
-                        amount,
-                        ticker,
-                        human_date,
-                        timestamp
-                    },
-                    timestamp,
+            newNotification(
+                balanceUpdateStatusNotification,
+                {
+                    am_i_sender,
+                    amount,
+                    ticker,
                     human_date,
-                    "open_wallet_page")
-            }
-        }
-        else
-        {
-            app.segwit_on = false
+                    timestamp
+                },
+                timestamp,
+                human_date,
+                "open_wallet_page")
         }
     }
 

@@ -28,6 +28,8 @@
 #include "atomicdex/constants/dex.constants.hpp"
 #include "rpc.hpp"
 #include "rpc.tx.history.hpp"
+#include "rpc2.enable_tendermint_token.hpp"
+#include "rpc2.enable_tendermint_with_assets.hpp"
 
 namespace
 {
@@ -160,6 +162,8 @@ namespace atomic_dex::mm2
     template void mm2_client::process_rpc_async<get_public_key_rpc>(const std::function<void(get_public_key_rpc)>&);
     template void mm2_client::process_rpc_async<enable_slp_rpc>(const std::function<void(enable_slp_rpc)>&);
     template void mm2_client::process_rpc_async<enable_bch_with_tokens_rpc>(const std::function<void(enable_bch_with_tokens_rpc)>&);
+    template void mm2_client::process_rpc_async<enable_tendermint_token_rpc>(const std::function<void(enable_tendermint_token_rpc)>&);
+    template void mm2_client::process_rpc_async<enable_tendermint_with_assets_rpc>(const std::function<void(enable_tendermint_with_assets_rpc)>&);
     template void mm2_client::process_rpc_async<my_tx_history_rpc>(const std::function<void(my_tx_history_rpc)>&);
     template void mm2_client::process_rpc_async<my_tx_history_v1_rpc>(const std::function<void(my_tx_history_v1_rpc)>&);
     
@@ -192,11 +196,11 @@ namespace atomic_dex::mm2
 
     template <typename TRequest, typename TAnswer>
     TAnswer
-    mm2_client::process_rpc(TRequest&& request, std::string rpc_command)
+    mm2_client::process_rpc(TRequest&& request, std::string rpc_command, bool is_v2)
     {
         SPDLOG_DEBUG("Processing rpc call: {}", rpc_command);
 
-        nlohmann::json json_data = mm2::template_request(rpc_command);
+        nlohmann::json json_data = mm2::template_request(rpc_command, is_v2);
 
         mm2::to_json(json_data, request);
 
@@ -209,6 +213,12 @@ namespace atomic_dex::mm2
         rpc_request.set_body(json_data.dump());
         auto resp = generate_client().request(rpc_request).get();
         return rpc_process_answer<TAnswer>(resp, rpc_command);
+    }
+
+    t_enable_z_coin_cancel_answer
+    mm2_client::rpc_enable_z_coin_cancel(t_enable_z_coin_cancel_request&& request)
+    {
+        return process_rpc<t_enable_z_coin_cancel_request, t_enable_z_coin_cancel_answer>(std::forward<t_enable_z_coin_cancel_request>(request), "task::enable_z_coin::cancel", true);
     }
 
     t_disable_coin_answer

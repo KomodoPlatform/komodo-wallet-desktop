@@ -196,6 +196,7 @@ QtObject {
             case 'Ethereum Classic':  return dark_theme ? colorCoinDark["ETC"] : colorCoin["ETC"]
             case 'Arbitrum':          return dark_theme ? colorCoinDark["ETH"] : colorCoin["ETH"]
             case 'ERC-20':            return dark_theme ? colorCoinDark["ETH"] : colorCoin["ETH"]
+            case 'EWT':               return dark_theme ? colorCoinDark["EWT"] : colorCoin["EWT"]
             case 'FTM-20':            return dark_theme ? colorCoinDark["FTM"] : colorCoin["FTM"]
             case 'Moonbeam':          return dark_theme ? colorCoinDark["GLMR"] : colorCoin["GLMR"]
             case 'HecoChain':         return dark_theme ? colorCoinDark["HECO"] : colorCoin["HECO"]
@@ -237,6 +238,7 @@ QtObject {
             case 'Ethereum Classic':  return dark_theme ? colorCoinDark["ETC"] : colorCoin["ETC"]
             case 'Arbitrum':          return dark_theme ? colorCoinDark["ETH"] : colorCoin["ETH"]
             case 'ERC-20':            return dark_theme ? colorCoinDark["ETH"] : colorCoin["ETH"]
+            case 'EWT':               return dark_theme ? colorCoinDark["EWT"] : colorCoin["EWT"]
             case 'FTM-20':            return dark_theme ? colorCoinDark["FTM"] : colorCoin["FTM"]
             case 'Moonbeam':          return dark_theme ? colorCoinDark["GLMR"] : colorCoin["GLMR"]
             case 'HecoChain':         return dark_theme ? colorCoinDark["HECO"] : colorCoin["HECO"]
@@ -256,7 +258,7 @@ QtObject {
 
     function getCoinColor(ticker) {
         let info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        if (!info.type) { return dark_theme ? colorCoin["default"] : colorCoinDark["default"] }
+        if (!info.type) { return colorWhite3 }
         let color = getCoinGroupTextColor(info.type)
         let base_ticker = atomic_qt_utilities.retrieve_main_ticker(ticker)
         if (colorCoin.hasOwnProperty(base_ticker) && !dark_theme)
@@ -278,6 +280,7 @@ QtObject {
                                           "BCH": "#8DC351",
                                           "ETC": "#328432",
                                           "ETH": "#687DE3",
+                                          "EWT": "#A466FF",
                                           "FTM": "#13B5EC",
                                           "HECO": "#00953F",                             
                                           "GLMR": "#F6007C",
@@ -303,6 +306,7 @@ QtObject {
                                           "BCH": "#8DC351",
                                           "ETC": "#328432",
                                           "ETH": "#687DE3",
+                                          "EWT": "#A466FF",
                                           "FTM": "#13B5EC",
                                           "HECO": "#00953F",                             
                                           "GLMR": "#F6007C",

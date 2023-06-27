@@ -47,6 +47,7 @@ namespace
             {"is_erc_family", coin.is_erc_family},
             {"is_zhtlc_family", coin.is_zhtlc_family},
             {"is_wallet_only", coin.wallet_only},
+            {"has_memos", coin.has_memos},
             {"fees_ticker", QString::fromStdString(coin.fees_ticker)}};
         return j;
     }
@@ -206,7 +207,7 @@ namespace atomic_dex
                 m_enabled_coins[cur.ticker] = cur;
             }
         }
-        cfg.push_back(coin_config{.ticker = "All", .currently_enabled = true, .active = true});
+        cfg.push_back(coin_config{.ticker = "All", .active = true, .currently_enabled = true});
         SPDLOG_INFO("Initializing global coin cfg model with size {}", cfg.size());
         set_checked_nb(0);
         beginResetModel();
@@ -306,6 +307,12 @@ namespace atomic_dex
     global_coins_cfg_model::get_all_erc20_proxy() const 
     {
         return m_proxies[CoinType::ERC20];
+    }
+
+    global_coins_cfg_proxy_model*
+    global_coins_cfg_model::get_all_ewt_proxy() const
+    {
+        return m_proxies[CoinType::EWT];
     }
 
     global_coins_cfg_proxy_model*

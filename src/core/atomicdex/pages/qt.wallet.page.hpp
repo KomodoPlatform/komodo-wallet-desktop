@@ -30,7 +30,7 @@ namespace atomic_dex
         // Getters/Setters
         [[nodiscard]] transactions_model* get_transactions_mdl() const;
         [[nodiscard]] QString             get_current_ticker() const;
-        void                              set_current_ticker(const QString& ticker);
+        void                              set_current_ticker(const QString& ticker, bool force = false);
         [[nodiscard]] QVariant            get_ticker_infos() const;
         [[nodiscard]] bool                is_broadcast_busy() const;
         void                              set_broadcast_busy(bool status);
@@ -88,9 +88,7 @@ namespace atomic_dex
                         bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max,
                         const QString& amount); // Broadcast requires OS local user credentials verification. This is called by the Q_INVOKABLE broadcast() method after
                                                 // entering credentials.
-        Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
-        Q_INVOKABLE QString switch_address_mode(bool checked);
-        Q_INVOKABLE void    post_switch_address_mode(bool is_segwit);
+        Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data, const QString& memo);
 
         // QML API Properties
         Q_PROPERTY(transactions_model* transactions_mdl READ get_transactions_mdl NOTIFY transactionsMdlChanged)

@@ -87,6 +87,16 @@ QtObject {
         return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_wallet_only
     }
 
+    function isFaucetCoin(ticker)
+    {
+        return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_faucet_coin
+    }
+
+    function isCoinWithMemo(ticker) {
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
+        return coin_info.has_memos
+    }
+
     function getLanguage()
     {
         return API.app.settings_pg.lang
@@ -111,17 +121,22 @@ QtObject {
     {
         let progress = 100
         if (!activation_status.hasOwnProperty("result")) return progress
+        // console.log("["+coin+"] [zhtlcActivationProgress]: " + JSON.stringify(activation_status))
         let status = activation_status.result.status
         let details = activation_status.result.details
 
         let block_offset = 0
-        if (coin == 'ARRR') block_offset = 1900000
+        if (coin == 'ARRR') block_offset = 2000000
 
         // use range from checkpoint block to present
-        if (status == "Ready")
+        if (!status)
+        {
+            return -1
+        }
+        else if (status == "Ok")
         {
             if (details.hasOwnProperty("error"))
-                console.log("[zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
+                console.log("["+coin+"] [zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
         }
         else if (status == "InProgress")
         {
@@ -140,7 +155,7 @@ QtObject {
             else if (details.hasOwnProperty("RequestingBalance")) progress = 98
             else progress = 5
         }
-        else console.log("[zhtlcActivationProgress] Unexpected status: " + status)
+        else console.log("["+coin+"] [zhtlcActivationProgress] Unexpected status: " + status)
         return progress
     }
 

@@ -269,6 +269,7 @@ ClipRRect // Trade Card
                         opacity: .6
                     }
 
+                    // Tooltip
                     MouseArea
                     {
                         anchors.left: _fromBalanceIcon.left
@@ -279,7 +280,11 @@ ClipRRect // Trade Card
                         DefaultTooltip
                         {
                             visible: parent.containsMouse
-                            text: qsTr("Tradable: ") + parent.parent.text
+                            text:
+                            {
+                                let balance = Constants.API.app.portfolio_pg.portfolio_mdl.coin_balance(selectedTicker);
+                                return qsTr("Balance: ") + Constants.API.app.portfolio_pg.portfolio_mdl.coin_balance(selectedTicker) + ' (' + parent.parent.text + ' tradable)'
+                            } 
                         }
                     }
 
