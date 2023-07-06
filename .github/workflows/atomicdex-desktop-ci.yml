@@ -13,7 +13,7 @@ env:
   DEX_API: "mm2"
   DEX_RPCPORT: 7762
   DEX_RPC: "http://127.0.0.1:7762"
-  DEX_PROJECT_NAME: "atomicdex-desktop"
+  DEX_PROJECT_NAME: "komodo-wallet"
   DEX_DISPLAY_NAME: "Komodo Wallet"
   DEX_COMPANY: "KomodoPlatform"
   DEX_VERSION: "0.5.8"
