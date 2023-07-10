@@ -32,7 +32,7 @@ namespace atomic_dex
 {
     struct coin_config
     {
-        static constexpr const char* erc_gas_stations   = "https://ethgasstation.info/json/ethgasAPI.json";
+        std::optional<std::string>                        erc_gas_stations{std::nullopt};
         std::optional<std::string>                        matic_gas_stations{std::nullopt};
         using electrum_servers                          = std::vector<electrum_server>;
         using nodes                                     = std::vector<node>;

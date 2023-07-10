@@ -13,10 +13,10 @@ env:
   DEX_API: "mm2"
   DEX_RPCPORT: 7762
   DEX_RPC: "http://127.0.0.1:7762"
-  DEX_PROJECT_NAME: "atomicdex-desktop"
-  DEX_DISPLAY_NAME: "AtomicDex Desktop"
+  DEX_PROJECT_NAME: "komodo-wallet"
+  DEX_DISPLAY_NAME: "Komodo Wallet"
   DEX_COMPANY: "KomodoPlatform"
-  DEX_VERSION: "0.5.8"
+  DEX_VERSION: "0.6.0"
   DEX_WEBSITE: "https://atomicdex.io/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
@@ -215,7 +215,7 @@ jobs:
 
 
 
-      - name: Build AtomicDEX (MacOS)
+      - name: Build Komodo Wallet (MacOS)
         if: runner.os == 'macOS'
         run: |
           xcrun --sdk macosx --show-sdk-path
@@ -239,7 +239,7 @@ jobs:
 
 
 
-      - name: Build AtomicDEX (Linux)
+      - name: Build Komodo Wallet (Linux)
         if: runner.os == 'Linux'
         run: |
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
@@ -257,7 +257,7 @@ jobs:
           ./ci_tools_atomic_dex bundle ${{ matrix.type }}
 
 
-      - name: Build AtomicDEX (Windows)
+      - name: Build Komodo Wallet (Windows)
         if: runner.os == 'Windows'
         shell: powershell
         run: |

@@ -215,9 +215,9 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">atomicdex-desktop</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.atomicdex-desktop</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">atomicdex-desktop</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">komodo-wallet</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.komodo-wallet</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">komodo-wallet</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
@@ -286,9 +286,9 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">atomicdex-desktop_tests</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.atomicdex-desktop_tests</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">atomicdex-desktop_tests</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">komodo-wallet_tests</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.komodo-wallet_tests</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">komodo-wallet_tests</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
