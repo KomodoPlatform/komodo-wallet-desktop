@@ -1,41 +1,41 @@
 <p align="center">
     <a href="https://atomicdex.io" alt="Komodo Wallet">
-        <img src="https://user-images.githubusercontent.com/35845239/147651230-827e8c0f-baf0-4f28-8be0-e08624baad37.png" />
+        <img src="https://user-images.githubusercontent.com/24797699/252289816-fa7d298a-3b7e-4003-956b-bef17f042f9c.png" />
     </a>
 </p>
 
 <p align="center">
-    <a href="https://github.com/komodoplatform/atomicdex-desktop/graphs/contributors" alt="Contributors">
-        <img src="https://img.shields.io/github/contributors/komodoplatform/atomicdex-desktop" />
+    <a href="https://github.com/komodoplatform/komodo-wallet-desktop/graphs/contributors" alt="Contributors">
+        <img src="https://img.shields.io/github/contributors/komodoplatform/komodo-wallet-desktop" />
     </a>
-    <a href="https://github.com/komodoplatform/atomicdex-desktop/releases">
-        <img src="https://img.shields.io/github/downloads/komodoplatform/atomicdex-desktop/total" alt="downloads">
+    <a href="https://github.com/komodoplatform/komodo-wallet-desktop/releases">
+        <img src="https://img.shields.io/github/downloads/komodoplatform/komodo-wallet-desktop/total" alt="downloads">
     </a>
-    <a href="https://github.com/komodoplatform/atomicdex-desktop/">
-        <img src="https://img.shields.io/github/last-commit/komodoplatform/atomicdex-desktop" alt="last commit">
+    <a href="https://github.com/komodoplatform/komodo-wallet-desktop/">
+        <img src="https://img.shields.io/github/last-commit/komodoplatform/komodo-wallet-desktop" alt="last commit">
     </a>
-    <a href="https://github.com/komodoplatform/atomicdex-desktop/pulse" alt="Activity">
-        <img src="https://img.shields.io/github/commit-activity/m/komodoplatform/atomicdex-desktop" />
-    </a>
-	<br/>
-    <a href="https://github.com/komodoplatform/atomicdex-desktop/issues">
-        <img src="https://img.shields.io/github/issues-raw/komodoplatform/atomicdex-desktop" alt="issues">
-    </a>
-    <a href="https://github.com/komodoplatform/atomicdex-desktop/issues?q=is%3Aissue+is%3Aclosed">
-        <img src="https://img.shields.io/github/issues-closed-raw/komodoplatform/atomicdex-desktop" alt="issues closed">
-    </a>
-    <a href="https://github.com/komodoplatform/atomicdex-desktop/pulls">
-        <img src="https://img.shields.io/github/issues-pr/komodoplatform/atomicdex-desktop" alt="pulls">
-    </a>
-    <a href="https://github.com/komodoplatform/atomicdex-desktop/pulls?q=is%3Apr+is%3Aclosed">
-        <img src="https://img.shields.io/github/issues-pr-closed/komodoplatform/atomicdex-desktop" alt="pulls closed">
+    <a href="https://github.com/komodoplatform/komodo-wallet-desktop/pulse" alt="Activity">
+        <img src="https://img.shields.io/github/commit-activity/m/komodoplatform/komodo-wallet-desktop" />
     </a>
 	<br/>
-    <a href="https://github.com/KomodoPlatform/atomicDEX-Desktop/actions">
-        <img src="https://img.shields.io/github/workflow/status/KomodoPlatform/atomicDEX-Desktop/AtomicDex-Desktop%20CI" alt="build status">
+    <a href="https://github.com/komodoplatform/komodo-wallet-desktop/issues">
+        <img src="https://img.shields.io/github/issues-raw/komodoplatform/komodo-wallet-desktop" alt="issues">
     </a>
-    <a href="https://github.com/KomodoPlatform/atomicdex-desktop/releases">
-        <img src="https://img.shields.io/github/v/release/komodoplatform/atomicdex-desktop" alt="release version">
+    <a href="https://github.com/komodoplatform/komodo-wallet-desktop/issues?q=is%3Aissue+is%3Aclosed">
+        <img src="https://img.shields.io/github/issues-closed-raw/komodoplatform/komodo-wallet-desktop" alt="issues closed">
+    </a>
+    <a href="https://github.com/komodoplatform/komodo-wallet-desktop/pulls">
+        <img src="https://img.shields.io/github/issues-pr/komodoplatform/komodo-wallet-desktop" alt="pulls">
+    </a>
+    <a href="https://github.com/komodoplatform/komodo-wallet-desktop/pulls?q=is%3Apr+is%3Aclosed">
+        <img src="https://img.shields.io/github/issues-pr-closed/komodoplatform/komodo-wallet-desktop" alt="pulls closed">
+    </a>
+	<br/>
+    <a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/actions/workflows/atomicdex-desktop-ci.yml">
+        <img src="https://github.com/KomodoPlatform/komodo-wallet-desktop/actions/workflows/atomicdex-desktop-ci.yml/badge.svg?branch=master" alt="build status">
+    </a>
+    <a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/releases">
+        <img src="https://img.shields.io/github/v/release/komodoplatform/komodo-wallet-desktop" alt="release version">
     </a>
     <a href="https://discord.gg/3rzDPAr">
         <img src="https://img.shields.io/discord/302123079818149888?logo=discord" alt="chat on Discord">
@@ -61,10 +61,10 @@ Komodo Wallet has been tested on the following platforms:
 
 ## Get Started
 
-You can [download](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases) the pre-built <b>beta</b> binaries on
-our [GitHub release page](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases).
+You can [download](https://github.com/KomodoPlatform/komodo-wallet-desktop/releases) the pre-built <b>beta</b> binaries on
+our [GitHub release page](https://github.com/KomodoPlatform/komodo-wallet-desktop/releases).
 
-Build instructions can be found [here](https://github.com/KomodoPlatform/atomicDEX-Desktop/wiki/Build-Instructions)
+Build instructions can be found [here](https://github.com/KomodoPlatform/komodo-wallet-desktop/wiki/Build-Instructions)
 
 Please join our [Discord Server](https://komodoplatform.com/discord) for support, discussions and general UI/UX
 feedback.
@@ -75,13 +75,13 @@ feedback.
 - :book: [Komodo Wallet Documentation](https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-tutorials/introduction-to-atomicdex.html)
 - :link: [Komodo Wallet Website](https://atomicdex.io/)
 - :speech_balloon: [Komodo Wallet Discord](https://discord.gg/tvp96Gf)
-- :hammer_and_wrench: [Komodo Wallet Development Boards](https://github.com/KomodoPlatform/atomicDEX-Desktop/projects)
-- :notebook_with_decorative_cover: [Komodo Wallet Wiki](https://github.com/KomodoPlatform/atomicDEX-Desktop/wiki/)
+- :hammer_and_wrench: [Komodo Wallet Development Boards](https://github.com/KomodoPlatform/komodo-wallet-desktop/projects)
+- :notebook_with_decorative_cover: [Komodo Wallet Wiki](https://github.com/KomodoPlatform/komodo-wallet-desktop/wiki/)
 
 
 ## Komodo Wallet mobile
 
-Check out Komodo Wallet mobile, available for [Android and iOS](https://atomicdex.io) 
+Check out Komodo Wallet mobile, available for [Android and iOS](https://atomicdex.io)
 
 
 ## Self-Hosted Dependencies
@@ -103,7 +103,7 @@ Check out Komodo Wallet mobile, available for [Android and iOS](https://atomicde
 
 
 ## Contributors / Thanks
-  
+
 <div align="center">
 	<table>
 	  <tr>
@@ -151,7 +151,7 @@ Check out Komodo Wallet mobile, available for [Android and iOS](https://atomicde
 	</table>
 </div>
 
-  
+
 ## License
 
 For details please refer to our [license](https://github.com/KomodoPlatform/atomicDEX-Desktop/blob/master/LICENSE).
