@@ -40,8 +40,8 @@
     <a href="https://discord.gg/3rzDPAr">
         <img src="https://img.shields.io/discord/302123079818149888?logo=discord" alt="chat on Discord">
     </a>
-    <a href="https://twitter.com/intent/follow?screen_name=https://twitter.com/atomicdex">
-        <img src="https://img.shields.io/twitter/follow/atomicdex?style=social&logo=twitter"
+    <a href="https://twitter.com/KomodoPlatform">
+        <img src="https://img.shields.io/twitter/follow/komodoplatform?style=social&logo=twitter"
             alt="follow on Twitter">
     </a>
 </p>
