@@ -32,7 +32,10 @@ namespace atomic_dex::mm2
         {
         case CoinType::ERC20:
         {
-            j["gas_station_url"]        = cfg.gas_station_url;
+            if (cfg.gas_station_url.has_value())
+            {
+                j["gas_station_url"]        = cfg.gas_station_url.value();
+            }
         }
         case CoinType::Matic:
         {
@@ -40,7 +43,7 @@ namespace atomic_dex::mm2
             {
                 if (cfg.testnet_matic_gas_station_url.has_value())
                 {
-                    j["gas_station_url"]        = cfg.testnet_matic_gas_station_url.value();
+                    j["gas_station_url"]    = cfg.testnet_matic_gas_station_url.value();
                 }
             }
             else

@@ -1403,7 +1403,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
 <context>
     <name>General</name>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="352"/>
+        <location filename="../../Dex/Constants/General.qml" line="357"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n Tag</numerusform>
@@ -1411,7 +1411,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="362"/>
+        <location filename="../../Dex/Constants/General.qml" line="367"/>
         <source>%nd</source>
         <comment>day</comment>
         <translation>
@@ -1420,7 +1420,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="363"/>
+        <location filename="../../Dex/Constants/General.qml" line="368"/>
         <source>%nh</source>
         <comment>hours</comment>
         <translation>
@@ -1429,7 +1429,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="364"/>
+        <location filename="../../Dex/Constants/General.qml" line="369"/>
         <source>%nm</source>
         <comment>minutes</comment>
         <translation>
@@ -1438,7 +1438,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="365"/>
+        <location filename="../../Dex/Constants/General.qml" line="370"/>
         <source>%ns</source>
         <comment>seconds</comment>
         <translation>
@@ -1447,7 +1447,7 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="366"/>
+        <location filename="../../Dex/Constants/General.qml" line="371"/>
         <source>%nms</source>
         <comment>milliseconds</comment>
         <translation>
@@ -1456,117 +1456,117 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
         </translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="367"/>
+        <location filename="../../Dex/Constants/General.qml" line="372"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="403"/>
+        <location filename="../../Dex/Constants/General.qml" line="408"/>
         <source>&lt;b&gt;Taker tx fee:&lt;/b&gt; </source>
         <translation>&lt;b&gt;Taker tx Gebühren:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="404"/>
+        <location filename="../../Dex/Constants/General.qml" line="409"/>
         <source>&lt;b&gt;Dex tx fee:&lt;/b&gt; </source>
         <translation>&lt;b&gt;Dex tx Gebühren:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="405"/>
+        <location filename="../../Dex/Constants/General.qml" line="410"/>
         <source>&lt;b&gt;Dex fee:&lt;/b&gt; </source>
         <translation>&lt;b&gt;Dex Gebühren:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="406"/>
+        <location filename="../../Dex/Constants/General.qml" line="411"/>
         <source>&lt;b&gt;Maker tx fee:&lt;/b&gt; </source>
         <translation>&lt;b&gt;Maker tx Gebühren:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="420"/>
+        <location filename="../../Dex/Constants/General.qml" line="425"/>
         <source>%1 balance is zero</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="424"/>
+        <location filename="../../Dex/Constants/General.qml" line="429"/>
         <source>Activating %1 (%2%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="428"/>
+        <location filename="../../Dex/Constants/General.qml" line="433"/>
         <source>Loading wallet...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="432"/>
+        <location filename="../../Dex/Constants/General.qml" line="437"/>
         <source>Min: %1</source>
         <translation type="unfinished">Minimum: %1</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="434"/>
+        <location filename="../../Dex/Constants/General.qml" line="439"/>
         <source>Enter an amount</source>
         <translation type="unfinished">Betrag eingeben</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="805"/>
+        <location filename="../../Dex/Constants/General.qml" line="810"/>
         <source>Trading Fee</source>
         <translation>Handelsgebühr</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="815"/>
+        <location filename="../../Dex/Constants/General.qml" line="820"/>
         <source>Minimum Trading Amount</source>
         <translation>Mindesthandelsbetrag</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="826"/>
+        <location filename="../../Dex/Constants/General.qml" line="831"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation>Brieftasche %1 existiert bereits</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="839"/>
+        <location filename="../../Dex/Constants/General.qml" line="844"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
         <translation>Das %1 Guthaben ist niedriger als der Gebührenbetrag: %2 %3</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="841"/>
+        <location filename="../../Dex/Constants/General.qml" line="846"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation>Handelbares %1 Guthaben (nach Gebühren) ist niedriger als der Mindesthandelsbetrag</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="843"/>
+        <location filename="../../Dex/Constants/General.qml" line="848"/>
         <source>Please fill the price field</source>
         <translation>Bitte füllen Sie das Preisfeld aus</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="845"/>
+        <location filename="../../Dex/Constants/General.qml" line="850"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="835"/>
-        <location filename="../../Dex/Constants/General.qml" line="837"/>
+        <location filename="../../Dex/Constants/General.qml" line="840"/>
+        <location filename="../../Dex/Constants/General.qml" line="842"/>
         <source>Please wait for %1 to fully activate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="847"/>
-        <location filename="../../Dex/Constants/General.qml" line="849"/>
+        <location filename="../../Dex/Constants/General.qml" line="852"/>
+        <location filename="../../Dex/Constants/General.qml" line="854"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation>%1 Volumen ist niedriger als der minimale Handelsbetrag</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="851"/>
-        <location filename="../../Dex/Constants/General.qml" line="855"/>
+        <location filename="../../Dex/Constants/General.qml" line="856"/>
+        <location filename="../../Dex/Constants/General.qml" line="860"/>
         <source>%1 needs to be enabled in order to use %2</source>
         <translation>%1 muss aktiviert werden, um %2 verwenden zu können</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="853"/>
-        <location filename="../../Dex/Constants/General.qml" line="857"/>
+        <location filename="../../Dex/Constants/General.qml" line="858"/>
+        <location filename="../../Dex/Constants/General.qml" line="862"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation>Das %1 Guthaben muss finanziert werden, ein Guthaben größer Null ist erforderlich, um das Benzin von %2 Transaktionen zu bezahlen</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="859"/>
+        <location filename="../../Dex/Constants/General.qml" line="864"/>
         <source>Unknown Error</source>
         <translation>Unbekannter Fehler</translation>
     </message>
