@@ -1483,7 +1483,7 @@ namespace atomic_dex
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
                                                     SPDLOG_DEBUG("{} status : {}", tickers[idx], status);
-                                                    SPDLOG_DEBUG(" Activation Status: {}", z_answers[0].dump());
+                                                    SPDLOG_DEBUG("{} Activation Status: {}", tickers[idx], z_answers[0].dump());
 
                                                     if (status == "Ok")
                                                     {
