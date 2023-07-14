@@ -1483,7 +1483,7 @@ namespace atomic_dex
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
                                                     SPDLOG_DEBUG("{} status : {}", tickers[idx], status);
-                                                    SPDLOG_DEBUG("{} activation status response [{}]", tickers[idx], z_answers[0].dump());
+                                                    SPDLOG_DEBUG(" Activation Status: {}", z_answers[0].dump());
 
                                                     if (status == "Ok")
                                                     {
@@ -1508,6 +1508,11 @@ namespace atomic_dex
 
                                                         dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {tickers[idx]}});
                                                         this->m_nb_update_required += 1;
+                                                        break;
+                                                    }
+                                                    else if (status == "Error")
+                                                    {
+                                                        event = z_answers[0].at("result").at("details").at("error_data").at("error").get<std::string>();
                                                         break;
                                                     }
                                                     else
@@ -1553,8 +1558,7 @@ namespace atomic_dex
                                                 try {
                                                     if (z_error[0].at("result").at("details").contains("error"))
                                                     {
-                                                        std::string zhtlc_error   = z_error[0].at("result").at("details").at("error").get<std::string>();
-                                                        SPDLOG_DEBUG("Error enabling {}: {} ", tickers[idx], zhtlc_error);
+                                                        SPDLOG_DEBUG("Error enabling {}: {} ", tickers[idx], event);
                                                         SPDLOG_DEBUG(
                                                             "Removing zhtlc from enabling, idx: {}, tickers size: {}, answers size: {}",
                                                             tickers[idx], idx, tickers.size(), answers.size()
