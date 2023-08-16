@@ -115,7 +115,7 @@ jobs:
 
       - name: Install QT (macOS)
         if: runner.os == 'macOS'
-        uses: jurplel/install-qt-action@v3.0.0
+        uses: jurplel/install-qt-action@v3.3.0
         with:
           version: ${{ matrix.qt }}
           host: ${{ matrix.host }}
@@ -128,7 +128,7 @@ jobs:
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: jurplel/install-qt-action@v3.0.0
+        uses: jurplel/install-qt-action@v3.3.0
         with:
           version: ${{ matrix.qt }}
           host: ${{ matrix.host }}
@@ -140,7 +140,7 @@ jobs:
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: jurplel/install-qt-action@v3.0.0
+        uses: jurplel/install-qt-action@v3.3.0
         with:
           version: ${{ matrix.qt }}
           host: ${{ matrix.host }}
