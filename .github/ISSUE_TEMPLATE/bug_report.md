@@ -32,4 +32,4 @@ Please describe what you expected to happen.
 
 **Additional context**
  - Add any related context about the problem here (e.g. screen resolution, mining activity on address)
- - Attach [log files](https://forum.komodoplatform.com/t/accessing-atomicdex-desktop-log-files/540)
+ - Attach [log files](https://forum.komodoplatform.com/t/accessing-komodo-wallet-desktop-log-files/540)

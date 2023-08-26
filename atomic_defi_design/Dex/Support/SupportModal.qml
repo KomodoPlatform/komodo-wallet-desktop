@@ -208,7 +208,7 @@ There is a toggle in settings where you can turn on/off the display of these tra
                 Layout.preferredHeight: column_layout.height
                 hoverEnabled: true
 
-                onClicked: Qt.openUrlExternally("https://github.com/KomodoPlatform/atomicDEX-Desktop/pull/2296")
+                onClicked: Qt.openUrlExternally("https://github.com/KomodoPlatform/komodo-wallet-desktop/pull/2296")
 
                 ColumnLayout
                 {

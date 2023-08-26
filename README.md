@@ -31,8 +31,8 @@
         <img src="https://img.shields.io/github/issues-pr-closed/komodoplatform/komodo-wallet-desktop" alt="pulls closed">
     </a>
 	<br/>
-    <a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/actions/workflows/atomicdex-desktop-ci.yml">
-        <img src="https://github.com/KomodoPlatform/komodo-wallet-desktop/actions/workflows/atomicdex-desktop-ci.yml/badge.svg?branch=master" alt="build status">
+    <a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/actions/workflows/komodo-wallet-desktop-ci.yml">
+        <img src="https://github.com/KomodoPlatform/komodo-wallet-desktop/actions/workflows/komodo-wallet-desktop-ci.yml/badge.svg?branch=master" alt="build status">
     </a>
     <a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/releases">
         <img src="https://img.shields.io/github/v/release/komodoplatform/komodo-wallet-desktop" alt="release version">
@@ -108,44 +108,44 @@ Check out Komodo Wallet mobile, available for [Android and iOS](https://atomicde
 	<table>
 	  <tr>
 	    <td align="center">
-	        <a href="https://github.com/Milerius"><img src="https://avatars1.githubusercontent.com/u/21139416?s=400&u=12e0a99353ae95365801542b85e2fd69abd44a81&v=4" width="100px;" alt="Milerius"/><br /><sub><b>Milerius</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=Milerius" title="Lead Back-End Dev / Code">✍️💻</a>
+	        <a href="https://github.com/Milerius"><img src="https://avatars1.githubusercontent.com/u/21139416?s=400&u=12e0a99353ae95365801542b85e2fd69abd44a81&v=4" width="100px;" alt="Milerius"/><br /><sub><b>Milerius</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=Milerius" title="Lead Back-End Dev / Code">✍️💻</a>
 	    </td>
 		<td align="center">
-		    <a href="https://github.com/SylEze"><img src="https://avatars1.githubusercontent.com/u/14373103?s=460&u=b303a2d2261008814800c2d7809efc6af685a460&v=4"width="100px;" alt="syl"/><br /><sub><b>syl</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=SylEze" title="Frontend and Back-End Dev / Code">✍️💻</a>
+		    <a href="https://github.com/SylEze"><img src="https://avatars1.githubusercontent.com/u/14373103?s=460&u=b303a2d2261008814800c2d7809efc6af685a460&v=4"width="100px;" alt="syl"/><br /><sub><b>syl</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=SylEze" title="Frontend and Back-End Dev / Code">✍️💻</a>
 		</td>
 	    <td align="center">
-	        <a href="https://github.com/naezith"><img src="https://avatars2.githubusercontent.com/u/6732486?s=400&u=5d242e560be002ad4af597dd284eb3242ab28016&v=4" width="100px;" alt="naezith"/><br /><sub><b>naezith</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=naezith" title="Front-End Dev / Code">✍️💻</a>
+	        <a href="https://github.com/naezith"><img src="https://avatars2.githubusercontent.com/u/6732486?s=400&u=5d242e560be002ad4af597dd284eb3242ab28016&v=4" width="100px;" alt="naezith"/><br /><sub><b>naezith</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=naezith" title="Front-End Dev / Code">✍️💻</a>
 	    </td>
 	    <td align="center">
-	        <a href="https://github.com/ssakone"><img src="https://avatars.githubusercontent.com/u/39985611?v=4" width="100px;" alt="ssakone"/><br /><sub><b>ssakone</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=ssakone" title="Front-End Dev / Code">✍️💻</a>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td align="center">
-	        <a href="https://github.com/tonymorony"><img src="https://avatars3.githubusercontent.com/u/24797699?s=400&u=335984bcb93856f260ac6d139b18f0c596306e08&v=4" width="100px;" alt="Anton TonyL Lysakov"/><br /><sub><b>Anton "TonyL" Lysakov</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=tonymorony" title="Lead QA / CI">🛠💻</a>
-	    </td>
-	    <td align="center">
-	        <a href="https://github.com/ca333"><img src="https://avatars3.githubusercontent.com/u/10762374?s=60&v=4" width="100px;" alt="ca333"/><br /><sub><b>ca333</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=ca333" title="Chief Technology Officer">:penguin: :guardsman:</a>
-	    </td>
-	    <td align="center">
-	        <a href="https://github.com/smk762"><img src="https://i.imgur.com/gAD7BxX.jpg" width="100px;" alt="smk762"/><br /><sub><b>smk762</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=smk762" title="QA Engineer">🛠:wolf:</a>
-	    </td>
-	    <td align="center">
-	        <a href="https://github.com/cipig"><img src="https://avatars0.githubusercontent.com/u/32116761?s=60&v=4" width="100px;" alt="cipig"/><br /><sub><b>cipig</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=cipig" title="System Administrator">✍️💻</a>
+	        <a href="https://github.com/ssakone"><img src="https://avatars.githubusercontent.com/u/39985611?v=4" width="100px;" alt="ssakone"/><br /><sub><b>ssakone</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=ssakone" title="Front-End Dev / Code">✍️💻</a>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td align="center">
-	        <a href="https://github.com/SirSevenG"><img src="https://avatars1.githubusercontent.com/u/44422309?s=60&v=4" width="100px;" alt="SirSevenG"/><br /><sub><b>SirSevenG</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=SirSevenG" title="QA Engineer">🛠💻</a>
+	        <a href="https://github.com/tonymorony"><img src="https://avatars3.githubusercontent.com/u/24797699?s=400&u=335984bcb93856f260ac6d139b18f0c596306e08&v=4" width="100px;" alt="Anton TonyL Lysakov"/><br /><sub><b>Anton "TonyL" Lysakov</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=tonymorony" title="Lead QA / CI">🛠💻</a>
 	    </td>
 	    <td align="center">
-	        <a href="https://github.com/dathbezumniy"><img src="https://avatars2.githubusercontent.com/u/11756768?s=60&v=4" width="100px;" alt="dathbezumniy"/><br /><sub><b>dathbezumniy</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=dathbezumniy" title="Junior QA Engineer">🛠💻</a>
+	        <a href="https://github.com/ca333"><img src="https://avatars3.githubusercontent.com/u/10762374?s=60&v=4" width="100px;" alt="ca333"/><br /><sub><b>ca333</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=ca333" title="Chief Technology Officer">:penguin: :guardsman:</a>
 	    </td>
 	    <td align="center">
-	        <a href="https://github.com/BloodyNora"><img src="https://avatars2.githubusercontent.com/u/4005813?s=60&v=4" width="100px;" alt="BloodyNora"/><br /><sub><b>BloodyNora</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=BloodyNora" title="IT allrounder">🛠💻</a>
+	        <a href="https://github.com/smk762"><img src="https://i.imgur.com/gAD7BxX.jpg" width="100px;" alt="smk762"/><br /><sub><b>smk762</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=smk762" title="QA Engineer">🛠:wolf:</a>
 	    </td>
 	    <td align="center">
-	        <a href="https://github.com/zatJUM"><img src="https://avatars3.githubusercontent.com/u/45312760?s=60&v=4" width="100px;" alt="zatJUM"/><br /><sub><b>zatJUM</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=zatJUM" title="Community Dev">:heart:💻</a>
+	        <a href="https://github.com/cipig"><img src="https://avatars0.githubusercontent.com/u/32116761?s=60&v=4" width="100px;" alt="cipig"/><br /><sub><b>cipig</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=cipig" title="System Administrator">✍️💻</a>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td align="center">
+	        <a href="https://github.com/SirSevenG"><img src="https://avatars1.githubusercontent.com/u/44422309?s=60&v=4" width="100px;" alt="SirSevenG"/><br /><sub><b>SirSevenG</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=SirSevenG" title="QA Engineer">🛠💻</a>
+	    </td>
+	    <td align="center">
+	        <a href="https://github.com/dathbezumniy"><img src="https://avatars2.githubusercontent.com/u/11756768?s=60&v=4" width="100px;" alt="dathbezumniy"/><br /><sub><b>dathbezumniy</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=dathbezumniy" title="Junior QA Engineer">🛠💻</a>
+	    </td>
+	    <td align="center">
+	        <a href="https://github.com/BloodyNora"><img src="https://avatars2.githubusercontent.com/u/4005813?s=60&v=4" width="100px;" alt="BloodyNora"/><br /><sub><b>BloodyNora</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=BloodyNora" title="IT allrounder">🛠💻</a>
+	    </td>
+	    <td align="center">
+	        <a href="https://github.com/zatJUM"><img src="https://avatars3.githubusercontent.com/u/45312760?s=60&v=4" width="100px;" alt="zatJUM"/><br /><sub><b>zatJUM</b></sub></a><br /><a href="https://github.com/KomodoPlatform/komodo-wallet-desktop/commits?author=zatJUM" title="Community Dev">:heart:💻</a>
 	    </td>
 	  </tr>
 	</table>
@@ -154,7 +154,7 @@ Check out Komodo Wallet mobile, available for [Android and iOS](https://atomicde
 
 ## License
 
-For details please refer to our [license](https://github.com/KomodoPlatform/atomicDEX-Desktop/blob/master/LICENSE).
+For details please refer to our [license](https://github.com/KomodoPlatform/komodo-wallet-desktop/blob/master/LICENSE).
 
 This is experimental alpha software - use at your own risk!
 
