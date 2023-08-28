@@ -92,7 +92,6 @@ endforeach()
 message("Using highest IFW version in ${IFW_ROOT}: ${IFW_VERSION}")
 
 message(STATUS "Creating Installer")
-message(STATUS "$ENV{QT_ROOT}/Tools/QtInstallerFramework")
 set(IFW_BINDIR ${IFW_ROOT}/${IFW_VERSION}/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 execute_process(COMMAND ls "${IFW_BINDIR}")
