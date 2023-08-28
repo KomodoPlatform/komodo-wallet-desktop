@@ -164,6 +164,17 @@ jobs:
           export PATH=/home/runner/.nimble/bin:$PATH
           chmod +x /home/runner/.choosenim/toolchains/nim-1.6.10/bin/*
 
+      - name: Install nim (MacOS)
+        if: runner.os == 'macOS'
+        run: |
+          echo "CHOOSENIM_CHOOSE_VERSION=1.6.10" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.6.10
+          curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
+          chmod +x choosenim.sh
+          ./choosenim.sh -y
+          export PATH=/Users/runner/.nimble/bin:$PATH
+          chmod +x /Users/runner/.choosenim/toolchains/nim-1.6.10/bin/*
+
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -230,6 +241,7 @@ jobs:
           export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export PATH=/Users/runner/.nimble/bin:$PATH
           export MACOSX_DEPLOYMENT_TARGET=10.15
           export CC=clang
           export CXX=clang++
@@ -383,6 +395,7 @@ jobs:
           export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export PATH=/Users/runner/.nimble/bin:$PATH
           export CC=clang
           export CXX=clang++
           #echo "Running tests"
