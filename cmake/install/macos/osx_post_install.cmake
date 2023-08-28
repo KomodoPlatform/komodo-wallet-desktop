@@ -100,9 +100,20 @@ file(COPY ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg DESTINATION ${TARGET_A
 
 get_filename_component(QT_ROOT_DIR $ENV{QT_ROOT} DIRECTORY)
 
-execute_process(COMMAND ls ${QT_ROOT_DIR}/Tools/QtInstallerFramework )
+execute_process(COMMAND ls "${IFW_BINDIR}")
 set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.6/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
+execute_process(COMMAND ls "${IFW_BINDIR}")
+message(STATUS "IFW_BIN PATH IS ${PROJECT_APP_PATH}")
+execute_process(COMMAND ls "${PROJECT_APP_PATH}")
+message(STATUS "IFW_BIN PATH IS ${CMAKE_SOURCE_DIR}")
+execute_process(COMMAND ls "${CMAKE_SOURCE_DIR}")
+message(STATUS "IFW_BIN PATH IS ${TARGET_APP_PATH}")
+execute_process(COMMAND ls "${TARGET_APP_PATH}")
+message(STATUS "IFW_BIN PATH IS ${CMAKE_CURRENT_SOURCE_DIR}")
+execute_process(COMMAND ls "${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "IFW_BIN PATH IS ${CMAKE_CURRENT_SOURCE_DIR}/bin")
+execute_process(COMMAND ls "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z)
     message(STATUS "command is: [${IFW_BINDIR}/archivegen ${DEX_PROJECT_NAME}.7z ${PROJECT_APP_PATH} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin]")
     execute_process(COMMAND
