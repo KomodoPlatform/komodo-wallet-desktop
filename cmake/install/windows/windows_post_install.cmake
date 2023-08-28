@@ -70,9 +70,30 @@ execute_process(COMMAND powershell.exe -File ${PROJECT_ROOT_DIR}/ci_tools_atomic
 		ERROR_VARIABLE MANIFEST_ERROR)
 message(STATUS "manifest output: ${MANIFEST_RESULT} ${MANIFEST_OUTPUT} ${MANIFEST_ERROR}")
 
+# Set the path to the ifw root directory
+set(IFW_ROOT "$ENV{QT_ROOT}/Tools/QtInstallerFramework")
+execute_process(COMMAND ls "${IFW_ROOT}")
+# Find all subdirectories
+file(GLOB subdirs "${IFW_ROOT}/*")
+# Initialize variables to track the highest version and folder
+set(IFW_VERSION "")
+# Loop through the subdirectories
+foreach(subdir ${subdirs})
+    get_filename_component(folder_name ${subdir} NAME)
+    # Use string manipulation to extract version from folder name
+    string(REGEX MATCH "([0-9]+\\.[0-9]+\\.[0-9]+)" version ${folder_name})
+    # Check if the extracted version is higher than the current highest
+    if(version STREQUAL "")
+        continue()
+    elseif(version STRGREATER IFW_VERSION)
+        set(IFW_VERSION ${version})
+    endif()
+endforeach()
+message("Using highest IFW version in ${IFW_ROOT}: ${IFW_VERSION}")
+
 message(STATUS "Creating Installer")
 message(STATUS "$ENV{QT_ROOT}/Tools/QtInstallerFramework")
-set(IFW_BINDIR $ENV{QT_ROOT}/Tools/QtInstallerFramework/4.5/bin)
+set(IFW_BINDIR ${IFW_ROOT}/${IFW_VERSION}/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 execute_process(COMMAND ls "${IFW_BINDIR}")
 if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${DEX_PROJECT_NAME}.7z)

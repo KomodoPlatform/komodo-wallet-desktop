@@ -100,8 +100,30 @@ file(COPY ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg DESTINATION ${TARGET_A
 
 get_filename_component(QT_ROOT_DIR $ENV{QT_ROOT} DIRECTORY)
 
-execute_process(COMMAND ls "${IFW_BINDIR}")
-set(IFW_BINDIR ${QT_ROOT_DIR}/Tools/QtInstallerFramework/4.6/bin)
+
+# Set the path to the ifw root directory
+set(IFW_ROOT "$ENV{QT_ROOT}/Tools/QtInstallerFramework")
+execute_process(COMMAND ls "${IFW_ROOT}")
+# Find all subdirectories
+file(GLOB subdirs "${IFW_ROOT}/*")
+# Initialize variables to track the highest version and folder
+set(IFW_VERSION "")
+# Loop through the subdirectories
+foreach(subdir ${subdirs})
+    get_filename_component(folder_name ${subdir} NAME)
+    # Use string manipulation to extract version from folder name
+    string(REGEX MATCH "([0-9]+\\.[0-9]+\\.[0-9]+)" version ${folder_name})
+    # Check if the extracted version is higher than the current highest
+    if(version STREQUAL "")
+        continue()
+    elseif(version STRGREATER IFW_VERSION)
+        set(IFW_VERSION ${version})
+    endif()
+endforeach()
+message("Using highest IFW version in ${IFW_ROOT}: ${IFW_VERSION}")
+
+
+set(IFW_BINDIR ${IFW_ROOT}/${IFW_VERSION}/bin)
 message(STATUS "IFW_BIN PATH IS ${IFW_BINDIR}")
 execute_process(COMMAND ls "${IFW_BINDIR}")
 message(STATUS "IFW_BIN PATH IS ${PROJECT_APP_PATH}")
