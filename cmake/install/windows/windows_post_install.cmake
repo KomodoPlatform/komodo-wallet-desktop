@@ -72,6 +72,7 @@ message(STATUS "manifest output: ${MANIFEST_RESULT} ${MANIFEST_OUTPUT} ${MANIFES
 
 # Set the path to the ifw root directory
 set(IFW_ROOT "$ENV{QT_ROOT}/Tools/QtInstallerFramework")
+message(STATUS "IFW_ROOT PATH IS ${IFW_ROOT}")
 execute_process(COMMAND ls "${IFW_ROOT}")
 # Find all subdirectories
 file(GLOB subdirs "${IFW_ROOT}/*")
@@ -80,16 +81,19 @@ set(IFW_VERSION "")
 # Loop through the subdirectories
 foreach(subdir ${subdirs})
     get_filename_component(folder_name ${subdir} NAME)
+	message(STATUS "scanning: ${subdir} [${folder_name}]")
     # Use string manipulation to extract version from folder name
     string(REGEX MATCH "([0-9]+\\.[0-9]+\\.[0-9]+)" version "${folder_name}")
     # Check if the extracted version is higher than the current highest
+	message(STATUS "version: ${version}")
     if(version STREQUAL "")
+		message(STATUS "No version: ${version}, skipping")
         continue()
     elseif(version STRGREATER IFW_VERSION)
         set(IFW_VERSION "${version}")
 		message(STATUS "Updating best version: ${IFW_VERSION} from ${folder_name}")
 	else()
-
+		message(STATUS "${version}: < ${IFW_VERSION}, skipping")
     endif()
 endforeach()
 message("Using highest IFW version in ${IFW_ROOT}: ${IFW_VERSION}")
