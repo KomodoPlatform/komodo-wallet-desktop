@@ -15,7 +15,7 @@ set(DEX_PRIMARY_COIN "LTC")                                                     
 set(DEX_SECOND_PRIMARY_COIN "KMD")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 set(DEX_REPOSITORY_OWNER ${DEX_COMPANY})
-set(DEX_REPOSITORY_NAME "atomicDEX-Desktop")
+set(DEX_REPOSITORY_NAME "komodo-wallet-desktop")
 set(DEX_CHECKSUM_API_URL "https://komodo.earth/static/checksum.json")
 if (APPLE)
     set(DEX_APPDATA_FOLDER "Komodo Wallet")
