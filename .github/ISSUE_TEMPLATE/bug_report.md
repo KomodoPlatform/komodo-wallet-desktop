@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Something looks wierd or doesn't work as expected? Let us know the details so we can fix it!
+about: Something looks weird or doesn't work as expected? Let us know the details so we can fix it!
 title: "[BUG]: "
 labels: bug
 assignees: ''
