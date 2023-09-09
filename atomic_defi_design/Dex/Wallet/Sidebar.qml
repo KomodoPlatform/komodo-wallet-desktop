@@ -125,25 +125,6 @@ Item
                         }
                     }
                 }
-
-                DexAppButton {
-                    id: add_coin_button
-                    onClicked: enable_coin_modal.open()
-                    Layout.alignment:  Qt.AlignHCenter
-                    Layout.preferredWidth: 140
-                    radius: 18
-                    spacing: 2
-                    label.font: DexTypo.overLine
-                    text: qsTr("ADD CRYPTO")
-                    iconSource: Qaterial.Icons.plus
-                    leftPadding: 3
-                    rightPadding: 3
-                    btnPressedColor: Dex.CurrentTheme.buttonSecondaryColorPressed
-                    btnHoveredColor: Dex.CurrentTheme.buttonSecondaryColorHovered
-                    btnEnabledColor: Dex.CurrentTheme.buttonSecondaryColorEnabled
-                    btnDisabledColor: Dex.CurrentTheme.buttonSecondaryColorDisabled
-
-                }
             }
         }
     }
