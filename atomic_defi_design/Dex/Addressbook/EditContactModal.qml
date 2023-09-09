@@ -234,17 +234,19 @@ Dex.MultipageModal
                     Dex.Rectangle
                     {
                         id: tagBg
+                        property int _currentColorIndex: contactTable._getCurrentTagColorId()
                         anchors.verticalCenter: parent.verticalCenter
                         width: tagLabel.width + 12
                         height: 21
                         radius: 20
-                        color: Dex.CurrentTheme.accentColor
+                        color: Dex.CurrentTheme.addressBookTagColors[_currentColorIndex]
 
                         Dex.Text
                         {
                             id: tagLabel
                             anchors.centerIn: parent
                             text: modelData
+                            color: "white"
                         }
                     }
 

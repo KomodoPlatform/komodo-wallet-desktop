@@ -216,6 +216,7 @@ Item
                                         id: tagLabel
                                         anchors.centerIn: parent
                                         text: modelData
+                                        color: "white"
                                     }
                                 }
                             }
