@@ -49,7 +49,7 @@ Dex.Popup
         {
             id: add_contact_btn
             font: DexTypo.body2
-            text: qsTr("+ ADD")
+            text: qsTr("Save")
             height: 30
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked:
