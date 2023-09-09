@@ -158,8 +158,8 @@ MouseArea
             {
                 id: privacySwitch
 
-                anchors.left: parent.left - 8
-                anchors.leftMargin: 0
+                anchors.left: parent.left
+                anchors.leftMargin: -5
                 anchors.verticalCenter: parent.verticalCenter
                 scale: 0.5
                 mouseArea.hoverEnabled: true

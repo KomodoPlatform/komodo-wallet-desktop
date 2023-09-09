@@ -31,7 +31,7 @@ Item
     signal expanded(var isExpanded)
     signal expandStarted(var isExpanding)
 
-    width: 160
+    width: 150
     height: parent.height
 
     // Background Rectangle
