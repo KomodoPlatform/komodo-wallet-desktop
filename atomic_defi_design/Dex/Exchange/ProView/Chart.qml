@@ -137,14 +137,16 @@ Item
         catch (e) { console.error(e) }
     }
 
-    onWidthChanged: {
-        try
-        {
-            loadChart(left_ticker?? atomic_app_primary_coin,
-                      right_ticker?? atomic_app_secondary_coin)
-        }
-        catch (e) { console.error(e) }
-    }
+// Currently chart should not resize, but in future it might be needed
+
+//    onWidthChanged: {
+//        try
+//        {
+//            loadChart(left_ticker?? atomic_app_primary_coin,
+//                      right_ticker?? atomic_app_secondary_coin)
+//        }
+//        catch (e) { console.error(e) }
+//    }
 
     RowLayout
     {
