@@ -25,7 +25,7 @@ Item
 
         let chart_html = ""
         let symbol = ""
-        let widget_x = 390
+        let widget_x = 385
         let widget_y = 150
         let scale_x = root.width / widget_x
         let scale_y = root.height / widget_y
@@ -189,6 +189,7 @@ Item
     {
         id: webEngineViewPlaceHolder
         anchors.fill: parent
+        anchors.centerIn: parent
         visible: false
 
         Component.onCompleted:
