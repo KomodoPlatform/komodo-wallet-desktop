@@ -28,9 +28,11 @@ namespace atomic_dex::mm2
     {
         j["params"]["ticker"]                                                          = request.coin_name;
         j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
+        j["params"]["activation_params"]["sync_params"]                                = "earliest";
         j["params"]["activation_params"]["mode"]["rpc_data"]["electrum_servers"]       = request.servers;
         j["params"]["activation_params"]["mode"]["rpc_data"]["light_wallet_d_servers"] = request.z_urls;
         j["params"]["tx_history"]                                                      = request.with_tx_history;
+        earliest
     }
 
     //! Deserialization
