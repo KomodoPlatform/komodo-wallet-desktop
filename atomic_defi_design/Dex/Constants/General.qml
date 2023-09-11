@@ -119,13 +119,11 @@ QtObject {
 
     function zhtlcActivationProgress(activation_status, coin='ARRR')
     {
-        // Around 90 mins for ARRR when using 'earliest' activation
-        // and params set as below
-        // j["params"]["activation_params"]["scan_blocks_per_iteration"] = 1000;
-        // j["params"]["activation_params"]["scan_interval_ms"]          = 200;
-
         const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin)
         let block_offset = coin_info.checkpoint_block
+        if (coin_info.ticker.toString() == "ARRR") {
+            block_offset = API.app.settings_pg.get_pirate_sync_block()
+        }
         let progress = 100
         if (!activation_status.hasOwnProperty("result")) return progress
         // console.log("["+coin+"] [zhtlcActivationProgress]: " + JSON.stringify(activation_status))

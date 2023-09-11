@@ -24,6 +24,7 @@
 #include <QException>
 #include <QFile>
 #include <QProcess>
+#include <QSettings>
 
 #include "atomicdex/api/mm2/utxo.merge.params.hpp"
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
@@ -37,6 +38,7 @@
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -1399,12 +1401,20 @@ namespace atomic_dex
     {
         auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
+            int sync_from_block = coin_info.checkpoint_block;
+            if (coin_info.ticker == "ARRR")
+            {
+                SPDLOG_INFO("ARRR using settings for sync from block: {}", sync_from_block);
+                const auto& settings_system  = m_system_manager.get_system<settings_page>();
+                sync_from_block          = settings_system.get_pirate_sync_block();
+            }
+
             t_enable_z_coin_request request{
                 .coin_name            = coin_info.ticker,
                 .servers              = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
                 .z_urls               = coin_info.z_urls.value_or(std::vector<std::string>{}),
                 .coin_type            = coin_info.coin_type,
-                .sync_height          = coin_info.checkpoint_block,
+                .sync_height          = sync_from_block,
                 .is_testnet           = coin_info.is_testnet.value_or(false),
                 .with_tx_history      = false}; // Tx history not yet ready for ZHTLC
 
@@ -1484,7 +1494,7 @@ namespace atomic_dex
                                                     z_error                                          = z_answers;
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
-                                                    SPDLOG_DEBUG("{} status : {}", tickers[idx], status);
+                                                    // SPDLOG_DEBUG("{} status : {}", tickers[idx], status);
                                                     SPDLOG_DEBUG("{} Activation Status: {}", tickers[idx], z_answers[0].dump());
 
                                                     if (status == "Ok")
@@ -1541,7 +1551,7 @@ namespace atomic_dex
                                                         {
                                                             event = z_answers[0].at("result").at("details").get<std::string>();
                                                         }
-                                                        SPDLOG_DEBUG("{} activation event [{}]", event, tickers[idx]);
+                                                        // SPDLOG_DEBUG("{} activation event [{}]", event, tickers[idx]);
 
                                                         if (event != last_event)
                                                         {

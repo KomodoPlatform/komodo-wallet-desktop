@@ -344,6 +344,7 @@ handle_settings(QSettings& settings)
     create_settings_functor("CurrentLang", QString("en"));
     create_settings_functor("2FA", 0);
     create_settings_functor("MaximumNbCoinsEnabled", 50);
+    create_settings_functor("PirateSyncHeight", 2500000);
     create_settings_functor("DefaultTradingMode", TradingMode::Simple);
     create_settings_functor("FontMode", QQuickWindow::TextRenderType::QtTextRendering);
 }
