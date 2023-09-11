@@ -298,6 +298,52 @@ Qaterial.Dialog
                                 onClicked: openLogsFolder()
                             }
 
+                            // Notifications toggle
+                            RowLayout
+                            {
+                                width: parent.width - 30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+
+                                DexLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
+                                    text: qsTr("ARRR sync height")
+                                }
+
+                                Item { Layout.fillWidth: true }
+
+                                DexComboBox
+                                {
+                                    id: pirate_sync_combo_box
+                                    Layout.alignment: Qt.AlignVCenter
+                                    width: 140
+                                    height: 45
+                                    dropDownMaxHeight: 600
+                                    model: [
+                                        150000,
+                                        300000,
+                                        500000,
+                                        750000,
+                                        1000000,
+                                        1250000,
+                                        1500000,
+                                        1750000,
+                                        2000000,
+                                        2250000,
+                                        2500000
+                                    ]
+                                    currentIndex: model.indexOf(parseInt(atomic_settings2.value("PirateSyncHeight")))
+                                    onCurrentIndexChanged: atomic_settings2.setValue("PirateSyncHeight", model[currentIndex])
+                                    Component.onCompleted:
+                                    {
+                                        currentIndex: model.indexOf(parseInt(atomic_settings2.value("PirateSyncHeight")))
+                                    }
+                                }
+                            }
+
                             SettingsButton
                             {
                                 width: parent.width - 30
