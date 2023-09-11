@@ -168,6 +168,7 @@ namespace atomic_dex
         cfg.wallet_only          = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
         cfg.default_coin         = is_default_coin(cfg.ticker);
         cfg.is_faucet_coin       = is_faucet_coin(cfg.ticker);
+        cfg.checkpoint_block     = 0;
 
         if (j.contains("other_types"))
         {
@@ -224,7 +225,12 @@ namespace atomic_dex
         if (j.contains("light_wallet_d_servers"))
         {
             cfg.z_urls = j.at("light_wallet_d_servers").get<std::vector<std::string>>();
-        }        if (j.contains("alias_ticker"))
+        }
+        if (j.contains("check_point_block"))
+        {
+            cfg.checkpoint_block = j.at("check_point_block").get<int>();
+        }
+        if (j.contains("alias_ticker"))
         {
             cfg.alias_ticker = j.at("alias_ticker").get<std::string>();
         }

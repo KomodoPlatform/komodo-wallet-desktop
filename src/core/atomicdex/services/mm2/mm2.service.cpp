@@ -1404,6 +1404,7 @@ namespace atomic_dex
                 .servers              = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
                 .z_urls               = coin_info.z_urls.value_or(std::vector<std::string>{}),
                 .coin_type            = coin_info.coin_type,
+                .sync_height          = coin_info.checkpoint_block,
                 .is_testnet           = coin_info.is_testnet.value_or(false),
                 .with_tx_history      = false}; // Tx history not yet ready for ZHTLC
 
@@ -1411,6 +1412,7 @@ namespace atomic_dex
             mm2::to_json(j, request);
             nlohmann::json batch = nlohmann::json::array();
             batch.push_back(j);
+            // SPDLOG_INFO("ZHTLC request: {}", batch.dump(4));
             return {batch, {coin_info.ticker}};
         };
 
@@ -1527,6 +1529,14 @@ namespace atomic_dex
                                                         {
                                                             event = "BuildingWalletDb";
                                                         }
+                                                        else if (z_answers[0].at("result").at("details").contains("ActivatingCoin"))
+                                                        {
+                                                            event = "ActivatingCoin";
+                                                        }
+                                                        else if (z_answers[0].at("result").at("details").contains("TemporaryError"))
+                                                        {
+                                                            event = "TemporaryError";
+                                                        }
                                                         else
                                                         {
                                                             event = z_answers[0].at("result").at("details").get<std::string>();
@@ -1553,7 +1563,7 @@ namespace atomic_dex
                                                     m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                     z_nb_try += 1;
 
-                                                } while (z_nb_try < 2000);
+                                                } while (z_nb_try < 5000);
 
                                                 try {
                                                     if (z_error[0].at("result").at("details").contains("error"))

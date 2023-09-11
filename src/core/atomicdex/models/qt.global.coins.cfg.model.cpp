@@ -46,6 +46,7 @@ namespace
             {"is_testnet", coin.is_testnet.value_or(false)},
             {"is_erc_family", coin.is_erc_family},
             {"is_zhtlc_family", coin.is_zhtlc_family},
+            {"checkpoint_block", coin.checkpoint_block},
             {"is_wallet_only", coin.wallet_only},
             {"has_memos", coin.has_memos},
             {"fees_ticker", QString::fromStdString(coin.fees_ticker)}};
