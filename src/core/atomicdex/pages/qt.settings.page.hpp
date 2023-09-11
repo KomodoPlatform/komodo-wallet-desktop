@@ -81,7 +81,7 @@ namespace atomic_dex
         [[nodiscard]] QString                   get_current_currency_sign() const;
         [[nodiscard]] QString                   get_current_fiat_sign() const;
         [[nodiscard]] QString                   get_current_fiat() const;
-        void                                    set_pirate_sync_block(int new_height);
+        void                                    set_pirate_sync_date(int new_timestamp);
         [[nodiscard]] bool                      is_notification_enabled() const;
         void                                    set_notification_enabled(bool is_enabled);
         [[nodiscard]] bool                      is_spamfilter_enabled() const;
@@ -109,7 +109,7 @@ namespace atomic_dex
         Q_INVOKABLE [[nodiscard]] bool          is_this_ticker_present_in_raw_cfg(const QString& ticker) const;
         Q_INVOKABLE [[nodiscard]] bool          is_this_ticker_present_in_normal_cfg(const QString& ticker) const;
         Q_INVOKABLE [[nodiscard]] QString       get_custom_coins_icons_path() const;
-        Q_INVOKABLE [[nodiscard]] int           get_pirate_sync_block() const;
+        Q_INVOKABLE [[nodiscard]] int           get_pirate_sync_date() const;
         Q_INVOKABLE void                        process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type);
         Q_INVOKABLE void                        process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath);
         Q_INVOKABLE void                        submit();

@@ -25,6 +25,8 @@ Qaterial.Dialog
     property var fiats: API.app.settings_pg.get_available_fiats()
     property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
     property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
+    readonly property date default_min_date: new Date("2019-01-01")
+    readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate()))
 
     width: 950
     height: 650
@@ -298,7 +300,7 @@ Qaterial.Dialog
                                 onClicked: openLogsFolder()
                             }
 
-                            // Notifications toggle
+                            // Sync date picker
                             RowLayout
                             {
                                 width: parent.width - 30
@@ -310,36 +312,28 @@ Qaterial.Dialog
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
                                     font: DexTypo.subtitle1
-                                    text: qsTr("ARRR sync height")
+                                    text: qsTr("ZHTLC sync date")
                                 }
 
                                 Item { Layout.fillWidth: true }
 
-                                DexComboBox
+                                DatePicker
                                 {
-                                    id: pirate_sync_combo_box
-                                    Layout.alignment: Qt.AlignVCenter
-                                    width: 140
-                                    height: 45
-                                    dropDownMaxHeight: 600
-                                    model: [
-                                        150000,
-                                        300000,
-                                        500000,
-                                        750000,
-                                        1000000,
-                                        1250000,
-                                        1500000,
-                                        1750000,
-                                        2000000,
-                                        2250000,
-                                        2500000
-                                    ]
-                                    currentIndex: model.indexOf(parseInt(atomic_settings2.value("PirateSyncHeight")))
-                                    onCurrentIndexChanged: atomic_settings2.setValue("PirateSyncHeight", model[currentIndex])
-                                    Component.onCompleted:
-                                    {
-                                        currentIndex: model.indexOf(parseInt(atomic_settings2.value("PirateSyncHeight")))
+                                    id: sync_date
+                                    titleText: qsTr("Sync Date")
+                                    minimumDate: default_min_date
+                                    maximumDate: default_max_date
+                                    selectedDate: {
+                                        var date = new Date(new Date(0).setUTCSeconds(API.app.settings_pg.get_pirate_sync_date()));
+                                        console.log(API.app.settings_pg.get_pirate_sync_date());
+                                        console.log(date);
+                                        return date;
+                                    }
+                                    onAccepted: {
+                                        atomic_settings2.setValue(
+                                            "PirateSyncDate",
+                                            parseInt(selectedDate.getTime().valueOf()/1000)
+                                        )
                                     }
                                 }
                             }

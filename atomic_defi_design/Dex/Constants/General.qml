@@ -119,6 +119,8 @@ QtObject {
 
     function zhtlcActivationProgress(activation_status, coin='ARRR')
     {
+        
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin)
         let block_offset = coin_info.checkpoint_block
         let progress = 100
         if (!activation_status.hasOwnProperty("result")) return progress
