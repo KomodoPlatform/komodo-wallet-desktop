@@ -149,9 +149,14 @@ namespace atomic_dex
             config.current_fiat              = new_currency;
             config.current_fiat_sign         = config.current_currency_sign;
             config.possible_currencies[0]    = new_currency;
+            bool update_recommended_fiat{true};
 
-            if (!std::binary_search(config.recommended_fiat.begin(), config.recommended_fiat.end(), new_currency))
+            if (std::count(config.recommended_fiat.begin(), config.recommended_fiat.end(), new_currency))
             {
+                SPDLOG_INFO("{} is already in recommended fiats", new_currency);
+                update_recommended_fiat = false;
+            }
+            if (update_recommended_fiat) {
                 SPDLOG_INFO("Adding {} to recommended fiats", new_currency);
                 config.recommended_fiat.pop_back();
                 config.recommended_fiat.insert(config.recommended_fiat.begin(), new_currency);
