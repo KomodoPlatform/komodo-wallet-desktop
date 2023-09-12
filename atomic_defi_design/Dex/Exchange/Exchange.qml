@@ -10,7 +10,7 @@ Item
 {
     id: exchange
     readonly property int layout_margin: 12
-    width: 495
+    width: 450
 
     property int current_page: idx_exchange_trade
 
