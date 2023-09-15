@@ -891,7 +891,6 @@ namespace atomic_dex
                 }
                 rpc.request.tokens_params.push_back({.ticker = coin_config.ticker});
             }
-            SPDLOG_DEBUG("RPC Req: {}", rpc.request.dump(4));
             m_mm2_client.process_rpc_async<mm2::enable_tendermint_with_assets_rpc>(rpc.request, callback);
         }
         this->m_nb_update_required += 1;
