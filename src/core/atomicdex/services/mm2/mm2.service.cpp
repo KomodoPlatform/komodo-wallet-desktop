@@ -1474,7 +1474,7 @@ namespace atomic_dex
                                                 nlohmann::json     z_batch_array = nlohmann::json::array();
                                                 t_enable_z_coin_status_request z_request{.task_id = task_id};
 
-                                                SPDLOG_DEBUG("{} enable_z_coin Task ID: {}", tickers[idx], task_id);
+                                                SPDLOG_INFO("{} enable_z_coin Task ID: {}", tickers[idx], task_id);
 
                                                 nlohmann::json j = mm2::template_request("task::enable_z_coin::status", true);
                                                 mm2::to_json(j, z_request);
@@ -1490,11 +1490,11 @@ namespace atomic_dex
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
                                                     // SPDLOG_DEBUG("{} status : {}", tickers[idx], status);
-                                                    SPDLOG_DEBUG("{} Activation Status: {}", tickers[idx], z_answers[0].dump());
+                                                    SPDLOG_INFO("{} Activation Status: {}", tickers[idx], z_answers[0].dump());
 
                                                     if (status == "Ok")
                                                     {
-                                                        SPDLOG_DEBUG("{} activation ready...", tickers[idx]);
+                                                        SPDLOG_INFO("{} activation ready...", tickers[idx]);
                                                         m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                         if (z_answers[0].at("result").at("details").contains("error"))
                                                         {
@@ -1506,10 +1506,10 @@ namespace atomic_dex
                                                                 }
                                                             }
                                                             event = z_answers[0].at("result").at("details").at("error").get<std::string>();
-                                                            SPDLOG_DEBUG("Enabling [{}] error: {}", tickers[idx], event);
+                                                            SPDLOG_INFO("Enabling [{}] error: {}", tickers[idx], event);
                                                             break;
                                                         }
-                                                        SPDLOG_DEBUG("{} activation complete!", tickers[idx]);
+                                                        SPDLOG_INFO("{} activation complete!", tickers[idx]);
                                                         std::unique_lock lock(m_coin_cfg_mutex);
                                                         m_coins_informations[tickers[idx]].currently_enabled = true;
 
@@ -1550,7 +1550,7 @@ namespace atomic_dex
 
                                                         if (event != last_event)
                                                         {
-                                                            SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
+                                                            SPDLOG_INFO("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
                                                             if (!m_coins_informations[tickers[idx]].currently_enabled && event != "ActivatingCoin")
                                                             {
                                                                 std::unique_lock lock(m_coin_cfg_mutex);
@@ -1573,8 +1573,8 @@ namespace atomic_dex
                                                 try {
                                                     if (z_error[0].at("result").at("details").contains("error"))
                                                     {
-                                                        SPDLOG_DEBUG("Error enabling {}: {} ", tickers[idx], event);
-                                                        SPDLOG_DEBUG(
+                                                        SPDLOG_INFO("Error enabling {}: {} ", tickers[idx], event);
+                                                        SPDLOG_INFO(
                                                             "Removing zhtlc from enabling, idx: {}, tickers size: {}, answers size: {}",
                                                             tickers[idx], idx, tickers.size(), answers.size()
                                                         );
@@ -1590,8 +1590,8 @@ namespace atomic_dex
                                                         // Either we force disable here, or schedule to check on it later
                                                         // If this happens, address will be "Invalid" and balance will be zero.
                                                         // We could save this ticker in a list to try `enable_z_coin_status` again on it periodically until complete.
-                                                        SPDLOG_DEBUG("Exited {} enable loop after 1000 tries ", tickers[idx]);
-                                                        SPDLOG_DEBUG(
+                                                        SPDLOG_INFO("Exited {} enable loop after 1000 tries ", tickers[idx]);
+                                                        SPDLOG_INFO(
                                                             "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                                             tickers.size(), answers.size()
                                                         );
@@ -1601,13 +1601,13 @@ namespace atomic_dex
                                                     }
                                                     else
                                                     {
-                                                        SPDLOG_DEBUG("{} enable loop complete!", tickers[idx]);
+                                                        SPDLOG_INFO("{} enable loop complete!", tickers[idx]);
                                                         this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "Complete!");
                                                     }
                                                 }
                                                 catch (const std::exception& error)
                                                 {
-                                                    SPDLOG_ERROR("exception caught in zhtlc batch_enable_coins: {}", error.what());
+                                                    SPDLOG_INFO("exception caught in zhtlc batch_enable_coins: {}", error.what());
                                                 }
                                             }
                                         }
