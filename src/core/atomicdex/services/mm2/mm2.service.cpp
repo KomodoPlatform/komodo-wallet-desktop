@@ -1563,12 +1563,12 @@ namespace atomic_dex
                                                             last_event = event;
                                                         }
                                                         // todo(syl): refactor to a background task
-                                                        std::this_thread::sleep_for(2s);
+                                                        std::this_thread::sleep_for(5s);
                                                     }
                                                     m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                     z_nb_try += 1;
 
-                                                } while (z_nb_try < 5000);
+                                                } while (z_nb_try < 10000);
 
                                                 try {
                                                     if (z_error[0].at("result").at("details").contains("error"))
@@ -1583,14 +1583,14 @@ namespace atomic_dex
                                                         this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], z_error[0].dump(4));
                                                         to_remove.emplace(tickers[idx]);
                                                     }
-                                                    else if (z_nb_try == 1000)
+                                                    else if (z_nb_try == 10000)
                                                     {
                                                         // TODO: Handle this case.
                                                         // There could be no error message if scanning takes too long.
                                                         // Either we force disable here, or schedule to check on it later
                                                         // If this happens, address will be "Invalid" and balance will be zero.
                                                         // We could save this ticker in a list to try `enable_z_coin_status` again on it periodically until complete.
-                                                        SPDLOG_INFO("Exited {} enable loop after 1000 tries ", tickers[idx]);
+                                                        SPDLOG_INFO("Exited {} enable loop after 10000 tries ", tickers[idx]);
                                                         SPDLOG_INFO(
                                                             "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                                             tickers.size(), answers.size()
