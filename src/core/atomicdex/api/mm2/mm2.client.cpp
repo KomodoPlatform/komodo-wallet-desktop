@@ -72,11 +72,12 @@ namespace
     template <atomic_dex::mm2::rpc Rpc>
     Rpc process_rpc_answer(const web::http::http_response& answer)
     {
+        // SPDLOG_DEBUG("rpc answer: {}", TO_STD_STR(answer.extract_string(true).get()));
         Rpc rpc;
         auto json_answer = nlohmann::json::parse(TO_STD_STR(answer.extract_string(true).get()));
-        
         if (Rpc::is_v2)
         {
+            // SPDLOG_DEBUG("v2 rpc answer")
             if (answer.status_code() == 200)
                 rpc.result = json_answer.at("result").get<typename Rpc::expected_result_type>();
             else

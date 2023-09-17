@@ -527,17 +527,18 @@ namespace atomic_dex
                 {
                     cosmos_coins.push_back(coin_config);
                 }
-                if (coin_config.parent_coin == "IRIS")
+                else if (coin_config.parent_coin == "IRIS")
                 {
                     iris_coins.push_back(coin_config);
                 }
-                if (coin_config.parent_coin == "OSMO")
+                else if (coin_config.parent_coin == "OSMO")
                 {
                     osmosis_coins.push_back(coin_config);
                 }
                 else
                 {
-                    SPDLOG_WARN("Unexpected Tenddermint ticker: {}", coin_config.ticker);
+                    SPDLOG_WARN("Unexpected Tendermint ticker: {}", coin_config.ticker);
+                    SPDLOG_WARN("Parent coin: {}", coin_config.parent_coin);
                 }
             }
             else if (coin_config.coin_type == CoinType::ZHTLC)
