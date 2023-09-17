@@ -4,10 +4,10 @@ import AtomicDEX.TradingError 1.0
 import AtomicDEX.MarketMode 1.0
 
 QtObject {
-    readonly property int width: 1280
-    readonly property int height: 800
+    readonly property int width: 1280 // Set for maximum user compatibility 
+    readonly property int height: 720 // See https://gs.statcounter.com/screen-resolution-stats/desktop/worldwide
     readonly property int minimumWidth: 1280
-    readonly property int minimumHeight: 800
+    readonly property int minimumHeight: 720
     readonly property int max_camo_pw_length: 256
     readonly property int max_std_pw_length: 256
     readonly property int max_pw_length: max_std_pw_length + max_camo_pw_length

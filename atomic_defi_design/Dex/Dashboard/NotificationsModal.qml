@@ -32,10 +32,11 @@ DexPopup
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
 
-    function reset()
+    function reset(close_after_reset = false)
     {
         notifications_list = []
-        root.close()
+        if (close_after_reset)
+            root.close()
     }
 
     enum NotificationKind
@@ -619,7 +620,7 @@ DexPopup
             height: 40
             width: 260
             Layout.alignment: Qt.AlignHCenter
-            onClicked: root.reset()
+            onClicked: notifications_list.length !== 0 ? root.reset(false) : root.reset(true)
         }
     }
 }

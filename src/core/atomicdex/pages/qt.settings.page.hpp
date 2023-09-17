@@ -104,7 +104,7 @@ namespace atomic_dex
         Q_INVOKABLE void                        remove_custom_coin(const QString& ticker);
         Q_INVOKABLE [[nodiscard]] QStringList   get_available_langs() const;
         Q_INVOKABLE [[nodiscard]] QStringList   get_available_fiats() const;
-        Q_INVOKABLE [[nodiscard]] QStringList   get_recommended_fiats() const; // Returns 6 recommended fiats. Basically, the first 6 values in cfg.json.
+        Q_INVOKABLE [[nodiscard]] QStringList   get_recommended_fiats();
         Q_INVOKABLE [[nodiscard]] QStringList   get_available_currencies() const;
         Q_INVOKABLE [[nodiscard]] bool          is_this_ticker_present_in_raw_cfg(const QString& ticker) const;
         Q_INVOKABLE [[nodiscard]] bool          is_this_ticker_present_in_normal_cfg(const QString& ticker) const;

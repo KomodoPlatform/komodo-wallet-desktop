@@ -343,12 +343,12 @@ namespace atomic_dex
         return out;
     }
 
-    QStringList settings_page::get_recommended_fiats() const
+    QStringList settings_page::get_recommended_fiats()
     {
         static const auto nb_recommended = 6;
         QStringList       out;
         out.reserve(nb_recommended);
-        for (auto&& it = m_config.available_fiat.begin(); it != m_config.available_fiat.end() && it < m_config.available_fiat.begin() + nb_recommended; it++)
+        for (auto&& it = m_config.recommended_fiat.begin(); it != m_config.recommended_fiat.end() && it < m_config.recommended_fiat.begin() + nb_recommended; it++)
         {
             out.push_back(QString::fromStdString(*it));
         }
