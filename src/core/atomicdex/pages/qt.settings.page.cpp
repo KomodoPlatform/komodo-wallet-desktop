@@ -79,6 +79,19 @@ namespace atomic_dex { void settings_page::update() {} }
 // Getters|Setters
 namespace atomic_dex
 {
+    int settings_page::get_pirate_sync_date() const
+    {
+        QSettings& settings = entity_registry_.ctx<QSettings>();
+        return settings.value("PirateSyncDate").toInt();
+    }
+
+    void settings_page::set_pirate_sync_date(int new_timestamp)
+    {
+        QSettings&        settings     = entity_registry_.ctx<QSettings>();
+        settings.setValue("PirateSyncDate", new_timestamp);
+        settings.sync();
+    }
+
     QString settings_page::get_current_lang() const
     {
         QSettings& settings = entity_registry_.ctx<QSettings>();
