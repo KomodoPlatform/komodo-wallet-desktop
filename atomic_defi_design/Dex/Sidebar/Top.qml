@@ -57,7 +57,7 @@ MouseArea
         {
             sourceSize.width = parent.width
             source = Dex.CurrentTheme.bigLogoPath // isExpanded ? Dex.CurrentTheme.bigLogoPath : Dex.CurrentTheme.logoPath;
-            scale = 1 // isExpanded ? .8 : .5
+            scale = 0.8 // isExpanded ? .8 : .5
         }
 
         Connections
