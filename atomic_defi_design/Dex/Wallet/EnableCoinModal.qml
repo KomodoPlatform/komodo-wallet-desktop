@@ -49,7 +49,8 @@ MultipageModal
     ColumnLayout
     {
         spacing: 5
-        anchors.fill: parent
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
         DefaultText
         {
