@@ -69,10 +69,7 @@ MultipageModal
             Layout.margins: 20
             Layout.alignment: Qt.AlignHCenter
             field.onAccepted: tryViewKeysAndSeed()
-            leftIconColor: Dex.CurrentTheme.foregroundColor
             field.onTextChanged: { _isPasswordWrong = false }
-            background.color: Dex.CurrentTheme.accentColor            
-            hideFieldButton.icon.color: Dex.CurrentTheme.foregroundColor
         }
 
         DexLabel
@@ -80,7 +77,7 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             height: 14
             text: _isPasswordWrong ? qsTr("Incorrect Password") : ""
-            color: Dex.CurrentTheme.noColor
+            color: Dex.CurrentTheme.warningColor
         }
 
         // Footer
@@ -88,7 +85,7 @@ MultipageModal
         {
             Layout.preferredWidth: parent.width
             Layout.topMargin: 30
-            DefaultButton
+            CancelButton
             {
                 text: qsTr("Cancel")
                 Layout.preferredWidth: parent.width / 100 * 48
@@ -375,7 +372,7 @@ MultipageModal
                                     DefaultText
                                     {
                                         id: publicAddress
-                                        text: model.public_address
+                                        text: model.public_address != 'Invalid Ticker' ? model.public_address : "Please wait for " + model.name + " to fully activate..."
                                         font: model.public_address.length > 70 ? DexTypo.body4 : DexTypo.body3
                                     }
                                 }

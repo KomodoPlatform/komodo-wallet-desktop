@@ -5,10 +5,10 @@ var g_vcpkg_local_path* = ""
 var g_vcpkg_cmake_script_path* = ""
 
 proc check_if_vcpkg_exists*(): bool =
-    result = os.existsDir("vcpkg-repo")
+    result = os.dirExists("vcpkg-repo")
 
 proc build_vcpkg() =
-    if not os.existsFile(g_vcpkg_local_path):
+    if not os.fileExists(g_vcpkg_local_path):
         echo "building vcpkg"
         os.setCurrentDir("vcpkg-repo")
         when defined(windows):

@@ -6,10 +6,10 @@ import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
 import "../../../Constants"
-import Dex.Themes 1.0 as Dex
-import AtomicDEX.MarketMode 1.0
 import App 1.0 as App
+import Dex.Themes 1.0 as Dex
 import Dex.Components 1.0 as Dex
+import AtomicDEX.MarketMode 1.0
 
 Item
 {
@@ -100,7 +100,7 @@ Item
                                                                   parseFloat(cex_rates).toFixed(2) + "%"
             color: cex_rates === "0" ? Qt.darker(Dex.CurrentTheme.foregroundColor) :
                                        parseFloat(cex_rates) < 0 ? Dex.CurrentTheme.okColor :
-                                                                   Dex.CurrentTheme.noColor
+                                                                   Dex.CurrentTheme.warningColor
 
             Behavior on rightPadding
             {
@@ -122,7 +122,9 @@ Item
 
         contentItem: DexLabelUnlinked
         {
-            text_value: qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin)
+            text_value: !General.isZhtlc(coin) ? 
+                qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin) :
+                qsTr(" %1 is not enabled - Please enable it through the coin activation menu").arg(coin)
             wrapMode: DefaultText.Wrap
             width: 250
             onLinkActivated:
@@ -177,7 +179,6 @@ Item
                     app.pairChanged(base_ticker, coin)
                 }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
-                orderSelected()
             }
         }
     }

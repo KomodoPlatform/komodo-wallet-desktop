@@ -5,9 +5,9 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
+import "../../../Constants"
 import App 1.0
 import bignumberjs 1.0
-import "../../../Constants"
 import Dex.Themes 1.0 as Dex
 import Dex.Components 1.0 as Dex
 import AtomicDEX.MarketMode 1.0
@@ -109,9 +109,8 @@ Item
             {
                 orderbook_list.currentIndex = index
 
-                selectOrder(isAsk, coin, price, quantity, price_denom,
-                            price_numer, quantity_denom, quantity_numer,
-                            min_volume, base_min_volume, base_max_volume,
+                selectOrder(isAsk, coin, price, price_denom,
+                            price_numer, min_volume, base_min_volume, base_max_volume,
                             rel_min_volume, rel_max_volume, base_max_volume_denom,
                             base_max_volume_numer, uuid)
 
@@ -136,7 +135,7 @@ Item
             height: 6
             radius: width / 2
             visible: is_mine
-            color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+            color: isAsk ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
         }
 
         // Progress bar
@@ -157,7 +156,7 @@ Item
                 Behavior on width { NumberAnimation { duration: 1000 } }
                 radius: 3
                 opacity: 0.8
-                color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+                color: isAsk ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
                 Component.onCompleted: width = ((depth * 100) * (mouse_area.width + 40)) / 100
             }
         }
@@ -177,7 +176,7 @@ Item
                 text: { new BigNumber(price).toFixed(8) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
-                color: isAsk ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.okColor
+                color: isAsk ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
                 horizontalAlignment: Text.AlignRight
                 wrapMode: Text.NoWrap
             }
@@ -189,7 +188,7 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width * 0.37
-                text: { new BigNumber(quantity).toFixed(6) }
+                text: { new BigNumber(base_max_volume).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 horizontalAlignment: Text.AlignRight

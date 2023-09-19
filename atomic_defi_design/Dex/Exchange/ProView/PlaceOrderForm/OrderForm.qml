@@ -3,8 +3,6 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
-import AtomicDEX.MarketMode 1.0
-import AtomicDEX.TradingError 1.0
 import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
@@ -20,10 +18,9 @@ ColumnLayout
     }
 
     readonly property string total_amount: API.app.trading_pg.total_amount
-    readonly property int input_height: 70
+    readonly property int input_height: 65
     readonly property int subfield_margin: 5
 
-    readonly property bool can_submit_trade: last_trading_error === TradingError.None
 
     // Will move to backend: Minimum Fee
     function getMaxBalance()
@@ -71,7 +68,7 @@ ColumnLayout
             color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             text: backend_price ? backend_price : General.formatDouble(API.app.trading_pg.cex_price)
             width: parent.width
-            height: 41
+            height: 36
             radius: 18
 
             onTextChanged: setPrice(text)
@@ -121,11 +118,11 @@ ColumnLayout
         {
             id: input_volume
             width: parent.width
-            height: 41
+            height: 36
             radius: 18
-            left_text: qsTr("Volume")
+            left_text: sell_mode ? qsTr("Send") : qsTr("Receive") 
             right_text: left_ticker
-            placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
+            placeholderText: "0" 
             text: API.app.trading_pg.volume
             onTextChanged: setVolume(text)
         }
@@ -171,7 +168,7 @@ ColumnLayout
         {
             id: input_minvolume
             width: parent.width
-            height: 41
+            height: 36
             radius: 18
             left_text: qsTr("Min Volume")
             right_text: left_ticker
@@ -214,7 +211,7 @@ ColumnLayout
     Item
     {
         Layout.preferredWidth: parent.width
-        Layout.preferredHeight: 30
+        Layout.preferredHeight: 24
         visible: !_useCustomMinTradeAmountCheckbox.checked
 
         DefaultText
@@ -231,7 +228,7 @@ ColumnLayout
         Layout.rightMargin: 2
         Layout.leftMargin: 2
         Layout.preferredWidth: parent.width
-        Layout.preferredHeight: 30
+        Layout.preferredHeight: 28
         spacing: 5
 
         DefaultCheckBox

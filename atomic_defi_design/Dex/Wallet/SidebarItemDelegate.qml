@@ -78,7 +78,7 @@ GradientRectangle
             verticalAlignment: Text.AlignVCenter
             text: activation_progress + "%"
             font: Dex.DexTypo.head8
-            color: Dex.DexTheme.greenColor
+            color: Dex.DexTheme.okColor
         }
     }
 
