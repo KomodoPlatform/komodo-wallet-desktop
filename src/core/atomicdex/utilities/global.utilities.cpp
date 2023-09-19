@@ -10,6 +10,8 @@
 //! Qt Headers
 #include <QCryptographicHash>
 #include <QString>
+#include <QFile>
+
 
 //! Project Headers
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -56,13 +58,13 @@ namespace atomic_dex::utils
     }
 
     bool
-    create_if_doesnt_exist(const fs::path& path)
+    create_if_doesnt_exist(const std::filesystem::path& path)
     {
-        if (not fs::exists(path))
+        if (not std::filesystem::exists(path))
         {
             LOG_PATH("creating directory {}", path);
             //SPDLOG_INFO("creating directory {}", path.string());
-            fs::create_directories(path);
+            std::filesystem::create_directories(path);
             return true;
         }
         return false;
@@ -82,27 +84,24 @@ namespace atomic_dex::utils
         return distr(gen);
     }
 
-    fs::path
+    std::filesystem::path
     get_atomic_dex_data_folder()
     {
-        fs::path appdata_path;
+        std::filesystem::path appdata_path;
 #if defined(_WIN32) || defined(WIN32)
         std::wstring out = _wgetenv(L"APPDATA");
-        appdata_path = fs::path(out) / DEX_APPDATA_FOLDER;
+        appdata_path = std::filesystem::path(out) / DEX_APPDATA_FOLDER;
 #elif defined(__APPLE__)
-        appdata_path = fs::path(std::getenv("HOME")) / "Library" / "Application Support" / DEX_APPDATA_FOLDER;
+        appdata_path = std::filesystem::path(std::getenv("HOME")) / "Library" / "Application Support" / DEX_APPDATA_FOLDER;
 #else
-        appdata_path = fs::path(std::getenv("HOME")) / (std::string(".") + std::string(DEX_APPDATA_FOLDER));
+        appdata_path = std::filesystem::path(std::getenv("HOME")) / (std::string(".") + std::string(DEX_APPDATA_FOLDER));
 #endif
         return appdata_path;
     }
 
     std::string
-    u8string(const fs::path& p)
+    u8string(const std::filesystem::path& p)
     {
-#if defined(PREFER_BOOST_FILESYSTEM)
-        return p.string();
-#else
         auto res = p.u8string();
 
         auto functor = [](auto&& r) {
@@ -116,10 +115,9 @@ namespace atomic_dex::utils
           }
         };
         return functor(res);
-#endif
     }
 
-    fs::path
+    std::filesystem::path
     get_atomic_dex_addressbook_folder()
     {
         const auto fs_addr_book_path = get_atomic_dex_data_folder() / "addressbook";
@@ -127,7 +125,7 @@ namespace atomic_dex::utils
         return fs_addr_book_path;
     }
 
-    fs::path
+    std::filesystem::path
     get_runtime_coins_path()
     {
         const auto fs_coins_path = get_atomic_dex_data_folder() / "custom_coins_icons";
@@ -135,7 +133,7 @@ namespace atomic_dex::utils
         return fs_coins_path;
     }
 
-    fs::path
+    std::filesystem::path
     get_atomic_dex_logs_folder()
     {
         const auto fs_logs_path = get_atomic_dex_data_folder() / "logs";
@@ -143,7 +141,7 @@ namespace atomic_dex::utils
         return fs_logs_path;
     }
 
-    ENTT_API fs::path
+    ENTT_API std::filesystem::path
     get_atomic_dex_current_log_file()
     {
         using namespace std::chrono;
@@ -151,11 +149,11 @@ namespace atomic_dex::utils
         static auto              timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
         static date::sys_seconds tp{seconds{timestamp}};
         static std::string       s        = date::format("%Y-%m-%d-%H-%M-%S", tp);
-        static const fs::path    log_path = get_atomic_dex_logs_folder() / (s + ".log");
+        static const std::filesystem::path    log_path = get_atomic_dex_logs_folder() / (s + ".log");
         return log_path;
     }
 
-    fs::path
+    std::filesystem::path
     get_mm2_atomic_dex_current_log_file()
     {
         using namespace std::chrono;
@@ -163,11 +161,11 @@ namespace atomic_dex::utils
         static auto              timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
         static date::sys_seconds tp{seconds{timestamp}};
         static std::string       s        = date::format("%Y-%m-%d-%H-%M-%S", tp);
-        static const fs::path    log_path = get_atomic_dex_logs_folder() / (s + ".mm2.log");
+        static const std::filesystem::path    log_path = get_atomic_dex_logs_folder() / (s + ".mm2.log");
         return log_path;
     }
 
-    fs::path
+    std::filesystem::path
     get_atomic_dex_config_folder()
     {
         const auto fs_cfg_path = get_atomic_dex_data_folder() / "config";
@@ -175,7 +173,7 @@ namespace atomic_dex::utils
         return fs_cfg_path;
     }
 
-    fs::path
+    std::filesystem::path
     get_atomic_dex_export_folder()
     {
         const auto fs_export_folder = get_atomic_dex_data_folder() / "exports";
@@ -183,7 +181,7 @@ namespace atomic_dex::utils
         return fs_export_folder;
     }
 
-    fs::path
+    std::filesystem::path
     get_atomic_dex_current_export_recent_swaps_file()
     {
         return get_atomic_dex_export_folder() / ("swap-export.json");
@@ -219,7 +217,7 @@ namespace atomic_dex::utils
         address = final_eth_address;
     }
 
-    fs::path
+    std::filesystem::path
     get_current_configs_path()
     {
         const auto fs_raw_mm2_shared_folder = get_atomic_dex_data_folder() / get_raw_version() / "configs";
@@ -237,18 +235,18 @@ namespace atomic_dex::utils
         return current;
     }
 
-    fs::path
+    std::filesystem::path
     get_themes_path()
     {
-        fs::path theme_path = get_atomic_dex_data_folder() / "themes";
+        std::filesystem::path theme_path = get_atomic_dex_data_folder() / "themes";
         create_if_doesnt_exist(theme_path);
         return theme_path;
     }
 
-    fs::path
+    std::filesystem::path
     get_logo_path()
     {
-        fs::path logo_path = get_atomic_dex_data_folder() / "logo";
+        std::filesystem::path logo_path = get_atomic_dex_data_folder() / "logo";
         create_if_doesnt_exist(logo_path);
         return logo_path;
     }
@@ -274,5 +272,29 @@ namespace atomic_dex::utils
             out.push_back(coin.ticker);
         }
         return out;
+    }
+
+    nlohmann::json
+    read_json_file(std::filesystem::path filepath)
+    {
+        nlohmann::json valid_json_data;
+
+        if (std::filesystem::exists(filepath))
+        {
+            QFile ifs;
+#if defined(_WIN32) || defined(WIN32)
+            ifs.setFileName(QString::fromStdWString(filepath.wstring()));
+#else
+            ifs.setFileName(QString::fromStdString(filepath.string()));
+#endif
+            ifs.open(QIODevice::ReadOnly | QIODevice::Text);
+            std::string json_str = QString(ifs.readAll()).toUtf8().constData();
+            if (nlohmann::json::accept(json_str))
+            {
+                valid_json_data = nlohmann::json::parse(json_str);
+            }
+            ifs.close();
+        }
+        return valid_json_data;
     }
 } // namespace atomic_dex::utils

@@ -1,5 +1,5 @@
 /******************************************************************************
-* Copyright © 2013-2022 The Komodo Platform Developers.                      *
+* Copyright © 2013-2023 The Komodo Platform Developers.                      *
 *                                                                            *
 * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
 * the top-level directory of this distribution for the individual copyright  *
@@ -37,6 +37,8 @@
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/api/mm2/enable_bch_with_tokens_rpc.hpp"
 #include "atomicdex/api/mm2/enable_slp_rpc.hpp"
+#include "atomicdex/api/mm2/rpc2.enable_tendermint_with_assets.hpp"
+#include "atomicdex/api/mm2/rpc2.enable_tendermint_token.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/data/dex/orders.and.swaps.data.hpp"
@@ -92,7 +94,6 @@ namespace atomic_dex
        //! Atomicity / Threads
        std::atomic_bool m_mm2_running{false};
        std::atomic_bool m_orderbook_thread_active{false};
-       std::atomic_bool m_zhtlc_enable_thread_active{false};
        std::atomic_size_t m_nb_update_required{0};
        std::thread      m_mm2_init_thread;
 
@@ -154,10 +155,6 @@ namespace atomic_dex
 
        void on_gui_leave_trading(const gui_leave_trading& evt);
 
-       void on_zhtlc_enter_enabling(const zhtlc_enter_enabling& evt);
-
-       void on_zhtlc_leave_enabling(const zhtlc_leave_enabling& evt);
-
        //! Spawn mm2 instance with given seed
        void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
 
@@ -180,19 +177,28 @@ namespace atomic_dex
        void enable_slp_coins(const t_coins& coins);
        void enable_slp_testnet_coin(coin_config coin_config);
        void enable_slp_testnet_coins(const t_coins& coins);
+       void enable_tendermint_coin(coin_config coin_config, std::string parent_ticker);
+       void enable_tendermint_coins(const t_coins& coins, const std::string parent_ticker);
        void enable_zhtlc(const t_coins& coins);
-       
+
        // Balances processing functions
        void process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc);    // Called after enabling SLP coins along tBCH/BCH.
        void process_balance_answer(const mm2::enable_slp_rpc& rpc);                // Called after enabling an SLP coin.
+       void process_balance_answer(const mm2::enable_tendermint_with_assets_rpc& rpc);
+       void process_balance_answer(const mm2::enable_tendermint_token_rpc& rpc);
 
      public:
        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
-       void               add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
-       void               remove_custom_coin(const std::string& ticker);
-       [[nodiscard]] bool is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
-       [[nodiscard]] bool is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
-       [[nodiscard]] bool is_zhtlc_coin_ready(const std::string coin) const;
+       void                         add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
+       void                         remove_custom_coin(const std::string& ticker);
+       [[nodiscard]] bool           is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
+       [[nodiscard]] bool           is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
+       [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;
+       [[nodiscard]] nlohmann::json get_zhtlc_status(const std::string coin) const;
+
+
+       //! Cancel zhtlc activation
+       void enable_z_coin_cancel(const std::int8_t task_id);
 
        //! Disable a single coin
        bool disable_coin(const std::string& ticker, std::error_code& ec);
@@ -251,7 +257,6 @@ namespace atomic_dex
        [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
 
        [[nodiscard]] bool is_orderbook_thread_active() const;
-       [[nodiscard]] bool is_zhtlc_enable_thread_active() const;
 
        [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const;
 
@@ -274,7 +279,6 @@ namespace atomic_dex
        //! Pagination
        void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50, t_filtering_infos infos = {});
 
-       void change_segwit_status(std::string ticker, bool status);
    };
 } // namespace atomic_dex
 

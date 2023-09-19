@@ -36,7 +36,7 @@ namespace atomic_dex
         entt::dispatcher&       m_dispatcher;
         QNetworkAccessManager   m_manager;
         std::string             m_download_filename;
-        fs::path                m_download_path;
+        std::filesystem::path                m_download_path;
         QVector<QNetworkReply*> m_current_downloads;
         float                   m_download_progress;
         QJsonObject             m_download_status;
@@ -46,8 +46,8 @@ namespace atomic_dex
         qt_downloader(entt::dispatcher& dispatcher);
         ~qt_downloader();
 
-        void                          do_download(const QUrl& url, std::string filename, fs::path folder);
-        [[nodiscard]] fs::path        get_last_download_path() const;
+        void                          do_download(const QUrl& url, std::string filename, std::filesystem::path folder);
+        [[nodiscard]] std::filesystem::path        get_last_download_path() const;
         [[nodiscard]] QJsonObject     get_download_status() const;
         [[nodiscard]] QJsonObject     get_combined_download_status() const;
         [[nodiscard]] QNetworkReply*  get_reply() const;

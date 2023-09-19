@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include <boost/lockfree/queue.hpp>
 
 #include <QObject>
@@ -110,9 +111,9 @@ namespace atomic_dex
         QString                                m_price{"0"};
         QString                                m_volume{"0"};
         QString                                m_max_volume{"0"};
-        QString                                m_total_amount{"0"};
+        QString                                m_total_amount{"0.00777"};
         QString                                m_cex_price{"0"};
-        QString                                m_minimal_trading_amount{"0"};
+        QString                                m_minimal_trading_amount{"0.0001"};
         std::optional<nlohmann::json>          m_preferred_order;
         boost::synchronized_value<QVariantMap> m_fees;
         bool                                   m_skip_taker{false};
@@ -183,7 +184,6 @@ namespace atomic_dex
         [[nodiscard]] QString             get_price_reversed() const;
         [[nodiscard]] QString             get_price() const;
         void                              set_price(QString price);
-        //[[nodiscard]] QString      get_mm2_min_trade_vol() const;
         [[nodiscard]] QString         get_min_trade_vol() const;
         void                          set_min_trade_vol(QString min_trade_vol);
         [[nodiscard]] QString         get_volume() const;

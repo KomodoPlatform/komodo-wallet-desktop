@@ -14,7 +14,7 @@ namespace atomic_dex
         "BANANO-BEP20",
         "BNB",
         "BONE-ERC20",
-        "BTC",
+        "BTC-segwit",
         "CAKE",
         "CUMMIES-BEP20",
         "DOGE-BEP20",
@@ -28,7 +28,14 @@ namespace atomic_dex
         "SHIB-BEP20",
         "TAMA-BEP20",
         "SHIB-ERC20",
-        "ZINU-BEP20"
+        "ZINU-BEP20",
+        "LTC-segwit",
+        "DGB-segwit"
+    };
+    inline const std::vector<std::string> g_faucet_coins{
+        "DOC",
+        "MARTY",
+        "ZOMBIE"
     };
     inline const std::vector<std::string> g_wallet_only_coins{
         "ARRR-BEP20",
@@ -48,6 +55,7 @@ namespace atomic_dex
         "REVS",
         "SUPERNET",
         "XPM",
+        "VOTE2023",
         "ATOM"
     };
 }

@@ -50,7 +50,7 @@ namespace atomic_dex
     t_password_key
     derive_password(const std::string& password, std::error_code& ec)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
         t_salt_array   salt{};
         t_password_key generated_crypto_key{};
 
@@ -71,9 +71,9 @@ namespace atomic_dex
     }
 
     void
-    encrypt(const fs::path& target_path, const char* mnemonic, const unsigned char* key)
+    encrypt(const std::filesystem::path& target_path, const char* mnemonic, const unsigned char* key)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
 
         std::array<unsigned char, g_chunk_size>     buf_in{};
         std::array<unsigned char, g_buff_len>       buf_out{};
@@ -98,9 +98,9 @@ namespace atomic_dex
     }
 
     std::string
-    decrypt(const fs::path& encrypted_file_path, const unsigned char* key, std::error_code& ec)
+    decrypt(const std::filesystem::path& encrypted_file_path, const unsigned char* key, std::error_code& ec)
     {
-        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        SPDLOG_DEBUG("{} l{} f[{}]", __FUNCTION__, __LINE__, std::filesystem::path(__FILE__).filename().string());
 
         std::array<unsigned char, g_buff_len>       buf_in{};
         std::array<unsigned char, g_chunk_size>     buf_out{};

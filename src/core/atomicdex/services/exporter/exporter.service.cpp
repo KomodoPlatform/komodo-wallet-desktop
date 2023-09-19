@@ -56,7 +56,7 @@ namespace atomic_dex
     exporter_service::export_swaps_history_to_csv(const QString& path)
     {
         std::string str_path = path.toStdString();
-        fs::path    csv_path = str_path;
+        std::filesystem::path    csv_path = str_path;
 
         if (not csv_path.has_extension())
         {

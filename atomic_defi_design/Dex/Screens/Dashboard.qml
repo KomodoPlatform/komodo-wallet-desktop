@@ -20,6 +20,7 @@ import "../Support" as SupportPage
 import "../Screens"
 import "../Addressbook" as Addressbook
 import Dex.Themes 1.0 as Dex
+import AtomicDEX.TradingMode 1.0
 
 Item
 {
@@ -82,7 +83,13 @@ Item
 
     Layout.fillWidth: true
 
-    onCurrentPageChanged: sidebar.currentLineType = currentPage
+    onCurrentPageChanged: {
+        sidebar.currentLineType = currentPage
+        if (currentPage == Dashboard.PageType.DEX)
+        {
+            API.app.trading_pg.set_pair(true, api_wallet_page.ticker)
+        }
+    }
 
     SupportPage.SupportModal { id: support_modal }
 
@@ -96,11 +103,12 @@ Item
             if (API.app.portfolio_pg.portfolio_mdl.length > atomic_settings2.value("MaximumNbCoinsEnabled")) {
                 open()
                 onTimerEnded = () => {
-                    API.app.settings_pg.reset_coin_cfg()
+                    API.app.reset_coin_cfg()
                 }
             }
         }
     }
+
 
     // Right side
     AnimatedRectangle
@@ -109,6 +117,18 @@ Item
         height: parent.height
         x: sidebar.width
         border.color: 'transparent'
+
+        Rectangle
+        {
+            radius: 0
+            anchors.fill: parent
+            anchors.rightMargin : - border.width
+            anchors.bottomMargin:  - border.width
+            anchors.leftMargin: - border.width
+            border.width: 1
+            border.color: Dex.CurrentTheme.lineSeparatorColor
+            color: 'transparent'
+        }
 
         // Modals
         ModalLoader
@@ -259,6 +279,7 @@ Item
         enabled: loader.status === Loader.Ready
 
         onLineSelected: currentPage = lineType;
+        onAddCryptoClicked: enable_coin_modal.open()
         onSettingsClicked: setting_modal.open()
         onSupportClicked: support_modal.open()
     }
@@ -353,7 +374,7 @@ Item
                 return Dex.CurrentTheme.sidebarLineTextHovered
             case "failed":
             default:
-                return DexTheme.redColor
+                return DexTheme.warningColor
         }
     }
 

@@ -52,14 +52,11 @@ namespace atomic_dex
         {
             PriceRole = Qt::UserRole + 1, // 257
             CoinRole,
-            QuantityRole,
             TotalRole,
             UUIDRole,
             IsMineRole,
             PriceDenomRole,
             PriceNumerRole,
-            QuantityDenomRole,
-            QuantityNumerRole,
             PercentDepthRole,
             MinVolumeRole,
             EnoughFundsToPayMinVolume,
@@ -91,8 +88,8 @@ namespace atomic_dex
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
         bool                                 removeRows(int row, int count, const QModelIndex& parent) override;
 
-        void                                 reset_orderbook(const t_orders_contents& orderbook);
-        void                                 refresh_orderbook(const t_orders_contents& orderbook);
+        void                                 reset_orderbook(const t_orders_contents& orderbook, bool is_bestorders=false);
+        void                                 refresh_orderbook(const t_orders_contents& orderbook, bool is_bestorders=false);
         void                                 clear_orderbook();
         [[nodiscard]] int                    get_length() const;
         [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const;
