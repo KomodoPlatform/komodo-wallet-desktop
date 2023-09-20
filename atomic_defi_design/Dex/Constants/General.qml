@@ -119,14 +119,13 @@ QtObject {
 
     function zhtlcActivationProgress(activation_status, coin='ARRR')
     {
-        
-        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin)
-        let block_offset = coin_info.checkpoint_block
         let progress = 100
         if (!activation_status.hasOwnProperty("result")) return progress
-        // console.log("["+coin+"] [zhtlcActivationProgress]: " + JSON.stringify(activation_status))
+        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin)
+        let block_offset = coin_info.checkpoint_height
         let status = activation_status.result.status
         let details = activation_status.result.details
+        // console.log("["+coin+"] [zhtlcActivationProgress]: " + JSON.stringify(activation_status))
 
         // use range from checkpoint block to present
         if (!status)
@@ -145,14 +144,14 @@ QtObject {
                 block_offset = details.UpdatingBlocksCache.first_sync_block.actual
                 let n = details.UpdatingBlocksCache.current_scanned_block - block_offset
                 let d = details.UpdatingBlocksCache.latest_block - block_offset
-                progress = 5 + parseInt(n/d*40)
+                progress = 5 + parseInt(n/d*20)
             }
             else if (details.hasOwnProperty("BuildingWalletDb"))
             {
                 block_offset = details.BuildingWalletDb.first_sync_block.actual
                 let n = details.BuildingWalletDb.current_scanned_block - block_offset
                 let d = details.BuildingWalletDb.latest_block - block_offset
-                progress = 45 + parseInt(n/d*40)
+                progress = 45 + parseInt(n/d*60)
             }
             else if (details.hasOwnProperty("RequestingBalance")) progress = 95
             else if (details.hasOwnProperty("ActivatingCoin")) progress = 5
