@@ -150,14 +150,20 @@ QtObject {
                 let n = details.BuildingWalletDb.current_scanned_block - block_offset
                 let d = details.BuildingWalletDb.latest_block - block_offset
                 progress = 45 + parseInt(n/d*60)
-                if progress > 95: progress = 95
+                if (progress > 95) {
+                    progress = 95
+                }
+                
             }
             else if (details.hasOwnProperty("RequestingBalance")) progress = 95
             else if (details.hasOwnProperty("ActivatingCoin")) progress = 5
             else progress = 5
         }
         else console.log("["+coin+"] [zhtlcActivationProgress] Unexpected status: " + status)
-        if progress > 100: progress = 98
+        if (progress > 100) {
+            progress = 98
+        }
+        
         return progress
     }
 
