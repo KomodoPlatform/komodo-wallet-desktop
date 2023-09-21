@@ -156,24 +156,24 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           export SHELL=/bin/bash
-          echo "CHOOSENIM_CHOOSE_VERSION=1.6.10" >> $GITHUB_ENV
-          export CHOOSENIM_CHOOSE_VERSION=1.6.10
+          echo "CHOOSENIM_CHOOSE_VERSION=1.6.20" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.6.20
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
-          chmod +x /home/runner/.choosenim/toolchains/nim-1.6.10/bin/*
+          chmod +x /home/runner/.choosenim/toolchains/nim-1.6.20/bin/*
 
       - name: Install nim (MacOS)
         if: runner.os == 'macOS'
         run: |
-          echo "CHOOSENIM_CHOOSE_VERSION=1.6.10" >> $GITHUB_ENV
-          export CHOOSENIM_CHOOSE_VERSION=1.6.10
+          echo "CHOOSENIM_CHOOSE_VERSION=1.6.20" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.6.20
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/Users/runner/.nimble/bin:$PATH
-          chmod +x /Users/runner/.choosenim/toolchains/nim-1.6.10/bin/*
+          chmod +x /Users/runner/.choosenim/toolchains/nim-1.6.20/bin/*
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
