@@ -28,7 +28,7 @@ namespace atomic_dex::mm2
     {
         j["params"]["ticker"]                                                          = request.coin_name;
         j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
-        j["params"]["activation_params"]["mode"]["rpc_data"]["sync_params"]["date"]    = request.sync_date;
+        j["params"]["activation_params"]["mode"]["rpc_data"]["sync_params"]["height"]  = request.sync_height;
         j["params"]["activation_params"]["mode"]["rpc_data"]["electrum_servers"]       = request.servers;
         j["params"]["activation_params"]["mode"]["rpc_data"]["light_wallet_d_servers"] = request.z_urls;
         j["params"]["activation_params"]["scan_blocks_per_iteration"]                  = 5000;

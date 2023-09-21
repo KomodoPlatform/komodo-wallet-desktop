@@ -47,6 +47,8 @@ namespace
             {"is_erc_family", coin.is_erc_family},
             {"is_zhtlc_family", coin.is_zhtlc_family},
             {"is_wallet_only", coin.wallet_only},
+            {"checkpoint_height", coin.checkpoint_height},
+            {"checkpoint_blocktime", coin.checkpoint_blocktime},
             {"has_memos", coin.has_memos},
             {"fees_ticker", QString::fromStdString(coin.fees_ticker)}};
         return j;
