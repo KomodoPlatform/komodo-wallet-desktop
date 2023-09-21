@@ -317,9 +317,31 @@ Qaterial.Dialog
 
                                 Item { Layout.fillWidth: true }
 
+                                DefaultCheckBox
+                                {
+                                    id: use_sync_date_checkbox
+
+                                    spacing: 2
+
+                                    label.wrapMode: Label.NoWrap
+                                    label.font.pixelSize: 14
+                                    text: qsTr("use date sync")
+                                    textColor: Dex.CurrentTheme.foregroundColor2
+                                    Component.onCompleted: checked = API.app.settings_pg.get_use_sync_date()
+                                    onToggled: {
+                                        atomic_settings2.setValue(
+                                            "UseSyncDate",
+                                            checked
+                                        )
+                                    }
+                                }
+
+                                Item { Layout.fillWidth: true }
+
                                 DatePicker
                                 {
                                     id: sync_date
+                                    enabled: use_sync_date_checkbox.checked
                                     titleText: qsTr("Sync Date")
                                     minimumDate: default_min_date
                                     maximumDate: default_max_date
