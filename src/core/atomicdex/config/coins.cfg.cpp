@@ -168,6 +168,8 @@ namespace atomic_dex
         cfg.wallet_only          = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
         cfg.default_coin         = is_default_coin(cfg.ticker);
         cfg.is_faucet_coin       = is_faucet_coin(cfg.ticker);
+        cfg.checkpoint_height    = 0;
+        cfg.checkpoint_blocktime = 0;
         using namespace std::chrono;
 
         if (j.contains("other_types"))
@@ -225,6 +227,14 @@ namespace atomic_dex
         if (j.contains("light_wallet_d_servers"))
         {
             cfg.z_urls = j.at("light_wallet_d_servers").get<std::vector<std::string>>();
+        }
+        if (j.contains("checkpoint_blocktime"))
+        {
+            cfg.checkpoint_blocktime = j.at("checkpoint_blocktime").get<int>();
+        }
+        if (j.contains("checkpoint_height"))
+        {
+            cfg.checkpoint_height = j.at("checkpoint_height").get<int>();
         }
         if (j.contains("alias_ticker"))
         {

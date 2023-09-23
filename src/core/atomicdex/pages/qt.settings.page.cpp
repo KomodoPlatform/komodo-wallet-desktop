@@ -84,6 +84,29 @@ namespace atomic_dex
         QSettings& settings = entity_registry_.ctx<QSettings>();
         return settings.value("PirateSyncDate").toInt();
     }
+    int settings_page::get_pirate_sync_height(int sync_date, int checkpoint_height, int checkpoint_blocktime) const
+    {
+        if (checkpoint_height == 0)
+        {
+            return 0;
+        }
+        int blocktime_estimate = 65; // Based on average block time between checkpoint block and block 2575600 + margin of error
+        SPDLOG_INFO("sync_date: {}", sync_date);
+        SPDLOG_INFO("checkpoint_height: {}", checkpoint_height);
+        SPDLOG_INFO("checkpoint_blocktime: {}", checkpoint_blocktime);
+        int time_delta = sync_date - checkpoint_blocktime;
+        SPDLOG_INFO("time_delta: {}", time_delta);
+        int block_delta =  static_cast<int>(time_delta / blocktime_estimate);
+        SPDLOG_INFO("block_delta: {}", block_delta);
+        // As block time is variable, we round height to the nearest 1000 blocks
+        int height = checkpoint_height + static_cast<int>(block_delta / 1000) * 1000;
+        if (height < 0)
+        {
+            height = 0;
+        }
+        SPDLOG_INFO("height: {}", height);
+        return height;
+    }
 
     void settings_page::set_pirate_sync_date(int new_timestamp)
     {

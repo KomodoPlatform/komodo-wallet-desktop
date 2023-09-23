@@ -55,6 +55,8 @@ namespace atomic_dex
         std::string                                       minimal_claim_amount{"0"};
         CoinType                                          coin_type;
         nlohmann::json                                    activation_status;
+        int                                               checkpoint_height{0};
+        int                                               checkpoint_blocktime{0};
         bool                                              segwit{false};
         bool                                              active{false};
         bool                                              checked{false};
