@@ -29,6 +29,7 @@ namespace atomic_dex
         std::string                                  current_fiat_sign;
         std::unordered_map<std::string, std::string> available_currency_signs;
         std::vector<std::string>                     available_fiat;
+        std::vector<std::string>                     recommended_fiat;
         std::vector<std::string>                     possible_currencies;
         bool                                         notification_enabled;
         bool                                         spamfilter_enabled{false};

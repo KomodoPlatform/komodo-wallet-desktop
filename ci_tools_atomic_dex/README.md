@@ -68,7 +68,7 @@ git checkout curl-7_70_0
 make install
 ```
 
-Installling libbitcoin:
+Installing libbitcoin:
 
 ```
 git clone --depth 1 --branch version5 --single-branch "https://github.com/KomodoPlatform/secp256k1"

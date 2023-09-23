@@ -25,7 +25,7 @@ Item
 
         let chart_html = ""
         let symbol = ""
-        let widget_x = 390
+        let widget_x = 385
         let widget_y = 150
         let scale_x = root.width / widget_x
         let scale_y = root.height / widget_y
@@ -137,14 +137,16 @@ Item
         catch (e) { console.error(e) }
     }
 
-    onWidthChanged: {
-        try
-        {
-            loadChart(left_ticker?? atomic_app_primary_coin,
-                      right_ticker?? atomic_app_secondary_coin)
-        }
-        catch (e) { console.error(e) }
-    }
+// Currently chart should not resize, but in future it might be needed
+
+//    onWidthChanged: {
+//        try
+//        {
+//            loadChart(left_ticker?? atomic_app_primary_coin,
+//                      right_ticker?? atomic_app_secondary_coin)
+//        }
+//        catch (e) { console.error(e) }
+//    }
 
     RowLayout
     {
@@ -187,6 +189,7 @@ Item
     {
         id: webEngineViewPlaceHolder
         anchors.fill: parent
+        anchors.centerIn: parent
         visible: false
 
         Component.onCompleted:

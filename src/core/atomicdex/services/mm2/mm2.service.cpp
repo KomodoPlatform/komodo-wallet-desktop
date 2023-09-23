@@ -24,6 +24,7 @@
 #include <QException>
 #include <QFile>
 #include <QProcess>
+#include <QSettings>
 
 #include "atomicdex/api/mm2/utxo.merge.params.hpp"
 #include "atomicdex/api/mm2/rpc.electrum.hpp"
@@ -37,6 +38,7 @@
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -527,17 +529,18 @@ namespace atomic_dex
                 {
                     cosmos_coins.push_back(coin_config);
                 }
-                if (coin_config.parent_coin == "IRIS")
+                else if (coin_config.parent_coin == "IRIS")
                 {
                     iris_coins.push_back(coin_config);
                 }
-                if (coin_config.parent_coin == "OSMO")
+                else if (coin_config.parent_coin == "OSMO")
                 {
                     osmosis_coins.push_back(coin_config);
                 }
                 else
                 {
-                    SPDLOG_WARN("Unexpected Tenddermint ticker: {}", coin_config.ticker);
+                    SPDLOG_WARN("Unexpected Tendermint ticker: {}", coin_config.ticker);
+                    SPDLOG_WARN("Parent coin: {}", coin_config.parent_coin);
                 }
             }
             else if (coin_config.coin_type == CoinType::ZHTLC)
@@ -1295,36 +1298,27 @@ namespace atomic_dex
             std::size_t     limit =  5000;
             bool            requires_v2 = false;
             std::string     method = "my_tx_history";
-            if (coin_info.coin_type == CoinTypeGadget::SLP || coin_info.ticker == "tBCH" || coin_info.ticker == "BCH")
+            if (coin_info.coin_type == CoinTypeGadget::ZHTLC || coin_info.coin_type == CoinTypeGadget::TENDERMINT || coin_info.coin_type == CoinTypeGadget::TENDERMINTTOKEN || coin_info.coin_type == CoinTypeGadget::SLP || coin_info.ticker == "tBCH" || coin_info.ticker == "BCH")
             {
                 requires_v2 = true;
-                t_tx_history_request request{.coin = ticker, .limit = limit};
-                nlohmann::json       j = mm2::template_request(method, requires_v2);
-                mm2::to_json(j, request);
-                batch_array.push_back(j);
-            }
-            else if (coin_info.is_zhtlc_family)
-            {
-                // Don't request balance / history if not completely activated.
-                if (coin_info.activation_status.at("result").at("status") == "Ok")
+                if (coin_info.is_zhtlc_family)
                 {
-                    limit = 50;
-                    requires_v2 = true;
-                    method = "z_coin_tx_history";
-                    t_tx_history_request request{.coin = ticker, .limit = limit};
-                    nlohmann::json       j = mm2::template_request(method, requires_v2);
-                    mm2::to_json(j, request);
-                    batch_array.push_back(j);
+                    // Don't request balance / history if not completely activated.
+                    if (coin_info.activation_status.at("result").at("status") == "Ok")
+                    {
+                        limit = 50;
+                        method = "z_coin_tx_history";
+                    }
+                    else
+                    {
+                        return std::make_tuple(batch_array, tickers_idx, tokens_to_fetch);
+                    }
                 }
             }
-            else
-            {
-                t_tx_history_request request{.coin = ticker, .limit = limit};
-                nlohmann::json       j = mm2::template_request(method, requires_v2);
-                mm2::to_json(j, request);
-                batch_array.push_back(j);
-            }
-
+            t_tx_history_request request{.coin = ticker, .limit = limit};
+            nlohmann::json       j = mm2::template_request(method, requires_v2);
+            mm2::to_json(j, request);
+            batch_array.push_back(j);
         }
 
         if (not only_tx)
@@ -1399,11 +1393,16 @@ namespace atomic_dex
     {
         auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
+            const auto& settings_system  = m_system_manager.get_system<settings_page>();
+            int sync_date = settings_system.get_pirate_sync_date();
+            int sync_height = settings_system.get_pirate_sync_height(sync_date, coin_info.checkpoint_height, coin_info.checkpoint_blocktime);
+
             t_enable_z_coin_request request{
                 .coin_name            = coin_info.ticker,
                 .servers              = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
                 .z_urls               = coin_info.z_urls.value_or(std::vector<std::string>{}),
                 .coin_type            = coin_info.coin_type,
+                .sync_height          = sync_height,
                 .is_testnet           = coin_info.is_testnet.value_or(false),
                 .with_tx_history      = false}; // Tx history not yet ready for ZHTLC
 
@@ -1411,6 +1410,7 @@ namespace atomic_dex
             mm2::to_json(j, request);
             nlohmann::json batch = nlohmann::json::array();
             batch.push_back(j);
+            // SPDLOG_INFO("ZHTLC request: {}", batch.dump(4));
             return {batch, {coin_info.ticker}};
         };
 
@@ -1467,7 +1467,7 @@ namespace atomic_dex
                                                 nlohmann::json     z_batch_array = nlohmann::json::array();
                                                 t_enable_z_coin_status_request z_request{.task_id = task_id};
 
-                                                SPDLOG_DEBUG("{} enable_z_coin Task ID: {}", tickers[idx], task_id);
+                                                SPDLOG_INFO("{} enable_z_coin Task ID: {}", tickers[idx], task_id);
 
                                                 nlohmann::json j = mm2::template_request("task::enable_z_coin::status", true);
                                                 mm2::to_json(j, z_request);
@@ -1482,12 +1482,12 @@ namespace atomic_dex
                                                     z_error                                          = z_answers;
 
                                                     std::string status = z_answers[0].at("result").at("status").get<std::string>();
-                                                    SPDLOG_DEBUG("{} status : {}", tickers[idx], status);
-                                                    SPDLOG_DEBUG("{} activation status response [{}]", tickers[idx], z_answers[0].dump());
+                                                    // SPDLOG_DEBUG("{} status : {}", tickers[idx], status);
+                                                    SPDLOG_INFO("{} Activation Status: {}", tickers[idx], z_answers[0].dump());
 
                                                     if (status == "Ok")
                                                     {
-                                                        SPDLOG_DEBUG("{} activation ready...", tickers[idx]);
+                                                        SPDLOG_INFO("{} activation ready...", tickers[idx]);
                                                         m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                         if (z_answers[0].at("result").at("details").contains("error"))
                                                         {
@@ -1499,15 +1499,20 @@ namespace atomic_dex
                                                                 }
                                                             }
                                                             event = z_answers[0].at("result").at("details").at("error").get<std::string>();
-                                                            SPDLOG_DEBUG("Enabling [{}] error: {}", tickers[idx], event);
+                                                            SPDLOG_INFO("Enabling [{}] error: {}", tickers[idx], event);
                                                             break;
                                                         }
-                                                        SPDLOG_DEBUG("{} activation complete!", tickers[idx]);
+                                                        SPDLOG_INFO("{} activation complete!", tickers[idx]);
                                                         std::unique_lock lock(m_coin_cfg_mutex);
                                                         m_coins_informations[tickers[idx]].currently_enabled = true;
 
                                                         dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {tickers[idx]}});
                                                         this->m_nb_update_required += 1;
+                                                        break;
+                                                    }
+                                                    else if (status == "Error")
+                                                    {
+                                                        event = z_answers[0].at("result").at("details").at("error_data").at("error").get<std::string>();
                                                         break;
                                                     }
                                                     else
@@ -1522,15 +1527,23 @@ namespace atomic_dex
                                                         {
                                                             event = "BuildingWalletDb";
                                                         }
+                                                        else if (z_answers[0].at("result").at("details").contains("ActivatingCoin"))
+                                                        {
+                                                            event = "ActivatingCoin";
+                                                        }
+                                                        else if (z_answers[0].at("result").at("details").contains("TemporaryError"))
+                                                        {
+                                                            event = "TemporaryError";
+                                                        }
                                                         else
                                                         {
                                                             event = z_answers[0].at("result").at("details").get<std::string>();
                                                         }
-                                                        SPDLOG_DEBUG("{} activation event [{}]", event, tickers[idx]);
+                                                        // SPDLOG_DEBUG("{} activation event [{}]", event, tickers[idx]);
 
                                                         if (event != last_event)
                                                         {
-                                                            SPDLOG_DEBUG("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
+                                                            SPDLOG_INFO("Waiting for {} to enable [{}: {}]...", tickers[idx], status, event);
                                                             if (!m_coins_informations[tickers[idx]].currently_enabled && event != "ActivatingCoin")
                                                             {
                                                                 std::unique_lock lock(m_coin_cfg_mutex);
@@ -1543,19 +1556,18 @@ namespace atomic_dex
                                                             last_event = event;
                                                         }
                                                         // todo(syl): refactor to a background task
-                                                        std::this_thread::sleep_for(2s);
+                                                        std::this_thread::sleep_for(5s);
                                                     }
                                                     m_coins_informations[tickers[idx]].activation_status = z_answers[0];
                                                     z_nb_try += 1;
 
-                                                } while (z_nb_try < 2000);
+                                                } while (z_nb_try < 10000);
 
                                                 try {
                                                     if (z_error[0].at("result").at("details").contains("error"))
                                                     {
-                                                        std::string zhtlc_error   = z_error[0].at("result").at("details").at("error").get<std::string>();
-                                                        SPDLOG_DEBUG("Error enabling {}: {} ", tickers[idx], zhtlc_error);
-                                                        SPDLOG_DEBUG(
+                                                        SPDLOG_INFO("Error enabling {}: {} ", tickers[idx], event);
+                                                        SPDLOG_INFO(
                                                             "Removing zhtlc from enabling, idx: {}, tickers size: {}, answers size: {}",
                                                             tickers[idx], idx, tickers.size(), answers.size()
                                                         );
@@ -1564,15 +1576,15 @@ namespace atomic_dex
                                                         this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], z_error[0].dump(4));
                                                         to_remove.emplace(tickers[idx]);
                                                     }
-                                                    else if (z_nb_try == 1000)
+                                                    else if (z_nb_try == 10000)
                                                     {
                                                         // TODO: Handle this case.
                                                         // There could be no error message if scanning takes too long.
                                                         // Either we force disable here, or schedule to check on it later
                                                         // If this happens, address will be "Invalid" and balance will be zero.
                                                         // We could save this ticker in a list to try `enable_z_coin_status` again on it periodically until complete.
-                                                        SPDLOG_DEBUG("Exited {} enable loop after 1000 tries ", tickers[idx]);
-                                                        SPDLOG_DEBUG(
+                                                        SPDLOG_INFO("Exited {} enable loop after 10000 tries ", tickers[idx]);
+                                                        SPDLOG_INFO(
                                                             "Bad answer for zhtlc_error: [{}] -> idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                                             tickers.size(), answers.size()
                                                         );
@@ -1582,13 +1594,13 @@ namespace atomic_dex
                                                     }
                                                     else
                                                     {
-                                                        SPDLOG_DEBUG("{} enable loop complete!", tickers[idx]);
+                                                        SPDLOG_INFO("{} enable loop complete!", tickers[idx]);
                                                         this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "Complete!");
                                                     }
                                                 }
                                                 catch (const std::exception& error)
                                                 {
-                                                    SPDLOG_ERROR("exception caught in zhtlc batch_enable_coins: {}", error.what());
+                                                    SPDLOG_INFO("exception caught in zhtlc batch_enable_coins: {}", error.what());
                                                 }
                                             }
                                         }
