@@ -40,7 +40,7 @@ RowLayout
             anchors.centerIn: parent
             anchors.fill: parent
             radius: 10
-            enabled: Dex.General.isZhtlc(details.ticker) ? activation_progress != 100 : false
+            enabled: Dex.General.isZhtlc(details.ticker) ? activation_progress < 100 : false
             visible: enabled
             opacity: .9
             color: Dex.DexTheme.backgroundColor
@@ -50,7 +50,7 @@ RowLayout
         {
             anchors.centerIn: parent
             anchors.fill: parent
-            enabled: Dex.General.isZhtlc(details.ticker) ? activation_progress != 100 : false
+            enabled: Dex.General.isZhtlc(details.ticker) ? activation_progress < 100 : false
             visible: enabled
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

@@ -1298,36 +1298,27 @@ namespace atomic_dex
             std::size_t     limit =  5000;
             bool            requires_v2 = false;
             std::string     method = "my_tx_history";
-            if (coin_info.coin_type == CoinTypeGadget::SLP || coin_info.ticker == "tBCH" || coin_info.ticker == "BCH")
+            if (coin_info.coin_type == CoinTypeGadget::ZHTLC || coin_info.coin_type == CoinTypeGadget::TENDERMINT || coin_info.coin_type == CoinTypeGadget::TENDERMINTTOKEN || coin_info.coin_type == CoinTypeGadget::SLP || coin_info.ticker == "tBCH" || coin_info.ticker == "BCH")
             {
                 requires_v2 = true;
-                t_tx_history_request request{.coin = ticker, .limit = limit};
-                nlohmann::json       j = mm2::template_request(method, requires_v2);
-                mm2::to_json(j, request);
-                batch_array.push_back(j);
-            }
-            else if (coin_info.is_zhtlc_family)
-            {
-                // Don't request balance / history if not completely activated.
-                if (coin_info.activation_status.at("result").at("status") == "Ok")
+                if (coin_info.is_zhtlc_family)
                 {
-                    limit = 50;
-                    requires_v2 = true;
-                    method = "z_coin_tx_history";
-                    t_tx_history_request request{.coin = ticker, .limit = limit};
-                    nlohmann::json       j = mm2::template_request(method, requires_v2);
-                    mm2::to_json(j, request);
-                    batch_array.push_back(j);
+                    // Don't request balance / history if not completely activated.
+                    if (coin_info.activation_status.at("result").at("status") == "Ok")
+                    {
+                        limit = 50;
+                        method = "z_coin_tx_history";
+                    }
+                    else
+                    {
+                        return std::make_tuple(batch_array, tickers_idx, tokens_to_fetch);
+                    }
                 }
             }
-            else
-            {
-                t_tx_history_request request{.coin = ticker, .limit = limit};
-                nlohmann::json       j = mm2::template_request(method, requires_v2);
-                mm2::to_json(j, request);
-                batch_array.push_back(j);
-            }
-
+            t_tx_history_request request{.coin = ticker, .limit = limit};
+            nlohmann::json       j = mm2::template_request(method, requires_v2);
+            mm2::to_json(j, request);
+            batch_array.push_back(j);
         }
 
         if (not only_tx)
@@ -1403,14 +1394,15 @@ namespace atomic_dex
         auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
             const auto& settings_system  = m_system_manager.get_system<settings_page>();
-            int sync_from_date = settings_system.get_pirate_sync_date();
+            int sync_date = settings_system.get_pirate_sync_date();
+            int sync_height = settings_system.get_pirate_sync_height(sync_date, coin_info.checkpoint_height, coin_info.checkpoint_blocktime);
 
             t_enable_z_coin_request request{
                 .coin_name            = coin_info.ticker,
                 .servers              = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
                 .z_urls               = coin_info.z_urls.value_or(std::vector<std::string>{}),
                 .coin_type            = coin_info.coin_type,
-                .sync_date            = sync_from_date,
+                .sync_height          = sync_height,
                 .is_testnet           = coin_info.is_testnet.value_or(false),
                 .with_tx_history      = false}; // Tx history not yet ready for ZHTLC
 

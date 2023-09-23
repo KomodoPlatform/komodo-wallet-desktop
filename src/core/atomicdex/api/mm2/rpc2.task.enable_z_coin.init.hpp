@@ -34,7 +34,7 @@ namespace atomic_dex::mm2
         std::vector<atomic_dex::electrum_server>  servers;
         std::vector<std::string>                  z_urls;
         CoinType                                  coin_type;
-        int                                       sync_date{1672531200};   // Jan 1st 2023
+        int                                       sync_height{0};
         bool                                      is_testnet{false};
         bool                                      with_tx_history{false};  // Not yet in API
     };
