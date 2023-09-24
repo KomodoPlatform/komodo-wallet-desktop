@@ -6,7 +6,7 @@ iwr -useb 'https://raw.githubusercontent.com/scoopinstaller/install/master/insta
 #Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh') -RunAsAdmin
 scoop install llvm --global
 scoop install ninja --global
-scoop install cmake@3.22.0 --global
+scoop install cmake@3.26.3 --global
 scoop install git --global
 scoop install 7zip  --global
 scoop cache rm 7zip
@@ -22,8 +22,8 @@ git clone https://github.com/KomodoPlatform/coins/ -b master
 mkdir -p atomic_defi_design\assets\images\coins
 Get-Item -Path "coins\icons\*.png" | Move-Item -Destination "atomic_defi_design\assets\images\coins"
 
-mkdir build
-cd build
+mkdir b
+cd b
 
-cmake -DCMAKE_BUILD_TYPE="$Env:CMAKE_BUILD_TYPE" -GNinja ../
+Invoke-Expression "cmake -DCMAKE_BUILD_TYPE=$Env:CMAKE_BUILD_TYPE -GNinja ../"
 ninja install
