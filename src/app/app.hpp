@@ -45,7 +45,6 @@
 #include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
-#include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
