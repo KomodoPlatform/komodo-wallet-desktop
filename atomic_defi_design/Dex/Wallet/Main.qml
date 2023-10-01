@@ -513,7 +513,6 @@ Item
             // Swap Button
             Item
             {
-                visible: !is_dex_banned
                 Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
 

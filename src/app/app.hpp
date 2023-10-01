@@ -69,7 +69,6 @@ namespace atomic_dex
         Q_PROPERTY(portfolio_page_ptr portfolio_pg READ get_portfolio_page NOTIFY portfolioPageChanged)
         Q_PROPERTY(notification_manager* notification_mgr READ get_notification_manager)
         Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker NOTIFY internetCheckerChanged)
-        Q_PROPERTY(ip_service_checker* ip_checker READ get_ip_checker NOTIFY ipCheckerChanged)
         Q_PROPERTY(exporter_service* exporter_service READ get_exporter_service NOTIFY exporterServiceChanged)
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
@@ -135,7 +134,6 @@ namespace atomic_dex
         settings_page*                           get_settings_page() const;
         qt_wallet_manager*                       get_wallet_mgr() const;
         internet_service_checker*                get_internet_checker() const;
-        ip_service_checker*                      get_ip_checker() const;
         update_checker_service*                  get_update_checker_service() const;
         [[nodiscard]] zcash_params_service*      get_zcash_params_service() const;
         exporter_service*                        get_exporter_service() const;
@@ -184,7 +182,6 @@ namespace atomic_dex
         void tradingPageChanged();
         void settingsPageChanged();
         void internetCheckerChanged();
-        void ipCheckerChanged();
         void exporterServiceChanged();
       public slots:
         void exit_handler();
