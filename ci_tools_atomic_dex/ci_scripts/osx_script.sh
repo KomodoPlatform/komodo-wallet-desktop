@@ -8,6 +8,7 @@ rm /usr/local/bin/python3* || true
 rm /usr/local/bin/python3-config* || true
 
 brew update
+brew install llvm
 brew install autoconf \
             automake \
             pkgconfig \
@@ -17,7 +18,6 @@ brew install autoconf \
             gnu-sed \
             coreutils \
             libtool \
-            llvm \
             gnu-getopt
 
 pip3 install yq
