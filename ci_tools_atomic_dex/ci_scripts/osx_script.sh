@@ -7,8 +7,8 @@ rm /usr/local/bin/pydoc3* || true
 rm /usr/local/bin/python3* || true
 rm /usr/local/bin/python3-config* || true
 
+brew install llvm@16
 brew update
-brew install llvm
 brew install autoconf \
             automake \
             pkgconfig \
