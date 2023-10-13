@@ -61,6 +61,10 @@ namespace atomic_dex::komodo_prices::api
         {
             x = provider::forex;
         }
+        else if (j == "livecoinwatch")
+        {
+            x = provider::livecoinwatch;
+        }
         else
         {
             x = provider::unknown;
