@@ -1,13 +1,7 @@
 #!/bin/bash
 
 # Workaround for https://github.com/actions/setup-python/issues/577
-rm /usr/local/bin/2to3* || true
-rm /usr/local/bin/idle3* || true
-rm /usr/local/bin/pydoc3* || true
-rm /usr/local/bin/python3* || true
-rm /usr/local/bin/python3-config* || true
 
-brew install llvm@16
 brew update
 brew install autoconf \
             automake \
@@ -18,6 +12,7 @@ brew install autoconf \
             gnu-sed \
             coreutils \
             libtool \
+            llvm \
             gnu-getopt
 
 pip3 install yq
