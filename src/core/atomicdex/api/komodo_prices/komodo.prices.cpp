@@ -17,7 +17,7 @@ namespace
                                                               {
                                                                   web::http::client::http_client_config cfg;
                                                                   cfg.set_validate_certificates(false);
-                                                                  cfg.set_timeout(std::chrono::seconds(30));
+                                                                  cfg.set_timeout(std::chrono::seconds(60));
                                                                   return cfg;
                                                               }()};
     t_http_client_ptr g_komodo_prices_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodo_prices_endpoint), g_komodo_prices_cfg);
