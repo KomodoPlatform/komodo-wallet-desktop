@@ -79,6 +79,11 @@ namespace atomic_dex { void settings_page::update() {} }
 // Getters|Setters
 namespace atomic_dex
 {
+    bool settings_page::get_use_sync_date() const
+    {
+        QSettings& settings = entity_registry_.ctx<QSettings>();
+        return settings.value("UseSyncDate").toBool();
+    }
     int settings_page::get_pirate_sync_date() const
     {
         QSettings& settings = entity_registry_.ctx<QSettings>();
@@ -108,10 +113,10 @@ namespace atomic_dex
         return height;
     }
 
-    void settings_page::set_pirate_sync_date(int new_timestamp)
+    void settings_page::set_pirate_sync_date(int new_value)
     {
         QSettings&        settings     = entity_registry_.ctx<QSettings>();
-        settings.setValue("PirateSyncDate", new_timestamp);
+        settings.setValue("UseSyncDate", new_value);
         settings.sync();
     }
 
