@@ -41,10 +41,6 @@ if (APPLE)
     endmacro()
     adex_add_framework(Security ${PROJECT_NAME}_core)
 endif ()
-if (DISABLE_GEOBLOCKING)
-    message(STATUS "Disabling Geoblocking for dev purpose")
-    target_compile_definitions(${PROJECT_NAME}_core INTERFACE -DDISABLE_GEOBLOCKING)
-endif ()
 target_link_libraries(${PROJECT_NAME}_core INTERFACE SortFilterProxyModel)
 
 
