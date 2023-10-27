@@ -1,8 +1,14 @@
 {
     "accentColor": "#212020",
     "foregroundColor": "#ffffff",
+    "foregroundColor2": "#7A8EA1FF",
+    "foregroundColor3": "#ABC0D3FF",
     "backgroundColor": "#1F1E1E",
+    "secondBackgroundColor": "#24273DFF",
     "backgroundColorDeep": "#1F1E1E",
+    "floatingBackgroundColor": "#1F1E1E",
+    "innerBackgroundColor": "#1F1E1E",
+
 
     "busyIndicatorColor": "#EB1C2EAF",
 
@@ -14,6 +20,16 @@
     "buttonTextEnabledColor": "#ffffff",
     "buttonTextHoveredColor": "#7A8EA1FF",
     "buttonTextPressedColor": "#ABC0D3FF",
+
+    "buttonSecondaryColorDisabled": "#28375AFF",
+    "buttonSecondaryColorEnabled":  "#293254FF",
+    "buttonSecondaryColorHovered":  "#4068B929",
+    "buttonSecondaryColorPressed":  "#2932546C",
+
+    "buttonCancelColorDisabled": "#28375AFF",
+    "buttonCancelColorEnabled":  "#293254FF",
+    "buttonCancelColorHovered":  "#4068B929",
+    "buttonCancelColorPressed":  "#2932546C",
 
     "gradientButtonStartColor": "#9B1C2EFF",
     "gradientButtonEndColor": "#EE5C78FF",
@@ -66,12 +82,10 @@
     "textFieldPrefixColor": "#FFFFFFFF",
     "textFieldSuffixColor": "#FFFFFFFF",
 
+    "tickerBadgeBackgroundColor": "#202337FF",
+
     "chartTradingLineBackgroundColor": "#24283dFF",
     "chartTradingLineColor": "#74fbeeFF",
-
-    "innerBackgroundColor": "#1F1E1E",
-
-    "floatingBackgroundColor": "#1F1E1E",
 
     "rangeSliderBackgroundColor": "#EE5C78FF",
     "rangeSliderDistanceColor": "#F9F5F5FF",
@@ -94,10 +108,24 @@
     "tradeSellModeSelectorBackgroundColorEnd": "#F48EA1FF",
     "tradeMarketModeSelectorNotSelectedBackgroundColor": "#89B6FF21",
 
-    "addressBookTagColors": ["#627EEAFF", "#FFD87AFF", "#F7931AFF"],
+    "inputModifierBackgroundColor": "#89B6FF21",
+    "inputFieldBackgroundColor":    "#313555FF",
+
+    "inputFieldBorderColor":        "#20233788",
+    "inputPlaceholderTextColor":    "#FFFFFFFF",
+    "inputRightIconColor":          "#FFFFFFFF",
+    "inputLeftIconColor":           "#FFFFFFFF",
+    "inputLeftIconBackgroundColor": "#202337FF",
+
+    "listItemOddBackground": "#202337FF",
+    "listItemEvenBackground": "#24273DFF",
+    "listItemHoveredBackground": "#4068B9FF",
+
+    "addressBookTagColors": ["#003bbbFF", "#006133FF", "#612600FF", "#430061FF", "#004d61FF"],
 
     "okColor": "#00C058FF",
-    "noColor": "#E52167FF",
+    "warningColor": "#E52167FF",
+    "swapIconColor": "#005FBEFF",
 
     "senderColorStart": "#F85757FF",
     "receiverColorStart": "#845FEFFF",
