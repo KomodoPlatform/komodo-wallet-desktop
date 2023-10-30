@@ -29,7 +29,7 @@ namespace
                                                               cfg.set_timeout(std::chrono::seconds(5));
                                                               return cfg;
                                                           }()};
-    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://rates.komodo.earth"), g_openrates_cfg);
+    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://defi-stats.komodo.earth"), g_openrates_cfg);
     pplx::cancellation_token_source g_token_source;
 
     pplx::task<web::http::http_response>
@@ -37,7 +37,7 @@ namespace
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
-        req.set_request_uri(FROM_STD_STR("api/v1/usd_rates"));
+        req.set_request_uri(FROM_STD_STR("api/v3/rates/fixer_io"));
         //SPDLOG_INFO("req: {}", TO_STD_STR(req.to_string()));
         return g_openrates_client->request(req, g_token_source.get_token());
     }
