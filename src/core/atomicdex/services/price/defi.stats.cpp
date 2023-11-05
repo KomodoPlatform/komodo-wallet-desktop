@@ -131,8 +131,9 @@ namespace atomic_dex
     std::string
     global_defi_stats_service::get_volume_24h(const std::string& base, const std::string& quote) const
     {
-        std::string volume_24h = "0";
+        std::string volume_24h = "0.00";
         auto ticker = base + "_" + quote;
+        auto ticker_reversed = quote + "_" + base;
         SPDLOG_INFO("Getting 24hr volume data for {}", ticker);
         if (base == quote)
         {
@@ -150,6 +151,11 @@ namespace atomic_dex
             {
                 volume_24h = defi_ticker_stats.at("data").at(ticker).at("volume_usd_24hr").get<std::string>();
                 SPDLOG_INFO("{} volume usd: {}", ticker, volume_24h);
+            }
+            else if (defi_ticker_stats.at("data").contains(ticker_reversed))
+            {
+                volume_24h = defi_ticker_stats.at("data").at(ticker_reversed).at("volume_usd_24hr").get<std::string>();
+                SPDLOG_INFO("{} volume usd: {}", ticker_reversed, volume_24h);
             }
         }
         else
