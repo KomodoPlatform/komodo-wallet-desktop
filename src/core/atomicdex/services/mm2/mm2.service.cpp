@@ -1915,6 +1915,7 @@ namespace atomic_dex
         this->m_current_wallet_name = std::move(wallet_name);
         this->dispatcher_.trigger<coin_cfg_parsed>(this->retrieve_coins_informations());
         this->dispatcher_.trigger<force_update_providers>();
+        this->dispatcher_.trigger<force_update_defi_stats>();
         mm2_config cfg{.passphrase = std::move(passphrase), .rpc_password = atomic_dex::gen_random_password()};
         mm2::set_system_manager(m_system_manager);
         mm2::set_rpc_password(cfg.rpc_password);
