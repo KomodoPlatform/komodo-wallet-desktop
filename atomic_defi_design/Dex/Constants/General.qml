@@ -546,7 +546,6 @@ QtObject {
         if (precision == 2 && fiat == "BTC") {
             precision = 8
         }
-        console.log("formatFiat", received, amount, fiat, precision)
         return diffPrefix(received) +
                 (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
                 + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), precision, true) : nFormatter(parseFloat(amount), 2))
