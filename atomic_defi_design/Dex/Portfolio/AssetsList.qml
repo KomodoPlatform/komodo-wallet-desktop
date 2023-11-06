@@ -248,7 +248,7 @@ Dex.DexListView
                 verticalAlignment: Text.AlignVCenter
 
                 text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
-                                                   Dex.API.app.settings_pg.current_currency, 6)
+                                                   Dex.API.app.settings_pg.current_currency, 8)
             }
 
             Item // Price Provider
