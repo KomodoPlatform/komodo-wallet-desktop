@@ -463,11 +463,16 @@ namespace atomic_dex
     std::string
     global_price_service::get_fiat_rates(const std::string& fiat) const
     {
-        if (fiat == "USD")
+        if (is_fiat_available(fiat))
         {
-            return "1";
+           
+            if (fiat == "USD")
+            {
+                return "1";
+            }
+            return std::to_string(m_other_fiats_rates->at("rates").at(fiat).get<double>());
         }
-        return std::to_string(m_other_fiats_rates->at("rates").at(fiat).get<double>());
+        return "0";
     }
 
     bool
@@ -478,6 +483,20 @@ namespace atomic_dex
         auto rates = m_other_fiats_rates.get();
         // SPDLOG_INFO("rates: {}", rates.dump(4));
         return !rates.empty() && rates.contains("rates") && rates.at("rates").contains(fiat);
+    }
+
+    std::string
+    global_price_service::get_currency_rates(const std::string& currency) const
+    {
+        if (is_currency_available(currency))
+        {           
+            if (currency == "USD")
+            {
+                return "1";
+            }
+            return m_coin_rate_providers.at(currency);
+        }
+        return "0";
     }
 
     bool
