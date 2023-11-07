@@ -686,6 +686,20 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QString
+    application::get_rate_conversion(const QString& fiat, const QString& ticker, bool adjusted)
+    {
+        const auto&     price_service = system_manager_.get_system<global_price_service>();
+        return QString::fromStdString(price_service.get_rate_conversion(fiat.toStdString(), ticker.toStdString(), adjusted));
+    }
+
+    QString
+    application::get_fiat_rate(const QString& fiat)
+    {
+        const auto&     price_service = system_manager_.get_system<global_price_service>();
+        return QString::fromStdString(price_service.get_fiat_rates(fiat.toStdString()));
+    }
+
+    QString
     application::get_fiat_from_amount(const QString& ticker, const QString& amount)
     {
         std::error_code ec;
