@@ -19,6 +19,7 @@
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/api/coinpaprika/coinpaprika.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
 
 
 //! Constructor
@@ -129,16 +130,16 @@ namespace atomic_dex
     }
 
     std::string
-    global_defi_stats_service::get_volume_24h(const std::string& base, const std::string& quote) const
+    global_defi_stats_service::get_volume_24h_usd(const std::string& base, const std::string& quote) const
     {
-        std::string volume_24h = "0.00";
+        std::string volume_24h_usd = "0.00";
         auto ticker = base + "_" + quote;
         auto ticker_reversed = quote + "_" + base;
         SPDLOG_INFO("Getting 24hr volume data for {}", ticker);
         if (base == quote)
         {
             SPDLOG_INFO("Base/quote must be different, no volume data for {}", ticker);
-            return volume_24h;
+            return volume_24h_usd;
         }
 
         auto defi_ticker_stats = m_defi_ticker_stats.get();
@@ -149,19 +150,19 @@ namespace atomic_dex
             SPDLOG_INFO("Combined volume usd: {}", defi_ticker_stats["combined_volume_usd"]);
             if (defi_ticker_stats.at("data").contains(ticker))
             {
-                volume_24h = defi_ticker_stats.at("data").at(ticker).at("volume_usd_24hr").get<std::string>();
-                SPDLOG_INFO("{} volume usd: {}", ticker, volume_24h);
+                volume_24h_usd = defi_ticker_stats.at("data").at(ticker).at("volume_usd_24hr").get<std::string>();
+                SPDLOG_INFO("{} volume usd: {}", ticker, volume_24h_usd);
             }
             else if (defi_ticker_stats.at("data").contains(ticker_reversed))
             {
-                volume_24h = defi_ticker_stats.at("data").at(ticker_reversed).at("volume_usd_24hr").get<std::string>();
-                SPDLOG_INFO("{} volume usd: {}", ticker_reversed, volume_24h);
+                volume_24h_usd = defi_ticker_stats.at("data").at(ticker_reversed).at("volume_usd_24hr").get<std::string>();
+                SPDLOG_INFO("{} volume usd: {}", ticker_reversed, volume_24h_usd);
             }
         }
         else
         {
             SPDLOG_WARN("Empty 24hr volume data for {}", defi_ticker_stats.dump(4));
         }
-        return volume_24h;
+        return volume_24h_usd;
     }
 } // namespace atomic_dex

@@ -67,7 +67,7 @@ namespace atomic_dex
 
         //! Public API
         void                  process_defi_stats();
-        std::string           get_volume_24h(const std::string& base, const std::string& quote) const;
+        std::string           get_volume_24h_usd(const std::string& base, const std::string& quote) const;
 
         
         
