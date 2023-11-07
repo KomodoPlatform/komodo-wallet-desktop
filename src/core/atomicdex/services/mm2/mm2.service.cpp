@@ -1743,7 +1743,7 @@ namespace atomic_dex
 
     nlohmann::json mm2_service::prepare_batch_orderbook(bool is_a_reset)
     {
-        SPDLOG_INFO("[prepare_batch_orderbook] is_a_reset: {}", is_a_reset);
+        // SPDLOG_DEBUG("[prepare_batch_orderbook] is_a_reset: {}", is_a_reset);
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
         if (rel.empty())
             return nlohmann::json::array();

@@ -1376,7 +1376,7 @@ namespace atomic_dex
         const auto* market_selector     = get_market_pairs_mdl();
         const auto& base                = utils::retrieve_main_ticker(market_selector->get_left_selected_coin().toStdString(), true);
         const auto& rel                 = utils::retrieve_main_ticker(market_selector->get_right_selected_coin().toStdString(), true);
-        QString vol                     = QString::fromStdString(defi_stats_service.get_volume_24h(base, rel));
+        QString vol                     = QString::fromStdString(defi_stats_service.get_volume_24h_usd(base, rel));
 
         if (vol != m_pair_volume_24hr)
         {
