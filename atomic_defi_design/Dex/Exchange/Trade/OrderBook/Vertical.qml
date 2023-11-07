@@ -61,7 +61,7 @@ Widget
         Layout.bottomMargin: 2
         Layout.alignment: Qt.AlignHCenter
         color: Dex.CurrentTheme.foregroundColor2
-        text_value: pair + qsTr(" traded 24hrs: %1").arg("<b>" + General.getFiatText(pair_volume_24hr, "USD", false) + "</b>")
+        text_value: pair + qsTr(" traded 24hrs: %1").arg("<b>" + General.convertUsd(pair_volume_24hr) + "</b>")
         font.pixelSize: Style.textSizeSmall1
     }
 }
