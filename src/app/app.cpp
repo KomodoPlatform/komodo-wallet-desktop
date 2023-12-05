@@ -498,6 +498,7 @@ namespace atomic_dex
 
         system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
+        system_manager_.create_system<global_defi_stats_service>(system_manager_);
         system_manager_.create_system<orderbook_scanner_service>(system_manager_);
         //system_manager_.create_system<coinpaprika_provider>(system_manager_);
         //system_manager_.create_system<coingecko_provider>(system_manager_);
@@ -684,6 +685,20 @@ namespace atomic_dex
 //! Trading functions
 namespace atomic_dex
 {
+    QString
+    application::get_rate_conversion(const QString& fiat, const QString& ticker, bool adjusted)
+    {
+        const auto&     price_service = system_manager_.get_system<global_price_service>();
+        return QString::fromStdString(price_service.get_rate_conversion(fiat.toStdString(), ticker.toStdString(), adjusted));
+    }
+
+    QString
+    application::get_fiat_rate(const QString& fiat)
+    {
+        const auto&     price_service = system_manager_.get_system<global_price_service>();
+        return QString::fromStdString(price_service.get_fiat_rates(fiat.toStdString()));
+    }
+
     QString
     application::get_fiat_from_amount(const QString& ticker, const QString& amount)
     {

@@ -29,7 +29,7 @@ namespace
                                                               cfg.set_timeout(std::chrono::seconds(5));
                                                               return cfg;
                                                           }()};
-    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://rates.komodo.earth"), g_openrates_cfg);
+    t_http_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://defi-stats.komodo.earth"), g_openrates_cfg);
     pplx::cancellation_token_source g_token_source;
 
     pplx::task<web::http::http_response>
@@ -37,7 +37,7 @@ namespace
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
-        req.set_request_uri(FROM_STD_STR("api/v1/usd_rates"));
+        req.set_request_uri(FROM_STD_STR("api/v3/rates/fixer_io"));
         //SPDLOG_INFO("req: {}", TO_STD_STR(req.to_string()));
         return g_openrates_client->request(req, g_token_source.get_token());
     }
@@ -463,11 +463,16 @@ namespace atomic_dex
     std::string
     global_price_service::get_fiat_rates(const std::string& fiat) const
     {
-        if (fiat == "USD")
+        if (is_fiat_available(fiat))
         {
-            return "1";
+           
+            if (fiat == "USD")
+            {
+                return "1";
+            }
+            return std::to_string(m_other_fiats_rates->at("rates").at(fiat).get<double>());
         }
-        return std::to_string(m_other_fiats_rates->at("rates").at(fiat).get<double>());
+        return "0";
     }
 
     bool
@@ -478,6 +483,20 @@ namespace atomic_dex
         auto rates = m_other_fiats_rates.get();
         // SPDLOG_INFO("rates: {}", rates.dump(4));
         return !rates.empty() && rates.contains("rates") && rates.at("rates").contains(fiat);
+    }
+
+    std::string
+    global_price_service::get_currency_rates(const std::string& currency) const
+    {
+        if (is_currency_available(currency))
+        {           
+            if (currency == "USD")
+            {
+                return "1";
+            }
+            return m_coin_rate_providers.at(currency);
+        }
+        return "0";
     }
 
     bool

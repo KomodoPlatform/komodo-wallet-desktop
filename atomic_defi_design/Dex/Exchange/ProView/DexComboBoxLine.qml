@@ -98,7 +98,7 @@ RowLayout
                 id: bottom_line
 
                 property string fiat_value: !details ? "" :
-                            General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_fiat_sign)
+                            General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_currency)
                 text: fiat_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight

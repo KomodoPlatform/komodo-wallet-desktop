@@ -46,6 +46,7 @@
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/price/defi.stats.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/services/update/zcash.params.service.hpp"
@@ -165,7 +166,9 @@ namespace atomic_dex
         Q_INVOKABLE bool               disable_coins(const QStringList& coins);
         Q_INVOKABLE bool               disable_no_balance_coins();
         Q_INVOKABLE bool               has_coins_with_balance();
+        Q_INVOKABLE QString            get_fiat_rate(const QString& fiat);
         Q_INVOKABLE QString            get_fiat_from_amount(const QString& ticker, const QString& amount);
+        Q_INVOKABLE QString            get_rate_conversion(const QString& fiat, const QString& ticker, bool adjusted = false);
 
       signals:
         void walletMgrChanged();

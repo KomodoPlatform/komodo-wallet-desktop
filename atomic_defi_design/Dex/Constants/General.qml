@@ -542,7 +542,21 @@ QtObject {
       return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol
     }
 
+    function convertUsd(v) {
+        let rate = API.app.get_rate_conversion("USD", API.app.settings_pg.current_currency)
+        let value = parseFloat(v) / parseFloat(rate)
+
+        if (API.app.settings_pg.current_fiat == API.app.settings_pg.current_currency) {
+            let fiat_rate = API.app.get_fiat_rate(API.app.settings_pg.current_fiat)
+            value = parseFloat(v) * parseFloat(fiat_rate)
+        }
+        return formatFiat("", value, API.app.settings_pg.current_currency)
+    }
+
     function formatFiat(received, amount, fiat, precision=2) {
+        if (precision == 2 && fiat == "BTC") {
+            precision = 8
+        }
         return diffPrefix(received) +
                 (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
                 + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), precision, true) : nFormatter(parseFloat(amount), 2))
@@ -737,8 +751,10 @@ QtObject {
     }
 
     function getFiatText(v, ticker, has_info_icon=true) {
-        return General.formatFiat('', v === '' ? 0 : API.app.get_fiat_from_amount(ticker, v), API.app.settings_pg.current_fiat)
-                + (has_info_icon ? " " +  General.cex_icon : "")
+        let fiat_from_amount = API.app.get_fiat_from_amount(ticker, v)
+        let current_fiat = API.app.settings_pg.current_fiat
+        let formatted_fiat = General.formatFiat('', v === '' ? 0 : fiat_from_amount, current_fiat)
+        return formatted_fiat + (has_info_icon ? " " +  General.cex_icon : "")
     }
 
     function hasParentCoinFees(trade_info) {
