@@ -23,7 +23,7 @@ DexListView
     property var    tradeCard
     property var    selectedOrder
     property bool best: true
-    property string currentLeftToken // The token we wanna sell
+    property string currentLeftToken // The token we want to sell
 
     property int    _rowWidth: width
     property int    _rowHeight: 40

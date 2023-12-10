@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc2.best.orders.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
@@ -95,7 +95,7 @@ namespace atomic_dex
                         }
                         catch (const std::exception& e)
                         {
-                            SPDLOG_ERROR("pplx task error: {}", e.what());
+                            SPDLOG_ERROR("pplx task error in [process_best_orders]: {}", e.what());
                             this->m_rpc_busy = false;
                             this->dispatcher_.trigger<process_orderbook_finished>(true);
                         }
@@ -103,12 +103,12 @@ namespace atomic_dex
             }
             else
             {
-                SPDLOG_WARN("MM2 Service not launched yet - skipping");
+                SPDLOG_WARN("MM2 Service not launched yet - skipping process_best_orders");
             }
         }
         else
         {
-            SPDLOG_WARN("MM2 Service not created yet - skipping");
+            SPDLOG_WARN("MM2 Service not created yet - skipping process_best_orders");
         }
     }
 } // namespace atomic_dex

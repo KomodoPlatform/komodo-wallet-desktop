@@ -55,7 +55,7 @@ namespace atomic_dex
         Q_PROPERTY(QString base_amount READ get_base_amount NOTIFY baseAmountChanged)
         Q_PROPERTY(QString rel_amount READ get_rel_amount NOTIFY relAmountChanged)
         Q_PROPERTY(QVariantMap fees READ get_fees WRITE set_fees NOTIFY feesChanged)
-        Q_PROPERTY(QVariantMap preffered_order READ get_preferred_order WRITE set_preferred_order NOTIFY prefferedOrderChanged)
+        Q_PROPERTY(QVariantMap preferred_order READ get_preferred_order WRITE set_preferred_order NOTIFY preferredOrderChanged)
         Q_PROPERTY(SelectedOrderStatus selected_order_status READ get_selected_order_status WRITE set_selected_order_status NOTIFY selectedOrderStatusChanged)
         Q_PROPERTY(QString price_reversed READ get_price_reversed NOTIFY priceReversedChanged)
         Q_PROPERTY(QString pair_volume_24hr READ get_pair_volume_24hr NOTIFY pairVolume24hrChanged)
@@ -233,7 +233,7 @@ namespace atomic_dex
         void maxVolumeChanged();
         void tradingErrorChanged();
         void tradingModeChanged();
-        void prefferedOrderChanged();
+        void preferredOrderChanged();
         void totalAmountChanged();
         void baseAmountChanged();
         void relAmountChanged();

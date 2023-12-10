@@ -37,7 +37,7 @@ ClipRRect // Trade Card
     onSelectedOrderChanged:
     {
         if (typeof selectedOrder !== 'undefined' && selectedOrder.from_best_order) Constants.API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
-        else if (typeof selectedOrder !== 'undefined') Constants.API.app.trading_pg.preffered_order = selectedOrder
+        else if (typeof selectedOrder !== 'undefined') Constants.API.app.trading_pg.preferred_order = selectedOrder
         else Constants.API.app.trading_pg.reset_order()
         Constants.API.app.trading_pg.determine_fees()
     }

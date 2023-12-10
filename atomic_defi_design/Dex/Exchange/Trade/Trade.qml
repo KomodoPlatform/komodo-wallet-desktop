@@ -79,7 +79,7 @@ Item
                 && exchange.current_page === idx_exchange_trade
     }
 
-    readonly property var preffered_order: API.app.trading_pg.preffered_order
+    readonly property var preferred_order: API.app.trading_pg.preferred_order
 
 
 
