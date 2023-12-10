@@ -125,9 +125,10 @@ DexListView
     delegate: DexRectangle // Order Line
     {
         property bool _isCoinEnabled: Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
-
+        property bool _hideDisabled: hide_disabled_coins_checkbox.checked
+        visible: _isCoinEnabled ? true : _hideDisabled ? false : true
+        height: _isCoinEnabled ? _rowHeight : _hideDisabled ? 0 : _rowHeight
         width: _rowWidth
-        height: _rowHeight
         radius: mouse_area.containsMouse ? 3 : 0
         border.width: 0
         colorAnimation: false
