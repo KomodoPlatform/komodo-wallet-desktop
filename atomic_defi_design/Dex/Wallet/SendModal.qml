@@ -683,13 +683,14 @@ MultipageModal
                 AmountIntField
                 {
                     id: input_custom_fees_gas_price
+                    allowFloat: current_ticker_infos.type === "TENDERMINT" ? true : "TENDERMINTTOKEN" ? true : false
 
                     enabled: !root.is_send_busy
 
                     Layout.preferredWidth: 380
                     Layout.preferredHeight: 38
 
-                    placeholderText: qsTr("Gas price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
+                    placeholderText: qsTr("Gas price") + " [" + General.tokenUnitName(current_ticker_infos) + "]"
                 }
             }
 

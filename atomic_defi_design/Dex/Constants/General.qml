@@ -705,9 +705,13 @@ QtObject {
         return true
     }
 
-    function tokenUnitName(type)
+    function tokenUnitName(current_ticker_infos)
     {
-        return type === "QRC-20" ? "Satoshi" : "Gwei"
+        if (current_ticker_infos.type === "TENDERMINT" || current_ticker_infos.type === "TENDERMINTTOKEN")
+        {
+            return "u" + current_ticker_infos.name.toLowerCase()
+        }
+        return current_ticker_infos.type === "QRC-20" ? "Satoshi" : "Gwei"
     }
 
     function isSpecialToken(current_ticker_infos)

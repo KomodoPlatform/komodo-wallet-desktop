@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 
 //! Our Headers
+#include "atomicdex/utilities/global.utilities.hpp"
 #include "rpc2.withdraw.hpp"
 
 namespace atomic_dex::mm2
@@ -14,7 +15,7 @@ namespace atomic_dex::mm2
     to_json(nlohmann::json& j, const withdraw_fees& cfg)
     {
         j["type"] = cfg.type;
-        if (cfg.type == "EthGas")
+        if (cfg.type == "EthGas" || cfg.type == "otherGas")
         {
             j["gas"]       = cfg.gas_limit.value_or(55000);
             j["gas_price"] = cfg.gas_price.value();
@@ -24,11 +25,11 @@ namespace atomic_dex::mm2
             j["gas_limit"] = cfg.gas_limit.value_or(40);
             j["gas_price"] = std::stoi(cfg.gas_price.value());
         }
-        else if (cfg.type == "otherGas")
+        else if (cfg.type == "CosmosGas")
         {
-            j["type"] = "EthGas";
-            j["gas"]       = cfg.gas_limit.value_or(55000);
-            j["gas_price"] = std::stoi(cfg.gas_price.value());
+            j["type"] = "CosmosGas";
+            j["gas_limit"]       = cfg.gas_limit.value_or(55000);
+            j["gas_price"]       = cfg.cosmos_gas_price.value_or(0.03);
         }
         else
         {

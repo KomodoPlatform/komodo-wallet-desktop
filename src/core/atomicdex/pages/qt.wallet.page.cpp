@@ -692,31 +692,46 @@ namespace atomic_dex
                 .max = max
             };
 
+            auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
             if (with_fees)
             {
                 qDebug() << fees_data;
-                auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
                 withdraw_req.fees = t_withdraw_fees{
                     .type      = "UtxoFixed",
                     .amount    = json_fees.at("fees_amount").get<std::string>(),
-                    .gas_price = json_fees.at("gas_price").get<std::string>(),
                     .gas_limit = json_fees.at("gas_limit").get<int>()};
                 if (coin_info.coin_type == CoinType::ERC20)
                 {
                     withdraw_req.fees->type = "EthGas";
+                    withdraw_req.fees->gas_price = json_fees.at("gas_price").get<std::string>();
                 }
                 else if (coin_info.coin_type == CoinType::QRC20)
                 {
                     withdraw_req.fees->type = "Qrc20Gas";
+                    withdraw_req.fees->gas_price = json_fees.at("gas_price").get<std::string>();
+                }
+                else if (coin_info.coin_type == CoinType::TENDERMINTTOKEN or coin_info.coin_type == CoinType::TENDERMINT)
+                {
+                    withdraw_req.fees->type = "CosmosGas";
+                    withdraw_req.fees->cosmos_gas_price = std::stod(json_fees.at("gas_price").get<std::string>());
                 }
                 else if (coin_info.has_parent_fees_ticker)
                 {
                     withdraw_req.fees->type = "otherGas";
+                    withdraw_req.fees->gas_price = json_fees.at("gas_price").get<std::string>();
                 }
             }
+            else if (coin_info.coin_type == CoinType::TENDERMINTTOKEN or coin_info.coin_type == CoinType::TENDERMINT)
+            {
+                withdraw_req.fees = t_withdraw_fees{
+                    .type      = "CosmosGas",
+                    .cosmos_gas_price = 0.05,
+                    .gas_limit = 150000};
+            }
+
             nlohmann::json json_data = mm2::template_request("withdraw", true);
             mm2::to_json(json_data, withdraw_req);
-            // SPDLOG_DEBUG("final json: {}", json_data.dump(4));
+            SPDLOG_DEBUG("final json: {}", json_data.dump(4));
             batch.push_back(json_data);
 
             std::string amount_std = amount.toStdString();
