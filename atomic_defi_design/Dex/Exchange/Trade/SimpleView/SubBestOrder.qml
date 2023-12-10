@@ -177,6 +177,7 @@ DexListView
                     Layout.preferredWidth: _tokenColumnSize - parent._iconWidth
                     text_value: coin
                     font.pixelSize: 14
+                    opacity: !_isCoinEnabled? .3 : 1
                 }
             }
 
@@ -186,6 +187,7 @@ DexListView
                 horizontalAlignment: Text.AlignRight
                 text_value: parseFloat(General.formatDouble(rel_max_volume, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
+                opacity: !_isCoinEnabled? .3 : 1
             }
 
             DexLabel                         // Order Available Quantity In BASE
@@ -194,6 +196,7 @@ DexListView
                 horizontalAlignment: Text.AlignRight
                 text_value: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
                 font.pixelSize: 14
+                opacity: !_isCoinEnabled? .3 : 1
             }
 
             DexLabel                         // Order Fiat Volume
@@ -201,6 +204,7 @@ DexListView
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 horizontalAlignment: Text.AlignRight
                 text_value: parseFloat(price_fiat).toFixed(2)+Constants.API.app.settings_pg.current_fiat_sign
+                opacity: !_isCoinEnabled? .3 : 1
             }
 
             DexLabel
@@ -209,6 +213,7 @@ DexListView
                 horizontalAlignment: Text.AlignRight
                 color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.warningColor : DexTheme.okColor
                 text_value: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
+                opacity: !_isCoinEnabled? .3 : 1
             }
 
             DexTooltip
