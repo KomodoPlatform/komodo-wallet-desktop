@@ -50,13 +50,15 @@ Item
     readonly property string backend_price: API.app.trading_pg.price
     function setPrice(v) {
         API.app.trading_pg.price = v
-         API.app.trading_pg.determine_error_cases()
+        reset_fees_state()
+        API.app.trading_pg.determine_error_cases()
     }
     readonly property int last_trading_error: API.app.trading_pg.last_trading_error
     readonly property string max_volume: API.app.trading_pg.max_volume
     readonly property string backend_volume: API.app.trading_pg.volume
     function setVolume(v) {
         API.app.trading_pg.volume = v
+        reset_fees_state()
         API.app.trading_pg.determine_error_cases()
     }
 
