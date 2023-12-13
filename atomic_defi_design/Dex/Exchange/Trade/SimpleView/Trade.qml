@@ -37,7 +37,7 @@ ClipRRect // Trade Card
     onSelectedOrderChanged:
     {
         if (typeof selectedOrder !== 'undefined' && selectedOrder.from_best_order) Constants.API.app.trading_pg.orderbook.select_best_order(selectedOrder.uuid)
-        else if (typeof selectedOrder !== 'undefined') Constants.API.app.trading_pg.preferred_order = selectedOrder
+        else if (typeof selectedOrder !== 'undefined') Constants.API.app.trading_pg.preffered_order = selectedOrder
         else Constants.API.app.trading_pg.reset_order()
         Constants.API.app.trading_pg.determine_fees()
     }
@@ -735,7 +735,7 @@ ClipRRect // Trade Card
         Item
         {
             height: 35
-            width: 150
+            width: 206
             visible: coinSelectorSimplified.visible
 
             SearchField
@@ -747,6 +747,7 @@ ClipRRect // Trade Card
                 forceFocus: true
                 textField.onTextChanged: _coinList.model.setFilterFixedString(textField.text)
                 Component.onDestruction: _coinList.model.setFilterFixedString("")
+                textField.placeholderText: qsTr("Search coins")
             }
         }
 
@@ -782,21 +783,48 @@ ClipRRect // Trade Card
         Item
         {
             height: 45
-            width: 150
+            width: parent.width - 40
             visible: bestOrderSimplified.visible && (_bestOrderList.count > 0 || _bestOrderSearchField.textField.text != "")
-
-            SearchField
-            {
-                id: _bestOrderSearchField
-                anchors.topMargin: 10
-                height: 35
+    
+            RowLayout {
                 anchors.fill: parent
-                anchors.leftMargin: 20
-                forceFocus: true
-                textField.onTextChanged: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(textField.text)
-                Component.onDestruction: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
+
+                SearchField
+                {
+
+                    id: _bestOrderSearchField
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: 206
+                    Layout.preferredHeight: 35
+                    Layout.leftMargin: 20
+                    Layout.topMargin: 10
+                    forceFocus: true
+                    textField.onTextChanged: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(textField.text)
+                    Component.onDestruction: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
+                    textField.placeholderText: qsTr("Search coins")
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                DefaultCheckBox
+                {
+                    id: hide_disabled_coins_checkbox
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredHeight: 35
+                    Layout.topMargin: 10
+
+                    spacing: 2
+
+                    label.wrapMode: Label.NoWrap
+                    label.font.pixelSize: 14
+                    text: qsTr("Show only enabled coins")
+                    textColor: Dex.CurrentTheme.foregroundColor2
+                }
             }
         }
+        
 
         Item
         {
