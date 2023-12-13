@@ -14,10 +14,11 @@ namespace atomic_dex::mm2
 {
     struct withdraw_fees
     {
-        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
-        std::optional<std::string> amount;    ///< Utxo only
-        std::optional<std::string> gas_price; ///< price EthGas or Qrc20Gas
-        std::optional<int>         gas_limit; ///< sets the gas limit for transaction
+        std::string                  type;             ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
+        std::optional<std::string>   amount;           ///< Utxo only
+        std::optional<std::string>   gas_price;        ///< price EthGas or Qrc20Gas
+        std::optional<std::double_t> cosmos_gas_price; ///< price CosmosGas or Qrc20Gas
+        std::optional<int>           gas_limit;        ///< sets the gas limit for transaction
     };
 
     void to_json(nlohmann::json& j, const withdraw_fees& cfg);
