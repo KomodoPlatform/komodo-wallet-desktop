@@ -126,7 +126,6 @@ DexListView
     {
         property bool _isCoinEnabled: Constants.API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
         property bool _isAboveMinVal: parseFloat(price_fiat) > parseFloat(_bestOrderFiatFilterField.textField.text) || _bestOrderFiatFilterField.textField.text === ""
-        }
         property bool _hideDisabled: hide_disabled_coins_checkbox.checked
         visible: !_isAboveMinVal ? false : _isCoinEnabled ? true : _hideDisabled ? false : true
         height: !_isAboveMinVal ? 0 : _isCoinEnabled ? _rowHeight : _hideDisabled ? 0 : _rowHeight
