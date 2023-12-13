@@ -26,7 +26,7 @@ SetupPage
     signal walletSelected(string walletName);
 
     image_path: Dex.CurrentTheme.bigLogoPath
-    image_margin: 15
+    image_margin: 12
 
     backgroundColor: Dex.CurrentTheme.backgroundColor
 
@@ -34,7 +34,7 @@ SetupPage
     {
         id: content_column
         width: 270
-        spacing: Style.rowSpacing
+        spacing: 8
         RowLayout
         {
             Layout.fillWidth: true
@@ -115,7 +115,7 @@ SetupPage
 
                 width: content_column.width
                 Layout.minimumHeight: row_height
-                Layout.preferredHeight: (row_height * Math.min(wallet_count, 5)) + 20
+                Layout.preferredHeight: (row_height * Math.min(wallet_count, 4)) + 20
                 color: Dex.CurrentTheme.floatingBackgroundColor
                 radius: 18
 
@@ -294,10 +294,8 @@ SetupPage
     {
         Layout.alignment: Qt.AlignHCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
-
+        anchors.bottomMargin: 0
         anchors.horizontalCenter: parent.horizontalCenter
-
     }
 
     GaussianBlur

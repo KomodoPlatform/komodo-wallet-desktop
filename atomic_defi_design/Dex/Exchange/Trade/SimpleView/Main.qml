@@ -36,7 +36,7 @@ Item
     Column
     {
         width: root.currentSubPage === subPages.Trade ? _simpleTrade.best ? 600 : 450 : 450
-        y: 80
+        y: 60
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
 
