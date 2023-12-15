@@ -83,7 +83,7 @@ namespace atomic_dex
     {
         this->m_asks->refresh_orderbook(answer.asks);
         this->m_bids->refresh_orderbook(answer.bids);
-        const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_data();
+        const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_bestorders_data();
         if (data.empty())
         {
             m_best_orders->clear_orderbook();
