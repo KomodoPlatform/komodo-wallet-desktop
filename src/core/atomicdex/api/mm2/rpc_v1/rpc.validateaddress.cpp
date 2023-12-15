@@ -1,6 +1,6 @@
 #include <nlohmann/json.hpp>
 
-#include "atomicdex/api/mm2/rpc.validate.address.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.validateaddress.hpp"
 #include "atomicdex/api/mm2/generics.hpp"
 
 namespace atomic_dex::mm2

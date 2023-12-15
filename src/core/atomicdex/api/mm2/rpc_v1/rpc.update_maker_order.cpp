@@ -6,7 +6,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include <atomicdex/api/mm2/rpc.update.maker.order.hpp>
+#include <atomicdex/api/mm2/rpc_v1/rpc.update_maker_order.hpp>
 
 namespace atomic_dex::mm2
 {

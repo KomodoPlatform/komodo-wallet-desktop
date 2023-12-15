@@ -19,7 +19,7 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/generics.hpp"
-#include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.max_taker_vol.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
 //! Implementation RPC [max_taker_vol]

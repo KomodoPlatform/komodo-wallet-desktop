@@ -18,9 +18,9 @@
 #include <QSettings>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc.buy.hpp"
-#include "atomicdex/api/mm2/rpc.sell.hpp"
-#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.buy.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.sell.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
@@ -1197,7 +1197,7 @@ namespace atomic_dex
         };
 
         nlohmann::json batch;
-        nlohmann::json preimage_request = mm2::template_request("trade_preimage");
+        nlohmann::json preimage_request = mm2::template_request("trade_preimage", true);
         mm2::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";

@@ -19,16 +19,16 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/generics.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.buy.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.convertaddress.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.disable_coin.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.max_taker_vol.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.sell.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.validateaddress.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.best.orders.hpp"
-#include "atomicdex/api/mm2/rpc.buy.hpp"
-#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
-#include "atomicdex/api/mm2/rpc.disable.hpp"
-#include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
-#include "atomicdex/api/mm2/rpc.min.volume.hpp"
-#include "atomicdex/api/mm2/rpc.sell.hpp"
-#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
-#include "atomicdex/api/mm2/rpc.validate.address.hpp"
-#include "atomicdex/api/mm2/rpc.recover.funds.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
 
 namespace atomic_dex::mm2
 {

@@ -17,24 +17,57 @@
 //! Deps
 #include <nlohmann/json.hpp>
 
-//! Project Headers
-#include "atomicdex/api/mm2/rpc.balance.hpp"
-#include "atomicdex/utilities/global.utilities.hpp"
+//! Project Deps
+#include "atomicdex/api/mm2/rpc_v1/rpc.electrum.hpp"
 
+//! Implementation RPC [electrum]
 namespace atomic_dex::mm2
 {
+    //! Serialization
     void
-    to_json(nlohmann::json& j, const balance_request& cfg)
+    to_json(nlohmann::json& j, const electrum_request& cfg)
     {
-        j["coin"] = cfg.coin;
+        j["coin"]       = cfg.coin_name;
+        j["tx_history"] = cfg.with_tx_history;
+
+        if (!cfg.servers.empty())
+        {
+            j["servers"] = cfg.servers;
+        }
+
+        if (cfg.coin_type == CoinType::QRC20)
+        {
+            if (cfg.swap_contract_address.has_value())
+            {
+                j["swap_contract_address"] = cfg.swap_contract_address.value();
+            }
+            if (cfg.fallback_swap_contract_address.has_value())
+            {
+                j["fallback_swap_contract_address"] = cfg.fallback_swap_contract_address.value();
+            }
+        }
+
+        if (cfg.bchd_urls.has_value()) {
+            j["bchd_urls"] = cfg.bchd_urls.value();
+            j["allow_slp_unsafe_conf"] = cfg.allow_slp_unsafe_conf.value_or(false);
+        }
+
+        if (cfg.address_format.has_value())
+        {
+            j["address_format"] = cfg.address_format.value();
+        }
+        if (cfg.merge_params.has_value())
+        {
+            j["utxo_merge_params"] = cfg.merge_params.value();
+        }
     }
 
+    //! Deserialization
     void
-    from_json(const nlohmann::json& j, balance_answer& cfg)
+    from_json(const nlohmann::json& j, electrum_answer& cfg)
     {
         j.at("address").get_to(cfg.address);
         j.at("balance").get_to(cfg.balance);
-        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
-        j.at("coin").get_to(cfg.coin);
+        j.at("result").get_to(cfg.result);
     }
 } // namespace atomic_dex::mm2

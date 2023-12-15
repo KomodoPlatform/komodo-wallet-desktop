@@ -6,7 +6,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.convertaddress.hpp"
 #include "atomicdex/api/mm2/generics.hpp"
 
 namespace atomic_dex::mm2

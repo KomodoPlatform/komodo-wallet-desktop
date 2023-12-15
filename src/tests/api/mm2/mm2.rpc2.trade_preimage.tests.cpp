@@ -16,7 +16,7 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
-#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
 
 //! Constants
 namespace
@@ -321,7 +321,7 @@ TEST_SUITE("atomic_dex::mm2::preimage_answer deserialization test suites")
 
     //! Project Headers
     #include "atomicdex/api/mm2/mm2.hpp"
-    #include "atomicdex/api/mm2/rpc.trade.preimage.hpp" ///< replace this one by your current rpc file
+    #include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp" ///< replace this one by your current rpc file
  */
 SCENARIO("atomic_dex::mm2::preimage scenario")
 {
@@ -335,7 +335,7 @@ SCENARIO("atomic_dex::mm2::preimage scenario")
     CHECK(batch.is_array());
 
     //! Prepare request template
-    nlohmann::json request_json = atomic_dex::mm2::template_request("trade_preimage");
+    nlohmann::json request_json = atomic_dex::mm2::template_request("trade_preimage", true);
 
     //! Retrieve mm2 service
     auto& mm2 = g_context->system_manager().get_system<atomic_dex::mm2_service>();

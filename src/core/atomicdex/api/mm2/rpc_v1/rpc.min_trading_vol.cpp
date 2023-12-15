@@ -3,7 +3,7 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/generics.hpp"
-#include "atomicdex/api/mm2/rpc.min.volume.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"
 
 namespace atomic_dex::mm2
 {

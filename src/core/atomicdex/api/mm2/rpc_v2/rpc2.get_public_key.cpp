@@ -16,7 +16,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "get_public_key_rpc.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.get_public_key.hpp"
 
 namespace atomic_dex::mm2
 {

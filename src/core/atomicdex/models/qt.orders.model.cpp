@@ -19,7 +19,7 @@
 #include <range/v3/algorithm/any_of.hpp>
 
 //! Project
-#include "atomicdex/api/mm2/rpc.recover.funds.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
 #include "atomicdex/events/qt.events.hpp"
 #include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"

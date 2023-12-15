@@ -6,7 +6,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc.recover.funds.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
 
 namespace atomic_dex::mm2
 {

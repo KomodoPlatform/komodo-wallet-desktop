@@ -3,7 +3,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "my_tx_history_rpc.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.my_tx_history.hpp"
 
 namespace atomic_dex::mm2
 {

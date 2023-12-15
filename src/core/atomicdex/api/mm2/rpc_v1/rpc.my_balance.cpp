@@ -14,41 +14,27 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Deps
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc.setprice.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.my_balance.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex::mm2
 {
     void
-    to_json(nlohmann::json& j, const setprice_request& request)
+    to_json(nlohmann::json& j, const balance_request& cfg)
     {
-        j["base"]            = request.base;
-        j["price"]           = request.price;
-        j["rel"]             = request.rel;
-        j["volume"]          = request.volume;
-        j["cancel_previous"] = request.cancel_previous;
-        j["max"]             = request.max;
-        if (request.base_nota.has_value())
-        {
-            j["base_nota"] = request.base_nota.value();
-        }
-        if (request.base_confs.has_value())
-        {
-            j["base_confs"] = request.base_confs.value();
-        }
-        if (request.rel_nota.has_value())
-        {
-            j["rel_nota"] = request.rel_nota.value();
-        }
-        if (request.rel_confs.has_value())
-        {
-            j["rel_confs"] = request.rel_confs.value();
-        }
-        if (request.min_volume.has_value())
-        {
-            j["min_volume"] = request.min_volume.value();
-        }
+        j["coin"] = cfg.coin;
     }
-}
+
+    void
+    from_json(const nlohmann::json& j, balance_answer& cfg)
+    {
+        j.at("address").get_to(cfg.address);
+        j.at("balance").get_to(cfg.balance);
+        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
+        j.at("coin").get_to(cfg.coin);
+    }
+} // namespace atomic_dex::mm2

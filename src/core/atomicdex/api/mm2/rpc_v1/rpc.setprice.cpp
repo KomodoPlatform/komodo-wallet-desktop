@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -14,32 +14,41 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+#include <nlohmann/json.hpp>
 
-// Std Headers
-#include <string>
-
-// Deps Headers
-#include <nlohmann/json_fwd.hpp>
+//! Project Headers
+#include "atomicdex/api/mm2/rpc_v1/rpc.setprice.hpp"
 
 namespace atomic_dex::mm2
 {
-    struct get_public_key
+    void
+    to_json(nlohmann::json& j, const setprice_request& request)
     {
-        static constexpr auto endpoint = "get_public_key";
-        static constexpr bool is_v2     = true;
-        struct expected_request_type
+        j["base"]            = request.base;
+        j["price"]           = request.price;
+        j["rel"]             = request.rel;
+        j["volume"]          = request.volume;
+        j["cancel_previous"] = request.cancel_previous;
+        j["max"]             = request.max;
+        if (request.base_nota.has_value())
         {
-
-        } request;
-        struct expected_answer_type
+            j["base_nota"] = request.base_nota.value();
+        }
+        if (request.base_confs.has_value())
         {
-            std::string public_key;
-        } answer;
-    };
-    using get_public_key_request = get_public_key::expected_request_type;
-    using get_public_key_answer = get_public_key::expected_answer_type;
-
-    inline void to_json([[maybe_unused]] nlohmann::json& j, const get_public_key_request&) { }
-    void from_json(const nlohmann::json& json, get_public_key_answer& in);
+            j["base_confs"] = request.base_confs.value();
+        }
+        if (request.rel_nota.has_value())
+        {
+            j["rel_nota"] = request.rel_nota.value();
+        }
+        if (request.rel_confs.has_value())
+        {
+            j["rel_confs"] = request.rel_confs.value();
+        }
+        if (request.min_volume.has_value())
+        {
+            j["min_volume"] = request.min_volume.value();
+        }
+    }
 }

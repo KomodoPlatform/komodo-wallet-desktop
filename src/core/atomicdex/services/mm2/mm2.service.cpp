@@ -27,9 +27,9 @@
 #include <QSettings>
 
 #include "atomicdex/api/mm2/utxo.merge.params.hpp"
-#include "atomicdex/api/mm2/rpc.electrum.hpp"
-#include "atomicdex/api/mm2/rpc.enable.hpp"
-#include "atomicdex/api/mm2/rpc.min.volume.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.electrum.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.enable.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"
 #include "atomicdex/api/mm2/rpc.tx.history.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.z_coin_tx_history.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.task.enable_z_coin.init.hpp"

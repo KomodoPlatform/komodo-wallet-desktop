@@ -18,7 +18,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc.orderbook.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex::mm2

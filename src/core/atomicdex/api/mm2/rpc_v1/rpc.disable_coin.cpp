@@ -6,7 +6,7 @@
 
 //!
 #include "atomicdex/api/mm2/generics.hpp"
-#include "atomicdex/api/mm2/rpc.disable.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.disable_coin.hpp"
 
 namespace atomic_dex::mm2
 {
