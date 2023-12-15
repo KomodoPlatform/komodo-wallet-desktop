@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "paging_options.hpp"
-#include "transaction.data.hpp"
-#include "rpc.hpp"
+#include "atomicdex/api/mm2/paging_options.hpp"
+#include "atomicdex/api/mm2/transaction.data.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
 
 #pragma once
 

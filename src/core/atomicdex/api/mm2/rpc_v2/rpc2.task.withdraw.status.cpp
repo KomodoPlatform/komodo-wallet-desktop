@@ -18,30 +18,28 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc2.task.enable_z_coin.init.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.status.hpp"
 
-//! Implementation 2.0 RPC [enable_z_coin]
+//! Implementation 2.0 RPC [withdraw_status]
 namespace atomic_dex::mm2
 {
     //! Serialization
-    void to_json(nlohmann::json& j, const enable_z_coin_request& request)
+    void to_json(nlohmann::json& j, const withdraw_status_request& request)
     {
-        j["params"]["ticker"]                                                          = request.coin_name;
-        j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
-        if (request.sync_height.has_value())
-        {
-            j["params"]["activation_params"]["mode"]["rpc_data"]["sync_params"]["height"]  = request.sync_height.value();
-        }
-        j["params"]["activation_params"]["mode"]["rpc_data"]["electrum_servers"]       = request.servers;
-        j["params"]["activation_params"]["mode"]["rpc_data"]["light_wallet_d_servers"] = request.z_urls;
-        j["params"]["activation_params"]["scan_blocks_per_iteration"]                  = 5000;
-        j["params"]["activation_params"]["scan_interval"]                              = 0;
-        j["params"]["tx_history"]                                                      = request.with_tx_history;
+        j["params"]["task_id"] = request.task_id;
+        j["params"]["forget_if_finished"] = false;
     }
 
     //! Deserialization
-    void from_json(const nlohmann::json& j, enable_z_coin_answer& answer)
+    void from_json(const nlohmann::json& j, withdraw_status_answer& answer)
     {
-        j.at("task_id").get_to(answer.task_id);
+        if (j.count("error") >= 1)
+        {
+            answer.error = j;
+        }
+        else
+        {
+            answer.result = j.at("result").at("details").get<transaction_data>();
+        }
     }
 } // namespace atomic_dex::mm2

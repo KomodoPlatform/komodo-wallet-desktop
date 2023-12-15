@@ -5,8 +5,8 @@
 
 #include <nlohmann/json_fwd.hpp>
 
-#include "transaction.data.hpp"
-#include "paging_options.hpp"
+#include "atomicdex/api/mm2/transaction.data.hpp"
+#include "atomicdex/api/mm2/paging_options.hpp"
 
 namespace atomic_dex::mm2
 {

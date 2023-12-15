@@ -14,47 +14,46 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
-// Std Headers
-#include <optional>
-
-// Deps Headers
+//! Deps
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "generic.error.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.init.hpp"
 
+//! Implementation 2.0 RPC [withdraw_init]
 namespace atomic_dex::mm2
 {
-    struct enable_z_coin_cancel_request
+    void
+    to_json(nlohmann::json& j, const withdraw_init_fees& request)
     {
-        int         task_id;
-    };
+        j["type"]   = request.type;
+        j["amount"] = request.amount.value();
+    }
 
-    void to_json(nlohmann::json& j, const enable_z_coin_cancel_request& request);
-
-    struct enable_z_coin_cancel_answer_success
+    //! Serialization
+    void to_json(nlohmann::json& j, const withdraw_init_request& request)
     {
-        std::string result;
-    };
+        nlohmann::json obj = nlohmann::json::object();
 
-    void from_json(const nlohmann::json& j, enable_z_coin_cancel_answer_success& answer);
+        obj["params"]["coin"]        = request.coin;
+        obj["params"]["to"]          = request.to;
+        obj["params"]["amount"]      = request.amount;
+        obj["params"]["max"]         = request.max;
 
-    struct enable_z_coin_cancel_answer
+        if (request.memo.has_value())
+        {
+            obj["params"]["memo"] = request.memo.value();
+        }
+        if (request.fees.has_value())
+        {
+            obj["params"]["fee"] = request.fees.value();
+        }
+        j.update(obj);
+    }
+
+    //! Deserialization
+    void from_json(const nlohmann::json& j, withdraw_init_answer& answer)
     {
-        std::optional<enable_z_coin_cancel_answer_success> result;
-        std::optional<generic_answer_error>              error;
-        std::string                                      raw_result;      ///< internal
-        int                                              rpc_result_code; ///< internal
-    };
-
-    void from_json(const nlohmann::json& j, enable_z_coin_cancel_answer& answer);
-}
-
-namespace atomic_dex
-{
-    using t_enable_z_coin_cancel_request         = mm2::enable_z_coin_cancel_request;
-    using t_enable_z_coin_cancel_answer          = mm2::enable_z_coin_cancel_answer;
-    using t_enable_z_coin_cancel_answer_success  = mm2::enable_z_coin_cancel_answer_success;
-} // namespace atomic_dex
+        j.at("task_id").get_to(answer.task_id);
+    }
+} // namespace atomic_dex::mm2

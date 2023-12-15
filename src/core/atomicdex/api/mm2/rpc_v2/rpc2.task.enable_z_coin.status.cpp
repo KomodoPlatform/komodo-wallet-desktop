@@ -18,7 +18,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc2.task.enable_z_coin.status.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.task.enable_z_coin.status.hpp"
 
 //! Implementation 2.0 RPC [enable_z_coin_status]
 namespace atomic_dex::mm2

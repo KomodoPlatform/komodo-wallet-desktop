@@ -22,8 +22,8 @@
 
 #include <nlohmann/json_fwd.hpp> //> nlohmann::json
 
-#include "rpc.hpp"
-#include "balance_info.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
+#include "atomicdex/api/mm2/balance_info.hpp"
 
 namespace atomic_dex::mm2
 {

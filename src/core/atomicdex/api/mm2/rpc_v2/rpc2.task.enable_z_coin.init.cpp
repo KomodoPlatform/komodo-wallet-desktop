@@ -18,41 +18,29 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc2.task.withdraw.init.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.task.enable_z_coin.init.hpp"
 
-//! Implementation 2.0 RPC [withdraw_init]
+//! Implementation 2.0 RPC [enable_z_coin]
 namespace atomic_dex::mm2
 {
-    void
-    to_json(nlohmann::json& j, const withdraw_init_fees& request)
-    {
-        j["type"]   = request.type;
-        j["amount"] = request.amount.value();
-    }
-
     //! Serialization
-    void to_json(nlohmann::json& j, const withdraw_init_request& request)
+    void to_json(nlohmann::json& j, const enable_z_coin_request& request)
     {
-        nlohmann::json obj = nlohmann::json::object();
-
-        obj["params"]["coin"]        = request.coin;
-        obj["params"]["to"]          = request.to;
-        obj["params"]["amount"]      = request.amount;
-        obj["params"]["max"]         = request.max;
-
-        if (request.memo.has_value())
+        j["params"]["ticker"]                                                          = request.coin_name;
+        j["params"]["activation_params"]["mode"]["rpc"]                                = "Light";
+        if (request.sync_height.has_value())
         {
-            obj["params"]["memo"] = request.memo.value();
+            j["params"]["activation_params"]["mode"]["rpc_data"]["sync_params"]["height"]  = request.sync_height.value();
         }
-        if (request.fees.has_value())
-        {
-            obj["params"]["fee"] = request.fees.value();
-        }
-        j.update(obj);
+        j["params"]["activation_params"]["mode"]["rpc_data"]["electrum_servers"]       = request.servers;
+        j["params"]["activation_params"]["mode"]["rpc_data"]["light_wallet_d_servers"] = request.z_urls;
+        j["params"]["activation_params"]["scan_blocks_per_iteration"]                  = 5000;
+        j["params"]["activation_params"]["scan_interval"]                              = 0;
+        j["params"]["tx_history"]                                                      = request.with_tx_history;
     }
 
     //! Deserialization
-    void from_json(const nlohmann::json& j, withdraw_init_answer& answer)
+    void from_json(const nlohmann::json& j, enable_z_coin_answer& answer)
     {
         j.at("task_id").get_to(answer.task_id);
     }

@@ -23,7 +23,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "generic.error.hpp"
+#include "atomicdex/api/mm2/generic.error.hpp"
 
 namespace atomic_dex::mm2
 {

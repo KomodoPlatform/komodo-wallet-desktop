@@ -18,7 +18,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc2.z_coin_tx_history.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.z_coin_tx_history.hpp"
 
 //! Implementation 2.0 RPC [z_coin_tx_history]
 namespace atomic_dex::mm2

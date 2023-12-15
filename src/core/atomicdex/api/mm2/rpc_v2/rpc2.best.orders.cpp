@@ -23,7 +23,7 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/generics.hpp"
-#include "atomicdex/api/mm2/rpc2.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.best.orders.hpp"
 
 //! Implementation RPC [best_orders]
 namespace atomic_dex::mm2

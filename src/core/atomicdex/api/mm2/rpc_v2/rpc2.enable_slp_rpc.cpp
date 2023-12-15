@@ -1,6 +1,6 @@
 #include <nlohmann/json.hpp>
 
-#include "enable_slp_rpc.hpp"
+#include "rpc2.enable_slp_rpc.hpp"
 
 namespace atomic_dex::mm2
 {

@@ -22,7 +22,7 @@
 
 #include <nlohmann/json_fwd.hpp>
 
-#include "rpc.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
 
 namespace atomic_dex::mm2
 {

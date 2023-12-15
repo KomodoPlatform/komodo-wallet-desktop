@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "rpc.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
 #include "rpc.tx.history.hpp"
 
 namespace atomic_dex::mm2

@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "rpc.hpp"
-#include "balance_info.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
+#include "atomicdex/api/mm2/balance_info.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
 
 namespace atomic_dex::mm2

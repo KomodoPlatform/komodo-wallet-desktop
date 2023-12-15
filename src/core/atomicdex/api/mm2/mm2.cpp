@@ -19,15 +19,15 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
-#include "atomicdex/api/mm2/rpc2.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.best.orders.hpp"
 #include "atomicdex/api/mm2/rpc.convertaddress.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 #include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
 #include "atomicdex/api/mm2/rpc.validate.address.hpp"
-#include "atomicdex/api/mm2/rpc2.withdraw.hpp"
-#include "atomicdex/api/mm2/rpc2.task.withdraw.status.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.withdraw.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.status.hpp"
 #include "atomicdex/api/mm2/rpc.recover.funds.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"

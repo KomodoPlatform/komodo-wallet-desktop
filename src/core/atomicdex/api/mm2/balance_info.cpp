@@ -1,6 +1,6 @@
 #include <nlohmann/json.hpp>
 
-#include "balance_info.hpp"
+#include "atomicdex/api/mm2/balance_info.hpp"
 
 namespace atomic_dex::mm2
 {

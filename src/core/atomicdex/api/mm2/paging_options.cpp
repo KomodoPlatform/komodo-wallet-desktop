@@ -3,7 +3,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "paging_options.hpp"
+#include "atomicdex/api/mm2/paging_options.hpp"
 
 namespace atomic_dex::mm2
 {

@@ -22,7 +22,7 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc2.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.best.orders.hpp"
 
 //! Namespace declaration
 namespace atomic_dex
