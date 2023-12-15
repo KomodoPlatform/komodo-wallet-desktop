@@ -524,6 +524,7 @@ namespace atomic_dex
     void
     orderbook_model::refresh_orderbook(const t_orders_contents& orderbook, bool is_bestorders)
     {
+        SPDLOG_DEBUG("[orderbook_model::refresh_orderbook], is_bestorders: {}", is_bestorders);
         auto refresh_functor = [this](const std::vector<mm2::order_contents>& contents)
         {
             for (auto&& order: contents)
