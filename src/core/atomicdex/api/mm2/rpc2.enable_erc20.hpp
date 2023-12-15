@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2023 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2022 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <optional>
 #include <string>
 
 #include <nlohmann/json_fwd.hpp> //> nlohmann::json
@@ -26,9 +25,9 @@
 
 namespace atomic_dex::mm2
 {
-    struct enable_tendermint_token_rpc
+    struct enable_erc20_rpc
     {
-        static constexpr auto endpoint  = "enable_tendermint_token";
+        static constexpr auto endpoint  = "enable_erc20";
         static constexpr bool is_v2     = true;
         
         struct expected_request_type
@@ -40,6 +39,7 @@ namespace atomic_dex::mm2
         struct expected_result_type
         {
             std::string                                     platform_coin;
+            int                                             required_confirmations;
             std::unordered_map<std::string, balance_info>   balances;
         };
 
@@ -50,10 +50,10 @@ namespace atomic_dex::mm2
         std::optional<expected_error_type>     error;
     };
 
-    using enable_tendermint_token_rpc_request    = enable_tendermint_token_rpc::expected_request_type;
-    using enable_tendermint_token_rpc_result     = enable_tendermint_token_rpc::expected_result_type;
-    using enable_tendermint_token_rpc_error      = enable_tendermint_token_rpc::expected_error_type;
+    using enable_erc20_rpc_request    = enable_erc20_rpc::expected_request_type;
+    using enable_erc20_rpc_result     = enable_erc20_rpc::expected_result_type;
+    using enable_erc20_rpc_error      = enable_erc20_rpc::expected_error_type;
 
-    void to_json(nlohmann::json& j, const enable_tendermint_token_rpc_request& request);
-    void from_json(const nlohmann::json& j, enable_tendermint_token_rpc_result& in);
+    void to_json(nlohmann::json& j, const enable_erc20_rpc_request& request);
+    void from_json(const nlohmann::json& j, enable_erc20_rpc_result& in);
 }

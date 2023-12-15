@@ -38,19 +38,18 @@ namespace atomic_dex
     void
     orderbook_scanner_service::process_best_orders() 
     {
-        if (m_rpc_busy)
+        if (m_bestorders_rpc_busy)
         {
-            // SPDLOG_INFO("process_best_orders is busy - skipping");
+            SPDLOG_DEBUG("[process_best_orders] is busy - skipping");
             return;
         }
 
-        // SPDLOG_INFO("process_best_orders processing");
         if (m_system_manager.has_system<mm2_service>())
         {
             auto& mm2_system = m_system_manager.get_system<mm2_service>();
             if (mm2_system.is_mm2_running() && mm2_system.is_orderbook_thread_active())
             {
-                // SPDLOG_INFO("process_best_orders");
+                SPDLOG_DEBUG("[process_best_orders] started");
                 using namespace std::string_literals;
                 const auto&           trading_pg = m_system_manager.get_system<trading_page>();
                 auto                  volume     = trading_pg.get_volume().toStdString();
@@ -67,7 +66,7 @@ namespace atomic_dex
                 // best_orders_req_json["userpass"] = "*****";
                 // SPDLOG_INFO("best_orders request: {}", best_orders_req_json.dump(4));
 
-                this->m_rpc_busy = true;
+                this->m_bestorders_rpc_busy = true;
                 emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
                 //! Treat answer
                 auto answer_functor = [this, &trading_pg](web::http::http_response resp) {
@@ -81,7 +80,7 @@ namespace atomic_dex
                             this->m_best_orders_infos = best_order_answer.result.value();
                         }
                     }
-                    this->m_rpc_busy = false;
+                    this->m_bestorders_rpc_busy = false;
                     this->dispatcher_.trigger<process_orderbook_finished>(false);
                     emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
                 };
@@ -95,20 +94,21 @@ namespace atomic_dex
                         }
                         catch (const std::exception& e)
                         {
-                            SPDLOG_ERROR("pplx task error: {}", e.what());
-                            this->m_rpc_busy = false;
+                            SPDLOG_ERROR("[process_best_orders] pplx task error: {}", e.what());
+                            this->m_bestorders_rpc_busy = false;
                             this->dispatcher_.trigger<process_orderbook_finished>(true);
                         }
                     });
+                SPDLOG_DEBUG("[process_best_orders] ended");
             }
             else
             {
-                SPDLOG_WARN("MM2 Service not launched yet - skipping");
+                SPDLOG_WARN("MM2 Service not launched yet - skipping [process_best_orders]");
             }
         }
         else
         {
-            SPDLOG_WARN("MM2 Service not created yet - skipping");
+            SPDLOG_WARN("MM2 Service not created yet - skipping [process_best_orders]");
         }
     }
 } // namespace atomic_dex
@@ -134,7 +134,7 @@ namespace atomic_dex
     bool
     orderbook_scanner_service::is_best_orders_busy() const 
     {
-        return m_rpc_busy.load();
+        return m_bestorders_rpc_busy.load();
     }
 
     t_orders_contents

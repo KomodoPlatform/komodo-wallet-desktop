@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2023 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -16,7 +16,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "get_public_key_rpc.hpp"
+#include "rpc2.get_public_key.hpp"
 
 namespace atomic_dex::mm2
 {

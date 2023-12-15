@@ -35,10 +35,12 @@
 #include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
 #include "atomicdex/api/mm2/rpc.min.volume.hpp"
 #include "atomicdex/api/mm2/rpc.orderbook.hpp"
-#include "atomicdex/api/mm2/enable_bch_with_tokens_rpc.hpp"
-#include "atomicdex/api/mm2/enable_slp_rpc.hpp"
+#include "atomicdex/api/mm2/rpc2.enable_bch_with_tokens.hpp"
+#include "atomicdex/api/mm2/rpc2.enable_slp.hpp"
 #include "atomicdex/api/mm2/rpc2.enable_tendermint_with_assets.hpp"
 #include "atomicdex/api/mm2/rpc2.enable_tendermint_token.hpp"
+#include "atomicdex/api/mm2/rpc2.enable_erc20.hpp"
+#include "atomicdex/api/mm2/rpc2.enable_eth_with_tokens.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/data/dex/orders.and.swaps.data.hpp"
@@ -90,6 +92,7 @@ namespace atomic_dex
        //! Timers
        t_mm2_time_point m_orderbook_clock;
        t_mm2_time_point m_info_clock;
+       t_mm2_time_point m_coin_status_clock;
 
        //! Atomicity / Threads
        std::atomic_bool m_mm2_running{false};
@@ -162,7 +165,7 @@ namespace atomic_dex
        void fetch_infos_thread(bool is_a_fresh = true, bool only_tx = false);
 
        // Coins enabling functions
-       bool enable_default_coins(); // Enables required coins + coins enabled in the config
+       bool enable_default_coins(); // Enables coins marked active in the config
        void enable_coins(const std::vector<std::string>& tickers);
        void enable_coins(const t_coins& coins);
        void enable_coin(const std::string& ticker);
@@ -171,6 +174,8 @@ namespace atomic_dex
        void update_coin_active(const std::vector<std::string>& tickers, bool status);
        void enable_erc_family_coin(const coin_config& coin_config);
        void enable_erc_family_coins(const t_coins& coins);
+       void enable_erc20_coin(coin_config coin_config);
+       void enable_erc20_coins(const t_coins& coins);
        void enable_utxo_qrc20_coin(coin_config coin_config);
        void enable_utxo_qrc20_coins(const t_coins& coins);
        void enable_slp_coin(coin_config coin_config);
@@ -180,12 +185,15 @@ namespace atomic_dex
        void enable_tendermint_coin(coin_config coin_config, std::string parent_ticker);
        void enable_tendermint_coins(const t_coins& coins, const std::string parent_ticker);
        void enable_zhtlc(const t_coins& coins);
+       std::string get_parent_ticker(coin_config coin_config);
 
        // Balances processing functions
-       void process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc);    // Called after enabling SLP coins along tBCH/BCH.
-       void process_balance_answer(const mm2::enable_slp_rpc& rpc);                // Called after enabling an SLP coin.
-       void process_balance_answer(const mm2::enable_tendermint_with_assets_rpc& rpc);
-       void process_balance_answer(const mm2::enable_tendermint_token_rpc& rpc);
+       void process_balance_answer(const mm2::enable_bch_with_tokens_rpc& rpc);           // Called after enabling SLP coins alongside tBCH/BCH.
+       void process_balance_answer(const mm2::enable_slp_rpc& rpc);                       // Called after enabling a SLP coin.
+       void process_balance_answer(const mm2::enable_tendermint_with_assets_rpc& rpc);    // Called after enabling Tendermint coins alongside the parent coin (e.g. IRIS).
+       void process_balance_answer(const mm2::enable_tendermint_token_rpc& rpc);          // Called after enabling a Tendermint coin.
+       void process_balance_answer(const mm2::enable_erc20_rpc& rpc);                     // Called after enabling an ERC20 token.
+       void process_balance_answer(const mm2::enable_eth_with_tokens_rpc& rpc);           // Called after enabling ERC20 tokens alongside ETH.
 
      public:
        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
