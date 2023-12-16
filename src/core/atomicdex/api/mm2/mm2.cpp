@@ -710,7 +710,6 @@ namespace atomic_dex::mm2
     template mm2::withdraw_answer               rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::withdraw_status_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::my_orders_answer              rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::orderbook_answer              rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::trade_fee_answer              rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::max_taker_vol_answer          rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::min_volume_answer             rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);

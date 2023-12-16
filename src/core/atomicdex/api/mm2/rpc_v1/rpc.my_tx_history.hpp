@@ -4,7 +4,6 @@
 #pragma once
 
 #include "atomicdex/api/mm2/rpc.hpp"
-#include "atomicdex/api/mm2/rpc_v1/rpc.my_tx_history.hpp"
 
 namespace atomic_dex::mm2
 {

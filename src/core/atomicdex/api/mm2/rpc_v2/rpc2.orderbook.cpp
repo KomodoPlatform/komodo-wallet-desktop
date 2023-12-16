@@ -24,24 +24,29 @@
 namespace atomic_dex::mm2
 {
     void
-    from_json(const nlohmann::json& j, orderbook_answer& answer)
+    to_json(nlohmann::json& j, const orderbook_request_rpc& req)
+    {
+        j["params"]["base"] = req.base;
+        j["params"]["rel"]  = req.rel;
+    }
+
+    void
+    from_json(const nlohmann::json& j, orderbook_result_rpc& resp)
     {
         using namespace date;
-        // SPDLOG_INFO("got orderbook data...");
+        j.at("result").at("base").get_to(resp.base);
+        j.at("result").at("rel").get_to(resp.rel);
+        j.at("result").at("num_asks").get_to(resp.numasks);
+        j.at("result").at("num_bids").get_to(resp.numbids);
+        j.at("result").at("net_id").get_to(resp.netid);
+        j.at("result").at("timestamp").get_to(resp.timestamp);
+        j.at("result").at("bids").get_to(resp.bids);
+        j.at("result").at("asks").get_to(resp.asks);
 
-        j.at("result").at("base").get_to(answer.base);
-        j.at("result").at("rel").get_to(answer.rel);
-        j.at("result").at("num_asks").get_to(answer.numasks);
-        j.at("result").at("num_bids").get_to(answer.numbids);
-        j.at("result").at("net_id").get_to(answer.netid);
-        j.at("result").at("timestamp").get_to(answer.timestamp);
-        j.at("result").at("bids").get_to(answer.bids);
-        j.at("result").at("asks").get_to(answer.asks);
-
-        answer.human_timestamp = atomic_dex::utils::to_human_date(answer.timestamp, "%Y-%m-%d %I:%M:%S");
+        resp.human_timestamp = atomic_dex::utils::to_human_date(resp.timestamp, "%Y-%m-%d %I:%M:%S");
 
         t_float_50 result_asks_f(0);
-        for (auto&& cur_asks: answer.asks) {
+        for (auto&& cur_asks: resp.asks) {
             cur_asks.min_volume                 = cur_asks.base_min_volume;
             cur_asks.min_volume_fraction_numer  = cur_asks.base_min_volume_numer;
             cur_asks.min_volume_fraction_denom  = cur_asks.base_min_volume_denom;
@@ -59,10 +64,10 @@ namespace atomic_dex::mm2
             cur_asks.total                      = atomic_dex::utils::adjust_precision(total_f.str());
             result_asks_f                       = result_asks_f + safe_float(cur_asks.max_volume);
         }
-        answer.asks_total_volume = result_asks_f.str();
+        resp.asks_total_volume = result_asks_f.str();
 
         t_float_50 result_bids_f(0);
-        for (auto& cur_bids: answer.bids)
+        for (auto& cur_bids: resp.bids)
         {
             cur_bids.min_volume                 = cur_bids.base_min_volume;
             cur_bids.min_volume_fraction_numer  = cur_bids.base_min_volume_numer;
@@ -82,16 +87,16 @@ namespace atomic_dex::mm2
             cur_bids.total                      = atomic_dex::utils::adjust_precision(total_f.str());
             result_bids_f                       = result_bids_f + safe_float(cur_bids.max_volume);
         }
-        answer.bids_total_volume = result_bids_f.str();
+        resp.bids_total_volume = result_bids_f.str();
 
-        for (auto&& cur_asks: answer.asks)
+        for (auto&& cur_asks: resp.asks)
         {
             t_float_50 percent_f   = safe_float(cur_asks.max_volume) / result_asks_f;
             cur_asks.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
             // SPDLOG_INFO("cur_asks: {}", cur_asks.to_string());
         }
 
-        for (auto&& cur_bids: answer.bids)
+        for (auto&& cur_bids: resp.bids)
         {
             t_float_50 percent_f   = safe_float(cur_bids.max_volume) / result_bids_f;
             cur_bids.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
@@ -99,10 +104,4 @@ namespace atomic_dex::mm2
         }
     }
 
-    void
-    to_json(nlohmann::json& j, const orderbook_request& request)
-    {
-        j["params"]["base"] = request.base;
-        j["params"]["rel"]  = request.rel;
-    }
 } // namespace atomic_dex::mm2

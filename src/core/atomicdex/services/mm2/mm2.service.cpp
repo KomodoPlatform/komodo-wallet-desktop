@@ -20,6 +20,7 @@
 #include <sstream>
 
 #include <boost/thread/thread.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <range/v3/algorithm/any_of.hpp>
 #include <QException>
 #include <QFile>
@@ -1723,7 +1724,7 @@ namespace atomic_dex
     }
 
     // [smk] Only called by trading_page::process_action()
-    t_orderbook_answer mm2_service::get_orderbook(t_mm2_ec& ec) const
+    mm2::orderbook_result_rpc mm2_service::get_orderbook(t_mm2_ec& ec) const
     {
         auto&& [base, rel]          = this->m_synchronized_ticker_pair.get();
         const std::string pair      = base + "/" + rel;
@@ -1741,31 +1742,50 @@ namespace atomic_dex
         return orderbook;
     }
 
+
+    nlohmann::json generate_req(std::string request_name, auto request, bool is_v2=false)
+    {
+        nlohmann::json current_request = mm2::template_request(std::move(request_name), is_v2);
+        mm2::to_json(current_request, request);
+        return current_request;
+    }
+
     nlohmann::json mm2_service::prepare_batch_orderbook(bool is_a_reset)
     {
-        // SPDLOG_DEBUG("[prepare_batch_orderbook] is_a_reset: {}", is_a_reset);
-        auto&& [base, rel] = m_synchronized_ticker_pair.get();
-        if (rel.empty())
-            return nlohmann::json::array();
-        nlohmann::json batch = nlohmann::json::array();
-
-        auto generate_req = [&batch](std::string request_name, auto request, bool is_v2=false)
+        auto callback = [this, is_a_reset]<typename RpcRequest>(RpcRequest rpc)
         {
-            nlohmann::json current_request = mm2::template_request(std::move(request_name), is_v2);
-            mm2::to_json(current_request, request);
-            batch.push_back(current_request);
+            nlohmann::json batch = nlohmann::json::array();
+            if (rpc.error)
+            {
+                SPDLOG_ERROR("error: bad answer json for orderbook: {}", rpc.error->error);
+            }
+            else
+            {
+                m_orderbook = rpc.result.value();
+                this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
+                if (is_a_reset)
+                {
+                    nlohmann::json batch = nlohmann::json::array();
+                    auto&& [base, rel] = m_synchronized_ticker_pair.get();
+                    batch.push_back(generate_req("max_taker_vol", mm2::max_taker_vol_request{.coin = base}));
+                    batch.push_back(generate_req("max_taker_vol", mm2::max_taker_vol_request{.coin = rel}));
+                    batch.push_back(generate_req("min_trading_vol", t_min_volume_request{.coin = base}));
+                    batch.push_back(generate_req("min_trading_vol", t_min_volume_request{.coin = rel}));
+                }
+            }
+            return batch;
         };
 
-        generate_req("orderbook", t_orderbook_request{.base = base, .rel = rel}, true);
-        if (is_a_reset)
-        {
-            generate_req("max_taker_vol", mm2::max_taker_vol_request{.coin = base});
-            generate_req("max_taker_vol", mm2::max_taker_vol_request{.coin = rel});
-            generate_req("min_trading_vol", t_min_volume_request{.coin = base});
-            generate_req("min_trading_vol", t_min_volume_request{.coin = rel});
-        }
-        // SPDLOG_INFO("batch max: {}", batch.dump(4));
-        return batch;
+        auto&& [base, rel] = m_synchronized_ticker_pair.get();
+        // Avoid segwit coins self pairing, e.g. LTC/LTC-segwit
+        std::string base_ticker = boost::replace_all_copy(base, "-segwit", "");
+        std::string rel_ticker = boost::replace_all_copy(rel, "-segwit", "");
+        if (rel.empty() || base.empty() || base_ticker == rel_ticker)
+            SPDLOG_ERROR("Invalid ticker pair while requesting orderbook: {} {}", base, rel);
+            return nlohmann::json::array();
+
+        mm2::orderbook_rpc rpc{.request={.base = base, .rel = rel}};
+        m_mm2_client.process_rpc_async<mm2::orderbook_rpc>(rpc.request, callback);
     }
 
     void mm2_service::process_orderbook(bool is_a_reset)
@@ -1776,7 +1796,6 @@ namespace atomic_dex
 
         auto answer_functor = [this, is_a_reset](web::http::http_response resp)
         {
-            auto&& [base, rel] = m_synchronized_ticker_pair.get();
             auto answer        = mm2::basic_batch_answer(resp);
             if (answer.is_array())
             {
@@ -1786,16 +1805,15 @@ namespace atomic_dex
                     return;
                 }
 
-                auto orderbook_answer = mm2::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
-
                 if (is_a_reset)
                 {
-                    if (answer.size() < 5)
+                    if (answer.size() < 4)
                     {
                         SPDLOG_ERROR("Answer array did not contain enough elements");
                         return;
                     }
 
+                    auto&& [base, rel] = m_synchronized_ticker_pair.get();
                     auto base_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[1], "max_taker_vol");
                     if (base_max_taker_vol_answer.rpc_result_code == 200)
                     {
@@ -1828,17 +1846,12 @@ namespace atomic_dex
                     }
                 }
 
-                if (orderbook_answer.rpc_result_code == 200)
-                {
-                    m_orderbook = orderbook_answer;
-                    this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
-                }
             }
         };
 
         m_mm2_client.async_rpc_batch_standalone(batch)
             .then(answer_functor)
-            .then([this, batch](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "process_orderbook", batch); });
+            .then([this, batch](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "process_orderbook_extras", batch); });
     }
 
     void mm2_service::fetch_current_orderbook_thread(bool is_a_reset)

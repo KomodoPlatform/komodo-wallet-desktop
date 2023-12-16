@@ -79,7 +79,7 @@ namespace atomic_dex
     }
 
     void
-    qt_orderbook_wrapper::refresh_orderbook(t_orderbook_answer answer)
+    qt_orderbook_wrapper::refresh_orderbook(mm2::orderbook_result_rpc answer)
     {
         this->m_asks->refresh_orderbook(answer.asks);
         this->m_bids->refresh_orderbook(answer.bids);
@@ -102,7 +102,7 @@ namespace atomic_dex
     }
 
     void
-    qt_orderbook_wrapper::reset_orderbook(t_orderbook_answer answer)
+    qt_orderbook_wrapper::reset_orderbook(mm2::orderbook_result_rpc answer)
     {
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);

@@ -32,9 +32,9 @@
 #include "atomicdex/api/mm2/mm2.error.code.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.max_taker_vol.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.my_balance.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.enable_bch_with_tokens_rpc.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.enable_slp_rpc.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.enable_tendermint_with_assets.hpp"
@@ -68,7 +68,7 @@ namespace atomic_dex
        using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
        using t_balance_registry           = std::unordered_map<t_ticker, t_balance_answer>;
        using t_tx_registry                = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
-       using t_orderbook                  = boost::synchronized_value<t_orderbook_answer>;
+       using t_orderbook                  = boost::synchronized_value<mm2::orderbook_result_rpc>;
        using t_orders_and_swaps           = boost::synchronized_value<orders_and_swaps>;
        using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
        using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
@@ -109,7 +109,7 @@ namespace atomic_dex
        t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
        t_balance_registry       m_balance_informations;
        t_tx_registry            m_tx_informations;
-       t_orderbook              m_orderbook{t_orderbook_answer{}};
+       t_orderbook              m_orderbook{mm2::orderbook_result_rpc{}};
        t_orders_and_swaps       m_orders_and_swaps{orders_and_swaps{}};
        t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
 
@@ -245,7 +245,7 @@ namespace atomic_dex
        [[nodiscard]] bool has_coin(const std::string& ticker) const;
 
        //! Get Current orderbook
-       [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const;
+       [[nodiscard]] mm2::orderbook_result_rpc get_orderbook(t_mm2_ec& ec) const;
 
        //! Get Swaps
        [[nodiscard]] orders_and_swaps get_orders_and_swaps() const;

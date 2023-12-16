@@ -16,48 +16,55 @@
 
 #pragma once
 
-//! Deps
-#include <nlohmann/json_fwd.hpp>
+#include <optional>
+#include <string>
 
-//! Project Headers
+#include <nlohmann/json_fwd.hpp> //> nlohmann::json
+
+#include "atomicdex/api/mm2/rpc.hpp"
 #include "atomicdex/api/mm2/orderbook.order.contents.hpp"
 
 namespace atomic_dex::mm2
 {
-    struct orderbook_request
+    struct orderbook_rpc
     {
-        std::string base;
-        std::string rel;
+        static constexpr auto endpoint  = "orderbook";
+        static constexpr bool is_v2     = true;
+
+        struct expected_request_type
+        {
+            std::string base;
+            std::string rel;
+        };
+
+        struct expected_result_type
+        {
+            std::size_t                 askdepth;
+            std::size_t                 biddepth;
+            std::vector<order_contents> asks;
+            std::vector<order_contents> bids;
+            std::string                 base;
+            std::string                 rel;
+            std::size_t                 numasks;
+            std::size_t                 numbids;
+            std::size_t                 timestamp;
+            std::size_t                 netid;
+            std::string                 human_timestamp; //! human readable orderbook request time
+            std::string                 asks_total_volume;
+            std::string                 bids_total_volume;
+        };
+
+        using expected_error_type = rpc_basic_error_type;
+
+        expected_request_type                  request;
+        std::optional<expected_result_type>    result;
+        std::optional<expected_error_type>     error;
     };
 
-    void to_json(nlohmann::json& j, const orderbook_request& request);
+    using orderbook_request_rpc    = orderbook_rpc::expected_request_type;
+    using orderbook_result_rpc     = orderbook_rpc::expected_result_type;
+    using orderbook_error_rpc      = orderbook_rpc::expected_error_type;
 
-    struct orderbook_answer
-    {
-        std::size_t                 askdepth{0};
-        std::size_t                 biddepth{0};
-        std::vector<order_contents> asks;
-        std::vector<order_contents> bids;
-        std::string                 base;
-        std::string                 rel;
-        std::size_t                 numasks;
-        std::size_t                 numbids;
-        std::size_t                 timestamp;
-        std::size_t                 netid;
-        std::string                 human_timestamp; //! Moment of the orderbook request human readeable
-        std::string                 asks_total_volume;
-        std::string                 bids_total_volume;
-
-        //! Internal
-        std::string raw_result;
-        int         rpc_result_code;
-    };
-
-    void from_json(const nlohmann::json& j, orderbook_answer& answer);
-}
-
-namespace atomic_dex
-{
-    using t_orderbook_request       = mm2::orderbook_request;
-    using t_orderbook_answer        = mm2::orderbook_answer;
+    void to_json(nlohmann::json& j, const orderbook_request_rpc& req);
+    void from_json(const nlohmann::json& j, orderbook_result_rpc& resp);
 }

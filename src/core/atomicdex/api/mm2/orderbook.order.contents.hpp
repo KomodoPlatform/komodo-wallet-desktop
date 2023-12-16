@@ -55,7 +55,7 @@ namespace atomic_dex::mm2
         std::string                uuid;
         std::string                depth_percent;
         bool                       is_mine;
-        std::optional<std::string> rel_coin{std::nullopt};
+        std::optional<std::string> rel_coin;
 
         std::string to_string() const noexcept;
     };

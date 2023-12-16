@@ -485,7 +485,7 @@ namespace atomic_dex
             case trading_actions::post_process_orderbook_finished:
             {
                 std::error_code    ec;
-                t_orderbook_answer result = mm2_system.get_orderbook(ec);
+                mm2::orderbook_result_rpc result = mm2_system.get_orderbook(ec);
                 
                 if (!ec)
                 {
