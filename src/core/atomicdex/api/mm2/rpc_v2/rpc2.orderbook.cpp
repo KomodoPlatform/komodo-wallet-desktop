@@ -16,6 +16,7 @@
 
 //! Deps
 #include <nlohmann/json.hpp>
+#include <ranges>
 
 //! Project Headers
 #include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
@@ -26,22 +27,41 @@ namespace atomic_dex::mm2
     void
     to_json(nlohmann::json& j, const orderbook_request_rpc& req)
     {
-        j["params"]["base"] = req.base;
-        j["params"]["rel"]  = req.rel;
+        j["base"] = req.base;
+        j["rel"]  = req.rel;
     }
 
     void
     from_json(const nlohmann::json& j, orderbook_result_rpc& resp)
     {
         using namespace date;
-        j.at("result").at("base").get_to(resp.base);
-        j.at("result").at("rel").get_to(resp.rel);
-        j.at("result").at("num_asks").get_to(resp.numasks);
-        j.at("result").at("num_bids").get_to(resp.numbids);
-        j.at("result").at("net_id").get_to(resp.netid);
-        j.at("result").at("timestamp").get_to(resp.timestamp);
-        j.at("result").at("bids").get_to(resp.bids);
-        j.at("result").at("asks").get_to(resp.asks);
+        // atomic_dex::utils::json_keys(j);
+        nlohmann::json k; 
+        if (j.contains("result"))
+        {
+            // Not sure how why where it is being returned in this format
+            SPDLOG_DEBUG("orderbook_result_rpc: result");
+            j.at("result").at("rel").get_to(resp.rel);
+            j.at("result").at("num_asks").get_to(resp.numasks);
+            j.at("result").at("num_bids").get_to(resp.numbids);
+            j.at("result").at("net_id").get_to(resp.netid);
+            j.at("result").at("timestamp").get_to(resp.timestamp);
+            j.at("result").at("bids").get_to(resp.bids);
+            j.at("result").at("asks").get_to(resp.asks);
+            j.at("result").at("base").get_to(resp.base);
+        }
+        else
+        {
+            SPDLOG_DEBUG("orderbook_result_rpc: base");
+            j.at("base").get_to(resp.base);
+            j.at("rel").get_to(resp.rel);
+            j.at("num_asks").get_to(resp.numasks);
+            j.at("num_bids").get_to(resp.numbids);
+            j.at("net_id").get_to(resp.netid);
+            j.at("timestamp").get_to(resp.timestamp);
+            j.at("bids").get_to(resp.bids);
+            j.at("asks").get_to(resp.asks);
+        }
 
         resp.human_timestamp = atomic_dex::utils::to_human_date(resp.timestamp, "%Y-%m-%d %I:%M:%S");
 

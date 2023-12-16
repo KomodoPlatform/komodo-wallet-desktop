@@ -48,6 +48,7 @@ namespace atomic_dex::mm2
         expected_request_type                  request;
         std::optional<expected_result_type>    result;
         std::optional<expected_error_type>     error;
+        std::string                             raw_result;
     };
 
     using enable_tendermint_token_rpc_request    = enable_tendermint_token_rpc::expected_request_type;

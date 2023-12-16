@@ -306,4 +306,12 @@ namespace atomic_dex::utils
         }
         return valid_json_data;
     }
+
+    void json_keys(nlohmann::json j)
+    {
+        for (auto& [key, val] : j.items())
+        {
+            SPDLOG_DEBUG("key: {}, value: {}", key, val);
+        }
+    }
 } // namespace atomic_dex::utils

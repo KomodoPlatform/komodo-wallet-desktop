@@ -43,6 +43,7 @@ namespace atomic_dex::mm2
         expected_request_type                   request;
         std::optional<expected_result_type>     result;
         std::optional<expected_error_type>      error;
+        std::string                             raw_result;
     };
     
     using get_public_key_rpc_request    = get_public_key_rpc::expected_request_type;

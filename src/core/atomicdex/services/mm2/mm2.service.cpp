@@ -1732,13 +1732,16 @@ namespace atomic_dex
         if (orderbook.base.empty() && orderbook.rel.empty())
         {
             ec = dextop_error::orderbook_empty;
+            SPDLOG_WARN("base/rel/orderbook mismatch: {} != {}", pair, orderbook.base + "/" + rel);
             return {};
         }
         if (pair != orderbook.base + "/" + rel)
         {
+            SPDLOG_WARN("base/rel/orderbook mismatch: {} != {}", pair, orderbook.base + "/" + rel);
             ec = dextop_error::orderbook_ticker_not_found;
             return {};
         }
+        // SPDLOG_DEBUG("orderbook active: {}/{}", orderbook.base + "/" + orderbook.rel);
         return orderbook;
     }
 
@@ -1750,14 +1753,21 @@ namespace atomic_dex
         return current_request;
     }
 
-    nlohmann::json mm2_service::prepare_batch_orderbook(bool is_a_reset)
+
+    void mm2_service::process_orderbook(bool is_a_reset)
+    {
+        prepare_orderbook(is_a_reset);        
+    }
+
+
+    void mm2_service::prepare_orderbook(bool is_a_reset)
     {
         auto callback = [this, is_a_reset]<typename RpcRequest>(RpcRequest rpc)
         {
             nlohmann::json batch = nlohmann::json::array();
             if (rpc.error)
             {
-                SPDLOG_ERROR("error: bad answer json for orderbook: {}", rpc.error->error);
+                SPDLOG_ERROR("error: bad answer json for prepare_orderbook: {}", rpc.error->error);
             }
             else
             {
@@ -1771,9 +1781,9 @@ namespace atomic_dex
                     batch.push_back(generate_req("max_taker_vol", mm2::max_taker_vol_request{.coin = rel}));
                     batch.push_back(generate_req("min_trading_vol", t_min_volume_request{.coin = base}));
                     batch.push_back(generate_req("min_trading_vol", t_min_volume_request{.coin = rel}));
+                    process_orderbook_extras(batch, is_a_reset);
                 }
             }
-            return batch;
         };
 
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
@@ -1782,17 +1792,18 @@ namespace atomic_dex
         std::string rel_ticker = boost::replace_all_copy(rel, "-segwit", "");
         if (rel.empty() || base.empty() || base_ticker == rel_ticker)
             SPDLOG_ERROR("Invalid ticker pair while requesting orderbook: {} {}", base, rel);
-            return nlohmann::json::array();
 
         mm2::orderbook_rpc rpc{.request={.base = base, .rel = rel}};
         m_mm2_client.process_rpc_async<mm2::orderbook_rpc>(rpc.request, callback);
     }
 
-    void mm2_service::process_orderbook(bool is_a_reset)
+    void mm2_service::process_orderbook_extras(nlohmann::json batch, bool is_a_reset)
     {
-        auto batch = prepare_batch_orderbook(is_a_reset);
         if (batch.empty())
+        {
+            SPDLOG_WARN("prepared batch_orderbook is empty, nothing to do");
             return;
+        }
 
         auto answer_functor = [this, is_a_reset](web::http::http_response resp)
         {
@@ -1814,7 +1825,7 @@ namespace atomic_dex
                     }
 
                     auto&& [base, rel] = m_synchronized_ticker_pair.get();
-                    auto base_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[1], "max_taker_vol");
+                    auto base_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[0], "max_taker_vol");
                     if (base_max_taker_vol_answer.rpc_result_code == 200)
                     {
                         if (base == base_max_taker_vol_answer.result->coin)
@@ -1823,7 +1834,7 @@ namespace atomic_dex
                         }
                     }
 
-                    auto rel_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[2], "max_taker_vol");
+                    auto rel_max_taker_vol_answer = mm2::rpc_process_answer_batch<mm2::max_taker_vol_answer>(answer[1], "max_taker_vol");
                     if (rel_max_taker_vol_answer.rpc_result_code == 200)
                     {
                         if (rel == rel_max_taker_vol_answer.result->coin)
@@ -1832,23 +1843,21 @@ namespace atomic_dex
                         }
                     }
 
-                    auto base_min_taker_vol_answer = mm2::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
+                    auto base_min_taker_vol_answer = mm2::rpc_process_answer_batch<t_min_volume_answer>(answer[2], "min_trading_vol");
                     if (base_min_taker_vol_answer.rpc_result_code == 200)
                     {
                         m_synchronized_min_taker_vol->first = base_min_taker_vol_answer.result.value();
 
                     }
 
-                    auto rel_min_taker_vol_answer = mm2::rpc_process_answer_batch<t_min_volume_answer>(answer[4], "min_trading_vol");
+                    auto rel_min_taker_vol_answer = mm2::rpc_process_answer_batch<t_min_volume_answer>(answer[3], "min_trading_vol");
                     if (rel_min_taker_vol_answer.rpc_result_code == 200)
                     {
                         m_synchronized_min_taker_vol->second = rel_min_taker_vol_answer.result.value();
                     }
                 }
-
             }
         };
-
         m_mm2_client.async_rpc_batch_standalone(batch)
             .then(answer_functor)
             .then([this, batch](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "process_orderbook_extras", batch); });
@@ -2312,9 +2321,7 @@ namespace atomic_dex
     void
     mm2_service::on_refresh_orderbook(const orderbook_refresh& evt)
     {
-        SPDLOG_DEBUG("on_refresh_orderbook");
-
-        // SPDLOG_INFO("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
+        // SPDLOG_DEBUG("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
         this->m_synchronized_ticker_pair = std::make_pair(evt.base, evt.rel);
 
         if (this->m_mm2_running)

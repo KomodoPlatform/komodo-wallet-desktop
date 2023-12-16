@@ -76,9 +76,9 @@ namespace
         // SPDLOG_DEBUG("rpc answer: {}", TO_STD_STR(answer.extract_string(true).get()));
         Rpc rpc;
         auto json_answer = nlohmann::json::parse(TO_STD_STR(answer.extract_string(true).get()));
+        rpc.raw_result = json_answer.at("result").dump();
         if (Rpc::is_v2)
         {
-            // SPDLOG_DEBUG("v2 rpc answer")
             if (answer.status_code() == 200)
                 rpc.result = json_answer.at("result").get<typename Rpc::expected_result_type>();
             else
@@ -181,6 +181,7 @@ namespace atomic_dex::mm2
                                try
                                {
                                    auto rpc = process_rpc_answer<Rpc>(resp);
+                                   // SPDLOG_DEBUG("process_rpc_answer rpc.result: {}", rpc.raw_result);
                                    rpc.request = request;
                                    on_rpc_processed(rpc);
                                }
