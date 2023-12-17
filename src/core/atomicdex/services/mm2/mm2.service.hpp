@@ -150,7 +150,7 @@ namespace atomic_dex
        ~mm2_service() final;
 
        //! Events
-       void on_refresh_orderbook(const orderbook_refresh& evt);
+       void on_refresh_orderbook_model_data(const orderbook_refresh& evt);
 
        void on_gui_enter_trading(const gui_enter_trading& evt);
 

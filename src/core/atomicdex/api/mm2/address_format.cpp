@@ -17,15 +17,29 @@
 //! Dependencies Headers
 #include <nlohmann/json.hpp>
 
-// Project Headers
-#include "balance.infos.hpp"
+//! Project Headers
+#include "atomicdex/api/mm2/address_format.hpp"
 
 namespace atomic_dex::mm2
 {
     void
-    from_json(const nlohmann::json& j, balance_infos& answer)
+    to_json(nlohmann::json& j, const address_format_t& req)
     {
-        answer.spendable = j.at("spendable").get<std::string>();
-        answer.unspendable = j.at("unspendable").get<std::string>();
+        j["format"] = req.format;
+        if (req.network.has_value())
+        {
+            j["network"] = req.network.value();
+        }
+    }
+
+    void
+    from_json(const nlohmann::json& j, address_format_t& resp)
+    {
+        resp.format  = j.at("format").get<std::string>();
+        if (j.contains("network"))
+        {
+            resp.network = j.at("network").get<std::string>();
+        }
+        
     }
 } // namespace atomic_dex::mm2

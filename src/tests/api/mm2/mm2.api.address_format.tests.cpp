@@ -18,7 +18,7 @@
 #include "doctest/doctest.h"
 #include <nlohmann/json.hpp>
 
-#include "atomicdex/api/mm2/format.address.hpp"
+#include "atomicdex/api/mm2/address_format.hpp"
 
 TEST_CASE("mm2::address_format serialisation")
 {
@@ -28,9 +28,9 @@ TEST_CASE("mm2::address_format serialisation")
       "network":"bchtest"
     }
     )"_json;
-    atomic_dex::mm2::format_address request{.format = "cashaddress", .network = "bchtest"};
+    atomic_dex::mm2::address_format_t req{.format = "cashaddress", .network = "bchtest"};
     nlohmann::json j;
     
-    atomic_dex::mm2::to_json(j, request);
+    to_json(j, req);
     CHECK_EQ(j, expected_json);
 }

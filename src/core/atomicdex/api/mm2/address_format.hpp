@@ -14,18 +14,18 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Dependencies Headers
-#include <nlohmann/json.hpp>
+#pragma once
 
-//! Project Headers
-#include "format.address.hpp"
+#include <string>
+#include <nlohmann/json_fwd.hpp>
 
 namespace atomic_dex::mm2
 {
-    void
-    to_json(nlohmann::json& j, const format_address& cfg)
+    struct address_format_t
     {
-        j["format"] = cfg.format;
-        j["network"] = cfg.network;
-    }
-} // namespace atomic_dex::mm2
+        std::string                format;
+        std::optional<std::string> network{std::nullopt};
+    };
+    void to_json(nlohmann::json& j, const address_format_t& cfg);
+    void from_json(const nlohmann::json& j, address_format_t& cfg);
+}

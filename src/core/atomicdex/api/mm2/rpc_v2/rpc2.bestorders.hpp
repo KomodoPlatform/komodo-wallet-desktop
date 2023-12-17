@@ -18,45 +18,48 @@
 
 //! STD
 #include <optional>
+#include <string>
 
 //! Deps
 #include <nlohmann/json_fwd.hpp>
 
 //! Project Headers
+#include "atomicdex/api/mm2/rpc.hpp"
 #include "atomicdex/api/mm2/orderbook.order.contents.hpp"
 
 namespace atomic_dex::mm2
 {
-    struct best_orders_request
+    struct bestorders_rpc
     {
-        std::string coin;
-        std::string volume;
-        std::string action;
+        static constexpr auto endpoint  = "best_orders";
+        static constexpr bool is_v2     = true;
+
+        struct expected_request_type
+        {
+            std::string coin;
+            std::string volume;
+            std::string action;
+        };
+
+
+        struct expected_result_type
+        {
+            std::vector<order_contents> result;
+        };
+
+        using expected_error_type = rpc_basic_error_type;
+
+        expected_request_type                  request;
+        std::optional<expected_result_type>    result;
+        std::optional<expected_error_type>     error;
+        std::string                            raw_result;
     };
 
-    void to_json(nlohmann::json& j, const best_orders_request& req);
+    using bestorders_request_rpc    = bestorders_rpc::expected_request_type;
+    using bestorders_result_rpc     = bestorders_rpc::expected_result_type;
+    using bestorders_error_rpc      = bestorders_rpc::expected_error_type;
 
-    struct best_orders_answer_success
-    {
-        std::vector<order_contents> result;
-    };
+    void to_json(nlohmann::json& j, const bestorders_request_rpc& req);
+    void from_json(const nlohmann::json& j, bestorders_result_rpc& answer);
 
-    void from_json(const nlohmann::json& j, best_orders_answer_success& answer);
-
-    struct best_orders_answer
-    {
-        std::optional<best_orders_answer_success> result;
-        std::optional<std::string>                error;
-        std::string                               raw_result;      ///< internal
-        int                                       rpc_result_code; ///< internal
-    };
-
-    void from_json(const nlohmann::json& j, best_orders_answer& answer);
 } // namespace atomic_dex::mm2
-
-namespace atomic_dex
-{
-    using t_best_orders_request        = mm2::best_orders_request;
-    using t_best_orders_answer         = mm2::best_orders_answer;
-    using t_best_orders_answer_success = mm2::best_orders_answer_success;
-} // namespace atomic_dex

@@ -489,9 +489,10 @@ namespace atomic_dex
                 
                 if (!ec)
                 {
-                    // SPDLOG_DEBUG("[process_action::post_process_orderbook_finished]");
+                    SPDLOG_DEBUG("[process_action::post_process_orderbook_finished] Needs reset: {}", m_models_actions[orderbook_need_a_reset]);
+                    SPDLOG_DEBUG(">>>> triggers: {}", m_models_actions[orderbook_need_a_reset] ? "reset_orderbook" : "refresh_orderbook_model_data");
                     auto* wrapper = get_orderbook_wrapper();
-                    m_models_actions[orderbook_need_a_reset] ? wrapper->reset_orderbook(result) : wrapper->refresh_orderbook(result);
+                    m_models_actions[orderbook_need_a_reset] ? wrapper->reset_orderbook(result) : wrapper->refresh_orderbook_model_data(result);
 
                     if (m_models_actions[orderbook_need_a_reset] && this->m_current_trading_mode == TradingModeGadget::Pro)
                     {
@@ -814,6 +815,7 @@ namespace atomic_dex
 
                 //! Capping it
                 this->cap_volume();
+                SPDLOG_WARN("max_taker_vol this->cap_volume()");
             }
             else
             {
@@ -862,6 +864,7 @@ namespace atomic_dex
                         }
                     }
                     this->cap_volume();
+                    SPDLOG_WARN("max_taker_vol this->cap_volume()");
                 }
                 else
                 {
@@ -874,6 +877,7 @@ namespace atomic_dex
                     }
                     this->set_max_volume(QString::fromStdString(utils::format_float(res)));
                     this->cap_volume();
+                    SPDLOG_WARN("max_taker_vol this->cap_volume()");
                 }
             }
         }
@@ -886,10 +890,10 @@ namespace atomic_dex
          * cap_volume is called only in MarketMode::Buy, and in Sell mode if preferred order
          * if the current volume text field is > the new max_volume then set volume to max_volume
          */
-        if (auto std_volume = this->get_volume().toStdString();
-            !std_volume.empty() && safe_float(std_volume) > safe_float(this->get_max_volume().toStdString()))
+        auto max_volume = this->get_max_volume();
+        auto std_volume = this->get_volume().toStdString();
+        if (!std_volume.empty() && safe_float(std_volume) > safe_float(max_volume.toStdString()))
         {
-            auto max_volume = this->get_max_volume();
             if (!max_volume.isEmpty() && max_volume != "0")
             {
                 SPDLOG_DEBUG("capping volume because {} (volume) > {} (max_volume)", std_volume, max_volume.toStdString());

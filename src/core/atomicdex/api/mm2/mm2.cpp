@@ -23,7 +23,7 @@
 #include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.validateaddress.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.bestorders.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.status.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
@@ -717,7 +717,6 @@ namespace atomic_dex::mm2
     template mm2::active_swaps_answer           rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::show_priv_key_answer          rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::trade_preimage_answer         rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::best_orders_answer            rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::validate_address_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::convert_address_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::recover_funds_of_swap_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);

@@ -23,23 +23,22 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/generics.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.bestorders.hpp"
 
 //! Implementation RPC [best_orders]
 namespace atomic_dex::mm2
 {
     void
-    to_json(nlohmann::json& j, const best_orders_request& req)
+    to_json(nlohmann::json& j, const bestorders_request_rpc& req)
     {
-        SPDLOG_INFO("getting bestorders data...");
-        j["params"]["coin"]   = req.coin;
-        j["params"]["action"] = req.action;
-        j["params"]["request_by"]["type"] = "volume";
-        j["params"]["request_by"]["value"] = req.volume;
+        j["coin"]   = req.coin;
+        j["action"] = req.action;
+        j["request_by"]["type"] = "volume";
+        j["request_by"]["value"] = req.volume;
     }
 
     void
-    from_json(const nlohmann::json& j, best_orders_answer_success& answer)
+    from_json(const nlohmann::json& j, bestorders_result_rpc& resp)
     {
         if (j.empty())
         {
@@ -59,7 +58,7 @@ namespace atomic_dex::mm2
                     from_json(cur_order, contents);
                     if (uuid_visited.emplace(contents.uuid).second)
                     {
-                        answer.result.emplace_back(std::move(contents));
+                        resp.result.emplace_back(std::move(contents));
                     }
                     else
                     {
@@ -69,11 +68,4 @@ namespace atomic_dex::mm2
             }
         }
     }
-
-    void
-    from_json(const nlohmann::json& j, best_orders_answer& answer)
-    {
-        extract_rpc_json_answer<best_orders_answer_success>(j, answer);
-    }
-
 } // namespace atomic_dex::mm2

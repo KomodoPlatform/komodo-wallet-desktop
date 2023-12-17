@@ -18,9 +18,9 @@ namespace atomic_dex::mm2
         
         struct expected_request_type
         {
-            std::string     coin;
-            int             limit;
-            paging_options  paging_options;
+            std::string       coin;
+            int               limit;
+            paging_options_t  paging_options;
         };
         
         struct expected_result_type

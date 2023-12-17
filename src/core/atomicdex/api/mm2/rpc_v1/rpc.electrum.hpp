@@ -22,6 +22,7 @@
 //! Project Headers
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"
+#include "atomicdex/api/mm2/address_format.hpp"
 
 namespace atomic_dex::mm2
 {
@@ -34,7 +35,7 @@ namespace atomic_dex::mm2
         bool                                         with_tx_history{true};
         std::optional<std::string>                   swap_contract_address{std::nullopt};
         std::optional<std::string>                   fallback_swap_contract_address{std::nullopt};
-        std::optional<nlohmann::json>                address_format;
+        std::optional<address_format_t>              address_format;
         std::optional<nlohmann::json>                merge_params;
         std::optional<std::vector<std::string>>      bchd_urls;
         std::optional<bool>                          allow_slp_unsafe_conf;

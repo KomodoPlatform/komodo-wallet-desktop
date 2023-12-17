@@ -24,7 +24,7 @@ TEST_CASE("enable_bch_with_tokens_request_rpc serialization")
         .slp_tokens_requests = { { .ticker = "ASLP", .required_confirmations = 4 } },
         .required_confirmations = 5,
         .requires_notarization = false,
-        .address_format = enable_bch_with_tokens_request_rpc::address_format_t{ .format = "cashaddress", .network = "bitcoincash" },
+        .address_format = address_format_t{ .format = "cashaddress", .network = "bitcoincash" },
         .utxo_merge_params = enable_bch_with_tokens_request_rpc::utxo_merge_params_t{ .merge_at = 50, .check_every = 10, .max_merge_at_once = 25 }
     };
     

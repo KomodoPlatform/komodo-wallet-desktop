@@ -1,5 +1,6 @@
 #include <nlohmann/json.hpp>
 
+#include "atomicdex/api/mm2/address_format.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.enable_bch_with_tokens_rpc.hpp"
 
 namespace atomic_dex::mm2
@@ -33,11 +34,6 @@ namespace atomic_dex::mm2
         j["servers"] = in.servers;
     }
     
-    void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::address_format_t& in)
-    {
-        j["format"] = in.format;
-        j["network"] = in.network;
-    }
     
     void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::slp_token_request_t& in)
     {
