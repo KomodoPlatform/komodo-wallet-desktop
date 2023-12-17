@@ -180,9 +180,9 @@ namespace atomic_dex
             cfg.other_types = std::set<CoinType>();
             for (const auto& other_type: other_types) { cfg.other_types->emplace(get_coin_type_from_str(other_type)); }
         }
-        if (j.contains("utxo_merge"))
+        if (j.contains("merge_utxos"))
         {
-            cfg.utxo_merge = j.at("utxo_merge");
+            cfg.merge_utxos = j.at("merge_utxos");
         }
         if (j.contains("mm2_backup"))
         {

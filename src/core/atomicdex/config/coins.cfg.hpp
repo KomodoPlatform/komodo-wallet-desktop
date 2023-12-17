@@ -73,7 +73,7 @@ namespace atomic_dex
         std::optional<std::string>                        alias_ticker{std::nullopt};
         std::optional<bool>                               allow_slp_unsafe_conf;
         std::optional<bool>                               is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
-        std::optional<bool>                               utxo_merge{false};
+        std::optional<bool>                               merge_utxos{false};
         std::optional<std::string>                        swap_contract_address{std::nullopt};
         std::optional<std::string>                        fallback_swap_contract_address{std::nullopt};
         std::optional<std::string>                        gas_station_url{std::nullopt};

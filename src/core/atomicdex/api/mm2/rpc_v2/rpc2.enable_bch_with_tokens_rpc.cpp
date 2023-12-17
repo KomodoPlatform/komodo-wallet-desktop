@@ -33,20 +33,12 @@ namespace atomic_dex::mm2
     {
         j["servers"] = in.servers;
     }
-    
-    
+
     void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::slp_token_request_t& in)
     {
         j["ticker"] = in.ticker;
         if (in.required_confirmations)
             j["required_confirmations"] = in.required_confirmations.value();
-    }
-    
-    void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::utxo_merge_params_t& in)
-    {
-        j["merge_at"] = in.merge_at;
-        j["check_every"] = in.check_every;
-        j["max_merge_at_once"] = in.max_merge_at_once;
     }
 
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc& out)

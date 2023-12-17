@@ -20,12 +20,12 @@
 
 namespace atomic_dex::mm2
 {
-    struct utxo_merge_params
+    struct utxo_merge_params_t
     {
         std::size_t merge_at;
         std::size_t check_every;
         std::size_t max_merge_at_once;
     };
 
-    void to_json(nlohmann::json& j, const utxo_merge_params& cfg);
+    void to_json(nlohmann::json& j, const utxo_merge_params_t& cfg);
 }

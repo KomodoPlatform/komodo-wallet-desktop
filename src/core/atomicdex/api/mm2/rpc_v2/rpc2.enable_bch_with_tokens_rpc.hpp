@@ -18,10 +18,11 @@
 
 #include <vector>
 
-#include "atomicdex/api/mm2/rpc.hpp"
-#include "atomicdex/api/mm2/balance_info.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/api/mm2/address_format.hpp"
+#include "atomicdex/api/mm2/balance_info.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
+#include "atomicdex/api/mm2/utxo.merge.params.hpp"
 
 namespace atomic_dex::mm2
 {
@@ -43,13 +44,6 @@ namespace atomic_dex::mm2
             {
                 std::string         ticker;
                 std::optional<int>  required_confirmations;
-            };
-            
-            struct utxo_merge_params_t
-            {
-                int merge_at;
-                int check_every;
-                int max_merge_at_once;
             };
 
             std::string                         ticker;
@@ -102,7 +96,6 @@ namespace atomic_dex::mm2
     void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::mode_t::data& in);
     void to_json(nlohmann::json& j, const address_format_t& in);
     void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::slp_token_request_t& in);
-    void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::utxo_merge_params_t& in);
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc& out);
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc::derivation_method_t& out);
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc::bch_address_infos_t& out);

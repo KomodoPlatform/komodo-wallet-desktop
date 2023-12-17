@@ -778,10 +778,10 @@ namespace atomic_dex
                 .is_testnet      = coin_config.is_testnet.value_or(false),
                 .with_tx_history = true
             };
-            if (coin_config.utxo_merge.value_or(false))
+            if (coin_config.merge_utxos.value_or(false))
             {
-                mm2::utxo_merge_params  merge_params{.merge_at = 250, .check_every = 300, .max_merge_at_once = 125};
-                nlohmann::json          json_merge_params;
+                mm2::utxo_merge_params_t  merge_params{.merge_at = 250, .check_every = 300, .max_merge_at_once = 125};
+                nlohmann::json            json_merge_params;
                 
                 mm2::to_json(json_merge_params, merge_params);
                 request.merge_params = json_merge_params;
