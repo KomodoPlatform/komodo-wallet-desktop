@@ -43,6 +43,7 @@ namespace atomic_dex::mm2
     nlohmann::json basic_batch_answer(const web::http::http_response& resp);
 
     std::string rpc_version();
+    std::string peer_id();
 
     struct trade_fee_request
     {

@@ -707,6 +707,11 @@ namespace atomic_dex
         return QString::fromStdString(mm2::rpc_version());
     }
 
+    QString settings_page::get_peerid()
+    {
+        return QString::fromStdString(mm2::peer_id());
+    }
+
     QString settings_page::get_export_folder()
     {
         return QString::fromStdString(utils::get_atomic_dex_export_folder().string());

@@ -615,6 +615,33 @@ namespace atomic_dex::mm2
         return "";
     }
 
+    std::string
+    peer_id()
+    {
+        nlohmann::json json_data = template_request("get_my_peer_id");
+        try
+        {
+            auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(atomic_dex::g_dex_rpc));
+            web::http::http_request request;
+            request.set_method(web::http::methods::POST);
+            request.set_body(json_data.dump());
+            web::http::http_response resp = client->request(request).get();
+            if (resp.status_code() == 200)
+            {
+                std::string    body      = TO_STD_STR(resp.extract_string(true).get());
+                nlohmann::json body_json = nlohmann::json::parse(body);
+                return body_json.at("result").get<std::string>();
+            }
+
+            return "error occured during rpc_version";
+        }
+        catch (const web::http::http_exception& exception)
+        {
+            return "error occured during rpc_version";
+        }
+        return "";
+    }
+
     kmd_rewards_info_answer
     process_kmd_rewards_answer(nlohmann::json result)
     {
