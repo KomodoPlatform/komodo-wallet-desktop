@@ -39,6 +39,8 @@
 #include "atomicdex/api/mm2/rpc_v2/rpc2.enable_slp_rpc.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.enable_tendermint_with_assets.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.enable_tendermint_token.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_erc20.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_eth_with_tokens.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/data/dex/orders.and.swaps.data.hpp"
@@ -178,6 +180,8 @@ namespace atomic_dex
        void enable_slp_coins(const t_coins& coins);
        void enable_slp_testnet_coin(coin_config coin_config);
        void enable_slp_testnet_coins(const t_coins& coins);
+       void enable_erc20_coin(coin_config coin_config, std::string parent_ticker);
+       void enable_erc20_coins(const t_coins& coins, const std::string parent_ticker);
        void enable_tendermint_coin(coin_config coin_config, std::string parent_ticker);
        void enable_tendermint_coins(const t_coins& coins, const std::string parent_ticker);
        void enable_zhtlc(const t_coins& coins);
@@ -187,6 +191,8 @@ namespace atomic_dex
        void process_balance_answer(const mm2::enable_slp_rpc& rpc);                // Called after enabling an SLP coin.
        void process_balance_answer(const mm2::enable_tendermint_with_assets_rpc& rpc);
        void process_balance_answer(const mm2::enable_tendermint_token_rpc& rpc);
+       void process_balance_answer(const mm2::enable_eth_with_tokens_rpc& rpc);
+       void process_balance_answer(const mm2::enable_erc20_rpc& rpc);
 
      public:
        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)

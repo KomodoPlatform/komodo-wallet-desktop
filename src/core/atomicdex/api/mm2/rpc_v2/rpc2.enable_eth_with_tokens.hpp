@@ -69,8 +69,8 @@ namespace atomic_dex::mm2
             };
 
             std::size_t current_block;
-            std::unordered_map<std::string, eth_address_infos_t> eth_addresses_infos;
-            std::unordered_map<std::string, erc20_address_infos_t> erc20_addresses_infos;
+            std::unordered_map<std::string, eth_address_infos_t>    eth_addresses_infos;
+            std::unordered_map<std::string, erc20_address_infos_t>  erc20_addresses_infos;
         };
 
         using expected_error_type = rpc_basic_error_type;
@@ -78,6 +78,7 @@ namespace atomic_dex::mm2
         expected_request_type                   request;
         std::optional<expected_result_type>     result;
         std::optional<expected_error_type>      error;
+        std::string                             raw_result;
     };
 
     using enable_eth_with_tokens_request_rpc    = enable_eth_with_tokens_rpc::expected_request_type;

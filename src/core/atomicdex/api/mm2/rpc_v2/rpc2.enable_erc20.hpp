@@ -44,9 +44,10 @@ namespace atomic_dex::mm2
 
         using expected_error_type = rpc_basic_error_type;
 
-        expected_request_type                  request;
-        std::optional<expected_result_type>    result;
-        std::optional<expected_error_type>     error;
+        expected_request_type                   request;
+        std::optional<expected_result_type>     result;
+        std::optional<expected_error_type>      error;
+        std::string                             raw_result;
     };
 
     using enable_erc20_rpc_request    = enable_erc20_rpc::expected_request_type;
