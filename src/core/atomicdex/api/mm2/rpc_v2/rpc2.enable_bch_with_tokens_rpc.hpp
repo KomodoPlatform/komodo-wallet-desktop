@@ -22,7 +22,7 @@
 #include "atomicdex/api/mm2/address_format.hpp"
 #include "atomicdex/api/mm2/balance_info.hpp"
 #include "atomicdex/api/mm2/rpc.hpp"
-#include "atomicdex/api/mm2/utxo.merge.params.hpp"
+#include "atomicdex/api/mm2/utxo_merge_params.hpp"
 
 namespace atomic_dex::mm2
 {

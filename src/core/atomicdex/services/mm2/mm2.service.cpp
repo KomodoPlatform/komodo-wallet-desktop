@@ -27,7 +27,7 @@
 #include <QProcess>
 #include <QSettings>
 
-#include "atomicdex/api/mm2/utxo.merge.params.hpp"
+#include "atomicdex/api/mm2/utxo_merge_params.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.electrum.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.enable.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"

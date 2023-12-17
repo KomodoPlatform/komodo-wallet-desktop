@@ -16,7 +16,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "utxo.merge.params.hpp"
+#include "utxo_merge_params.hpp"
 
 namespace atomic_dex::mm2
 {

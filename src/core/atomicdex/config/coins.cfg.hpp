@@ -22,7 +22,7 @@
 #include <nlohmann/json.hpp>
 
 #include "atomicdex/api/mm2/mm2.constants.hpp"
-#include "atomicdex/api/mm2/utxo.merge.params.hpp"
+#include "atomicdex/api/mm2/utxo_merge_params.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/constants/qt.coins.enums.hpp"

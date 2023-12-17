@@ -53,8 +53,6 @@ namespace atomic_dex
             {
                 // SPDLOG_INFO("process_best_orders");
                 using namespace std::string_literals;
-                using bestorders_req              = mm2::bestorders_rpc::expected_request_type;
-                using bestorders_resp             = mm2::bestorders_rpc::expected_result_type;
                 const auto&            trading_pg = m_system_manager.get_system<trading_page>();
                 auto                   volume     = trading_pg.get_volume().toStdString();
                 auto                   action     = trading_pg.get_market_mode() == MarketMode::Buy ? "buy"s : "sell"s;
@@ -88,10 +86,6 @@ namespace atomic_dex
                 emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
                 mm2::bestorders_rpc rpc{.request={.coin = std::move(coin), .volume = std::move(volume), .action = std::move(action)}};
                 mm2_system.get_mm2_client().process_rpc_async<atomic_dex::mm2::bestorders_rpc>(rpc.request, callback);
-
-                //! Treat answer
-                auto answer_functor = [this, &trading_pg](web::http::http_response resp) {
-                };
             }
             else
             {
