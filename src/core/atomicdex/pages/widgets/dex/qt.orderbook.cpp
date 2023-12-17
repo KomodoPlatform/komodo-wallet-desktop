@@ -174,11 +174,12 @@ namespace atomic_dex
     {
         if (safe_float(m_system_manager.get_system<trading_page>().get_volume().toStdString()) > 0)
         {
-            SPDLOG_INFO("qt_orderbook_wrapper::refresh_best_orders()");
+            SPDLOG_INFO("qt_orderbook_wrapper::refresh_best_orders() >> process_best_orders()");
             this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
         }
         else
         {
+            SPDLOG_INFO("qt_orderbook_wrapper::refresh_best_orders() >> get_best_orders()->clear_orderbook()");
             get_best_orders()->clear_orderbook();
         }
     }
