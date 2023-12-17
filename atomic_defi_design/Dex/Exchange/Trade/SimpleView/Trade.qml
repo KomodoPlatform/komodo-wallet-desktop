@@ -398,7 +398,7 @@ ClipRRect // Trade Card
 
                         width: 60
 
-                        text: _selectedTickerIcon.enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedTicker) : qsTr("Pick a coin")
+                        text: _selectedTickerIcon.enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedTicker, false, true) : qsTr("Pick a coin")
                         font.pixelSize: Constants.Style.textSizeSmall2
 
                         wrapMode: Text.NoWrap
@@ -580,7 +580,7 @@ ClipRRect // Trade Card
                         anchors.leftMargin: 10
                         width: 60
 
-                        text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin) : ""
+                        text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin, false, true) : ""
                         font.pixelSize: Constants.Style.textSizeSmall2
                         wrapMode: Text.NoWrap
 

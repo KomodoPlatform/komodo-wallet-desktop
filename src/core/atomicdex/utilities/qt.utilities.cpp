@@ -165,8 +165,8 @@ namespace atomic_dex
     }
 
     QString
-    qt_utilities::retrieve_main_ticker(const QString& ticker) const
+    qt_utilities::retrieve_main_ticker(const QString& ticker, bool segwit_only, bool exclude_segwit) const
     {
-        return QString::fromStdString(atomic_dex::utils::retrieve_main_ticker(ticker.toStdString()));
+        return QString::fromStdString(atomic_dex::utils::retrieve_main_ticker(ticker.toStdString(), segwit_only, exclude_segwit));
     }
 } // namespace atomic_dex

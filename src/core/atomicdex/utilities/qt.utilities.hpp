@@ -92,6 +92,6 @@ namespace atomic_dex
          * @return a ticker
          * @example -> retrieve_main_ticker("BUSD") -> BUSD retrieve_main_ticker("BUSD-ERC20") -> BUSD
          */
-        Q_INVOKABLE QString retrieve_main_ticker(const QString& ticker) const;
+        Q_INVOKABLE QString retrieve_main_ticker(const QString& ticker, bool segwit_only = false, bool exclude_segwit = false) const;
     };
 } // namespace atomic_dex

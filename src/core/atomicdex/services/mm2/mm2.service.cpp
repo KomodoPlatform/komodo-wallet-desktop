@@ -287,27 +287,25 @@ namespace atomic_dex
 
         if (s >= 5s)
         {
-            if (m_nb_update_required > 0)
+            SPDLOG_DEBUG("coin_status_update required, {}", m_nb_update_required);
+            
+            auto                     coins = this->get_enabled_coins();
+            std::vector<std::string> tickers;
+            for (auto&& coin: coins)
             {
-                auto                     coins = this->get_enabled_coins();
-                std::vector<std::string> tickers;
-                for (auto&& coin: coins)
+                if (!coin.active)
                 {
-                    SPDLOG_DEBUG("{}: Active [{}]", coin.ticker, coin.active);
-                    if (!coin.active)
-                    {
-                        tickers.push_back(coin.ticker);
-                    }
+                    tickers.push_back(coin.ticker);
                 }
-                if (!tickers.empty())
-                {
-                    SPDLOG_DEBUG("coin_status_update required, {}", m_nb_update_required);
-                    update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
-                }
-                m_nb_update_required -= 1;
             }
-            fetch_current_orderbook_thread(false);
-            batch_fetch_orders_and_swap();
+            SPDLOG_DEBUG("Making sure {} enabled coins are marked as active", tickers.size());
+            if (!tickers.empty())
+            {
+                // Mark coins as active internally, and updates the coins file
+                update_coin_status(this->m_current_wallet_name, tickers, true, m_coins_informations, m_coin_cfg_mutex);
+            }
+            fetch_current_orderbook_thread(false); // process_orderbook (not a reset) if on trading page
+            batch_fetch_orders_and_swap(); // gets 'my_orders', 'my_recent_swaps' & 'active_swaps'
             m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
 
@@ -1866,7 +1864,7 @@ namespace atomic_dex
 
     void mm2_service::fetch_current_orderbook_thread(bool is_a_reset)
     {
-        //! m_orderbook_thread_active ? SPDLOG_WARN("Nothing to achieve, sleeping") : SPDLOG_INFO("Fetch current orderbook");
+        m_orderbook_thread_active ? SPDLOG_WARN("Not fetching orderbook, m_orderbook_thread_active is true") : SPDLOG_INFO("Fetching current orderbook");
 
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
         if (!m_orderbook_thread_active)

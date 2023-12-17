@@ -93,7 +93,7 @@ namespace atomic_dex
 
        //! Atomicity / Threads
        std::atomic_bool m_mm2_running{false};
-       std::atomic_bool m_orderbook_thread_active{false};
+       std::atomic_bool m_orderbook_thread_active{false};  // Only active when in trading view (pro and simple)
        std::atomic_size_t m_nb_update_required{0};
        std::thread      m_mm2_init_thread;
 
