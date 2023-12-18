@@ -16,6 +16,7 @@
 
 #include <QJsonDocument>
 #include <QSettings>
+#include <boost/algorithm/string/replace.hpp>
 
 //! Project Headers
 #include "atomicdex/api/mm2/rpc_v1/rpc.buy.hpp"
@@ -107,8 +108,13 @@ namespace atomic_dex
     }
 
     void
-    trading_page::swap_market_pair()
+    trading_page::swap_market_pair(bool involves_segwit)
     {
+        if (involves_segwit)
+        {
+            // TODO: Need to resolve this case. It is not clear what to do here, backend overrides are not reflected on the front end as expected.
+            SPDLOG_DEBUG("swap_market_pair involves_segwit. This is undefined behaviour");
+        }
         const auto* market_selector_mdl = get_market_pairs_mdl();
         set_current_orderbook(market_selector_mdl->get_right_selected_coin(), market_selector_mdl->get_left_selected_coin());
     }
@@ -985,51 +991,60 @@ namespace atomic_dex
     }
 
     bool
-    trading_page::set_pair(bool is_left_side, const QString& changed_ticker)
+    trading_page::set_pair(bool is_left_side, const QString& requested_ticker)
     {
-        // SPDLOG_DEBUG("Changed ticker: {}", changed_ticker.toStdString());
-        const auto* market_pair = get_market_pairs_mdl();
-        auto        base        = market_pair->get_left_selected_coin();
-        auto        rel         = market_pair->get_right_selected_coin();
+        // SPDLOG_DEBUG("Changed ticker: {}", requested_ticker.toStdString());
+        const auto* market_pair      = get_market_pairs_mdl();
+        auto        base             = market_pair->get_left_selected_coin();
+        auto        rel              = market_pair->get_right_selected_coin();
+        std::string requested_coin   = boost::replace_all_copy(requested_ticker.toStdString(), "-segwit", "");
+        std::string base_coin        = boost::replace_all_copy(base.toStdString(), "-segwit", "");
+        std::string rel_coin         = boost::replace_all_copy(rel.toStdString(), "-segwit", "");
+        bool        involves_segwit  = false;
 
+        if (requested_coin == base_coin && requested_coin == rel_coin)
+        {
+            SPDLOG_DEBUG("Trying to select a segwit self pair. Naughty boy!");
+            involves_segwit = true;
+        }
         bool is_swap = false;
-        if (!changed_ticker.isEmpty())
+        if (!requested_ticker.isEmpty())
         {
             if (is_left_side)
             {
-                if (base == changed_ticker)
+                if (base == requested_ticker)
                 {
                     return false;
                 }
-                if (base != changed_ticker && rel == changed_ticker)
+                if (base != requested_ticker && rel == requested_ticker)
                 {
                     is_swap = true;
                 }
                 else
                 {
-                    base = changed_ticker;
+                    base = requested_ticker;
                 }
             }
             else
             {
-                if (rel == changed_ticker)
+                if (rel == requested_ticker)
                 {
                     return false;
                 }
-                if (rel != changed_ticker && base == changed_ticker)
+                if (rel != requested_ticker && base == requested_ticker)
                 {
                     is_swap = true;
                 }
                 else
                 {
-                    rel = changed_ticker;
+                    rel = requested_ticker;
                 }
             }
         }
 
         if (is_swap)
         {
-            swap_market_pair();
+            swap_market_pair(involves_segwit);
             base = market_pair->get_left_selected_coin();
             rel  = market_pair->get_right_selected_coin();
         }

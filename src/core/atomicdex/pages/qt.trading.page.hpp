@@ -155,7 +155,7 @@ namespace atomic_dex
         Q_INVOKABLE void     clear_forms(QString from);
 
         //! Trading business
-        Q_INVOKABLE void swap_market_pair(); ///< market_selector (button to switch market selector and orderbook)
+        Q_INVOKABLE void swap_market_pair(bool involves_segwit = false); ///< market_selector (button to switch market selector and orderbook)
         Q_INVOKABLE bool set_pair(bool is_left_side, const QString& changed_ticker);
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
