@@ -254,7 +254,7 @@ namespace atomic_dex::utils
     std::string
     retrieve_main_ticker(const std::string& ticker, const bool segwit_only)
     {
-        auto pos = ticker.find('-');
+        auto pos = ticker.find("-");
         if (segwit_only)
         {
             if (ticker.find("-segwit") != std::string::npos)
