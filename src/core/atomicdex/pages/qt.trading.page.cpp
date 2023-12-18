@@ -103,7 +103,7 @@ namespace atomic_dex
         }
 
         emit mm2MinTradeVolChanged();
-        dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
+        dispatcher_.trigger<refresh_orderbook_model_data>(base.toStdString(), rel.toStdString());
     }
 
     void

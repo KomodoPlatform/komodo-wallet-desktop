@@ -152,7 +152,7 @@ namespace atomic_dex
        ~mm2_service() final;
 
        //! Events
-       void on_refresh_orderbook_model_data(const orderbook_refresh& evt);
+       void on_refresh_orderbook_model_data(const refresh_orderbook_model_data& evt);
 
        void on_gui_enter_trading(const gui_enter_trading& evt);
 
@@ -198,6 +198,7 @@ namespace atomic_dex
        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
        void                         add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
        void                         remove_custom_coin(const std::string& ticker);
+       void                         update_sync_ticker_pair(std::string base, std::string rel);
        [[nodiscard]] bool           is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
        [[nodiscard]] bool           is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
        [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;

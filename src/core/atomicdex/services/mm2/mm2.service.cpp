@@ -268,7 +268,7 @@ namespace atomic_dex
         m_info_clock      = std::chrono::high_resolution_clock::now();
         dispatcher_.sink<gui_enter_trading>().connect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().connect<&mm2_service::on_gui_leave_trading>(*this);
-        dispatcher_.sink<orderbook_refresh>().connect<&mm2_service::on_refresh_orderbook_model_data>(*this);
+        dispatcher_.sink<refresh_orderbook_model_data>().connect<&mm2_service::on_refresh_orderbook_model_data>(*this);
         SPDLOG_INFO("mm2_service created");
     }
 
@@ -321,7 +321,7 @@ namespace atomic_dex
         SPDLOG_INFO("destroying mm2 service...");
         dispatcher_.sink<gui_enter_trading>().disconnect<&mm2_service::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().disconnect<&mm2_service::on_gui_leave_trading>(*this);
-        dispatcher_.sink<orderbook_refresh>().disconnect<&mm2_service::on_refresh_orderbook_model_data>(*this);
+        dispatcher_.sink<refresh_orderbook_model_data>().disconnect<&mm2_service::on_refresh_orderbook_model_data>(*this);
         SPDLOG_INFO("mm2 signals successfully disconnected");
         bool mm2_stopped = false;
         if (m_mm2_running)
@@ -1929,7 +1929,7 @@ namespace atomic_dex
                     process_orderbook_extras(batch, is_a_reset);
                 }
                 m_orderbook = rpc.result.value();
-                SPDLOG_ERROR("Triggering [process_orderbook_finished]: {}", is_a_reset);
+                SPDLOG_DEBUG("Triggering [process_orderbook_finished]: {}", is_a_reset);
                 this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
             }
         };
@@ -2467,7 +2467,14 @@ namespace atomic_dex
     }
 
     void
-    mm2_service::on_refresh_orderbook_model_data(const orderbook_refresh& evt)
+    mm2_service::update_sync_ticker_pair(std::string base, std::string rel)
+    {
+        SPDLOG_DEBUG("update_sync_ticker_pair: [{} / {}]", base, rel);
+        this->m_synchronized_ticker_pair = std::make_pair(base, rel);
+    }
+
+    void
+    mm2_service::on_refresh_orderbook_model_data(const refresh_orderbook_model_data& evt)
     {
         SPDLOG_DEBUG("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
         this->m_synchronized_ticker_pair = std::make_pair(evt.base, evt.rel);

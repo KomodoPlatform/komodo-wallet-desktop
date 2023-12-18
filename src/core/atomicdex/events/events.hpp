@@ -117,7 +117,7 @@ namespace atomic_dex
         std::string ticker;
     };
 
-    struct orderbook_refresh
+    struct refresh_orderbook_model_data
     {
         std::string base;
         std::string rel;
