@@ -584,7 +584,9 @@ namespace atomic_dex::mm2
         if (is_protocol_v2)
         {
             request["mmrpc"] = "2.0";
+            request["id"] = 42;
         }
+        SPDLOG_INFO("template_request: {}", request.dump(4));
         return request;
     }
 
