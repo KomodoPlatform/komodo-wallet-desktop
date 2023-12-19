@@ -594,6 +594,7 @@ namespace atomic_dex::mm2
     rpc_version()
     {
         nlohmann::json json_data = template_request("version");
+        SPDLOG_DEBUG("version request {}", json_data.dump(4));
         try
         {
             auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(atomic_dex::g_dex_rpc));

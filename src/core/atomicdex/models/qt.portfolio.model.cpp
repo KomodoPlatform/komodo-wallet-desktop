@@ -59,10 +59,12 @@ namespace atomic_dex
 
         for (auto&& ticker: tickers)
         {
-            SPDLOG_INFO("initialize_portfolio for ticker: {}", ticker);
             if (m_ticker_registry.find(ticker) != m_ticker_registry.end())
+            {
                 SPDLOG_INFO("ticker {} not in m_ticker_registry", ticker);
                 continue;
+            }
+            SPDLOG_INFO("initialize_portfolio for ticker: {}", ticker);
             const auto& mm2_system    = this->m_system_manager.get_system<mm2_service>();
             const auto& price_service = this->m_system_manager.get_system<global_price_service>();
             const auto& provider      = this->m_system_manager.get_system<komodo_prices_provider>();
@@ -118,7 +120,7 @@ namespace atomic_dex
         {
             if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
             {
-                SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", coin.ticker);
+                SPDLOG_WARN("[update_currency_values] ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 return false;
             }
             const std::string& ticker = coin.ticker;
@@ -154,7 +156,7 @@ namespace atomic_dex
                 auto        coin_info          = mm2_system.get_coin_info(ticker);
                 QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
                 update_value(ActivationStatus, status, idx, *this);
-                // SPDLOG_DEBUG("updated currency values of: {}", ticker);
+                SPDLOG_DEBUG("updated currency values of: {}", ticker);
             }
         }
         return true;
