@@ -41,9 +41,9 @@ namespace atomic_dex::mm2
             {
                 j["swap_contract_address"] = cfg.swap_contract_address.value();
             }
-            if (cfg.fallback_swap_contract_address.has_value())
+            if (cfg.fallback_swap_contract.has_value())
             {
-                j["fallback_swap_contract_address"] = cfg.fallback_swap_contract_address.value();
+                j["fallback_swap_contract"] = cfg.fallback_swap_contract.value();
             }
         }
 

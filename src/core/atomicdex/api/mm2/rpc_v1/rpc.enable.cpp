@@ -61,9 +61,9 @@ namespace atomic_dex::mm2
         default:
             j["urls"]                   = cfg.urls;
             j["swap_contract_address"]  = cfg.swap_contract_address;
-            if (cfg.fallback_swap_contract_address.has_value())
+            if (cfg.fallback_swap_contract.has_value())
             {
-                j["fallback_swap_contract"] = cfg.fallback_swap_contract_address.value();
+                j["fallback_swap_contract"] = cfg.fallback_swap_contract.value();
             }
             break;
         }
