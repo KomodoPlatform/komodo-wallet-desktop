@@ -59,21 +59,25 @@ namespace atomic_dex
 
         for (auto&& ticker: tickers)
         {
+            SPDLOG_INFO("initialize_portfolio for ticker: {}", ticker);
             if (m_ticker_registry.find(ticker) != m_ticker_registry.end())
+                SPDLOG_INFO("ticker {} not in m_ticker_registry", ticker);
                 continue;
             const auto& mm2_system    = this->m_system_manager.get_system<mm2_service>();
             const auto& price_service = this->m_system_manager.get_system<global_price_service>();
             const auto& provider      = this->m_system_manager.get_system<komodo_prices_provider>();
             auto        coin          = mm2_system.get_coin_info(ticker);
-
+            SPDLOG_INFO("Building portfolio for ticker {}", coin.ticker);
             std::error_code ec;
+            std::string balance       = mm2_system.my_balance(coin.ticker, ec);
+            SPDLOG_INFO("balance for ticker {}: {}", coin.ticker, balance);
             const QString   change_24h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
             portfolio_data  data{
                 .ticker                           = QString::fromStdString(coin.ticker),
                 .gui_ticker                       = QString::fromStdString(coin.gui_ticker),
                 .coin_type                        = QString::fromStdString(coin.type),
                 .name                             = QString::fromStdString(coin.name),
-                .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
+                .balance                          = QString::fromStdString(balance),
                 .main_currency_balance            = QString::fromStdString(price_service.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
                 .change_24h                       = change_24h,
                 .main_currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, true)),
