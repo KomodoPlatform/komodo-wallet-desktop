@@ -75,7 +75,7 @@ namespace atomic_dex
         std::optional<bool>                               is_testnet{false}; ///< True if testnet (tBTC, tQTUM, QRC-20 on testnet, tETH)
         std::optional<bool>                               merge_utxos{false};
         std::optional<std::string>                        swap_contract_address{std::nullopt};
-        std::optional<std::string>                        fallback_swap_contract_address{std::nullopt};
+        std::optional<std::string>                        fallback_swap_contract{std::nullopt};
         std::optional<std::string>                        gas_station_url{std::nullopt};
         std::optional<std::string>                        matic_gas_station_url{std::nullopt};
         std::optional<std::string>                        testnet_matic_gas_station_url{std::nullopt};

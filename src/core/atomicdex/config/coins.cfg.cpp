@@ -254,10 +254,11 @@ namespace atomic_dex
         {
             cfg.swap_contract_address = j["swap_contract_address"];
         }
-        if (j.contains("fallback_swap_contract_address"))
+        if (j.contains("fallback_swap_contract"))
         {
-            cfg.fallback_swap_contract_address = j["fallback_swap_contract_address"];
+            cfg.fallback_swap_contract = j["fallback_swap_contract"];
         }
+
         // Gas station urls
         if (j.contains("gas_station_url"))
         {
