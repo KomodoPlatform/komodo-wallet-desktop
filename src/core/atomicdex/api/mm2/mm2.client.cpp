@@ -63,6 +63,7 @@ namespace
         if (Rpc::is_v2)
         {
             json_req["mmrpc"] = "2.0";
+            json_req["id"] = 42;
             json_req.push_back({"params", json_data});
         }
         else
@@ -76,19 +77,40 @@ namespace
     template <atomic_dex::mm2::rpc Rpc>
     Rpc process_rpc_answer(const web::http::http_response& answer)
     {
-        // SPDLOG_DEBUG("rpc answer: {}", TO_STD_STR(answer.extract_string(true).get()));
+        std::string body = TO_STD_STR(answer.extract_string(true).get());
+        SPDLOG_DEBUG("rpc answer: {}", body);
+        nlohmann::json json_answer;
         Rpc rpc;
-        auto json_answer = nlohmann::json::parse(TO_STD_STR(answer.extract_string(true).get()));
+        try
+        {
+            json_answer = nlohmann::json::parse(body);
+            SPDLOG_DEBUG("rpc answer: {}", json_answer.dump(4));
+        }
+        catch (const nlohmann::json::parse_error& error)
+        {
+            SPDLOG_ERROR("rpc answer error: {}", error.what());
+        }
         rpc.raw_result = json_answer.at("result").dump();
+
         if (Rpc::is_v2)
         {
+            SPDLOG_DEBUG("rpc answer: v2");
             if (answer.status_code() == 200)
+            {
+                SPDLOG_DEBUG("rpc answer: 200");
                 rpc.result = json_answer.at("result").get<typename Rpc::expected_result_type>();
+            }
             else
+            {
+                SPDLOG_DEBUG("rpc answer: error");
                 rpc.error = json_answer.get<typename Rpc::expected_error_type>();
+            }
         }
         else
+        {
+            SPDLOG_DEBUG("rpc answer: v2");
             rpc.result = json_answer.get<typename Rpc::expected_result_type>();
+        }
         return rpc;
     }
 } // namespace
@@ -165,6 +187,7 @@ namespace atomic_dex::mm2
         process_rpc_async(request_type{}, on_rpc_processed);
     }
 
+    // template void mm2_client::process_rpc_async<my_balance_rpc>(const std::function<void(orderbook_rpc)>&);
     template void mm2_client::process_rpc_async<orderbook_rpc>(const std::function<void(orderbook_rpc)>&);
     template void mm2_client::process_rpc_async<bestorders_rpc>(const std::function<void(bestorders_rpc)>&);
     template void mm2_client::process_rpc_async<enable_slp_rpc>(const std::function<void(enable_slp_rpc)>&);
@@ -188,9 +211,11 @@ namespace atomic_dex::mm2
                                try
                                {
                                    auto rpc = process_rpc_answer<Rpc>(resp);
-                                   // SPDLOG_DEBUG("process_rpc_answer rpc.result: {}", rpc.raw_result);
+                                   SPDLOG_DEBUG("process_rpc_answer rpc.result: {}", rpc.raw_result);
                                    rpc.request = request;
+                                   SPDLOG_DEBUG("process_rpc_answer A");
                                    on_rpc_processed(rpc);
+                                   SPDLOG_DEBUG("process_rpc_answer B");
                                }
                                catch (const std::exception& ex)
                                {
