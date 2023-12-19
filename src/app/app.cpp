@@ -530,9 +530,15 @@ namespace atomic_dex
         {
             SPDLOG_DEBUG("on_coin_fully_initialized_event");
 #if !defined(_WIN32)
-            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
+            for (auto&& ticker: evt.tickers) {
+                SPDLOG_DEBUG("Adding {} to m_portfolio_queue", ticker);
+                m_portfolio_queue.push(strdup(ticker.c_str()));
+            }
 #else
-            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(_strdup(ticker.c_str())); }
+            for (auto&& ticker: evt.tickers) {
+                SPDLOG_DEBUG("Adding {} to m_portfolio_queue", ticker);
+                m_portfolio_queue.push(_strdup(ticker.c_str()));
+            }
 #endif
         }
     }
