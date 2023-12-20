@@ -420,6 +420,8 @@ namespace atomic_dex
         return std_path_to_qstring(utils::get_runtime_coins_path());
     }
 
+    // QRC20 option in add custom coin form has been disabled due to unresolved issues.
+    // This code remains for when we re-enable it in the future
     void settings_page::process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath)
     {
         this->set_fetching_custom_token_data_busy(true);
@@ -515,9 +517,9 @@ namespace atomic_dex
         {
             switch (coin_type)
             {
-            case CoinTypeGadget::QRC20:
-                return std::make_tuple(
-                    &mm2::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
+            // case CoinTypeGadget::QRC20:
+            //     return std::make_tuple(
+            //         &mm2::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
             case CoinTypeGadget::ERC20:
                 return std::make_tuple(
                     &mm2::g_etherscan_proxy_http_client, "/api/v1/token_infos/erc20/"s + contract_address.toStdString(), "ERC20"s, "ETH"s, "ERC-20"s,
@@ -544,24 +546,25 @@ namespace atomic_dex
 
             if (resp.status_code() == 200)
             {
-                nlohmann::json raw_parent_cfg = mm2.get_raw_mm2_ticker_cfg(parent_chain);
-                nlohmann::json body_json      = nlohmann::json::parse(body).at("result")[0];
-                const auto     ticker         = body_json.at("symbol").get<std::string>() + "-" + type;
-                const auto     name_lowercase = body_json.at("tokenName").get<std::string>();
+                nlohmann::json raw_parent_cfg             = mm2.get_raw_mm2_ticker_cfg(parent_chain);
+                nlohmann::json body_json                  = nlohmann::json::parse(body).at("result")[0];
+                const auto     ticker                     = body_json.at("symbol").get<std::string>() + "-" + type;
+                const auto     name_lowercase             = body_json.at("tokenName").get<std::string>();
+                const auto&    coin_info                  = mm2.get_coin_info(parent_chain);
+                std::string token_contract_address        = contract_address.toStdString();
+                boost::algorithm::to_lower(token_contract_address);
+                utils::to_eth_checksum(token_contract_address);
 
                 out["ticker"] = ticker;
                 out["name"]   = name_lowercase;
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), atomic_dex::utils::retrieve_main_ticker(ticker));
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
-                    out["mm2_cfg"]["protocol"]                              = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["type"]                      = parent_type;
-                    out["mm2_cfg"]["protocol"]["protocol_data"]             = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"] = platform;
-                    std::string out_address                                 = contract_address.toStdString();
-                    boost::algorithm::to_lower(out_address);
-                    utils::to_eth_checksum(out_address);
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
+                    out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["type"]                              = parent_type;
+                    out["mm2_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = platform;
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = token_contract_address;
                     out["mm2_cfg"]["rpcport"]                                       = raw_parent_cfg.at("rpcport");
                     out["mm2_cfg"]["coin"]                                          = ticker;
                     out["mm2_cfg"]["mm2"]                                           = 1;
@@ -577,18 +580,57 @@ namespace atomic_dex
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
                     //!
-                    out["adex_cfg"][ticker]                      = nlohmann::json::object();
-                    out["adex_cfg"][ticker]["coin"]              = ticker;
-                    out["adex_cfg"][ticker]["name"]              = name_lowercase;
-                    out["adex_cfg"][ticker]["coingecko_id"]      = coingecko_id.toStdString();
-                    const auto& coin_info                        = mm2.get_coin_info(parent_chain);
-                    out["adex_cfg"][ticker]["nodes"]             = coin_info.urls.value_or(std::vector<node>());
-                    out["adex_cfg"][ticker]["explorer_url"]      = coin_info.explorer_url;
-                    out["adex_cfg"][ticker]["type"]              = adex_platform;
-                    out["adex_cfg"][ticker]["active"]            = true;
-                    out["adex_cfg"][ticker]["currently_enabled"] = false;
-                    out["adex_cfg"][ticker]["is_custom_coin"]    = true;
-                    out["adex_cfg"][ticker]["mm2_backup"]        = out["mm2_cfg"];
+                    out["adex_cfg"][ticker]                            = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["active"]                  = true;
+                    if (raw_parent_cfg.contains("chain_id"))
+                    {
+                        out["adex_cfg"][ticker]["chain_id"]            = raw_parent_cfg.at("chain_id");
+                    }
+                    out["adex_cfg"][ticker]["coin"]                    = ticker;
+                    out["adex_cfg"][ticker]["coingecko_id"]            = coingecko_id.toStdString();
+                    // contract address
+                    if (raw_parent_cfg.contains("protocol"))
+                    {
+                        if (raw_parent_cfg.at("protocol").contains("protocol_data"))
+                        {
+                            if (raw_parent_cfg.at("protocol").at("protocol_data").contains("contract_address"))
+                            {
+                                out["adex_cfg"][ticker]["contract_address"]    = raw_parent_cfg.at("protocol").at("protocol_data").at("contract_address");
+                            }
+                        }
+                    }
+                    
+                    out["adex_cfg"][ticker]["currently_enabled"]       = false;
+                    if (raw_parent_cfg.contains("decimals"))
+                    {
+                        out["adex_cfg"][ticker]["decimals"]            = raw_parent_cfg.at("decimals");
+                    }
+                    if (raw_parent_cfg.contains("derivation_path"))
+                    {
+                        out["adex_cfg"][ticker]["derivation_path"]     = raw_parent_cfg.at("derivation_path");
+                    }
+                    out["adex_cfg"][ticker]["explorer_address_url"]    = coin_info.address_uri;
+                    out["adex_cfg"][ticker]["explorer_block_url"]      = coin_info.block_uri;
+                    out["adex_cfg"][ticker]["explorer_tx_url"]         = coin_info.tx_uri;
+                    out["adex_cfg"][ticker]["explorer_url"]            = coin_info.explorer_url;
+                    out["adex_cfg"][ticker]["fallback_swap_contract"]  = coin_info.swap_contract_address;
+                    out["adex_cfg"][ticker]["fname"]                   = name_lowercase;
+                    out["adex_cfg"][ticker]["is_testnet"]              = true;
+                    out["adex_cfg"][ticker]["currently_enabled"]       = false;
+                    out["adex_cfg"][ticker]["mm2"]                     = 1;
+                    out["adex_cfg"][ticker]["name"]                    = name_lowercase;
+                    out["adex_cfg"][ticker]["nodes"]                   = coin_info.urls.value_or(std::vector<node>());
+                    out["adex_cfg"][ticker]["parent_coin"]             = parent_chain;
+                    out["adex_cfg"][ticker]["protocol"]                                          = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["protocol"]["protocol_data"]                         = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["protocol"]["protocol_data"]["contract_address"]     = token_contract_address;
+                    out["adex_cfg"][ticker]["protocol"]["protocol_data"]["platform"]             = platform;
+                    out["adex_cfg"][ticker]["protocol"]["type"]                                  = parent_type;
+                    out["adex_cfg"][ticker]["required_confirmations"]  = raw_parent_cfg.at("required_confirmations");
+                    out["adex_cfg"][ticker]["type"]                    = adex_platform;
+                    out["adex_cfg"][ticker]["swap_contract_address"]   = coin_info.swap_contract_address;
+                    out["adex_cfg"][ticker]["wallet_only"]             = false;
+                    out["adex_cfg"][ticker]["is_custom_coin"]          = true;
                 }
             }
             else
