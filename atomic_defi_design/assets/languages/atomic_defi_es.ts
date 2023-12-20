@@ -1510,67 +1510,67 @@
         <translation type="unfinished">Ingrese una cantidad</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="838"/>
+        <location filename="../../Dex/Constants/General.qml" line="843"/>
         <source>Trading Fee</source>
         <translation>Tarifa de Intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="848"/>
+        <location filename="../../Dex/Constants/General.qml" line="853"/>
         <source>Minimum Trading Amount</source>
         <translation>Cantidad Mínima de Intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="859"/>
+        <location filename="../../Dex/Constants/General.qml" line="864"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation>Monedero %1 ya existe</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="872"/>
+        <location filename="../../Dex/Constants/General.qml" line="877"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
         <translation>El saldo de %1 es inferior al monto de las tarifas: %2 %3</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="874"/>
+        <location filename="../../Dex/Constants/General.qml" line="879"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation>El saldo de %1 (después de las tarifas) es inferior al monto mínimo de intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="876"/>
+        <location filename="../../Dex/Constants/General.qml" line="881"/>
         <source>Please fill the price field</source>
         <translation>Por favor complete el campo de precio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="878"/>
+        <location filename="../../Dex/Constants/General.qml" line="883"/>
         <source>Please fill the volume field</source>
         <translation>Complete el campo de volumen</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="868"/>
-        <location filename="../../Dex/Constants/General.qml" line="870"/>
+        <location filename="../../Dex/Constants/General.qml" line="873"/>
+        <location filename="../../Dex/Constants/General.qml" line="875"/>
         <source>Please wait for %1 to fully activate</source>
         <translation>Espere a que %1 se active por completo</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="880"/>
-        <location filename="../../Dex/Constants/General.qml" line="882"/>
+        <location filename="../../Dex/Constants/General.qml" line="885"/>
+        <location filename="../../Dex/Constants/General.qml" line="887"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation>El volumen de %1 es inferior al monto mínimo de intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="884"/>
-        <location filename="../../Dex/Constants/General.qml" line="888"/>
+        <location filename="../../Dex/Constants/General.qml" line="889"/>
+        <location filename="../../Dex/Constants/General.qml" line="893"/>
         <source>%1 needs to be enabled in order to use %2</source>
         <translation>%1 debe habilitarse para usar %2</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="886"/>
-        <location filename="../../Dex/Constants/General.qml" line="890"/>
+        <location filename="../../Dex/Constants/General.qml" line="891"/>
+        <location filename="../../Dex/Constants/General.qml" line="895"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation>se debe rellenar el saldo de %1, se requiere un saldo distinto de cero para pagar el gas de %2 transacciones</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="892"/>
+        <location filename="../../Dex/Constants/General.qml" line="897"/>
         <source>Unknown Error</source>
         <translation>Error Desconocido</translation>
     </message>
@@ -4560,7 +4560,7 @@ Esto puede tardar unos minutos...</translation>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="726"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="755"/>
         <source>An error has occurred.</source>
         <translation>Se ha producido un error.</translation>
     </message>
@@ -4568,62 +4568,62 @@ Esto puede tardar unos minutos...</translation>
 <context>
     <name>atomic_dex::wallet_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="72"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="73"/>
         <source>You do not have enough funds.</source>
         <translation>No tiene fondos suficientes.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="83"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="84"/>
         <source>%1 is not activated: click on the button to enable it or enable it manually</source>
         <translation>%1 no está activado: haga clic en el botón para habilitarlo o habilítelo manualmente</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="89"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="90"/>
         <source>You need to have %1 to pay the gas for %2 transactions.</source>
         <translation>Necesita tener %1 para pagar la gasolina de %2 transacciones.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="340"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="342"/>
         <source>Checksum verification failed for %1.</source>
         <translation>La verificación de la suma de comprobación falló para %1.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="346"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="348"/>
         <source>Invalid checksum for %1. Click the button to convert to mixed case address.</source>
         <translation>Suma de comprobación no válida para %1. Haga clic en el botón para convertir a dirección de mayúsculas y minúsculas.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="353"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="355"/>
         <source>Legacy address used for %1. Click the button to convert to a Cashaddress.</source>
         <translation>Dirección heredada utilizada para %1. Haga clic en el botón para convertir a una dirección de efectivo.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="359"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="361"/>
         <source>%1 address must be prefixed with 0x</source>
         <translation>La dirección %1 debe tener el prefijo 0x</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="364"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="366"/>
         <source>%1 address length is invalid, please use a valid address.</source>
         <translation>La longitud de la dirección %1 no es válida, utilice una dirección válida.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="369"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="371"/>
         <source>%1 address is invalid.</source>
         <translation>La dirección %1 no es válida.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="374"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="376"/>
         <source>Invalid checksum.</source>
         <translation>Suma de comprobación no válida.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="379"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="381"/>
         <source>%1 address has invalid prefixes.</source>
         <translation>La dirección %1 tiene prefijos no válidos.</translation>
     </message>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="383"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.wallet.page.cpp" line="385"/>
         <source>Backend error: %1</source>
         <translation>Error de backend: %1</translation>
     </message>
