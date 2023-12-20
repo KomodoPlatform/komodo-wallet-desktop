@@ -112,6 +112,12 @@ Qaterial.Dialog
 
                 FAQLine
                 {
+                    title: qsTr("Where can I see the orderbook or market statistics online?")
+                    text: qsTr('You can view an online orderbook and market statistics at <a href="https://markets.atomicdex.io/">https://markets.atomicdex.io/</a>, or use the Komodo Wallet in your browser at <a href="https://app.komodoplatform.com">https://app.komodoplatform.com</a>!')
+                }
+
+                FAQLine
+                {
                     title: qsTr("How long does each atomic swap take?")
                     text: qsTr('Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example, (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">notarization</a>.').arg(API.app_name)
                 }
@@ -202,7 +208,7 @@ There is a toggle in settings where you can turn on/off the display of these tra
                 Layout.preferredHeight: column_layout.height
                 hoverEnabled: true
 
-                onClicked: Qt.openUrlExternally("https://github.com/KomodoPlatform/komodo-wallet-desktop/pull/2296")
+                onClicked: Qt.openUrlExternally("https://github.com/KomodoPlatform/komodo-wallet-desktop/pull/2388")
 
                 ColumnLayout
                 {

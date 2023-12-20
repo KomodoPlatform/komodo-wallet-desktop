@@ -58,6 +58,10 @@ namespace
         {
             return CoinType::PLG20;
         }
+        if (coin_type == "Matic")
+        {
+            return CoinType::PLG20;
+        }
         if (coin_type == "Optimism")
         {
             return CoinType::Optimism;
