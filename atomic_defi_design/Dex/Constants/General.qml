@@ -476,6 +476,11 @@ QtObject {
         return coin_info.tx_uri
     }
 
+    function getBlockUri(coin_info) {
+        if (coin_info.block_uri == "") return "block/"
+        return coin_info.block_uri
+    }
+
     function getTxExplorerURL(ticker, txid, add_0x=true) {
         if(txid !== '') {
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
@@ -684,7 +689,7 @@ QtObject {
         if (prevent_coin_disabling.running) return false
         if (ticker === atomic_app_primary_coin || ticker === atomic_app_secondary_coin) return false
         if (ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
-        if (ticker === "MATIC") return !General.isParentCoinNeeded("MATIC", "Matic")
+        if (ticker === "MATIC") return !General.isParentCoinNeeded("MATIC", "PLG-20")
         if (ticker === "FTM") return !General.isParentCoinNeeded("FTM", "FTM-20")
         if (ticker === "AVAX") return !General.isParentCoinNeeded("AVAX", "AVX-20")
         if (ticker === "BNB") return !General.isParentCoinNeeded("BNB", "BEP-20")
@@ -722,7 +727,11 @@ QtObject {
     }
 
     function isERC20(current_ticker_infos) {
-        return current_ticker_infos.type === "ERC-20" || current_ticker_infos.type === "BEP-20" || current_ticker_infos.type == "Matic"
+        return current_ticker_infos.type === "ERC-20"
+            || current_ticker_infos.type === "BEP-20"
+            || current_ticker_infos.type == "PLG-20"
+            || current_ticker_infos.type == "FTM-20"
+            || current_ticker_infos.type == "AVX-20"
     }
 
     function isParentCoin(ticker) {
