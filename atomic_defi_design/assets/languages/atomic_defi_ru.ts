@@ -58,148 +58,152 @@
 <context>
     <name>AddCustomCoinModal</name>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="126"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="147"/>
         <source>Choose the asset type</source>
         <translation>Выберите тип монеты</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="151"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="175"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="162"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="236"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="301"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="186"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="260"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="325"/>
         <source>Next</source>
         <translation>Далее</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="196"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="220"/>
         <source>Enter the contract address</source>
         <translation>Введите адрес контракта</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="178"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="202"/>
         <source>Choose the asset ticker</source>
         <translation>Введите тикер монеты</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="186"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="210"/>
         <source>Ticker</source>
         <translation>Тикер</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="187"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="211"/>
         <source>Enter the ticker</source>
         <translation>Введите тикер</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="27"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="30"/>
         <source>Get the contract address from</source>
         <translation>Получить адрес контракта от</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="178"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="202"/>
         <source>Contract address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="204"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="228"/>
         <source>Get the contract address from </source>
         <translation>Получить адрес контракта от </translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="226"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="292"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="379"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="477"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="250"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="316"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="403"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="501"/>
         <source>Previous</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="249"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="273"/>
         <source>Choose the asset logo</source>
         <translation>Загрузите логотип монеты</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="254"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="278"/>
         <source>Browse</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="265"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="289"/>
         <source>Please choose the asset logo</source>
         <translation>Выберите логотип монеты</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="312"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="336"/>
         <source>Configuration</source>
         <translation>Конфигурация</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="318"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="342"/>
         <source>All configuration fields will be fetched using the contract address you provided.</source>
         <translation>Все параметры конфигурации будут получены с помощью адреса контракта.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="327"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="351"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="328"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="352"/>
         <source>Enter the name</source>
         <translation>Введите название</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="335"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="359"/>
         <source>Coingecko ID</source>
         <translation>Coingecko ID</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="336"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="360"/>
         <source>Enter the Coingecko ID</source>
         <translation>Введите Coingecko ID</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="343"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="367"/>
         <source>Get the Coingecko ID</source>
         <translation>Получить Coingecko ID</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="366"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="390"/>
         <source>Active</source>
         <translation>Активно</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="388"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="404"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="412"/>
         <source>Preview</source>
         <translation>Превью</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="410"/>
-        <source>WARNING: Application will restart immidiately to apply the changes!</source>
-        <translation>ПРЕДУПРЕЖДЕНИЕ: Приложение будет немедленно перезапущено для применения изменений!</translation>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="428"/>
+        <source>Preview Token Configuration</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="434"/>
+        <source>WARNING: Application will restart immediately to apply the changes!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="458"/>
         <source>Asset not found, please go back and make sure Contract Address is correct</source>
         <translation>Токен не найден, убедитесь, что адрес контракта указан верно</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="453"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="477"/>
         <source>Config Fields</source>
         <translation>Параметры конфигурации</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="466"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="490"/>
         <source>Fetched Data</source>
         <translation>Полученные данные</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="485"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="509"/>
         <source>Submit &amp; Restart</source>
         <translation>Отправить и перезапустить</translation>
     </message>
@@ -1516,67 +1520,67 @@
         <translation type="unfinished">Введите количество</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="843"/>
+        <location filename="../../Dex/Constants/General.qml" line="847"/>
         <source>Trading Fee</source>
         <translation>Торговая комиссия</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="853"/>
+        <location filename="../../Dex/Constants/General.qml" line="857"/>
         <source>Minimum Trading Amount</source>
         <translation>Минимальный объем сделки</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="864"/>
+        <location filename="../../Dex/Constants/General.qml" line="868"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation>Кошелек %1 уже существует</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="877"/>
+        <location filename="../../Dex/Constants/General.qml" line="881"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
         <translation>%1 баланс менее чем размер комиссий: %2 %3</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="879"/>
+        <location filename="../../Dex/Constants/General.qml" line="883"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation>Торгуемый (после комиссий) баланс %1 - меньше минимальной суммы сделки</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="881"/>
+        <location filename="../../Dex/Constants/General.qml" line="885"/>
         <source>Please fill the price field</source>
         <translation>Пожалуйста, укажите цену</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="883"/>
+        <location filename="../../Dex/Constants/General.qml" line="887"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="873"/>
-        <location filename="../../Dex/Constants/General.qml" line="875"/>
+        <location filename="../../Dex/Constants/General.qml" line="877"/>
+        <location filename="../../Dex/Constants/General.qml" line="879"/>
         <source>Please wait for %1 to fully activate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="885"/>
-        <location filename="../../Dex/Constants/General.qml" line="887"/>
+        <location filename="../../Dex/Constants/General.qml" line="889"/>
+        <location filename="../../Dex/Constants/General.qml" line="891"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation>Сумма %1 меньше минимальной суммы сделки</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="889"/>
         <location filename="../../Dex/Constants/General.qml" line="893"/>
+        <location filename="../../Dex/Constants/General.qml" line="897"/>
         <source>%1 needs to be enabled in order to use %2</source>
         <translation>%1 должен быть активным для использования %2</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="891"/>
         <location filename="../../Dex/Constants/General.qml" line="895"/>
+        <location filename="../../Dex/Constants/General.qml" line="899"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation>нужно пополнить баланс %1  для оплаты газа %2 транзакций</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="897"/>
+        <location filename="../../Dex/Constants/General.qml" line="901"/>
         <source>Unknown Error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
@@ -3911,18 +3915,18 @@ Please select a new order.</source>
         <translation type="unfinished">Сколько времени занимает каждый атомарный своп?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="116"/>
-        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
-        <translation type="unfinished">Несколько факторов определяют время завершения каждого Атомарного Свопа. Время блока на каждой из торгуемых сетей (Bitcoin обычно самый медленный) В добавок каждый юзер может кастомизировать опции защиты. Например в пред-настройках Свопа,  (вы можете установить %1 так чтобы протокол считал транзакцию KMD финальной как только она получит всего 3 подтверждения что уменьшает время Атомарного Свопа в сравнении с ожиданием &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;нотаризации&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="121"/>
         <source>Do I need to be online for the duration of the swap?</source>
         <translation type="unfinished">Необходимо ли мне быть в сети во время свопа?</translation>
     </message>
     <message>
+        <location filename="../../Dex/Support/SupportModal.qml" line="116"/>
+        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example, (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="122"/>
-        <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker.
+        <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. To mitigate this, &apos;watchertower&apos; nodes have been deployed to monitor the dex network for you and, where possible, complete the swaps for you if your app goes offline.
 
 The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.
 
@@ -4545,7 +4549,7 @@ This might take a few minutes...</source>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="755"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="768"/>
         <source>An error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>

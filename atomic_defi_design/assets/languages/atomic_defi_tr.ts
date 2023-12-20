@@ -58,148 +58,152 @@
 <context>
     <name>AddCustomCoinModal</name>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="126"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="147"/>
         <source>Choose the asset type</source>
         <translation>Varlık türünü seçin</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="151"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="175"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="162"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="236"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="301"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="186"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="260"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="325"/>
         <source>Next</source>
         <translation>İleri</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="196"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="220"/>
         <source>Enter the contract address</source>
         <translation>Kontrat adresini girin</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="178"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="202"/>
         <source>Choose the asset ticker</source>
         <translation>Varlık kodunu girin</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="186"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="210"/>
         <source>Ticker</source>
         <translation>Varlık Kodu</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="187"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="211"/>
         <source>Enter the ticker</source>
         <translation>Varlık kodunu girin</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="27"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="30"/>
         <source>Get the contract address from</source>
         <translation>Kontrat adresini şuradan alın</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="178"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="202"/>
         <source>Contract address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="204"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="228"/>
         <source>Get the contract address from </source>
         <translation>Kontrat adresini şuradan alın </translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="226"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="292"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="379"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="477"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="250"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="316"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="403"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="501"/>
         <source>Previous</source>
         <translation>Geri</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="249"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="273"/>
         <source>Choose the asset logo</source>
         <translation>Varlık logosunu seçin</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="254"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="278"/>
         <source>Browse</source>
         <translation>Göz at</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="265"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="289"/>
         <source>Please choose the asset logo</source>
         <translation>Lütfen varlık logosunu seçin</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="312"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="336"/>
         <source>Configuration</source>
         <translation>Konfigürasyon</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="318"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="342"/>
         <source>All configuration fields will be fetched using the contract address you provided.</source>
         <translation>Tüm konfigürasyon bilgileri verdiğiniz kontrat adresinden edinilip doldurulacak.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="327"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="351"/>
         <source>Name</source>
         <translation>İsim</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="328"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="352"/>
         <source>Enter the name</source>
         <translation>İsmi girin</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="335"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="359"/>
         <source>Coingecko ID</source>
         <translation>Coingecko ID</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="336"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="360"/>
         <source>Enter the Coingecko ID</source>
         <translation>Coingecko ID&apos;sini girin</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="343"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="367"/>
         <source>Get the Coingecko ID</source>
         <translation>Coingecko ID&apos;si al</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="366"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="390"/>
         <source>Active</source>
         <translation>Aktif</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="388"/>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="404"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="412"/>
         <source>Preview</source>
         <translation>Görüntüle</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="410"/>
-        <source>WARNING: Application will restart immidiately to apply the changes!</source>
-        <translation>DİKKAT: Program değişiklikleri uygulamak için yeniden başlatılacak!</translation>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="428"/>
+        <source>Preview Token Configuration</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="434"/>
+        <source>WARNING: Application will restart immediately to apply the changes!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="458"/>
         <source>Asset not found, please go back and make sure Contract Address is correct</source>
         <translation>Varlık bulunamadı, lütfen geri dönün ve Kontrat Adresi&apos;nin doğruluğundan emin olun</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="453"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="477"/>
         <source>Config Fields</source>
         <translation>Konfig Alanları</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="466"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="490"/>
         <source>Fetched Data</source>
         <translation>Çekilen Veri</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="485"/>
+        <location filename="../../Dex/Settings/AddCustomCoinModal.qml" line="509"/>
         <source>Submit &amp; Restart</source>
         <translation>Yolla ve Yeniden Başlat</translation>
     </message>
@@ -1504,67 +1508,67 @@
         <translation type="unfinished">Bir miktar gir</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="843"/>
+        <location filename="../../Dex/Constants/General.qml" line="847"/>
         <source>Trading Fee</source>
         <translation>Takas Ücreti</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="853"/>
+        <location filename="../../Dex/Constants/General.qml" line="857"/>
         <source>Minimum Trading Amount</source>
         <translation>Minimum Takas Hacmi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="864"/>
+        <location filename="../../Dex/Constants/General.qml" line="868"/>
         <source>Wallet %1 already exists</source>
         <comment>WALLETNAME</comment>
         <translation>%1 cüzdanı zaten mevcut</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="877"/>
+        <location filename="../../Dex/Constants/General.qml" line="881"/>
         <source>%1 balance is lower than the fees amount: %2 %3</source>
         <translation>%1 bakiye ücret tutarının altında: %2 %3</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="879"/>
+        <location filename="../../Dex/Constants/General.qml" line="883"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation>Takas edilebilir (ücretlerden sonra)%1 bakiyesi minimum işlem ücretinden düşük</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="881"/>
+        <location filename="../../Dex/Constants/General.qml" line="885"/>
         <source>Please fill the price field</source>
         <translation>Lütfen fiyat alanını doldurun</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="883"/>
+        <location filename="../../Dex/Constants/General.qml" line="887"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="873"/>
-        <location filename="../../Dex/Constants/General.qml" line="875"/>
+        <location filename="../../Dex/Constants/General.qml" line="877"/>
+        <location filename="../../Dex/Constants/General.qml" line="879"/>
         <source>Please wait for %1 to fully activate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="885"/>
-        <location filename="../../Dex/Constants/General.qml" line="887"/>
+        <location filename="../../Dex/Constants/General.qml" line="889"/>
+        <location filename="../../Dex/Constants/General.qml" line="891"/>
         <source>%1 volume is lower than minimum trade amount</source>
         <translation>%1 hacmi, minimum işlem ücretinden düşük</translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="889"/>
         <location filename="../../Dex/Constants/General.qml" line="893"/>
+        <location filename="../../Dex/Constants/General.qml" line="897"/>
         <source>%1 needs to be enabled in order to use %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="891"/>
         <location filename="../../Dex/Constants/General.qml" line="895"/>
+        <location filename="../../Dex/Constants/General.qml" line="899"/>
         <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="897"/>
+        <location filename="../../Dex/Constants/General.qml" line="901"/>
         <source>Unknown Error</source>
         <translation>Bilinmeyen Hata</translation>
     </message>
@@ -3899,18 +3903,18 @@ Please select a new order.</source>
         <translation type="unfinished">Her bir atomik takas ne kadar sürer? </translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="116"/>
-        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
-        <translation type="unfinished">Her takas için işlem süresini birkaç faktör belirler. İşlem gören varlıkların blok süresi her bir ağa bağlıdır (Bitcoin tipik olarak en yavaş olanıdır) Ek olarak, kullanıcı güvenlik tercihlerini özelleştirebilir.   (Örneğin; %1 in KMD işlemini sadece 3 onayla gerçekleştirmesini seçerek takas süresini &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarizasyon&lt;/a&gt; süresinden daha öncesine kısaltabilirsiniz. </translation>
-    </message>
-    <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="121"/>
         <source>Do I need to be online for the duration of the swap?</source>
         <translation type="unfinished">Takas süresi boyunca çevrimiçi olmam gerekir mi? </translation>
     </message>
     <message>
+        <location filename="../../Dex/Support/SupportModal.qml" line="116"/>
+        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example, (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Support/SupportModal.qml" line="122"/>
-        <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker.
+        <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. To mitigate this, &apos;watchertower&apos; nodes have been deployed to monitor the dex network for you and, where possible, complete the swaps for you if your app goes offline.
 
 The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.
 
@@ -4533,7 +4537,7 @@ This might take a few minutes...</source>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="755"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="768"/>
         <source>An error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>
