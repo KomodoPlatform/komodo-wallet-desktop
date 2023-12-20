@@ -127,6 +127,7 @@ namespace atomic_dex
             if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly);
                 not res.isEmpty())
             {
+                // SPDLOG_INFO("[update_currency_values] for ticker: {}", coin.ticker);
                 std::error_code    ec;
                 const QModelIndex& idx                         = res.at(0);
                 const QString      main_currency_balance_value = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
@@ -156,7 +157,7 @@ namespace atomic_dex
                 auto        coin_info          = mm2_system.get_coin_info(ticker);
                 QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
                 update_value(ActivationStatus, status, idx, *this);
-                SPDLOG_DEBUG("updated currency values of: {}", ticker);
+                // SPDLOG_DEBUG("updated currency values of: {}", ticker);
             }
         }
         return true;
@@ -177,9 +178,10 @@ namespace atomic_dex
                 SPDLOG_WARN("ticker: {} not inserted yet in the model, skipping", ticker);
                 return false;
             }
-            // SPDLOG_DEBUG("trying updating balance values of: {}", ticker);
+            
             if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
             {
+                // SPDLOG_DEBUG("Updating balance values of: {}", ticker);
                 const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
                 const auto*        global_cfg    = this->m_system_manager.get_system<portfolio_page>().get_global_cfg();
                 const auto         coin          = global_cfg->get_coin_info(ticker);

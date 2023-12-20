@@ -78,37 +78,44 @@ namespace
     Rpc process_rpc_answer(const web::http::http_response& answer)
     {
         std::string body = TO_STD_STR(answer.extract_string(true).get());
+        if (body.size() > 1000)
+        {
+            SPDLOG_DEBUG("redacted rpc answer: {}", body.substr(0, 1000));
+        }
+        else
+        {
+            SPDLOG_DEBUG("rpc answer: {}", body);
+        }
         SPDLOG_DEBUG("rpc answer: {}", body);
         nlohmann::json json_answer;
         Rpc rpc;
         try
         {
             json_answer = nlohmann::json::parse(body);
-            SPDLOG_DEBUG("rpc answer: {}", json_answer.dump(4));
+            // SPDLOG_DEBUG("rpc answer: {}", json_answer.dump(4));
         }
         catch (const nlohmann::json::parse_error& error)
         {
             SPDLOG_ERROR("rpc answer error: {}", error.what());
         }
-        rpc.raw_result = json_answer.at("result").dump();
 
         if (Rpc::is_v2)
         {
-            SPDLOG_DEBUG("rpc answer: v2");
             if (answer.status_code() == 200)
             {
-                SPDLOG_DEBUG("rpc answer: 200");
                 rpc.result = json_answer.at("result").get<typename Rpc::expected_result_type>();
+                rpc.raw_result = json_answer.at("result").dump();
             }
             else
             {
-                SPDLOG_DEBUG("rpc answer: error");
+                SPDLOG_DEBUG("rpc2 answer: error");
                 rpc.error = json_answer.get<typename Rpc::expected_error_type>();
+                rpc.raw_result = json_answer.dump();
+                SPDLOG_DEBUG("rpc.raw_result: {}", rpc.raw_result);
             }
         }
         else
         {
-            SPDLOG_DEBUG("rpc answer: v2");
             rpc.result = json_answer.get<typename Rpc::expected_result_type>();
         }
         return rpc;
@@ -211,14 +218,12 @@ namespace atomic_dex::mm2
                                try
                                {
                                    auto rpc = process_rpc_answer<Rpc>(resp);
-                                   SPDLOG_DEBUG("process_rpc_answer rpc.result: {}", rpc.raw_result);
                                    rpc.request = request;
-                                   SPDLOG_DEBUG("process_rpc_answer A");
                                    on_rpc_processed(rpc);
-                                   SPDLOG_DEBUG("process_rpc_answer B");
                                }
                                catch (const std::exception& ex)
                                {
+                                   // SPDLOG_DEBUG("process_rpc_answer rpc.result: {}", rpc.raw_result);
                                    SPDLOG_ERROR(ex.what());
                                }
                            });

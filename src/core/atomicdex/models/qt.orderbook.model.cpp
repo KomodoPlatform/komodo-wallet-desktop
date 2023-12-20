@@ -364,7 +364,7 @@ namespace atomic_dex
     void
     orderbook_model::reset_orderbook(const t_orders_contents& orderbook, bool is_bestorders)
     {
-        SPDLOG_DEBUG("[orderbook_model::reset_orderbook], is_bestorders: {}", is_bestorders);
+        // SPDLOG_DEBUG("[orderbook_model::reset_orderbook], is_bestorders: {}", is_bestorders);
         if (!orderbook.empty())
         {
             SPDLOG_INFO(

@@ -59,6 +59,7 @@ namespace atomic_dex
     void
     wallet_page::check_send_availability()
     {
+        // SPDLOG_DEBUG("check_send_availability");
         auto& mm2              = m_system_manager.get_system<mm2_service>();
         auto  global_coins_cfg = m_system_manager.get_system<portfolio_page>().get_global_cfg();
         auto  ticker_info      = global_coins_cfg->get_coin_info(mm2.get_current_ticker());
@@ -274,6 +275,7 @@ namespace atomic_dex
         auto&           mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
+            SPDLOG_DEBUG("get_ticker_infos for {} wallet page", mm2_system.get_current_ticker());
             auto&       price_service                 = m_system_manager.get_system<global_price_service>();
             const auto& settings_system               = m_system_manager.get_system<settings_page>();
             const auto& provider                      = m_system_manager.get_system<komodo_prices_provider>();

@@ -563,6 +563,7 @@ namespace atomic_dex
     QString application::get_balance(const QString& coin)
     {
         std::error_code ec;
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         auto            res = get_mm2().my_balance(coin.toStdString(), ec);
         return QString::fromStdString(res);
     }
@@ -573,6 +574,7 @@ namespace atomic_dex
         system_manager_.get_system<qt_wallet_manager>().set_status("enabling_coins");
     }
 
+    // Function appears to be unused.
     void application::refresh_orders_and_swaps()
     {
         auto& mm2 = get_mm2();

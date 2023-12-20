@@ -586,7 +586,8 @@ namespace atomic_dex::mm2
             request["mmrpc"] = "2.0";
             request["id"] = 42;
         }
-        SPDLOG_INFO("template_request: {}", request.dump(4));
+        // SPDLOG_INFO("template_request: {}", request.dump(4));
+        
         return request;
     }
 
@@ -594,7 +595,7 @@ namespace atomic_dex::mm2
     rpc_version()
     {
         nlohmann::json json_data = template_request("version");
-        SPDLOG_DEBUG("version request {}", json_data.dump(4));
+        // SPDLOG_DEBUG("version request {}", json_data.dump(4));
         try
         {
             auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(atomic_dex::g_dex_rpc));

@@ -334,6 +334,9 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const
     {
+        // Runs often to update fiat values for all enabled coins.
+        // fetch ticker infos loop and on_update_portfolio_values_event triggers this.
+        // SPDLOG_INFO("get_price_in_fiat [{}] [{}]", fiat, ticker);
         try
         {
             auto& mm2_instance = m_system_manager.get_system<mm2_service>();
@@ -352,7 +355,7 @@ namespace atomic_dex
             }
 
             std::error_code t_ec;
-            const auto      amount = mm2_instance.my_balance(ticker, t_ec);
+            const auto      amount = mm2_instance.my_balance(ticker, t_ec); // from registry
 
             if (t_ec)
             {
