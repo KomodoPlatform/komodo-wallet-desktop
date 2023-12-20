@@ -129,11 +129,6 @@ namespace
         }
     }
 
-    void mm2_service::update_coin_active(const std::vector<std::string>& tickers, bool status)
-    {
-        update_coin_status(this->m_current_wallet_name, tickers, status, m_coins_informations, m_coin_cfg_mutex);
-    }
-
     void update_coin_status(const std::string& wallet_name, const std::vector<std::string>& tickers, bool status,
                             atomic_dex::t_coins_registry& registry, std::shared_mutex& registry_mtx, std::string field_name = "active")
     {
@@ -321,11 +316,10 @@ namespace atomic_dex
             if (!m_activation_queue.empty())
             {
                 std::unique_lock lock(m_activation_mutex);
-                SPDLOG_DEBUG("Activating {} coins from activation queue", m_activation_queue.size());
+                SPDLOG_DEBUG("{} coins in the activation queue", m_activation_queue.size());
                 t_coins to_enable;
                 
                 for (size_t i = 0; i < 20 && i < m_activation_queue.size(); ++i) {
-                SPDLOG_DEBUG("Activating {} coins from activation queue", m_activation_queue.size());
                     to_enable.push_back(m_activation_queue[i]);
                 }
                 activate_coins(to_enable);
@@ -552,13 +546,12 @@ namespace atomic_dex
         SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", coins.size());
         for (const auto& coin_cfg : coins)
         {
-
             if (coin_cfg.currently_enabled)
             {
                 SPDLOG_WARN("{} cannot be enabled because it already is or is being enabled.", coin_cfg.ticker);
                 continue;
             }
-            SPDLOG_INFO("Preparing {} for activation", coin_cfg.ticker);
+            // SPDLOG_INFO("Preparing {} for activation", coin_cfg.ticker);
             if (coin_cfg.coin_type == CoinType::SLP || (coin_cfg.other_types && coin_cfg.other_types->contains(CoinType::SLP)))
             {
                 if (coin_cfg.is_testnet.value_or(false))
@@ -596,8 +589,7 @@ namespace atomic_dex
             }
             else if (coin_cfg.coin_type == CoinType::BEP20)
             {
-                // coin_cfg.is_testnet.value_or(false) ? bep20_testnet_coins.push_back(coin_cfg) : bep20_coins.push_back(coin_cfg);
-                erc_family_coins.push_back(coin_cfg);
+                coin_cfg.is_testnet.value_or(false) ? bep20_testnet_coins.push_back(coin_cfg) : bep20_coins.push_back(coin_cfg);
             }
             else if (coin_cfg.is_erc_family)
             {
@@ -616,12 +608,14 @@ namespace atomic_dex
         if (bep20_coins.size() > 0)
         {
             SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} BEP20 coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", bep20_coins.size());
-            enable_erc20_coins(bep20_coins, "BNB");
+            // enable_erc20_coins(bep20_coins, "BNB");
+            enable_erc_family_coins(erc_family_coins);
         }
         if (bep20_testnet_coins.size() > 0)
         {
             SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} bep20_testnet_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", bep20_testnet_coins.size());
-            enable_erc20_coins(bep20_testnet_coins, "BNBT");
+            // enable_erc20_coins(bep20_testnet_coins, "BNBT");
+            enable_erc_family_coins(erc_family_coins);
         }
         if (erc_family_coins.size() > 0)
         {
@@ -658,6 +652,11 @@ namespace atomic_dex
             SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} osmosis_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", osmosis_coins.size());
             enable_tendermint_coins(osmosis_coins, "OSMO");
         }
+    }
+
+    void mm2_service::update_coin_active(const std::vector<std::string>& tickers, bool status)
+    {
+        update_coin_status(this->m_current_wallet_name, tickers, status, m_coins_informations, m_coin_cfg_mutex);
     }
 
     void mm2_service::enable_erc_family_coin(const coin_config& coin_cfg)
@@ -964,7 +963,7 @@ namespace atomic_dex
         {
             for (const auto& token_config : coins)
             {
-                SPDLOG_DEBUG("Processing {} token: {}", parent_ticker, token_config.ticker);
+                // SPDLOG_DEBUG("Processing {} token: {}", parent_ticker, token_config.ticker);
                 mm2::enable_erc20_rpc rpc{.request={.ticker = token_config.ticker}};
 
                 if (token_config.ticker == parent_ticker_info.ticker)
