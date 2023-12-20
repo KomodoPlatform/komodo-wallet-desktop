@@ -37,7 +37,7 @@ namespace atomic_dex::mm2
                 j["gas_station_url"]        = cfg.gas_station_url.value();
             }
         }
-        case CoinType::Matic:
+        case CoinType::PLG20:
         {
             if (cfg.is_testnet)
             {
@@ -56,6 +56,10 @@ namespace atomic_dex::mm2
             if (cfg.matic_gas_station_decimals.has_value())
             {
                 j["gas_station_decimals"]   = cfg.matic_gas_station_decimals.value();
+            }
+            if (cfg.mm2.has_value())
+            {
+                j["mm2"]   = cfg.mm2.value();
             }
         }
         default:

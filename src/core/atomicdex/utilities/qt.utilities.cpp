@@ -50,7 +50,7 @@ namespace atomic_dex
 
     QString
     retrieve_change_24h(
-        const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
+        const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config_t& coin, const atomic_dex::cfg& config,
         [[maybe_unused]] const ag::ecs::system_manager& system_manager)
     {
         QString change_24h = "0";

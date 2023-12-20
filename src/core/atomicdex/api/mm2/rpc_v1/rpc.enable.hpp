@@ -35,6 +35,7 @@ namespace atomic_dex::mm2
         const std::string           swap_contract_address;
         std::optional<std::string>  fallback_swap_contract{std::nullopt};
         std::optional<std::size_t>  matic_gas_station_decimals{9};
+        std::optional<std::size_t>  mm2{1};
         std::optional<std::string>  gas_station_url{std::nullopt};
         std::optional<std::string>  matic_gas_station_url{std::nullopt};
         std::optional<std::string>  testnet_matic_gas_station_url{std::nullopt};

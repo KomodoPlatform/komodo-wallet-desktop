@@ -195,9 +195,9 @@ namespace
 
 namespace atomic_dex
 {
-    std::vector<atomic_dex::coin_config> mm2_service::retrieve_coins_informations()
+    std::vector<atomic_dex::coin_config_t> mm2_service::retrieve_coins_informations()
     {
-        std::vector<atomic_dex::coin_config> cfg;
+        std::vector<atomic_dex::coin_config_t> cfg;
         SPDLOG_DEBUG("retrieve_coins_informations");
 
         check_for_reconfiguration(m_current_wallet_name);
@@ -206,7 +206,7 @@ namespace atomic_dex
         std::string custom_tokens_filename = "custom-tokens." + m_current_wallet_name + ".json";
 
         LOG_PATH("Retrieving Wallet information of {}", (cfg_path / filename));
-        auto retrieve_cfg_functor = [](std::filesystem::path path) -> std::unordered_map<std::string, atomic_dex::coin_config>
+        auto retrieve_cfg_functor = [](std::filesystem::path path) -> std::unordered_map<std::string, atomic_dex::coin_config_t>
         {
             if (exists(path))
             {
@@ -227,7 +227,7 @@ namespace atomic_dex
                         }
                     }
 
-                    auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
+                    auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config_t>>();
                     return res;
                 }
                 catch (const std::exception& error)
@@ -324,11 +324,12 @@ namespace atomic_dex
                 }
                 activate_coins(to_enable);
                 m_activation_queue.erase(m_activation_queue.begin(), m_activation_queue.begin() + to_enable.size());
+                m_activation_clock = std::chrono::high_resolution_clock::now();
             }
             else {
-                SPDLOG_DEBUG("No coins left in activation queue!");
+                SPDLOG_DEBUG("Coins activation queue is empty.");
+                m_activation_clock = std::chrono::high_resolution_clock::now() + std::chrono::duration_cast<std::chrono::seconds>(std::chrono::seconds(6));
             }
-            m_activation_clock = std::chrono::high_resolution_clock::now();
         }
 
         if (s_info >= 29s)
@@ -442,7 +443,7 @@ namespace atomic_dex
 
     bool mm2_service::disable_coin(const std::string& ticker, std::error_code& ec)
     {
-        coin_config coin_info = get_coin_info(ticker);
+        coin_config_t coin_info = get_coin_info(ticker);
         if (not coin_info.currently_enabled)
         {
             // SPDLOG_DEBUG("[mm2_service::disable_coin]: {} not currently_enabled", ticker);
@@ -498,7 +499,7 @@ namespace atomic_dex
         enable_coin(get_coin_info(ticker));
     }
 
-    void mm2_service::enable_coin(const coin_config& coin_config)
+    void mm2_service::enable_coin(const coin_config_t& coin_config)
     {
         enable_coins(t_coins{coin_config});
     }
@@ -528,6 +529,7 @@ namespace atomic_dex
             std::unique_lock lock(m_activation_mutex);
             m_activation_queue.push_back(coin);
         }
+        m_activation_clock = std::chrono::high_resolution_clock::now() - std::chrono::duration_cast<std::chrono::seconds>(std::chrono::seconds(13));
     }
 
     void mm2_service::activate_coins(const t_coins& coins)
@@ -659,7 +661,7 @@ namespace atomic_dex
         update_coin_status(this->m_current_wallet_name, tickers, status, m_coins_informations, m_coin_cfg_mutex);
     }
 
-    void mm2_service::enable_erc_family_coin(const coin_config& coin_cfg)
+    void mm2_service::enable_erc_family_coin(const coin_config_t& coin_cfg)
     {
         enable_erc_family_coins(t_coins{coin_cfg});
     }
@@ -749,6 +751,14 @@ namespace atomic_dex
             {
                 request.fallback_swap_contract = coin_config.fallback_swap_contract;
             }
+            if (coin_config.is_custom_coin)
+            {
+                request.mm2 = 1;
+            }
+            else if (coin_config.wallet_only)
+            {
+                request.mm2 = 0;
+            }
             nlohmann::json j = mm2::template_request("enable");
             mm2::to_json(j, request);
             batch_array.push_back(j);
@@ -758,7 +768,7 @@ namespace atomic_dex
             .then([this, batch_array](pplx::task<void> previous_task) { this->handle_exception_pplx_task(previous_task, "enable_common_coins", batch_array); });
     }
 
-    void mm2_service::enable_utxo_qrc20_coin(coin_config coin_config)
+    void mm2_service::enable_utxo_qrc20_coin(coin_config_t coin_config)
     {
         enable_utxo_qrc20_coins(t_coins{std::move(coin_config)});
     }
@@ -870,7 +880,7 @@ namespace atomic_dex
     }
 
 
-    void mm2_service::enable_erc20_coin(coin_config coin_config, std::string parent_ticker)
+    void mm2_service::enable_erc20_coin(coin_config_t coin_config, std::string parent_ticker)
     {
         enable_erc20_coins(t_coins{std::move(coin_config)}, parent_ticker);
     }
@@ -996,7 +1006,7 @@ namespace atomic_dex
         SPDLOG_DEBUG("mm2_service::enable_erc20_coins done for {}", parent_ticker);
     }
 
-    void mm2_service::enable_tendermint_coin(coin_config coin_config, std::string parent_ticker)
+    void mm2_service::enable_tendermint_coin(coin_config_t coin_config, std::string parent_ticker)
     {
         enable_tendermint_coins(t_coins{std::move(coin_config)}, parent_ticker);
     }
@@ -1207,7 +1217,7 @@ namespace atomic_dex
         }
     }
 
-    void mm2_service::enable_slp_coin(coin_config coin_config)
+    void mm2_service::enable_slp_coin(coin_config_t coin_config)
     {
         enable_slp_coins(t_coins{std::move(coin_config)});
     }
@@ -1314,7 +1324,7 @@ namespace atomic_dex
     }
 
     
-    void mm2_service::enable_slp_testnet_coin(coin_config coin_config)
+    void mm2_service::enable_slp_testnet_coin(coin_config_t coin_config)
     {
         enable_slp_testnet_coins(t_coins{std::move(coin_config)});
     }
@@ -1662,7 +1672,7 @@ namespace atomic_dex
 
     void mm2_service::enable_zhtlc(const t_coins& coins)
     {
-        auto request_functor = [this](coin_config coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
+        auto request_functor = [this](coin_config_t coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
             const auto& settings_system  = m_system_manager.get_system<settings_page>();
             
@@ -1969,7 +1979,7 @@ namespace atomic_dex
         return true;
     }
 
-    coin_config mm2_service::get_coin_info(const std::string& ticker) const
+    coin_config_t mm2_service::get_coin_info(const std::string& ticker) const
     {
         std::shared_lock lock(m_coin_cfg_mutex);
         if (m_coins_informations.find(ticker) == m_coins_informations.cend())
@@ -2140,7 +2150,7 @@ namespace atomic_dex
         process_orderbook(is_a_reset);
     }
 
-    void mm2_service::fetch_single_balance(const coin_config& cfg_infos)
+    void mm2_service::fetch_single_balance(const coin_config_t& cfg_infos)
     {
         nlohmann::json batch_array = nlohmann::json::array();
         if (is_pin_cfg_enabled())
@@ -2474,7 +2484,7 @@ namespace atomic_dex
             case CoinTypeGadget::BEP20:
                 out = construct_url_functor("BNB", "BNBT", "bnb_tx_history", "bep_tx_history", ticker, address);
                 break;
-            case CoinTypeGadget::Matic:
+            case CoinTypeGadget::PLG20:
                 out = construct_url_functor("MATIC", "MATICTEST", "plg_tx_history", "plg_tx_history", ticker, address);
                 break;
             case CoinTypeGadget::Moonriver:
@@ -2981,7 +2991,7 @@ namespace atomic_dex
     mm2_service::get_electrum_server_from_token(const std::string& ticker)
     {
         std::vector<electrum_server> servers;
-        const coin_config            cfg = this->get_coin_info(ticker);
+        const coin_config_t            cfg = this->get_coin_info(ticker);
         if (cfg.coin_type == CoinType::QRC20)
         {
             if (cfg.is_testnet.value())

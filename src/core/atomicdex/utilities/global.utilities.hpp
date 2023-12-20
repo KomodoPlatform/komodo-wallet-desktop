@@ -99,6 +99,6 @@ namespace atomic_dex::utils
     void to_eth_checksum(std::string& address);
     void json_keys(nlohmann::json j);
 
-    std::vector<std::string> coin_cfg_to_ticker_cfg(std::vector<coin_config> in);
+    std::vector<std::string> coin_cfg_to_ticker_cfg(std::vector<coin_config_t> in);
 
 } // namespace atomic_dex::utils

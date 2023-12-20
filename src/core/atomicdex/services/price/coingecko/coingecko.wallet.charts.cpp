@@ -150,7 +150,7 @@ namespace atomic_dex
     }
 
     void
-    coingecko_wallet_charts_service::fetch_data_of_single_coin(const coin_config& cfg)
+    coingecko_wallet_charts_service::fetch_data_of_single_coin(const coin_config_t& cfg)
     {
         using namespace std::chrono_literals;
         SPDLOG_INFO("fetch charts data of {} {}", cfg.ticker, cfg.coingecko_id);

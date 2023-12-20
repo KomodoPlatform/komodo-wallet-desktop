@@ -57,8 +57,8 @@ namespace atomic_dex
    using t_shared_synchronized_value = boost::synchronized_value<T, std::shared_mutex>;
 
    using t_ticker         = std::string;
-   using t_coins_registry = std::unordered_map<t_ticker, coin_config>;
-   using t_coins          = std::vector<coin_config>;
+   using t_coins_registry = std::unordered_map<t_ticker, coin_config_t>;
+   using t_coins          = std::vector<coin_config_t>;
 
    class ENTT_API mm2_service final : public ag::ecs::pre_update_system<mm2_service>
    {
@@ -130,13 +130,13 @@ namespace atomic_dex
        void process_balance_answer(const nlohmann::json& answer);
        void process_tx_answer(const nlohmann::json& answer_json, std::string ticker);
        void process_tx_tokenscan(const std::string& ticker, bool is_a_refresh);
-       void fetch_single_balance(const coin_config& cfg_infos);
+       void fetch_single_balance(const coin_config_t& cfg_infos);
 
        //!
        std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);
        [[nodiscard]] std::pair<t_transactions, t_tx_state> get_tx(t_mm2_ec& ec) const;
        std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
-       std::vector<atomic_dex::coin_config>                retrieve_coins_informations();
+       std::vector<atomic_dex::coin_config_t>                retrieve_coins_informations();
 
        void handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from, nlohmann::json batch);
 
@@ -172,20 +172,20 @@ namespace atomic_dex
        void enable_coins(const std::vector<std::string>& tickers);
        void enable_coins(const t_coins& coins);
        void enable_coin(const std::string& ticker);
-       void enable_coin(const coin_config& coin_config);
+       void enable_coin(const coin_config_t& coin_config);
      private:
        void update_coin_active(const std::vector<std::string>& tickers, bool status);
-       void enable_erc_family_coin(const coin_config& coin_config);
+       void enable_erc_family_coin(const coin_config_t& coin_config);
        void enable_erc_family_coins(const t_coins& coins);
-       void enable_utxo_qrc20_coin(coin_config coin_config);
+       void enable_utxo_qrc20_coin(coin_config_t coin_config);
        void enable_utxo_qrc20_coins(const t_coins& coins);
-       void enable_slp_coin(coin_config coin_config);
+       void enable_slp_coin(coin_config_t coin_config);
        void enable_slp_coins(const t_coins& coins);
-       void enable_slp_testnet_coin(coin_config coin_config);
+       void enable_slp_testnet_coin(coin_config_t coin_config);
        void enable_slp_testnet_coins(const t_coins& coins);
-       void enable_erc20_coin(coin_config coin_config, std::string parent_ticker);
+       void enable_erc20_coin(coin_config_t coin_config, std::string parent_ticker);
        void enable_erc20_coins(const t_coins& coins, const std::string parent_ticker);
-       void enable_tendermint_coin(coin_config coin_config, std::string parent_ticker);
+       void enable_tendermint_coin(coin_config_t coin_config, std::string parent_ticker);
        void enable_tendermint_coins(const t_coins& coins, const std::string parent_ticker);
        void enable_zhtlc(const t_coins& coins);
 
@@ -247,7 +247,7 @@ namespace atomic_dex
        [[nodiscard]] t_coins get_active_coins() const;
 
        //! Get Specific info about one coin
-       [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
+       [[nodiscard]] coin_config_t get_coin_info(const std::string& ticker) const;
        
        // Tells if the given coin is enabled.
        [[nodiscard]] bool is_coin_enabled(const std::string& ticker) const;

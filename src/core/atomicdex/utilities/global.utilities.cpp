@@ -272,7 +272,7 @@ namespace atomic_dex::utils
     }
 
     std::vector<std::string>
-    coin_cfg_to_ticker_cfg(std::vector<coin_config> in)
+    coin_cfg_to_ticker_cfg(std::vector<coin_config_t> in)
     {
         std::vector<std::string> out;
         out.reserve(in.size());

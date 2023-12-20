@@ -125,7 +125,7 @@ namespace atomic_dex
 
     struct coin_cfg_parsed
     {
-        std::vector<atomic_dex::coin_config> cfg;
+        std::vector<atomic_dex::coin_config_t> cfg;
     };
 
     struct fatal_notification

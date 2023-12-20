@@ -130,7 +130,7 @@ namespace atomic_dex
 {
     template <typename... Args>
     void
-    coinpaprika_provider::process_provider(const coin_config& current_coin, Args... args)
+    coinpaprika_provider::process_provider(const coin_config_t& current_coin, Args... args)
     {
         const price_converter_request request{.base_currency_id = current_coin.coinpaprika_id, .quote_currency_id = "usd-us-dollars"};
         generic_rpc_paprika_process<t_price_converter_answer>(
@@ -140,7 +140,7 @@ namespace atomic_dex
 
     template <typename... Args>
     void
-    coinpaprika_provider::process_ticker_infos(const coin_config& current_coin, Args... args)
+    coinpaprika_provider::process_ticker_infos(const coin_config_t& current_coin, Args... args)
     {
         const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR", "BTC"}};
         generic_rpc_paprika_process<ticker_info_answer>(
@@ -150,7 +150,7 @@ namespace atomic_dex
 
     template <typename... Args>
     void
-    coinpaprika_provider::process_ticker_historical(const coin_config& current_coin, Args... args)
+    coinpaprika_provider::process_ticker_historical(const coin_config_t& current_coin, Args... args)
     {
         const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id, .interval = "2h"};
         generic_rpc_paprika_process<ticker_historical_answer>(
