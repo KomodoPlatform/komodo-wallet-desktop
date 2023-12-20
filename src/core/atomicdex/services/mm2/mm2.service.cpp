@@ -611,13 +611,13 @@ namespace atomic_dex
         {
             SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} BEP20 coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", bep20_coins.size());
             // enable_erc20_coins(bep20_coins, "BNB");
-            enable_erc_family_coins(erc_family_coins);
+            enable_erc_family_coins(bep20_coins);
         }
         if (bep20_testnet_coins.size() > 0)
         {
             SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} bep20_testnet_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", bep20_testnet_coins.size());
             // enable_erc20_coins(bep20_testnet_coins, "BNBT");
-            enable_erc_family_coins(erc_family_coins);
+            enable_erc_family_coins(bep20_testnet_coins);
         }
         if (erc_family_coins.size() > 0)
         {

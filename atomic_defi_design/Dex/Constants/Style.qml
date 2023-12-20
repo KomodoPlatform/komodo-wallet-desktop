@@ -203,6 +203,7 @@ QtObject {
             case 'QRC-20':            return dark_theme ? colorCoinDark["QTUM"] : colorCoin["QTUM"]
             case 'KRC-20':            return dark_theme ? colorCoinDark["KCS"] : colorCoin["KCS"]
             case 'Smart Chain':       return dark_theme ? colorCoinDark["KMD"] : colorCoin["KMD"]
+            case 'Matic':
             case 'PLG-20':            return dark_theme ? colorCoinDark["MATIC"] : colorCoin["MATIC"]
             case 'Moonriver':         return dark_theme ? colorCoinDark["MOVR"] : colorCoin["MOVR"]
             case 'HRC-20':            return dark_theme ? colorCoinDark["ONE"] : colorCoin["ONE"]
@@ -245,6 +246,7 @@ QtObject {
             case 'QRC-20':            return dark_theme ? colorCoinDark["QTUM"] : colorCoin["QTUM"]
             case 'KRC-20':            return dark_theme ? colorCoinDark["KCS"] : colorCoin["KCS"]
             case 'Smart Chain':       return dark_theme ? colorCoinDark["KMD"] : colorCoin["KMD"]
+            case 'Matic':
             case 'PLG-20':            return dark_theme ? colorCoinDark["MATIC"] : colorCoin["MATIC"]
             case 'Moonriver':         return dark_theme ? colorCoinDark["MOVR"] : colorCoin["MOVR"]
             case 'HRC-20':            return dark_theme ? colorCoinDark["ONE"] : colorCoin["ONE"]
