@@ -3558,12 +3558,17 @@ Please select a new order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="663"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="632"/>
+        <source>Reuse static RPC password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="688"/>
         <source>Application Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="664"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="689"/>
         <source>copied to clipboard</source>
         <translation type="unfinished">скопировано в буфер</translation>
     </message>
@@ -3593,47 +3598,47 @@ Please select a new order.</source>
         <translation>Спрашивать системный пароль перед отправкой монет? (2FA)</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="657"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="682"/>
         <source>Application version</source>
         <translation>Версия приложения</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="678"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="703"/>
         <source>MM2 version</source>
         <translation>Версия MM2</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="685"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="710"/>
         <source>MM2 Version</source>
         <translation>Версия MM2</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="686"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="711"/>
         <source>MM2 Version copied to clipboard.</source>
         <translation>Версия MM2 скопирована в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="700"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="725"/>
         <source>Qt version</source>
         <translation>Версия Qt</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="707"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="732"/>
         <source>Qt Version</source>
         <translation>Версия Qt</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="708"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="733"/>
         <source>Qt Version copied to clipboard.</source>
         <translation>Версия Qt скопирована в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="733"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="758"/>
         <source>Search Update</source>
         <translation>Проверить на обновления</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="750"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="775"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
@@ -3644,7 +3649,7 @@ Please select a new order.</source>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="607"/>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="643"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="668"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
@@ -3659,7 +3664,7 @@ Please select a new order.</source>
         <translation>Установить</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="642"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="667"/>
         <source>Disclaimer and ToS</source>
         <translation>Дисклеймер и Условия Использования</translation>
     </message>
@@ -3700,12 +3705,12 @@ Please select a new order.</source>
         <translation>CEX цена</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="233"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="235"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
         <translation> %1 не активирован -Вы хотите активировать этот %2 актив чтобы видеть лучшие ордеры для него ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Да&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;Нет&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="234"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/SubBestOrder.qml" line="236"/>
         <source> %1 is not enabled - Please enable it through the coin activation menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4177,37 +4182,42 @@ There is a toggle in settings where you can turn on/off the display of these tra
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="750"/>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="804"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="803"/>
         <source>Search coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="822"/>
-        <source>Show only enabled coins</source>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="818"/>
+        <source>Min Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="883"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="841"/>
+        <source>Hide disabled coins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="902"/>
         <source>No buy orders found for %1.</source>
         <translation>Не найдено ордеров на покупку дл] %1.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="890"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="909"/>
         <source>You can check later or try to sell a different coin.</source>
         <translation>Вы можете попробовать позже или попробовать продать другой актив.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="919"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="938"/>
         <source>Calculating fee estimate... </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="947"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="966"/>
         <source>Total %1 fees: </source>
         <translation>Всего %1 комиссий: </translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="955"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Trade.qml" line="974"/>
         <source>%2 (%3)</source>
         <translation>%2 (%3)</translation>
     </message>
@@ -4524,7 +4534,7 @@ This might take a few minutes...</source>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="705"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="721"/>
         <source>An error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>

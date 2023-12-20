@@ -11,12 +11,12 @@
 
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
-#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
-#include "atomicdex/api/mm2/rpc.electrum.hpp"
-#include "atomicdex/api/mm2/rpc.validate.address.hpp"
-#include "atomicdex/api/mm2/rpc2.withdraw.hpp"
-#include "atomicdex/api/mm2/rpc2.task.withdraw.init.hpp"
-#include "atomicdex/api/mm2/rpc2.task.withdraw.status.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.convertaddress.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.electrum.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.validateaddress.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.withdraw.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.init.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.status.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"

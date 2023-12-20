@@ -27,7 +27,7 @@
 #include <antara/gaming/ecs/system.manager.hpp>
 
 //! Project
-#include "atomicdex/api/mm2/rpc.orderbook.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
 #include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 
 namespace atomic_dex

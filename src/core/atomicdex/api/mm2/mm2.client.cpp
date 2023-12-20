@@ -18,18 +18,18 @@
 
 #include <meta/detection/detection.hpp>
 
-#include "enable_slp_rpc.hpp"
-#include "get_public_key_rpc.hpp"
-#include "enable_bch_with_tokens_rpc.hpp"
-#include "my_tx_history_rpc.hpp"
-#include "my_tx_history_v1_rpc.hpp"
-#include "mm2.client.hpp"
 #include "mm2.hpp"
-#include "atomicdex/constants/dex.constants.hpp"
-#include "rpc.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
+#include "mm2.client.hpp"
 #include "rpc.tx.history.hpp"
-#include "rpc2.enable_tendermint_token.hpp"
-#include "rpc2.enable_tendermint_with_assets.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.my_tx_history.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.get_public_key.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.my_tx_history.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_tendermint_token.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_tendermint_with_assets.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_slp_rpc.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_bch_with_tokens_rpc.hpp"
 
 namespace
 {
