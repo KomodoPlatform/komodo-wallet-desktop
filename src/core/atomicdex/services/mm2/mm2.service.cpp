@@ -521,7 +521,7 @@ namespace atomic_dex
         t_coins enabled_coins = get_enabled_coins();
         for (const auto& coin : coins)
         {
-            if (std::ranges::any_of(enabled_coins, [&coin](const auto& enabled_coin) { return enabled_coin.ticker == coin.ticker; }))
+            if (ranges::any_of(enabled_coins, [&coin](const auto& enabled_coin) { return enabled_coin.ticker == coin.ticker; }))
             {
                 SPDLOG_WARN("{} cannot be enabled because it already is or is being enabled.", coin.ticker);
                 continue;
