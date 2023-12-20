@@ -686,16 +686,18 @@ namespace atomic_dex
                         auto [res, error] = this->process_batch_enable_answer(answer);
                         if (!res)
                         {
-                            SPDLOG_DEBUG(
-                                "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", coins[idx].ticker, idx,
-                                coins.size(), answers.size());
-                            if (error.find("already initialized") != std::string::npos)
+                            if (error.find("is initialized already") != std::string::npos)
                             {
                                 SPDLOG_INFO("{} {}: ", coins[idx].ticker, error);
                                 activated_coins.push_back(std::move(coins[idx]));
                             }
                             else
                             {
+                                SPDLOG_DEBUG(
+                                    "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}",
+                                    coins[idx].ticker, idx,
+                                    coins.size(), answers.size()
+                                );
                                 failed_coins.push_back(std::move(coins[idx]));
                                 this->dispatcher_.trigger<enabling_coin_failed>(coins[idx].ticker, error);
                                 SPDLOG_ERROR(error);
