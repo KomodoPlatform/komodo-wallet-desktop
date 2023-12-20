@@ -92,17 +92,18 @@ namespace atomic_dex
        //! Timers
        t_mm2_time_point m_orderbook_clock;
        t_mm2_time_point m_info_clock;
+       t_mm2_time_point m_activation_clock;
 
        //! Atomicity / Threads
        std::atomic_bool m_mm2_running{false};
        std::atomic_bool m_orderbook_thread_active{false};  // Only active when in trading view (pro and simple)
-       std::atomic_size_t m_nb_update_required{0};
        std::thread      m_mm2_init_thread;
 
        //! Current wallet name
        std::string m_current_wallet_name;
 
        //! Mutex
+       mutable std::shared_mutex m_activation_mutex;
        mutable std::shared_mutex m_balance_mutex;
        mutable std::shared_mutex m_coin_cfg_mutex;
        mutable std::shared_mutex m_raw_coin_cfg_mutex;
@@ -114,6 +115,7 @@ namespace atomic_dex
        t_orderbook              m_orderbook{mm2::orderbook_result_rpc{}};
        t_orders_and_swaps       m_orders_and_swaps{orders_and_swaps{}};
        t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
+       t_coins                  m_activation_queue;
 
        //! Balance factor
        double m_balance_factor{1.0};
@@ -166,6 +168,7 @@ namespace atomic_dex
 
        // Coins enabling functions
        bool enable_default_coins(); // Enables required coins + coins enabled in the config
+       void activate_coins(const t_coins& coins);
        void enable_coins(const std::vector<std::string>& tickers);
        void enable_coins(const t_coins& coins);
        void enable_coin(const std::string& ticker);

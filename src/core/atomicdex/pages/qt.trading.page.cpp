@@ -1280,6 +1280,7 @@ namespace atomic_dex
     void
     trading_page::determine_error_cases()
     {
+        // SPDLOG_DEBUG("determine_error_cases");
         if (!m_system_manager.has_system<mm2_service>())
             return;
         TradingError current_trading_error = TradingError::None;

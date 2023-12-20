@@ -44,6 +44,7 @@ namespace atomic_dex::mm2
             std::string                         swap_contract_address;
             std::string                         fallback_swap_contract;
             bool                                tx_history{true};
+            bool                                get_balances{true};
             std::optional<bool>                 is_testnet{false};
             std::optional<size_t>               gas_station_decimals;
             std::optional<int>                  required_confirmations;

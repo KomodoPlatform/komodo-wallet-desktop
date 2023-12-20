@@ -9,21 +9,16 @@ namespace atomic_dex::mm2
         j["ticker"] = in.ticker;
         j["nodes"] = in.nodes;
         j["tx_history"] = in.tx_history;
+        j["get_balances"] = in.get_balances;
         j["erc20_tokens_requests"]  = in.erc20_tokens_requests;
         if (in.required_confirmations.has_value())
             j["required_confirmations"] = in.required_confirmations.value();
         if (in.requires_notarization.has_value())
             j["requires_notarization"] = in.requires_notarization.value();
+        j["swap_contract_address"] = in.swap_contract_address;
+        j["fallback_swap_contract"] = in.fallback_swap_contract;
 
-        // Use this in mm2.service.cpp when constructing the request
-        //
-        // coin_config coin_info = get_coin_info(in.ticker);
-        // coin_config.fallback_swap_contract_address
-        // coin_config.swap_contract_address
-        // coin_config.gas_station_url
-        // coin_config.gas_station_decimals
-
-        // SPDLOG_DEBUG("enable_erc20_with_tokens: {}", j.dump(4));
+        SPDLOG_DEBUG("enable_eth_with_tokens: {}", j.dump(4));
     }
 
     void to_json(nlohmann::json& j, const enable_eth_with_tokens_request_rpc::erc20_token_request_t& in)
