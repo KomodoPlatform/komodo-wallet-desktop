@@ -37,7 +37,7 @@ namespace atomic_dex
             UTXO            = 3,
             SmartChain      = 4,
             SLP             = 5,
-            Matic           = 6,
+            PLG20           = 6,
             Optimism        = 7,
             Arbitrum        = 8,
             AVX20           = 9,

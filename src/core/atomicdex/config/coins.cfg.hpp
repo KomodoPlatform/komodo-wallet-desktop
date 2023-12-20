@@ -30,7 +30,7 @@
 
 namespace atomic_dex
 {
-    struct coin_config
+    struct coin_config_t
     {
         std::optional<std::string>                        erc_gas_stations{std::nullopt};
         std::optional<std::string>                        matic_gas_stations{std::nullopt};
@@ -43,6 +43,7 @@ namespace atomic_dex
         std::string                                       ticker;
         std::string                                       gui_ticker; ///< Ticker displayed in the gui
         std::string                                       name;       ///< nice name
+        std::string                                       fname;       ///< nice name
         std::string                                       parent_coin;
         std::string                                       fees_ticker;
         std::string                                       type;
@@ -51,7 +52,8 @@ namespace atomic_dex
         std::string                                       livecoinwatch_id{"test-coin"};
         std::string                                       explorer_url;
         std::string                                       tx_uri{"tx/"};
-        std::string                                       address_url{"address/"};
+        std::string                                       address_uri{"address/"};
+        std::string                                       block_uri{"block/"};
         std::string                                       minimal_claim_amount{"0"};
         CoinType                                          coin_type;
         nlohmann::json                                    activation_status;
@@ -79,7 +81,11 @@ namespace atomic_dex
         std::optional<std::string>                        gas_station_url{std::nullopt};
         std::optional<std::string>                        matic_gas_station_url{std::nullopt};
         std::optional<std::string>                        testnet_matic_gas_station_url{std::nullopt};
+        std::optional<std::string>                        contract_address{std::nullopt};
+        std::optional<std::string>                        derivation_path{std::nullopt};
+        std::optional<std::size_t>                        decimals{std::nullopt};
         std::optional<std::size_t>                        matic_gas_station_decimals{std::nullopt};
+        std::optional<std::size_t>                        chain_id{std::nullopt};
         std::optional<nlohmann::json>                     custom_backup;
         std::optional<std::set<CoinType>>                 other_types;
         std::optional<electrum_servers>                   electrum_urls;
@@ -90,10 +96,11 @@ namespace atomic_dex
         std::optional<bchd_url_list>                      bchd_urls;
     };
 
-    void from_json(const nlohmann::json& j, coin_config& cfg);
+    void from_json(const nlohmann::json& j, coin_config_t& cfg);
 
-    void print_coins(std::vector<coin_config> coins);
+    void print_coins(std::vector<coin_config_t> coins);
     bool is_wallet_only(std::string ticker);
     bool is_default_coin(std::string ticker);
     bool is_faucet_coin(std::string ticker);
+
 } // namespace atomic_dex
