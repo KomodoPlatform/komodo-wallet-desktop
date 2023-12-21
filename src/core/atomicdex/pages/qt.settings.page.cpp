@@ -763,6 +763,11 @@ namespace atomic_dex
         return QString::fromStdString(mm2::rpc_version());
     }
 
+    QString settings_page::get_rpcport()
+    {
+        return QString::fromStdString(atomic_dex::g_dex_rpcport);
+    }
+
     QString settings_page::get_peerid()
     {
         return QString::fromStdString(mm2::peer_id());

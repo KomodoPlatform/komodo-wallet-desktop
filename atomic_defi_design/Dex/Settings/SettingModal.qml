@@ -650,7 +650,7 @@ Qaterial.Dialog
                         {
                             anchors.fill: parent
                             topPadding: 10
-                            spacing: 15
+                            spacing: 12
 
                             ModalLoader
                             {
@@ -721,15 +721,15 @@ Qaterial.Dialog
                                 {
                                     Layout.alignment: Qt.AlignVCenter
                                     Layout.fillWidth: true
-                                    text: qsTr("Qt version")
+                                    text: qsTr("RPC Port")
                                 }
 
                                 DexCopyableLabel
                                 {
                                     Layout.alignment: Qt.AlignVCenter
-                                    text: qtversion
-                                    onCopyNotificationTitle: qsTr("Qt Version")
-                                    onCopyNotificationMsg: qsTr("Qt Version copied to clipboard.")
+                                    text: API.app.settings_pg.get_rpcport()
+                                    onCopyNotificationTitle: qsTr("RPC Port")
+                                    onCopyNotificationMsg: qsTr("RPC Port copied to clipboard.")
                                 }
                             }
 
@@ -755,6 +755,27 @@ Qaterial.Dialog
                                 }
                             }
 
+                            RowLayout
+                            {
+                                width: parent.width - 30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+
+                                DexLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Qt version")
+                                }
+
+                                DexCopyableLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    text: qtversion
+                                    onCopyNotificationTitle: qsTr("Qt Version")
+                                    onCopyNotificationMsg: qsTr("Qt Version copied to clipboard.")
+                                }
+                            }
                         }
                     }
                 }
@@ -777,7 +798,7 @@ Qaterial.Dialog
 
             DexAppButton
             {
-                text: qsTr("Search Update")
+                text: qsTr("Search for Update")
                 height: 48
                 radius: 20
                 leftPadding: 20
