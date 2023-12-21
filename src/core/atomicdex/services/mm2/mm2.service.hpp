@@ -1,5 +1,5 @@
 /******************************************************************************
-* Copyright © 2013-2023 The Komodo Platform Developers.                      *
+* Copyright © 2013-2024 The Komodo Platform Developers.                      *
 *                                                                            *
 * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
 * the top-level directory of this distribution for the individual copyright  *
@@ -31,14 +31,16 @@
 #include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/api/mm2/mm2.error.code.hpp"
 #include "atomicdex/api/mm2/mm2.hpp"
-#include "atomicdex/api/mm2/rpc.balance.hpp"
-#include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
-#include "atomicdex/api/mm2/rpc.min.volume.hpp"
-#include "atomicdex/api/mm2/rpc.orderbook.hpp"
-#include "atomicdex/api/mm2/enable_bch_with_tokens_rpc.hpp"
-#include "atomicdex/api/mm2/enable_slp_rpc.hpp"
-#include "atomicdex/api/mm2/rpc2.enable_tendermint_with_assets.hpp"
-#include "atomicdex/api/mm2/rpc2.enable_tendermint_token.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.max_taker_vol.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.my_balance.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_bch_with_tokens_rpc.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_slp_rpc.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_tendermint_with_assets.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_tendermint_token.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_erc20.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_eth_with_tokens.hpp"
 #include "atomicdex/config/raw.mm2.coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/data/dex/orders.and.swaps.data.hpp"
@@ -55,8 +57,8 @@ namespace atomic_dex
    using t_shared_synchronized_value = boost::synchronized_value<T, std::shared_mutex>;
 
    using t_ticker         = std::string;
-   using t_coins_registry = std::unordered_map<t_ticker, coin_config>;
-   using t_coins          = std::vector<coin_config>;
+   using t_coins_registry = std::unordered_map<t_ticker, coin_config_t>;
+   using t_coins          = std::vector<coin_config_t>;
 
    class ENTT_API mm2_service final : public ag::ecs::pre_update_system<mm2_service>
    {
@@ -68,7 +70,7 @@ namespace atomic_dex
        using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
        using t_balance_registry           = std::unordered_map<t_ticker, t_balance_answer>;
        using t_tx_registry                = t_shared_synchronized_value<std::unordered_map<t_ticker, std::pair<t_transactions, t_tx_state>>>;
-       using t_orderbook                  = boost::synchronized_value<t_orderbook_answer>;
+       using t_orderbook                  = boost::synchronized_value<mm2::orderbook_result_rpc>;
        using t_orders_and_swaps           = boost::synchronized_value<orders_and_swaps>;
        using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
        using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
@@ -90,17 +92,18 @@ namespace atomic_dex
        //! Timers
        t_mm2_time_point m_orderbook_clock;
        t_mm2_time_point m_info_clock;
+       t_mm2_time_point m_activation_clock;
 
        //! Atomicity / Threads
        std::atomic_bool m_mm2_running{false};
-       std::atomic_bool m_orderbook_thread_active{false};
-       std::atomic_size_t m_nb_update_required{0};
+       std::atomic_bool m_orderbook_thread_active{false};  // Only active when in trading view (pro and simple)
        std::thread      m_mm2_init_thread;
 
        //! Current wallet name
        std::string m_current_wallet_name;
 
        //! Mutex
+       mutable std::shared_mutex m_activation_mutex;
        mutable std::shared_mutex m_balance_mutex;
        mutable std::shared_mutex m_coin_cfg_mutex;
        mutable std::shared_mutex m_raw_coin_cfg_mutex;
@@ -109,15 +112,17 @@ namespace atomic_dex
        t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
        t_balance_registry       m_balance_informations;
        t_tx_registry            m_tx_informations;
-       t_orderbook              m_orderbook{t_orderbook_answer{}};
+       t_orderbook              m_orderbook{mm2::orderbook_result_rpc{}};
        t_orders_and_swaps       m_orders_and_swaps{orders_and_swaps{}};
        t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
+       t_coins                  m_activation_queue;
 
        //! Balance factor
        double m_balance_factor{1.0};
 
        //! Refresh the orderbook registry (internal)
-       nlohmann::json prepare_batch_orderbook(bool is_a_reset);
+       void prepare_orderbook(bool is_a_reset);
+       void process_orderbook_extras(nlohmann::json batch, bool is_a_reset);
 
        //! Batch balance / tx
        std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx(bool only_tx = false) const;
@@ -125,13 +130,13 @@ namespace atomic_dex
        void process_balance_answer(const nlohmann::json& answer);
        void process_tx_answer(const nlohmann::json& answer_json, std::string ticker);
        void process_tx_tokenscan(const std::string& ticker, bool is_a_refresh);
-       void fetch_single_balance(const coin_config& cfg_infos);
+       void fetch_single_balance(const coin_config_t& cfg_infos);
 
        //!
        std::pair<bool, std::string>                        process_batch_enable_answer(const nlohmann::json& answer);
        [[nodiscard]] std::pair<t_transactions, t_tx_state> get_tx(t_mm2_ec& ec) const;
        std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
-       std::vector<atomic_dex::coin_config>                retrieve_coins_informations();
+       std::vector<atomic_dex::coin_config_t>                retrieve_coins_informations();
 
        void handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from, nlohmann::json batch);
 
@@ -149,35 +154,38 @@ namespace atomic_dex
        ~mm2_service() final;
 
        //! Events
-       void on_refresh_orderbook(const orderbook_refresh& evt);
+       void on_refresh_orderbook_model_data(const refresh_orderbook_model_data& evt);
 
        void on_gui_enter_trading(const gui_enter_trading& evt);
 
        void on_gui_leave_trading(const gui_leave_trading& evt);
 
        //! Spawn mm2 instance with given seed
-       void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
+       void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false, std::string rpcpassword = "");
 
        //! Refresh the current info (internally call process_balance and process_tx)
        void fetch_infos_thread(bool is_a_fresh = true, bool only_tx = false);
 
        // Coins enabling functions
        bool enable_default_coins(); // Enables required coins + coins enabled in the config
+       void activate_coins(const t_coins& coins);
        void enable_coins(const std::vector<std::string>& tickers);
        void enable_coins(const t_coins& coins);
        void enable_coin(const std::string& ticker);
-       void enable_coin(const coin_config& coin_config);
+       void enable_coin(const coin_config_t& coin_config);
      private:
        void update_coin_active(const std::vector<std::string>& tickers, bool status);
-       void enable_erc_family_coin(const coin_config& coin_config);
+       void enable_erc_family_coin(const coin_config_t& coin_config);
        void enable_erc_family_coins(const t_coins& coins);
-       void enable_utxo_qrc20_coin(coin_config coin_config);
+       void enable_utxo_qrc20_coin(coin_config_t coin_config);
        void enable_utxo_qrc20_coins(const t_coins& coins);
-       void enable_slp_coin(coin_config coin_config);
+       void enable_slp_coin(coin_config_t coin_config);
        void enable_slp_coins(const t_coins& coins);
-       void enable_slp_testnet_coin(coin_config coin_config);
+       void enable_slp_testnet_coin(coin_config_t coin_config);
        void enable_slp_testnet_coins(const t_coins& coins);
-       void enable_tendermint_coin(coin_config coin_config, std::string parent_ticker);
+       void enable_erc20_coin(coin_config_t coin_config, std::string parent_ticker);
+       void enable_erc20_coins(const t_coins& coins, const std::string parent_ticker);
+       void enable_tendermint_coin(coin_config_t coin_config, std::string parent_ticker);
        void enable_tendermint_coins(const t_coins& coins, const std::string parent_ticker);
        void enable_zhtlc(const t_coins& coins);
 
@@ -186,11 +194,14 @@ namespace atomic_dex
        void process_balance_answer(const mm2::enable_slp_rpc& rpc);                // Called after enabling an SLP coin.
        void process_balance_answer(const mm2::enable_tendermint_with_assets_rpc& rpc);
        void process_balance_answer(const mm2::enable_tendermint_token_rpc& rpc);
+       void process_balance_answer(const mm2::enable_eth_with_tokens_rpc& rpc);
+       void process_balance_answer(const mm2::enable_erc20_rpc& rpc);
 
      public:
        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
        void                         add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json);
        void                         remove_custom_coin(const std::string& ticker);
+       void                         update_sync_ticker_pair(std::string base, std::string rel);
        [[nodiscard]] bool           is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
        [[nodiscard]] bool           is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
        [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;
@@ -216,7 +227,7 @@ namespace atomic_dex
        [[nodiscard]] const std::atomic_bool& is_mm2_running() const;
 
        //! Retrieve my balance for a given ticker as a string.
-       [[nodiscard]] std::string my_balance(const std::string& ticker, t_mm2_ec& ec) const;
+       [[nodiscard]] std::string get_balance_info(const std::string& ticker, t_mm2_ec& ec) const;
 
        //! Refresh the current orderbook (internally call process_orderbook)
        void fetch_current_orderbook_thread(bool is_a_reset = false);
@@ -236,7 +247,7 @@ namespace atomic_dex
        [[nodiscard]] t_coins get_active_coins() const;
 
        //! Get Specific info about one coin
-       [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
+       [[nodiscard]] coin_config_t get_coin_info(const std::string& ticker) const;
        
        // Tells if the given coin is enabled.
        [[nodiscard]] bool is_coin_enabled(const std::string& ticker) const;
@@ -245,13 +256,13 @@ namespace atomic_dex
        [[nodiscard]] bool has_coin(const std::string& ticker) const;
 
        //! Get Current orderbook
-       [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const;
+       [[nodiscard]] mm2::orderbook_result_rpc get_orderbook(t_mm2_ec& ec) const;
 
        //! Get Swaps
        [[nodiscard]] orders_and_swaps get_orders_and_swaps() const;
 
        //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
-       [[nodiscard]] t_float_50 get_balance(const std::string& ticker) const;
+       [[nodiscard]] t_float_50 get_balance_info_f(const std::string& ticker) const;
 
        //! Return true if we the balance of the `ticker` > amount, false otherwise.
        [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
@@ -279,6 +290,8 @@ namespace atomic_dex
        //! Pagination
        void set_orders_and_swaps_pagination_infos(std::size_t current_page = 1, std::size_t limit = 50, t_filtering_infos infos = {});
 
+      signals:
+        void zhtlcStatusChanged();
    };
 } // namespace atomic_dex
 

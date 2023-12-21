@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -364,11 +364,13 @@ namespace atomic_dex
     void
     orderbook_model::reset_orderbook(const t_orders_contents& orderbook, bool is_bestorders)
     {
-        SPDLOG_DEBUG("[orderbook_model::reset_orderbook]");
+        // SPDLOG_DEBUG("[orderbook_model::reset_orderbook], is_bestorders: {}", is_bestorders);
         if (!orderbook.empty())
         {
             SPDLOG_INFO(
-                "full orderbook initialization initial size: {} target size: {}, orderbook_kind: {}", rowCount(), orderbook.size(), m_current_orderbook_kind);
+                "full orderbook initialization initial size: {} target size: {}, orderbook_kind: {}, is_bestorders: {}",
+                rowCount(), orderbook.size(), m_current_orderbook_kind, is_bestorders
+            );
         }
         this->beginResetModel();
         m_model_data = orderbook;
@@ -502,8 +504,9 @@ namespace atomic_dex
                         if (price_std > preferred_price)
                         {
                             SPDLOG_INFO(
-                                "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}", order.uuid,
-                                utils::format_float(price_std), utils::format_float(preferred_price));
+                                "An order with a better price is available, uuid: {}, new_price: {}, current_price: {}",
+                                order.uuid, utils::format_float(price_std), utils::format_float(preferred_price)
+                            );
                             trading_pg.set_selected_order_status(SelectedOrderStatus::BetterPriceAvailable);
                             emit betterOrderDetected(get_order_from_uuid(QString::fromStdString(order.uuid)));
                         }
@@ -519,8 +522,9 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::refresh_orderbook(const t_orders_contents& orderbook, bool is_bestorders)
+    orderbook_model::refresh_orderbook_model_data(const t_orders_contents& orderbook, bool is_bestorders)
     {
+        // SPDLOG_DEBUG("[orderbook_model::refresh_orderbook_model_data], is_bestorders: {}", is_bestorders);
         auto refresh_functor = [this](const std::vector<mm2::order_contents>& contents)
         {
             for (auto&& order: contents)
@@ -575,15 +579,15 @@ namespace atomic_dex
             if (m_system_mgr.has_system<trading_page>() && m_current_orderbook_kind == kind::bids)
             {
                 auto&      trading_pg      = m_system_mgr.get_system<trading_page>();
-                const auto preffered_order = trading_pg.get_preferred_order();
-                if (!preffered_order.empty())
+                const auto preferred_order = trading_pg.get_preferred_order();
+                if (!preferred_order.empty())
                 {
-                    const auto selected_order_uuid = preffered_order.value("uuid", "").toString().toStdString();
+                    const auto selected_order_uuid = preferred_order.value("uuid", "").toString().toStdString();
                     if (selected_order_uuid == uuid_to_be_removed)
                     {
                         SPDLOG_WARN(
                             "The selected order uuid: {} is removed from the orderbook model, checking if a better order is available", uuid_to_be_removed);
-                        check_for_better_order(trading_pg, preffered_order, selected_order_uuid);
+                        check_for_better_order(trading_pg, preferred_order, selected_order_uuid);
                     }
                 }
             }

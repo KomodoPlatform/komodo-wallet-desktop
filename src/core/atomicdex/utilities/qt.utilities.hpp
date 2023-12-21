@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -49,7 +49,7 @@ namespace atomic_dex
     QJsonArray           nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);
     QJsonObject          nlohmann_json_object_to_qt_json_object(const nlohmann::json& j);
     QString              retrieve_change_24h(
-                     const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
+                     const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config_t& coin, const atomic_dex::cfg& config,
                      const ag::ecs::system_manager& system_manager);
     
     [[nodiscard]] QString inline sha256_qstring_from_qt_byte_array(const QByteArray& byte_array)
@@ -92,6 +92,6 @@ namespace atomic_dex
          * @return a ticker
          * @example -> retrieve_main_ticker("BUSD") -> BUSD retrieve_main_ticker("BUSD-ERC20") -> BUSD
          */
-        Q_INVOKABLE QString retrieve_main_ticker(const QString& ticker) const;
+        Q_INVOKABLE QString retrieve_main_ticker(const QString& ticker, bool segwit_only = false, bool exclude_segwit = false) const;
     };
 } // namespace atomic_dex

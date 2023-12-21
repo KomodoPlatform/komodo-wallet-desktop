@@ -103,7 +103,7 @@ namespace atomic_dex::coingecko::api
     }
 
     std::pair<std::vector<std::string>, t_coingecko_registry>
-    from_enabled_coins(const std::vector<coin_config>& coins)
+    from_enabled_coins(const std::vector<coin_config_t>& coins)
     {
         std::vector<std::string> out;
         t_coingecko_registry     registry;

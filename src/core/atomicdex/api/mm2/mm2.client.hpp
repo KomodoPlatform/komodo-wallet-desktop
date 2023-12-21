@@ -8,10 +8,10 @@
 
 // Project Headers
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
-#include "rpc.disable.hpp"
-#include "rpc.recover.funds.hpp"
-#include "rpc.hpp"
-#include "rpc2.task.enable_z_coin.cancel.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.disable_coin.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.task.enable_z_coin.cancel.hpp"
 
 namespace atomic_dex::mm2
 {

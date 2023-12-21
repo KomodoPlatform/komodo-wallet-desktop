@@ -20,7 +20,6 @@ Qaterial.Dialog
 {
     id: setting_modal
     property alias selectedMenuIndex: menu_list.currentIndex
-    readonly property string mm2_version: API.app.settings_pg.get_mm2_version()
     property var recommended_fiats: API.app.settings_pg.get_recommended_fiats()
     property var fiats: API.app.settings_pg.get_available_fiats()
     property var enableable_coins_count: enableable_coins_count_combo_box.currentValue
@@ -617,6 +616,31 @@ Qaterial.Dialog
                                 onClicked: camouflage_password_modal.open()
                             }
 
+                            // Spam filter toggle
+                            RowLayout
+                            {
+                                width: parent.width - 30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+
+                                DexLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
+                                    text: qsTr("Reuse static RPC password")
+                                }
+
+                                Item { Layout.fillWidth: true }
+
+                                DexSwitch
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Component.onCompleted: checked = API.app.settings_pg.static_rpcpass_enabled
+                                    onCheckedChanged: API.app.settings_pg.static_rpcpass_enabled = checked
+                                }
+                            }
+
                         }
                     }
 
@@ -708,6 +732,29 @@ Qaterial.Dialog
                                     onCopyNotificationMsg: qsTr("Qt Version copied to clipboard.")
                                 }
                             }
+
+                            RowLayout
+                            {
+                                width: parent.width - 30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 60
+
+                                DexLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    text: qsTr("Peer ID")
+                                }
+
+                                DexCopyableLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    text: API.app.settings_pg.get_peerid()
+                                    onCopyNotificationTitle: qsTr("Peer ID")
+                                    onCopyNotificationMsg: qsTr("Peer ID copied to clipboard.")
+                                }
+                            }
+
                         }
                     }
                 }

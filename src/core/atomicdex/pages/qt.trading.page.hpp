@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -55,7 +55,7 @@ namespace atomic_dex
         Q_PROPERTY(QString base_amount READ get_base_amount NOTIFY baseAmountChanged)
         Q_PROPERTY(QString rel_amount READ get_rel_amount NOTIFY relAmountChanged)
         Q_PROPERTY(QVariantMap fees READ get_fees WRITE set_fees NOTIFY feesChanged)
-        Q_PROPERTY(QVariantMap preffered_order READ get_preferred_order WRITE set_preferred_order NOTIFY prefferedOrderChanged)
+        Q_PROPERTY(QVariantMap preferred_order READ get_preferred_order WRITE set_preferred_order NOTIFY preferredOrderChanged)
         Q_PROPERTY(SelectedOrderStatus selected_order_status READ get_selected_order_status WRITE set_selected_order_status NOTIFY selectedOrderStatusChanged)
         Q_PROPERTY(QString price_reversed READ get_price_reversed NOTIFY priceReversedChanged)
         Q_PROPERTY(QString pair_volume_24hr READ get_pair_volume_24hr NOTIFY pairVolume24hrChanged)
@@ -155,7 +155,7 @@ namespace atomic_dex
         Q_INVOKABLE void     clear_forms(QString from);
 
         //! Trading business
-        Q_INVOKABLE void swap_market_pair(); ///< market_selector (button to switch market selector and orderbook)
+        Q_INVOKABLE void swap_market_pair(bool involves_segwit = false); ///< market_selector (button to switch market selector and orderbook)
         Q_INVOKABLE bool set_pair(bool is_left_side, const QString& changed_ticker);
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
@@ -233,7 +233,7 @@ namespace atomic_dex
         void maxVolumeChanged();
         void tradingErrorChanged();
         void tradingModeChanged();
-        void prefferedOrderChanged();
+        void preferredOrderChanged();
         void totalAmountChanged();
         void baseAmountChanged();
         void relAmountChanged();

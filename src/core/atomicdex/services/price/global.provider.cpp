@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -334,6 +334,9 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const
     {
+        // Runs often to update fiat values for all enabled coins.
+        // fetch ticker infos loop and on_update_portfolio_values_event triggers this.
+        // SPDLOG_INFO("get_price_in_fiat [{}] [{}]", fiat, ticker);
         try
         {
             auto& mm2_instance = m_system_manager.get_system<mm2_service>();
@@ -352,12 +355,12 @@ namespace atomic_dex
             }
 
             std::error_code t_ec;
-            const auto      amount = mm2_instance.my_balance(ticker, t_ec);
+            const auto      amount = mm2_instance.get_balance_info(ticker, t_ec); // from registry
 
             if (t_ec)
             {
                 ec = t_ec;
-                //SPDLOG_ERROR("my_balance error: {} {}", t_ec.message(), ticker);
+                //SPDLOG_ERROR("get_balance_info error: {} {}", t_ec.message(), ticker);
                 return "0.00";
             }
 

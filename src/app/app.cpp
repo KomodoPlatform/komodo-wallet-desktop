@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -530,9 +530,15 @@ namespace atomic_dex
         {
             SPDLOG_DEBUG("on_coin_fully_initialized_event");
 #if !defined(_WIN32)
-            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
+            for (auto&& ticker: evt.tickers) {
+                SPDLOG_DEBUG("Adding {} to m_portfolio_queue", ticker);
+                m_portfolio_queue.push(strdup(ticker.c_str()));
+            }
 #else
-            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(_strdup(ticker.c_str())); }
+            for (auto&& ticker: evt.tickers) {
+                SPDLOG_DEBUG("Adding {} to m_portfolio_queue", ticker);
+                m_portfolio_queue.push(_strdup(ticker.c_str()));
+            }
 #endif
         }
     }
@@ -554,10 +560,11 @@ namespace atomic_dex
         return res;
     }
 
-    QString application::get_balance(const QString& coin)
+    QString application::get_balance_info_qstr(const QString& coin)
     {
         std::error_code ec;
-        auto            res = get_mm2().my_balance(coin.toStdString(), ec);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+        auto            res = get_mm2().get_balance_info(coin.toStdString(), ec);
         return QString::fromStdString(res);
     }
 
@@ -567,6 +574,7 @@ namespace atomic_dex
         system_manager_.get_system<qt_wallet_manager>().set_status("enabling_coins");
     }
 
+    // Function appears to be unused.
     void application::refresh_orders_and_swaps()
     {
         auto& mm2 = get_mm2();

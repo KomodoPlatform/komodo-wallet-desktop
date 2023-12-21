@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -54,9 +54,13 @@ namespace
         {
             return CoinType::SLP;
         }
+        if (coin_type == "PLG-20")
+        {
+            return CoinType::PLG20;
+        }
         if (coin_type == "Matic")
         {
-            return CoinType::Matic;
+            return CoinType::PLG20;
         }
         if (coin_type == "Optimism")
         {
@@ -147,7 +151,7 @@ namespace atomic_dex
     }
 
     void
-    from_json(const nlohmann::json& j, coin_config& cfg)
+    from_json(const nlohmann::json& j, coin_config_t& cfg)
     {
         j.at("coin").get_to(cfg.ticker);
         j.at("name").get_to(cfg.name);
@@ -180,13 +184,9 @@ namespace atomic_dex
             cfg.other_types = std::set<CoinType>();
             for (const auto& other_type: other_types) { cfg.other_types->emplace(get_coin_type_from_str(other_type)); }
         }
-        if (j.contains("utxo_merge"))
+        if (j.contains("merge_utxos"))
         {
-            cfg.utxo_merge = j.at("utxo_merge");
-        }
-        if (j.contains("mm2_backup"))
-        {
-            cfg.custom_backup = j.at("mm2_backup");
+            cfg.merge_utxos = j.at("merge_utxos");
         }
         if (j.contains("activation_status"))
         {
@@ -245,19 +245,24 @@ namespace atomic_dex
         {
             j.at("explorer_tx_url").get_to(cfg.tx_uri);
         }
+        if (j.contains("explorer_block_url"))
+        {
+            j.at("explorer_block_url").get_to(cfg.block_uri);
+        }
         if (j.contains("explorer_address_url"))
         {
-            j.at("explorer_address_url").get_to(cfg.address_url);
+            j.at("explorer_address_url").get_to(cfg.address_uri);
         }
         // Swap contract addresses
         if (j.contains("swap_contract_address"))
         {
             cfg.swap_contract_address = j["swap_contract_address"];
         }
-        if (j.contains("fallback_swap_contract_address"))
+        if (j.contains("fallback_swap_contract"))
         {
-            cfg.fallback_swap_contract_address = j["fallback_swap_contract_address"];
+            cfg.fallback_swap_contract = j["fallback_swap_contract"];
         }
+
         // Gas station urls
         if (j.contains("gas_station_url"))
         {
@@ -293,7 +298,7 @@ namespace atomic_dex
             cfg.fees_ticker            = cfg.is_testnet.value() ? "BNBT" : "BNB";
             cfg.is_erc_family          = true;
             break;
-        case CoinType::Matic:
+        case CoinType::PLG20:
             cfg.has_parent_fees_ticker = true;
             cfg.fees_ticker            = cfg.is_testnet.value() ? "MATICTEST" : "MATIC";
             cfg.is_erc_family          = true;
@@ -400,7 +405,7 @@ namespace atomic_dex
     }
 
     void
-    print_coins(std::vector<coin_config> coins)
+    print_coins(std::vector<coin_config_t> coins)
     {
         std::stringstream ss;
         ss << "[";

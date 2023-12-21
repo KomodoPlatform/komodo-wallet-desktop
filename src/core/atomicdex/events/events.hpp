@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -117,7 +117,7 @@ namespace atomic_dex
         std::string ticker;
     };
 
-    struct orderbook_refresh
+    struct refresh_orderbook_model_data
     {
         std::string base;
         std::string rel;
@@ -125,7 +125,7 @@ namespace atomic_dex
 
     struct coin_cfg_parsed
     {
-        std::vector<atomic_dex::coin_config> cfg;
+        std::vector<atomic_dex::coin_config_t> cfg;
     };
 
     struct fatal_notification
