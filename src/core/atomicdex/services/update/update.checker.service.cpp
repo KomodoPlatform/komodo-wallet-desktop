@@ -53,7 +53,7 @@ namespace
         {
 
             resp = nlohmann::json::parse(resp_str);
-            SPDLOG_ERROR("Update check response: {}", resp_str);
+            // SPDLOG_ERROR("Update check response: {}", resp_str);
         }
         result["rpcCode"]        = resp_http.status_code();
         result["currentVersion"] = atomic_dex::get_raw_version();

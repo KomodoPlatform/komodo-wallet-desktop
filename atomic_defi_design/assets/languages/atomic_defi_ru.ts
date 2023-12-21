@@ -1411,178 +1411,178 @@
 <context>
     <name>General</name>
     <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="365"/>
+        <location filename="../../Dex/Constants/General.qml" line="367"/>
         <source>%n day(s)</source>
-        <translation>
-            <numerusform>%n день</numerusform>
-            <numerusform>%n дня</numerusform>
-            <numerusform>%n дней</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="375"/>
-        <source>%nd</source>
-        <comment>day</comment>
-        <translation>
-            <numerusform>%nд</numerusform>
-            <numerusform>%nд</numerusform>
-            <numerusform>%nд</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../../Dex/Constants/General.qml" line="376"/>
-        <source>%nh</source>
-        <comment>hours</comment>
-        <translation>
-            <numerusform>%nч</numerusform>
-            <numerusform>%nч</numerusform>
-            <numerusform>%nч</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../../Dex/Constants/General.qml" line="377"/>
-        <source>%nm</source>
-        <comment>minutes</comment>
-        <translation>
-            <numerusform>%nмин</numerusform>
-            <numerusform>%nмин</numerusform>
-            <numerusform>%nмин</numerusform>
+        <source>%nd</source>
+        <comment>day</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../../Dex/Constants/General.qml" line="378"/>
-        <source>%ns</source>
-        <comment>seconds</comment>
-        <translation>
-            <numerusform>%nсек</numerusform>
-            <numerusform>%nсек</numerusform>
-            <numerusform>%nсек</numerusform>
+        <source>%nh</source>
+        <comment>hours</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../../Dex/Constants/General.qml" line="379"/>
+        <source>%nm</source>
+        <comment>minutes</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../Dex/Constants/General.qml" line="380"/>
+        <source>%ns</source>
+        <comment>seconds</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../Dex/Constants/General.qml" line="381"/>
         <source>%nms</source>
         <comment>milliseconds</comment>
-        <translation>
-            <numerusform>%nмс</numerusform>
-            <numerusform>%nмс</numerusform>
-            <numerusform>%nмс</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="380"/>
+        <location filename="../../Dex/Constants/General.qml" line="382"/>
         <source>-</source>
-        <translation>-</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="416"/>
-        <source>&lt;b&gt;Taker tx fee:&lt;/b&gt; </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="417"/>
-        <source>&lt;b&gt;Dex tx fee:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="418"/>
-        <source>&lt;b&gt;Dex fee:&lt;/b&gt; </source>
+        <source>&lt;b&gt;Taker tx fee:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="419"/>
+        <source>&lt;b&gt;Dex tx fee:&lt;/b&gt; </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="420"/>
+        <source>&lt;b&gt;Dex fee:&lt;/b&gt; </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="421"/>
         <source>&lt;b&gt;Maker tx fee:&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="433"/>
+        <location filename="../../Dex/Constants/General.qml" line="435"/>
         <source>%1 balance is zero</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="437"/>
+        <location filename="../../Dex/Constants/General.qml" line="439"/>
         <source>Activating %1 (%2%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="441"/>
+        <location filename="../../Dex/Constants/General.qml" line="443"/>
         <source>Loading wallet...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="445"/>
-        <source>Min: %1</source>
-        <translation type="unfinished">Мин: %1</translation>
-    </message>
-    <message>
         <location filename="../../Dex/Constants/General.qml" line="447"/>
-        <source>Enter an amount</source>
-        <translation type="unfinished">Введите количество</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="847"/>
-        <source>Trading Fee</source>
-        <translation>Торговая комиссия</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="857"/>
-        <source>Minimum Trading Amount</source>
-        <translation>Минимальный объем сделки</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="868"/>
-        <source>Wallet %1 already exists</source>
-        <comment>WALLETNAME</comment>
-        <translation>Кошелек %1 уже существует</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="881"/>
-        <source>%1 balance is lower than the fees amount: %2 %3</source>
-        <translation>%1 баланс менее чем размер комиссий: %2 %3</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="883"/>
-        <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
-        <translation>Торгуемый (после комиссий) баланс %1 - меньше минимальной суммы сделки</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="885"/>
-        <source>Please fill the price field</source>
-        <translation>Пожалуйста, укажите цену</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Constants/General.qml" line="887"/>
-        <source>Please fill the volume field</source>
+        <source>Min: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="877"/>
+        <location filename="../../Dex/Constants/General.qml" line="449"/>
+        <source>Enter an amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="849"/>
+        <source>Trading Fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="859"/>
+        <source>Minimum Trading Amount</source>
+        <translation type="unfinished">Минимальный торговый объем</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="870"/>
+        <source>Wallet %1 already exists</source>
+        <comment>WALLETNAME</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Constants/General.qml" line="879"/>
+        <location filename="../../Dex/Constants/General.qml" line="881"/>
         <source>Please wait for %1 to fully activate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Constants/General.qml" line="889"/>
-        <location filename="../../Dex/Constants/General.qml" line="891"/>
-        <source>%1 volume is lower than minimum trade amount</source>
-        <translation>Сумма %1 меньше минимальной суммы сделки</translation>
+        <location filename="../../Dex/Constants/General.qml" line="883"/>
+        <source>%1 balance is lower than the fees amount: %2 %3</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dex/Constants/General.qml" line="885"/>
+        <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="887"/>
+        <source>Please fill the price field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="889"/>
+        <source>Please fill the volume field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="891"/>
         <location filename="../../Dex/Constants/General.qml" line="893"/>
-        <location filename="../../Dex/Constants/General.qml" line="897"/>
-        <source>%1 needs to be enabled in order to use %2</source>
-        <translation>%1 должен быть активным для использования %2</translation>
+        <source>%1 volume is lower than minimum trade amount</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Constants/General.qml" line="895"/>
         <location filename="../../Dex/Constants/General.qml" line="899"/>
-        <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
-        <translation>нужно пополнить баланс %1  для оплаты газа %2 транзакций</translation>
+        <source>%1 needs to be enabled in order to use %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dex/Constants/General.qml" line="897"/>
         <location filename="../../Dex/Constants/General.qml" line="901"/>
+        <source>%1 balance needs to be funded, a non-zero balance is required to pay the gas of %2 transactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Constants/General.qml" line="903"/>
         <source>Unknown Error</source>
-        <translation>Неизвестная ошибка</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3910,22 +3910,32 @@ Please select a new order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="115"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="121"/>
         <source>How long does each atomic swap take?</source>
         <translation type="unfinished">Сколько времени занимает каждый атомарный своп?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="121"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="127"/>
         <source>Do I need to be online for the duration of the swap?</source>
         <translation type="unfinished">Необходимо ли мне быть в сети во время свопа?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="116"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="122"/>
         <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example, (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="122"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="115"/>
+        <source>Where can I see the orderbook or market statistics online?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Support/SupportModal.qml" line="116"/>
+        <source>You can view an online orderbook and market statistics at &lt;a href=&quot;https://markets.atomicdex.io/&quot;&gt;https://markets.atomicdex.io/&lt;/a&gt;, or use the Komodo Wallet in your browser at &lt;a href=&quot;https://app.komodoplatform.com&quot;&gt;https://app.komodoplatform.com&lt;/a&gt;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Support/SupportModal.qml" line="128"/>
         <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. To mitigate this, &apos;watchertower&apos; nodes have been deployed to monitor the dex network for you and, where possible, complete the swaps for you if your app goes offline.
 
 The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.
@@ -3938,12 +3948,12 @@ For this reason, we recommend cancelling orders before closing %1, or reviewing 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="135"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="141"/>
         <source>How are the fees on %1 calculated?</source>
         <translation type="unfinished">Как подсчитывается %1 комиссия?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="136"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="142"/>
         <source>There are two fee categories to consider when trading on %1.
 
 1. %1 charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
@@ -3954,12 +3964,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="148"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="154"/>
         <source>I see a transaction in my wallet that was marked as &apos;poison&apos;. What does this mean?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="149"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="155"/>
         <source>Address poisoning is a relatively new type of phishing attack, where a malicious actor aims to trick you into sending funds to an address that you did not intend to send funds to.
 
 This is often done by sending a zero value transaction to your wallet from an address which looks very similar to your actual address, with the exact same letters at the start and end. This transaction will then appear in your transaction history, with the scammer hoping you will mistake the fake address for your own and send funds to it.
@@ -3970,52 +3980,52 @@ There is a toggle in settings where you can turn on/off the display of these tra
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="160"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="166"/>
         <source>Do you provide user support?</source>
         <translation type="unfinished">Предоставляете ли вы поддержку пользователей?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="161"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="167"/>
         <source>Yes! %1 offers support through the &lt;a href=&quot;%2&quot;&gt;%1 Discord server&lt;/a&gt;. The team and the community are always happy to help!</source>
         <translation type="unfinished">Да! %1 предоставляет саппорт через &lt;a href=&quot;%2&quot;&gt;%1 Discord сервер&lt;/a&gt;. Команда и сообщество проекта всегда рады помочь!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="166"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="172"/>
         <source>Who is behind %1?</source>
         <translation type="unfinished">Кто создал %1?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="167"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="173"/>
         <source>%1 is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.</source>
         <translation type="unfinished">%1 разрабатывается командой Komodo. Komodo один из наиболее известных блокчейн проектов который работает над такими инновационными решениями как Атомарные Свопы, &quot;Отложенный&quot; PoW, а также над совместимой мульти-чейн архитектурой.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="172"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="178"/>
         <source>Is it possible to develop my own white-label exchange on %1?</source>
         <translation type="unfinished">Возможно ли разработать децентрализованную биржу с моим брендом на %1?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="173"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="179"/>
         <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The %1 developer community is always ready to help!</source>
         <translation type="unfinished">Обязательно! Вы можете прочитать нашу документацию для разработчиков для более детального ревью или же связаться с нашей командой по поводу партнерства. Есть очень специфичный технический вопрос? %1 наше комьюнити разработчиков всегда готово помочь!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="178"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="184"/>
         <source>Which devices can I use %1 on?</source>
         <translation type="unfinished">На каких устройствах я могу использовать %1 ?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="179"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="185"/>
         <source>%1 is available for mobile on both &lt;a href=&quot;%2&quot;&gt;Android and iPhone, and for desktop on Windows, Mac, and Linux&lt;/a&gt; operating systems.</source>
         <translation type="unfinished">%1 доступен для Android и iOS мобильных устройв &lt;a href=&quot;%2&quot;&gt;, и для операционных систем Windows, Mac и Linux&lt;/a&gt; на PC.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="240"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="246"/>
         <source>Changelog</source>
         <translation type="unfinished">Журнал изменений</translation>
     </message>
     <message>
-        <location filename="../../Dex/Support/SupportModal.qml" line="252"/>
+        <location filename="../../Dex/Support/SupportModal.qml" line="258"/>
         <source>Open Logs Folder</source>
         <translation type="unfinished">Открыть папку с логами</translation>
     </message>
