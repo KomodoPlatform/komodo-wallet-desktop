@@ -1019,7 +1019,8 @@ namespace atomic_dex
         {
             if (rpc.error)
             {
-                if (rpc.error->error_type.find("PlatformIsAlreadyActivated") != std::string::npos || rpc.error->error_type.find("TokenIsAlreadyActivated") != std::string::npos)
+                if (rpc.error->error_type.find("PlatformIsAlreadyActivated") != std::string::npos
+                    || rpc.error->error_type.find("TokenIsAlreadyActivated") != std::string::npos)
                 {
                     SPDLOG_ERROR("{} {}: ", rpc.request.ticker, rpc.error->error_type);
                     fetch_single_balance(get_coin_info(rpc.request.ticker));
@@ -1708,13 +1709,15 @@ namespace atomic_dex
 
         auto answer_functor = [this](nlohmann::json batch, std::vector<std::string> tickers)
         {
+            
             m_mm2_client.async_rpc_batch_standalone(batch)
                 .then(
                     [this, tickers](web::http::http_response resp) mutable
                     {
                         try
                         {
-                            auto answers = mm2::basic_batch_answer(resp);
+                            auto answers                 = mm2::basic_batch_answer(resp);
+                            auto& settings_system  = m_system_manager.get_system<settings_page>();
 
                             if (answers.count("error") == 0)
                             {
@@ -1781,6 +1784,8 @@ namespace atomic_dex
                                                         // SPDLOG_INFO("{} activation ready...", tickers[idx]);
                                                         std::unique_lock lock(m_coin_cfg_mutex);
                                                         m_coins_informations[tickers[idx]].activation_status = z_answers[0];
+
+
                                                         if (z_answers[0].at("result").at("details").contains("error"))
                                                         {
                                                             if (z_answers[0].at("result").at("details").at("error").contains("error_type"))
@@ -1849,6 +1854,7 @@ namespace atomic_dex
                                                     }
                                                     std::unique_lock lock(m_coin_cfg_mutex);
                                                     m_coins_informations[tickers[idx]].activation_status = z_answers[0];
+                                                    settings_system.set_zhtlc_status(z_answers[0]);
                                                     z_nb_try += 1;
 
                                                 } while (z_nb_try < 10000);
@@ -2166,7 +2172,7 @@ namespace atomic_dex
         }
 
         t_balance_request balance_request{.coin = cfg_infos.ticker};
-        SPDLOG_DEBUG("Getting balance from mm2 for {} ", cfg_infos.ticker);
+        // SPDLOG_DEBUG("Getting balance from mm2 for {} ", cfg_infos.ticker);
         nlohmann::json    j = mm2::template_request("my_balance");
         mm2::to_json(j, balance_request);
         batch_array.push_back(j);
@@ -2311,29 +2317,46 @@ namespace atomic_dex
     }
 
     t_float_50
-    mm2_service::get_balance(const std::string& ticker) const
+    mm2_service::get_balance_info_f(const std::string& ticker) const
     {
         std::error_code ec;
-        std::string     balance_str = my_balance(ticker, ec);
+        std::string     balance_str = get_balance_info(ticker, ec);
         t_float_50      balance_f = safe_float(balance_str);
         // SPDLOG_DEBUG("get_balance for {}: [{}]", ticker, balance_str);
         return balance_f;
     }
 
     std::string
-    mm2_service::my_balance(const std::string& ticker, t_mm2_ec& ec) const
+    mm2_service::get_balance_info(const std::string& ticker, t_mm2_ec& ec) const
     {
-        // This happens too often
+        // This happens quite often
         std::shared_lock lock(m_balance_mutex); ///! read
         auto             it = m_balance_informations.find(ticker);
-        if (it == m_balance_informations.cend())
+        
+        if (m_coins_informations[ticker].currently_enabled)
         {
-            SPDLOG_DEBUG("my_balance not found for {}", ticker);
+            if (it == m_balance_informations.cend())
+            {
+                if (!is_zhtlc_coin_ready(ticker))
+                {
+                    return "0";
+                }
+                SPDLOG_ERROR("get_balance_info not found for enabled coin: {}", ticker);
+                ec = dextop_error::balance_of_a_non_enabled_coin;
+                return "0";
+            }
+            else
+            {
+                // SPDLOG_DEBUG("get_balance_info for {}: [{}]", ticker, it->second.balance);
+                return it->second.balance;
+            }
+        }
+        else
+        {
+            SPDLOG_DEBUG("get_balance_info request skipped for not enabled coin: {}", ticker);
             ec = dextop_error::balance_of_a_non_enabled_coin;
             return "0";
         }
-        // SPDLOG_DEBUG("my_balance for {}: [{}]", ticker, it->second.balance);
-        return it->second.balance;
     }
 
     void
@@ -2643,7 +2666,7 @@ namespace atomic_dex
     mm2_service::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const
     {
         SPDLOG_DEBUG("do_i_have_enough_funds for {}: [{}]", ticker, amount.str(8, std::ios_base::fixed));
-        t_float_50 funds = get_balance(ticker);
+        t_float_50 funds = get_balance_info_f(ticker);
         return funds >= amount;
     }
 
@@ -2717,7 +2740,7 @@ namespace atomic_dex
     mm2_service::decrease_fake_balance(const std::string& ticker, const std::string& amount)
     {
         SPDLOG_DEBUG("decrease_fake_balance for {}: [{}]", ticker, amount);
-        t_float_50 balance = get_balance(ticker);
+        t_float_50 balance = get_balance_info_f(ticker);
         t_float_50 amount_f(amount);
         t_float_50 result = balance - amount_f;
         SPDLOG_DEBUG(

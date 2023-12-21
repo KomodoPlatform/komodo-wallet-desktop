@@ -1307,7 +1307,7 @@ namespace atomic_dex
             {
                 current_trading_error = TradingError::LeftParentChainNotEnabled;
             }
-            else if (mm2.get_balance(left_fee_cfg.ticker) <= 0)
+            else if (mm2.get_balance_info_f(left_fee_cfg.ticker) <= 0)
             {
                 current_trading_error = TradingError::LeftParentChainNotEnoughBalance;
             }
@@ -1319,7 +1319,7 @@ namespace atomic_dex
             {
                 current_trading_error = TradingError::RightParentChainNotEnabled;
             }
-            else if (mm2.get_balance(right_fee_cfg.ticker) <= 0)
+            else if (mm2.get_balance_info_f(right_fee_cfg.ticker) <= 0)
             {
                 current_trading_error = TradingError::RightParentChainNotEnoughBalance;
             }

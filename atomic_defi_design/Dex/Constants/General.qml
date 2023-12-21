@@ -20,6 +20,9 @@ QtObject {
     readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
     readonly property string providerIconsPath: image_path + "providers/"
 
+    /* Timers */
+    property Timer prevent_coin_disabling: Timer { interval: 5000 }
+
     function coinIcon(ticker)
     {
         if (ticker === "" || ticker === "All" || ticker===undefined)
@@ -67,19 +70,12 @@ QtObject {
     }
 
     function coinName(ticker) {
-        if(ticker === "" || ticker === "All" || ticker===undefined) {
-            return ""
-        } else {
-            const name = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).name
-            return name
-        }
+        return (ticker === "" || ticker === "All" || ticker===undefined) ? "" : API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).name
     }
 
     function canSend(ticker, progress=100)
     {
-        if (!API.app.wallet_pg.send_available) return false
-        if (isZhtlc(ticker) && progress < 100) return false
-        return true
+        return !API.app.wallet_pg.send_available ? false : progress < 100 ? false : true
     }
 
     function isWalletOnly(ticker)
@@ -92,9 +88,9 @@ QtObject {
         return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_faucet_coin
     }
 
-    function isCoinWithMemo(ticker) {
-        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        return coin_info.has_memos
+    function isCoinWithMemo(ticker)
+    {
+        return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).has_memos
     }
 
     function getLanguage()
@@ -102,68 +98,74 @@ QtObject {
         return API.app.settings_pg.lang
     }
 
-    function isZhtlc(ticker)
+    function isZhtlc(coin)
     {
-        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
-        return coin_info.is_zhtlc_family
+        return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_zhtlc_family
     }
 
-    function isZhtlcReady(ticker)
+    function isZhtlcReady(coin)
     {
-        if (!isZhtlc(ticker)) return true
-        let activation_status = API.app.get_zhtlc_status(ticker)
-        let progress = zhtlcActivationProgress(activation_status, ticker)
-        if (progress == 100) return true
-        return false
+        return !isZhtlc(coin) ? true : (zhtlcActivationProgress(coin) == 100) ? true : false
     }
 
     function zhtlcActivationProgress(activation_status, coin='ARRR')
     {
         let progress = 100
-        if (!activation_status.hasOwnProperty("result")) return progress
-        const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin)
-        let block_offset = coin_info.checkpoint_height
+        if (!isZhtlc(coin)) return progress
+        if (!activation_status.hasOwnProperty("result"))
+        {
+            return progress
+        }
         let status = activation_status.result.status
         let details = activation_status.result.details
-        // use range from checkpoint block to present
+
         if (!status)
         {
-            return -1
+            return 0
         }
         else if (status == "Ok")
         {
             if (details.hasOwnProperty("error"))
+            {
                 console.log("["+coin+"] [zhtlcActivationProgress] Error enabling: " + JSON.stringify(details.error))
+                return 0
+            }
         }
         else if (status == "InProgress")
         {
             if (details.hasOwnProperty("UpdatingBlocksCache"))
             {
-                block_offset = details.UpdatingBlocksCache.first_sync_block.actual
-                let n = details.UpdatingBlocksCache.current_scanned_block - block_offset
-                let d = details.UpdatingBlocksCache.latest_block - block_offset
-                progress = 5 + parseInt(n/d*20)
+                let current = details.UpdatingBlocksCache.current_scanned_block
+                let latest = details.UpdatingBlocksCache.latest_block
+                let abs_pct = parseFloat(current/latest)
+                progress = parseInt(15 * abs_pct)
+                // console.log("["+coin+"] [zhtlcActivationProgress] UpdatingBlocksCache ["+current+"/"+latest+" * "+abs_pct+" | "+progress+"%]: " + JSON.stringify(details.UpdatingBlocksCache))                
             }
             else if (details.hasOwnProperty("BuildingWalletDb"))
             {
-                block_offset = details.BuildingWalletDb.first_sync_block.actual
-                let n = details.BuildingWalletDb.current_scanned_block - block_offset
-                let d = details.BuildingWalletDb.latest_block - block_offset
-                progress = 45 + parseInt(n/d*60)
-                if (progress > 95) {
-                    progress = 95
+                let current = details.BuildingWalletDb.current_scanned_block
+                let latest = details.BuildingWalletDb.latest_block
+                let abs_pct = parseFloat(current/latest)
+                progress = parseInt(98 * abs_pct)
+                // console.log("["+coin+"] [zhtlcActivationProgress] BuildingWalletDb ["+current+"/"+latest+" * "+abs_pct+" * 98 | "+progress+"%]: " + JSON.stringify(details.BuildingWalletDb))
+                if (progress < 15) {
+                    progress = 15
                 }
-                
+                else if (progress > 98) {
+                    progress = 98
+                }
             }
-            else if (details.hasOwnProperty("RequestingBalance")) progress = 95
-            else if (details.hasOwnProperty("ActivatingCoin")) progress = 5
-            else progress = 5
+            else if (details.hasOwnProperty("RequestingWalletBalance")) progress = 99
+            else if (details.hasOwnProperty("ActivatingCoin")) progress = 1
+            else
+            {
+                progress = 2
+            }
         }
-        else console.log("["+coin+"] [zhtlcActivationProgress] Unexpected status: " + status)
+        else console.log("["+coin+"] [zhtlcActivationProgress] Unexpected status: " + JSON.stringify(status))
         if (progress > 100) {
-            progress = 98
-        }
-        
+            progress = 100
+        }        
         return progress
     }
 
@@ -683,7 +685,6 @@ QtObject {
         return false
     }
 
-    property Timer prevent_coin_disabling: Timer { interval: 5000 }
 
     function canDisable(ticker) {
         if (prevent_coin_disabling.running) return false
@@ -700,13 +701,9 @@ QtObject {
         if (ticker === "BCH") return !General.isParentCoinNeeded("BCH", "SLP")
         if (ticker === "UBQ") return !General.isParentCoinNeeded("UBQ", "Ubiq")
         if (ticker === "MOVR") return !General.isParentCoinNeeded("MOVR", "Moonriver")
-        if (ticker === "GLMR") return !General.isParentCoinNeeded("GLMR", "Moonbeam")
-        if (General.isZhtlc(ticker))
-        {
-            let progress = General.zhtlcActivationProgress(API.app.wallet_pg.ticker_infos.activation_status, ticker)
-            if (progress != 100) return false
-        }
-
+        if (ticker === "IRIS") return !General.isParentCoinNeeded("IRIS", "COSMOS")
+        if (ticker === "OSMO") return !General.isParentCoinNeeded("OSMO", "COSMOS")
+        if (ticker === "ATOM") return !General.isParentCoinNeeded("ATOM", "COSMOS")
         return true
     }
 

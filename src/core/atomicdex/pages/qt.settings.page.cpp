@@ -183,6 +183,20 @@ namespace atomic_dex
         return m_config.static_rpcpass_enabled;
     }
 
+    bool atomic_dex::settings_page::set_zhtlc_status(nlohmann::json data)
+    {
+        m_zhtlc_status = data;
+        // SPDLOG_INFO("zhtlc status: {}", m_zhtlc_status.get().dump(4));
+        emit onZhtlcStatusChanged();
+        return true;
+    }
+
+    nlohmann::json atomic_dex::settings_page::get_zhtlc_status()
+    {
+        return m_zhtlc_status.get();
+    }
+
+
     void settings_page::set_static_rpcpass_enabled(bool is_enabled)
     {
         if (m_config.static_rpcpass_enabled != is_enabled)
