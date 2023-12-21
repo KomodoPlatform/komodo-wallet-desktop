@@ -27,7 +27,7 @@
 #include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.sell.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.validateaddress.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.bestorders.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
 
 namespace atomic_dex::mm2
@@ -51,7 +51,6 @@ namespace atomic_dex::mm2
     template void extract_rpc_json_answer<min_volume_answer_success>(const nlohmann::json& j, min_volume_answer& answer);
     template void extract_rpc_json_answer<buy_answer_success>(const nlohmann::json& j, buy_answer& answer);
     template void extract_rpc_json_answer<sell_answer_success>(const nlohmann::json& j, sell_answer& answer);
-    template void extract_rpc_json_answer<best_orders_answer_success>(const nlohmann::json& j, best_orders_answer& answer);
     template void extract_rpc_json_answer<disable_coin_answer_success>(const nlohmann::json& j, disable_coin_answer& answer);
     template void extract_rpc_json_answer<validate_address_answer_success>(const nlohmann::json& j, validate_address_answer& answer);
     template void extract_rpc_json_answer<convert_address_answer_success>(const nlohmann::json& j, convert_address_answer& answer);

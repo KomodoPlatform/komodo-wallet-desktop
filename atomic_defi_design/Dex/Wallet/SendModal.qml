@@ -414,11 +414,11 @@ MultipageModal
                     {
                         if (_preparePage.cryptoSendMode)
                         {
-                            input_amount.text = API.app.get_balance(api_wallet_page.ticker);
+                            input_amount.text = API.app.get_balance_info_qstr(api_wallet_page.ticker);
                         }
                         else
                         {
-                            let cryptoBalance = new BigNumber(API.app.get_balance(api_wallet_page.ticker));
+                            let cryptoBalance = new BigNumber(API.app.get_balance_info_qstr(api_wallet_page.ticker));
                             input_amount.text = cryptoBalance.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                         }
                     }
@@ -706,7 +706,7 @@ MultipageModal
                 wrapMode: Label.Wrap
                 color: Style.colorRed
                 text_value: qsTr("Custom Fee can't be higher than the amount") + "\n"
-                          + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(General.getFeesTicker(current_ticker_infos)), General.getFeesTicker(current_ticker_infos)))
+                          + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance_info_qstr(General.getFeesTicker(current_ticker_infos)), General.getFeesTicker(current_ticker_infos)))
             }
         }
 
@@ -722,7 +722,7 @@ MultipageModal
             color: Dex.CurrentTheme.warningColor
 
             text_value: qsTr("Not enough funds.") + "\n"
-                      + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
+                      + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance_info_qstr(api_wallet_page.ticker), api_wallet_page.ticker))
         }
 
         DefaultBusyIndicator {

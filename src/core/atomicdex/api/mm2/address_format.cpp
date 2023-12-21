@@ -14,49 +14,32 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
-//! STD
-#include <optional>
-
-//! Deps
-#include <nlohmann/json_fwd.hpp>
+//! Dependencies Headers
+#include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/orderbook.order.contents.hpp"
+#include "atomicdex/api/mm2/address_format.hpp"
 
 namespace atomic_dex::mm2
 {
-    struct best_orders_request
+    void
+    to_json(nlohmann::json& j, const address_format_t& req)
     {
-        std::string coin;
-        std::string volume;
-        std::string action;
-    };
+        j["format"] = req.format;
+        if (req.network.has_value())
+        {
+            j["network"] = req.network.value();
+        }
+    }
 
-    void to_json(nlohmann::json& j, const best_orders_request& req);
-
-    struct best_orders_answer_success
+    void
+    from_json(const nlohmann::json& j, address_format_t& resp)
     {
-        std::vector<order_contents> result;
-    };
-
-    void from_json(const nlohmann::json& j, best_orders_answer_success& answer);
-
-    struct best_orders_answer
-    {
-        std::optional<best_orders_answer_success> result;
-        std::optional<std::string>                error;
-        std::string                               raw_result;      ///< internal
-        int                                       rpc_result_code; ///< internal
-    };
-
-    void from_json(const nlohmann::json& j, best_orders_answer& answer);
+        resp.format  = j.at("format").get<std::string>();
+        if (j.contains("network"))
+        {
+            resp.network = j.at("network").get<std::string>();
+        }
+        
+    }
 } // namespace atomic_dex::mm2
-
-namespace atomic_dex
-{
-    using t_best_orders_request        = mm2::best_orders_request;
-    using t_best_orders_answer         = mm2::best_orders_answer;
-    using t_best_orders_answer_success = mm2::best_orders_answer_success;
-} // namespace atomic_dex

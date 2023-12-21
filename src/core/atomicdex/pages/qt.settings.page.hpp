@@ -52,6 +52,7 @@ namespace atomic_dex
         Q_PROPERTY(bool     fetching_priv_keys_busy         READ is_fetching_priv_key_busy          WRITE set_fetching_priv_key_busy            NOTIFY privKeyStatusChanged)
         Q_PROPERTY(bool     fetchingPublicKey               READ is_fetching_public_key                                                         NOTIFY fetchingPublicKeyChanged)
         Q_PROPERTY(QString  publicKey                       READ get_public_key                                                                 NOTIFY publicKeyChanged)
+        Q_PROPERTY(bool     zhtlcStatus                     READ get_zhtlc_status                   WRITE set_zhtlc_status                      NOTIFY onZhtlcStatusChanged)
 
 
         ag::ecs::system_manager&                    m_system_manager;
@@ -64,6 +65,7 @@ namespace atomic_dex
         std::atomic_bool                            fetching_public_key{false};
         QString                                     public_key;
         boost::synchronized_value<nlohmann::json>   m_custom_token_data;
+        boost::synchronized_value<nlohmann::json>   m_zhtlc_status;
 
       public:
         explicit settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent = nullptr);
@@ -88,6 +90,8 @@ namespace atomic_dex
         void                                    set_notification_enabled(bool is_enabled);
         [[nodiscard]] bool                      is_static_rpcpass_enabled() const;
         void                                    set_static_rpcpass_enabled(bool is_enabled);
+        void                                    is_testcoin_filter_enabled(bool is_enabled);
+        bool                                    set_zhtlc_status(nlohmann::json data);
         [[nodiscard]] bool                      is_spamfilter_enabled() const;
         void                                    set_spamfilter_enabled(bool is_enabled);
         void                                    set_current_currency(const QString& current_currency);
@@ -121,10 +125,13 @@ namespace atomic_dex
         Q_INVOKABLE void                        submit();
         Q_INVOKABLE QStringList                 retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE static QString              get_mm2_version();
+        Q_INVOKABLE static QString              get_peerid();
         Q_INVOKABLE static QString              get_log_folder();
         Q_INVOKABLE static QString              get_export_folder();
         Q_INVOKABLE static QString              get_version();
         Q_INVOKABLE void                        fetchPublicKey();
+        Q_INVOKABLE nlohmann::json              get_zhtlc_status();
+
 
         // QML API Properties Signals
       signals:
@@ -142,6 +149,7 @@ namespace atomic_dex
         void privKeyStatusChanged();
         void fetchingPublicKeyChanged();
         void publicKeyChanged();
+        void onZhtlcStatusChanged();
     };
 } // namespace atomic_dex
 

@@ -1,10 +1,28 @@
+/******************************************************************************
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
+
 #pragma once
 
 #include <vector>
 
-#include "atomicdex/api/mm2/rpc.hpp"
-#include "atomicdex/api/mm2/balance_info.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
+#include "atomicdex/api/mm2/address_format.hpp"
+#include "atomicdex/api/mm2/balance_info.hpp"
+#include "atomicdex/api/mm2/rpc.hpp"
+#include "atomicdex/api/mm2/utxo_merge_params.hpp"
 
 namespace atomic_dex::mm2
 {
@@ -26,17 +44,6 @@ namespace atomic_dex::mm2
             {
                 std::string         ticker;
                 std::optional<int>  required_confirmations;
-            };
-            struct address_format_t
-            {
-                std::string format;
-                std::string network;
-            };
-            struct utxo_merge_params_t
-            {
-                int merge_at;
-                int check_every;
-                int max_merge_at_once;
             };
 
             std::string                         ticker;
@@ -77,6 +84,7 @@ namespace atomic_dex::mm2
         expected_request_type                   request;
         std::optional<expected_result_type>     result;
         std::optional<expected_error_type>      error;
+        std::string                             raw_result;
     };
 
     using enable_bch_with_tokens_request_rpc    = enable_bch_with_tokens_rpc::expected_request_type;
@@ -86,9 +94,8 @@ namespace atomic_dex::mm2
     void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc& in);
     void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::mode_t& in);
     void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::mode_t::data& in);
-    void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::address_format_t& in);
+    void to_json(nlohmann::json& j, const address_format_t& in);
     void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::slp_token_request_t& in);
-    void to_json(nlohmann::json& j, const enable_bch_with_tokens_request_rpc::utxo_merge_params_t& in);
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc& out);
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc::derivation_method_t& out);
     void from_json(const nlohmann::json& json, enable_bch_with_tokens_result_rpc::bch_address_infos_t& out);

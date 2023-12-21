@@ -50,7 +50,7 @@ namespace atomic_dex
 
     QString
     retrieve_change_24h(
-        const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config,
+        const atomic_dex::komodo_prices_provider& provider, const atomic_dex::coin_config_t& coin, const atomic_dex::cfg& config,
         [[maybe_unused]] const ag::ecs::system_manager& system_manager)
     {
         QString change_24h = "0";
@@ -165,8 +165,8 @@ namespace atomic_dex
     }
 
     QString
-    qt_utilities::retrieve_main_ticker(const QString& ticker) const
+    qt_utilities::retrieve_main_ticker(const QString& ticker, bool segwit_only, bool exclude_segwit) const
     {
-        return QString::fromStdString(atomic_dex::utils::retrieve_main_ticker(ticker.toStdString()));
+        return QString::fromStdString(atomic_dex::utils::retrieve_main_ticker(ticker.toStdString(), segwit_only, exclude_segwit));
     }
 } // namespace atomic_dex

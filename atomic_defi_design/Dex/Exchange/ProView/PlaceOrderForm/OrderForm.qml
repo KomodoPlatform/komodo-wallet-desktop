@@ -26,8 +26,7 @@ ColumnLayout
     function getMaxBalance()
     {
         if (General.isFilled(base_ticker))
-            return API.app.get_balance(base_ticker)
-
+            return API.app.get_balance_info_qstr(base_ticker)
         return "0"
     }
 

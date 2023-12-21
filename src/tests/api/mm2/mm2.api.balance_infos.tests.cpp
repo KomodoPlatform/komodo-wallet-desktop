@@ -14,18 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+//! Deps
+#include "doctest/doctest.h"
+#include <nlohmann/json.hpp>
 
-#include <string>
-#include <nlohmann/json_fwd.hpp>
+#include "atomicdex/api/mm2/balance_infos.hpp"
 
-namespace atomic_dex::mm2
+TEST_CASE("mm2::balance_infos deserialization")
 {
-    struct format_address
+    const nlohmann::json json = R"(
     {
-        std::string format;
-        std::string network;
-    };
-
-    void to_json(nlohmann::json& j, const format_address& cfg);
+       "balances":{
+           "spendable":"0.11398301",
+           "unspendable":"0.00001"
+       }
+    })"_json;
+    atomic_dex::mm2::balance_infos infos;
+    atomic_dex::mm2::from_json(json.at("balances"), infos);
+    CHECK_EQ(infos.spendable, "0.11398301");
+    CHECK_EQ(infos.unspendable, "0.00001");
 }

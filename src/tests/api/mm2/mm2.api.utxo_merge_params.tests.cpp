@@ -14,18 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Dependencies Headers
+//! Deps
+#include "doctest/doctest.h"
 #include <nlohmann/json.hpp>
 
-// Project Headers
-#include "balance.infos.hpp"
+#include "atomicdex/api/mm2/utxo_merge_params.hpp"
 
-namespace atomic_dex::mm2
+TEST_CASE("mm2::utxo_merge_params serialisation")
 {
-    void
-    from_json(const nlohmann::json& j, balance_infos& answer)
+    const nlohmann::json     expected_json = R"(
     {
-        answer.spendable = j.at("spendable").get<std::string>();
-        answer.unspendable = j.at("unspendable").get<std::string>();
+      "merge_at":50,
+      "check_every":10,
+      "max_merge_at_once":25
     }
-} // namespace atomic_dex::mm2
+    )"_json;
+    atomic_dex::mm2::utxo_merge_params_t request{.merge_at = 50, .check_every = 10, .max_merge_at_once = 25};
+    nlohmann::json           j;
+    atomic_dex::mm2::to_json(j, request);
+    CHECK_EQ(j, expected_json);
+}

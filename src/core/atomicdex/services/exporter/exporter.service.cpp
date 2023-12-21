@@ -78,6 +78,7 @@ namespace atomic_dex
             .to_timestamp   = swaps_data.filtering_infos.to_timestamp};
         to_json(my_recent_swaps, request);
         batch.push_back(my_recent_swaps);
+        // SPDLOG_INFO("my_recent_swaps req: {}", my_recent_swaps.dump(4));
 
         auto answer_functor = [csv_path](web::http::http_response resp) {
             auto       answers     = mm2::basic_batch_answer(resp);

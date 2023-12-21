@@ -23,7 +23,7 @@
 #include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.validateaddress.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.best.orders.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.bestorders.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.status.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
@@ -584,7 +584,10 @@ namespace atomic_dex::mm2
         if (is_protocol_v2)
         {
             request["mmrpc"] = "2.0";
+            request["id"] = 42;
         }
+        // SPDLOG_INFO("template_request: {}", request.dump(4));
+        
         return request;
     }
 
@@ -592,6 +595,34 @@ namespace atomic_dex::mm2
     rpc_version()
     {
         nlohmann::json json_data = template_request("version");
+        // SPDLOG_DEBUG("version request {}", json_data.dump(4));
+        try
+        {
+            auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(atomic_dex::g_dex_rpc));
+            web::http::http_request request;
+            request.set_method(web::http::methods::POST);
+            request.set_body(json_data.dump());
+            web::http::http_response resp = client->request(request).get();
+            if (resp.status_code() == 200)
+            {
+                std::string    body      = TO_STD_STR(resp.extract_string(true).get());
+                nlohmann::json body_json = nlohmann::json::parse(body);
+                return body_json.at("result").get<std::string>();
+            }
+
+            return "error occured during rpc_version";
+        }
+        catch (const web::http::http_exception& exception)
+        {
+            return "error occured during rpc_version";
+        }
+        return "";
+    }
+
+    std::string
+    peer_id()
+    {
+        nlohmann::json json_data = template_request("get_my_peer_id");
         try
         {
             auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(atomic_dex::g_dex_rpc));
@@ -710,7 +741,6 @@ namespace atomic_dex::mm2
     template mm2::withdraw_answer               rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::withdraw_status_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::my_orders_answer              rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::orderbook_answer              rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::trade_fee_answer              rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::max_taker_vol_answer          rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::min_volume_answer             rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
@@ -718,7 +748,6 @@ namespace atomic_dex::mm2
     template mm2::active_swaps_answer           rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::show_priv_key_answer          rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::trade_preimage_answer         rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
-    template mm2::best_orders_answer            rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::validate_address_answer       rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::convert_address_answer        rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);
     template mm2::recover_funds_of_swap_answer  rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command);

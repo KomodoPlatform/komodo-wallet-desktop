@@ -173,6 +173,7 @@ namespace atomic_dex
                 SPDLOG_INFO("mm2 is alive, checking if we are able to fetch mm2 version");
                 nlohmann::json      batch           = nlohmann::json::array();
                 nlohmann::json      current_request = mm2::template_request("version");
+                // SPDLOG_DEBUG("version request {}", current_request.dump(4));
                 batch.push_back(current_request);
                 auto async_answer = mm2.get_mm2_client().async_rpc_batch_standalone(batch);
                 generic_treat_answer(async_answer, TO_STD_STR(atomic_dex::g_dex_rpc), &internet_service_checker::is_mm2_endpoint_alive);

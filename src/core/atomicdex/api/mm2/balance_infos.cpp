@@ -14,16 +14,18 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Dependencies Headers
 #include <nlohmann/json.hpp>
 
-#include "utxo.merge.params.hpp"
+// Project Headers
+#include "balance_infos.hpp"
 
 namespace atomic_dex::mm2
 {
-    void to_json(nlohmann::json& j, const utxo_merge_params& cfg)
+    void
+    from_json(const nlohmann::json& j, balance_infos& answer)
     {
-        j["merge_at"] = cfg.merge_at;
-        j["check_every"] = cfg.check_every;
-        j["max_merge_at_once"] = cfg.max_merge_at_once;
+        answer.spendable = j.at("spendable").get<std::string>();
+        answer.unspendable = j.at("unspendable").get<std::string>();
     }
-}
+} // namespace atomic_dex::mm2

@@ -14,23 +14,18 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
-#include "doctest/doctest.h"
-#include <nlohmann/json.hpp>
+#pragma once
 
-#include "atomicdex/api/mm2/balance.infos.hpp"
+#include <nlohmann/json_fwd.hpp>
 
-TEST_CASE("mm2::balance_infos deserialization")
+namespace atomic_dex::mm2
 {
-    const nlohmann::json json = R"(
+    struct utxo_merge_params_t
     {
-       "balances":{
-           "spendable":"0.11398301",
-           "unspendable":"0.00001"
-       }
-    })"_json;
-    atomic_dex::mm2::balance_infos infos;
-    atomic_dex::mm2::from_json(json.at("balances"), infos);
-    CHECK_EQ(infos.spendable, "0.11398301");
-    CHECK_EQ(infos.unspendable, "0.00001");
+        std::size_t merge_at;
+        std::size_t check_every;
+        std::size_t max_merge_at_once;
+    };
+
+    void to_json(nlohmann::json& j, const utxo_merge_params_t& cfg);
 }

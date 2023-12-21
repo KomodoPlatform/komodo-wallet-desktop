@@ -16,16 +16,50 @@
 
 #pragma once
 
+//! STD
+#include <optional>
+#include <string>
+
+//! Deps
 #include <nlohmann/json_fwd.hpp>
+
+//! Project Headers
+#include "atomicdex/api/mm2/rpc.hpp"
+#include "atomicdex/api/mm2/orderbook.order.contents.hpp"
 
 namespace atomic_dex::mm2
 {
-    struct utxo_merge_params
+    struct bestorders_rpc
     {
-        std::size_t merge_at;
-        std::size_t check_every;
-        std::size_t max_merge_at_once;
+        static constexpr auto endpoint  = "best_orders";
+        static constexpr bool is_v2     = true;
+
+        struct expected_request_type
+        {
+            std::string coin;
+            std::string volume;
+            std::string action;
+        };
+
+
+        struct expected_result_type
+        {
+            std::vector<order_contents> result;
+        };
+
+        using expected_error_type = rpc_basic_error_type;
+
+        expected_request_type                  request;
+        std::optional<expected_result_type>    result;
+        std::optional<expected_error_type>     error;
+        std::string                            raw_result;
     };
 
-    void to_json(nlohmann::json& j, const utxo_merge_params& cfg);
-}
+    using bestorders_request_rpc    = bestorders_rpc::expected_request_type;
+    using bestorders_result_rpc     = bestorders_rpc::expected_result_type;
+    using bestorders_error_rpc      = bestorders_rpc::expected_error_type;
+
+    void to_json(nlohmann::json& j, const bestorders_request_rpc& req);
+    void from_json(const nlohmann::json& j, bestorders_result_rpc& answer);
+
+} // namespace atomic_dex::mm2

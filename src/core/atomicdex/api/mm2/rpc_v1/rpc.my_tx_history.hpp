@@ -4,7 +4,6 @@
 #pragma once
 
 #include "atomicdex/api/mm2/rpc.hpp"
-#include "atomicdex/api/mm2/rpc_v1/rpc.my_tx_history.hpp"
 
 namespace atomic_dex::mm2
 {
@@ -22,6 +21,7 @@ namespace atomic_dex::mm2
         expected_request_type                   request;
         std::optional<expected_result_type>     result;
         std::optional<expected_error_type>      error;
+        std::string                             raw_result;
     };
     
     using my_tx_history_request_v1_rpc    = my_tx_history_v1_rpc::expected_request_type;

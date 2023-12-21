@@ -14,23 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Deps
-#include "doctest/doctest.h"
 #include <nlohmann/json.hpp>
 
-#include "atomicdex/api/mm2/utxo.merge.params.hpp"
+#include "utxo_merge_params.hpp"
 
-TEST_CASE("mm2::utxo_merge_params serialisation")
+namespace atomic_dex::mm2
 {
-    const nlohmann::json     expected_json = R"(
+    void to_json(nlohmann::json& j, const utxo_merge_params_t& req)
     {
-      "merge_at":50,
-      "check_every":10,
-      "max_merge_at_once":25
+        j["merge_at"] = req.merge_at;
+        j["check_every"] = req.check_every;
+        j["max_merge_at_once"] = req.max_merge_at_once;
     }
-    )"_json;
-    atomic_dex::mm2::utxo_merge_params request{.merge_at = 50, .check_every = 10, .max_merge_at_once = 25};
-    nlohmann::json           j;
-    atomic_dex::mm2::to_json(j, request);
-    CHECK_EQ(j, expected_json);
+    void
+    from_json(const nlohmann::json& j, utxo_merge_params_t& resp)
+    {
+        resp.merge_at = j.at("merge_at").get<std::size_t>();
+        resp.check_every = j.at("check_every").get<std::size_t>();
+        resp.max_merge_at_once = j.at("max_merge_at_once").get<std::size_t>();        
+    }
 }

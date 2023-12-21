@@ -14,18 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Dependencies Headers
+//! Deps
+#include "doctest/doctest.h"
 #include <nlohmann/json.hpp>
 
-//! Project Headers
-#include "format.address.hpp"
+#include "atomicdex/api/mm2/address_format.hpp"
 
-namespace atomic_dex::mm2
+TEST_CASE("mm2::address_format serialisation")
 {
-    void
-    to_json(nlohmann::json& j, const format_address& cfg)
+    const nlohmann::json     expected_json = R"(
     {
-        j["format"] = cfg.format;
-        j["network"] = cfg.network;
+      "format":"cashaddress",
+      "network":"bchtest"
     }
-} // namespace atomic_dex::mm2
+    )"_json;
+    atomic_dex::mm2::address_format_t req{.format = "cashaddress", .network = "bchtest"};
+    nlohmann::json j;
+    
+    to_json(j, req);
+    CHECK_EQ(j, expected_json);
+}

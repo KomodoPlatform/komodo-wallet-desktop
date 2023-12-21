@@ -79,30 +79,31 @@ namespace atomic_dex
     }
 
     void
-    qt_orderbook_wrapper::refresh_orderbook(t_orderbook_answer answer)
+    qt_orderbook_wrapper::refresh_orderbook_model_data(mm2::orderbook_result_rpc answer)
     {
-        this->m_asks->refresh_orderbook(answer.asks);
-        this->m_bids->refresh_orderbook(answer.bids);
-        const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_data();
+        SPDLOG_INFO("[qt_orderbook_wrapper::refresh_orderbook_model_data] bids/asks size: {}/{}", answer.bids.size(), answer.asks.size());
+        this->m_asks->refresh_orderbook_model_data(answer.asks);
+        this->m_bids->refresh_orderbook_model_data(answer.bids);
+        const auto data = this->m_system_manager.get_system<orderbook_scanner_service>().get_bestorders_data();
         if (data.empty())
         {
             m_best_orders->clear_orderbook();
         }
         else if (m_best_orders->rowCount() == 0)
         {
-            // SPDLOG_INFO("[qt_orderbook_wrapper::refresh_orderbook] : reset_best_orders");
+            SPDLOG_INFO("[qt_orderbook_wrapper::refresh_orderbook_model_data] : reset_best_orders");
             m_best_orders->reset_orderbook(data, true);
         }
         else
         {
-            // SPDLOG_INFO("[qt_orderbook_wrapper::refresh_orderbook] : refresh_best_orders");
-            m_best_orders->refresh_orderbook(data, true);
+            SPDLOG_INFO("[qt_orderbook_wrapper::refresh_orderbook_model_data] : refresh_best_orders");
+            m_best_orders->refresh_orderbook_model_data(data, true);
         }
         this->set_both_taker_vol();
     }
 
     void
-    qt_orderbook_wrapper::reset_orderbook(t_orderbook_answer answer)
+    qt_orderbook_wrapper::reset_orderbook(mm2::orderbook_result_rpc answer)
     {
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);
@@ -113,6 +114,7 @@ namespace atomic_dex
             m_system_manager.get_system<trading_page>().set_preferred_order(m_selected_best_order->value());
             m_selected_best_order = std::nullopt;
         }
+        SPDLOG_INFO("m_best_orders->clear_orderbook()");
         m_best_orders->clear_orderbook();                                                     ///< Remove all elements from the model
         this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders(); ///< re process the model
     }
@@ -172,10 +174,12 @@ namespace atomic_dex
     {
         if (safe_float(m_system_manager.get_system<trading_page>().get_volume().toStdString()) > 0)
         {
+            SPDLOG_INFO("qt_orderbook_wrapper::refresh_best_orders() >> process_best_orders()");
             this->m_system_manager.get_system<orderbook_scanner_service>().process_best_orders();
         }
         else
         {
+            SPDLOG_INFO("qt_orderbook_wrapper::refresh_best_orders() >> get_best_orders()->clear_orderbook()");
             get_best_orders()->clear_orderbook();
         }
     }

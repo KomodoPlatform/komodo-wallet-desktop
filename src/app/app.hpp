@@ -160,7 +160,7 @@ namespace atomic_dex
         Q_INVOKABLE bool               disconnect();
         Q_INVOKABLE bool               enable_coins(const QStringList& coins);
         Q_INVOKABLE bool               enable_coin(const QString& coin);
-        Q_INVOKABLE QString            get_balance(const QString& coin);
+        Q_INVOKABLE QString            get_balance_info_qstr(const QString& coin);
         Q_INVOKABLE QJsonObject        get_zhtlc_status(const QString& coin);
         Q_INVOKABLE [[nodiscard]] bool do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool               disable_coins(const QStringList& coins);

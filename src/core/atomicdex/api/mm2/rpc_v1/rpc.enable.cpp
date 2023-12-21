@@ -37,7 +37,7 @@ namespace atomic_dex::mm2
                 j["gas_station_url"]        = cfg.gas_station_url.value();
             }
         }
-        case CoinType::Matic:
+        case CoinType::PLG20:
         {
             if (cfg.is_testnet)
             {
@@ -57,13 +57,17 @@ namespace atomic_dex::mm2
             {
                 j["gas_station_decimals"]   = cfg.matic_gas_station_decimals.value();
             }
+            if (cfg.mm2.has_value())
+            {
+                j["mm2"]   = cfg.mm2.value();
+            }
         }
         default:
             j["urls"]                   = cfg.urls;
             j["swap_contract_address"]  = cfg.swap_contract_address;
-            if (cfg.fallback_swap_contract_address.has_value())
+            if (cfg.fallback_swap_contract.has_value())
             {
-                j["fallback_swap_contract"] = cfg.fallback_swap_contract_address.value();
+                j["fallback_swap_contract"] = cfg.fallback_swap_contract.value();
             }
             break;
         }
