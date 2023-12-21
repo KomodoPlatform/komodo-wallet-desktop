@@ -22,7 +22,7 @@ ClipRRect // Trade Card
     readonly property var fees: Constants.API.app.trading_pg.fees
     readonly property var max_trade_volume: Constants.API.app.trading_pg.max_volume
     readonly property var min_trade_volume: Constants.API.app.trading_pg.min_trade_vol
-    readonly property var sell_ticker_balance: parseFloat(API.app.get_balance(left_ticker))
+    readonly property var sell_ticker_balance: parseFloat(API.app.get_balance_info_qstr(left_ticker))
     readonly property bool coin_tradable: selectedTicker !== "" && sell_ticker_balance > 0
     readonly property bool waiting_for_sell_coin_info: (max_trade_volume == 0 || !Constants.General.isZhtlcReady(left_ticker)) && sell_ticker_balance != 0
 

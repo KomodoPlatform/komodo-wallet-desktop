@@ -355,12 +355,12 @@ namespace atomic_dex
             }
 
             std::error_code t_ec;
-            const auto      amount = mm2_instance.my_balance(ticker, t_ec); // from registry
+            const auto      amount = mm2_instance.get_balance_info(ticker, t_ec); // from registry
 
             if (t_ec)
             {
                 ec = t_ec;
-                //SPDLOG_ERROR("my_balance error: {} {}", t_ec.message(), ticker);
+                //SPDLOG_ERROR("get_balance_info error: {} {}", t_ec.message(), ticker);
                 return "0.00";
             }
 

@@ -82,11 +82,7 @@ namespace
         {
             SPDLOG_DEBUG("redacted rpc answer: {}", body.substr(0, 1000));
         }
-        else
-        {
-            SPDLOG_DEBUG("rpc answer: {}", body);
-        }
-        SPDLOG_DEBUG("rpc answer: {}", body);
+        SPDLOG_DEBUG("body: {}", body);
         nlohmann::json json_answer;
         Rpc rpc;
         try

@@ -71,7 +71,7 @@ namespace atomic_dex
             auto        coin          = mm2_system.get_coin_info(ticker);
             SPDLOG_INFO("Building portfolio for ticker {}", coin.ticker);
             std::error_code ec;
-            std::string balance       = mm2_system.my_balance(coin.ticker, ec);
+            std::string balance       = mm2_system.get_balance_info(coin.ticker, ec);
             SPDLOG_INFO("balance for ticker {}: {}", coin.ticker, balance);
             const QString   change_24h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
             portfolio_data  data{
@@ -103,6 +103,33 @@ namespace atomic_dex
             endInsertRows();
             SPDLOG_INFO("size of the portfolio after batch inserted: {}", this->get_length());
             emit lengthChanged();
+        }
+    }
+
+    bool
+    portfolio_model::update_activation_status()
+    {
+        const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
+        const auto         coins         = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
+
+        for (auto&& [_, coin]: coins)
+        {
+            if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
+            {
+                SPDLOG_WARN("[update_activation_status] ticker: {} not inserted yet in the model, skipping", coin.ticker);
+                return false;
+            }
+            const std::string& ticker = coin.ticker;
+            if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly);
+                not res.isEmpty())
+            {
+                std::error_code    ec;
+                const QModelIndex& idx         = res.at(0);
+                auto        coin_info          = mm2_system.get_coin_info(ticker);
+                QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
+                update_value(ActivationStatus, status, idx, *this);
+                SPDLOG_DEBUG("updated activation status of: {}", ticker);
+            }
         }
     }
 
@@ -142,7 +169,7 @@ namespace atomic_dex
                 update_value(LastPriceTimestamp, last_price_timestamp, idx, *this);
                 QString change24_h = retrieve_change_24h(provider, coin, *m_config, m_system_manager);
                 update_value(Change24H, change24_h, idx, *this);
-                const QString balance                           = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
+                const QString balance                           = QString::fromStdString(mm2_system.get_balance_info(coin.ticker, ec));
                 auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
                 const QString display                           = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                 update_value(Display, display, idx, *this);
@@ -191,7 +218,7 @@ namespace atomic_dex
                 const std::string& currency                     = m_config->current_currency;
                 const std::string& fiat                         = m_config->current_fiat;
                 const QModelIndex& idx                          = res.at(0);
-                const QString      balance                      = QString::fromStdString(mm2_system.my_balance(ticker, ec));
+                const QString      balance                      = QString::fromStdString(mm2_system.get_balance_info(ticker, ec));
                 auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
                 const QString main_currency_balance_value       = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
                 auto&& [_1, _2, is_change_mc]                   = update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);

@@ -77,7 +77,7 @@ namespace atomic_dex
                             to_skip = true;
                             continue;
                         }
-                        t_float_50 cur_total = (t_float_50(value[idx][1].get<float>()) * mm2.get_balance(key)) * rate;
+                        t_float_50 cur_total = (t_float_50(value[idx][1].get<float>()) * mm2.get_balance_info_f(key)) * rate;
                         total += cur_total;
                     }
                     if (to_skip)

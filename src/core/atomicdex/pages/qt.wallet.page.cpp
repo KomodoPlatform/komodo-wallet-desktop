@@ -67,7 +67,7 @@ namespace atomic_dex
         m_send_available                   = true;
         m_send_availability_state          = "";
         m_current_ticker_fees_coin_enabled = true;
-        if (not mm2.get_balance(ticker_info.ticker) > 0)
+        if (not mm2.get_balance_info_f(ticker_info.ticker) > 0)
         {
             m_send_available                   = false;
             m_send_availability_state          = tr("You do not have enough funds.");
@@ -84,7 +84,7 @@ namespace atomic_dex
                     tr("%1 is not activated: click on the button to enable it or enable it manually").arg(QString::fromStdString(parent_ticker_info.ticker));
                 m_current_ticker_fees_coin_enabled = false;
             }
-            else if (not mm2.get_balance(parent_ticker_info.ticker) > 0)
+            else if (not mm2.get_balance_info_f(parent_ticker_info.ticker) > 0)
             {
                 m_send_available          = false;
                 m_send_availability_state = tr("You need to have %1 to pay the gas for %2 transactions.")
@@ -275,14 +275,14 @@ namespace atomic_dex
         auto&           mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
         {
-            SPDLOG_DEBUG("get_ticker_infos for {} wallet page", mm2_system.get_current_ticker());
+            // SPDLOG_DEBUG("get_ticker_infos for {} wallet page", mm2_system.get_current_ticker());
             auto&       price_service                 = m_system_manager.get_system<global_price_service>();
             const auto& settings_system               = m_system_manager.get_system<settings_page>();
             const auto& provider                      = m_system_manager.get_system<komodo_prices_provider>();
             const auto& ticker                        = mm2_system.get_current_ticker();
             const auto& coin_info                     = mm2_system.get_coin_info(ticker);
             const auto& config                        = settings_system.get_cfg();
-            obj["balance"]                            = QString::fromStdString(mm2_system.my_balance(ticker, ec));
+            obj["balance"]                            = QString::fromStdString(mm2_system.get_balance_info(ticker, ec));
             obj["name"]                               = QString::fromStdString(coin_info.name);
             obj["type"]                               = QString::fromStdString(coin_info.type);
             obj["segwit_supported"]                   = coin_info.segwit;
@@ -538,7 +538,7 @@ namespace atomic_dex
             if (max)
             {
                 std::error_code ec;
-                amount_std = mm2_system.my_balance(ticker, ec);
+                amount_std = mm2_system.get_balance_info(ticker, ec);
             }
 
             auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
@@ -740,7 +740,7 @@ namespace atomic_dex
             if (max)
             {
                 std::error_code ec;
-                amount_std = mm2_system.my_balance(ticker, ec);
+                amount_std = mm2_system.get_balance_info(ticker, ec);
             }
 
             //! Answer

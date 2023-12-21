@@ -560,11 +560,11 @@ namespace atomic_dex
         return res;
     }
 
-    QString application::get_balance(const QString& coin)
+    QString application::get_balance_info_qstr(const QString& coin)
     {
         std::error_code ec;
         SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-        auto            res = get_mm2().my_balance(coin.toStdString(), ec);
+        auto            res = get_mm2().get_balance_info(coin.toStdString(), ec);
         return QString::fromStdString(res);
     }
 

@@ -227,7 +227,7 @@ namespace atomic_dex
        [[nodiscard]] const std::atomic_bool& is_mm2_running() const;
 
        //! Retrieve my balance for a given ticker as a string.
-       [[nodiscard]] std::string my_balance(const std::string& ticker, t_mm2_ec& ec) const;
+       [[nodiscard]] std::string get_balance_info(const std::string& ticker, t_mm2_ec& ec) const;
 
        //! Refresh the current orderbook (internally call process_orderbook)
        void fetch_current_orderbook_thread(bool is_a_reset = false);
@@ -262,7 +262,7 @@ namespace atomic_dex
        [[nodiscard]] orders_and_swaps get_orders_and_swaps() const;
 
        //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
-       [[nodiscard]] t_float_50 get_balance(const std::string& ticker) const;
+       [[nodiscard]] t_float_50 get_balance_info_f(const std::string& ticker) const;
 
        //! Return true if we the balance of the `ticker` > amount, false otherwise.
        [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
