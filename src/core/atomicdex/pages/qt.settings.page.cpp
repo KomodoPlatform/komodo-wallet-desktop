@@ -257,6 +257,12 @@ namespace atomic_dex
 
     void settings_page::set_current_currency(const QString& current_currency)
     {
+        if (m_config.possible_currencies.empty())
+        {
+            SPDLOG_ERROR("m_config.possible_currencies are empty!");
+            return;
+        }
+
         bool        can_proceed = true;
         std::string reason      = "";
         if (atomic_dex::is_this_currency_a_fiat(m_config, current_currency.toStdString()))
@@ -293,7 +299,18 @@ namespace atomic_dex
         {
             if (!reason.empty())
             {
-                SPDLOG_ERROR("cannot change currency for reason: {}", reason);
+                SPDLOG_WARN("Cannot change currency to {} for reason: {}", current_currency.toStdString(), reason);
+                // Try next in line
+                int8_t selected_idx = utils::get_index_str(m_config.possible_currencies, current_currency.toStdString());
+                if (selected_idx < m_config.possible_currencies.size() - 1)
+                {
+                    set_current_currency(QString::fromStdString(m_config.possible_currencies[selected_idx + 1]));
+                }
+                else
+                {
+                    set_current_currency(QString::fromStdString(m_config.possible_currencies[0]));
+                }
+
             }
         }
     }

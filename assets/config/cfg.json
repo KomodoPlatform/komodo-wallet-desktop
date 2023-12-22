@@ -41,6 +41,9 @@
     "HUF": "Ft",
     "SEK": "kr",
     "KMD": "KMD",
+    "DOGE": "Ð",
+    "ETH": "⟠",
+    "ETH_ALT": "Ξ",
     "BTC": "₿",
     "BTC_ALT": "฿",
     "LTC": "Ł"
@@ -92,6 +95,7 @@
     "USD",
     "BTC",
     "KMD",
-    "LTC"
+    "LTC",
+    "DOGE"
   ]
 }

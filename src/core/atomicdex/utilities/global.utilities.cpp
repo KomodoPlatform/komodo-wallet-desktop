@@ -251,6 +251,19 @@ namespace atomic_dex::utils
         return logo_path;
     }
 
+    int8_t
+    get_index_str(std::vector<std::string> vec, std::string val)
+    { 
+        auto it = find(vec.begin(), vec.end(), val); 
+        if (it != vec.end())  
+        { 
+            int index = it - vec.begin(); 
+            return index;
+        } 
+        else {
+            return -1;
+        } 
+    } 
     std::string
     retrieve_main_ticker(const std::string& ticker, bool segwit_only, bool exclude_segwit)
     {
