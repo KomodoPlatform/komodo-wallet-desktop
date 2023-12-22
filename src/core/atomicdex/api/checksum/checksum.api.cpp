@@ -35,7 +35,7 @@ namespace atomic_dex::checksum::api
                         return it.value().get<std::string>();
                 }
                 
-                return std::string{"Cannot found valid checksum."};
+                return std::string{"Valid checksum not found!"};
             });
     }
 }

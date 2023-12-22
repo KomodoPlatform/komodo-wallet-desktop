@@ -2,8 +2,9 @@ import QtQuick 2.15
 
 DefaultTextField
 {
+    property bool allowFloat: false
     validator: RegExpValidator
     {
-        regExp: /[0-9]+/
+        regExp: allowFloat ? /([0-9]*[.])?[0-9]+/ : /[0-9]+/
     }
 }

@@ -11,11 +11,20 @@ import App 1.0
 
 GradientRectangle
 {
-    property int activation_progress: Dex.General.zhtlcActivationProgress(activation_status, ticker)
 
-    width: list_bg.width - list_bg.border.width*2 - 6
+    width: list_bg.width - list_bg.border.width * 2 - 6
     height: 44
     radius: Dex.Style.rectangleCornerRadius + 4
+    property int activation_pct: Dex.General.zhtlcActivationProgress(API.app.get_zhtlc_status(ticker), ticker)
+    Connections
+    {
+        target: API.app.settings_pg
+        function onZhtlcStatusChanged() {
+            activation_pct = Dex.General.zhtlcActivationProgress(API.app.get_zhtlc_status(ticker), ticker)
+        }
+    }
+
+
 
     start_color: api_wallet_page.ticker === ticker ? Dex.DexTheme.buttonColorEnabled : mouse_area.containsMouse ? Dex.DexTheme.buttonColorHovered : 'transparent'
     end_color: 'transparent'
@@ -57,12 +66,13 @@ GradientRectangle
         width: Dex.Style.textSizeSmall4*2
         anchors.verticalCenter: parent.verticalCenter
 
+
         DexRectangle
         {
             anchors.centerIn: parent
             anchors.fill: parent
             radius: 15
-            enabled: Dex.General.isZhtlc(ticker) ? activation_progress < 100 : false
+            enabled: activation_pct < 100
             visible: enabled
             opacity: .9
             color: Dex.DexTheme.backgroundColor
@@ -72,11 +82,11 @@ GradientRectangle
         {
             anchors.centerIn: parent
             anchors.fill: parent
-            enabled: Dex.General.isZhtlc(ticker) ? activation_progress < 100 : false
+            enabled: activation_pct < 100
             visible: enabled
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            text: activation_progress + "%"
+            text: activation_pct + "%"
             font: Dex.DexTypo.head8
             color: Dex.DexTheme.okColor
         }
@@ -93,7 +103,24 @@ GradientRectangle
             Layout.preferredWidth: 80
             font: Dex.DexTypo.caption
             wrapMode: Text.WordWrap
-            text_value: mouse_area.containsMouse ? name.replace(" (TESTCOIN)", "") : ticker
+            text_value: 
+            {
+                if (typeof name === 'undefined')
+                {
+                    if (typeof ticker === 'undefined')
+                    {
+                        return ""
+                    }
+                    else
+                    {
+                        return ticker
+                    }
+                }
+                else
+                {
+                    return mouse_area.containsMouse ? name.replace(" (TESTCOIN)", "") : ticker
+                }
+            }
             color: Dex.DexTheme.foregroundColor
         }
     }

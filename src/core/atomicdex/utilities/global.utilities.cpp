@@ -252,9 +252,19 @@ namespace atomic_dex::utils
     }
 
     std::string
-    retrieve_main_ticker(const std::string& ticker)
+    retrieve_main_ticker(const std::string& ticker, bool segwit_only, bool exclude_segwit)
     {
-        if (const auto pos = ticker.find('-'); pos != std::string::npos)
+        bool is_segwit = ticker.find("-segwit") != std::string::npos;
+        if (exclude_segwit && is_segwit)
+        {
+            return ticker;
+        }
+        auto pos = ticker.find("-");
+        if (segwit_only && is_segwit)
+        {
+            return ticker.substr(0, pos);
+        }
+        if (pos != std::string::npos)
         {
             return ticker.substr(0, pos);
         }
@@ -262,7 +272,7 @@ namespace atomic_dex::utils
     }
 
     std::vector<std::string>
-    coin_cfg_to_ticker_cfg(std::vector<coin_config> in)
+    coin_cfg_to_ticker_cfg(std::vector<coin_config_t> in)
     {
         std::vector<std::string> out;
         out.reserve(in.size());
@@ -296,5 +306,13 @@ namespace atomic_dex::utils
             ifs.close();
         }
         return valid_json_data;
+    }
+
+    void json_keys(nlohmann::json j)
+    {
+        for (auto& [key, val] : j.items())
+        {
+            SPDLOG_DEBUG("key: {}, value: {}", key, val);
+        }
     }
 } // namespace atomic_dex::utils

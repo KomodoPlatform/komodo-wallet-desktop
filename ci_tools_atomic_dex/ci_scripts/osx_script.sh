@@ -1,11 +1,8 @@
 #!/bin/bash
 
+# Workaround for https://github.com/actions/setup-python/issues/577
+
 brew update
-
-brew unlink libtool
-wget https://raw.githubusercontent.com/Homebrew/homebrew-core/0fbd6e24c4122e18ade1ec6c5916cb21de14f352/Formula/libtool.rb
-brew install libtool.rb
-
 brew install autoconf \
             automake \
             pkgconfig \
@@ -14,6 +11,7 @@ brew install autoconf \
             ninja \
             gnu-sed \
             coreutils \
+            libtool \
             llvm \
             gnu-getopt
 

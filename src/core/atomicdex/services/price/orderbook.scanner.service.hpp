@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -22,7 +22,8 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc.best.orders.hpp"
+#include "atomicdex/api/mm2/mm2.client.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.bestorders.hpp"
 
 //! Namespace declaration
 namespace atomic_dex
@@ -32,13 +33,13 @@ namespace atomic_dex
     {
         //! Private typedefs
         using t_update_time_point        = std::chrono::high_resolution_clock::time_point;
-        using t_best_orders_synchronized = boost::synchronized_value<t_best_orders_answer_success>;
+        using t_best_orders_synchronized = boost::synchronized_value<mm2::bestorders_rpc::expected_result_type>;
 
         //! Private member fields
         ag::ecs::system_manager&   m_system_manager;
         t_best_orders_synchronized m_best_orders_infos;
         t_update_time_point        m_update_clock;
-        std::atomic_bool           m_rpc_busy{false};
+        std::atomic_bool           m_bestorders_busy{false};
 
       public:
         //! Constructor
@@ -55,7 +56,7 @@ namespace atomic_dex
 
         [[nodiscard]] bool is_best_orders_busy() const ;
 
-        [[nodiscard]] t_orders_contents get_data() const ;
+        [[nodiscard]] t_orders_contents get_bestorders_data() const ;
     };
 } // namespace atomic_dex
 

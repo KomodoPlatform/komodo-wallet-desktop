@@ -27,6 +27,7 @@ Menu {
 
     MenuItem {
         id: disable_action
+        height: 40
         text: qsTr("Disable %1", "TICKER").arg(ticker)
         onTriggered: API.app.disable_coins([ticker])
         enabled: can_disable
@@ -41,15 +42,19 @@ Menu {
             restart_modal.open()
         }
         enabled: disable_action.enabled && API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_custom_coin
+        visible: enabled
+        height: enabled ? 40 : 0
     }
 
     MenuItem {
+        height: 40
         enabled: !General.prevent_coin_disabling.running
         text: qsTr("Disable all %1 assets").arg(type)
         onTriggered: API.app.disable_coins(API.app.portfolio_pg.get_all_coins_by_type(type))
     }
 
     MenuItem {
+        height: 40
         enabled: !General.prevent_coin_disabling.running
         text: qsTr("Disable all assets")
         onTriggered: API.app.disable_coins(API.app.portfolio_pg.get_all_enabled_coins())
@@ -57,6 +62,7 @@ Menu {
 
     MenuItem
     {
+        height: 40
         enabled: !General.prevent_coin_disabling.running
         text: qsTr("Disable 0 balance assets")
         onTriggered: API.app.disable_no_balance_coins()

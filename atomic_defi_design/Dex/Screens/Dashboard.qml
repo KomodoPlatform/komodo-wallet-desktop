@@ -52,8 +52,7 @@ Item
 
     readonly property var   api_wallet_page: API.app.wallet_pg
     readonly property var   current_ticker_infos: api_wallet_page.ticker_infos
-    readonly property bool  can_change_ticker: !api_wallet_page.tx_fetching_busy
-    readonly property bool  is_dex_banned: !API.app.ip_checker.ip_authorized
+    readonly property bool  can_disable_ticker: !api_wallet_page.tx_fetching_busy
 
     readonly property alias loader: loader
     readonly property alias current_component: loader.item

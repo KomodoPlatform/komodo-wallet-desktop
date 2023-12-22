@@ -39,7 +39,7 @@ namespace atomic_dex
         boost::synchronized_value<QJsonObject> m_wallet_performance;
 
         //! Private member functions
-        void fetch_data_of_single_coin(const coin_config& cfg);
+        void fetch_data_of_single_coin(const coin_config_t& cfg);
         void fetch_all_charts_data();
         void generate_fiat_chart();
 

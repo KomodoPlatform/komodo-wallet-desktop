@@ -31,6 +31,9 @@ Dex.Rectangle
             case "QRC-20":      return "QTUM"
             case "BEP-20":      return "BNB"
             case "ERC-20":      return "ETH"
+            case "AVX-20":      return "AVAX"
+            case "FTM-20":      return "FTM"
+            case "PLG-20":      return "MATIC"
             case "Smart Chain": return "KMD"
             case "SLP":         return "USDT-SLP"
         }
@@ -49,6 +52,9 @@ Dex.Rectangle
             case "QRC-20":      return true
             case "BEP-20":      return true
             case "ERC-20":      return true
+            case "PLG-20":      return true
+            case "AVX-20":      return true
+            case "FTM-20":      return true
             case "Smart Chain": return true
             case "SLP":         return true
         }

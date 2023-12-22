@@ -23,15 +23,16 @@ Dex.MultipageModal
 
     Component.onCompleted:
     {
-        if (Dex.API.app.updateCheckerService.updateInfo.status === "recommended" ||
-            Dex.API.app.updateCheckerService.updateInfo.status === "required" )
+        let status = Dex.API.app.updateCheckerService.updateInfo.status
+        if ( status === "recommended" || status === "required")
         {
             root.open()
         }
     }
 
     closePolicy: Popup.NoAutoClose
-
+    
+    // Wait for response page
     Dex.MultipageModalContent
     {
         titleText: qsTr("Searching new updates")
@@ -61,6 +62,7 @@ Dex.MultipageModal
         ]
     }
 
+    // Failed to fetch page
     Dex.MultipageModalContent
     {
         titleText: qsTr("Searching new updates")
@@ -83,9 +85,12 @@ Dex.MultipageModal
         ]
     }
 
+    // Response page
     Dex.MultipageModalContent
     {
-        titleText: Dex.API.app.updateCheckerService.updateInfo.status === "required" ? qsTr("Mandatory version found") : qsTr("New version found")
+        titleText: Dex.API.app.updateCheckerService.updateInfo.status === "required" 
+            ? qsTr("Mandatory version found")
+            : qsTr("New version found")
         titleAlignment: Qt.AlignHCenter
         spacing: 16
 
@@ -128,7 +133,7 @@ Dex.MultipageModal
 
         Dex.DefaultText
         {
-            text: qsTr("Your application is updated.")
+            text: qsTr("Your application is up to date!")
         }
 
         footer:
@@ -148,16 +153,17 @@ Dex.MultipageModal
 
         function onUpdateInfoChanged()
         {
+            console.log("updateInfo.status: " + Dex.API.app.updateCheckerService.updateInfo.status)
+            console.log("updateInfo.updateNeeded: " + Dex.API.app.updateCheckerService.updateInfo.updateNeeded)
+            console.log("updateInfo.newVersion: " + Dex.API.app.updateCheckerService.updateInfo.newVersion)
+            console.log("updateInfo.downloadUrl: " + Dex.API.app.updateCheckerService.updateInfo.downloadUrl)
+            console.log("updateInfo.changelog: " + Dex.API.app.updateCheckerService.updateInfo.changelog)
             if (Dex.API.app.updateCheckerService.updateInfo)
             {
-                if (Dex.API.app.updateCheckerService.updateInfo.status === "recommended" ||
-                    Dex.API.app.updateCheckerService.updateInfo.status === "required" )
+                let status = Dex.API.app.updateCheckerService.updateInfo.status
+                if (status === "recommended" || status === "required")
                 {
                     root.open()
-                }
-                else
-                {
-                    console.error(Dex.API.app.updateCheckerService.updateInfo.status)
                 }
             }
         }

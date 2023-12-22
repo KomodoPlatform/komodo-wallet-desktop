@@ -11,7 +11,7 @@ include(vcpkg_prerequisites)
 include(qt_prerequisites)
 include(cfg_hash)
 
-project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.6.1)
+project(${DEX_PROJECT_NAME} LANGUAGES CXX VERSION 0.7.0)
 message(STATUS "${PROJECT_NAME} is version ${PROJECT_VERSION}")
 
 include(cmake_default_options)
@@ -60,13 +60,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/komodo-defi-framework/releases/download/v1.0.7-beta/mm2-79f620559-Darwin-Release.zip)
+            URL https://sdk.devbuilds.komodo.earth/main/mm2_b0fd99e-mac-x86-64.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/komodo-defi-framework/releases/download/v1.0.7-beta/mm2-79f620559-Linux-Release.zip)
+            URL https://sdk.devbuilds.komodo.earth/main/mm2_b0fd99e-linux-x86-64.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/komodo-defi-framework/releases/download/v1.0.7-beta/mm2-79f620559-Win64.zip)
+            URL https://sdk.devbuilds.komodo.earth/main/mm2_b0fd99e-win-x86-64.zip)
 endif ()
 
 #FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)

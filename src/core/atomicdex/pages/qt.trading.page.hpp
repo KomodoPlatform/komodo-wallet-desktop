@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -55,9 +55,10 @@ namespace atomic_dex
         Q_PROPERTY(QString base_amount READ get_base_amount NOTIFY baseAmountChanged)
         Q_PROPERTY(QString rel_amount READ get_rel_amount NOTIFY relAmountChanged)
         Q_PROPERTY(QVariantMap fees READ get_fees WRITE set_fees NOTIFY feesChanged)
-        Q_PROPERTY(QVariantMap preffered_order READ get_preferred_order WRITE set_preferred_order NOTIFY prefferedOrderChanged)
+        Q_PROPERTY(QVariantMap preferred_order READ get_preferred_order WRITE set_preferred_order NOTIFY preferredOrderChanged)
         Q_PROPERTY(SelectedOrderStatus selected_order_status READ get_selected_order_status WRITE set_selected_order_status NOTIFY selectedOrderStatusChanged)
         Q_PROPERTY(QString price_reversed READ get_price_reversed NOTIFY priceReversedChanged)
+        Q_PROPERTY(QString pair_volume_24hr READ get_pair_volume_24hr NOTIFY pairVolume24hrChanged)
         Q_PROPERTY(QString cex_price READ get_cex_price NOTIFY cexPriceChanged)
         Q_PROPERTY(QString cex_price_reversed READ get_cex_price_reversed NOTIFY cexPriceReversedChanged)
         Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
@@ -113,6 +114,7 @@ namespace atomic_dex
         QString                                m_max_volume{"0"};
         QString                                m_total_amount{"0.00777"};
         QString                                m_cex_price{"0"};
+        QString                                m_pair_volume_24hr{"0"};
         QString                                m_minimal_trading_amount{"0.0001"};
         std::optional<nlohmann::json>          m_preferred_order;
         boost::synchronized_value<QVariantMap> m_fees;
@@ -122,11 +124,12 @@ namespace atomic_dex
         void                       determine_max_volume();
         void                       determine_total_amount();
         void                       determine_cex_rates();
+        void                       determine_pair_volume_24hr();
         void                       cap_volume();
         [[nodiscard]] t_float_50   get_max_balance_without_dust(const std::optional<QString>& trade_with = std::nullopt) const;
         [[nodiscard]] TradingError generate_fees_error(QVariantMap fees) const;
         void                       set_preferred_settings();
-        static QString                    calculate_total_amount(QString price, QString volume) ;
+        static QString             calculate_total_amount(QString price, QString volume) ;
 
       public:
         //! Constructor
@@ -152,7 +155,7 @@ namespace atomic_dex
         Q_INVOKABLE void     clear_forms(QString from);
 
         //! Trading business
-        Q_INVOKABLE void swap_market_pair(); ///< market_selector (button to switch market selector and orderbook)
+        Q_INVOKABLE void swap_market_pair(bool involves_segwit = false); ///< market_selector (button to switch market selector and orderbook)
         Q_INVOKABLE bool set_pair(bool is_left_side, const QString& changed_ticker);
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
@@ -194,6 +197,7 @@ namespace atomic_dex
         void                          set_total_amount(QString total_amount);
         [[nodiscard]] QString         get_base_amount() const;
         [[nodiscard]] QString         get_rel_amount() const;
+        [[nodiscard]] QString         get_pair_volume_24hr() const;
         [[nodiscard]] QString         get_cex_price() const;
         [[nodiscard]] QString         get_cex_price_reversed() const;
         [[nodiscard]] QString         get_cex_price_diff() const;
@@ -229,11 +233,12 @@ namespace atomic_dex
         void maxVolumeChanged();
         void tradingErrorChanged();
         void tradingModeChanged();
-        void prefferedOrderChanged();
+        void preferredOrderChanged();
         void totalAmountChanged();
         void baseAmountChanged();
         void relAmountChanged();
         void feesChanged();
+        void pairVolume24hrChanged();
         void cexPriceChanged();
         void cexPriceReversedChanged();
         void cexPriceDiffChanged();

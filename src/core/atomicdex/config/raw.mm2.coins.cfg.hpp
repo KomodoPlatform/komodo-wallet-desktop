@@ -12,6 +12,7 @@
 #include "atomicdex/api/mm2/mm2.constants.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/api/mm2/address_format.hpp"
 
 #ifndef NLOHMANN_OPT_HELPER
 #    define NLOHMANN_OPT_HELPER
@@ -76,46 +77,42 @@ namespace atomic_dex
         return get_optional<T>(j, property.data());
     }
 
-    struct address_format
-    {
-        std::string                format;
-        std::optional<std::string> network{std::nullopt};
-    };
 
     struct coin_element
     {
-        std::string                   coin;
-        std::optional<std::string>    name{std::nullopt};
-        std::optional<std::string>    fname{std::nullopt};
-        std::optional<std::string>    etomic{std::nullopt};
-        std::optional<int64_t>        chain_id{std::nullopt};
-        std::optional<int64_t>        rpcport{std::nullopt};
-        std::optional<int64_t>        pubtype{std::nullopt};
-        std::optional<int64_t>        p2_shtype{std::nullopt};
-        std::optional<int64_t>        wiftype{std::nullopt};
-        std::optional<int64_t>        txfee{std::nullopt};
-        std::optional<std::string>    confpath{std::nullopt};
-        std::optional<int64_t>        mm2{std::nullopt};
-        std::optional<int64_t>        required_confirmations{std::nullopt};
-        std::optional<std::string>    asset{std::nullopt};
-        std::optional<int64_t>        txversion{std::nullopt};
-        std::optional<int64_t>        overwintered{std::nullopt};
-        std::optional<bool>           requires_notarization{std::nullopt};
-        std::optional<int64_t>        is_po_s{std::nullopt};
-        std::optional<bool>           segwit{std::nullopt};
-        std::optional<address_format> address_format{std::nullopt};
-        std::optional<std::string>    estimate_fee_mode{std::nullopt};
-        std::optional<int64_t>        taddr{std::nullopt};
-        std::optional<int64_t>        decimals{std::nullopt};
-        std::optional<bool>           force_min_relay_fee{std::nullopt};
-        std::optional<int64_t>        p2_p{std::nullopt};
-        std::optional<std::string>    magic{std::nullopt};
-        std::optional<std::string>    n_spv{std::nullopt};
-        std::optional<std::string>    version_group_id{std::nullopt};
-        std::optional<std::string>    consensus_branch_id{std::nullopt};
-        std::optional<double>         avg_blocktime{std::nullopt};
-        std::optional<int64_t>        dust{std::nullopt};
-        nlohmann::json                protocol;
+        using addr_fmt = mm2::address_format_t;
+        std::string                     coin;
+        std::optional<std::string>      name{std::nullopt};
+        std::optional<std::string>      fname{std::nullopt};
+        std::optional<std::string>      etomic{std::nullopt};
+        std::optional<int64_t>          chain_id{std::nullopt};
+        std::optional<int64_t>          rpcport{std::nullopt};
+        std::optional<int64_t>          pubtype{std::nullopt};
+        std::optional<int64_t>          p2_shtype{std::nullopt};
+        std::optional<int64_t>          wiftype{std::nullopt};
+        std::optional<int64_t>          txfee{std::nullopt};
+        std::optional<std::string>      confpath{std::nullopt};
+        std::optional<int64_t>          mm2{std::nullopt};
+        std::optional<int64_t>          required_confirmations{std::nullopt};
+        std::optional<std::string>      asset{std::nullopt};
+        std::optional<int64_t>          txversion{std::nullopt};
+        std::optional<int64_t>          overwintered{std::nullopt};
+        std::optional<bool>             requires_notarization{std::nullopt};
+        std::optional<int64_t>          is_po_s{std::nullopt};
+        std::optional<bool>             segwit{std::nullopt};
+        std::optional<addr_fmt>         address_format{std::nullopt};
+        std::optional<std::string>      estimate_fee_mode{std::nullopt};
+        std::optional<int64_t>          taddr{std::nullopt};
+        std::optional<int64_t>          decimals{std::nullopt};
+        std::optional<bool>             force_min_relay_fee{std::nullopt};
+        std::optional<int64_t>          p2_p{std::nullopt};
+        std::optional<std::string>      magic{std::nullopt};
+        std::optional<std::string>      n_spv{std::nullopt};
+        std::optional<std::string>      version_group_id{std::nullopt};
+        std::optional<std::string>      consensus_branch_id{std::nullopt};
+        std::optional<double>           avg_blocktime{std::nullopt};
+        std::optional<int64_t>          dust{std::nullopt};
+        nlohmann::json                  protocol;
     };
 
     using coins = std::vector<coin_element>;
@@ -129,29 +126,8 @@ namespace atomic_dex
 
 namespace atomic_dex
 {
-    void from_json(const json& j, atomic_dex::address_format& x);
-    void to_json(json& j, const atomic_dex::address_format& x);
-
     void from_json(const json& j, atomic_dex::coin_element& x);
     void to_json(json& j, const atomic_dex::coin_element& x);
-
-    inline void
-    from_json(const json& j, atomic_dex::address_format& x)
-    {
-        x.format  = j.at("format").get<std::string>();
-        x.network = atomic_dex::get_optional<std::string>(j, "network");
-    }
-
-    inline void
-    to_json(json& j, const atomic_dex::address_format& x)
-    {
-        j           = json::object();
-        j["format"] = x.format;
-        if (x.network.has_value())
-        {
-            j["network"] = x.network.value();
-        }
-    }
 
     inline void
     from_json(const json& j, atomic_dex::coin_element& x)
@@ -175,7 +151,7 @@ namespace atomic_dex
         x.requires_notarization  = atomic_dex::get_optional<bool>(j, "requires_notarization");
         x.is_po_s                = atomic_dex::get_optional<int64_t>(j, "isPoS");
         x.segwit                 = atomic_dex::get_optional<bool>(j, "segwit");
-        x.address_format         = atomic_dex::get_optional<atomic_dex::address_format>(j, "address_format");
+        x.address_format         = atomic_dex::get_optional<mm2::address_format_t>(j, "address_format");
         x.estimate_fee_mode      = atomic_dex::get_optional<std::string>(j, "estimate_fee_mode");
         x.taddr                  = atomic_dex::get_optional<int64_t>(j, "taddr");
         x.decimals               = atomic_dex::get_optional<int64_t>(j, "decimals");
