@@ -53,7 +53,7 @@ namespace atomic_dex::faucet::api
             auto resp_body_json = nlohmann::json::parse(resp_body);
 
             return faucet::api::claim_result{
-                .message = resp_body_json.at("Result")["Message"].get<std::string>(), .status = resp_body_json.at("Status").get<std::string>()};
+                .message = resp_body_json.at("result")["message"].get<std::string>(), .status = resp_body_json.at("status").get<std::string>()};
         }
         //! request error.
         return faucet::api::claim_result{.message = resp_body, .status = "Request Error"};
