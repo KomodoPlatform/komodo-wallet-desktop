@@ -25,6 +25,7 @@
 #include <boost/algorithm/string/case_conv.hpp>
 
 // Project Headers
+#include "atomicdex/constants/dex.constants.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.get_public_key.hpp"
 #include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/events/events.hpp"
@@ -778,6 +779,11 @@ namespace atomic_dex
     QString settings_page::get_mm2_version()
     {
         return QString::fromStdString(mm2::rpc_version());
+    }
+
+    QString settings_page::get_rpcport()
+    {
+        return QString::fromStdString(std::to_string(atomic_dex::g_dex_rpcport));
     }
 
     QString settings_page::get_peerid()

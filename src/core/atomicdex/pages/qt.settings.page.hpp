@@ -126,6 +126,7 @@ namespace atomic_dex
         Q_INVOKABLE QStringList                 retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE static QString              get_mm2_version();
         Q_INVOKABLE static QString              get_peerid();
+        Q_INVOKABLE static QString              get_rpcport();
         Q_INVOKABLE static QString              get_log_folder();
         Q_INVOKABLE static QString              get_export_folder();
         Q_INVOKABLE static QString              get_version();

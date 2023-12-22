@@ -10,7 +10,7 @@ on:
     - cron: '0 0 * * 1'
 
 env:
-  DEX_API: "mm2"
+  DEX_API: "mm2_kmd"
   DEX_RPCPORT: 7762
   DEX_RPC: "http://127.0.0.1:7762"
   DEX_PROJECT_NAME: "komodo-wallet"
