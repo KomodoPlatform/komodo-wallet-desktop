@@ -453,7 +453,7 @@ namespace atomic_dex
                         refresh_other_coins_rates(second_id, g_second_primary_dex_coin, with_update, 0);
                         already_send = true;
                     }
-                    for (auto&& coin: m_config.possible_currencies)
+                    for (auto&& coin: this->m_cfg.possible_currencies)
                     {
                         if (g_primary_dex_coin != coin && g_second_primary_dex_coin != coin)
                         {
