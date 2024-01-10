@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -21,24 +21,24 @@ namespace atomic_dex
     constexpr const char*
     get_version()
     {
-        return "0.6.1-beta";
+        return "0.7.0-beta";
     }
 
     constexpr int
     get_num_version() noexcept
     {
-        return 61;
+        return 70;
     }
 
     constexpr const char*
     get_raw_version()
     {
-        return "0.6.1";
+        return "0.7.0";
     }
 
     constexpr const char*
     get_precedent_raw_version()
     {
-        return "0.6.0";
+        return "0.6.1";
     }
 } // namespace atomic_dex

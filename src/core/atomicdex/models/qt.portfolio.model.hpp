@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -97,6 +97,7 @@ namespace atomic_dex
 
         //! Public api
         void                                  initialize_portfolio(const std::vector<std::string>& tickers);
+        bool                                  update_activation_status();
         bool                                  update_currency_values();
         bool                                  update_balance_values(const std::vector<std::string>& tickers);
         void                                  adjust_percent_current_currency(QString balance_all);

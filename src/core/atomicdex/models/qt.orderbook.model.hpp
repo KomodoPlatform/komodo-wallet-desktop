@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -27,7 +27,7 @@
 #include <antara/gaming/ecs/system.manager.hpp>
 
 //! Project
-#include "atomicdex/api/mm2/rpc.orderbook.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.orderbook.hpp"
 #include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 
 namespace atomic_dex
@@ -89,7 +89,7 @@ namespace atomic_dex
         bool                                 removeRows(int row, int count, const QModelIndex& parent) override;
 
         void                                 reset_orderbook(const t_orders_contents& orderbook, bool is_bestorders=false);
-        void                                 refresh_orderbook(const t_orders_contents& orderbook, bool is_bestorders=false);
+        void                                 refresh_orderbook_model_data(const t_orders_contents& orderbook, bool is_bestorders=false);
         void                                 clear_orderbook();
         [[nodiscard]] int                    get_length() const;
         [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const;

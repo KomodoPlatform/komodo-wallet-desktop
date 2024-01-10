@@ -44,8 +44,8 @@ Item
 
             leftPadding: 30
             rightPadding: leftPadding
-            topPadding: leftPadding * 0.5
-            bottomPadding: topPadding
+            topPadding: 12
+            bottomPadding: 12
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             background: DefaultRectangle
@@ -69,9 +69,9 @@ Item
 
     DexLanguage
     {
-        y: 52
+        y: 24
         anchors.right: parent.right
-        anchors.rightMargin: 52
+        anchors.rightMargin: 24
         width: 72
     }
 

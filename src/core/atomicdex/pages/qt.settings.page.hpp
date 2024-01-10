@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -46,11 +46,13 @@ namespace atomic_dex
         Q_PROPERTY(QString  current_fiat                    READ get_current_fiat                   WRITE set_current_fiat                      NOTIFY onFiatChanged)
         Q_PROPERTY(bool     notification_enabled            READ is_notification_enabled            WRITE set_notification_enabled              NOTIFY onNotificationEnabledChanged)
         Q_PROPERTY(bool     spamfilter_enabled              READ is_spamfilter_enabled              WRITE set_spamfilter_enabled                NOTIFY onSpamFilterEnabledChanged)
+        Q_PROPERTY(bool     static_rpcpass_enabled          READ is_static_rpcpass_enabled          WRITE set_static_rpcpass_enabled            NOTIFY onStaticRpcPassEnabledChanged)
         Q_PROPERTY(QVariant custom_token_data               READ get_custom_token_data              WRITE set_custom_token_data                 NOTIFY customTokenDataChanged)
         Q_PROPERTY(bool     fetching_custom_token_data_busy READ is_fetching_custom_token_data_busy WRITE set_fetching_custom_token_data_busy   NOTIFY customTokenDataStatusChanged)
         Q_PROPERTY(bool     fetching_priv_keys_busy         READ is_fetching_priv_key_busy          WRITE set_fetching_priv_key_busy            NOTIFY privKeyStatusChanged)
         Q_PROPERTY(bool     fetchingPublicKey               READ is_fetching_public_key                                                         NOTIFY fetchingPublicKeyChanged)
         Q_PROPERTY(QString  publicKey                       READ get_public_key                                                                 NOTIFY publicKeyChanged)
+        Q_PROPERTY(bool     zhtlcStatus                     READ get_zhtlc_status                   WRITE set_zhtlc_status                      NOTIFY onZhtlcStatusChanged)
 
 
         ag::ecs::system_manager&                    m_system_manager;
@@ -63,6 +65,7 @@ namespace atomic_dex
         std::atomic_bool                            fetching_public_key{false};
         QString                                     public_key;
         boost::synchronized_value<nlohmann::json>   m_custom_token_data;
+        boost::synchronized_value<nlohmann::json>   m_zhtlc_status;
 
       public:
         explicit settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent = nullptr);
@@ -81,9 +84,14 @@ namespace atomic_dex
         [[nodiscard]] QString                   get_current_currency_sign() const;
         [[nodiscard]] QString                   get_current_fiat_sign() const;
         [[nodiscard]] QString                   get_current_fiat() const;
+        void                                    set_use_sync_date(int new_value);
         void                                    set_pirate_sync_date(int new_timestamp);
         [[nodiscard]] bool                      is_notification_enabled() const;
         void                                    set_notification_enabled(bool is_enabled);
+        [[nodiscard]] bool                      is_static_rpcpass_enabled() const;
+        void                                    set_static_rpcpass_enabled(bool is_enabled);
+        void                                    is_testcoin_filter_enabled(bool is_enabled);
+        bool                                    set_zhtlc_status(nlohmann::json data);
         [[nodiscard]] bool                      is_spamfilter_enabled() const;
         void                                    set_spamfilter_enabled(bool is_enabled);
         void                                    set_current_currency(const QString& current_currency);
@@ -109,6 +117,7 @@ namespace atomic_dex
         Q_INVOKABLE [[nodiscard]] bool          is_this_ticker_present_in_raw_cfg(const QString& ticker) const;
         Q_INVOKABLE [[nodiscard]] bool          is_this_ticker_present_in_normal_cfg(const QString& ticker) const;
         Q_INVOKABLE [[nodiscard]] QString       get_custom_coins_icons_path() const;
+        Q_INVOKABLE [[nodiscard]] bool          get_use_sync_date() const;
         Q_INVOKABLE [[nodiscard]] int           get_pirate_sync_date() const;
         Q_INVOKABLE [[nodiscard]] int           get_pirate_sync_height(int sync_date, int checkpoint_height, int checkpoint_blocktime) const;
         Q_INVOKABLE void                        process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type);
@@ -116,10 +125,14 @@ namespace atomic_dex
         Q_INVOKABLE void                        submit();
         Q_INVOKABLE QStringList                 retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE static QString              get_mm2_version();
+        Q_INVOKABLE static QString              get_peerid();
+        Q_INVOKABLE static QString              get_rpcport();
         Q_INVOKABLE static QString              get_log_folder();
         Q_INVOKABLE static QString              get_export_folder();
         Q_INVOKABLE static QString              get_version();
         Q_INVOKABLE void                        fetchPublicKey();
+        Q_INVOKABLE nlohmann::json              get_zhtlc_status();
+
 
         // QML API Properties Signals
       signals:
@@ -131,11 +144,13 @@ namespace atomic_dex
         void onFiatChanged();
         void onNotificationEnabledChanged();
         void onSpamFilterEnabledChanged();
+        void onStaticRpcPassEnabledChanged();
         void customTokenDataChanged();
         void customTokenDataStatusChanged();
         void privKeyStatusChanged();
         void fetchingPublicKeyChanged();
         void publicKeyChanged();
+        void onZhtlcStatusChanged();
     };
 } // namespace atomic_dex
 

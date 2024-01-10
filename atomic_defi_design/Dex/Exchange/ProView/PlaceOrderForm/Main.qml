@@ -36,7 +36,7 @@ Widget
         function onPreImageRpcStatusChanged(){
             // console.log("onPreImageRpcStatusChanged::preimage_rpc_busy: " + API.app.trading_pg.preimage_rpc_busy)
         }
-        function onPrefferedOrderChanged(){
+        function onPreferredOrderChanged(){
             reset_fees_state()
         }
     }
@@ -156,7 +156,7 @@ Widget
         RowLayout
         {
             id: orderSelection
-            visible: API.app.trading_pg.preffered_order.price !== undefined
+            visible: API.app.trading_pg.preferred_order.price !== undefined
             anchors.fill: parent
             anchors.verticalCenter: parent.verticalCenter
 
@@ -192,7 +192,7 @@ Widget
 
         Rectangle
         {
-            visible: API.app.trading_pg.preffered_order.price !== undefined
+            visible: API.app.trading_pg.preferred_order.price !== undefined
             anchors.fill: parent
             radius: 8
             color: 'transparent'
@@ -258,6 +258,7 @@ Widget
             console.log("Getting fees info...")
             API.app.trading_pg.determine_fees()
             show_waiting_for_trade_preimage = true;
+            check_trade_preimage.start()
         }
 
         Item
@@ -275,20 +276,6 @@ Widget
                 anchors.centerIn: parent
                 indicatorSize: 32
                 indicatorDotSize: 5
-            }
-        }
-
-        DexMouseArea
-        {
-            id: areaAlert
-            hoverEnabled: true
-            anchors.fill: parent
-            onClicked: 
-            {
-                console.log("Getting fees info...")
-                API.app.trading_pg.determine_fees()
-                show_waiting_for_trade_preimage = true;
-                check_trade_preimage.start()
             }
         }
     }
@@ -315,7 +302,6 @@ Widget
                 errors.text_value = trade_preimage_error.toString()
                 show_waiting_for_trade_preimage = false
                 stop()
-
             }
             else if (loop_count > 50)
             {

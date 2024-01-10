@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -25,7 +25,8 @@
 #include <boost/algorithm/string/case_conv.hpp>
 
 // Project Headers
-#include "atomicdex/api/mm2/get_public_key_rpc.hpp"
+#include "atomicdex/constants/dex.constants.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.get_public_key.hpp"
 #include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
@@ -79,6 +80,11 @@ namespace atomic_dex { void settings_page::update() {} }
 // Getters|Setters
 namespace atomic_dex
 {
+    bool settings_page::get_use_sync_date() const
+    {
+        QSettings& settings = entity_registry_.ctx<QSettings>();
+        return settings.value("UseSyncDate").toBool();
+    }
     int settings_page::get_pirate_sync_date() const
     {
         QSettings& settings = entity_registry_.ctx<QSettings>();
@@ -108,10 +114,10 @@ namespace atomic_dex
         return height;
     }
 
-    void settings_page::set_pirate_sync_date(int new_timestamp)
+    void settings_page::set_pirate_sync_date(int new_value)
     {
         QSettings&        settings     = entity_registry_.ctx<QSettings>();
-        settings.setValue("PirateSyncDate", new_timestamp);
+        settings.setValue("UseSyncDate", new_value);
         settings.sync();
     }
 
@@ -173,6 +179,34 @@ namespace atomic_dex
         emit onLangChanged();
     }
 
+    bool atomic_dex::settings_page::is_static_rpcpass_enabled() const
+    {
+        return m_config.static_rpcpass_enabled;
+    }
+
+    bool atomic_dex::settings_page::set_zhtlc_status(nlohmann::json data)
+    {
+        m_zhtlc_status = data;
+        // SPDLOG_INFO("zhtlc status: {}", m_zhtlc_status.get().dump(4));
+        emit onZhtlcStatusChanged();
+        return true;
+    }
+
+    nlohmann::json atomic_dex::settings_page::get_zhtlc_status()
+    {
+        return m_zhtlc_status.get();
+    }
+
+
+    void settings_page::set_static_rpcpass_enabled(bool is_enabled)
+    {
+        if (m_config.static_rpcpass_enabled != is_enabled)
+        {
+            change_static_rpcpass_status(m_config, is_enabled);
+            emit onStaticRpcPassEnabledChanged();
+        }
+    }
+
     bool atomic_dex::settings_page::is_spamfilter_enabled() const
     {
         return m_config.spamfilter_enabled;
@@ -223,6 +257,12 @@ namespace atomic_dex
 
     void settings_page::set_current_currency(const QString& current_currency)
     {
+        if (m_config.possible_currencies.empty())
+        {
+            SPDLOG_ERROR("m_config.possible_currencies are empty!");
+            return;
+        }
+
         bool        can_proceed = true;
         std::string reason      = "";
         if (atomic_dex::is_this_currency_a_fiat(m_config, current_currency.toStdString()))
@@ -259,7 +299,18 @@ namespace atomic_dex
         {
             if (!reason.empty())
             {
-                SPDLOG_ERROR("cannot change currency for reason: {}", reason);
+                SPDLOG_WARN("Cannot change currency to {} for reason: {}", current_currency.toStdString(), reason);
+                // Try next in line
+                int8_t selected_idx = utils::get_index_str(m_config.possible_currencies, current_currency.toStdString());
+                if (selected_idx < m_config.possible_currencies.size() - 1)
+                {
+                    set_current_currency(QString::fromStdString(m_config.possible_currencies[selected_idx + 1]));
+                }
+                else
+                {
+                    set_current_currency(QString::fromStdString(m_config.possible_currencies[0]));
+                }
+
             }
         }
     }
@@ -401,6 +452,8 @@ namespace atomic_dex
         return std_path_to_qstring(utils::get_runtime_coins_path());
     }
 
+    // QRC20 option in add custom coin form has been disabled due to unresolved issues.
+    // This code remains for when we re-enable it in the future
     void settings_page::process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath)
     {
         this->set_fetching_custom_token_data_busy(true);
@@ -496,9 +549,9 @@ namespace atomic_dex
         {
             switch (coin_type)
             {
-            case CoinTypeGadget::QRC20:
-                return std::make_tuple(
-                    &mm2::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
+            // case CoinTypeGadget::QRC20:
+            //     return std::make_tuple(
+            //         &mm2::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
             case CoinTypeGadget::ERC20:
                 return std::make_tuple(
                     &mm2::g_etherscan_proxy_http_client, "/api/v1/token_infos/erc20/"s + contract_address.toStdString(), "ERC20"s, "ETH"s, "ERC-20"s,
@@ -525,24 +578,25 @@ namespace atomic_dex
 
             if (resp.status_code() == 200)
             {
-                nlohmann::json raw_parent_cfg = mm2.get_raw_mm2_ticker_cfg(parent_chain);
-                nlohmann::json body_json      = nlohmann::json::parse(body).at("result")[0];
-                const auto     ticker         = body_json.at("symbol").get<std::string>() + "-" + type;
-                const auto     name_lowercase = body_json.at("tokenName").get<std::string>();
+                nlohmann::json raw_parent_cfg             = mm2.get_raw_mm2_ticker_cfg(parent_chain);
+                nlohmann::json body_json                  = nlohmann::json::parse(body).at("result")[0];
+                const auto     ticker                     = body_json.at("symbol").get<std::string>() + "-" + type;
+                const auto     name_lowercase             = body_json.at("tokenName").get<std::string>();
+                const auto&    coin_info                  = mm2.get_coin_info(parent_chain);
+                std::string token_contract_address        = contract_address.toStdString();
+                boost::algorithm::to_lower(token_contract_address);
+                utils::to_eth_checksum(token_contract_address);
 
                 out["ticker"] = ticker;
                 out["name"]   = name_lowercase;
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), atomic_dex::utils::retrieve_main_ticker(ticker));
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
-                    out["mm2_cfg"]["protocol"]                              = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["type"]                      = parent_type;
-                    out["mm2_cfg"]["protocol"]["protocol_data"]             = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"] = platform;
-                    std::string out_address                                 = contract_address.toStdString();
-                    boost::algorithm::to_lower(out_address);
-                    utils::to_eth_checksum(out_address);
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
+                    out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["type"]                              = parent_type;
+                    out["mm2_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = platform;
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = token_contract_address;
                     out["mm2_cfg"]["rpcport"]                                       = raw_parent_cfg.at("rpcport");
                     out["mm2_cfg"]["coin"]                                          = ticker;
                     out["mm2_cfg"]["mm2"]                                           = 1;
@@ -558,18 +612,57 @@ namespace atomic_dex
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
                     //!
-                    out["adex_cfg"][ticker]                      = nlohmann::json::object();
-                    out["adex_cfg"][ticker]["coin"]              = ticker;
-                    out["adex_cfg"][ticker]["name"]              = name_lowercase;
-                    out["adex_cfg"][ticker]["coingecko_id"]      = coingecko_id.toStdString();
-                    const auto& coin_info                        = mm2.get_coin_info(parent_chain);
-                    out["adex_cfg"][ticker]["nodes"]             = coin_info.urls.value_or(std::vector<node>());
-                    out["adex_cfg"][ticker]["explorer_url"]      = coin_info.explorer_url;
-                    out["adex_cfg"][ticker]["type"]              = adex_platform;
-                    out["adex_cfg"][ticker]["active"]            = true;
-                    out["adex_cfg"][ticker]["currently_enabled"] = false;
-                    out["adex_cfg"][ticker]["is_custom_coin"]    = true;
-                    out["adex_cfg"][ticker]["mm2_backup"]        = out["mm2_cfg"];
+                    out["adex_cfg"][ticker]                            = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["active"]                  = true;
+                    if (raw_parent_cfg.contains("chain_id"))
+                    {
+                        out["adex_cfg"][ticker]["chain_id"]            = raw_parent_cfg.at("chain_id");
+                    }
+                    out["adex_cfg"][ticker]["coin"]                    = ticker;
+                    out["adex_cfg"][ticker]["coingecko_id"]            = coingecko_id.toStdString();
+                    // contract address
+                    if (raw_parent_cfg.contains("protocol"))
+                    {
+                        if (raw_parent_cfg.at("protocol").contains("protocol_data"))
+                        {
+                            if (raw_parent_cfg.at("protocol").at("protocol_data").contains("contract_address"))
+                            {
+                                out["adex_cfg"][ticker]["contract_address"]    = raw_parent_cfg.at("protocol").at("protocol_data").at("contract_address");
+                            }
+                        }
+                    }
+                    
+                    out["adex_cfg"][ticker]["currently_enabled"]       = false;
+                    if (raw_parent_cfg.contains("decimals"))
+                    {
+                        out["adex_cfg"][ticker]["decimals"]            = raw_parent_cfg.at("decimals");
+                    }
+                    if (raw_parent_cfg.contains("derivation_path"))
+                    {
+                        out["adex_cfg"][ticker]["derivation_path"]     = raw_parent_cfg.at("derivation_path");
+                    }
+                    out["adex_cfg"][ticker]["explorer_address_url"]    = coin_info.address_uri;
+                    out["adex_cfg"][ticker]["explorer_block_url"]      = coin_info.block_uri;
+                    out["adex_cfg"][ticker]["explorer_tx_url"]         = coin_info.tx_uri;
+                    out["adex_cfg"][ticker]["explorer_url"]            = coin_info.explorer_url;
+                    out["adex_cfg"][ticker]["fallback_swap_contract"]  = coin_info.swap_contract_address;
+                    out["adex_cfg"][ticker]["fname"]                   = name_lowercase;
+                    out["adex_cfg"][ticker]["is_testnet"]              = true;
+                    out["adex_cfg"][ticker]["currently_enabled"]       = false;
+                    out["adex_cfg"][ticker]["mm2"]                     = 1;
+                    out["adex_cfg"][ticker]["name"]                    = name_lowercase;
+                    out["adex_cfg"][ticker]["nodes"]                   = coin_info.urls.value_or(std::vector<node>());
+                    out["adex_cfg"][ticker]["parent_coin"]             = parent_chain;
+                    out["adex_cfg"][ticker]["protocol"]                                          = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["protocol"]["protocol_data"]                         = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["protocol"]["protocol_data"]["contract_address"]     = token_contract_address;
+                    out["adex_cfg"][ticker]["protocol"]["protocol_data"]["platform"]             = platform;
+                    out["adex_cfg"][ticker]["protocol"]["type"]                                  = parent_type;
+                    out["adex_cfg"][ticker]["required_confirmations"]  = raw_parent_cfg.at("required_confirmations");
+                    out["adex_cfg"][ticker]["type"]                    = adex_platform;
+                    out["adex_cfg"][ticker]["swap_contract_address"]   = coin_info.swap_contract_address;
+                    out["adex_cfg"][ticker]["wallet_only"]             = false;
+                    out["adex_cfg"][ticker]["is_custom_coin"]          = true;
                 }
             }
             else
@@ -619,6 +712,8 @@ namespace atomic_dex
         using namespace std::string_literals;
         const std::filesystem::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
+        const std::filesystem::path rpcpass_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".rpcpass"s);
+        auto           rpcpass   = atomic_dex::decrypt(rpcpass_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
             SPDLOG_ERROR("cannot decrypt the seed with the derived password: {}", ec.message());
@@ -684,6 +779,16 @@ namespace atomic_dex
     QString settings_page::get_mm2_version()
     {
         return QString::fromStdString(mm2::rpc_version());
+    }
+
+    QString settings_page::get_rpcport()
+    {
+        return QString::fromStdString(std::to_string(atomic_dex::g_dex_rpcport));
+    }
+
+    QString settings_page::get_peerid()
+    {
+        return QString::fromStdString(mm2::peer_id());
     }
 
     QString settings_page::get_export_folder()

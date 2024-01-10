@@ -38,7 +38,7 @@ ColumnLayout
         DefaultText
         {
             Layout.alignment: Qt.AlignHCenter
-            text_value: qsTr("Exchange rate") + (preffered_order.price !== undefined ? (" (" + qsTr("Selected") + ")") : "")
+            text_value: qsTr("Exchange rate") + (preferred_order.price !== undefined ? (" (" + qsTr("Selected") + ")") : "")
             font.pixelSize: fontSize
         }
 

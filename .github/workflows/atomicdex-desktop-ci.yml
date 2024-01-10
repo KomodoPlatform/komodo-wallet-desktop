@@ -10,7 +10,7 @@ on:
     - cron: '0 0 * * 1'
 
 env:
-  DEX_API: "mm2"
+  DEX_API: "mm2_shiba"
   DEX_RPCPORT: 7783
   DEX_RPC: "http://127.0.0.1:7783"
   DEX_PROJECT_NAME: "shibadex-desktop"
@@ -55,13 +55,13 @@ jobs:
             host: 'linux'
 
           - name: osx-release
-            os: macos-11
+            os: macos-12
             qt: '5.15.2'
             type: 'Release'
             host: 'mac'
 
           - name: osx-debug
-            os: macos-11
+            os: macos-12
             qt: '5.15.2'
             type: 'Debug'
             host: 'mac'

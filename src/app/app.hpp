@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -45,8 +45,8 @@
 #include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
-#include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/price/defi.stats.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/services/update/zcash.params.service.hpp"
@@ -69,7 +69,6 @@ namespace atomic_dex
         Q_PROPERTY(portfolio_page_ptr portfolio_pg READ get_portfolio_page NOTIFY portfolioPageChanged)
         Q_PROPERTY(notification_manager* notification_mgr READ get_notification_manager)
         Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker NOTIFY internetCheckerChanged)
-        Q_PROPERTY(ip_service_checker* ip_checker READ get_ip_checker NOTIFY ipCheckerChanged)
         Q_PROPERTY(exporter_service* exporter_service READ get_exporter_service NOTIFY exporterServiceChanged)
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
@@ -135,7 +134,6 @@ namespace atomic_dex
         settings_page*                           get_settings_page() const;
         qt_wallet_manager*                       get_wallet_mgr() const;
         internet_service_checker*                get_internet_checker() const;
-        ip_service_checker*                      get_ip_checker() const;
         update_checker_service*                  get_update_checker_service() const;
         [[nodiscard]] zcash_params_service*      get_zcash_params_service() const;
         exporter_service*                        get_exporter_service() const;
@@ -162,13 +160,15 @@ namespace atomic_dex
         Q_INVOKABLE bool               disconnect();
         Q_INVOKABLE bool               enable_coins(const QStringList& coins);
         Q_INVOKABLE bool               enable_coin(const QString& coin);
-        Q_INVOKABLE QString            get_balance(const QString& coin);
+        Q_INVOKABLE QString            get_balance_info_qstr(const QString& coin);
         Q_INVOKABLE QJsonObject        get_zhtlc_status(const QString& coin);
         Q_INVOKABLE [[nodiscard]] bool do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool               disable_coins(const QStringList& coins);
         Q_INVOKABLE bool               disable_no_balance_coins();
         Q_INVOKABLE bool               has_coins_with_balance();
+        Q_INVOKABLE QString            get_fiat_rate(const QString& fiat);
         Q_INVOKABLE QString            get_fiat_from_amount(const QString& ticker, const QString& amount);
+        Q_INVOKABLE QString            get_rate_conversion(const QString& fiat, const QString& ticker, bool adjusted = false);
 
       signals:
         void walletMgrChanged();
@@ -184,7 +184,6 @@ namespace atomic_dex
         void tradingPageChanged();
         void settingsPageChanged();
         void internetCheckerChanged();
-        void ipCheckerChanged();
         void exporterServiceChanged();
       public slots:
         void exit_handler();

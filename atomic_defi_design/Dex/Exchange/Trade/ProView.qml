@@ -69,7 +69,7 @@ RowLayout
             "uuid": uuid
         }
 
-        API.app.trading_pg.preffered_order = selected_order
+        API.app.trading_pg.preferred_order = selected_order
 
         // Shows place order form in case it has been hidden in the settings.
         placeOrderForm.visible = true

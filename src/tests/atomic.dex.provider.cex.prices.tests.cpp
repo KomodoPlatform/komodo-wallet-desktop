@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -50,7 +50,7 @@ TEST_CASE("atomic dex cex prices provider constructor")
 
             AND_WHEN("i set the current orderbook pair to a valid supported pair (kmd-btc)")
             {
-                registry.ctx<entt::dispatcher>().trigger<atomic_dex::orderbook_refresh>("kmd", "btc");
+                registry.ctx<entt::dispatcher>().trigger<atomic_dex::refresh_orderbook_model_data>("kmd", "btc");
                 using namespace std::chrono_literals;
                 cex_system.consume_pending_tasks();
 

@@ -97,7 +97,14 @@ Dex.DexListView
     delegate: Rectangle
     {
         property color _idleColor: index % 2 === 1 ? Dex.CurrentTheme.listItemOddBackground : Dex.CurrentTheme.listItemEvenBackground
-        property int   activation_progress: Dex.General.zhtlcActivationProgress(activation_status, ticker)
+        property int activation_pct: Dex.General.zhtlcActivationProgress(Dex.API.app.get_zhtlc_status(ticker), ticker)
+        Connections
+        {
+            target: Dex.API.app.settings_pg
+            function onZhtlcStatusChanged() {
+                activation_pct = Dex.General.zhtlcActivationProgress(Dex.API.app.get_zhtlc_status(ticker), ticker)
+            }
+        }
 
         width: list.width
         height: _assetRowHeight
@@ -126,7 +133,7 @@ Dex.DexListView
                         anchors.centerIn: parent
                         anchors.fill: parent
                         radius: 15
-                        enabled: Dex.General.isZhtlc(ticker) ? activation_progress < 100 : false
+                        enabled: activation_pct < 100
                         visible: enabled
                         opacity: .9
                         color: Dex.DexTheme.backgroundColor
@@ -136,11 +143,11 @@ Dex.DexListView
                     {
                         anchors.centerIn: parent
                         anchors.fill: parent
-                        enabled: Dex.General.isZhtlc(ticker) ? activation_progress < 100 : false
+                        enabled: activation_pct < 100
                         visible: enabled
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        text: activation_progress + "%"
+                        text: activation_pct + "%"
                         font: Dex.DexTypo.head8
                         color: Dex.DexTheme.okColor
                     }
@@ -193,11 +200,13 @@ Dex.DexListView
                 font: Dex.DexTypo.body2
                 text_value:
                 {
+
                     if (Dex.General.isZhtlc(ticker))
                     {
-                        if (activation_progress != 100)
+                        let x = activation_pct
+                        if (x != 100)
                         {
-                            return qsTr("Activating: ") + activation_progress + "%"
+                            return qsTr("Activating: ") + x + "%"
                         }
                     }
                     return parseFloat(balance).toFixed(8)
@@ -248,7 +257,7 @@ Dex.DexListView
                 verticalAlignment: Text.AlignVCenter
 
                 text_value: Dex.General.formatFiat('', main_currency_price_for_one_unit,
-                                                   Dex.API.app.settings_pg.current_currency, 6)
+                                                   Dex.API.app.settings_pg.current_currency, 8)
             }
 
             Item // Price Provider
@@ -286,8 +295,8 @@ Dex.DexListView
             }
 
             Dex.CoinMenu { id: contextMenu }
-        }
 
+        }
         Dex.DefaultMouseArea
         {
             id: mouseArea
@@ -297,8 +306,6 @@ Dex.DexListView
 
             onClicked:
             {
-                if (!can_change_ticker)
-                    return
                 if (mouse.button === Qt.RightButton)
                 {
                     contextMenu.can_disable = Dex.General.canDisable(ticker)
@@ -313,11 +320,11 @@ Dex.DexListView
 
             onPressAndHold:
             {
-                if (!can_change_ticker) return
-
                 if (mouse.source === Qt.MouseEventNotSynthesized)
+                {
                     contextMenu.can_disable = Dex.General.canDisable(ticker)
                     contextMenu.popup()
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -491,7 +491,6 @@ namespace atomic_dex
 
         // get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
-        system_manager_.create_system<ip_service_checker>();
         system_manager_.create_system<mm2_service>(system_manager_);
         auto& settings_page_system = system_manager_.create_system<settings_page>(system_manager_, m_app, this);
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
@@ -499,6 +498,7 @@ namespace atomic_dex
 
         system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
+        system_manager_.create_system<global_defi_stats_service>(system_manager_);
         system_manager_.create_system<orderbook_scanner_service>(system_manager_);
         //system_manager_.create_system<coinpaprika_provider>(system_manager_);
         //system_manager_.create_system<coingecko_provider>(system_manager_);
@@ -530,9 +530,15 @@ namespace atomic_dex
         {
             SPDLOG_DEBUG("on_coin_fully_initialized_event");
 #if !defined(_WIN32)
-            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
+            for (auto&& ticker: evt.tickers) {
+                SPDLOG_DEBUG("Adding {} to m_portfolio_queue", ticker);
+                m_portfolio_queue.push(strdup(ticker.c_str()));
+            }
 #else
-            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(_strdup(ticker.c_str())); }
+            for (auto&& ticker: evt.tickers) {
+                SPDLOG_DEBUG("Adding {} to m_portfolio_queue", ticker);
+                m_portfolio_queue.push(_strdup(ticker.c_str()));
+            }
 #endif
         }
     }
@@ -554,10 +560,11 @@ namespace atomic_dex
         return res;
     }
 
-    QString application::get_balance(const QString& coin)
+    QString application::get_balance_info_qstr(const QString& coin)
     {
         std::error_code ec;
-        auto            res = get_mm2().my_balance(coin.toStdString(), ec);
+        SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
+        auto            res = get_mm2().get_balance_info(coin.toStdString(), ec);
         return QString::fromStdString(res);
     }
 
@@ -567,6 +574,7 @@ namespace atomic_dex
         system_manager_.get_system<qt_wallet_manager>().set_status("enabling_coins");
     }
 
+    // Function appears to be unused.
     void application::refresh_orders_and_swaps()
     {
         auto& mm2 = get_mm2();
@@ -685,6 +693,20 @@ namespace atomic_dex
 //! Trading functions
 namespace atomic_dex
 {
+    QString
+    application::get_rate_conversion(const QString& fiat, const QString& ticker, bool adjusted)
+    {
+        const auto&     price_service = system_manager_.get_system<global_price_service>();
+        return QString::fromStdString(price_service.get_rate_conversion(fiat.toStdString(), ticker.toStdString(), adjusted));
+    }
+
+    QString
+    application::get_fiat_rate(const QString& fiat)
+    {
+        const auto&     price_service = system_manager_.get_system<global_price_service>();
+        return QString::fromStdString(price_service.get_fiat_rates(fiat.toStdString()));
+    }
+
     QString
     application::get_fiat_from_amount(const QString& ticker, const QString& amount)
     {
@@ -900,18 +922,6 @@ namespace atomic_dex
     zcash_params_service* application::get_zcash_params_service() const
     {
         auto ptr = const_cast<zcash_params_service*>(std::addressof(system_manager_.get_system<zcash_params_service>()));
-        assert(ptr != nullptr);
-        return ptr;
-    }
-} // namespace atomic_dex
-
-//! IP checker
-namespace atomic_dex
-{
-    ip_service_checker*
-    application::get_ip_checker() const
-    {
-        auto ptr = const_cast<ip_service_checker*>(std::addressof(system_manager_.get_system<ip_service_checker>()));
         assert(ptr != nullptr);
         return ptr;
     }

@@ -22,7 +22,7 @@ ClipRRect // Trade Card
     readonly property var fees: Constants.API.app.trading_pg.fees
     readonly property var max_trade_volume: Constants.API.app.trading_pg.max_volume
     readonly property var min_trade_volume: Constants.API.app.trading_pg.min_trade_vol
-    readonly property var sell_ticker_balance: parseFloat(API.app.get_balance(left_ticker))
+    readonly property var sell_ticker_balance: parseFloat(API.app.get_balance_info_qstr(left_ticker))
     readonly property bool coin_tradable: selectedTicker !== "" && sell_ticker_balance > 0
     readonly property bool waiting_for_sell_coin_info: (max_trade_volume == 0 || !Constants.General.isZhtlcReady(left_ticker)) && sell_ticker_balance != 0
 
@@ -398,7 +398,7 @@ ClipRRect // Trade Card
 
                         width: 60
 
-                        text: _selectedTickerIcon.enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedTicker) : qsTr("Pick a coin")
+                        text: _selectedTickerIcon.enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedTicker, false, true) : qsTr("Pick a coin")
                         font.pixelSize: Constants.Style.textSizeSmall2
 
                         wrapMode: Text.NoWrap
@@ -580,7 +580,7 @@ ClipRRect // Trade Card
                         anchors.leftMargin: 10
                         width: 60
 
-                        text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin) : ""
+                        text: enabled ? atomic_qt_utilities.retrieve_main_ticker(selectedOrder.coin, false, true) : ""
                         font.pixelSize: Constants.Style.textSizeSmall2
                         wrapMode: Text.NoWrap
 
@@ -735,7 +735,7 @@ ClipRRect // Trade Card
         Item
         {
             height: 35
-            width: 150
+            width: 206
             visible: coinSelectorSimplified.visible
 
             SearchField
@@ -747,6 +747,7 @@ ClipRRect // Trade Card
                 forceFocus: true
                 textField.onTextChanged: _coinList.model.setFilterFixedString(textField.text)
                 Component.onDestruction: _coinList.model.setFilterFixedString("")
+                textField.placeholderText: qsTr("Search coins")
             }
         }
 
@@ -782,21 +783,67 @@ ClipRRect // Trade Card
         Item
         {
             height: 45
-            width: 150
+            width: parent.width - 40
             visible: bestOrderSimplified.visible && (_bestOrderList.count > 0 || _bestOrderSearchField.textField.text != "")
-
-            SearchField
-            {
-                id: _bestOrderSearchField
-                anchors.topMargin: 10
-                height: 35
+    
+            RowLayout {
                 anchors.fill: parent
-                anchors.leftMargin: 20
-                forceFocus: true
-                textField.onTextChanged: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(textField.text)
-                Component.onDestruction: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
+
+                SearchField
+                {
+                    id: _bestOrderSearchField
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: 160
+                    Layout.preferredHeight: 35
+                    Layout.leftMargin: 20
+                    Layout.topMargin: 10
+                    forceFocus: true
+                    textField.onTextChanged: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString(textField.text)
+                    Component.onDestruction: Constants.API.app.trading_pg.orderbook.best_orders.proxy_mdl.setFilterFixedString("")
+                    textField.placeholderText: qsTr("Search coins")
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+                
+                SearchField
+                {
+                    id: _bestOrderFiatFilterField
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: 160
+                    Layout.preferredHeight: 35
+                    Layout.leftMargin: 20
+                    Layout.topMargin: 10
+                    textField.placeholderText: qsTr("Min Value")
+                    textField.validator: RegExpValidator
+                    {
+                        regExp: /[0-9]+/
+                    }
+                    Component.onDestruction: textField.text = ""
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                DefaultCheckBox
+                {
+                    id: hide_disabled_coins_checkbox
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredHeight: 35
+                    Layout.topMargin: 10
+
+                    spacing: 2
+
+                    label.wrapMode: Label.NoWrap
+                    label.font.pixelSize: 14
+                    text: qsTr("Hide disabled coins")
+                    textColor: Dex.CurrentTheme.foregroundColor2
+                }
             }
         }
+        
 
         Item
         {

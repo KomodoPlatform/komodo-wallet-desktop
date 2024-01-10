@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -55,7 +55,7 @@ namespace atomic_dex::mm2
         std::string                uuid;
         std::string                depth_percent;
         bool                       is_mine;
-        std::optional<std::string> rel_coin{std::nullopt};
+        std::optional<std::string> rel_coin;
 
         std::string to_string() const noexcept;
     };
