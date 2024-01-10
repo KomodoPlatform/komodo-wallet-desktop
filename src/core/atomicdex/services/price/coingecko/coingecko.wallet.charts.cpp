@@ -77,7 +77,7 @@ namespace atomic_dex
                             to_skip = true;
                             continue;
                         }
-                        t_float_50 cur_total = (t_float_50(value[idx][1].get<float>()) * mm2.get_balance(key)) * rate;
+                        t_float_50 cur_total = (t_float_50(value[idx][1].get<float>()) * mm2.get_balance_info_f(key)) * rate;
                         total += cur_total;
                     }
                     if (to_skip)
@@ -150,7 +150,7 @@ namespace atomic_dex
     }
 
     void
-    coingecko_wallet_charts_service::fetch_data_of_single_coin(const coin_config& cfg)
+    coingecko_wallet_charts_service::fetch_data_of_single_coin(const coin_config_t& cfg)
     {
         using namespace std::chrono_literals;
         SPDLOG_INFO("fetch charts data of {} {}", cfg.ticker, cfg.coingecko_id);

@@ -29,6 +29,14 @@ Item
     readonly property string    headerSmallTitleFont: Style.textSizeSmall4
     readonly property string    headerSmallFont: Style.textSizeSmall2
     readonly property string    addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
+    property int activation_pct: General.zhtlcActivationProgress(API.app.get_zhtlc_status(api_wallet_page.ticker), api_wallet_page.ticker)
+    Connections
+    {
+        target: API.app.settings_pg
+        function onZhtlcStatusChanged() {
+            activation_pct = General.zhtlcActivationProgress(API.app.get_zhtlc_status(api_wallet_page.ticker), api_wallet_page.ticker)
+        }
+    }
 
     function loadingPercentage(remaining)
     {
@@ -36,8 +44,6 @@ Item
     }
 
     readonly property var transactions_mdl: api_wallet_page.transactions_mdl
-    readonly property var activation_status: current_ticker_infos.activation_status
-    readonly property var activation_progress: General.isZhtlc(api_wallet_page.ticker) ? General.zhtlcActivationProgress(current_ticker_infos.activation_status, api_wallet_page.ticker) : 100
 
     Layout.fillHeight: true
     Layout.fillWidth: true
@@ -92,12 +98,13 @@ Item
                             Layout.preferredWidth: Layout.preferredHeight
                             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
+
                             DexRectangle
                             {
                                 anchors.centerIn: parent
                                 anchors.fill: parent
                                 radius: 30
-                                enabled: activation_progress != 100
+                                enabled: activation_pct != 100
                                 visible: enabled
                                 opacity: .9
                                 color: DexTheme.backgroundColor
@@ -107,11 +114,11 @@ Item
                             {
                                 anchors.centerIn: parent
                                 anchors.fill: parent
-                                enabled: activation_progress != 100
+                                enabled: activation_pct != 100
                                 visible: enabled
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                text: activation_progress + "%"
+                                text: activation_pct + "%"
                                 font: DexTypo.head8
                                 color: DexTheme.okColor
                             }
@@ -349,17 +356,17 @@ Item
             Layout.rightMargin: layout_margin
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
-            spacing: 25
+            // spacing: 20
 
             Item
             {
-                Layout.preferredWidth: 180
-                Layout.preferredHeight: 48
+                Layout.preferredWidth: 165
+                Layout.preferredHeight: 40
 
                 // Send Button
                 DefaultButton
                 {
-                    enabled: General.canSend(api_wallet_page.ticker, activation_progress)
+                    enabled: General.canSend(api_wallet_page.ticker, activation_pct)
                     anchors.fill: parent
                     radius: 18
                     label.text: qsTr("Send")
@@ -393,9 +400,9 @@ Item
                 // Send button error icon
                 DefaultAlertIcon
                 {
-                    visible: activation_progress != 100 || api_wallet_page.send_availability_state !== ""
-                    tooltipText: General.isZhtlc(api_wallet_page.ticker) && activation_progress != 100
-                                            ? api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
+                    visible: activation_pct != 100 || api_wallet_page.send_availability_state !== ""
+                    tooltipText: General.isZhtlc(api_wallet_page.ticker) && activation_pct != 100
+                                            ? api_wallet_page.ticker + qsTr(" Activation: " + activation_pct + "%")
                                             : api_wallet_page.send_availability_state
                 }
             }
@@ -462,8 +469,8 @@ Item
 
             Item
             {
-                Layout.preferredWidth: 180
-                Layout.preferredHeight: 48
+                Layout.preferredWidth: 165
+                Layout.preferredHeight: 40
 
                 // Receive Button
                 DefaultButton
@@ -500,7 +507,7 @@ Item
                 DefaultAlertIcon
                 {
                     visible: !General.isZhtlcReady(api_wallet_page.ticker)
-                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
+                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_pct + "%")
                 }
             }
 
@@ -513,13 +520,12 @@ Item
             // Swap Button
             Item
             {
-                visible: !is_dex_banned
-                Layout.preferredWidth: 180
-                Layout.preferredHeight: 48
+                Layout.preferredWidth: 165
+                Layout.preferredHeight: 40
 
                 DefaultButton
                 {
-                    enabled: !General.isWalletOnly(api_wallet_page.ticker) && activation_progress == 100
+                    enabled: !General.isWalletOnly(api_wallet_page.ticker) && activation_pct == 100
                     anchors.fill: parent
                     radius: 18
 
@@ -551,10 +557,10 @@ Item
                 // Swap button error icon
                 DefaultAlertIcon
                 {
-                    visible: General.isWalletOnly(api_wallet_page.ticker) || activation_progress != 100
+                    visible: General.isWalletOnly(api_wallet_page.ticker) || activation_pct != 100
                     tooltipText: General.isWalletOnly(api_wallet_page.ticker)
                                     ? api_wallet_page.ticker + qsTr(" is wallet only")
-                                    : api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
+                                    : api_wallet_page.ticker + qsTr(" Activation: " + activation_pct + "%")
                 }
             }
 
@@ -563,15 +569,18 @@ Item
             // Rewards Button
             Item
             {
-                Layout.preferredWidth: 180
-                Layout.preferredHeight: 48
+                Layout.preferredWidth: 165
+                Layout.preferredHeight: 40
                 visible: current_ticker_infos.is_claimable && !API.app.is_pin_cfg_enabled()
 
                 Item { Layout.fillWidth: true }
 
                 DefaultButton
                 {
-                    text: qsTr("Rewards")
+                    label.text: qsTr("Rewards")
+                    label.font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
                     radius: 18
                     font.pixelSize: 16
                     anchors.fill: parent
@@ -580,6 +589,20 @@ Item
                     {
                         claimRewardsModal.open()
                         claimRewardsModal.item.prepareClaimRewards()
+                    }
+                    Row
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 23
+
+                        Qaterial.Icon
+                        {
+                            icon: Qaterial.Icons.leaf
+                            size: 24
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "forestgreen"
+                        }
                     }
                 }
 
@@ -593,13 +616,13 @@ Item
             // Faucet Button
             Item
             {
-                Layout.preferredWidth: 180
-                Layout.preferredHeight: 48
+                Layout.preferredWidth: 165
+                Layout.preferredHeight: 40
                 visible:  current_ticker_infos.is_faucet_coin
 
                 DefaultButton
                 {
-                    enabled: activation_progress == 100
+                    enabled: activation_pct == 100
                     anchors.fill: parent
                     radius: 18
                     label.text: qsTr("Faucet")
@@ -621,7 +644,7 @@ Item
                             icon: Qaterial.Icons.water
                             size: 24
                             anchors.verticalCenter: parent.verticalCenter
-                            color: "cyan"
+                            color: "royalblue"
                         }
                     }
                 }
@@ -629,8 +652,8 @@ Item
                 // Faucet button error icon
                 DefaultAlertIcon
                 {
-                    visible: activation_progress != 100
-                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
+                    visible: activation_pct != 100
+                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_pct + "%")
                 }
             }
 
@@ -647,16 +670,17 @@ Item
             // Public Key button
             Item
             {
-                Layout.minimumWidth: 160
-                Layout.maximumWidth: 180
-                Layout.fillWidth: true
-                Layout.preferredHeight: 48
+                Layout.preferredHeight: 40
+                Layout.preferredWidth: 165
 
                 visible: current_ticker_infos.name === "Tokel" || current_ticker_infos.name === "Marmara Credit Loops"
 
                 DefaultButton
                 {
-                    text: qsTr("Public Key")
+                    label.text: qsTr("Public Key")
+                    label.font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
                     radius: 18
                     font.pixelSize: 16
                     anchors.fill: parent
@@ -664,6 +688,20 @@ Item
                     {
                         API.app.settings_pg.fetchPublicKey()
                         publicKeyModal.open()
+                    }
+                    Row
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 23
+
+                        Qaterial.Icon
+                        {
+                            icon: Qaterial.Icons.keyVariant
+                            size: 24
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "gold"
+                        }
                     }
                 }
 
@@ -726,6 +764,42 @@ Item
                     }
                 }
             }
+
+            // Explorer button
+            Item
+            {
+                Layout.preferredHeight: 40
+                Layout.preferredWidth: 165
+                enabled: addressURL != ""
+                
+
+                DefaultButton
+                {
+                    radius: 18
+                    anchors.fill: parent
+                    onClicked: Qt.openUrlExternally(addressURL)
+                    label.text: qsTr("Explore")
+                    label.font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
+
+                    Row
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 23
+
+                        Qaterial.Icon
+                        {
+                            icon: Qaterial.Icons.databaseSearch
+                            size: 24
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "steelblue"
+                        }
+                    }
+                }
+            }
+
         }
 
         // Price Graph
@@ -924,12 +998,12 @@ Item
                         font.pixelSize: Style.textSize
                         text_value:
                         {
-                            if (api_wallet_page.tx_fetching_busy) return qsTr("Fetching transactions...")
                             if (General.isZhtlc(api_wallet_page.ticker))
                             {
-                                if (activation_progress != 100) return qsTr("Please wait, %1 is %2").arg(api_wallet_page.ticker).arg(activation_progress) + qsTr("% activated...")
+                                if (activation_pct != 100) return qsTr("Please wait, %1 is %2").arg(api_wallet_page.ticker).arg(activation_pct) + qsTr("% activated...")
                             }
-                            return qsTr('No transactions available')
+                            if (api_wallet_page.tx_fetching_busy) return qsTr("Fetching transactions...")
+                            return qsTr('No transactions available.')
                         }
                     }
 
@@ -941,31 +1015,6 @@ Item
                         indicatorSize: 32
                         indicatorDotSize: 5
                         visible: api_wallet_page.tx_fetching_busy
-                    }
-
-                    // When no tx history available, or being fetched, show a button to open the explorer.
-                    DefaultText
-                    {
-                        id: explorerLink
-                        Layout.topMargin: 24
-                        Layout.alignment: Qt.AlignHCenter
-                        visible:
-                        {
-                            if (activation_progress != 100) return false
-                            return api_wallet_page.tx_fetching_busy ? false : addressURL == "" ? false : api_wallet_page.tx_fetching_failed 
-                        }
-                        text_value:  qsTr("Click to view your address on %1 (%2) block explorer").arg(current_ticker_infos.name).arg(api_wallet_page.ticker)
-                        font.pixelSize: Style.textSize
-                        color: explorer_mouseArea.containsMouse ? Dex.CurrentTheme.textSelectionColor : Dex.CurrentTheme.foregroundColor
-
-                        DefaultMouseArea
-                        {
-                            id: explorer_mouseArea
-                            cursorShape: Qt.PointingHandCursor
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onClicked: Qt.openUrlExternally(addressURL)
-                        }
                     }
 
                     Item { Layout.fillHeight: true }

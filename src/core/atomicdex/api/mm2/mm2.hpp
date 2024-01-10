@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -34,7 +34,7 @@ namespace ag = antara::gaming;
 
 namespace atomic_dex::mm2
 {
-    inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.earth:3334";
+    inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://etherscan-proxy.komodo.earth/";
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
     inline std::unique_ptr<web::http::client::http_client> g_qtum_proxy_http_client{
@@ -43,6 +43,7 @@ namespace atomic_dex::mm2
     nlohmann::json basic_batch_answer(const web::http::http_response& resp);
 
     std::string rpc_version();
+    std::string peer_id();
 
     struct trade_fee_request
     {

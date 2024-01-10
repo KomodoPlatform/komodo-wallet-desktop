@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -70,11 +70,11 @@ namespace atomic_dex
 
         //! Private RPC Call
         template <typename... Args>
-        void process_provider(const coin_config& current_coin, Args... args);
+        void process_provider(const coin_config_t& current_coin, Args... args);
         template <typename... Args>
-        void process_ticker_infos(const coin_config& current_coin, Args... args);
+        void process_ticker_infos(const coin_config_t& current_coin, Args... args);
         template <typename... Args>
-        void process_ticker_historical(const coin_config& current_coin, Args... args);
+        void process_ticker_historical(const coin_config_t& current_coin, Args... args);
 
       public:
         //! Deleted operation

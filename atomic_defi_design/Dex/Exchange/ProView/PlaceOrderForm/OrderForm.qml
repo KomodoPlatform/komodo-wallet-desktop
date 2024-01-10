@@ -26,8 +26,7 @@ ColumnLayout
     function getMaxBalance()
     {
         if (General.isFilled(base_ticker))
-            return API.app.get_balance(base_ticker)
-
+            return API.app.get_balance_info_qstr(base_ticker)
         return "0"
     }
 
@@ -64,14 +63,17 @@ ColumnLayout
 
             left_text: qsTr("Price")
             right_text: right_ticker
-            enabled: !(API.app.trading_pg.preffered_order.price !== undefined)
+            enabled: !(API.app.trading_pg.preferred_order.price !== undefined)
             color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             text: backend_price ? backend_price : General.formatDouble(API.app.trading_pg.cex_price)
             width: parent.width
             height: 36
             radius: 18
 
-            onTextChanged: setPrice(text)
+            onTextChanged: {
+                setPrice(text)
+                reset_fees_state()
+            }
             Component.onCompleted: text = General.formatDouble(API.app.trading_pg.cex_price) ? General.formatDouble(API.app.trading_pg.cex_price) : 1
         }
 
@@ -87,17 +89,20 @@ ColumnLayout
                 let price = General.formatDouble(parseFloat(input_price.text) - (General.formatDouble(API.app.trading_pg.cex_price)*0.01))
                 if (price < 0) price = 0
                 setPrice(String(price))
+                reset_fees_state()
             }
             right_btn.onClicked:
             {
                 let price = General.formatDouble(parseFloat(input_price.text) + (General.formatDouble(API.app.trading_pg.cex_price)*0.01))
                 setPrice(String(price))
+                reset_fees_state()
             }
             middle_btn.onClicked:
             {
                 if (input_price.text == "0") setPrice("1")
                 let price = General.formatDouble(API.app.trading_pg.cex_price)
                 setPrice(String(price))
+                reset_fees_state()
             }
             fiat_value: General.getFiatText(non_null_price, right_ticker)
             left_label: "-1%"
@@ -124,7 +129,10 @@ ColumnLayout
             right_text: left_ticker
             placeholderText: "0" 
             text: API.app.trading_pg.volume
-            onTextChanged: setVolume(text)
+            onTextChanged: {
+                setVolume(text)
+                reset_fees_state()
+            }
         }
 
         OrderFormSubfield
@@ -137,16 +145,19 @@ ColumnLayout
             {
                 let volume = General.formatDouble(API.app.trading_pg.max_volume * 0.25)
                 setVolume(String(volume))
+                reset_fees_state()
             }
             middle_btn.onClicked:
             {
                 let volume = General.formatDouble(API.app.trading_pg.max_volume * 0.5)
                 setVolume(String(volume))
+                reset_fees_state()
             }
             right_btn.onClicked:
             {
                 let volume = General.formatDouble(API.app.trading_pg.max_volume)
                 setVolume(String(volume))
+                reset_fees_state()
             }
             fiat_value: General.getFiatText(non_null_volume, left_ticker)
             left_label: "25%"

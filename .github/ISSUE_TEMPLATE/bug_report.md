@@ -26,7 +26,7 @@ Please describe what you expected to happen.
 **Operating Environment(s):**
  - OS: [e.g. Windows/OSX/Linux. If Linux, include distro. ]
  - OS version: [e.g. 7/10/11, 10.13/10.15, 18.04/20.04 ]
- - Komodo Wallet Version: [e.g. 0.6.1]
+ - Komodo Wallet Version: [e.g. 0.7.0]
  - Build branch: [e.g. master/dev] 
 
 

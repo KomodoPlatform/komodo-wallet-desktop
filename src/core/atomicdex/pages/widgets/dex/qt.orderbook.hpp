@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -47,8 +47,8 @@ namespace atomic_dex
 
       public:
         void                           adjust_min_vol();
-        void                           refresh_orderbook(t_orderbook_answer answer);
-        void                           reset_orderbook(t_orderbook_answer answer);
+        void                           refresh_orderbook_model_data(mm2::orderbook_result_rpc answer);
+        void                           reset_orderbook(mm2::orderbook_result_rpc answer);
         void                           clear_orderbook();
         [[nodiscard]] orderbook_model* get_asks() const;
         [[nodiscard]] orderbook_model* get_bids() const;

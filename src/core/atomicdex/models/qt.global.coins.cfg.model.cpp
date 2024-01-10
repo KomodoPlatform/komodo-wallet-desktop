@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -26,7 +26,7 @@
 namespace
 {
     QJsonObject
-    to_qt_binding(const atomic_dex::coin_config& coin) 
+    to_qt_binding(const atomic_dex::coin_config_t& coin) 
     {
         QJsonObject j{
             {"active", coin.active},
@@ -39,7 +39,8 @@ namespace
             {"livecoinwatch_id", QString::fromStdString(coin.livecoinwatch_id)},
             {"explorer_url", QString::fromStdString(coin.explorer_url)},
             {"tx_uri", QString::fromStdString(coin.tx_uri)},
-            {"address_uri", QString::fromStdString(coin.address_url)},
+            {"block_uri", QString::fromStdString(coin.block_uri)},
+            {"address_uri", QString::fromStdString(coin.address_uri)},
             {"is_custom_coin", coin.is_custom_coin},
             {"is_enabled", coin.currently_enabled},
             {"has_parent_fees_ticker", coin.has_parent_fees_ticker},
@@ -86,7 +87,7 @@ namespace atomic_dex
             return {};
         }
 
-        const coin_config& item = m_model_data.at(index.row());
+        const coin_config_t& item = m_model_data.at(index.row());
         switch (static_cast<CoinsRoles>(role))
         {
         case TickerRole:
@@ -120,7 +121,7 @@ namespace atomic_dex
     bool
     global_coins_cfg_model::setData(const QModelIndex& index, const QVariant& value, int role)
     {
-        coin_config& item = m_model_data[index.row()];
+        coin_config_t& item = m_model_data[index.row()];
         switch (static_cast<CoinsRoles>(role))
         {
         case CurrentlyEnabled:
@@ -192,7 +193,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    global_coins_cfg_model::initialize_model(std::vector<coin_config> cfg) 
+    global_coins_cfg_model::initialize_model(std::vector<coin_config_t> cfg) 
     {
         m_enabled_coins.clear();
         m_all_coin_types.clear();
@@ -209,7 +210,7 @@ namespace atomic_dex
                 m_enabled_coins[cur.ticker] = cur;
             }
         }
-        cfg.push_back(coin_config{.ticker = "All", .active = true, .currently_enabled = true});
+        cfg.push_back(coin_config_t{.ticker = "All", .active = true, .currently_enabled = true});
         SPDLOG_INFO("Initializing global coin cfg model with size {}", cfg.size());
         set_checked_nb(0);
         beginResetModel();
@@ -377,19 +378,19 @@ namespace atomic_dex
         return m_all_coin_types;
     }
 
-    const std::vector<coin_config>&
+    const std::vector<coin_config_t>&
     global_coins_cfg_model::get_model_data() const 
     {
         return m_model_data;
     }
 
-    coin_config
+    coin_config_t
     global_coins_cfg_model::get_coin_info(const std::string& ticker) const 
     {
         if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker), 1, Qt::MatchFlag::MatchExactly); not res.isEmpty())
         {
             const QModelIndex& idx  = res.at(0);
-            const coin_config& item = m_model_data.at(idx.row());
+            const coin_config_t& item = m_model_data.at(idx.row());
             return item;
         }
         return {};

@@ -13,6 +13,7 @@ namespace atomic_dex::komodo_prices::api
         coingecko,
         coinpaprika,
         forex,
+        livecoinwatch,
         unknown
     };
 

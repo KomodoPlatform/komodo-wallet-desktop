@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -76,7 +76,7 @@ namespace atomic_dex
     void
     portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt)
     {
-        SPDLOG_INFO("Updating portfolio values with model: {}", evt.with_update_model);
+        // SPDLOG_DEBUG("Updating portfolio values with model: {}", evt.with_update_model);
 
         bool res = true;
         if (evt.with_update_model)

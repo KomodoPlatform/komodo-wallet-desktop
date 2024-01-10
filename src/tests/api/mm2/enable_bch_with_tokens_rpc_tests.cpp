@@ -1,6 +1,6 @@
 #include <doctest/doctest.h>
 
-#include "atomicdex/api/mm2/enable_bch_with_tokens_rpc.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.enable_bch_with_tokens_rpc.hpp"
 
 TEST_CASE("enable_bch_with_tokens_request_rpc serialization")
 {
@@ -24,8 +24,8 @@ TEST_CASE("enable_bch_with_tokens_request_rpc serialization")
         .slp_tokens_requests = { { .ticker = "ASLP", .required_confirmations = 4 } },
         .required_confirmations = 5,
         .requires_notarization = false,
-        .address_format = enable_bch_with_tokens_request_rpc::address_format_t{ .format = "cashaddress", .network = "bitcoincash" },
-        .utxo_merge_params = enable_bch_with_tokens_request_rpc::utxo_merge_params_t{ .merge_at = 50, .check_every = 10, .max_merge_at_once = 25 }
+        .address_format = address_format_t{ .format = "cashaddress", .network = "bitcoincash" },
+        .utxo_merge_params = utxo_merge_params_t{ .merge_at = 50, .check_every = 10, .max_merge_at_once = 25 }
     };
     
     nlohmann::to_json(result, data);

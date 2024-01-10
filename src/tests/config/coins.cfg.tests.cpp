@@ -35,8 +35,8 @@ TEST_CASE("generate all coinpaprika possibilities")
     std::ifstream                   ifs(cfg_path.string());
     nlohmann::json                  j;
     ifs >> j;
-    std::unordered_map<std::string, atomic_dex::coin_config> cfg;
-    auto                                                     out = j.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
+    std::unordered_map<std::string, atomic_dex::coin_config_t> cfg;
+    auto                                                     out = j.get<std::unordered_map<std::string, atomic_dex::coin_config_t>>();
     CHECK_GT(out.size(), 0);
     std::ofstream ofs("/tmp/out.txt", std::ios::trunc);
     for (auto&& [key, current_cfg]: out)

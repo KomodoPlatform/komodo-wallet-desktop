@@ -55,13 +55,13 @@ jobs:
             host: 'linux'
 
           - name: osx-release
-            os: macos-11
+            os: macos-12
             qt: '5.15.2'
             type: 'Release'
             host: 'mac'
 
           - name: osx-debug
-            os: macos-11
+            os: macos-12
             qt: '5.15.2'
             type: 'Debug'
             host: 'mac'

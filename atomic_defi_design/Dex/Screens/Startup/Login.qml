@@ -26,7 +26,7 @@ SetupPage
 
     function onClickedLogin(password)
     {
-        if (API.app.wallet_mgr.login(password, walletName))
+        if (API.app.wallet_mgr.login(password, walletName, API.app.settings_pg.static_rpcpass_enabled))
         {
             console.info("Success: Login");
             app.currentWalletName = walletName;
@@ -43,7 +43,7 @@ SetupPage
     content: ColumnLayout
     {
         id: content
-        spacing: 10
+        spacing: 8
 
         DexLabel
         {
@@ -51,12 +51,12 @@ SetupPage
             text: "%1 wallet".arg(walletName)
             color: Dex.CurrentTheme.foregroundColor
             font: DexTypo.body1
-            topPadding: 10
+            topPadding: 8
         }
 
         Item
         {
-            height: 20
+            height: 16
             width: 1
         }
 

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -94,10 +94,11 @@ namespace atomic_dex::utils
     ENTT_API std::filesystem::path get_themes_path();
     ENTT_API std::filesystem::path get_logo_path();
 
-    std::string retrieve_main_ticker(const std::string& ticker);
+    std::string retrieve_main_ticker(const std::string& ticker, bool segwit_only=false, bool exclude_segwit=false);
 
     void to_eth_checksum(std::string& address);
-
-    std::vector<std::string> coin_cfg_to_ticker_cfg(std::vector<coin_config> in);
+    void json_keys(nlohmann::json j);
+    int8_t get_index_str(std::vector<std::string> vec, std::string val);
+    std::vector<std::string> coin_cfg_to_ticker_cfg(std::vector<coin_config_t> in);
 
 } // namespace atomic_dex::utils

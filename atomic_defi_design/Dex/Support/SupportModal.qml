@@ -112,14 +112,20 @@ Qaterial.Dialog
 
                 FAQLine
                 {
+                    title: qsTr("Where can I see the orderbook or market statistics online?")
+                    text: qsTr('You can view an online orderbook and market statistics at <a href="https://markets.atomicdex.io/">https://markets.atomicdex.io/</a>, or use the Komodo Wallet in your browser at <a href="https://app.komodoplatform.com">https://app.komodoplatform.com</a>!')
+                }
+
+                FAQLine
+                {
                     title: qsTr("How long does each atomic swap take?")
-                    text: qsTr('Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">notarization</a>.').arg(API.app_name)
+                    text: qsTr('Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example, (you can ask %1 to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">notarization</a>.').arg(API.app_name)
                 }
 
                 FAQLine
                 {
                     title: qsTr("Do I need to be online for the duration of the swap?")
-                    text: qsTr("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker.
+                    text: qsTr("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. To mitigate this, 'watchertower' nodes have been deployed to monitor the dex network for you and, where possible, complete the swaps for you if your app goes offline.
 
 The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.
 
@@ -146,7 +152,7 @@ Network fees can vary greatly depending on your selected trading pair.").arg(API
                 FAQLine
                 {
                     title: qsTr("I see a transaction in my wallet that was marked as 'poison'. What does this mean?")
-                    text: qsTr('Address poisoning is a relatively new tye of phishing attack, where a malicious actor aims to trick you into sending funds to an address that you did not intend to send funds to.
+                    text: qsTr('Address poisoning is a relatively new type of phishing attack, where a malicious actor aims to trick you into sending funds to an address that you did not intend to send funds to.
 
 This is often done by sending a zero value transaction to your wallet from an address which looks very similar to your actual address, with the exact same letters at the start and end. This transaction will then appear in your transaction history, with the scammer hoping you will mistake the fake address for your own and send funds to it.
 
@@ -178,12 +184,6 @@ There is a toggle in settings where you can turn on/off the display of these tra
                     title: qsTr("Which devices can I use %1 on?").arg(API.app_name)
                     text: qsTr('%1 is available for mobile on both <a href="%2">Android and iPhone, and for desktop on Windows, Mac, and Linux</a> operating systems.').arg(API.app_name).arg(API.app_website_url)
                 }
-
-                FAQLine
-                {
-                    title: qsTr("Compliance Info")
-                    text: qsTr("Due to regulatory and legal circumstances the citizens of certain jurisdictions including, but not limited to, the United States of America, Canada, Hong Kong, Israel, Singapore, Sudan, Austria, Iran and any other state, country or other jurisdiction that is embargoed by the United States of America or the European Union are not allowed to use this application.")
-                }
             }
         }
 
@@ -208,7 +208,7 @@ There is a toggle in settings where you can turn on/off the display of these tra
                 Layout.preferredHeight: column_layout.height
                 hoverEnabled: true
 
-                onClicked: Qt.openUrlExternally("https://github.com/KomodoPlatform/komodo-wallet-desktop/pull/2296")
+                onClicked: Qt.openUrlExternally("https://github.com/KomodoPlatform/komodo-wallet-desktop/pull/2388")
 
                 ColumnLayout
                 {

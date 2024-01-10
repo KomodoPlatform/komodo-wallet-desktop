@@ -14,6 +14,9 @@ MultipageModal
     id: root
 
     width: 700
+    horizontalPadding: 20
+    verticalPadding: 20
+    closePolicy: Popup.NoAutoClose
 
     onClosed:
     {
@@ -22,7 +25,7 @@ MultipageModal
     }
 
     property var config_fields: ({})
-    property var typeList: ["ERC-20", "QRC-20","BEP-20"]
+    property var typeList: ["ERC-20", "BEP-20"] // QRC removed due to unresolved issues and lack of use
     readonly property var custom_token_data: API.app.settings_pg.custom_token_data
     readonly property string general_message: qsTr('Get the contract address from')
     readonly property bool fetching_custom_token_data_busy: API.app.settings_pg.fetching_custom_token_data_busy
@@ -67,7 +70,7 @@ MultipageModal
         addToConfig(input_name,             "name",             input_name.field.text)
         addToConfig(input_contract_address, "contract_address", input_contract_address.text)
         addToConfig(input_active,           "active",           input_active.checked)
-        addToConfig(input_coingecko_id,   "coingecko_id",   input_coingecko_id.field.text)
+        addToConfig(input_coingecko_id,     "coingecko_id",     input_coingecko_id.field.text)
         fields['coinType'] = currentType.coinType
 
         root.config_fields = General.clone(fields)
@@ -86,26 +89,15 @@ MultipageModal
     {
         id: type_model
 
-        ListElement
-        {
-            text: "ERC-20"
-            prefix: ""
-            image: "erc"
-            url: "https://etherscan.io/tokens"
-            name: 'Etherscan'
-            coinType: CoinType.ERC20
-        }
-
-        ListElement
-        {
-            text: "QRC-20"
-            prefix: "0x"
-            image: "qrc"
-            url: "https://explorer.qtum.org/tokens/search"
-            name: 'QTUM Insight'
-            coinType: CoinType.QRC20
-        }
-
+        // ListElement
+        // {
+            // text: "AVX-20"
+            // prefix: ""
+            // url: "https://snowtrace.io/tokens"
+            // name: 'SnowTrace'
+            // image: "avax"
+            // coinType: CoinType.AVX20
+        // }
         ListElement
         {
             text: "BEP-20"
@@ -115,6 +107,35 @@ MultipageModal
             image: "bep"
             coinType: CoinType.BEP20
         }
+        ListElement
+        {
+            text: "ERC-20"
+            prefix: ""
+            image: "erc"
+            url: "https://etherscan.io/tokens"
+            name: 'Etherscan'
+            coinType: CoinType.ERC20
+        }
+        // ListElement
+        // {
+            // text: "PLG-20"
+            // prefix: ""
+            // image: "matic"
+            // url: "https://polygonscan.com/tokens"
+            // name: 'Polygonscan'
+            // coinType: CoinType.ERC20
+        // }
+
+        // ListElement
+        // {
+            // text: "QRC-20"
+            // prefix: "0x"
+            // image: "qrc"
+            // url: "https://explorer.qtum.org/tokens/search"
+            // name: 'QTUM Insight'
+            // coinType: CoinType.QRC20
+        // }
+
     }
 
     readonly property bool has_contract_address: typeList.indexOf(input_type.currentText)!==-1
@@ -125,6 +146,9 @@ MultipageModal
     {
         titleText: qsTr("Choose the asset type")
         height: 450
+        titleTopMargin: 0
+        topMarginAfterTitle: 10
+        flickMax: window.height - 480
 
         DefaultComboBox
         {
@@ -401,13 +425,13 @@ MultipageModal
 
     // Preview
     MultipageModalContent {
-        titleText: qsTr("Preview")
+        titleText: qsTr("Preview Token Configuration")
 
         DefaultText {
             id: warning_message
             visible: coin_name.visible
             Layout.fillWidth: true
-            text_value: qsTr("WARNING: Application will restart immidiately to apply the changes!")
+            text_value: qsTr("WARNING: Application will restart immediately to apply the changes!")
             color: Style.colorRed
             horizontalAlignment: Text.AlignHCenter
         }

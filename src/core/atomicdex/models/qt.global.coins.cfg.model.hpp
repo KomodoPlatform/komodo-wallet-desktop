@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -39,7 +39,7 @@ namespace atomic_dex
         // Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
         Q_OBJECT
 
-        using t_enabled_coins_registry = std::unordered_map<std::string, coin_config>;
+        using t_enabled_coins_registry = std::unordered_map<std::string, coin_config_t>;
 
       public:
         // Available Qt roles.
@@ -64,7 +64,7 @@ namespace atomic_dex
         explicit global_coins_cfg_model(entt::registry& entity_registry, QObject* parent = nullptr);
         ~global_coins_cfg_model() final = default;
 
-        void initialize_model(std::vector<coin_config> cfg);
+        void initialize_model(std::vector<coin_config_t> cfg);
 
         template <typename TArray>
         void update_status(const TArray& tickers, bool status);
@@ -76,8 +76,8 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
         // Getters/Setters
-        [[nodiscard]] const std::vector<coin_config>& get_model_data() const;
-        [[nodiscard]] coin_config                     get_coin_info(const std::string& ticker) const;
+        [[nodiscard]] const std::vector<coin_config_t>& get_model_data() const;
+        [[nodiscard]] coin_config_t                     get_coin_info(const std::string& ticker) const;
         [[nodiscard]] t_enabled_coins_registry        get_enabled_coins() const;
         [[nodiscard]] global_coins_cfg_proxy_model*   get_all_disabled_proxy() const;
         [[nodiscard]] global_coins_cfg_proxy_model*   get_all_proxy() const;
@@ -131,7 +131,7 @@ namespace atomic_dex
         void checked_nbChanged();
 
       private:
-        std::vector<coin_config> m_model_data;    // Contains all the data
+        std::vector<coin_config_t> m_model_data;    // Contains all the data
         t_enabled_coins_registry m_enabled_coins; // Currently enabled_coins
 
         std::array<global_coins_cfg_proxy_model*, ::CoinType::Size> m_proxies;

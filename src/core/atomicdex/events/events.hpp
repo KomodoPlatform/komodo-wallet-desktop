@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -24,14 +24,15 @@
 
 namespace atomic_dex
 {
-    using mm2_started           = entt::tag<"mm2_started"_hs>;
-    using post_login            = entt::tag<"post_login"_hs>;
-    using gui_enter_trading     = entt::tag<"gui_enter_trading"_hs>;
-    using gui_leave_trading     = entt::tag<"gui_leave_trading"_hs>;
-    using mm2_initialized       = entt::tag<"mm2_running_and_enabling"_hs>;
-    using default_coins_enabled = entt::tag<"default_coins_enabled"_hs>;
+    using mm2_started               = entt::tag<"mm2_started"_hs>;
+    using post_login                = entt::tag<"post_login"_hs>;
+    using gui_enter_trading         = entt::tag<"gui_enter_trading"_hs>;
+    using gui_leave_trading         = entt::tag<"gui_leave_trading"_hs>;
+    using mm2_initialized           = entt::tag<"mm2_running_and_enabling"_hs>;
+    using default_coins_enabled     = entt::tag<"default_coins_enabled"_hs>;
     using current_currency_changed  = entt::tag<"update_orders_and_swap_values"_hs>;
     using force_update_providers    = entt::tag<"force_update_providers"_hs>;
+    using force_update_defi_stats   = entt::tag<"force_update_defi_stats"_hs>;
     using download_started          = entt::tag<"download_started"_hs>;
     using download_complete         = entt::tag<"download_complete"_hs>;
     using download_failed           = entt::tag<"download_failed"_hs>;
@@ -116,7 +117,7 @@ namespace atomic_dex
         std::string ticker;
     };
 
-    struct orderbook_refresh
+    struct refresh_orderbook_model_data
     {
         std::string base;
         std::string rel;
@@ -124,7 +125,7 @@ namespace atomic_dex
 
     struct coin_cfg_parsed
     {
-        std::vector<atomic_dex::coin_config> cfg;
+        std::vector<atomic_dex::coin_config_t> cfg;
     };
 
     struct fatal_notification

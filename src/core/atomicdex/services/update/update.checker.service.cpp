@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -43,13 +43,17 @@ namespace
         using namespace std::string_literals;
         nlohmann::json resp;
         nlohmann::json result;
+        std::string    resp_str = TO_STD_STR(resp_http.extract_string(true).get());
         if (resp_http.status_code() != 200)
         {
+            SPDLOG_ERROR("Cannot reach the endpoint [{}]: {}", g_komodolive_endpoint);
             result["status"] = (QObject::tr("Cannot reach the endpoint: ") + g_komodolive_endpoint).toStdString();
         }
         else
         {
-            resp = nlohmann::json::parse(TO_STD_STR(resp_http.extract_string(true).get()));
+
+            resp = nlohmann::json::parse(resp_str);
+            // SPDLOG_ERROR("Update check response: {}", resp_str);
         }
         result["rpcCode"]        = resp_http.status_code();
         result["currentVersion"] = atomic_dex::get_raw_version();

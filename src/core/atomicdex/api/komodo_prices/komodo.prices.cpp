@@ -10,14 +10,14 @@
 
 namespace
 {
-    constexpr const char*                 g_komodo_prices_endpoint = "https://prices.komodo.earth";
+    constexpr const char*                 g_komodo_prices_endpoint = "https://defi-stats.komodo.earth";
     constexpr const char*                 g_komodo_prices_endpoint_fallback = "https://prices.cipig.net:1717";
 
     web::http::client::http_client_config g_komodo_prices_cfg{[]()
                                                               {
                                                                   web::http::client::http_client_config cfg;
                                                                   cfg.set_validate_certificates(false);
-                                                                  cfg.set_timeout(std::chrono::seconds(30));
+                                                                  cfg.set_timeout(std::chrono::seconds(60));
                                                                   return cfg;
                                                               }()};
     t_http_client_ptr g_komodo_prices_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodo_prices_endpoint), g_komodo_prices_cfg);
@@ -61,6 +61,10 @@ namespace atomic_dex::komodo_prices::api
         {
             x = provider::forex;
         }
+        else if (j == "livecoinwatch")
+        {
+            x = provider::livecoinwatch;
+        }
         else
         {
             x = provider::unknown;
@@ -75,8 +79,16 @@ namespace atomic_dex::komodo_prices::api
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
-        SPDLOG_INFO("url: {}", TO_STD_STR(g_komodo_prices_client->base_uri().to_string()) + "api/v2/tickers?expire_at=21600");
-        req.set_request_uri(FROM_STD_STR("/api/v2/tickers?expire_at=21600"));
+        std::string endpoint = fallback ? "api/v2/tickers?expire_at=21600" : "api/v3/prices/tickers_v2?expire_at=21600";
+        if (fallback)
+        {
+            SPDLOG_INFO("url: {}", TO_STD_STR(g_komodo_prices_client_fallback->base_uri().to_string()) + endpoint);
+        }
+        else
+        {
+            SPDLOG_INFO("url: {}", TO_STD_STR(g_komodo_prices_client->base_uri().to_string()) + endpoint);
+        }
+        req.set_request_uri(FROM_STD_STR(endpoint));
         return fallback ? g_komodo_prices_client_fallback->request(req) : g_komodo_prices_client->request(req);
     }
 } // namespace atomic_dex::komodo_prices::api

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -35,7 +35,7 @@ namespace atomic_dex
         atomic_dex::cfg&          m_cfg;
         t_supported_fiat_registry m_supported_fiat_registry{"USD", "EUR", "BTC", "KMD", "GBP", "HKD", "IDR", "ILS", "DKK", "INR", "CHF", "MXN",
                                                             "CZK", "SGD", "THB", "HRK", "MYR", "NOK", "CNY", "BGN", "PHP", "PLN", "ZAR", "CAD",
-                                                            "ISK", "BRL", "RON", "NZD", "TRY", "JPY", "RUB", "KRW", "AUD", "HUF", "SEK", "LTC", "DOGE"};
+                                                            "ISK", "BRL", "RON", "NZD", "TRY", "JPY", "RUB", "KRW", "AUD", "HUF", "SEK", "LTC", "DOGE", "GLEEC"};
         t_providers_registry      m_coin_rate_providers{};
         t_json_synchronized       m_other_fiats_rates;
         t_update_time_point       m_update_clock;
@@ -58,6 +58,7 @@ namespace atomic_dex
         std::string get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount) const ;
         std::string get_cex_rates(const std::string& base, const std::string& rel) const;
         std::string get_fiat_rates(const std::string& fiat) const;
+        std::string get_currency_rates(const std::string& currency) const;
 
         bool is_fiat_available(const std::string& fiat) const;
         bool is_currency_available(const std::string& currency) const;

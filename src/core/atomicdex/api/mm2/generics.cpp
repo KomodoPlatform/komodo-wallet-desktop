@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2021 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2024 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -19,16 +19,16 @@
 
 //! Project Headers
 #include "atomicdex/api/mm2/generics.hpp"
-#include "atomicdex/api/mm2/rpc.best.orders.hpp"
-#include "atomicdex/api/mm2/rpc.buy.hpp"
-#include "atomicdex/api/mm2/rpc.convertaddress.hpp"
-#include "atomicdex/api/mm2/rpc.disable.hpp"
-#include "atomicdex/api/mm2/rpc.max.taker.vol.hpp"
-#include "atomicdex/api/mm2/rpc.min.volume.hpp"
-#include "atomicdex/api/mm2/rpc.sell.hpp"
-#include "atomicdex/api/mm2/rpc.trade.preimage.hpp"
-#include "atomicdex/api/mm2/rpc.validate.address.hpp"
-#include "atomicdex/api/mm2/rpc.recover.funds.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.buy.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.convertaddress.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.disable_coin.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.max_taker_vol.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.min_trading_vol.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.sell.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.validateaddress.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.bestorders.hpp"
+#include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
 
 namespace atomic_dex::mm2
 {
@@ -51,7 +51,6 @@ namespace atomic_dex::mm2
     template void extract_rpc_json_answer<min_volume_answer_success>(const nlohmann::json& j, min_volume_answer& answer);
     template void extract_rpc_json_answer<buy_answer_success>(const nlohmann::json& j, buy_answer& answer);
     template void extract_rpc_json_answer<sell_answer_success>(const nlohmann::json& j, sell_answer& answer);
-    template void extract_rpc_json_answer<best_orders_answer_success>(const nlohmann::json& j, best_orders_answer& answer);
     template void extract_rpc_json_answer<disable_coin_answer_success>(const nlohmann::json& j, disable_coin_answer& answer);
     template void extract_rpc_json_answer<validate_address_answer_success>(const nlohmann::json& j, validate_address_answer& answer);
     template void extract_rpc_json_answer<convert_address_answer_success>(const nlohmann::json& j, convert_address_answer& answer);
