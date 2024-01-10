@@ -1,5 +1,5 @@
 {
-  "name": "komodo-wallet",
+  "name": "firodex-wallet",
   "version-string": "0.7.0",
   "dependencies": [
     "entt",

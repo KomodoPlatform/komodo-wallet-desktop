@@ -1,4 +1,4 @@
-name: komodo-wallet-desktop CD releases
+name: FiroDex-Desktop CD releases
 
 on:
   push:
@@ -6,11 +6,11 @@ on:
     - temporary_disabled
 
 env:
-  DEX_PROJECT_NAME: "komodo-wallet"
-  DEX_DISPLAY_NAME: "Komodo Wallet"
-  DEX_COMPANY: "KomodoPlatform"
+  DEX_PROJECT_NAME: "firodex-desktop"
+  DEX_DISPLAY_NAME: "FiroDex Desktop"
+  DEX_COMPANY: "Firo Core Team"
   DEX_VERSION: "0.7.0"
-  DEX_WEBSITE: "https://atomicdex.io/"
+  DEX_WEBSITE: "https://firo.org/"
 
 jobs:
 
