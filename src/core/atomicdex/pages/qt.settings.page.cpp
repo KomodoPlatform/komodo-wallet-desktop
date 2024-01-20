@@ -647,7 +647,7 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["explorer_url"]            = coin_info.explorer_url;
                     out["adex_cfg"][ticker]["fallback_swap_contract"]  = coin_info.swap_contract_address;
                     out["adex_cfg"][ticker]["fname"]                   = name_lowercase;
-                    out["adex_cfg"][ticker]["is_testnet"]              = true;
+                    out["adex_cfg"][ticker]["is_testnet"]              = false;
                     out["adex_cfg"][ticker]["currently_enabled"]       = false;
                     out["adex_cfg"][ticker]["mm2"]                     = 1;
                     out["adex_cfg"][ticker]["name"]                    = name_lowercase;
