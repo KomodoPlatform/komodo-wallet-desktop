@@ -16,7 +16,7 @@ env:
   DEX_PROJECT_NAME: "GleecDEX"
   DEX_DISPLAY_NAME: "GleecDEX"
   DEX_COMPANY: "Gleec"
-  DEX_VERSION: "0.6.1"
+  DEX_VERSION: "0.7.1"
   DEX_WEBSITE: "https://gleec.com/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
