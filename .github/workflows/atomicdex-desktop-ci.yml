@@ -11,13 +11,13 @@ on:
 
 env:
   DEX_API: "mm2_shiba"
-  DEX_RPCPORT: 7783
+  DEX_RPCPORT: 7763
   DEX_RPC: "http://127.0.0.1:7783"
   DEX_PROJECT_NAME: "shibadex-desktop"
   DEX_DISPLAY_NAME: "ShibaDex Desktop"
   DEX_COMPANY: "CZ Web Service S.A"
   DEX_WEBSITE: "https://shibadex.io/"
-  DEX_VERSION: "0.6.1"
+  DEX_VERSION: "0.7.1"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
   RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\komodo-wallet-desktop\ci_tools_atomic_dex\vcpkg-repo
