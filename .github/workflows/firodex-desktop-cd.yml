@@ -9,7 +9,7 @@ env:
   DEX_PROJECT_NAME: "firodex-desktop"
   DEX_DISPLAY_NAME: "FiroDex Desktop"
   DEX_COMPANY: "Firo Core Team"
-  DEX_VERSION: "0.7.0"
+  DEX_VERSION: "0.7.1"
   DEX_WEBSITE: "https://firo.org/"
 
 jobs:
