@@ -932,7 +932,7 @@ Item
 
                 DefaultText
                 {
-                    text_value: qsTr("Loading market data") + "..."
+                    text_value: qsTr("Loading ticker chart data") + "..."
                 }
             }
 
