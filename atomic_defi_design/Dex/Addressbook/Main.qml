@@ -120,6 +120,13 @@ Item
             }
         }
 
+        Dex.Text {
+            visible: contactTable.count == 0
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            text: qsTr("No contacts found.")
+        }
+
         // Contact table content
         Dex.DefaultListView
         {
