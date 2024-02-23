@@ -412,7 +412,7 @@ run_app(int argc, char** argv)
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
 
     app->setWindowIcon(QIcon(":/assets/images/logo/dex-logo.png"));
-    app->setOrganizationName("KomodoPlatform");
+    app->setOrganizationName("Firo Core Team");
     app->setOrganizationDomain("com");
     QQmlApplicationEngine engine;
 

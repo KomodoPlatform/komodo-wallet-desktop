@@ -3571,6 +3571,11 @@ Bitte wählen Sie eine neue Order aus.</translation>
         <translation>In die Zwischenablage kopiert</translation>
     </message>
     <message>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="801"/>
+        <source>Search for Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="129"/>
         <source>About &amp; Version</source>
         <translation>Über &amp; Version</translation>
@@ -3644,6 +3649,17 @@ Bitte wählen Sie eine neue Order aus.</translation>
         <translation>MM2 Version in die Zwischenablage kopiert.</translation>
     </message>
     <message>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="724"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="731"/>
+        <source>RPC Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="732"/>
+        <source>RPC Port copied to clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="746"/>
         <location filename="../../Dex/Settings/SettingModal.qml" line="753"/>
         <source>Peer ID</source>
@@ -3655,27 +3671,22 @@ Bitte wählen Sie eine neue Order aus.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="724"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="768"/>
         <source>Qt version</source>
         <translation>Qt Version</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="731"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="775"/>
         <source>Qt Version</source>
         <translation>Qt Version</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="732"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="776"/>
         <source>Qt Version copied to clipboard.</source>
         <translation>Qt Version in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="780"/>
-        <source>Search Update</source>
-        <translation>Update suchen</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="797"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="818"/>
         <source>Logout</source>
         <translation>Abmelden</translation>
     </message>
@@ -4563,7 +4574,7 @@ This might take a few minutes...</source>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="782"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="805"/>
         <source>An error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>
