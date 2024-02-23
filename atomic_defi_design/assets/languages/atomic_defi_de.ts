@@ -516,17 +516,17 @@ Beispiel: Kennwort = 1234    Suffix=56    Eingabe beim Login=123456</translation
 <context>
     <name>Chart</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="177"/>
-        <source>Loading pair chart data</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="170"/>
+        <source>Loading market data</source>
+        <translation>Laden von Marktdaten</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="183"/>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="176"/>
         <source>There is no chart data for this pair</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="191"/>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="184"/>
         <source>There is no chart data for %1 (testcoin) pairs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1957,6 +1957,11 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dex/Wallet/Main.qml" line="935"/>
+        <source>Loading market data</source>
+        <translation>Laden von Marktdaten</translation>
+    </message>
+    <message>
         <location filename="../../Dex/Wallet/Main.qml" line="942"/>
         <source>There is no chart data for this ticker yet</source>
         <translation>Für diesen Ticker liegen noch keine Chartdaten vor</translation>
@@ -1977,11 +1982,6 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="935"/>
-        <source>Loading ticker chart data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Dex/Wallet/Main.qml" line="1003"/>
         <source>% activated...</source>
         <translation type="unfinished"></translation>
@@ -1992,18 +1992,18 @@ They will be removed from the orderbook until you log in again.</source>
         <translation>Handelsinformationen</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="36"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="41"/>
         <source>Chart</source>
         <translation type="unfinished">Chart</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="44"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="49"/>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="110"/>
         <source>Orders</source>
         <translation type="unfinished">Order</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="52"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="57"/>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="120"/>
         <source>History</source>
         <translation>Historie</translation>
@@ -2025,7 +2025,7 @@ They will be removed from the orderbook until you log in again.</source>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="62"/>
-        <location filename="../../Dex/Addressbook/Main.qml" line="343"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="336"/>
         <source>Address Book</source>
         <translation type="unfinished">Adressbuch</translation>
     </message>
@@ -2050,27 +2050,22 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished">Schlagworte</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="127"/>
-        <source>No contacts found.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="246"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="239"/>
         <source>Edit</source>
         <translation type="unfinished">Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="259"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="252"/>
         <source>Delete</source>
         <translation type="unfinished">Löschen</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="343"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="336"/>
         <source>address copied to clipboard</source>
         <translation>Adresse in die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="366"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="359"/>
         <source>This contact does not have any registered address.</source>
         <translation>Dieser Kontakt hat keine registrierte Adresse.</translation>
     </message>
@@ -3576,11 +3571,6 @@ Bitte wählen Sie eine neue Order aus.</translation>
         <translation>In die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="801"/>
-        <source>Search for Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="129"/>
         <source>About &amp; Version</source>
         <translation>Über &amp; Version</translation>
@@ -3654,17 +3644,6 @@ Bitte wählen Sie eine neue Order aus.</translation>
         <translation>MM2 Version in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="724"/>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="731"/>
-        <source>RPC Port</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="732"/>
-        <source>RPC Port copied to clipboard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="746"/>
         <location filename="../../Dex/Settings/SettingModal.qml" line="753"/>
         <source>Peer ID</source>
@@ -3676,22 +3655,27 @@ Bitte wählen Sie eine neue Order aus.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="768"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="724"/>
         <source>Qt version</source>
         <translation>Qt Version</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="775"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="731"/>
         <source>Qt Version</source>
         <translation>Qt Version</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="776"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="732"/>
         <source>Qt Version copied to clipboard.</source>
         <translation>Qt Version in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="818"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="780"/>
+        <source>Search Update</source>
+        <translation>Update suchen</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="797"/>
         <source>Logout</source>
         <translation>Abmelden</translation>
     </message>
@@ -4579,7 +4563,7 @@ This might take a few minutes...</source>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="805"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="782"/>
         <source>An error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>
