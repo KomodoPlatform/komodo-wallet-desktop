@@ -46,7 +46,8 @@
     "ETH_ALT": "Ξ",
     "BTC": "₿",
     "BTC_ALT": "฿",
-    "LTC": "Ł"
+    "LTC": "Ł",
+    "GLEEC": "GLEEC"
   },
   "available_fiat": [
     "USD",
@@ -93,9 +94,10 @@
   ],
   "possible_currencies": [
     "USD",
-    "BTC",
     "KMD",
+    "BTC",
     "LTC",
-    "DOGE"
+    "DOGE",
+    "GLEEC"
   ]
 }
