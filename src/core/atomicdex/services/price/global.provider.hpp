@@ -41,8 +41,6 @@ namespace atomic_dex
         t_update_time_point       m_update_clock;
         mutable std::shared_mutex m_coin_rate_mutex;
 
-        void refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker, bool with_update_providers = false, std::atomic_uint16_t idx = 0);
-
       public:
         explicit global_price_service(entt::registry& registry, ag::ecs::system_manager& system_manager, atomic_dex::cfg& cfg);
         ~global_price_service()  final = default;
@@ -63,8 +61,6 @@ namespace atomic_dex
         bool is_fiat_available(const std::string& fiat) const;
         bool is_currency_available(const std::string& currency) const;
 
-        //! Events
-        void on_force_update_providers([[maybe_unused]] const force_update_providers& evt);
     };
 } // namespace atomic_dex
 
