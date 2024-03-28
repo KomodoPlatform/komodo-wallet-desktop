@@ -12,6 +12,7 @@ import Dex.Themes 1.0 as Dex
 Widget
 {
     title: qsTr("Order Book")
+    readonly property string pair_trades_24hr: API.app.trading_pg.pair_trades_24hr
     readonly property string pair_volume_24hr: API.app.trading_pg.pair_volume_24hr
     readonly property string pair: atomic_qt_utilities.retrieve_main_ticker(left_ticker) + "/" + atomic_qt_utilities.retrieve_main_ticker(right_ticker)
 
@@ -61,7 +62,7 @@ Widget
         Layout.bottomMargin: 2
         Layout.alignment: Qt.AlignHCenter
         color: Dex.CurrentTheme.foregroundColor2
-        text_value: pair + qsTr(" traded 24hrs: %1").arg("<b>" + General.convertUsd(pair_volume_24hr) + "</b>")
+        text_value: pair + qsTr(" 24hrs  |  %1  |  %2 trades").arg(General.convertUsd(pair_volume_24hr)).arg(pair_trades_24hr)
         font.pixelSize: Style.textSizeSmall1
     }
 }

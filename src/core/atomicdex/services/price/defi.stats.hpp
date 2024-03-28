@@ -24,18 +24,18 @@
 
 namespace atomic_dex::mm2
 {
-    struct defi_ticker_stats_answer
+    struct defi_stats_volumes_answer
     {
         nlohmann::json                 result;
         int                            status_code;
     };
-    void from_json(const nlohmann::json& j, defi_ticker_stats_answer& answer);
+    void from_json(const nlohmann::json& j, defi_stats_volumes_answer& answer);
 } // namespace atomic_dex::mm2
 
 
 namespace atomic_dex
 {
-    using t_defi_ticker_stats_answer         = mm2::defi_ticker_stats_answer;
+    using t_defi_stats_volumes_answer         = mm2::defi_stats_volumes_answer;
 } // namespace atomic_dex
 
 namespace atomic_dex
@@ -49,7 +49,7 @@ namespace atomic_dex
 
         //! Private member fields
         ag::ecs::system_manager&          m_system_manager;
-        t_json_synchronized               m_defi_ticker_stats;
+        t_json_synchronized               m_defi_stats_volumes;
         t_defi_stats_time_point           m_update_clock;
 
         //! private functions
@@ -67,6 +67,7 @@ namespace atomic_dex
 
         //! Public API
         void                  process_defi_stats();
+        std::string           get_trades_24h(const std::string& base, const std::string& quote) const;
         std::string           get_volume_24h_usd(const std::string& base, const std::string& quote) const;
 
         

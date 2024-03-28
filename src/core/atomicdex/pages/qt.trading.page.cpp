@@ -708,6 +708,7 @@ namespace atomic_dex
         this->m_preferred_order  = std::nullopt;
         this->m_fees             = QVariantMap();
         this->m_cex_price        = "0";
+        this->m_pair_trades_24hr = "0";
         this->m_pair_volume_24hr = "0";
         this->m_post_clear_forms = true;
         this->set_selected_order_status(SelectedOrderStatus::None);
@@ -1394,13 +1395,22 @@ namespace atomic_dex
         const auto* market_selector     = get_market_pairs_mdl();
         const auto& base                = utils::retrieve_main_ticker(market_selector->get_left_selected_coin().toStdString(), true);
         const auto& rel                 = utils::retrieve_main_ticker(market_selector->get_right_selected_coin().toStdString(), true);
+        QString trades                  = QString::fromStdString(defi_stats_service.get_trades_24h(base, rel));
         QString vol                     = QString::fromStdString(defi_stats_service.get_volume_24h_usd(base, rel));
 
         if (vol != m_pair_volume_24hr)
         {
+            m_pair_trades_24hr = trades;
+            emit pairTrades24hrChanged();
             m_pair_volume_24hr = vol;
             emit pairVolume24hrChanged();
         }        
+    }
+
+    QString
+    trading_page::get_pair_trades_24hr() const
+    {
+        return m_pair_trades_24hr;
     }
 
     QString

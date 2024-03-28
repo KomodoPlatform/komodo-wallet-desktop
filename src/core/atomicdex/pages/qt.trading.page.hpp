@@ -59,6 +59,7 @@ namespace atomic_dex
         Q_PROPERTY(SelectedOrderStatus selected_order_status READ get_selected_order_status WRITE set_selected_order_status NOTIFY selectedOrderStatusChanged)
         Q_PROPERTY(QString price_reversed READ get_price_reversed NOTIFY priceReversedChanged)
         Q_PROPERTY(QString pair_volume_24hr READ get_pair_volume_24hr NOTIFY pairVolume24hrChanged)
+        Q_PROPERTY(QString pair_trades_24hr READ get_pair_trades_24hr NOTIFY pairTrades24hrChanged)
         Q_PROPERTY(QString cex_price READ get_cex_price NOTIFY cexPriceChanged)
         Q_PROPERTY(QString cex_price_reversed READ get_cex_price_reversed NOTIFY cexPriceReversedChanged)
         Q_PROPERTY(QString cex_price_diff READ get_cex_price_diff NOTIFY cexPriceDiffChanged)
@@ -115,6 +116,7 @@ namespace atomic_dex
         QString                                m_total_amount{"0.00777"};
         QString                                m_cex_price{"0"};
         QString                                m_pair_volume_24hr{"0"};
+        QString                                m_pair_trades_24hr{"0"};
         QString                                m_minimal_trading_amount{"0.0001"};
         std::optional<nlohmann::json>          m_preferred_order;
         boost::synchronized_value<QVariantMap> m_fees;
@@ -197,6 +199,7 @@ namespace atomic_dex
         void                          set_total_amount(QString total_amount);
         [[nodiscard]] QString         get_base_amount() const;
         [[nodiscard]] QString         get_rel_amount() const;
+        [[nodiscard]] QString         get_pair_trades_24hr() const;
         [[nodiscard]] QString         get_pair_volume_24hr() const;
         [[nodiscard]] QString         get_cex_price() const;
         [[nodiscard]] QString         get_cex_price_reversed() const;
@@ -238,6 +241,7 @@ namespace atomic_dex
         void baseAmountChanged();
         void relAmountChanged();
         void feesChanged();
+        void pairTrades24hrChanged();
         void pairVolume24hrChanged();
         void cexPriceChanged();
         void cexPriceReversedChanged();
