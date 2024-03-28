@@ -172,8 +172,7 @@ Item
 
             proViewTickerSelectors: proView.tickerSelectors
             proViewTrInfo: proView.trInfo
-            proViewOrderBook: proView.orderBook
-            proViewBestOrders: proView.bestOrders
+            proViewMarketsOrderBook: proView.marketsOrderBook
             proViewPlaceOrderForm: proView.placeOrderForm
         }
 
