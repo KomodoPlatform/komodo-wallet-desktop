@@ -10,16 +10,10 @@ import "../../../Components"
 import "../../Trade"
 import "../../ProView"
 
-Widget
+ColumnLayout
 {
-    width: 450
+    Layout.preferredWidth: 450
     property alias currentIndex: tabView.currentIndex
-
-    title: qsTr("Trading Information")
-
-    background: null
-    margins: 0
-
 
     Qaterial.LatoTabBar
     {
