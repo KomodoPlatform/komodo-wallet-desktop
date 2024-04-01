@@ -63,6 +63,8 @@ namespace atomic_dex
             RelCoinAmountRole,
             RelCoinAmountCurrentCurrencyRole,
             OrderTypeRole,
+            MinVolumeRole,
+            MaxVolumeRole,
             IsMakerRole,
             HumanDateRole,
             UnixTimestampRole,

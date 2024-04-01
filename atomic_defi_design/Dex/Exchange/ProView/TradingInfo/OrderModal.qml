@@ -120,6 +120,26 @@ MultipageModal
                 label.font.pixelSize: 13
             }
 
+            // Min Vol
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("Min Volume")
+                text: details ? details.min_volume + " " + details.base_coin : ""
+                label.font.pixelSize: 13
+                visible: General.exists(details) && details.min_volume != ""
+            }
+
+            // Max Vol
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("Max Volume")
+                text: details ? details.max_volume + " " + details.base_coin : ""
+                label.font.pixelSize: 13
+                visible: General.exists(details) && details.max_volume != ""
+            }
+
             // Refund state
             TextEditWithTitle
             {
