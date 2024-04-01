@@ -66,6 +66,7 @@ MultipageModal
 
                 PairItemBadge
                 {
+                    is_left: true
                     ticker: details ? details.base_coin : ""
                     fullname: details ? General.coinName(details.base_coin) : ""
                     amount: details ? details.base_amount : ""
