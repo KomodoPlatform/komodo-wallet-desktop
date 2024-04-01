@@ -70,6 +70,7 @@ Item
                         transform: scale(${Math.min(scale_x, scale_y)});
                         transform-origin: top left;
                     }
+                    a { pointer-events: none; }
                 </style>
                 <script defer src="https://www.livecoinwatch.com/static/lcw-widget.js"></script>
                 <div class="livecoinwatch-widget-1" lcw-coin="${rel_ticker}" lcw-base="${base_ticker}" lcw-secondary="USDC" lcw-period="w" lcw-color-tx="${Dex.CurrentTheme.foregroundColor}" lcw-color-pr="#58c7c5" lcw-color-bg="${Dex.CurrentTheme.comboBoxBackgroundColor}" lcw-border-w="0" lcw-digits="8" ></div>
@@ -222,6 +223,16 @@ Item
                     webEngineViewPlaceHolder.visible = true
                 }
                 else webEngineViewPlaceHolder.visible = false
+            }
+        }
+    }
+
+    MouseArea {
+        id: chart_mousearea
+        anchors.fill: webEngineViewPlaceHolder
+        onClicked: {
+            if (webEngineView.visible) {
+                Qt.openUrlExternally("https://www.livecoinwatch.com")
             }
         }
     }
