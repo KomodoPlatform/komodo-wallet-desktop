@@ -17,6 +17,7 @@ Widget
     title: qsTr("Best Orders")
     margins: 10
     spacing: 10
+    collapsable: false
 
     Header
     {

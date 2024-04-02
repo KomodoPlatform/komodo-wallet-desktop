@@ -18,7 +18,6 @@ Widget
     property bool show_waiting_for_trade_preimage: false;
     property var fees: API.app.trading_pg.fees
     property var preimage_rpc_busy: API.app.trading_pg.preimage_rpc_busy
-    property string protocolIcon: General.platformIcon(General.coinPlatform(left_ticker))
     property var trade_preimage_error: fees.hasOwnProperty('error') ? fees["error"].split("] ").slice(-1) : ""
     readonly property bool trade_preimage_ready: fees.hasOwnProperty('base_transaction_fees_ticker')
     readonly property bool can_submit_trade: last_trading_error === TradingError.None
@@ -68,90 +67,51 @@ Widget
         errors.text_value = ""
     }
 
-    // Market mode selector
-    RowLayout
+    OrderForm
     {
-        Layout.topMargin: 5
-        Layout.bottomMargin: 2
+        id: formBase
+        width: parent.width
+        height: 330
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: parent.width
-        height: 32
-
-        MarketModeSelector
-        {
-            Layout.alignment: Qt.AlignLeft
-            Layout.preferredWidth: (parent.width / 100) * 46
-            Layout.preferredHeight: 32
-            marketMode: MarketMode.Buy
-            ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-        }
-
-        Item { Layout.fillWidth: true }
-
-        MarketModeSelector
-        {
-            Layout.alignment: Qt.AlignRight
-            Layout.preferredWidth: (parent.width / 100) * 46
-            Layout.preferredHeight: 32
-            ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-        }
     }
 
-    // Protocol text for platform tokens
+
+    Item { Layout.fillHeight: true }
+
+    // Error messages
+    // TODO: Move to toasts
     Item
     {
-        height: 32
-        Layout.alignment: Qt.AlignHCenter
+        height: 55
         Layout.preferredWidth: parent.width
-        visible: protocolIcon != ""
 
-        ColumnLayout
+        // Show errors
+        Dex.Text
         {
-            spacing: 2
+            id: errors
+            visible: errors.text_value !== ""
             anchors.fill: parent
             anchors.centerIn: parent
-
-            Dex.Text
-            {
-                id: protocolTitle
-                Layout.preferredWidth: parent.width
-                text_value: "Protocol:"
-                font.pixelSize: Style.textSizeSmall1
-                horizontalAlignment: Text.AlignHCenter
-                color: Style.colorText2
-            }
-
-            RowLayout
-            {
-                id: protocol
-                Layout.alignment: Qt.AlignHCenter
-
-                DefaultImage
-                {
-                    id: protocolImg
-                    source: protocolIcon
-                    Layout.preferredHeight: 16
-                    Layout.preferredWidth: Layout.preferredHeight
-                }
-
-                DexLabel
-                {
-                    id: protocolText
-                    text_value: General.getProtocolText(left_ticker)
-                    wrapMode: DexLabel.NoWrap
-                    font.pixelSize: Style.textSizeSmall1
-                    color: Style.colorText2
-                }
-            }
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: Style.textSizeSmall4
+            color: Dex.CurrentTheme.warningColor
+            text_value: General.getTradingError(
+                            last_trading_error,
+                            curr_fee_info,
+                            base_ticker,
+                            rel_ticker, left_ticker, right_ticker)
+            elide: Text.ElideRight
         }
     }
+
+    Item { Layout.fillHeight: true }
 
     // Order selected indicator
     Item
     {
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: parent.width
-        height: 32
+        Layout.preferredWidth: parent.width - 16
+        height: 28
 
         RowLayout
         {
@@ -200,40 +160,6 @@ Widget
         }
     }
 
-    OrderForm
-    {
-        id: formBase
-        width: parent.width
-        height: 330
-        Layout.alignment: Qt.AlignHCenter
-    }
-
-    Item { Layout.fillHeight: true }
-
-    // Error messages
-    Item
-    {
-        height: 55
-        Layout.preferredWidth: parent.width
-
-        // Show errors
-        Dex.Text
-        {
-            id: errors
-            visible: errors.text_value !== ""
-            anchors.fill: parent
-            anchors.centerIn: parent
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: Style.textSizeSmall4
-            color: Dex.CurrentTheme.warningColor
-            text_value: General.getTradingError(
-                            last_trading_error,
-                            curr_fee_info,
-                            base_ticker,
-                            rel_ticker, left_ticker, right_ticker)
-            elide: Text.ElideRight
-        }
-    }
 
     TotalView
     {

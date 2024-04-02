@@ -19,7 +19,6 @@ import "../../../Constants"
 Item
 {
     // property var proViewChart
-    property var proViewTickerSelectors
     property var proViewTrInfo
     property var proViewMarketsOrderBook
     property var proViewPlaceOrderForm
@@ -34,8 +33,8 @@ Item
         {
             id: cursorRect
             width: _simpleLabel.width + 28
-            height: _simpleLabel.height + 14
-            radius: 16
+            height: _simpleLabel.height + 8
+            radius: 8
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: API.app.trading_pg.current_trading_mode == TradingMode.Simple ? _simpleLabel.horizontalCenter : _proLabel.horizontalCenter
             color: Dex.CurrentTheme.tabSelectedColor
@@ -90,11 +89,12 @@ Item
 
         outlined: false
         highlighted: false
+        padding: 6
 
         foregroundColor: Dex.CurrentTheme.foregroundColor
         icon.source: Qaterial.Icons.cog
         text: qsTr("Pro View Settings")
-        font: DexTypo.subtitle1
+        font: DexTypo.subtitle2
 
         onClicked:
         {
@@ -110,19 +110,15 @@ Item
             contentItem: Item
             {
                 implicitWidth: 200
-                implicitHeight: 240
+                implicitHeight: 200
 
                 Column
                 {
                     anchors.fill: parent
-                    padding: 10
+                    padding: 8
                     spacing: 8
 
                     DefaultText { text: qsTr("Display Settings"); font: DexTypo.body2 }
-
-                    HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
-
-                    CheckEye { text: qsTr("Ticker Selectors"); target: proViewTickerSelectors }
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
 

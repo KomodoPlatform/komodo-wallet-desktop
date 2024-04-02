@@ -18,6 +18,7 @@ Widget
 
     margins: 8    
     spacing: 2
+    collapsable: false
 
     Header
     {
