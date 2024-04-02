@@ -2,14 +2,20 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
-
+import Qaterial 1.0 as Qaterial
 import "../../../Components"
+import "../../../Constants"
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
+import AtomicDEX.TradingError 1.0
 
 ColumnLayout
 {
     id: root
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.fill: parent
+    anchors.margins: 20
     spacing: 8
 
     function focusVolumeField()
@@ -20,6 +26,9 @@ ColumnLayout
     readonly property string total_amount: API.app.trading_pg.total_amount
     readonly property int input_height: 65
     readonly property int subfield_margin: 5
+    property alias swap_btn: swap_btn
+    property alias swap_btn_spinner: swap_btn_spinner
+    property alias dexErrors: dexErrors
 
 
     // Will move to backend: Minimum Fee
@@ -263,4 +272,127 @@ ColumnLayout
             font.pixelSize: 13
         }
     }
+
+    Item { Layout.fillHeight: true }
+
+    // Error messages
+    // TODO: Move to toasts
+    Item
+    {
+        height: 55
+        Layout.preferredWidth: parent.width
+
+        // Show errors
+        Dex.Text
+        {
+            id: dexErrors
+            visible: dexErrors.text_value !== ""
+            anchors.fill: parent
+            anchors.centerIn: parent
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: Style.textSizeSmall4
+            color: Dex.CurrentTheme.warningColor
+            text_value: General.getTradingError(
+                            last_trading_error,
+                            curr_fee_info,
+                            base_ticker,
+                            rel_ticker, left_ticker, right_ticker)
+            elide: Text.ElideRight
+        }
+    }
+
+    Item { Layout.fillHeight: true }
+
+    // Order selected indicator
+    Item
+    {
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width - 16
+        height: 28
+
+        RowLayout
+        {
+            id: orderSelection
+            visible: API.app.trading_pg.preferred_order.price !== undefined
+            anchors.fill: parent
+            anchors.verticalCenter: parent.verticalCenter
+
+            DefaultText
+            {
+                Layout.leftMargin: 15
+                color: Dex.CurrentTheme.warningColor
+                text: qsTr("Order Selected")
+            }
+
+            Item { Layout.fillWidth: true }
+
+            Qaterial.FlatButton
+            {
+                Layout.preferredHeight: parent.height
+                Layout.preferredWidth: 30
+                Layout.rightMargin: 5
+                foregroundColor: Dex.CurrentTheme.warningColor
+                onClicked: {
+                    API.app.trading_pg.reset_order()
+                    reset_fees_state()
+                }
+
+                Qaterial.ColorIcon
+                {
+                    anchors.centerIn: parent
+                    iconSize: 16
+                    color: Dex.CurrentTheme.warningColor
+                    source: Qaterial.Icons.close
+                }
+            }
+        }
+
+        Rectangle
+        {
+            visible: API.app.trading_pg.preferred_order.price !== undefined
+            anchors.fill: parent
+            radius: 8
+            color: 'transparent'
+            border.color: Dex.CurrentTheme.warningColor
+        }
+    }
+
+
+    TotalView
+    {
+        height: 70
+        Layout.preferredWidth: parent.width
+        Layout.alignment: Qt.AlignHCenter
+    }
+
+    DexGradientAppButton
+    {
+        id: swap_btn
+        height: 32
+        Layout.preferredWidth: parent.width - 30
+        Layout.alignment: Qt.AlignHCenter
+
+        radius: 16
+        text: qsTr("START SWAP")
+        font.weight: Font.Medium
+
+        Item
+        {
+            id: swap_btn_spinner
+            height: parent.height - 10
+            width: parent.width - 10
+            anchors.fill: parent
+            anchors.centerIn: parent
+
+            DefaultBusyIndicator
+            {
+                id: preimage_BusyIndicator
+                anchors.fill: parent
+                anchors.centerIn: parent
+                indicatorSize: 32
+                indicatorDotSize: 5
+            }
+        }
+    }
+
 }

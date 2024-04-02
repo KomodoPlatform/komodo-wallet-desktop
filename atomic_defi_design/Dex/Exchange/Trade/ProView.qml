@@ -113,7 +113,7 @@ RowLayout
         id: tradingInfo
         Layout.alignment: Qt.AlignTop
         Layout.minimumWidth: tradingInfo.visible ? 450 : -1
-        Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 450
+        Layout.maximumWidth: (!marketsOrderBook.visible) || (!placeOrderForm.visible) ? -1 : 450
         Layout.fillHeight: true
     }
 
@@ -137,8 +137,6 @@ RowLayout
         Layout.maximumWidth: 305
         Layout.fillWidth: true
         Layout.fillHeight: true
-
-        resizable: false
     }
 
     ModalLoader

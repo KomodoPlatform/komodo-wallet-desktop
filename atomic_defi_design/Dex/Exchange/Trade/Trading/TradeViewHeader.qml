@@ -126,11 +126,11 @@ Item
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
 
-                    CheckEye { text: qsTr("Markets"); target: proViewMarketsOrderBook }
+                    CheckEye { text: qsTr("Order Book"); target: proViewMarketsOrderBook }
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
 
-                    CheckEye { text: qsTr("Place Order"); target: proViewPlaceOrderForm }
+                    CheckEye { text: qsTr("Order Form"); target: proViewPlaceOrderForm }
                 }
             }
         }
