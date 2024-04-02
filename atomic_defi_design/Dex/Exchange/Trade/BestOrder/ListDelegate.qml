@@ -14,8 +14,7 @@ import AtomicDEX.MarketMode 1.0
 Item
 {
     id: _control
-
-    property bool coinEnable: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
+    property bool _isCoinEnabled: API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_enabled
     property bool isAsk
 
     AnimatedRectangle
@@ -46,7 +45,7 @@ Item
                 height: 24
                 anchors.verticalCenter: parent.verticalCenter
                 source: General.coinIcon(coin)
-                opacity: !_control.coinEnable? .1 : 1
+                opacity: !_control._isCoinEnabled? .1 : 1
             }
 
             Dex.Text
@@ -137,7 +136,7 @@ Item
                 {
                     if (API.app.enable_coins([coin]) === true)
                     {
-                        _control.coinEnable = true;
+                        _control._isCoinEnabled = true;
                         _tooltip.close();
                     }
                     else {
