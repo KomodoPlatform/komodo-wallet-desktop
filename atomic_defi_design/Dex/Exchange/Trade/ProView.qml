@@ -42,8 +42,7 @@ RowLayout
 
     property alias tickerSelectors: selectors
     property alias trInfo: tradingInfo
-    property alias orderBook: orderBook
-    property alias bestOrders: bestOrders
+    property alias marketsOrderBook: marketsOrderBook
     property alias placeOrderForm: placeOrderForm
 
     function selectOrder(
@@ -112,20 +111,15 @@ RowLayout
     ColumnLayout
     {
         Layout.alignment: Qt.AlignTop
-
         Layout.minimumWidth: selectors.visible || tradingInfo.visible ? 450 : -1
         Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 450
-        Layout.fillWidth: true
-
         Layout.fillHeight: true
-
         spacing: 10
 
         // Ticker selectors.
         TickerSelectors
         {
             id: selectors
-
             Layout.fillWidth: true
             Layout.preferredHeight: 70
         }
@@ -134,47 +128,20 @@ RowLayout
         TradingInfo.Main
         {
             id: tradingInfo
-
-            Layout.fillWidth: true
+            Layout.maximumWidth: 450
             Layout.fillHeight: true
-
-            resizable: false
         }
     }
 
-    WidgetContainer
+    // Best Orders & Order Book
+    Market
     {
-        property real _orderBookHeightRatio: 0.65
-        property real _bestOrdersHeightRatio: 0.35
-
-        Layout.minimumWidth: orderBook.visible || bestOrders.visible ? 350 : -1
+        id: marketsOrderBook
+        Layout.maximumWidth: 350
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
         spacing: 4
-
-        onHeightChanged:
-        {
-            orderBook.height = getHeight(_orderBookHeightRatio);
-            bestOrders.height = getHeight(_bestOrdersHeightRatio);
-        }
-
-        OrderBook.Vertical
-        {
-            id: orderBook
-
-            width: parent.width
-            minHeight: 320
-        }
-
-        // Best Orders
-        BestOrder.List
-        {
-            id: bestOrders
-
-            width: parent.width
-            minHeight: 140
-        }
     }
 
     // Place order form.
