@@ -28,7 +28,7 @@ MultipageModal
         titleAlignment: Qt.AlignHCenter
         titleTopMargin: 0
         topMarginAfterTitle: 10
-        flickMax: window.height - 480
+        flickMax: window.height - 500
 
         header: [
             RowLayout
@@ -43,6 +43,7 @@ MultipageModal
                 PairItemBadge
                 {
                     ticker: base_ticker
+                    is_left: true
                     fullname: General.coinName(base_ticker)
                     amount: base_amount
                     Layout.fillHeight: true
@@ -119,6 +120,8 @@ MultipageModal
                 {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: qsTr("This swap request can not be undone and is a final event!")
+                    font: DexTypo.italic12
+                    color: Dex.CurrentTheme.foregroundColor2
                 }
 
                 DefaultText
@@ -126,7 +129,8 @@ MultipageModal
                     id: warnings_tx_time_text
                     Layout.alignment: Qt.AlignHCenter
                     text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
-                    font.pixelSize: Style.textSizeSmall4
+                    font: DexTypo.italic12
+                    color: Dex.CurrentTheme.foregroundColor2
                 }
             }
         ]
@@ -138,9 +142,9 @@ MultipageModal
             readonly property var default_config: API.app.trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
             readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization || false
 
-            width: dex_pair_badges.width - 20
+            width: dex_pair_badges.width - 40
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 8
+            Layout.topMargin: 4
 
             spacing: 5
 
@@ -239,7 +243,7 @@ MultipageModal
                 }
             }
 
-            // Custom config checkbox
+            // Custom config section
             Item
             {
                 Layout.alignment: Qt.AlignCenter
@@ -251,9 +255,18 @@ MultipageModal
                 {
                     id: use_custom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    
                     spacing: 5
 
+                    DefaultCheckBox
+                    {
+                        id: _goodUntilCanceledCheckbox
+                        boxWidth: 20
+                        boxHeight: 20
+                        checked: true
+                        height: 40
+                        text: qsTr("Good until canceled (order will remain on orderbook until filled or canceled)")
+                    }
+                    
                     DefaultCheckBox
                     {
                         id: enable_custom_config
@@ -261,7 +274,7 @@ MultipageModal
                         spacing: 2
                         boxWidth: 20
                         boxHeight: 20
-                        height: 50
+                        height: 40
                         label.wrapMode: Label.NoWrap
 
                         text: qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker)

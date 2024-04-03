@@ -22,7 +22,7 @@ ColumnLayout
     readonly property int fontSizeBigger: Style.textSizeSmall2
     readonly property int lineScale: General.getComparisonScale(cexPriceDiff)
 
-    spacing: 35
+    spacing: 24
 
     RowLayout
     {
@@ -126,10 +126,22 @@ ColumnLayout
                 {
                     text_value: General.formatPercent(lineScale)
                     font.pixelSize: fontSize
+                    anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.topMargin: -15
                 }
 
+                DefaultText
+                {
+                    id: price_diff_text
+                    anchors.top: parent.top
+                    anchors.topMargin: -15
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    color: parseFloat(cexPriceDiff) <= 0 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.warningColor
+                    text_value: (parseFloat(cexPriceDiff) > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(General.limitDigits(cexPriceDiff)) + "</b>")
+                    font.pixelSize: fontSizeBigger
+                }
+        
                 DefaultText
                 {
                     text_value: General.formatPercent(-lineScale)
@@ -141,14 +153,5 @@ ColumnLayout
             }
         }
 
-        DefaultText
-        {
-            id: price_diff_text
-            Layout.topMargin: 10
-            Layout.alignment: Qt.AlignHCenter
-            color: parseFloat(cexPriceDiff) <= 0 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.warningColor
-            text_value: (parseFloat(cexPriceDiff) > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(General.limitDigits(cexPriceDiff)) + "</b>")
-            font.pixelSize: fontSize
-        }
     }
 }
