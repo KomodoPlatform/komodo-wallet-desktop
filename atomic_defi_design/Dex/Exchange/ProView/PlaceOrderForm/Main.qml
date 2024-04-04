@@ -145,10 +145,10 @@ ColumnLayout
 
             onCurrentIndexChanged:
             {
-                console.log("onCurrentIndexChanged: " + currentIndex)
                 API.app.trading_pg.maker_mode = currentIndex === makerOrderform_idx ? true : false
                 orderformSwipeView.currentItem.update()
-                console.log("API.app.trading_pg.maker_mode: " + API.app.trading_pg.maker_mode)
+                API.app.trading_pg.reset_order()
+                reset_fees_state()
             }
 
             Item
