@@ -515,17 +515,17 @@
 <context>
     <name>Chart</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="170"/>
-        <source>Loading market data</source>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="177"/>
+        <source>Loading pair chart data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="176"/>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="183"/>
         <source>There is no chart data for this pair</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="184"/>
+        <location filename="../../Dex/Exchange/ProView/Chart.qml" line="191"/>
         <source>There is no chart data for %1 (testcoin) pairs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1956,11 +1956,6 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="935"/>
-        <source>Loading market data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Dex/Wallet/Main.qml" line="942"/>
         <source>There is no chart data for this ticker yet</source>
         <translation type="unfinished"></translation>
@@ -1981,6 +1976,11 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dex/Wallet/Main.qml" line="935"/>
+        <source>Loading ticker chart data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Wallet/Main.qml" line="1003"/>
         <source>% activated...</source>
         <translation type="unfinished"></translation>
@@ -1991,18 +1991,18 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="41"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="36"/>
         <source>Chart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="49"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="44"/>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="110"/>
         <source>Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="57"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="52"/>
         <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="120"/>
         <source>History</source>
         <translation type="unfinished"></translation>
@@ -2024,7 +2024,7 @@ They will be removed from the orderbook until you log in again.</source>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="62"/>
-        <location filename="../../Dex/Addressbook/Main.qml" line="336"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="343"/>
         <source>Address Book</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2049,22 +2049,27 @@ They will be removed from the orderbook until you log in again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="239"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="127"/>
+        <source>No contacts found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Addressbook/Main.qml" line="246"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="252"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="259"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="336"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="343"/>
         <source>address copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Addressbook/Main.qml" line="359"/>
+        <location filename="../../Dex/Addressbook/Main.qml" line="366"/>
         <source>This contact does not have any registered address.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3642,6 +3647,17 @@ Please select a new order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="724"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="731"/>
+        <source>RPC Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="732"/>
+        <source>RPC Port copied to clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="746"/>
         <location filename="../../Dex/Settings/SettingModal.qml" line="753"/>
         <source>Peer ID</source>
@@ -3653,27 +3669,27 @@ Please select a new order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="724"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="768"/>
         <source>Qt version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="731"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="775"/>
         <source>Qt Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="732"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="776"/>
         <source>Qt Version copied to clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="780"/>
-        <source>Search Update</source>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="801"/>
+        <source>Search for Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="797"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="818"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4553,7 +4569,7 @@ This might take a few minutes...</source>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="782"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="805"/>
         <source>An error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>

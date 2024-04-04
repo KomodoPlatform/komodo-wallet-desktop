@@ -63,9 +63,9 @@ namespace atomic_dex
                     nlohmann::json batch = nlohmann::json::array();
                     if (rpc.error)
                     {
-                        SPDLOG_ERROR("error: bad answer json for process_best_orders: {}", rpc.error->error);
+                        // SPDLOG_DEBUG("error: bad answer json for process_best_orders: {}", rpc.error->error);
                         this->m_bestorders_busy = false;
-                        SPDLOG_ERROR("Triggering [process_orderbook_finished]: true");
+                        // SPDLOG_DEBUG("Triggering [process_orderbook_finished]: true");
                         this->dispatcher_.trigger<process_orderbook_finished>(true);
                     }
                     else
@@ -75,7 +75,7 @@ namespace atomic_dex
                             this->m_best_orders_infos = rpc.result.value();
                         }
                         this->m_bestorders_busy = false;
-                        SPDLOG_ERROR("Triggering [process_orderbook_finished]: false");
+                        // SPDLOG_DEBUG("Triggering [process_orderbook_finished]: false");
                         this->dispatcher_.trigger<process_orderbook_finished>(false);
                         emit trading_pg.get_orderbook_wrapper()->bestOrdersBusyChanged();
                     }
