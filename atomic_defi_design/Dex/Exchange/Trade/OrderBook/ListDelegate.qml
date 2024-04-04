@@ -44,6 +44,10 @@ Item
                 {
                     if (mouse_area.containsMouse)
                     {
+                        if (API.app.trading_pg.maker_mode)
+                        {
+                            return qsTr("Orderbook is disabled while creating maker orders")
+                        }
                         let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
                         let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
 
@@ -104,6 +108,7 @@ Item
         onClicked:
         {
             if (is_mine) return
+            if (API.app.trading_pg.maker_mode) return
 
             if (enough_funds_to_pay_min_volume )
             {
