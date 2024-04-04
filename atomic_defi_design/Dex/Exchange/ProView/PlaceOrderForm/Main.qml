@@ -22,6 +22,8 @@ ColumnLayout
     property var preimage_rpc_busy: API.app.trading_pg.preimage_rpc_busy
     property var trade_preimage_error: fees.hasOwnProperty('error') ? fees["error"].split("] ").slice(-1) : ""
     readonly property bool trade_preimage_ready: fees.hasOwnProperty('base_transaction_fees_ticker')
+    property int takerOrderform_idx: 0
+    property int makerOrderform_idx: 1
 
     function reset_fees_state()
     {
@@ -29,7 +31,8 @@ ColumnLayout
         check_trade_preimage.stop()
         loop_count = 0
         API.app.trading_pg.reset_fees()
-        formBase.dexErrors.text_value = ""
+        takerForm.dexErrors.text_value = ""
+        makerForm.dexErrors.text_value = ""
     }
 
     Connections {
@@ -85,7 +88,8 @@ ColumnLayout
             else if (trade_preimage_error != "")
             {
                 loop_count = 0
-                formBase.dexErrors.text_value = trade_preimage_error.toString()
+                takerForm.dexErrors.text_value = trade_preimage_error.toString()
+                makerForm.dexErrors.text_value = trade_preimage_error.toString()
                 show_waiting_for_trade_preimage = false
                 stop()
             }
@@ -102,14 +106,21 @@ ColumnLayout
     Qaterial.LatoTabBar
     {
         id: orderformTabView
-        property int orderform_idx: 0
 
         background: null
         Layout.leftMargin: 6
 
         Qaterial.LatoTabButton
         {
-            text: qsTr("Place Order")
+            text: qsTr("Taker Order")
+            font.pixelSize: 14
+            textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
+            textSecondaryColor: Dex.CurrentTheme.foregroundColor2
+            indicatorColor: Dex.CurrentTheme.foregroundColor
+        }
+        Qaterial.LatoTabButton
+        {
+            text: qsTr("Maker Order")
             font.pixelSize: 14
             textColor: checked ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             textSecondaryColor: Dex.CurrentTheme.foregroundColor2
@@ -134,23 +145,51 @@ ColumnLayout
 
             onCurrentIndexChanged:
             {
-                orderformSwipeView.currentItem.update();
+                console.log("onCurrentIndexChanged: " + currentIndex)
+                API.app.trading_pg.maker_mode = currentIndex === makerOrderform_idx ? true : false
+                orderformSwipeView.currentItem.update()
+                console.log("API.app.trading_pg.maker_mode: " + API.app.trading_pg.maker_mode)
             }
 
             Item
             {
-                id: orderFormWidget
+                id: takerOrderform
 
                 OrderForm
                 {
-                    id: formBase
+                    id: takerForm
                     width: parent.width
                     height: 330
                     Layout.alignment: Qt.AlignHCenter
-                    swap_btn.enabled: last_trading_error === TradingError.None && !show_waiting_for_trade_preimage && formBase.dexErrors.text_value == ""
+                    swap_btn.enabled: last_trading_error === TradingError.None && !show_waiting_for_trade_preimage && takerForm.dexErrors.text_value == ""
                     swap_btn.onClicked: 
                     {
                         console.log("Getting fees info...")
+                        API.app.trading_pg.determine_fees()
+                        show_waiting_for_trade_preimage = true
+                        check_trade_preimage.start()
+                    }
+                    swap_btn_spinner.visible: show_waiting_for_trade_preimage
+                }
+            }
+
+            Item
+            {
+                id: makerOrderform
+
+                OrderForm
+                {
+                    id: makerForm
+                    width: parent.width
+                    height: 330
+                    Layout.alignment: Qt.AlignHCenter
+                    swap_btn.enabled: last_trading_error === TradingError.None && !show_waiting_for_trade_preimage && makerForm.dexErrors.text_value == ""
+                    swap_btn.onClicked: 
+                    {
+                        console.log("Getting fees info...")
+                        console.log("API.app.trading_pg.market_mode")
+                        console.log(API.app.trading_pg.market_mode)
+                        // TODO: Apply reduced fees on maker orders
                         API.app.trading_pg.determine_fees()
                         show_waiting_for_trade_preimage = true;
                         check_trade_preimage.start()

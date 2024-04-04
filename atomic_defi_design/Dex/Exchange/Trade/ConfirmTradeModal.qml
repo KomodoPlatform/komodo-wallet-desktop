@@ -17,8 +17,9 @@ MultipageModal
     id: root
     readonly property var fees: API.app.trading_pg.fees
     width: 720
-    horizontalPadding: 20
-    verticalPadding: 20
+    height: window.height - 80
+    horizontalPadding: 10
+    verticalPadding: 10
     closePolicy: Popup.NoAutoClose
 
     MultipageModalContent
@@ -28,7 +29,7 @@ MultipageModal
         titleAlignment: Qt.AlignHCenter
         titleTopMargin: 0
         topMarginAfterTitle: 10
-        flickMax: window.height - 500
+        flickMax: window.height - 430
 
         header: [
             RowLayout
@@ -259,7 +260,19 @@ MultipageModal
 
                     DefaultCheckBox
                     {
+                        id: _cancelPreviousCheckbox
+                        visible: API.app.trading_pg.maker_mode
+                        boxWidth: 20
+                        boxHeight: 20
+                        checked: true
+                        height: 40
+                        text: qsTr("Cancel all existing orders for %1/%2?").arg(base_ticker).arg(rel_ticker)
+                    }
+
+                    DefaultCheckBox
+                    {
                         id: _goodUntilCanceledCheckbox
+                        visible: !API.app.trading_pg.maker_mode
                         boxWidth: 20
                         boxHeight: 20
                         checked: true
@@ -451,6 +464,7 @@ MultipageModal
                             is_dpow_configurable: config_section.is_dpow_configurable,
                             enable_dpow_confs: enable_dpow_confs.checked,
                             required_confirmation_count: required_confirmation_count.value,
+                            cancel_previous: _cancelPreviousCheckbox.checked,
                             good_until_canceled: _goodUntilCanceledCheckbox.checked},
                             config_section.default_config)
                     API.app.trading_pg.reset_fees()

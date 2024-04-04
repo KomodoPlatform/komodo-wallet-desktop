@@ -142,6 +142,6 @@ RowLayout
     ModalLoader
     {
         id: confirm_trade_modal
-        sourceComponent: ConfirmTradeModal {}
+        sourceComponent: ConfirmTradeModal { }
     }
 }

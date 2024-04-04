@@ -70,6 +70,7 @@ ColumnLayout
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: parent.width
         height: 28
+        visible: !API.app.trading_pg.maker_mode
 
         MarketModeSelector
         {
@@ -397,34 +398,27 @@ ColumnLayout
         Layout.alignment: Qt.AlignHCenter
     }
 
-    DexGradientAppButton
+    DefaultBusyIndicator
     {
-        id: swap_btn
-        height: 32
-        Layout.preferredWidth: parent.width - 30
+        id: swap_btn_spinner
         Layout.alignment: Qt.AlignHCenter
-
-        radius: 16
-        text: qsTr("START SWAP")
-        font.weight: Font.Medium
-
+        indicatorSize: 28
+        indicatorDotSize: 4
+    }
         Item
-        {
-            id: swap_btn_spinner
-            height: parent.height - 10
-            width: parent.width - 10
-            anchors.fill: parent
-            anchors.centerIn: parent
+    {
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width - 16
+        height: 28
 
-            DefaultBusyIndicator
-            {
-                id: preimage_BusyIndicator
-                anchors.fill: parent
-                anchors.centerIn: parent
-                indicatorSize: 32
-                indicatorDotSize: 5
-            }
+        DexGradientAppButton
+        {
+            id: swap_btn
+            height: 32
+            anchors.fill: parent
+            radius: 16
+            text: API.app.trading_pg.maker_mode ? qsTr("CREATE MAKER SWAP") : qsTr("START TAKER SWAP")
+            font.weight: Font.Medium
         }
     }
-
 }

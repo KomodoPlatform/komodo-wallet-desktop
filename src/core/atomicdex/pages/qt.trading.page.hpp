@@ -46,6 +46,7 @@ namespace atomic_dex
 
         // Trading logic Q properties
         Q_PROPERTY(MarketMode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
+        Q_PROPERTY(bool maker_mode READ get_maker_mode WRITE set_maker_mode NOTIFY makerModeChanged)
         Q_PROPERTY(TradingError last_trading_error READ get_trading_error WRITE set_trading_error NOTIFY tradingErrorChanged)
         Q_PROPERTY(TradingMode current_trading_mode READ get_current_trading_mode WRITE set_current_trading_mode NOTIFY tradingModeChanged)
         Q_PROPERTY(QString price READ get_price WRITE set_price NOTIFY priceChanged)
@@ -107,6 +108,7 @@ namespace atomic_dex
 
         //! Trading Logic
         MarketMode                             m_market_mode{MarketModeGadget::Sell};
+        bool                                   m_maker_mode{false};
         TradingError                           m_last_trading_error{TradingErrorGadget::None};
         TradingMode                            m_current_trading_mode{TradingModeGadget::Pro};
         SelectedOrderStatus                    m_selected_order_status{SelectedOrderGadget::None};
@@ -163,6 +165,7 @@ namespace atomic_dex
 
         Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "", const QString& good_until_canceled = "");
         Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "", const QString& good_until_canceled = "");
+        Q_INVOKABLE void place_setprice_order(const QString& rel_nota = "", const QString& rel_confs = "", const QString& cancel_previous = "");
 
         Q_INVOKABLE void reset_order();
 
@@ -178,6 +181,8 @@ namespace atomic_dex
         void                                set_buy_sell_rpc_busy(bool status);
 
         //! Trading Logic
+        [[nodiscard]] bool                get_maker_mode() const;
+        void                              set_maker_mode(bool market_mode);
         [[nodiscard]] MarketMode          get_market_mode() const;
         void                              set_market_mode(MarketMode market_mode);
         [[nodiscard]] TradingError        get_trading_error() const;
@@ -232,6 +237,7 @@ namespace atomic_dex
         //! Trading logic
         void priceChanged();
         void volumeChanged();
+        void makerModeChanged();
         void marketModeChanged();
         void maxVolumeChanged();
         void tradingErrorChanged();
