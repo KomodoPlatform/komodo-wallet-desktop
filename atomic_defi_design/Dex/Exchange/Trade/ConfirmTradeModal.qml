@@ -264,7 +264,7 @@ MultipageModal
                         boxHeight: 20
                         checked: true
                         height: 40
-                        text: qsTr("Good until canceled (order will remain on orderbook until filled or canceled)")
+                        text: qsTr("Good until cancelled (order will remain on orderbook until filled or cancelled)")
                     }
                     
                     DefaultCheckBox
@@ -450,7 +450,8 @@ MultipageModal
                     trade({ enable_custom_config: enable_custom_config.checked,
                             is_dpow_configurable: config_section.is_dpow_configurable,
                             enable_dpow_confs: enable_dpow_confs.checked,
-                            required_confirmation_count: required_confirmation_count.value, },
+                            required_confirmation_count: required_confirmation_count.value,
+                            good_until_canceled: _goodUntilCanceledCheckbox.checked},
                             config_section.default_config)
                     API.app.trading_pg.reset_fees()
                 }

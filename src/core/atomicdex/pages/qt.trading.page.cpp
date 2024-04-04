@@ -138,7 +138,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::place_buy_order(const QString& base_nota, const QString& base_confs)
+    trading_page::place_buy_order(const QString& base_nota, const QString& base_confs, const QString& good_until_canceled)
     {
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
@@ -177,6 +177,19 @@ namespace atomic_dex
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
             .min_volume = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_min_trade_vol().toStdString()};
+
+        if (good_until_canceled == "true")
+        {
+            SPDLOG_DEBUG("Good until cancelled order");
+            req.order_type                 = nlohmann::json::object();
+            req.order_type.value()["type"] = "GoodTillCancelled";
+        }
+        else
+        {
+            SPDLOG_DEBUG("Fill or kill order");
+            req.order_type                 = nlohmann::json::object();
+            req.order_type.value()["type"] = "FillOrKill";
+        }
 
         if (is_selected_min_max || is_selected_order)
         {
@@ -269,7 +282,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::place_sell_order(const QString& rel_nota, const QString& rel_confs)
+    trading_page::place_sell_order(const QString& rel_nota, const QString& rel_confs, const QString& good_until_canceled)
     {
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
@@ -311,6 +324,18 @@ namespace atomic_dex
             req.order_type                 = nlohmann::json::object();
             req.order_type.value()["type"] = "FillOrKill";
             req.min_volume                 = std::optional<std::string>{std::nullopt};
+        }
+        else if (good_until_canceled == "true")
+        {
+            SPDLOG_DEBUG("Good until cancelled order");
+            req.order_type                 = nlohmann::json::object();
+            req.order_type.value()["type"] = "GoodTillCancelled";
+        }
+        else
+        {
+            SPDLOG_DEBUG("Fill or kill order");
+            req.order_type                 = nlohmann::json::object();
+            req.order_type.value()["type"] = "FillOrKill";
         }
 
         if (is_selected_min_max)

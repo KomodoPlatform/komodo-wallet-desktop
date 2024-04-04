@@ -144,9 +144,9 @@ Item
         }
 
         if (sell_mode)
-            API.app.trading_pg.place_sell_order(nota, confs)
+            API.app.trading_pg.place_sell_order(nota, confs, options.good_until_canceled)
         else
-            API.app.trading_pg.place_buy_order(nota, confs)
+            API.app.trading_pg.place_buy_order(nota, confs, options.good_until_canceled)
 
         orderPlaced()
     }

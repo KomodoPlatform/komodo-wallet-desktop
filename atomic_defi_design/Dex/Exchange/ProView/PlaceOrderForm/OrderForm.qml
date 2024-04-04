@@ -9,6 +9,7 @@ import App 1.0
 import Dex.Themes 1.0 as Dex
 import Dex.Components 1.0 as Dex
 import AtomicDEX.TradingError 1.0
+import AtomicDEX.MarketMode 1.0 as Dex
 
 ColumnLayout
 {
@@ -59,6 +60,36 @@ ColumnLayout
         target: exchange_trade
         function onBackend_priceChanged() { input_price.text = exchange_trade.backend_price; }
         function onBackend_volumeChanged() { input_volume.text = exchange_trade.backend_volume; }
+    }
+
+    // Market mode selector
+    RowLayout
+    {
+        Layout.topMargin: 2
+        Layout.bottomMargin: 2
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredWidth: parent.width
+        height: 28
+
+        MarketModeSelector
+        {
+            Layout.alignment: Qt.AlignLeft
+            Layout.preferredWidth: 125
+            Layout.preferredHeight: 28
+            marketMode: Dex.MarketMode.Buy
+            ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+        }
+
+        Item { Layout.fillWidth: true }
+
+        MarketModeSelector
+        {
+            marketMode: Dex.MarketMode.Sell
+            Layout.alignment: Qt.AlignRight
+            Layout.preferredWidth: 125
+            Layout.preferredHeight: 28
+            ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
+        }
     }
 
     Item

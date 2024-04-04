@@ -86,40 +86,6 @@ ColumnLayout
                     Layout.rightMargin: 8
                 }
 
-                // Market mode selector
-                RowLayout
-                {
-                    Layout.topMargin: 2
-                    Layout.bottomMargin: 2
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: 435
-                    height: 28
-
-                    Item { Layout.fillWidth: true }
-                    MarketModeSelector
-                    {
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.preferredWidth: 150
-                        Layout.preferredHeight: 28
-                        marketMode: MarketMode.Buy
-                        ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-                    }
-
-                    Item { Layout.fillWidth: true }
-              
-                    Item { Layout.fillWidth: true }
-
-                    MarketModeSelector
-                    {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.preferredWidth: 150
-                        Layout.preferredHeight: 28
-                        ticker: atomic_qt_utilities.retrieve_main_ticker(left_ticker)
-                    }
-                    Item { Layout.fillWidth: true }
-                }
-
-
                 // Chart
                 Chart
                 {

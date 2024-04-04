@@ -161,8 +161,8 @@ namespace atomic_dex
         Q_INVOKABLE bool set_pair(bool is_left_side, const QString& changed_ticker);
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
-        Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "");
-        Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "");
+        Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "", const QString& good_until_canceled = "");
+        Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "", const QString& good_until_canceled = "");
 
         Q_INVOKABLE void reset_order();
 
