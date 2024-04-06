@@ -149,6 +149,11 @@ namespace atomic_dex
     {
         return std::any_of(g_faucet_coins.begin(), g_faucet_coins.end(), [ticker](std::string x) { return ticker == x; });
     }
+    bool
+    is_vote_coin(std::string ticker)
+    {
+        return std::any_of(g_vote_coins.begin(), g_vote_coins.end(), [ticker](std::string x) { return ticker == x; });
+    }
 
     void
     from_json(const nlohmann::json& j, coin_config_t& cfg)
@@ -172,6 +177,7 @@ namespace atomic_dex
         cfg.wallet_only          = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
         cfg.default_coin         = is_default_coin(cfg.ticker);
         cfg.is_faucet_coin       = is_faucet_coin(cfg.ticker);
+        cfg.is_vote_coin         = is_vote_coin(cfg.ticker);
         cfg.checkpoint_height    = 0;
         cfg.checkpoint_blocktime = 0;
         using namespace std::chrono;
