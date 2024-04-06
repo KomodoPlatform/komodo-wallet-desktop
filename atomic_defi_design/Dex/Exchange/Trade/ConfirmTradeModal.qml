@@ -29,7 +29,7 @@ MultipageModal
         titleAlignment: Qt.AlignHCenter
         titleTopMargin: 0
         topMarginAfterTitle: 10
-        flickMax: window.height - 430
+        flickMax: window.height - 385
 
         header: [
             RowLayout
@@ -77,62 +77,6 @@ MultipageModal
             {
                 id: price_line
                 Layout.fillWidth: true
-            },
-
-            ColumnLayout
-            {
-                id: warnings_text
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignHCenter
-
-                // Large margin warning
-                FloatingBackground
-                {
-                    Layout.alignment: Qt.AlignCenter
-                    width: childrenRect.width
-                    height: childrenRect.height
-                    color: Style.colorRed2
-                    visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
-
-                    RowLayout
-                    {
-                        Layout.fillWidth: true
-
-                        Item { width: 3 }
-
-                        DefaultCheckBox
-                        {
-                            id: allow_bad_trade
-                            Layout.alignment: Qt.AlignCenter
-                            textColor: Style.colorWhite0
-                            visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
-                            spacing: 2
-                            boxWidth: 16
-                            boxHeight: 16
-                            boxRadius: 8
-                            label.wrapMode: Label.NoWrap
-                            text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
-                            font: DexTypo.caption
-                        }
-                    }
-                }
-
-                DefaultText
-                {
-                    Layout.alignment: Qt.AlignHCenter
-                    text_value: qsTr("This swap request can not be undone and is a final event!")
-                    font: DexTypo.italic12
-                    color: Dex.CurrentTheme.foregroundColor2
-                }
-
-                DefaultText
-                {
-                    id: warnings_tx_time_text
-                    Layout.alignment: Qt.AlignHCenter
-                    text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
-                    font: DexTypo.italic12
-                    color: Dex.CurrentTheme.foregroundColor2
-                }
             }
         ]
 
@@ -244,6 +188,38 @@ MultipageModal
                 }
             }
 
+            // Large margin warning
+            FloatingBackground
+            {
+                Layout.alignment: Qt.AlignCenter
+                width: childrenRect.width
+                height: childrenRect.height
+                color: Style.colorRed2
+                visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
+
+                RowLayout
+                {
+                    Layout.fillWidth: true
+
+                    Item { width: 3 }
+
+                    DefaultCheckBox
+                    {
+                        id: allow_bad_trade
+                        Layout.alignment: Qt.AlignCenter
+                        textColor: Style.colorWhite0
+                        visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
+                        spacing: 2
+                        boxWidth: 16
+                        boxHeight: 16
+                        boxRadius: 8
+                        label.wrapMode: Label.NoWrap
+                        text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
+                        font: DexTypo.caption
+                    }
+                }
+            }
+            
             // Custom config section
             Item
             {
@@ -413,6 +389,31 @@ MultipageModal
                             text_value: Style.warningCharacter + " " + qsTr("Warning, this atomic swap is not dPoW protected!")
                         }
                     }
+                }
+            }
+
+            ColumnLayout
+            {
+                id: warnings_text
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
+
+
+                DefaultText
+                {
+                    Layout.alignment: Qt.AlignHCenter
+                    text_value: qsTr("This swap request can not be undone and is a final event!")
+                    font: DexTypo.italic12
+                    color: Dex.CurrentTheme.foregroundColor2
+                }
+
+                DefaultText
+                {
+                    id: warnings_tx_time_text
+                    Layout.alignment: Qt.AlignHCenter
+                    text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
+                    font: DexTypo.italic12
+                    color: Dex.CurrentTheme.foregroundColor2
                 }
             }
 
