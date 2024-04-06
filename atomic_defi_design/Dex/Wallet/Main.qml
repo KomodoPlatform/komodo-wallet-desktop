@@ -688,7 +688,7 @@ Item
                             icon: Qaterial.Icons.vote
                             size: 24
                             anchors.verticalCenter: parent.verticalCenter
-                            color: "#283547"
+                            color: "#2c87b9"
                         }
                     }
                 }
