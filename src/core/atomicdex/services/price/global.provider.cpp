@@ -263,6 +263,11 @@ namespace atomic_dex
     {
         try
         {
+            if (amount == "" || ticker == "" || currency == "")
+            {
+                return "0.00";
+            }
+
             auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
             const auto ticker_infos = mm2_instance.get_coin_info(ticker);

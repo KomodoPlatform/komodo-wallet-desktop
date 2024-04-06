@@ -55,6 +55,10 @@ namespace atomic_dex
             break;
         case orders_model::RelCoinAmountCurrentCurrencyRole:
             break;
+        case orders_model::MinVolumeRole:
+            break;
+        case orders_model::MaxVolumeRole:
+            break;
         case orders_model::OrderTypeRole:
             break;
         case orders_model::IsMakerRole:

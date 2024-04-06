@@ -40,7 +40,6 @@ namespace atomic_dex::mm2
         if (j.contains("result"))
         {
             // Not sure how why where it is being returned in this format
-            SPDLOG_DEBUG("orderbook_result_rpc: result");
             j.at("result").at("rel").get_to(resp.rel);
             j.at("result").at("num_asks").get_to(resp.numasks);
             j.at("result").at("num_bids").get_to(resp.numbids);
@@ -52,7 +51,6 @@ namespace atomic_dex::mm2
         }
         else
         {
-            SPDLOG_DEBUG("orderbook_result_rpc: base");
             j.at("base").get_to(resp.base);
             j.at("rel").get_to(resp.rel);
             j.at("num_asks").get_to(resp.numasks);

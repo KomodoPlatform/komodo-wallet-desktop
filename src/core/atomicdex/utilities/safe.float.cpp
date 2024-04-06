@@ -19,6 +19,10 @@ safe_float(const std::string& from)
 {
     try
     {
+        if (from.empty())
+        {
+            return t_float_50(0);
+        }
         t_float_50 out(boost::algorithm::replace_all_copy(from, ",", "."));
         return out;
     }
