@@ -40,7 +40,6 @@ RowLayout
 {
     id: form
 
-    property alias tickerSelectors: selectors
     property alias trInfo: tradingInfo
     property alias marketsOrderBook: marketsOrderBook
     property alias placeOrderForm: placeOrderForm
@@ -108,29 +107,14 @@ RowLayout
         }
     }
 
-    ColumnLayout
+    // Trading Informations
+    TradingInfo.Main
     {
+        id: tradingInfo
         Layout.alignment: Qt.AlignTop
-        Layout.minimumWidth: selectors.visible || tradingInfo.visible ? 450 : -1
-        Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 450
+        Layout.minimumWidth: tradingInfo.visible ? 450 : -1
+        Layout.maximumWidth: (!marketsOrderBook.visible) || (!placeOrderForm.visible) ? -1 : 450
         Layout.fillHeight: true
-        spacing: 10
-
-        // Ticker selectors.
-        TickerSelectors
-        {
-            id: selectors
-            Layout.fillWidth: true
-            Layout.preferredHeight: 70
-        }
-
-        // Trading Informations
-        TradingInfo.Main
-        {
-            id: tradingInfo
-            Layout.maximumWidth: 450
-            Layout.fillHeight: true
-        }
     }
 
     // Best Orders & Order Book
@@ -153,13 +137,11 @@ RowLayout
         Layout.maximumWidth: 305
         Layout.fillWidth: true
         Layout.fillHeight: true
-
-        resizable: false
     }
 
     ModalLoader
     {
         id: confirm_trade_modal
-        sourceComponent: ConfirmTradeModal {}
+        sourceComponent: ConfirmTradeModal { }
     }
 }

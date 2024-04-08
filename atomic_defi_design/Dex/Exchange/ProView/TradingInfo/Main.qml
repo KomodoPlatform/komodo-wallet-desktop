@@ -5,6 +5,8 @@ import QtQuick.Controls 2.15
 import Qaterial 1.0 as Qaterial
 
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
+import AtomicDEX.MarketMode 1.0
 import "../../../Constants"
 import "../../../Components"
 import "../../Trade"
@@ -13,6 +15,7 @@ import "../../ProView"
 ColumnLayout
 {
     Layout.preferredWidth: 450
+    Layout.fillHeight: true
     property alias currentIndex: tabView.currentIndex
 
     Qaterial.LatoTabBar
@@ -70,7 +73,19 @@ ColumnLayout
             {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                spacing: 10
+                Layout.topMargin: 8
+                spacing: 8
+                
+                // Ticker selectors.
+                TickerSelectors
+                {
+                    id: selectors
+                    Layout.preferredWidth: 435
+                    Layout.preferredHeight: 85
+                    Layout.leftMargin: 8
+                    Layout.rightMargin: 8
+                }
+
                 // Chart
                 Chart
                 {
@@ -91,6 +106,7 @@ ColumnLayout
                     Layout.rightMargin: 5
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    width: 435
                 }
             }
 

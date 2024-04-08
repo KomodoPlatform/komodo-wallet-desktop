@@ -73,16 +73,12 @@ ColumnLayout
             OrderBook.Vertical
             {
                 id: orderBook
-                Layout.fillHeight: true
-                Layout.fillWidth: true
             }
 
             // Best Orders
             BestOrder.List
             {
                 id: bestOrders
-                Layout.fillHeight: true
-                Layout.fillWidth: true
             }
         }
     }

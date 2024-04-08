@@ -169,15 +169,22 @@ Item
             else
             {
                 placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
-                if (API.app.trading_pg.market_mode == MarketMode.Buy)
+                if (!API.app.trading_pg.maker_mode)
                 {
-                    app.pairChanged(coin, rel_ticker)
+                    if (API.app.trading_pg.market_mode == MarketMode.Buy)
+                    {                        
+                        app.pairChanged(coin, rel_ticker)
+                    }
+                    else
+                    {
+                        app.pairChanged(base_ticker, coin)
+                    }
+                    API.app.trading_pg.orderbook.select_best_order(uuid)
                 }
                 else
                 {
-                    app.pairChanged(base_ticker, coin)
+                    setPair(false, coin)
                 }
-                API.app.trading_pg.orderbook.select_best_order(uuid)
             }
         }
     }
