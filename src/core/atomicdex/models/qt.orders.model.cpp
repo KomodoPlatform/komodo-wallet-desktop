@@ -82,6 +82,12 @@ namespace atomic_dex
         case RelCoinAmountCurrentCurrencyRole:
             item.rel_amount_fiat = value.toString();
             break;
+        case MinVolumeRole:
+            item.min_volume = value.toString();
+            break;
+        case MaxVolumeRole:
+            item.max_volume = value.toString();
+            break;
         case OrderTypeRole:
             item.order_type = value.toString();
             break;
@@ -166,6 +172,10 @@ namespace atomic_dex
             return item.rel_amount;
         case RelCoinAmountCurrentCurrencyRole:
             return item.rel_amount_fiat;
+        case MinVolumeRole:
+            return item.min_volume;
+        case MaxVolumeRole:
+            return item.max_volume;
         case OrderTypeRole:
             return item.order_type;
         case HumanDateRole:
@@ -233,6 +243,8 @@ namespace atomic_dex
             {BaseCoinAmountCurrentCurrencyRole, "base_amount_current_currency"},
             {RelCoinAmountRole, "rel_amount"},
             {RelCoinAmountCurrentCurrencyRole, "rel_amount_current_currency"},
+            {MinVolumeRole, "min_volume"},
+            {MaxVolumeRole, "max_volume"},
             {OrderTypeRole, "type"},
             {IsMakerRole, "is_maker"},
             {HumanDateRole, "date"},

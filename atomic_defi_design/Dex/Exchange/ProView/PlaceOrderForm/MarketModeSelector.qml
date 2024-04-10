@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQuick.Layouts 1.15
 
 import App 1.0
 import Dex.Themes 1.0 as Dex
@@ -9,9 +10,10 @@ Rectangle
 {
     property int    marketMode: Dex.MarketMode.Sell
     property string ticker: ""
+    property string protocolIcon: General.platformIcon(General.coinPlatform(left_ticker))
 
     radius: 18
-    opacity: marketMode != API.app.trading_pg.market_mode ? 0.1 : 1
+    opacity: marketMode != API.app.trading_pg.market_mode ? 0.25: 1
 
     gradient: Gradient
     {
@@ -32,15 +34,28 @@ Rectangle
             position: 1
         }
     }
-
-    DefaultText
+    RowLayout
     {
         anchors.centerIn: parent
-        color: API.app.trading_pg.market_mode == marketMode ? Dex.CurrentTheme.gradientButtonTextEnabledColor : Dex.CurrentTheme.foregroundColor
-        text:
+        spacing: 8
+
+        DefaultText
         {
-            if (marketMode == Dex.MarketMode.Sell) qsTr("Sell %1", "TICKER").arg(ticker)
-            else qsTr("Buy %1", "TICKER").arg(ticker)
+            color: API.app.trading_pg.market_mode == marketMode ? Dex.CurrentTheme.gradientButtonTextEnabledColor : Dex.CurrentTheme.foregroundColor
+            text:
+            {
+                if (marketMode == Dex.MarketMode.Sell) qsTr("Sell %1", "TICKER").arg(ticker)
+                else qsTr("Buy %1", "TICKER").arg(ticker)
+            }
+        }
+
+        DefaultImage
+        {
+            id: protocolImg
+            visible: protocolIcon != ""
+            source: protocolIcon
+            Layout.preferredHeight: protocolIcon != "" ? 16 : 0
+            Layout.preferredWidth: Layout.preferredHeight
         }
     }
 

@@ -53,30 +53,30 @@ namespace atomic_dex
             PriceRole = Qt::UserRole + 1, // 257
             CoinRole,
             TotalRole,
-            UUIDRole,
+            UUIDRole,               // 260
             IsMineRole,
             PriceDenomRole,
             PriceNumerRole,
             PercentDepthRole,
-            MinVolumeRole,
+            MinVolumeRole,          // 265
             EnoughFundsToPayMinVolume,
             CEXRatesRole,
             SendRole,
             PriceFiatRole,
-            HaveCEXIDRole,
+            HaveCEXIDRole,          // 270
             BaseMinVolumeRole,
             BaseMinVolumeDenomRole,
             BaseMinVolumeNumerRole,
             BaseMaxVolumeRole,
-            BaseMaxVolumeDenomRole,
+            BaseMaxVolumeDenomRole, // 275
             BaseMaxVolumeNumerRole,
             RelMinVolumeRole,
             RelMinVolumeDenomRole,
             RelMinVolumeNumerRole,
-            RelMaxVolumeRole,
+            RelMaxVolumeRole,      // 280
             RelMaxVolumeDenomRole,
             RelMaxVolumeNumerRole,
-            NameAndTicker
+            NameAndTicker          // 283
         };
 
         orderbook_model(kind orderbook_kind, ag::ecs::system_manager& system_mgr, QObject* parent = nullptr);

@@ -293,7 +293,8 @@ namespace atomic_dex::mm2
                 .is_swap        = false,
                 .is_cancellable = value.at("cancellable").get<bool>(),
                 .is_recoverable = false,
-                .min_volume     = is_maker ? QString::fromStdString(value.at("min_base_vol").get<std::string>()) : std::optional<QString>(std::nullopt),
+                .min_volume     = is_maker ? QString::fromStdString(value.at("min_base_vol").get<std::string>()) : "",
+                .max_volume     = is_maker ? QString::fromStdString(value.at("max_base_vol").get<std::string>()) : "",
                 .conf_settings  = conf_settings};
             if (action.empty() && contents.order_type == "maker")
             {

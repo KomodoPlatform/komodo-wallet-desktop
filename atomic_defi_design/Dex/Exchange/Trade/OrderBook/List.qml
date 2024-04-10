@@ -25,6 +25,7 @@ Item
         clip: true
         reuseItems: true
         spacing: 8
+        opacity: API.app.trading_pg.maker_mode ? 0.6 : 1
 
         onContentHeightChanged:
         {

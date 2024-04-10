@@ -15,7 +15,6 @@
  ******************************************************************************/
 
 //! Deps
-#include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 
 //! Project Headers
@@ -74,6 +73,10 @@ namespace atomic_dex::mm2
         else
         {
             SPDLOG_INFO("The order is not picked from orderbook we create it from volume = {}, price = {}", j.at("volume").dump(4), request.price);
+        }
+        if (request.order_type.has_value())
+        {
+            j["order_type"] = request.order_type.value();
         }
     }
 } // namespace atomic_dex::mm2

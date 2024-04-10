@@ -31,8 +31,7 @@ namespace atomic_dex::mm2
         std::string                rel;
         std::string                price;
         std::string                volume;
-        bool                       max{false};
-        bool                       cancel_previous{false};
+        std::optional<bool>        cancel_previous{false};
         std::optional<bool>        base_nota;
         std::optional<std::size_t> base_confs;
         std::optional<bool>        rel_nota;

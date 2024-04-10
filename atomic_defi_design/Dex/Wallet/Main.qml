@@ -657,6 +657,50 @@ Item
                 }
             }
 
+            // Proposals Button
+            Item
+            {
+                Layout.preferredWidth: 165
+                Layout.preferredHeight: 40
+                visible:  current_ticker_infos.is_vote_coin
+
+                DefaultButton
+                {
+                    enabled: activation_pct == 100
+                    anchors.fill: parent
+                    radius: 18
+                    label.text: qsTr("Vote Info")
+                    label.font.pixelSize: 16
+                    content.anchors.left: content.parent.left
+                    content.anchors.leftMargin: enabled ? 23 : 48
+                    content.anchors.rightMargin: 23
+
+                    onClicked: Qt.openUrlExternally("https://vote.komodoplatform.com/")
+
+                    Row
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 23
+
+                        Qaterial.Icon
+                        {
+                            icon: Qaterial.Icons.vote
+                            size: 24
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "#2c87b9"
+                        }
+                    }
+                }
+
+                // Faucet button error icon
+                DefaultAlertIcon
+                {
+                    visible: activation_pct != 100
+                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_pct + "%")
+                }
+            }
+
             Component.onCompleted: api_wallet_page.claimingFaucetRpcDataChanged.connect(onClaimFaucetRpcResultChanged)
             Component.onDestruction: api_wallet_page.claimingFaucetRpcDataChanged.disconnect(onClaimFaucetRpcResultChanged)
             function onClaimFaucetRpcResultChanged() { claimFaucetResultModal.open() }

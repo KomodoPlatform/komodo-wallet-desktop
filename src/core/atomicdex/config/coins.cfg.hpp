@@ -67,6 +67,7 @@ namespace atomic_dex
         bool                                              has_memos{false};
         bool                                              is_custom_coin{false};
         bool                                              is_faucet_coin{false};
+        bool                                              is_vote_coin{false};
         bool                                              currently_enabled{false};
         bool                                              has_parent_fees_ticker{false}; ///< True if parent fees is different from current ticker eg: ERC20 tokens
         bool                                              is_erc_family{false};
@@ -102,5 +103,6 @@ namespace atomic_dex
     bool is_wallet_only(std::string ticker);
     bool is_default_coin(std::string ticker);
     bool is_faucet_coin(std::string ticker);
+    bool is_vote_coin(std::string ticker);
 
 } // namespace atomic_dex

@@ -24,10 +24,20 @@ DexRectangle
     property int padding: 0
     property alias middle_text: middle_line.text_value
     property alias bottom_text: bottom_line.text_value
+    property bool is_left: false
     Layout.fillHeight: true
     Layout.fillWidth: true
     Layout.leftMargin: 10
     Layout.rightMargin: 20
+
+    Dex.Text{
+        anchors.bottom: parent.top
+        anchors.bottomMargin: 5
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: is_left ? "Outgoing" : "Incoming"
+        font: Dex.DexTypo.italic12
+        color: Dex.CurrentTheme.foregroundColor2
+    }
 
     RowLayout
     {
