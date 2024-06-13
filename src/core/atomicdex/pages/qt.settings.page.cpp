@@ -226,6 +226,20 @@ namespace atomic_dex
         }
     }
 
+    bool atomic_dex::settings_page::is_postorder_enabled() const
+    {
+        return m_config.postorder_enabled;
+    }
+
+    void settings_page::set_postorder_enabled(bool is_enabled)
+    {
+        if (m_config.postorder_enabled != is_enabled)
+        {
+            change_postorder_status(m_config, is_enabled);
+            emit onPostOrderEnabledChanged();
+        }
+    }
+
     bool atomic_dex::settings_page::is_notification_enabled() const
     {
         return m_config.notification_enabled;

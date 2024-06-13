@@ -102,7 +102,11 @@ RowLayout
                            General.prettifyJSON(response.result), false)
 
                 General.prevent_coin_disabling.restart()
-                tradingInfo.currentIndex = 1
+                // Show the orders tab unless settings say otherwise
+                if (API.app.settings_pg.postorder_enabled)
+                {
+                    tradingInfo.currentIndex = 1
+                }
             }
         }
     }
