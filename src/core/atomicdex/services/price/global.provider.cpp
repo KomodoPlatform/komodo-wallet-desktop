@@ -182,7 +182,7 @@ namespace atomic_dex
                 {
                     if (current_price_f < 1.0)
                     {
-                        default_precision = 5;
+                        default_precision = 8;
                     }
                 }
                 //! Trick: If there conversion in a fixed representation is 0.00 then use a default precision to 2 without fixed ios flags
