@@ -675,7 +675,10 @@ Item
                     content.anchors.leftMargin: enabled ? 23 : 48
                     content.anchors.rightMargin: 23
 
-                    onClicked: Qt.openUrlExternally("https://vote.komodoplatform.com/")
+                    onClicked: {
+                        let url = "https://vote.komodoplatform.com/" + api_wallet_page.ticker.toLowerCase();
+                        Qt.openUrlExternally(url);
+                    }
 
                     Row
                     {
