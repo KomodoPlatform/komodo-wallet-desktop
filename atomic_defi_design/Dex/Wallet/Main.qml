@@ -676,7 +676,7 @@ Item
                     content.anchors.rightMargin: 23
 
                     onClicked: {
-                        let url = "https://vote.komodoplatform.com/" + api_wallet_page.ticker.toLowerCase();
+                        let url = "https://vote.komodoplatform.com/" + api_wallet_page.ticker.toLowerCase() + "/";
                         Qt.openUrlExternally(url);
                     }
 
