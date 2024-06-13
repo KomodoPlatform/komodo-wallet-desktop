@@ -12,7 +12,6 @@ Item
     id: _control
 
     property bool isAsk
-    property bool isVertical: false
     width: parent.width
     height: parent.height
 
@@ -29,7 +28,11 @@ Item
 
         onContentHeightChanged:
         {
-            if (isVertical) _tm.start();
+            if (isAsk){
+                // Duplication is intended. Sometimes data takes too long to load so slowscroll is a backup. 
+                slowscroll_timer.start();
+                quickscroll_timer.start()
+            } 
         }
 
         delegate: Item
@@ -47,12 +50,37 @@ Item
 
         Timer
         {
-            id: _tm
-            interval: 2000
+            id: slowscroll_timer
+            interval: 1500
             onTriggered:
             {
                 orderbook_list.positionViewAtEnd()
             }
+        }
+        Timer
+        {
+            id: quickscroll_timer
+            interval: 500
+            onTriggered:
+            {
+                orderbook_list.positionViewAtEnd()
+            }
+        }
+        onModelChanged: {
+            if (isAsk) quickscroll_timer.start()
+        }
+    }
+
+    Connections {
+        target: API.app.trading_pg
+        onMarketModeChanged: {
+            if (isAsk)  quickscroll_timer.start()
+        }
+        onOrderbookChanged: {
+            if (isAsk)  quickscroll_timer.start()
+        }
+        onMarketPairsChanged: {
+            if (isAsk)  quickscroll_timer.start()
         }
     }
 }
