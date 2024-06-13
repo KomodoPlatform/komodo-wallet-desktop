@@ -12,6 +12,7 @@ namespace atomic_dex
         g_second_primary_dex_coin,
         "BTC-segwit",
         "DGB-segwit",
+        "VOTE2024",
     };
     inline const std::vector<std::string> g_faucet_coins{
         "DOC",
