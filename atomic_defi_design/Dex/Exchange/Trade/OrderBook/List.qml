@@ -73,13 +73,14 @@ Item
 
     Connections {
         target: API.app.trading_pg
-        onMarketModeChanged: {
+
+        function onMarketModeChanged: {
             if (isAsk)  quickscroll_timer.start()
         }
-        onOrderbookChanged: {
+        function onOrderbookChanged: {
             if (isAsk)  quickscroll_timer.start()
         }
-        onMarketPairsChanged: {
+        function onMarketPairsChanged: {
             if (isAsk)  quickscroll_timer.start()
         }
     }
