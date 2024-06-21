@@ -99,15 +99,18 @@ namespace atomic_dex
     global_price_service::refresh_other_coins_rates(
         const std::string& quote_id, const std::string& ticker, bool with_update_providers, std::atomic_uint16_t nb_try)
     {
-        // nb_try += 1;
-        // TODO: Paprika price conversion removed, needs to be replaced
-        nb_try = 10;
-        SPDLOG_INFO("refresh_other_coins_rates - try {}", nb_try.load());
-        if (nb_try == 10)
+        t_float_50 price = safe_float(get_rate_conversion("USD", ticker, true));
+        if (price <= 0)
         {
-            SPDLOG_WARN("refresh other coins rates max try reached, skipping");
-            return;
+            SPDLOG_ERROR("Price is 0 for ticker: {}", ticker);
+            this->m_coin_rate_providers[ticker] = "0.00";
         }
+        else
+        {
+            t_float_50 rate = 1 / price;
+            this->m_coin_rate_providers[ticker] = rate.str();
+        }
+        
     }
 
     global_price_service::global_price_service(entt::registry& registry, ag::ecs::system_manager& system_manager, atomic_dex::cfg& cfg) :
@@ -140,14 +143,14 @@ namespace atomic_dex
     {
         if (fiat == utils::retrieve_main_ticker(ticker_in))
         {
-            return "1";
+            return "1.00";
         }
         std::string ticker =  utils::retrieve_main_ticker(ticker_in);
         try
         {
             //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
             if (ticker.empty())
-                return "0";
+                return "0.00";
             auto&       provider        = m_system_manager.get_system<komodo_prices_provider>();
             std::string current_price   = provider.get_rate_conversion(ticker);
 
