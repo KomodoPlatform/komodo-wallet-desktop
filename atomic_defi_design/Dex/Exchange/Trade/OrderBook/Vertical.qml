@@ -29,7 +29,6 @@ Widget
     List
     {
         isAsk: true
-        isVertical: true
         Layout.fillHeight: true
         Layout.fillWidth: true
     }

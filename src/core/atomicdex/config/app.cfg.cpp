@@ -50,6 +50,7 @@ namespace
         config_json_data["available_signs"]         = config.available_currency_signs;
         config_json_data["notification_enabled"]    = config.notification_enabled;
         config_json_data["spamfilter_enabled"]      = config.spamfilter_enabled;
+        config_json_data["postorder_enabled"]       = config.postorder_enabled;
         config_json_data["static_rpcpass_enabled"]  = config.static_rpcpass_enabled;
 
         file.close();
@@ -85,6 +86,15 @@ namespace atomic_dex
             config.spamfilter_enabled = true;
         }
 
+        if (j.contains("postorder_enabled"))
+        {
+            j.at("postorder_enabled").get_to(config.postorder_enabled);
+        }
+        else
+        {
+            config.postorder_enabled = true;
+        }
+
         if (j.contains("static_rpcpass_enabled"))
         {
             j.at("static_rpcpass_enabled").get_to(config.static_rpcpass_enabled);
@@ -101,6 +111,16 @@ namespace atomic_dex
         if (config.notification_enabled != is_enabled)
         {
             config.notification_enabled = is_enabled;
+            upgrade_cfg(config);
+        }
+    }
+
+    void
+    change_postorder_status(cfg& config, bool is_enabled)
+    {
+        if (config.postorder_enabled != is_enabled)
+        {
+            config.postorder_enabled = is_enabled;
             upgrade_cfg(config);
         }
     }

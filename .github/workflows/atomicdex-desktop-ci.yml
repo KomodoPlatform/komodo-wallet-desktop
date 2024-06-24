@@ -17,7 +17,7 @@ env:
   DEX_PROJECT_NAME: "komodo-wallet"
   DEX_DISPLAY_NAME: "Komodo Wallet"
   DEX_COMPANY: "KomodoPlatform"
-  DEX_VERSION: "0.7.1"
+  DEX_VERSION: "0.7.2"
   DEX_WEBSITE: "https://atomicdex.io/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
@@ -68,13 +68,13 @@ jobs:
             host: 'mac'
 
           - name: windows-release
-            os: windows-latest
+            os: windows-2019
             qt: '5.15.2'
             type: 'Release'
             host: 'windows'
 
           - name: windows-debug
-            os: windows-latest
+            os: windows-2019
             qt: '5.15.2'
             type: 'Debug'
             host: 'windows'
