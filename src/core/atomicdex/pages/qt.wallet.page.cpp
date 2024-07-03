@@ -269,6 +269,7 @@ namespace atomic_dex
             {"transactions_left", 0},
             {"current_block", 1},
             {"is_faucet_coin", false},
+            {"is_vote_coin", false},
             {"qrcode_address", ""},
             {"segwit_supported", false}};
         std::error_code ec;
@@ -303,6 +304,7 @@ namespace atomic_dex
             obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
             obj["current_block"]                      = static_cast<qint64>(tx_state.current_block);
             obj["is_faucet_coin"]                     = coin_info.is_faucet_coin;
+            obj["is_vote_coin"]                       = coin_info.is_vote_coin;
 
             std::error_code   ec;
             if (!mm2_system.is_zhtlc_coin_ready(coin_info.ticker))
@@ -733,7 +735,7 @@ namespace atomic_dex
 
             nlohmann::json json_data = mm2::template_request("withdraw", true);
             mm2::to_json(json_data, withdraw_req);
-            SPDLOG_DEBUG("final json: {}", json_data.dump(4));
+
             batch.push_back(json_data);
 
             std::string amount_std = amount.toStdString();

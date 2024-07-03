@@ -3019,7 +3019,7 @@ namespace atomic_dex
         const coin_config_t            cfg = this->get_coin_info(ticker);
         if (cfg.coin_type == CoinType::QRC20)
         {
-            if (cfg.is_testnet.value())
+            if (cfg.is_testnet.value_or(false))
             {
                 SPDLOG_INFO("{} is from testnet picking tQTUM electrum", ticker);
                 servers = std::move(get_coin_info("tQTUM").electrum_urls.value());

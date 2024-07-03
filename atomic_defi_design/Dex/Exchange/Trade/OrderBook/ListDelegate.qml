@@ -35,6 +35,7 @@ Item
                 color: Qaterial.Colors.amber
             }
 
+            // Insufficient funds tooltip
             DexLabel
             {
                 id: tooltip_text
@@ -44,6 +45,10 @@ Item
                 {
                     if (mouse_area.containsMouse)
                     {
+                        if (API.app.trading_pg.maker_mode)
+                        {
+                            return qsTr("Orderbook is disabled while creating maker orders")
+                        }
                         let relMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.rel_max_taker_vol.decimal);
                         let baseMaxTakerVol = parseFloat(API.app.trading_pg.orderbook.base_max_taker_vol.decimal);
 
@@ -101,9 +106,11 @@ Item
         anchors.fill: parent
         hoverEnabled: true
 
+        // Populate form with selected order
         onClicked:
         {
             if (is_mine) return
+            if (API.app.trading_pg.maker_mode) return
 
             if (enough_funds_to_pay_min_volume )
             {
@@ -119,6 +126,7 @@ Item
             }
         }
 
+        // Highlight row on mouseover
         AnimatedRectangle
         {
             visible: mouse_area.containsMouse
@@ -126,16 +134,6 @@ Item
             height: parent.height
             color: Dex.CurrentTheme.foregroundColor
             opacity: 0.1
-        }
-
-        Rectangle
-        {
-            anchors.verticalCenter: parent.verticalCenter
-            width: 6
-            height: 6
-            radius: width / 2
-            visible: is_mine
-            color: isAsk ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
         }
 
         // Progress bar
@@ -161,98 +159,111 @@ Item
             }
         }
 
-        Row
+        // Price, Qty & Total text values
+        RowLayout
         {
             id: row
             anchors.fill: parent
-            anchors.horizontalCenter: parent.horizontalCenter
             onWidthChanged: progress.width = ((depth * 100) * (width + 40)) / 100
-            spacing: 0
+            spacing: 3
 
+            // Dot on the left side of the row to indicate own order
+            Rectangle
+            {
+                Layout.leftMargin: 6
+                Layout.alignment: Qt.AlignVCenter
+                opacity: is_mine ? 1 : 0
+                width: 6
+                height: 6
+                radius: 3
+                color: isAsk ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
+            }
+
+            // Price
             Dex.ElidableText
             {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width * 0.31
+                Layout.fillHeight: true
+                Layout.minimumWidth: 90
+                Layout.alignment: Qt.AlignVCenter
                 text: { new BigNumber(price).toFixed(8) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 color: isAsk ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
                 horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.NoWrap
             }
-
-            Item { width: parent.width * 0.01 }
 
             // Quantity
             Dex.ElidableText
             {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width * 0.37
+                Layout.fillHeight: true
+                Layout.minimumWidth: 90
+                Layout.alignment: Qt.AlignVCenter
                 text: { new BigNumber(base_max_volume).toFixed(6) }
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
                 onTextChanged: depth_bar.width = ((depth * 100) * (mouse_area.width + 40)) / 100
                 wrapMode: Text.NoWrap
             }
 
-            Item { width: parent.width * 0.01 }
-
             // Total
             Dex.ElidableText
             {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width * 0.30
-                rightPadding: (is_mine) && (mouse_area.containsMouse || cancel_button.containsMouse) ? 30 : 0
+                id: total_text
+                Layout.fillHeight: true
+                Layout.minimumWidth: 90
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 text: { new BigNumber(total).toFixed(6) }
                 horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.NoWrap
-
-                Behavior on rightPadding { NumberAnimation { duration: 150 } }
             }
-        }
-    }
 
-    Qaterial.ColorIcon
-    {
-        id: cancel_button_text
-        property bool requested_cancel: false
 
-        visible: is_mine && !requested_cancel
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: 1
-        anchors.right: parent.right
-        anchors.rightMargin:  mouse_area.containsMouse || cancel_button.containsMouse ? 12 : 6
-
-        Behavior on iconSize
-        {
-            NumberAnimation
+            // Cancel button
+            Item
             {
-                duration: 200
-            }
-        }
+                id: cancel_flat_btn
+                Layout.fillHeight: true
+                width: 30
+                Layout.alignment: Qt.AlignVCenter
 
-        iconSize: mouse_area.containsMouse || cancel_button.containsMouse? 16 : 0
+                MouseArea
+                {
+                    id: cancel_mouse_area
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+                }
 
-        color: cancel_button.containsMouse ?
-            Qaterial.Colors.red : mouse_area.containsMouse ?
-            DexTheme.foregroundColor: Qaterial.Colors.red
+                Qaterial.FlatButton
+                {
+                    id: cancel_button_orderbook
+                    anchors.centerIn: parent
+                    anchors.fill: parent
+                    opacity: is_mine ? 1 : 0
 
-        DefaultMouseArea
-        {
-            id: cancel_button
-            anchors.fill: parent
-            hoverEnabled: true
+                    onClicked: {
+                        if (uuid) cancelOrder(uuid);
+                    }
 
-            onClicked:
-            {
-                if (!is_mine) return
-
-                cancel_button_text.requested_cancel = true
-                cancelOrder(uuid)
+                    Qaterial.ColorIcon
+                    {
+                        anchors.centerIn: parent
+                        iconSize: 16
+                        color: Dex.CurrentTheme.warningColor
+                        source: Qaterial.Icons.close
+                        visible: is_mine
+                        scale: is_mine && mouse_area.containsMouse ? 1 : 0
+                        Behavior on scale { NumberAnimation { duration: 150 } }
+                    }
+                }
             }
         }
     }

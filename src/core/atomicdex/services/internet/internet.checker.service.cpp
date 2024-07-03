@@ -32,7 +32,6 @@ namespace
         return cfg;
     }()};
 
-    t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"), g_cfg)};
     std::atomic_bool  g_mm2_default_coins_ready{false};
 
     pplx::task<web::http::http_response>
@@ -164,7 +163,7 @@ namespace atomic_dex
     void
     internet_service_checker::fetch_internet_connection()
     {
-        //query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_paprika_provider_alive);
+        // TODO: This is only checking mm2 connection, not connection to the internet.
         if (this->m_system_manager.has_system<mm2_service>() && g_mm2_default_coins_ready)
         {
             auto& mm2 = this->m_system_manager.get_system<mm2_service>();

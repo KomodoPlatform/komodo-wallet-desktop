@@ -482,6 +482,32 @@ Qaterial.Dialog
                                     }
                                 }
                             }
+                            
+                            // Post-order placement toggle
+                            RowLayout
+                            {
+                                width: parent.width - 30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+
+                                DexLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
+                                    text: qsTr("Show orders after placement")
+                                }
+
+                                Item { Layout.fillWidth: true }
+
+                                DexSwitch
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Component.onCompleted: checked = API.app.settings_pg.postorder_enabled
+                                    onCheckedChanged: API.app.settings_pg.postorder_enabled = checked
+                                }
+                            }
+
                         }
                     }
                     Item

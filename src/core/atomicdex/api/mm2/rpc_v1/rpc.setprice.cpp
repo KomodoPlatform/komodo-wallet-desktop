@@ -28,8 +28,10 @@ namespace atomic_dex::mm2
         j["price"]           = request.price;
         j["rel"]             = request.rel;
         j["volume"]          = request.volume;
-        j["cancel_previous"] = request.cancel_previous;
-        j["max"]             = request.max;
+        if (request.cancel_previous.has_value())
+        {
+            j["cancel_previous"] = request.cancel_previous.value();
+        }
         if (request.base_nota.has_value())
         {
             j["base_nota"] = request.base_nota.value();

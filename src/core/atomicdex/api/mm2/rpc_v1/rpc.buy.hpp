@@ -21,7 +21,7 @@
 #include <string>
 
 //! Deps
-#include <nlohmann/json_fwd.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project Header
 #include <atomicdex/api/mm2/trading.order.contents.hpp>
@@ -43,7 +43,9 @@ namespace atomic_dex::mm2
         bool                       selected_order_use_input_volume{false};
         std::optional<bool>        base_nota{std::nullopt};
         std::optional<std::size_t> base_confs{std::nullopt};
+        // bool                       is_max;
         std::optional<std::string> min_volume{std::nullopt};
+        std::optional<nlohmann::json> order_type;
     };
 
     void to_json(nlohmann::json& j, const buy_request& request);

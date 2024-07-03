@@ -155,23 +155,34 @@ namespace atomic_dex
             case orderbook_model::kind::bids:
                 break;
             case orderbook_model::kind::best_orders:
-                t_float_50  rates      = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
-                t_float_50  fiat_price = safe_float(this->sourceModel()->data(idx, orderbook_model::PriceFiatRole).toString().toStdString());
-                std::string ticker     = this->sourceModel()->data(idx, orderbook_model::CoinRole).toString().toStdString();
-                const auto& provider   = this->m_system_mgr.get_system<komodo_prices_provider>();
-                const auto  coin_info  = this->m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(ticker);
                 t_float_50  limit("10000");
+                t_float_50  rates               = safe_float(this->sourceModel()->data(idx, orderbook_model::CEXRatesRole).toString().toStdString());
+                t_float_50  fiat_price          = safe_float(this->sourceModel()->data(idx, orderbook_model::PriceFiatRole).toString().toStdString());
                 bool        is_cex_id_available = this->sourceModel()->data(idx, orderbook_model::HaveCEXIDRole).toBool();
-                const auto  volume = provider.get_total_volume(utils::retrieve_main_ticker(ticker));
+                const auto& provider            = this->m_system_mgr.get_system<komodo_prices_provider>();
+                std::string ticker              = this->sourceModel()->data(idx, orderbook_model::CoinRole).toString().toStdString();
+                const auto  coin_info           = this->m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(ticker);
+                const auto  volume              = provider.get_total_volume(utils::retrieve_main_ticker(ticker));
+                std::string left_ticker         = this->m_system_mgr.get_system<trading_page>().get_market_pairs_mdl()->get_left_selected_coin().toStdString();
+                const auto  left_coin_info      = this->m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(left_ticker);
+
                 if (coin_info.ticker.empty() || coin_info.wallet_only) //< this means it's not present in our cfg - skipping
                 {
+                    return false;
+                }
+                if (left_coin_info.is_testnet.value_or(false))
+                {
+                    if (coin_info.is_testnet.value_or(false))
+                    {
+                        return true;
+                    }
                     return false;
                 }
                 if (is_cex_id_available && (rates > 100 || fiat_price <= 0 || ((safe_float(volume) < limit) && coin_info.coin_type != CoinType::SmartChain)))
                 {
                     return false;
                 }
-                break;
+                return true;
             }
         }
 

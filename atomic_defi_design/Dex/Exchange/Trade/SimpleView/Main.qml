@@ -29,7 +29,10 @@ Item
         target: exchange_trade
         function onOrderPlaced()
         {
-            currentSubPage = subPages.Orders
+            if (API.app.settings_pg.postorder_enabled)
+            {
+                currentSubPage = subPages.Orders
+            }
         }
     }
 

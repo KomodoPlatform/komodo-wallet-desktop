@@ -19,12 +19,16 @@ safe_float(const std::string& from)
 {
     try
     {
+        if (from.empty())
+        {
+            return t_float_50(0);
+        }
         t_float_50 out(boost::algorithm::replace_all_copy(from, ",", "."));
         return out;
     }
     catch (const std::exception& error)
     {
-        SPDLOG_ERROR("exception caught when creating a floating point number: {}", error.what());
+        SPDLOG_ERROR("exception caught when creating a floating point number from {}: {}", from, error.what());
 //#if defined(linux) || defined(__APPLE__)
 //        SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
 //#endif

@@ -18,13 +18,13 @@ Dex.ComboBoxWithSearchBar
     property string ticker
     property bool   index_changed: false
     
-    height: 70
+    height: 85
     enabled: !block_everything
 
     textRole: "ticker"
     valueRole: "ticker"
 
-    popupMaxHeight: Math.min(model.rowCount() * 70 + 70, 600)
+    popupMaxHeight: Math.min(model.rowCount() * 85 + 85, 600)
     popupForceMaxHeight: true
 
     searchBar.visible: true
@@ -34,7 +34,7 @@ Dex.ComboBoxWithSearchBar
     {
         id: _delegate
         width: control.width
-        height: visible ? 70 : 0
+        height: visible ? 85 : 0
         highlighted: control.highlightedIndex === index
 
         contentItem: DexComboBoxLine { details: model }
@@ -52,7 +52,7 @@ Dex.ComboBoxWithSearchBar
         property int update_count: 0
         property var prev_details
 
-        padding: 10
+        padding: 8
 
         function forceUpdateDetails()
         {

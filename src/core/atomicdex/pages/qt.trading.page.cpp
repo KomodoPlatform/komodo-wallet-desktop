@@ -21,6 +21,7 @@
 //! Project Headers
 #include "atomicdex/api/mm2/rpc_v1/rpc.buy.hpp"
 #include "atomicdex/api/mm2/rpc_v1/rpc.sell.hpp"
+#include "atomicdex/api/mm2/rpc_v1/rpc.setprice.hpp"
 #include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
@@ -138,7 +139,91 @@ namespace atomic_dex
     }
 
     void
-    trading_page::place_buy_order(const QString& base_nota, const QString& base_confs)
+    trading_page::place_setprice_order(const QString& base_nota, const QString& base_confs, const QString& cancel_previous)
+    {
+        this->set_buy_sell_rpc_busy(true);
+        this->set_buy_sell_last_rpc_data(QJsonObject{{}});
+
+        auto&       mm2_system        = m_system_manager.get_system<mm2_service>();
+        const auto* market_selector   = get_market_pairs_mdl();
+        const auto& base              = market_selector->get_left_selected_coin();
+        const auto& rel               = market_selector->get_right_selected_coin();
+        t_float_50 rel_min_trade    = safe_float(get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString());
+        t_float_50 rel_min_volume_f = safe_float(get_min_trade_vol().toStdString());
+
+        t_setprice_request req{
+            .base                     = base.toStdString(),
+            .rel                      = rel.toStdString(),
+            .price                    = m_price.toStdString(),
+            .volume                   = m_volume.toStdString(),
+            .cancel_previous          = cancel_previous == "true",
+            .base_nota                = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
+            .base_confs               = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
+            .min_volume               = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_min_trade_vol().toStdString()
+        };
+        
+        nlohmann::json batch;
+        nlohmann::json setprice_request = mm2::template_request("setprice");
+        mm2::to_json(setprice_request, req);
+        batch.push_back(setprice_request);
+        setprice_request["userpass"] = "*******";
+
+        //! Answer
+        SPDLOG_DEBUG("setprice_request is : {}", setprice_request.dump(4));
+        auto answer_functor = [this](const web::http::http_response& resp)
+        {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == web::http::status_codes::OK)
+            {
+                if (body.find("error") == std::string::npos)
+                {
+                    auto           answers = nlohmann::json::parse(body);
+                    nlohmann::json answer  = answers[0];
+                    this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
+                    auto& cur_mm2_system = m_system_manager.get_system<mm2_service>();
+                    SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
+                    cur_mm2_system.batch_fetch_orders_and_swap();
+                }
+                else
+                {
+                    auto error_json = QJsonObject({{"error_code", -1}, {"error_message", QString::fromStdString(body)}});
+                    SPDLOG_ERROR("error place_setprice_order: {}", body);
+                    this->set_buy_sell_last_rpc_data(error_json);
+                }
+            }
+            else
+            {
+                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                this->set_buy_sell_last_rpc_data(error_json);
+            }
+            this->set_buy_sell_rpc_busy(false);
+            this->clear_forms("place_setprice_order");
+        };
+
+        //! Async call
+        mm2_system.get_mm2_client()
+            .async_rpc_batch_standalone(batch)
+            .then(answer_functor)
+            .then(
+                [this]([[maybe_unused]] pplx::task<void> previous_task)
+                {
+                    try
+                    {
+                        previous_task.wait();
+                    }
+                    catch (const std::exception& e)
+                    {
+                        SPDLOG_ERROR("pplx task error: {}", e.what());
+                        auto error_json = QJsonObject({{"error_code", web::http::status_codes::InternalError}, {"error_message", e.what()}});
+                        this->set_buy_sell_last_rpc_data(error_json);
+                        this->set_buy_sell_rpc_busy(false);
+                        this->clear_forms("place_setprice_order");
+                    }
+                });
+    }
+
+    void
+    trading_page::place_buy_order(const QString& base_nota, const QString& base_confs, const QString& good_until_canceled)
     {
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
@@ -177,6 +262,19 @@ namespace atomic_dex
             .base_nota                      = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs                     = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt(),
             .min_volume = (rel_min_volume_f <= rel_min_trade) ? std::optional<std::string>{std::nullopt} : get_min_trade_vol().toStdString()};
+
+        if (good_until_canceled == "true")
+        {
+            SPDLOG_DEBUG("Good until cancelled order");
+            req.order_type                 = nlohmann::json::object();
+            req.order_type.value()["type"] = "GoodTillCancelled";
+        }
+        else
+        {
+            SPDLOG_DEBUG("Fill or kill order");
+            req.order_type                 = nlohmann::json::object();
+            req.order_type.value()["type"] = "FillOrKill";
+        }
 
         if (is_selected_min_max || is_selected_order)
         {
@@ -269,7 +367,7 @@ namespace atomic_dex
     }
 
     void
-    trading_page::place_sell_order(const QString& rel_nota, const QString& rel_confs)
+    trading_page::place_sell_order(const QString& rel_nota, const QString& rel_confs, const QString& good_until_canceled)
     {
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
@@ -311,6 +409,18 @@ namespace atomic_dex
             req.order_type                 = nlohmann::json::object();
             req.order_type.value()["type"] = "FillOrKill";
             req.min_volume                 = std::optional<std::string>{std::nullopt};
+        }
+        else if (good_until_canceled == "true")
+        {
+            SPDLOG_DEBUG("Good until cancelled order");
+            req.order_type                 = nlohmann::json::object();
+            req.order_type.value()["type"] = "GoodTillCancelled";
+        }
+        else
+        {
+            SPDLOG_DEBUG("Fill or kill order");
+            req.order_type                 = nlohmann::json::object();
+            req.order_type.value()["type"] = "FillOrKill";
         }
 
         if (is_selected_min_max)
@@ -602,6 +712,23 @@ namespace atomic_dex
 //! Properties related to trading
 namespace atomic_dex
 {
+    bool
+    trading_page::get_maker_mode() const
+    {
+        return m_maker_mode;
+    }
+
+    void
+    trading_page::set_maker_mode(bool market_mode)
+    {
+        if (this->m_maker_mode != market_mode)
+        {
+            this->m_maker_mode = market_mode;
+            emit makerModeChanged();
+            this->set_market_mode(MarketMode::Sell);
+        }
+    }
+
     MarketMode
     trading_page::get_market_mode() const
     {
@@ -708,6 +835,7 @@ namespace atomic_dex
         this->m_preferred_order  = std::nullopt;
         this->m_fees             = QVariantMap();
         this->m_cex_price        = "0";
+        this->m_pair_trades_24hr = "0";
         this->m_pair_volume_24hr = "0";
         this->m_post_clear_forms = true;
         this->set_selected_order_status(SelectedOrderStatus::None);
@@ -1394,13 +1522,22 @@ namespace atomic_dex
         const auto* market_selector     = get_market_pairs_mdl();
         const auto& base                = utils::retrieve_main_ticker(market_selector->get_left_selected_coin().toStdString(), true);
         const auto& rel                 = utils::retrieve_main_ticker(market_selector->get_right_selected_coin().toStdString(), true);
+        QString trades                  = QString::fromStdString(defi_stats_service.get_trades_24h(base, rel));
         QString vol                     = QString::fromStdString(defi_stats_service.get_volume_24h_usd(base, rel));
 
         if (vol != m_pair_volume_24hr)
         {
+            m_pair_trades_24hr = trades;
+            emit pairTrades24hrChanged();
             m_pair_volume_24hr = vol;
             emit pairVolume24hrChanged();
         }        
+    }
+
+    QString
+    trading_page::get_pair_trades_24hr() const
+    {
+        return m_pair_trades_24hr;
     }
 
     QString

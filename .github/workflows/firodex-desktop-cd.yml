@@ -9,7 +9,7 @@ env:
   DEX_PROJECT_NAME: "firodex-desktop"
   DEX_DISPLAY_NAME: "FiroDex Desktop"
   DEX_COMPANY: "Firo Core Team"
-  DEX_VERSION: "0.7.1"
+  DEX_VERSION: "0.7.2"
   DEX_WEBSITE: "https://firo.org/"
 
 jobs:
@@ -374,7 +374,7 @@ jobs:
 
   windows-release:
     name: Win Build/Release
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
       - uses: actions/checkout@v2
@@ -452,7 +452,7 @@ jobs:
 
   windows-debug:
     name: Win Build/Debug
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
       - uses: actions/checkout@v2
