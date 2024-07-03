@@ -45,7 +45,7 @@ namespace atomic_dex
 
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
-        if (s >= 1s)
+        if (s >= 15s)
         {
             // TODO: We could use this for an ETA
         }

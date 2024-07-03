@@ -50,6 +50,7 @@ namespace
         config_json_data["available_signs"]         = config.available_currency_signs;
         config_json_data["notification_enabled"]    = config.notification_enabled;
         config_json_data["spamfilter_enabled"]      = config.spamfilter_enabled;
+        config_json_data["postorder_enabled"]       = config.postorder_enabled;
         config_json_data["static_rpcpass_enabled"]  = config.static_rpcpass_enabled;
 
         file.close();
@@ -85,6 +86,15 @@ namespace atomic_dex
             config.spamfilter_enabled = true;
         }
 
+        if (j.contains("postorder_enabled"))
+        {
+            j.at("postorder_enabled").get_to(config.postorder_enabled);
+        }
+        else
+        {
+            config.postorder_enabled = true;
+        }
+
         if (j.contains("static_rpcpass_enabled"))
         {
             j.at("static_rpcpass_enabled").get_to(config.static_rpcpass_enabled);
@@ -101,6 +111,16 @@ namespace atomic_dex
         if (config.notification_enabled != is_enabled)
         {
             config.notification_enabled = is_enabled;
+            upgrade_cfg(config);
+        }
+    }
+
+    void
+    change_postorder_status(cfg& config, bool is_enabled)
+    {
+        if (config.postorder_enabled != is_enabled)
+        {
+            config.postorder_enabled = is_enabled;
             upgrade_cfg(config);
         }
     }
@@ -165,7 +185,7 @@ namespace atomic_dex
         //! If it's fiat, i set the first element of the possible currencies to the new currency (the new fiat here) and i also set the current fiat
         if (is_this_currency_a_fiat(config, new_currency))
         {
-            SPDLOG_INFO("{} is fiat, setting it as current fiat and possible currencies", new_currency);
+            // SPDLOG_INFO("{} is fiat, setting it as current fiat and possible currencies", new_currency);
             config.current_fiat              = new_currency;
             config.current_fiat_sign         = config.current_currency_sign;
             config.possible_currencies[0]    = new_currency;
@@ -173,11 +193,11 @@ namespace atomic_dex
 
             if (std::count(config.recommended_fiat.begin(), config.recommended_fiat.end(), new_currency))
             {
-                SPDLOG_INFO("{} is already in recommended fiats", new_currency);
+                // SPDLOG_INFO("{} is already in recommended fiats", new_currency);
                 update_recommended_fiat = false;
             }
             if (update_recommended_fiat) {
-                SPDLOG_INFO("Adding {} to recommended fiats", new_currency);
+                // SPDLOG_INFO("Adding {} to recommended fiats", new_currency);
                 config.recommended_fiat.pop_back();
                 config.recommended_fiat.insert(config.recommended_fiat.begin(), new_currency);
             }

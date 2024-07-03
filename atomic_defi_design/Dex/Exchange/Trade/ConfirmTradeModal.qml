@@ -17,8 +17,9 @@ MultipageModal
     id: root
     readonly property var fees: API.app.trading_pg.fees
     width: 720
-    horizontalPadding: 20
-    verticalPadding: 20
+    height: window.height - 80
+    horizontalPadding: 10
+    verticalPadding: 10
     closePolicy: Popup.NoAutoClose
 
     MultipageModalContent
@@ -28,7 +29,7 @@ MultipageModal
         titleAlignment: Qt.AlignHCenter
         titleTopMargin: 0
         topMarginAfterTitle: 10
-        flickMax: window.height - 480
+        flickMax: window.height - 385
 
         header: [
             RowLayout
@@ -43,6 +44,7 @@ MultipageModal
                 PairItemBadge
                 {
                     ticker: base_ticker
+                    is_left: true
                     fullname: General.coinName(base_ticker)
                     amount: base_amount
                     Layout.fillHeight: true
@@ -75,59 +77,6 @@ MultipageModal
             {
                 id: price_line
                 Layout.fillWidth: true
-            },
-
-            ColumnLayout
-            {
-                id: warnings_text
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignHCenter
-
-                // Large margin warning
-                FloatingBackground
-                {
-                    Layout.alignment: Qt.AlignCenter
-                    width: childrenRect.width
-                    height: childrenRect.height
-                    color: Style.colorRed2
-                    visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
-
-                    RowLayout
-                    {
-                        Layout.fillWidth: true
-
-                        Item { width: 3 }
-
-                        DefaultCheckBox
-                        {
-                            id: allow_bad_trade
-                            Layout.alignment: Qt.AlignCenter
-                            textColor: Style.colorWhite0
-                            visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
-                            spacing: 2
-                            boxWidth: 16
-                            boxHeight: 16
-                            boxRadius: 8
-                            label.wrapMode: Label.NoWrap
-                            text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
-                            font: DexTypo.caption
-                        }
-                    }
-                }
-
-                DefaultText
-                {
-                    Layout.alignment: Qt.AlignHCenter
-                    text_value: qsTr("This swap request can not be undone and is a final event!")
-                }
-
-                DefaultText
-                {
-                    id: warnings_tx_time_text
-                    Layout.alignment: Qt.AlignHCenter
-                    text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
-                    font.pixelSize: Style.textSizeSmall4
-                }
             }
         ]
 
@@ -138,9 +87,9 @@ MultipageModal
             readonly property var default_config: API.app.trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
             readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization || false
 
-            width: dex_pair_badges.width - 20
+            width: dex_pair_badges.width - 40
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 8
+            Layout.topMargin: 4
 
             spacing: 5
 
@@ -239,7 +188,39 @@ MultipageModal
                 }
             }
 
-            // Custom config checkbox
+            // Large margin warning
+            FloatingBackground
+            {
+                Layout.alignment: Qt.AlignCenter
+                width: childrenRect.width
+                height: childrenRect.height
+                color: Style.colorRed2
+                visible: Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
+
+                RowLayout
+                {
+                    Layout.fillWidth: true
+
+                    Item { width: 3 }
+
+                    DefaultCheckBox
+                    {
+                        id: allow_bad_trade
+                        Layout.alignment: Qt.AlignCenter
+                        textColor: Style.colorWhite0
+                        visible:  Math.abs(parseFloat(API.app.trading_pg.cex_price_diff)) >= 50
+                        spacing: 2
+                        boxWidth: 16
+                        boxHeight: 16
+                        boxRadius: 8
+                        label.wrapMode: Label.NoWrap
+                        text: qsTr("Trade price is more than 50% different to CEX! Confirm?")
+                        font: DexTypo.caption
+                    }
+                }
+            }
+            
+            // Custom config section
             Item
             {
                 Layout.alignment: Qt.AlignCenter
@@ -251,9 +232,30 @@ MultipageModal
                 {
                     id: use_custom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    
                     spacing: 5
 
+                    DefaultCheckBox
+                    {
+                        id: _cancelPreviousCheckbox
+                        visible: API.app.trading_pg.maker_mode
+                        boxWidth: 20
+                        boxHeight: 20
+                        checked: true
+                        height: 40
+                        text: qsTr("Cancel all existing orders for %1/%2?").arg(base_ticker).arg(rel_ticker)
+                    }
+
+                    DefaultCheckBox
+                    {
+                        id: _goodUntilCanceledCheckbox
+                        visible: !API.app.trading_pg.maker_mode
+                        boxWidth: 20
+                        boxHeight: 20
+                        checked: true
+                        height: 40
+                        text: qsTr("Good until cancelled (order will remain on orderbook until filled or cancelled)")
+                    }
+                    
                     DefaultCheckBox
                     {
                         id: enable_custom_config
@@ -261,7 +263,7 @@ MultipageModal
                         spacing: 2
                         boxWidth: 20
                         boxHeight: 20
-                        height: 50
+                        height: 40
                         label.wrapMode: Label.NoWrap
 
                         text: qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker)
@@ -390,6 +392,31 @@ MultipageModal
                 }
             }
 
+            ColumnLayout
+            {
+                id: warnings_text
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
+
+
+                DefaultText
+                {
+                    Layout.alignment: Qt.AlignHCenter
+                    text_value: qsTr("This swap request can not be undone and is a final event!")
+                    font: DexTypo.italic12
+                    color: Dex.CurrentTheme.foregroundColor2
+                }
+
+                DefaultText
+                {
+                    id: warnings_tx_time_text
+                    Layout.alignment: Qt.AlignHCenter
+                    text_value: qsTr("This transaction can take up to 60 mins - DO NOT close this application!")
+                    font: DexTypo.italic12
+                    color: Dex.CurrentTheme.foregroundColor2
+                }
+            }
+
             Item
             {
                 visible: buy_sell_rpc_busy
@@ -437,7 +464,9 @@ MultipageModal
                     trade({ enable_custom_config: enable_custom_config.checked,
                             is_dpow_configurable: config_section.is_dpow_configurable,
                             enable_dpow_confs: enable_dpow_confs.checked,
-                            required_confirmation_count: required_confirmation_count.value, },
+                            required_confirmation_count: required_confirmation_count.value,
+                            cancel_previous: _cancelPreviousCheckbox.checked,
+                            good_until_canceled: _goodUntilCanceledCheckbox.checked},
                             config_section.default_config)
                     API.app.trading_pg.reset_fees()
                 }

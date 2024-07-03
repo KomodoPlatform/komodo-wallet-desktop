@@ -40,10 +40,8 @@ RowLayout
 {
     id: form
 
-    property alias tickerSelectors: selectors
     property alias trInfo: tradingInfo
-    property alias orderBook: orderBook
-    property alias bestOrders: bestOrders
+    property alias marketsOrderBook: marketsOrderBook
     property alias placeOrderForm: placeOrderForm
 
     function selectOrder(
@@ -104,77 +102,34 @@ RowLayout
                            General.prettifyJSON(response.result), false)
 
                 General.prevent_coin_disabling.restart()
-                tradingInfo.currentIndex = 1
+                // Show the orders tab unless settings say otherwise
+                if (API.app.settings_pg.postorder_enabled)
+                {
+                    tradingInfo.currentIndex = 1
+                }
             }
         }
     }
 
-    ColumnLayout
+    // Trading Informations
+    TradingInfo.Main
     {
+        id: tradingInfo
         Layout.alignment: Qt.AlignTop
-
-        Layout.minimumWidth: selectors.visible || tradingInfo.visible ? 450 : -1
-        Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 450
-        Layout.fillWidth: true
-
+        Layout.minimumWidth: tradingInfo.visible ? 450 : -1
+        Layout.maximumWidth: (!marketsOrderBook.visible) || (!placeOrderForm.visible) ? -1 : 450
         Layout.fillHeight: true
-
-        spacing: 10
-
-        // Ticker selectors.
-        TickerSelectors
-        {
-            id: selectors
-
-            Layout.fillWidth: true
-            Layout.preferredHeight: 70
-        }
-
-        // Trading Informations
-        TradingInfo.Main
-        {
-            id: tradingInfo
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            resizable: false
-        }
     }
 
-    WidgetContainer
+    // Best Orders & Order Book
+    Market
     {
-        property real _orderBookHeightRatio: 0.65
-        property real _bestOrdersHeightRatio: 0.35
-
-        Layout.minimumWidth: orderBook.visible || bestOrders.visible ? 350 : -1
+        id: marketsOrderBook
+        Layout.maximumWidth: 350
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
         spacing: 4
-
-        onHeightChanged:
-        {
-            orderBook.height = getHeight(_orderBookHeightRatio);
-            bestOrders.height = getHeight(_bestOrdersHeightRatio);
-        }
-
-        OrderBook.Vertical
-        {
-            id: orderBook
-
-            width: parent.width
-            minHeight: 320
-        }
-
-        // Best Orders
-        BestOrder.List
-        {
-            id: bestOrders
-
-            width: parent.width
-            minHeight: 140
-        }
     }
 
     // Place order form.
@@ -186,13 +141,11 @@ RowLayout
         Layout.maximumWidth: 305
         Layout.fillWidth: true
         Layout.fillHeight: true
-
-        resizable: false
     }
 
     ModalLoader
     {
         id: confirm_trade_modal
-        sourceComponent: ConfirmTradeModal {}
+        sourceComponent: ConfirmTradeModal { }
     }
 }

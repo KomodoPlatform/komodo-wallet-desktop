@@ -22,7 +22,6 @@ DexRectangle
 
     property bool text_left_align: false
 
-    property int minWidth: 90
 
     property real textScale: 1
 

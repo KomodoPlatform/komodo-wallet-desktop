@@ -15,7 +15,6 @@
  ******************************************************************************/
 
 //! Deps
-#include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 
 //! Project Headers

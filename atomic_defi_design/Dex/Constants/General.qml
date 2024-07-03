@@ -88,6 +88,11 @@ QtObject {
         return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_faucet_coin
     }
 
+    function isVoteCoin(ticker)
+    {
+        return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).is_vote_coin
+    }
+
     function isCoinWithMemo(ticker)
     {
         return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker).has_memos
@@ -566,7 +571,7 @@ QtObject {
         }
         return diffPrefix(received) +
                 (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
-                + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), precision, true) : nFormatter(parseFloat(amount), 2))
+                + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), precision, true) : nFormatter(parseFloat(amount), precision))
     }
 
     function formatPercent(value, show_prefix=true) {
