@@ -149,6 +149,11 @@ namespace atomic_dex
     {
         return std::any_of(g_faucet_coins.begin(), g_faucet_coins.end(), [ticker](std::string x) { return ticker == x; });
     }
+    bool
+    is_vote_coin(std::string ticker)
+    {
+        return std::any_of(g_vote_coins.begin(), g_vote_coins.end(), [ticker](std::string x) { return ticker == x; });
+    }
 
     void
     from_json(const nlohmann::json& j, coin_config_t& cfg)
@@ -172,6 +177,7 @@ namespace atomic_dex
         cfg.wallet_only          = is_wallet_only(cfg.ticker) ? is_wallet_only(cfg.ticker) : j.contains("wallet_only") ? j.at("wallet_only").get<bool>() : false;
         cfg.default_coin         = is_default_coin(cfg.ticker);
         cfg.is_faucet_coin       = is_faucet_coin(cfg.ticker);
+        cfg.is_vote_coin         = is_vote_coin(cfg.ticker);
         cfg.checkpoint_height    = 0;
         cfg.checkpoint_blocktime = 0;
         using namespace std::chrono;
@@ -286,21 +292,21 @@ namespace atomic_dex
         {
         case CoinType::QRC20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "tQTUM" : "QTUM";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "tQTUM" : "QTUM";
             break;
         case CoinType::ERC20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETHR" : "ETH";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "ETHR" : "ETH";
             cfg.is_erc_family          = true;
             break;
         case CoinType::BEP20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "BNBT" : "BNB";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "BNBT" : "BNB";
             cfg.is_erc_family          = true;
             break;
         case CoinType::PLG20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "MATICTEST" : "MATIC";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "MATICTEST" : "MATIC";
             cfg.is_erc_family          = true;
             break;
         case CoinType::Optimism:
@@ -320,62 +326,62 @@ namespace atomic_dex
             break;
         case CoinType::AVX20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "AVAXT" : "AVAX";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "AVAXT" : "AVAX";
             cfg.is_erc_family          = true;
             break;
         case CoinType::FTM20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "FTMT" : "FTM";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "FTMT" : "FTM";
             cfg.is_erc_family          = true;
             break;
         case CoinType::HRC20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "ONET" : "ONE";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "ONET" : "ONE";
             cfg.is_erc_family          = true;
             break;
         case CoinType::Ubiq:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "UBQT" : "UBQ";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "UBQT" : "UBQ";
             cfg.is_erc_family          = true;
             break;
         case CoinType::KRC20:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "KCST" : "KCS";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "KCST" : "KCS";
             cfg.is_erc_family          = true;
             break;
         case CoinType::Moonriver:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "MOVRT" : "MOVR";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "MOVRT" : "MOVR";
             cfg.is_erc_family          = true;
             break;
         case CoinType::Moonbeam:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "GLMRT" : "GLMR";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "GLMRT" : "GLMR";
             cfg.is_erc_family          = true;
             break;
         case CoinType::HecoChain:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "HTT" : "HT";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "HTT" : "HT";
             cfg.is_erc_family          = true;
             break;
         case CoinType::SmartBCH:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "SBCHT" : "SBCH";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "SBCHT" : "SBCH";
             cfg.is_erc_family          = true;
             break;
         case CoinType::EthereumClassic:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "ETCT" : "ETC";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "ETCT" : "ETC";
             cfg.is_erc_family          = true;
             break;
         case CoinType::RSK:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "RBTCT" : "RBTC";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "RBTCT" : "RBTC";
             cfg.is_erc_family          = true;
             break;
         case CoinType::SLP:
             cfg.has_parent_fees_ticker = true;
-            cfg.fees_ticker            = cfg.is_testnet.value() ? "tBCH" : "BCH";
+            cfg.fees_ticker            = cfg.is_testnet.value_or(false) ? "tBCH" : "BCH";
             break;
         case CoinType::TENDERMINT:
             cfg.has_parent_fees_ticker = true;

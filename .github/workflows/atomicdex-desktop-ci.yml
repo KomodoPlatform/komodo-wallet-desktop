@@ -8,6 +8,7 @@ on:
       - master
   schedule:
     - cron: '0 0 * * 1'
+  workflow_dispatch:
 
 env:
   DEX_API: "mm2_shiba"
@@ -17,7 +18,7 @@ env:
   DEX_DISPLAY_NAME: "ShibaDex Desktop"
   DEX_COMPANY: "CZ Web Service S.A"
   DEX_WEBSITE: "https://shibadex.io/"
-  DEX_VERSION: "0.7.1"
+  DEX_VERSION: "0.7.2"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
   RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\komodo-wallet-desktop\ci_tools_atomic_dex\vcpkg-repo
@@ -67,13 +68,13 @@ jobs:
             host: 'mac'
 
           - name: windows-release
-            os: windows-latest
+            os: windows-2019
             qt: '5.15.2'
             type: 'Release'
             host: 'windows'
 
           - name: windows-debug
-            os: windows-latest
+            os: windows-2019
             qt: '5.15.2'
             type: 'Debug'
             host: 'windows'

@@ -6,9 +6,12 @@ import "../../Components"
 import "../../Constants"
 
 // Ticker selectors.
-Row
+RowLayout
 {
     id: selectors
+    Layout.topMargin: 8
+    Layout.bottomMargin: 2
+    Layout.alignment: Qt.AlignHCenter
 
     function renewIndex()
     {
@@ -21,9 +24,8 @@ Row
     SearchableTickerSelector
     {
         id: selectorLeft
-
-        width: 210
-        height: parent.height
+        Layout.preferredWidth: 195
+        Layout.preferredHeight: 85
 
         left_side: true
         model: API.app.trading_pg.market_pairs_mdl.left_selection_box
@@ -38,10 +40,12 @@ Row
         }
     }
 
+    Item { Layout.fillWidth: true }
+              
     SwapIcon
     {
-        width: 25
-        anchors.verticalCenter: parent.verticalCenter
+        Layout.preferredHeight: 25
+        Layout.alignment: Qt.AlignVCenter
         top_arrow_ticker: selectorLeft.ticker
         bottom_arrow_ticker: selectorRight.ticker
         hovered: swap_button.containsMouse
@@ -59,13 +63,13 @@ Row
         }
     }
 
+    Item { Layout.fillWidth: true }
+
     SearchableTickerSelector
     {
         id: selectorRight
-
-        width: 210
-        height: parent.height
-
+        Layout.preferredWidth: 195
+        Layout.preferredHeight: 85
         left_side: false
         model: API.app.trading_pg.market_pairs_mdl.right_selection_box
         ticker: right_ticker

@@ -78,11 +78,7 @@ namespace
     Rpc process_rpc_answer(const web::http::http_response& answer)
     {
         std::string body = TO_STD_STR(answer.extract_string(true).get());
-        if (body.size() > 1000)
-        {
-            SPDLOG_DEBUG("redacted rpc answer: {}", body.substr(0, 1000));
-        }
-        SPDLOG_DEBUG("body: {}", body);
+        // SPDLOG_DEBUG("body: {}", body);
         nlohmann::json json_answer;
         Rpc rpc;
         try

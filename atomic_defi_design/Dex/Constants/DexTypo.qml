@@ -154,6 +154,13 @@ QtObject {
         family: "Courier",
         weight: Font.Normal
     })
+    property font italic12: Qt.font({
+        pixelSize: 12 * fontDensity,
+        letterSpacing: 0.2,
+        family: fontFamily,
+        weight: Font.Normal,
+        italic: true
+    })
     property font inputFieldFont: Qt.font({
         pixelSize: (16 * DexTypo.fontDensity) * (Screen.pixelDensity / 160),
         letterSpacing: 0.5,

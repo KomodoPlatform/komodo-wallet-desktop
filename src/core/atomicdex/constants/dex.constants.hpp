@@ -31,12 +31,20 @@ namespace atomic_dex
         "ZINU-BEP20",
         "LTC-segwit",
         "DGB-segwit"
+        "VOTE2024",
     };
     inline const std::vector<std::string> g_faucet_coins{
         "DOC",
         "MARTY",
         "ZOMBIE"
     };
+    inline const std::vector<std::string> g_vote_coins{
+        "KIP0002",
+        "KIP0003",
+        "KIP0004",
+        "VOTE2024",
+    };
+    
     inline const std::vector<std::string> g_wallet_only_coins{
         "ARRR-BEP20",
         "RBTC",
@@ -44,7 +52,10 @@ namespace atomic_dex
         "PAXG-ERC20",
         "USDT-ERC20",
         "XPM",
-        "VOTE2023",
+        "KIP0002",
+        "KIP0003",
+        "KIP0004",
+        "VOTE2024",
         "ATOM"
     };
 }

@@ -66,6 +66,7 @@ MultipageModal
 
                 PairItemBadge
                 {
+                    is_left: true
                     ticker: details ? details.base_coin : ""
                     fullname: details ? General.coinName(details.base_coin) : ""
                     amount: details ? details.base_amount : ""
@@ -117,6 +118,26 @@ MultipageModal
                 title: qsTr("Order Type")
                 text: !details ? "" : details.is_maker ? qsTr("Maker Order") : qsTr("Taker Order")
                 label.font.pixelSize: 13
+            }
+
+            // Min Vol
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("Min Volume")
+                text: details ? details.min_volume + " " + details.base_coin : ""
+                label.font.pixelSize: 13
+                visible: General.exists(details) && details.min_volume != ""
+            }
+
+            // Max Vol
+            TextEditWithTitle
+            {
+                Layout.fillWidth: true
+                title: qsTr("Max Volume")
+                text: details ? details.max_volume + " " + details.base_coin : ""
+                label.font.pixelSize: 13
+                visible: General.exists(details) && details.max_volume != ""
             }
 
             // Refund state

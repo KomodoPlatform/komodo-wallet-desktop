@@ -78,7 +78,7 @@ RowLayout
                 Layout.preferredWidth: parent.width - 15
 
                 text_value: !details ? "" :
-                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Dex.CurrentTheme.foregroundColor}">${details.name}</font>`
+                            `<font color="${root.color}"><b>${details.ticker}</b></font><br /><font color="${Dex.CurrentTheme.foregroundColor2}">${details.name}</font>`
                 font.pixelSize: Style.textSizeSmall3
                 elide: Text.ElideRight
                 wrapMode: Text.NoWrap
@@ -96,7 +96,7 @@ RowLayout
                 font: DexTypo.body2
                 wrapMode: Label.NoWrap
                 ToolTip.text: coin_value
-                Component.onCompleted: font.pixelSize = 11.5
+                Component.onCompleted: font.pixelSize = 11
             }
 
             Dex.Text
@@ -112,7 +112,7 @@ RowLayout
                 font: DexTypo.body2
                 wrapMode: Label.NoWrap
                 ToolTip.text: fiat_value
-                Component.onCompleted: font.pixelSize = 11.5
+                Component.onCompleted: font.pixelSize = 11
             }
         }
     }

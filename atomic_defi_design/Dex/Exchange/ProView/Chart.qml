@@ -37,12 +37,14 @@ Item
             {
                 pair_supported = false
                 selected_testcoin = left_ticker
+                console.log("no chart, testcoin", selected_testcoin)
                 return
             }
             if (General.is_testcoin(right_ticker))
             {
                 pair_supported = false
                 selected_testcoin = right_ticker
+                console.log("no chart, testcoin", selected_testcoin)
                 return
             }
 
@@ -52,9 +54,13 @@ Item
             {
                 pair_supported = true
                 symbol = rel_ticker+"-"+base_ticker
+                console.log("symbol", symbol)
+                console.log("loaded_symbol", loaded_symbol)
+                
                 if (symbol === loaded_symbol && !force)
                 {
                     webEngineViewPlaceHolder.visible = true
+                    console.log("symbol === loaded_symbol, ok")
                     return
                 }
                 chart_html = `
@@ -64,13 +70,14 @@ Item
                         transform: scale(${Math.min(scale_x, scale_y)});
                         transform-origin: top left;
                     }
+                    a { pointer-events: none; }
                 </style>
                 <script defer src="https://www.livecoinwatch.com/static/lcw-widget.js"></script>
                 <div class="livecoinwatch-widget-1" lcw-coin="${rel_ticker}" lcw-base="${base_ticker}" lcw-secondary="USDC" lcw-period="w" lcw-color-tx="${Dex.CurrentTheme.foregroundColor}" lcw-color-pr="#58c7c5" lcw-color-bg="${Dex.CurrentTheme.comboBoxBackgroundColor}" lcw-border-w="0" lcw-digits="8" ></div>
                 `
             }
         }
-        // console.log(chart_html)
+        console.log(chart_html)
 
         if (chart_html == "")
         {
@@ -84,6 +91,7 @@ Item
             if (!symbol)
             {
                 pair_supported = false
+                console.log("pair not supported", pair, pair_reversed)
                 return
             }
 
@@ -165,7 +173,7 @@ Item
         DefaultText
         {
             visible: pair_supported
-            text_value: qsTr("Loading market data") + "..."
+            text_value: qsTr("Loading pair chart data") + "..."
         }
 
         DefaultText
@@ -190,7 +198,7 @@ Item
         id: webEngineViewPlaceHolder
         anchors.fill: parent
         anchors.centerIn: parent
-        visible: false
+        visible: true
 
         Component.onCompleted:
         {
@@ -215,6 +223,16 @@ Item
                     webEngineViewPlaceHolder.visible = true
                 }
                 else webEngineViewPlaceHolder.visible = false
+            }
+        }
+    }
+
+    MouseArea {
+        id: chart_mousearea
+        anchors.fill: webEngineViewPlaceHolder
+        onClicked: {
+            if (webEngineView.visible) {
+                Qt.openUrlExternally("https://www.livecoinwatch.com")
             }
         }
     }

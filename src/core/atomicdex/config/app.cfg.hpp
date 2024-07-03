@@ -32,6 +32,7 @@ namespace atomic_dex
         std::vector<std::string>                     recommended_fiat;
         std::vector<std::string>                     possible_currencies;
         bool                                         notification_enabled;
+        bool                                         postorder_enabled{false};
         bool                                         spamfilter_enabled{false};
         bool                                         static_rpcpass_enabled{false};
     };
@@ -40,6 +41,7 @@ namespace atomic_dex
     void               change_currency(cfg& config, const std::string& new_currency);
     void               change_fiat(cfg& config, const std::string& new_fiat);
     void               change_notification_status(cfg& config, bool is_enabled);
+    void               change_postorder_status(cfg& config, bool is_enabled);
     void               change_spamfilter_status(cfg& config, bool is_enabled);
     void               change_static_rpcpass_status(cfg& config, bool is_enabled);
     [[nodiscard]] bool is_this_currency_a_fiat(const cfg& config, const std::string& currency);

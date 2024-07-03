@@ -109,6 +109,8 @@ namespace atomic_dex
     bool
     portfolio_model::update_activation_status()
     {
+        // This feels a bit heavy handed. There should be a better way to do this.
+        // Function may be unused.
         const auto&        mm2_system    = this->m_system_manager.get_system<mm2_service>();
         const auto         coins         = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
 

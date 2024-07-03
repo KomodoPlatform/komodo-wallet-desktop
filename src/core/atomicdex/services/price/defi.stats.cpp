@@ -17,7 +17,6 @@
 //! Project Headers
 #include "atomicdex/services/price/defi.stats.hpp"
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
-#include "atomicdex/api/coinpaprika/coinpaprika.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 
@@ -49,17 +48,17 @@ namespace
     pplx::cancellation_token_source d_token_source;
 
     pplx::task<web::http::http_response>
-    async_fetch_defi_ticker_stats()
+    async_fetch_defi_stats_volumes()
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
-        req.set_request_uri(FROM_STD_STR("api/v3/tickers/summary"));
+        req.set_request_uri(FROM_STD_STR("api/v3/pairs/volumes_24hr"));
         SPDLOG_INFO("defi_stats req: {}", TO_STD_STR(req.to_string()));
         return g_defi_stats_client->request(req, d_token_source.get_token());
     }
 
     nlohmann::json
-    process_fetch_defi_ticker_stats_answer(web::http::http_response resp)
+    process_fetch_defi_stats_volumes_answer(web::http::http_response resp)
     {
         std::string body = TO_STD_STR(resp.extract_string(true).get());
         if (resp.status_code() == 200)
@@ -119,11 +118,11 @@ namespace atomic_dex
                 this->process_update();
             };
         };
-        async_fetch_defi_ticker_stats()
+        async_fetch_defi_stats_volumes()
             .then(
                 [this](web::http::http_response resp)
                 {
-                    this->m_defi_ticker_stats = process_fetch_defi_ticker_stats_answer(resp);
+                    this->m_defi_stats_volumes = process_fetch_defi_stats_volumes_answer(resp);
                     nb_try = 0;
                 })
             .then(error_functor);
@@ -136,33 +135,140 @@ namespace atomic_dex
         auto ticker = base + "_" + quote;
         auto ticker_reversed = quote + "_" + base;
         SPDLOG_INFO("Getting 24hr volume data for {}", ticker);
+
+        // Check if base/quote are the same
         if (base == quote)
         {
             SPDLOG_INFO("Base/quote must be different, no volume data for {}", ticker);
             return volume_24h_usd;
         }
 
-        auto defi_ticker_stats = m_defi_ticker_stats.get();
-        // SPDLOG_INFO("Volume data: {}", defi_ticker_stats.dump(4));
-        
-        if (defi_ticker_stats.contains("data"))
+        // Check if defi_stats_volumes is valid
+        auto defi_stats_volumes = m_defi_stats_volumes.get();
+        if (!defi_stats_volumes.is_object())
         {
-            SPDLOG_INFO("Combined volume usd: {}", defi_ticker_stats["combined_volume_usd"]);
-            if (defi_ticker_stats.at("data").contains(ticker))
+            SPDLOG_WARN("Invalid defi stats volumes data.");
+            return volume_24h_usd;
+        }
+        
+        // Check if volumes key exists
+        if (!defi_stats_volumes.contains("volumes"))
+        {
+            SPDLOG_WARN("No volumes data available.");
+            return volume_24h_usd;
+        }
+
+        // Extract ticker trade_volume_usd safely
+        if (defi_stats_volumes.at("volumes").contains(ticker))
+        {
+            auto volume_node = defi_stats_volumes["volumes"][ticker]["ALL"]["trade_volume_usd"];
+            if (volume_node.is_number())
             {
-                volume_24h_usd = defi_ticker_stats.at("data").at(ticker).at("volume_usd_24hr").get<std::string>();
+                volume_24h_usd = std::to_string(volume_node.get<double>());
                 SPDLOG_INFO("{} volume usd: {}", ticker, volume_24h_usd);
             }
-            else if (defi_ticker_stats.at("data").contains(ticker_reversed))
+            else if (volume_node.is_null()) 
             {
-                volume_24h_usd = defi_ticker_stats.at("data").at(ticker_reversed).at("volume_usd_24hr").get<std::string>();
+                SPDLOG_WARN("Volume value is null for {}", ticker);
+            }
+            else
+            {
+                SPDLOG_WARN("Volume value is not a number for {}: {}", ticker, volume_node.type_name());
+            }
+        }
+        else if (defi_stats_volumes["volumes"].contains(ticker_reversed))
+        {
+            auto volume_node = defi_stats_volumes["volumes"][ticker_reversed]["ALL"]["trade_volume_usd"];
+            if (volume_node.is_number())
+            {
+                volume_24h_usd = std::to_string(volume_node.get<double>());
                 SPDLOG_INFO("{} volume usd: {}", ticker_reversed, volume_24h_usd);
+            }
+            else if (volume_node.is_null()) 
+            {
+                SPDLOG_WARN("Volume value is null for {}", ticker);
+            }
+            else
+            {
+                SPDLOG_WARN("Volume value is not a number for {}: {}", ticker, volume_node.type_name());
             }
         }
         else
         {
-            SPDLOG_WARN("Empty 24hr volume data for {}", defi_ticker_stats.dump(4));
+            SPDLOG_WARN("No volume data available for {}", ticker);
         }
         return volume_24h_usd;
+    }
+
+    std::string
+    global_defi_stats_service::get_trades_24h(const std::string& base, const std::string& quote) const
+    {
+        std::string trades_24h = "0";
+        auto ticker = base + "_" + quote;
+        auto ticker_reversed = quote + "_" + base;
+        SPDLOG_INFO("Getting 24hr trade data for {}", ticker);
+
+        // Check if base/quote are the same
+        if (base == quote)
+        {
+            SPDLOG_INFO("Base/quote must be different, no volume data for {}", ticker);
+            return trades_24h;
+        }
+
+        // Check if defi_stats_volumes is valid
+        auto defi_stats_volumes = m_defi_stats_volumes.get();
+        if (!defi_stats_volumes.is_object())
+        {
+            SPDLOG_WARN("Invalid defi stats volumes data.");
+            return trades_24h;
+        }
+        
+        // Check if volumes key exists
+        if (!defi_stats_volumes.contains("volumes"))
+        {
+            SPDLOG_WARN("No volumes data available.");
+            return trades_24h;
+        }
+
+        // Extract ticker trade_volume_usd safely
+        if (defi_stats_volumes.at("volumes").contains(ticker))
+        {
+            auto trades_node = defi_stats_volumes["volumes"][ticker]["ALL"]["trades_24hr"];
+            if (trades_node.is_number())
+            {
+                trades_24h = std::to_string(trades_node.get<int>());
+                SPDLOG_INFO("{} trades_24h: {}", ticker, trades_24h);
+            }
+            else if (trades_node.is_null()) 
+            {
+                SPDLOG_WARN("Trades value is null for {}", ticker);
+            }
+            else
+            {
+                SPDLOG_WARN("Trades value is not a number for {}: {}", ticker, trades_node.type_name());
+            }
+        }
+        else if (defi_stats_volumes["volumes"].contains(ticker_reversed))
+        {
+            auto trades_node = defi_stats_volumes["volumes"][ticker_reversed]["ALL"]["trades_24hr"];
+            if (trades_node.is_number())
+            {
+                trades_24h = std::to_string(trades_node.get<int>());
+                SPDLOG_INFO("{} trades_24h: {}", ticker_reversed, trades_24h);
+            }
+            else if (trades_node.is_null()) 
+            {
+                SPDLOG_WARN("Trades value is null for {}", ticker);
+            }
+            else
+            {
+                SPDLOG_WARN("Trades value is not a number for {}: {}", ticker, trades_node.type_name());
+            }
+        }
+        else
+        {
+            SPDLOG_WARN("No trades data available for {}", ticker);
+        }
+        return trades_24h;
     }
 } // namespace atomic_dex
