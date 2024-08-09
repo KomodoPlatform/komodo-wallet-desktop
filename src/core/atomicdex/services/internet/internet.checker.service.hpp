@@ -45,7 +45,7 @@ namespace atomic_dex
         double                   m_timer;
         std::atomic_bool         is_internet_reacheable{true};
         std::atomic_bool         is_paprika_provider_alive{true};
-        std::atomic_bool         is_mm2_endpoint_alive{true};
+        std::atomic_bool         is_kdf_endpoint_alive{true};
         std::atomic_bool         is_our_private_endpoint_reacheable{true};
 
         //! Private functions

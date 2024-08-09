@@ -137,8 +137,8 @@ namespace atomic_dex
         {
             const auto& currency      = this->m_system_manager.get_system<settings_page>().get_cfg().current_currency;
             const auto& price_service = this->m_system_manager.get_system<global_price_service>();
-            const auto& mm2_system    = this->m_system_manager.get_system<mm2_service>();
-            return QString::fromStdString(price_service.get_price_as_currency_from_tx(currency, mm2_system.get_current_ticker(), item));
+            const auto& kdf_system    = this->m_system_manager.get_system<kdf_service>();
+            return QString::fromStdString(price_service.get_price_as_currency_from_tx(currency, kdf_system.get_current_ticker(), item));
         }
         case TxHashRole:
             return QString::fromStdString(item.tx_hash);
@@ -148,8 +148,8 @@ namespace atomic_dex
         {
             const auto& currency      = this->m_system_manager.get_system<settings_page>().get_cfg().current_currency;
             const auto& price_service = this->m_system_manager.get_system<global_price_service>();
-            const auto& mm2_system    = this->m_system_manager.get_system<mm2_service>();
-            const auto& fee_ticker    = mm2_system.get_coin_info(mm2_system.get_current_ticker()).fees_ticker;
+            const auto& kdf_system    = this->m_system_manager.get_system<kdf_service>();
+            const auto& fee_ticker    = kdf_system.get_coin_info(kdf_system.get_current_ticker()).fees_ticker;
             return QString::fromStdString(price_service.get_price_as_currency_from_amount(currency, fee_ticker, item.fees));
         }
         case FromRole:

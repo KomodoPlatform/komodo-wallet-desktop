@@ -17,7 +17,7 @@
 //! Project headers
 #include "qt.orderbook.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
 
 namespace
@@ -79,7 +79,7 @@ namespace atomic_dex
     }
 
     void
-    qt_orderbook_wrapper::refresh_orderbook_model_data(mm2::orderbook_result_rpc answer)
+    qt_orderbook_wrapper::refresh_orderbook_model_data(kdf::orderbook_result_rpc answer)
     {
         // SPDLOG_INFO("[qt_orderbook_wrapper::refresh_orderbook_model_data] bids/asks size: {}/{}", answer.bids.size(), answer.asks.size());
         this->m_asks->refresh_orderbook_model_data(answer.asks);
@@ -103,7 +103,7 @@ namespace atomic_dex
     }
 
     void
-    qt_orderbook_wrapper::reset_orderbook(mm2::orderbook_result_rpc answer)
+    qt_orderbook_wrapper::reset_orderbook(kdf::orderbook_result_rpc answer)
     {
         this->m_asks->reset_orderbook(answer.asks);
         this->m_bids->reset_orderbook(answer.bids);
@@ -142,7 +142,7 @@ namespace atomic_dex
     void
     atomic_dex::qt_orderbook_wrapper::set_both_taker_vol()
     {
-        auto&& [base, rel]         = m_system_manager.get_system<mm2_service>().get_taker_vol();
+        auto&& [base, rel]         = m_system_manager.get_system<kdf_service>().get_taker_vol();
         this->m_base_max_taker_vol = QJsonObject{
             {"denom", QString::fromStdString(base.denom)},
             {"numer", QString::fromStdString(base.numer)},
@@ -156,7 +156,7 @@ namespace atomic_dex
             {"coin", QString::fromStdString(rel.coin)}};
         emit relMaxTakerVolChanged();
 
-        auto&& [min_base, min_rel] = m_system_manager.get_system<mm2_service>().get_min_vol();
+        auto&& [min_base, min_rel] = m_system_manager.get_system<kdf_service>().get_min_vol();
         this->m_base_min_taker_vol = QString::fromStdString(min_base.min_trading_vol);
         emit baseMinTakerVolChanged();
         this->m_rel_min_taker_vol = QString::fromStdString(min_rel.min_trading_vol);
@@ -264,7 +264,7 @@ namespace atomic_dex
         // if (trading_pg.)
         if (price_f <= 0)
         {
-            //! Price is not set yet in the UI in this particular case return the min volume calculated by mm2
+            //! Price is not set yet in the UI in this particular case return the min volume calculated by kdf
             return cur_taker_vol;
         }
 

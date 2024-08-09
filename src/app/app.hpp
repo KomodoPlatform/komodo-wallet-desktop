@@ -45,7 +45,7 @@
 #include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/services/price/defi.stats.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
@@ -83,7 +83,7 @@ namespace atomic_dex
 
         enum events_action
         {
-            need_a_full_refresh_of_mm2 = 0,
+            need_a_full_refresh_of_kdf = 0,
             about_to_exit_app          = 1,
             size                       = 2
         };
@@ -117,11 +117,11 @@ namespace atomic_dex
         void on_ticker_balance_updated_event(const ticker_balance_updated&);
         void on_fiat_rate_updated(const fiat_rate_updated&);
         void on_coin_fully_initialized_event(const coin_fully_initialized&);
-        void on_mm2_initialized_event(const mm2_initialized&);
+        void on_kdf_initialized_event(const kdf_initialized&);
         void on_process_orders_and_swaps_finished_event(const process_swaps_and_orders_finished&);
 
-        mm2_service&                             get_mm2();
-        [[nodiscard]] const mm2_service&         get_mm2() const;
+        kdf_service&                             get_kdf();
+        [[nodiscard]] const kdf_service&         get_kdf() const;
         entt::dispatcher&                        get_dispatcher();
         const entt::registry&                    get_registry() const;
         entt::registry&                          get_registry();

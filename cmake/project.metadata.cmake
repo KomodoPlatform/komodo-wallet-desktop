@@ -1,5 +1,5 @@
 # Default project values
-set(DEX_API "mm2_kmd")
+set(DEX_API "kdf_kwd")
 set(DEX_RPCPORT 7762)
 set(DEX_RPC "http://127.0.0.1:7762")
 set(DEX_PROJECT_NAME "komodo-wallet")

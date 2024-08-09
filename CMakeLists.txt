@@ -59,14 +59,14 @@ endif ()
 
 ##! We fetch our dependencies
 if (APPLE)
-    FetchContent_Declare(mm2
-            URL https://sdk.devbuilds.komodo.earth/dev/mm2_a81f2a1-mac-x86-64.zip)
+    FetchContent_Declare(kdf
+            URL https://sdk.devbuilds.komodo.earth/main/kdf_35e9239-mac-x86-64.zip)
 elseif (UNIX AND NOT APPLE)
-    FetchContent_Declare(mm2
-            URL https://sdk.devbuilds.komodo.earth/dev/mm2_a81f2a1-linux-x86-64.zip)
+    FetchContent_Declare(kdf
+            URL https://sdk.devbuilds.komodo.earth/main/kdf_35e9239-linux-x86-64.zip)
 else ()
-    FetchContent_Declare(mm2
-            URL https://sdk.devbuilds.komodo.earth/dev/mm2_a81f2a1-win-x86-64.zip)
+    FetchContent_Declare(kdf
+            URL https://sdk.devbuilds.komodo.earth/main/kdf_35e9239-win-x86-64.zip)
 endif ()
 
 #FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/last-clang-working-2.zip)
@@ -83,20 +83,20 @@ FetchContent_Declare(jl777-coins
 #FetchContent_Declare(adex-generics-coins
 #        URL https://github.com/KomodoPlatform/komodo-wallet-desktop/archive/main.zip)
 
-FetchContent_MakeAvailable(mm2 jl777-coins qmaterial)
+FetchContent_MakeAvailable(kdf jl777-coins qmaterial)
 
 ##! Configure our needs.
 if (UNIX)
     configure_file(${jl777-coins_SOURCE_DIR}/utils/coins_config_tcp.json ${CMAKE_CURRENT_SOURCE_DIR}/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
-    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
-    configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/${DEX_API} COPYONLY)
+    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/kdf/coins COPYONLY)
+    configure_file(${kdf_SOURCE_DIR}/kdf ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/kdf/${DEX_API} COPYONLY)
     file(COPY ${jl777-coins_SOURCE_DIR}/icons/ DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/atomic_defi_design/assets/images/coins/)
 else ()
     configure_file(${jl777-coins_SOURCE_DIR}/utils/coins_config_tcp.json ${CMAKE_BINARY_DIR}/bin/assets/config/${PROJECT_VERSION}-coins.json COPYONLY)
-    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins COPYONLY)
-    configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/${DEX_API}.exe COPYONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc/msvcp140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/msvcp140.dll COPYONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc/vcruntime140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/vcruntime140.dll COPYONLY)
+    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/kdf/coins COPYONLY)
+    configure_file(${kdf_SOURCE_DIR}/kdf.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/kdf/${DEX_API}.exe COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc/msvcp140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/kdf/msvcp140.dll COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc/vcruntime140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/kdf/vcruntime140.dll COPYONLY)
 endif ()
 
 

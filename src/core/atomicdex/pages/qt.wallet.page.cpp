@@ -11,13 +11,13 @@
 
 //! Project Headers
 #include "atomicdex/api/faucet/faucet.hpp"
-#include "atomicdex/api/mm2/rpc_v1/rpc.convertaddress.hpp"
-#include "atomicdex/api/mm2/rpc_v1/rpc.electrum.hpp"
-#include "atomicdex/api/mm2/rpc_v1/rpc.validateaddress.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.withdraw.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.init.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.task.withdraw.status.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/api/kdf/rpc_v1/rpc.convertaddress.hpp"
+#include "atomicdex/api/kdf/rpc_v1/rpc.electrum.hpp"
+#include "atomicdex/api/kdf/rpc_v1/rpc.validateaddress.hpp"
+#include "atomicdex/api/kdf/rpc_v2/rpc2.withdraw.hpp"
+#include "atomicdex/api/kdf/rpc_v2/rpc2.task.withdraw.init.hpp"
+#include "atomicdex/api/kdf/rpc_v2/rpc2.task.withdraw.status.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -60,14 +60,14 @@ namespace atomic_dex
     wallet_page::check_send_availability()
     {
         // SPDLOG_DEBUG("check_send_availability");
-        auto& mm2              = m_system_manager.get_system<mm2_service>();
+        auto& kdf              = m_system_manager.get_system<kdf_service>();
         auto  global_coins_cfg = m_system_manager.get_system<portfolio_page>().get_global_cfg();
-        auto  ticker_info      = global_coins_cfg->get_coin_info(mm2.get_current_ticker());
+        auto  ticker_info      = global_coins_cfg->get_coin_info(kdf.get_current_ticker());
 
         m_send_available                   = true;
         m_send_availability_state          = "";
         m_current_ticker_fees_coin_enabled = true;
-        if (not mm2.get_balance_info_f(ticker_info.ticker) > 0)
+        if (not kdf.get_balance_info_f(ticker_info.ticker) > 0)
         {
             m_send_available                   = false;
             m_send_availability_state          = tr("You do not have enough funds.");
@@ -84,7 +84,7 @@ namespace atomic_dex
                     tr("%1 is not activated: click on the button to enable it or enable it manually").arg(QString::fromStdString(parent_ticker_info.ticker));
                 m_current_ticker_fees_coin_enabled = false;
             }
-            else if (not mm2.get_balance_info_f(parent_ticker_info.ticker) > 0)
+            else if (not kdf.get_balance_info_f(parent_ticker_info.ticker) > 0)
             {
                 m_send_available          = false;
                 m_send_availability_state = tr("You need to have %1 to pay the gas for %2 transactions.")
@@ -104,20 +104,20 @@ namespace atomic_dex
 {
     QString wallet_page::get_current_ticker() const
     {
-        const auto& mm2_system = m_system_manager.get_system<mm2_service>();
-        return QString::fromStdString(mm2_system.get_current_ticker());
+        const auto& kdf_system = m_system_manager.get_system<kdf_service>();
+        return QString::fromStdString(kdf_system.get_current_ticker());
     }
 
     void wallet_page::set_current_ticker(const QString& ticker, bool force)
     {
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
-        auto  coin_info  = mm2_system.get_coin_info(ticker.toStdString());
-        if (mm2_system.set_current_ticker(ticker.toStdString()) || force)
+        auto& kdf_system = m_system_manager.get_system<kdf_service>();
+        auto  coin_info  = kdf_system.get_coin_info(ticker.toStdString());
+        if (kdf_system.set_current_ticker(ticker.toStdString()) || force)
         {
             SPDLOG_INFO("new ticker: {}", ticker.toStdString());
             m_transactions_mdl->reset();
             this->set_tx_fetching_busy(true);
-            mm2_system.fetch_infos_thread(true, true);
+            kdf_system.fetch_infos_thread(true, true);
             emit currentTickerChanged();
             refresh_ticker_infos();
             check_send_availability();
@@ -273,17 +273,17 @@ namespace atomic_dex
             {"qrcode_address", ""},
             {"segwit_supported", false}};
         std::error_code ec;
-        auto&           mm2_system = m_system_manager.get_system<mm2_service>();
-        if (mm2_system.is_mm2_running())
+        auto&           kdf_system = m_system_manager.get_system<kdf_service>();
+        if (kdf_system.is_kdf_running())
         {
-            // SPDLOG_DEBUG("get_ticker_infos for {} wallet page", mm2_system.get_current_ticker());
+            // SPDLOG_DEBUG("get_ticker_infos for {} wallet page", kdf_system.get_current_ticker());
             auto&       price_service                 = m_system_manager.get_system<global_price_service>();
             const auto& settings_system               = m_system_manager.get_system<settings_page>();
             const auto& provider                      = m_system_manager.get_system<komodo_prices_provider>();
-            const auto& ticker                        = mm2_system.get_current_ticker();
-            const auto& coin_info                     = mm2_system.get_coin_info(ticker);
+            const auto& ticker                        = kdf_system.get_current_ticker();
+            const auto& coin_info                     = kdf_system.get_coin_info(ticker);
             const auto& config                        = settings_system.get_cfg();
-            obj["balance"]                            = QString::fromStdString(mm2_system.get_balance_info(ticker, ec));
+            obj["balance"]                            = QString::fromStdString(kdf_system.get_balance_info(ticker, ec));
             obj["name"]                               = QString::fromStdString(coin_info.name);
             obj["type"]                               = QString::fromStdString(coin_info.type);
             obj["segwit_supported"]                   = coin_info.segwit;
@@ -294,7 +294,7 @@ namespace atomic_dex
             obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url);
             obj["current_currency_ticker_price"]      = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, true));
             obj["change_24h"]                         = retrieve_change_24h(provider, coin_info, config, m_system_manager);
-            const auto& tx_state                      = mm2_system.get_tx_state(ec);
+            const auto& tx_state                      = kdf_system.get_tx_state(ec);
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["activation_status"]                  = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
@@ -307,7 +307,7 @@ namespace atomic_dex
             obj["is_vote_coin"]                       = coin_info.is_vote_coin;
 
             std::error_code   ec;
-            if (!mm2_system.is_zhtlc_coin_ready(coin_info.ticker))
+            if (!kdf_system.is_zhtlc_coin_ready(coin_info.ticker))
             {
                 obj["address"]        = "activating";
                 obj["qrcode_address"] = "";
@@ -315,8 +315,8 @@ namespace atomic_dex
             }
             else
             {
-                obj["address"]        = QString::fromStdString(mm2_system.address(ticker, ec));
-                qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(mm2_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
+                obj["address"]        = QString::fromStdString(kdf_system.address(ticker, ec));
+                qrcodegen::QrCode qr0 = qrcodegen::QrCode::encodeText(kdf_system.address(ticker, ec).c_str(), qrcodegen::QrCode::Ecc::MEDIUM);
                 std::string       svg = qr0.toSvgString(2);
                 obj["qrcode_address"] = QString::fromStdString("data:image/svg+xml;base64,") + QString::fromStdString(svg).toLocal8Bit().toBase64();
             }
@@ -513,9 +513,9 @@ namespace atomic_dex
         //! Preparation
         this->set_send_busy(true);
         nlohmann::json     batch      = nlohmann::json::array();
-        auto&              mm2_system = m_system_manager.get_system<mm2_service>();
-        const auto&        ticker     = mm2_system.get_current_ticker();
-        auto               coin_info = mm2_system.get_coin_info(ticker);
+        auto&              kdf_system = m_system_manager.get_system<kdf_service>();
+        const auto&        ticker     = kdf_system.get_current_ticker();
+        auto               coin_info = kdf_system.get_coin_info(ticker);
 
         if (coin_info.is_zhtlc_family)
         {
@@ -530,9 +530,9 @@ namespace atomic_dex
                     .amount    = json_fees.at("fees_amount").get<std::string>()
                 };
             }
-            nlohmann::json json_data = mm2::template_request("task::withdraw::init", true);
+            nlohmann::json json_data = kdf::template_request("task::withdraw::init", true);
 
-            mm2::to_json(json_data, withdraw_init_req);
+            kdf::to_json(json_data, withdraw_init_req);
 
             batch.push_back(json_data);
             std::string amount_std = amount.toStdString();
@@ -540,7 +540,7 @@ namespace atomic_dex
             if (max)
             {
                 std::error_code ec;
-                amount_std = mm2_system.get_balance_info(ticker, ec);
+                amount_std = kdf_system.get_balance_info(ticker, ec);
             }
 
             auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp)
@@ -548,7 +548,7 @@ namespace atomic_dex
                 const auto& settings_system     = m_system_manager.get_system<settings_page>();
                 const auto& global_price_system = m_system_manager.get_system<global_price_service>();
                 const auto& current_fiat        = settings_system.get_current_fiat().toStdString();
-                auto            answers        = mm2::basic_batch_answer(resp);
+                auto            answers        = kdf::basic_batch_answer(resp);
 
                 if (answers[0].contains("result"))
                 {
@@ -558,7 +558,7 @@ namespace atomic_dex
                         {
                             SPDLOG_DEBUG("Task ID: {}", task_id);
                             using namespace std::chrono_literals;
-                            auto&              mm2_system = m_system_manager.get_system<mm2_service>();
+                            auto&              kdf_system = m_system_manager.get_system<kdf_service>();
                             static std::size_t z_nb_try      = 1;
                             static std::size_t loop_limit    = 600;
                             nlohmann::json     z_error       = nlohmann::json::array();
@@ -566,14 +566,14 @@ namespace atomic_dex
                             QString            z_status;
                             t_withdraw_status_request z_request{.task_id = task_id};
 
-                            nlohmann::json j = mm2::template_request("task::withdraw::status", true);
-                            mm2::to_json(j, z_request);
+                            nlohmann::json j = kdf::template_request("task::withdraw::status", true);
+                            kdf::to_json(j, z_request);
                             z_batch_array.push_back(j);
 
                             do {
-                                pplx::task<web::http::http_response> z_resp_task = mm2_system.get_mm2_client().async_rpc_batch_standalone(z_batch_array);
+                                pplx::task<web::http::http_response> z_resp_task = kdf_system.get_kdf_client().async_rpc_batch_standalone(z_batch_array);
                                 web::http::http_response             z_resp      = z_resp_task.get();
-                                auto                                 z_answers   = mm2::basic_batch_answer(z_resp);
+                                auto                                 z_answers   = kdf::basic_batch_answer(z_resp);
                                 z_error = z_answers;
                                 z_status = QString::fromStdString(z_answers[0].at("result").at("status").get<std::string>());
 
@@ -609,7 +609,7 @@ namespace atomic_dex
                                 }
                                 else
                                 {
-                                    auto           withdraw_answer      = mm2::rpc_process_answer_batch<t_withdraw_status_answer>(z_error[0], "task::withdraw::status");
+                                    auto           withdraw_answer      = kdf::rpc_process_answer_batch<t_withdraw_status_answer>(z_error[0], "task::withdraw::status");
                                     nlohmann::json j_out                = nlohmann::json::object();
                                     j_out["withdraw_answer"]            = z_error[0]["result"]["details"];
                                     j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
@@ -683,7 +683,7 @@ namespace atomic_dex
             };
 
             //! Process
-            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
+            kdf_system.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
 
         }
         else
@@ -733,8 +733,8 @@ namespace atomic_dex
                     .gas_limit = 150000};
             }
 
-            nlohmann::json json_data = mm2::template_request("withdraw", true);
-            mm2::to_json(json_data, withdraw_req);
+            nlohmann::json json_data = kdf::template_request("withdraw", true);
+            kdf::to_json(json_data, withdraw_req);
 
             batch.push_back(json_data);
 
@@ -742,7 +742,7 @@ namespace atomic_dex
             if (max)
             {
                 std::error_code ec;
-                amount_std = mm2_system.get_balance_info(ticker, ec);
+                amount_std = kdf_system.get_balance_info(ticker, ec);
             }
 
             //! Answer
@@ -756,7 +756,7 @@ namespace atomic_dex
                 if (resp.status_code() == 200 && body.find("error") == std::string::npos)
                 {
                     auto           answers              = nlohmann::json::parse(body);
-                    auto           withdraw_answer      = mm2::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
+                    auto           withdraw_answer      = kdf::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                     nlohmann::json j_out                = nlohmann::json::object();
                     j_out["withdraw_answer"]            = answers[0]["result"];
                     j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
@@ -819,7 +819,7 @@ namespace atomic_dex
             };
 
             //! Process
-            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
+            kdf_system.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
         }
     }
 
@@ -855,12 +855,12 @@ namespace atomic_dex
         emit auth_succeededChanged();
         this->set_rpc_broadcast_data("");
         this->set_broadcast_busy(true);
-        auto&               mm2_system = m_system_manager.get_system<mm2_service>();
-        const auto&         ticker     = mm2_system.get_current_ticker();
+        auto&               kdf_system = m_system_manager.get_system<kdf_service>();
+        const auto&         ticker     = kdf_system.get_current_ticker();
         nlohmann::json      batch      = nlohmann::json::array();
         t_broadcast_request broadcast_request{.tx_hex = tx_hex.toStdString(), .coin = ticker};
-        nlohmann::json      json_data = mm2::template_request("send_raw_transaction");
-        mm2::to_json(json_data, broadcast_request);
+        nlohmann::json      json_data = kdf::template_request("send_raw_transaction");
+        kdf::to_json(json_data, broadcast_request);
         batch.push_back(json_data);
 
         //! Answer
@@ -869,22 +869,22 @@ namespace atomic_dex
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
-                auto&       mm2_system = m_system_manager.get_system<mm2_service>();
-                const auto& ticker     = mm2_system.get_current_ticker();
+                auto&       kdf_system = m_system_manager.get_system<kdf_service>();
+                const auto& ticker     = kdf_system.get_current_ticker();
                 auto        answers    = nlohmann::json::parse(body);
                 // SPDLOG_INFO("broadcast answer: {}", answers.dump(4));
                 if (answers[0].contains("tx_hash"))
                 {
                     this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
-                    if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && is_max))
+                    if (kdf_system.is_pin_cfg_enabled() && (not is_claiming && is_max))
                     {
-                        mm2_system.reset_fake_balance_to_zero(ticker);
+                        kdf_system.reset_fake_balance_to_zero(ticker);
                     }
-                    else if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && not is_max))
+                    else if (kdf_system.is_pin_cfg_enabled() && (not is_claiming && not is_max))
                     {
-                        mm2_system.decrease_fake_balance(ticker, amount.toStdString());
+                        kdf_system.decrease_fake_balance(ticker, amount.toStdString());
                     }
-                    mm2_system.fetch_infos_thread();
+                    kdf_system.fetch_infos_thread();
                 }
                 else
                 {
@@ -912,7 +912,7 @@ namespace atomic_dex
             }
         };
 
-        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
+        kdf_system.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 
     void
@@ -920,13 +920,13 @@ namespace atomic_dex
     {
         this->set_claiming_is_busy(true);
         nlohmann::json     batch      = nlohmann::json::array();
-        auto&              mm2_system = m_system_manager.get_system<mm2_service>();
+        auto&              kdf_system = m_system_manager.get_system<kdf_service>();
         std::error_code    ec;
-        t_withdraw_request withdraw_req{.coin = "KMD", .to = mm2_system.address("KMD", ec), .amount = "0", .max = true};
-        nlohmann::json     json_data = mm2::template_request("withdraw", true);
-        mm2::to_json(json_data, withdraw_req);
+        t_withdraw_request withdraw_req{.coin = "KMD", .to = kdf_system.address("KMD", ec), .amount = "0", .max = true};
+        nlohmann::json     json_data = kdf::template_request("withdraw", true);
+        kdf::to_json(json_data, withdraw_req);
         batch.push_back(json_data);
-        json_data = mm2::template_request("kmd_rewards_info");
+        json_data = kdf::template_request("kmd_rewards_info");
         batch.push_back(json_data);
 
         auto answer_functor = [this](web::http::http_response resp)
@@ -936,11 +936,11 @@ namespace atomic_dex
             if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok) && body.find("error") == std::string::npos)
             {
                 auto           answers              = nlohmann::json::parse(body);
-                auto           withdraw_answer      = mm2::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
+                auto           withdraw_answer      = kdf::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                 nlohmann::json j_out                = nlohmann::json::object();
                 j_out["withdraw_answer"]            = answers[0]["result"];
                 j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
-                auto kmd_rewards_answer             = mm2::process_kmd_rewards_answer(answers[1]);
+                auto kmd_rewards_answer             = kdf::process_kmd_rewards_answer(answers[1]);
                 j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
                 this->set_rpc_claiming_data(nlohmann_json_object_to_qt_json_object(j_out));
             }
@@ -967,17 +967,17 @@ namespace atomic_dex
             }
         };
 
-        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
+        kdf_system.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 
     void
     wallet_page ::claim_faucet()
     {
-        const auto&                mm2_system = m_system_manager.get_system<mm2_service>();
-        const auto&                ticker     = mm2_system.get_current_ticker();
-        const auto&                coin_info  = mm2_system.get_coin_info(ticker);
+        const auto&                kdf_system = m_system_manager.get_system<kdf_service>();
+        const auto&                ticker     = kdf_system.get_current_ticker();
+        const auto&                coin_info  = kdf_system.get_coin_info(ticker);
         std::error_code            ec;
-        faucet::api::claim_request claim_request{.coin_name = coin_info.ticker, .wallet_address = mm2_system.address(ticker, ec)};
+        faucet::api::claim_request claim_request{.coin_name = coin_info.ticker, .wallet_address = kdf_system.address(ticker, ec)};
 
         this->set_claiming_faucet_is_busy(true);
         faucet::api::claim(claim_request)
@@ -1011,7 +1011,7 @@ namespace atomic_dex
         {
             std::error_code ec;
             const auto& settings         = m_system_manager.get_system<settings_page>();
-            t_transactions  transactions = m_system_manager.get_system<mm2_service>().get_tx_history(ec);
+            t_transactions  transactions = m_system_manager.get_system<kdf_service>().get_tx_history(ec);
             t_transactions  to_init;
             if (settings.is_spamfilter_enabled())
             {
@@ -1056,10 +1056,10 @@ namespace atomic_dex
     void
     wallet_page::validate_address(QString address)
     {
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
-        if (mm2_system.is_mm2_running())
+        auto& kdf_system = m_system_manager.get_system<kdf_service>();
+        if (kdf_system.is_kdf_running())
         {
-            const auto& ticker = mm2_system.get_current_ticker();
+            const auto& ticker = kdf_system.get_current_ticker();
             validate_address(address, QString::fromStdString(ticker));
         }
     }
@@ -1068,15 +1068,15 @@ namespace atomic_dex
     wallet_page::validate_address(QString address, QString ticker)
     {
         // SPDLOG_INFO("validate_address: {} - ticker: {}", address.toStdString(), ticker.toStdString());
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
-        if (mm2_system.is_mm2_running())
+        auto& kdf_system = m_system_manager.get_system<kdf_service>();
+        if (kdf_system.is_kdf_running())
         {
             std::error_code            ec;
             t_validate_address_request req{.coin = ticker.toStdString(), .address = address.toStdString()};
             this->set_validate_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
-            nlohmann::json json_data = mm2::template_request("validateaddress");
-            mm2::to_json(json_data, req);
+            nlohmann::json json_data = kdf::template_request("validateaddress");
+            kdf::to_json(json_data, req);
             batch.push_back(json_data);
             auto answer_functor = [this, ticker](web::http::http_response resp)
             {
@@ -1087,7 +1087,7 @@ namespace atomic_dex
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
                 {
                     auto answers         = nlohmann::json::parse(body);
-                    auto validate_answer = mm2::rpc_process_answer_batch<t_validate_address_answer>(answers[0], "validateaddress");
+                    auto validate_answer = kdf::rpc_process_answer_batch<t_validate_address_answer>(answers[0], "validateaddress");
                     if (validate_answer.result.has_value())
                     {
                         auto res          = validate_answer.result.value();
@@ -1096,7 +1096,7 @@ namespace atomic_dex
                     }
                     else
                     {
-                        if (!m_system_manager.get_system<mm2_service>().is_zhtlc_coin_ready(ticker.toStdString()))
+                        if (!m_system_manager.get_system<kdf_service>().is_zhtlc_coin_ready(ticker.toStdString()))
                         {
                             j_out["reason"]   = "Validation error: Coin not fully enabled";
                         }
@@ -1116,17 +1116,17 @@ namespace atomic_dex
                 this->set_validate_address_data(nlohmann_json_object_to_qt_json_object(j_out));
                 this->set_validate_address_busy(false);
             };
-            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+            kdf_system.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
         }
     }
 
     void
     wallet_page::convert_address(QString from, QVariant to_address_format)
     {
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
-        if (mm2_system.is_mm2_running())
+        auto& kdf_system = m_system_manager.get_system<kdf_service>();
+        if (kdf_system.is_kdf_running())
         {
-            const auto& ticker = mm2_system.get_current_ticker();
+            const auto& ticker = kdf_system.get_current_ticker();
             convert_address(from, QString::fromStdString(ticker), to_address_format);
         }
     }
@@ -1134,16 +1134,16 @@ namespace atomic_dex
     void
     wallet_page::convert_address(QString from, QString ticker, QVariant to_address_format)
     {
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
-        if (mm2_system.is_mm2_running())
+        auto& kdf_system = m_system_manager.get_system<kdf_service>();
+        if (kdf_system.is_kdf_running())
         {
             QVariantMap               out         = to_address_format.value<QVariantMap>();
             auto                      address_fmt = nlohmann::json::parse(QJsonDocument::fromVariant(out).toJson().toStdString());
             t_convert_address_request req{.coin = ticker.toStdString(), .from = from.toStdString(), .to_address_format = address_fmt};
             this->set_convert_address_busy(true);
             nlohmann::json batch     = nlohmann::json::array();
-            nlohmann::json json_data = mm2::template_request("convertaddress");
-            mm2::to_json(json_data, req);
+            nlohmann::json json_data = kdf::template_request("convertaddress");
+            kdf::to_json(json_data, req);
             batch.push_back(json_data);
             auto answer_functor = [this](web::http::http_response resp)
             {
@@ -1152,7 +1152,7 @@ namespace atomic_dex
                 if (resp.status_code() == static_cast<web::http::status_code>(antara::app::http_code::ok))
                 {
                     auto answers        = nlohmann::json::parse(body);
-                    auto convert_answer = mm2::rpc_process_answer_batch<t_convert_address_answer>(answers[0], "convertaddress");
+                    auto convert_answer = kdf::rpc_process_answer_batch<t_convert_address_answer>(answers[0], "convertaddress");
                     if (convert_answer.result.has_value())
                     {
                         auto res = QString::fromStdString(convert_answer.result.value().address);
@@ -1161,7 +1161,7 @@ namespace atomic_dex
                 }
                 this->set_convert_address_busy(false);
             };
-            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+            kdf_system.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
         }
     }
 

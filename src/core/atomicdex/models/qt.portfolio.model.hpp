@@ -32,7 +32,7 @@
 #include "atomicdex/data/wallet/qt.portfolio.data.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 
 namespace atomic_dex
 {

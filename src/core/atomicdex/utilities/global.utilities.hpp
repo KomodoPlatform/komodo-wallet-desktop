@@ -77,7 +77,7 @@ namespace atomic_dex::utils
 
     ENTT_API std::filesystem::path get_current_configs_path();
 
-    std::filesystem::path get_mm2_atomic_dex_current_log_file();
+    std::filesystem::path get_kdf_atomic_dex_current_log_file();
 
     std::filesystem::path get_atomic_dex_config_folder();
 

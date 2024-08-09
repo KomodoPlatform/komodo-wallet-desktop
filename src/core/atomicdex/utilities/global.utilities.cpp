@@ -154,14 +154,14 @@ namespace atomic_dex::utils
     }
 
     std::filesystem::path
-    get_mm2_atomic_dex_current_log_file()
+    get_kdf_atomic_dex_current_log_file()
     {
         using namespace std::chrono;
         using namespace date;
         static auto              timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
         static date::sys_seconds tp{seconds{timestamp}};
         static std::string       s        = date::format("%Y-%m-%d-%H-%M-%S", tp);
-        static const std::filesystem::path    log_path = get_atomic_dex_logs_folder() / (s + ".mm2.log");
+        static const std::filesystem::path    log_path = get_atomic_dex_logs_folder() / (s + ".kdf.log");
         return log_path;
     }
 
@@ -220,9 +220,9 @@ namespace atomic_dex::utils
     std::filesystem::path
     get_current_configs_path()
     {
-        const auto fs_raw_mm2_shared_folder = get_atomic_dex_data_folder() / get_raw_version() / "configs";
-        create_if_doesnt_exist(fs_raw_mm2_shared_folder);
-        return fs_raw_mm2_shared_folder;
+        const auto fs_raw_kdf_shared_folder = get_atomic_dex_data_folder() / get_raw_version() / "configs";
+        create_if_doesnt_exist(fs_raw_kdf_shared_folder);
+        return fs_raw_kdf_shared_folder;
     }
 
     std::string

@@ -14,7 +14,7 @@ namespace atomic_dex
     {
         SPDLOG_INFO("coingecko_provider created");
         this->disable();
-        dispatcher_.sink<mm2_started>().connect<&coingecko_provider::on_mm2_started>(*this);
+        dispatcher_.sink<kdf_started>().connect<&coingecko_provider::on_kdf_started>(*this);
         dispatcher_.sink<coin_enabled>().connect<&coingecko_provider::on_coin_enabled>(*this);
         dispatcher_.sink<coin_disabled>().connect<&coingecko_provider::on_coin_disabled>(*this);
     }
@@ -22,7 +22,7 @@ namespace atomic_dex
     coingecko_provider::~coingecko_provider()
     {
         SPDLOG_INFO("coingecko_provider destroyed");
-        dispatcher_.sink<mm2_started>().disconnect<&coingecko_provider::on_mm2_started>(*this);
+        dispatcher_.sink<kdf_started>().disconnect<&coingecko_provider::on_kdf_started>(*this);
         dispatcher_.sink<coin_enabled>().disconnect<&coingecko_provider::on_coin_enabled>(*this);
         dispatcher_.sink<coin_disabled>().disconnect<&coingecko_provider::on_coin_disabled>(*this);
     }
@@ -41,9 +41,9 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    coingecko_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt)
+    coingecko_provider::on_kdf_started([[maybe_unused]] const kdf_started& evt)
     {
-        SPDLOG_INFO("on_mm2_started");
+        SPDLOG_INFO("on_kdf_started");
         update_ticker_and_provider();
     }
 
@@ -75,7 +75,7 @@ namespace atomic_dex
     coingecko_provider::update_ticker_and_provider()
     {
         SPDLOG_INFO("update_ticker_and_provider");
-        if (m_system_manager.has_system<mm2_service>() && m_system_manager.get_system<mm2_service>().is_mm2_running())
+        if (m_system_manager.has_system<kdf_service>() && m_system_manager.get_system<kdf_service>().is_kdf_running())
         {
             const auto coins       = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_model_data();
             auto&& [ids, registry] = coingecko::api::from_enabled_coins(coins);
@@ -83,7 +83,7 @@ namespace atomic_dex
         }
         else
         {
-            SPDLOG_WARN("mm2 not running - skipping update_ticker_and_provider");
+            SPDLOG_WARN("kdf not running - skipping update_ticker_and_provider");
         }
     }
 

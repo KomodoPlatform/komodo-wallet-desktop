@@ -37,8 +37,8 @@ namespace atomic_dex
 
         void update_ticker_and_provider();
 
-        //! Event that occur when the mm2 process is launched correctly.
-        void on_mm2_started(const mm2_started& evt) ;
+        //! Event that occur when the kdf process is launched correctly.
+        void on_kdf_started(const kdf_started& evt) ;
 
         //! Event that occur when a coin is correctly enabled.
         void on_coin_enabled(const coin_enabled& evt) ;
