@@ -1,6 +1,6 @@
 {
   "name": "komodo-wallet-desktop",
-  "version-string": "0.7.2",
+  "version-string": "0.8.0",
   "dependencies": [
     "entt",
     "boost-multiprecision",
