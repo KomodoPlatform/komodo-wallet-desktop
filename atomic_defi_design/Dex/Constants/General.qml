@@ -434,6 +434,15 @@ QtObject {
         return feetype + " " + amount + " " + ticker + " (" + fiat_text + ")"
     }
 
+    function reducedBignum(text, decimals=8, max_length=12) {
+        let val = new BigNumber(text).toFixed(decimals)
+        if (val.length > max_length)
+        {
+            return val.substring(0, max_length) + "..."
+        }
+        return val
+    }
+
     function getSimpleFromPlaceholder(selectedTicker, selectedOrder, sell_ticker_balance) {
         if (sell_ticker_balance == 0)
         {
