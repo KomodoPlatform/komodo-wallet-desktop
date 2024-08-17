@@ -103,7 +103,8 @@ ColumnLayout
             id: input_price
 
             left_text: qsTr("Price")
-            right_text: right_ticker
+            right_text: General.coinWithoutSuffix(right_ticker)
+            right_fontsize: 10
             enabled: !(API.app.trading_pg.preferred_order.price !== undefined)
             color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             text: backend_price ? backend_price : General.formatDouble(API.app.trading_pg.cex_price)
@@ -167,7 +168,8 @@ ColumnLayout
             height: 36
             radius: 18
             left_text: sell_mode ? qsTr("Send") : qsTr("Receive") 
-            right_text: left_ticker
+            right_text: General.coinWithoutSuffix(left_ticker)
+            right_fontsize: 10
             placeholderText: "0" 
             text: API.app.trading_pg.volume
             onTextChanged: {
