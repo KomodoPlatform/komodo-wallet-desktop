@@ -2228,13 +2228,13 @@ namespace atomic_dex
             .rpc_password = std::move(rpcpass) == "" ? std::move(atomic_dex::gen_random_password()) : std::move(rpcpass)
         };
 
-        auto dbdir = std::filesystem::path(cfg.dbdir);
-        auto old_dbdir = std::filesystem::path(utils::get_atomic_dex_data_folder() / "mm2" / "DB");
-        if (not std::filesystem::exists(dbdir))
+        auto dbdir_parent = std::filesystem::path(utils::get_atomic_dex_data_folder() / "kdf");
+        auto old_dbdir_parent = std::filesystem::path(utils::get_atomic_dex_data_folder() / "mm2");
+        if (not std::filesystem::exists(dbdir_parent))
         {
-            if (std::filesystem::exists(old_dbdir))
+            if (std::filesystem::exists(old_dbdir_parent))
             {
-                std::filesystem::rename(old_dbdir, dbdir);
+                std::filesystem::rename(old_dbdir_parent, dbdir_parent);
             }
         }
 
