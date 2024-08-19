@@ -80,7 +80,7 @@ MultipageModal
         TextEditWithTitle
         {
             title: qsTr("Amount")
-            text_value: !details ? "" : General.formatCrypto(!details.am_i_sender, details.amount, api_wallet_page.ticker, details.amount_fiat, API.app.settings_pg.current_currency)
+            text: !details ? "" : General.formatCrypto(!details.am_i_sender, details.amount, api_wallet_page.ticker, details.amount_fiat, API.app.settings_pg.current_currency)
             value_color: !details ? "white" : details.am_i_sender ?  Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
             privacy: true
             label.font.pixelSize: 13
@@ -90,7 +90,7 @@ MultipageModal
         TextEditWithTitle
         {
             title: qsTr("Fees")
-            text_value: !details ? "" : General.formatCrypto(parseFloat(details.fees) < 0, Math.abs(parseFloat(details.fees)), current_ticker_infos.fee_ticker, details.fees_amount_fiat, API.app.settings_pg.current_currency)
+            text: !details ? "" : General.formatCrypto(parseFloat(details.fees) < 0, Math.abs(parseFloat(details.fees)), current_ticker_infos.fee_ticker, details.fees_amount_fiat, API.app.settings_pg.current_currency)
             value_color: !details ? "white" : parseFloat(details.fees) > 0 ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
             privacy: true
             label.font.pixelSize: 13
