@@ -88,8 +88,9 @@ RowLayout
             {
                 id: middle_line
 
-                property string coin_value: !details ? "" : details.balance
+                property string coin_value: !details ? "" : Dex.General.privacy_mode ? Dex.General.privacy_text : details.balance
                 text: coin_value
+                privacy: true
                 Layout.fillWidth: true
                 elide: Text.ElideRight
                 color: Dex.CurrentTheme.foregroundColor
@@ -112,6 +113,7 @@ RowLayout
                 font: DexTypo.body2
                 wrapMode: Label.NoWrap
                 ToolTip.text: fiat_value
+                privacy: true
                 Component.onCompleted: font.pixelSize = 11
             }
         }
