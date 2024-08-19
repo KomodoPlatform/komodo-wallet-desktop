@@ -165,9 +165,9 @@ MultipageModal
             {
                 Layout.fillWidth: true
                 title: qsTr("Swap ID")
-                text: !details ? "" : details.order_id
+                text_value: !details ? "" : details.order_id
                 label.font.pixelSize: 13
-                visible: text !== ''
+                visible: text_value !== ''
                 copy: true
                 privacy: true
                 onCopyNotificationTitle: qsTr("Swap ID")
@@ -178,11 +178,11 @@ MultipageModal
             {
                 Layout.fillWidth: true
                 title: !details ? "" : details.is_maker ? qsTr("Maker Payment Sent Transaction ID") : qsTr("Maker Payment Spent Transaction ID")
-                text: !details ? "" : details.maker_payment_id
+                text_value: !details ? "" : details.maker_payment_id
                 label.font.pixelSize: 12
-                visible: text !== ''
+                visible: text_value !== ''
                 copy: true
-                linkURL: text !== '' ? General.getTxExplorerURL(details.is_maker ? details.base_coin : details.rel_coin, details.maker_payment_id) : ''
+                linkURL: text_value !== '' ? General.getTxExplorerURL(details.is_maker ? details.base_coin : details.rel_coin, details.maker_payment_id) : ''
                 privacy: true
                 onCopyNotificationTitle: qsTr("Maker Payment TXID")
             }
@@ -192,13 +192,13 @@ MultipageModal
             {
                 Layout.fillWidth: true
                 title: !details ? "" : details.is_maker ? qsTr("Taker Payment Spent Transaction ID") : qsTr("Taker Payment Sent Transaction ID")
-                text: !details ? "" : details.taker_payment_id
+                text_value: !details ? "" : details.taker_payment_id
                 label.font.pixelSize: 12
-                visible: text !== ''
+                visible: text_value !== ''
                 copy: true
                 privacy: true
                 onCopyNotificationTitle: qsTr("Taker Payment TXID")
-                linkURL: text !== '' ? General.getTxExplorerURL(details.is_maker ? details.rel_coin : details.base_coin, details.taker_payment_id) : ''
+                linkURL: text_value !== '' ? General.getTxExplorerURL(details.is_maker ? details.rel_coin : details.base_coin, details.taker_payment_id) : ''
             }
 
             // Error ID

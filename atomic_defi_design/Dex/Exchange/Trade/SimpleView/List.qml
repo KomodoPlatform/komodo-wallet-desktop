@@ -192,7 +192,7 @@ DexListView
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
-                    text: !details ? "" :
+                    text_value: !details ? "" :
                                 General.formatCrypto("", details.base_amount, details.base_coin)
                     privacy: true
                 }
@@ -202,7 +202,7 @@ DexListView
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
                     horizontalAlignment: Text.AlignRight
-                    text: !details ? "" :
+                    text_value: !details ? "" :
                                 General.formatCrypto("", details.rel_amount, details.rel_coin)
                     privacy: true
                 }
@@ -272,7 +272,6 @@ DexListView
                             anchors.verticalCenter: parent.verticalCenter
                             text: "Refund "
                             color: Qaterial.Colors.amber
-                            privacy: true
                         }
                     }
                     MouseArea
@@ -290,7 +289,6 @@ DexListView
                             DexLabel {
                                 text_value: qsTr("Funds are recoverable")
                                 font.pixelSize: Constants.Style.textSizeSmall4
-                                privacy: true
                             }
                         }
                     }

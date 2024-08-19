@@ -87,9 +87,8 @@ RowLayout
             Dex.Text
             {
                 id: middle_line
-
-                property string coin_value: !details ? "" : Dex.General.privacy_mode ? Dex.General.privacy_text : details.balance
-                text: coin_value
+                property string coin_value: !details ? "" : details.balance
+                text_value: coin_value
                 privacy: true
                 Layout.fillWidth: true
                 elide: Text.ElideRight
@@ -106,7 +105,7 @@ RowLayout
 
                 property string fiat_value: !details ? "" :
                             General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_currency)
-                text: fiat_value
+                text_value: fiat_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight
                 color: Dex.CurrentTheme.foregroundColor
