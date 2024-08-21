@@ -9,7 +9,7 @@
 //! deps
 #include <nlohmann/json.hpp>
 
-namespace atomic_dex::mm2
+namespace atomic_dex::kdf
 {
     struct order_swaps_data
     {
@@ -89,9 +89,9 @@ namespace atomic_dex::mm2
         QString        max_volume;
         std::optional<nlohmann::json> conf_settings{std::nullopt};
     };
-} // namespace atomic_dex::mm2
+} // namespace atomic_dex::kdf
 
 namespace atomic_dex
 {
-    using t_order_swaps_data = mm2::order_swaps_data;
+    using t_order_swaps_data = kdf::order_swaps_data;
 }

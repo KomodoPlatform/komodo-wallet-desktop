@@ -104,7 +104,7 @@ qt_message_handler(QtMsgType type, [[maybe_unused]] const QMessageLogContext& co
 static void
 signal_handler(int signal)
 {
-    SPDLOG_ERROR("sigabort received, cleaning mm2");
+    SPDLOG_ERROR("sigabort received, cleaning kdf");
     atomic_dex::kill_executable(atomic_dex::g_dex_api);
 #if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
@@ -158,7 +158,7 @@ init_sodium()
 static void
 clean_previous_run()
 {
-    SPDLOG_INFO("cleaning previous mm2 instance");
+    SPDLOG_INFO("cleaning previous kdf instance");
     atomic_dex::kill_executable(atomic_dex::g_dex_api);
 }
 

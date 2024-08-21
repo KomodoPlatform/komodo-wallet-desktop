@@ -20,8 +20,8 @@
 //! Project Headers
 #include "../../qt.settings.page.hpp"
 #include "../../qt.trading.page.hpp"
-#include "atomicdex/api/mm2/mm2.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/api/kdf/kdf.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "qt.orders.widget.hpp"
 
@@ -42,30 +42,30 @@ namespace atomic_dex
     qt_orders_widget::common_cancel_all_orders(bool by_coin, const QString& ticker)
     {
         nlohmann::json batch          = nlohmann::json::array();
-        nlohmann::json cancel_request = mm2::template_request("cancel_all_orders");
+        nlohmann::json cancel_request = kdf::template_request("cancel_all_orders");
         if (by_coin && not ticker.isEmpty())
         {
-            mm2::cancel_data cd;
+            kdf::cancel_data cd;
             cd.ticker = ticker.toStdString();
-            mm2::cancel_all_orders_request req{{"Coin", cd}};
-            mm2::to_json(cancel_request, req);
+            kdf::cancel_all_orders_request req{{"Coin", cd}};
+            kdf::to_json(cancel_request, req);
         }
         else
         {
-            mm2::cancel_data cd;
+            kdf::cancel_data cd;
             cd.ticker = ticker.toStdString();
-            mm2::cancel_all_orders_request req_all;
-            mm2::to_json(cancel_request, req_all);
+            kdf::cancel_all_orders_request req_all;
+            kdf::to_json(cancel_request, req_all);
         }
 
         batch.push_back(cancel_request);
-        auto& mm2_system = m_system_mgr.get_system<mm2_service>();
-        mm2_system.get_mm2_client()
+        auto& kdf_system = m_system_mgr.get_system<kdf_service>();
+        kdf_system.get_kdf_client()
             .async_rpc_batch_standalone(batch)
             .then([this]([[maybe_unused]] web::http::http_response resp) {
-                auto& mm2_system = m_system_mgr.get_system<mm2_service>();
-                mm2_system.batch_fetch_orders_and_swap();
-                mm2_system.process_orderbook(false);
+                auto& kdf_system = m_system_mgr.get_system<kdf_service>();
+                kdf_system.batch_fetch_orders_and_swap();
+                kdf_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
     }
@@ -81,20 +81,20 @@ namespace atomic_dex
         nlohmann::json batch = nlohmann::json::array();
         for (auto&& order_id: orders_id)
         {
-            mm2::cancel_all_orders_request req;
-            nlohmann::json                        cancel_request = mm2::template_request("cancel_order");
-            mm2::cancel_order_request      cancel_req{order_id.toStdString()};
+            kdf::cancel_all_orders_request req;
+            nlohmann::json                        cancel_request = kdf::template_request("cancel_order");
+            kdf::cancel_order_request      cancel_req{order_id.toStdString()};
             to_json(cancel_request, cancel_req);
             batch.push_back(cancel_request);
         }
 
-        auto& mm2_system = m_system_mgr.get_system<mm2_service>();
-        mm2_system.get_mm2_client()
+        auto& kdf_system = m_system_mgr.get_system<kdf_service>();
+        kdf_system.get_kdf_client()
             .async_rpc_batch_standalone(batch)
             .then([this]([[maybe_unused]] web::http::http_response resp) {
-                auto& mm2_system = m_system_mgr.get_system<mm2_service>();
-                mm2_system.batch_fetch_orders_and_swap();
-                mm2_system.process_orderbook(false);
+                auto& kdf_system = m_system_mgr.get_system<kdf_service>();
+                kdf_system.batch_fetch_orders_and_swap();
+                kdf_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
     }

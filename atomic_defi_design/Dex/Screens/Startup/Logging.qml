@@ -39,7 +39,7 @@ SetupPage
         DefaultText
         {
             Layout.alignment: Qt.AlignHCenter
-            text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+            text_value: (current_status === "initializing_kdf" ? qsTr("Initializing KDF") :
                 current_status === "enabling_coins" ? qsTr("Enabling assets") : qsTr("Getting ready")) + "..."
         }
     }

@@ -19,7 +19,7 @@
 
 //! Our project
 #include "atomicdex/services/internet/internet.checker.service.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
@@ -32,7 +32,7 @@ namespace
         return cfg;
     }()};
 
-    std::atomic_bool  g_mm2_default_coins_ready{false};
+    std::atomic_bool  g_kdf_default_coins_ready{false};
 
     pplx::task<web::http::http_response>
     async_check_retrieve(t_http_client_ptr& client, const std::string& uri)
@@ -163,35 +163,35 @@ namespace atomic_dex
     void
     internet_service_checker::fetch_internet_connection()
     {
-        // TODO: This is only checking mm2 connection, not connection to the internet.
-        if (this->m_system_manager.has_system<mm2_service>() && g_mm2_default_coins_ready)
+        // TODO: This is only checking kdf connection, not connection to the internet.
+        if (this->m_system_manager.has_system<kdf_service>() && g_kdf_default_coins_ready)
         {
-            auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-            if (mm2.is_mm2_running())
+            auto& kdf = this->m_system_manager.get_system<kdf_service>();
+            if (kdf.is_kdf_running())
             {
-                SPDLOG_INFO("mm2 is alive, checking if we are able to fetch mm2 version");
+                SPDLOG_INFO("kdf is alive, checking if we are able to fetch kdf version");
                 nlohmann::json      batch           = nlohmann::json::array();
-                nlohmann::json      current_request = mm2::template_request("version");
+                nlohmann::json      current_request = kdf::template_request("version");
                 // SPDLOG_DEBUG("version request {}", current_request.dump(4));
                 batch.push_back(current_request);
-                auto async_answer = mm2.get_mm2_client().async_rpc_batch_standalone(batch);
-                generic_treat_answer(async_answer, TO_STD_STR(atomic_dex::g_dex_rpc), &internet_service_checker::is_mm2_endpoint_alive);
+                auto async_answer = kdf.get_kdf_client().async_rpc_batch_standalone(batch);
+                generic_treat_answer(async_answer, TO_STD_STR(atomic_dex::g_dex_rpc), &internet_service_checker::is_kdf_endpoint_alive);
             }
             else
             {
-                SPDLOG_WARN("mm2 not running skipping internet connectivity with it");
+                SPDLOG_WARN("kdf not running skipping internet connectivity with it");
             }
         }
         else
         {
-            SPDLOG_WARN("mm2 system not available skipping internet connectivity with it");
+            SPDLOG_WARN("kdf system not available skipping internet connectivity with it");
         }
     }
 
     void
     internet_service_checker::on_default_coins_enabled([[maybe_unused]] const default_coins_enabled& evt)
     {
-        SPDLOG_INFO("Default coins are enabled, we can now check internet with mm2 too");
-        g_mm2_default_coins_ready = true;
+        SPDLOG_INFO("Default coins are enabled, we can now check internet with kdf too");
+        g_kdf_default_coins_ready = true;
     }
 } // namespace atomic_dex

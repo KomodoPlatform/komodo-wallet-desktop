@@ -60,7 +60,7 @@ namespace atomic_dex
                 auto           chart_registry = this->m_chart_data_registry.get();
                 nlohmann::json out            = nlohmann::json::array();
                 const auto&    data           = chart_registry.begin()->second;
-                const auto&    mm2            = m_system_manager.get_system<mm2_service>();
+                const auto&    kdf            = m_system_manager.get_system<kdf_service>();
                 t_float_50     first_total    = 0;
                 for (std::size_t idx = 0; idx < data.size(); idx++)
                 {
@@ -77,7 +77,7 @@ namespace atomic_dex
                             to_skip = true;
                             continue;
                         }
-                        t_float_50 cur_total = (t_float_50(value[idx][1].get<float>()) * mm2.get_balance_info_f(key)) * rate;
+                        t_float_50 cur_total = (t_float_50(value[idx][1].get<float>()) * kdf.get_balance_info_f(key)) * rate;
                         total += cur_total;
                     }
                     if (to_skip)
@@ -210,7 +210,7 @@ namespace atomic_dex
         const auto coins           = this->m_system_manager.get_system<portfolio_page>().get_global_cfg()->get_enabled_coins();
         auto*      portfolio_model = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
         auto       final_task      = m_taskflow.emplace([this]() { this->generate_fiat_chart(); }).name("Post task");
-        auto       active_coins    = m_system_manager.get_system<mm2_service>().get_active_coins().size();
+        auto       active_coins    = m_system_manager.get_system<kdf_service>().get_active_coins().size();
 
         SPDLOG_INFO("active_coins: {} coins_size: {}", active_coins, coins.size());
         if (active_coins == coins.size())

@@ -220,8 +220,8 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const
     {
-        auto&   mm2_instance = m_system_manager.get_system<mm2_service>();
-        t_coins coins        = mm2_instance.get_enabled_coins();
+        auto&   kdf_instance = m_system_manager.get_system<kdf_service>();
+        t_coins coins        = kdf_instance.get_enabled_coins();
         try
         {
             t_float_50        final_price_f = 0;
@@ -271,9 +271,9 @@ namespace atomic_dex
                 return "0.00";
             }
 
-            auto& mm2_instance = m_system_manager.get_system<mm2_service>();
+            auto& kdf_instance = m_system_manager.get_system<kdf_service>();
 
-            const auto ticker_infos = mm2_instance.get_coin_info(ticker);
+            const auto ticker_infos = kdf_instance.get_coin_info(ticker);
             const auto current_price = get_rate_conversion(currency, ticker);
 
             if (current_price == "0.00")
@@ -298,7 +298,7 @@ namespace atomic_dex
         // SPDLOG_INFO("get_price_in_fiat [{}] [{}]", fiat, ticker);
         try
         {
-            auto& mm2_instance = m_system_manager.get_system<mm2_service>();
+            auto& kdf_instance = m_system_manager.get_system<kdf_service>();
 
             if (m_supported_fiat_registry.count(fiat) == 0u)
             {
@@ -314,7 +314,7 @@ namespace atomic_dex
             }
 
             std::error_code t_ec;
-            const auto      amount = mm2_instance.get_balance_info(ticker, t_ec); // from registry
+            const auto      amount = kdf_instance.get_balance_info(ticker, t_ec); // from registry
 
             if (t_ec)
             {
@@ -397,11 +397,11 @@ namespace atomic_dex
                 [this](web::http::http_response resp)
                 {
                     this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
-                    const auto& mm2           = this->m_system_manager.get_system<mm2_service>();
-                    const bool  with_update   = mm2.is_mm2_running();
+                    const auto& kdf           = this->m_system_manager.get_system<kdf_service>();
+                    const bool  with_update   = kdf.is_kdf_running();
                     bool        already_send  = false;
-                    const auto  first_id      = mm2.get_coin_info(g_primary_dex_coin).coinpaprika_id;
-                    const auto  second_id     = mm2.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
+                    const auto  first_id      = kdf.get_coin_info(g_primary_dex_coin).coinpaprika_id;
+                    const auto  second_id     = kdf.get_coin_info(g_second_primary_dex_coin).coinpaprika_id;
                     
                     if (!first_id.empty())
                     {
@@ -417,7 +417,7 @@ namespace atomic_dex
                         if (g_primary_dex_coin != coin && g_second_primary_dex_coin != coin)
                         {
                             refresh_other_coins_rates(
-                                mm2.get_coin_info(coin).coinpaprika_id,
+                                kdf.get_coin_info(coin).coinpaprika_id,
                                 coin,
                                 !already_send,
                                 0

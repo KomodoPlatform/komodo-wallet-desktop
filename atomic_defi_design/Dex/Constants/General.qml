@@ -175,7 +175,7 @@ QtObject {
     }
 
     function coinContractAddress(ticker) {
-        var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
+        var cfg = API.app.trading_pg.get_raw_kdf_coin_cfg(ticker)
         if (cfg.hasOwnProperty('protocol')) {
             if (cfg.protocol.hasOwnProperty('protocol_data')) {
                 if (cfg.protocol.protocol_data.hasOwnProperty('contract_address')) {
@@ -187,7 +187,7 @@ QtObject {
     }
 
     function coinPlatform(ticker) {
-        var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
+        var cfg = API.app.trading_pg.get_raw_kdf_coin_cfg(ticker)
         if (cfg.hasOwnProperty('protocol')) {
             if (cfg.protocol.hasOwnProperty('protocol_data')) {
                 if (cfg.protocol.protocol_data.hasOwnProperty('platform')) {

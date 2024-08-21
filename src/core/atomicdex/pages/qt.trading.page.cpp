@@ -19,15 +19,15 @@
 #include <boost/algorithm/string/replace.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/rpc_v1/rpc.buy.hpp"
-#include "atomicdex/api/mm2/rpc_v1/rpc.sell.hpp"
-#include "atomicdex/api/mm2/rpc_v1/rpc.setprice.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.trade_preimage.hpp"
+#include "atomicdex/api/kdf/rpc_v1/rpc.buy.hpp"
+#include "atomicdex/api/kdf/rpc_v1/rpc.sell.hpp"
+#include "atomicdex/api/kdf/rpc_v1/rpc.setprice.hpp"
+#include "atomicdex/api/kdf/rpc_v2/rpc2.trade_preimage.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
-#include "atomicdex/services/mm2/auto.update.maker.order.service.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/auto.update.maker.order.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/services/price/defi.stats.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
@@ -68,10 +68,10 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QVariant
-    trading_page::get_raw_mm2_coin_cfg(const QString& ticker) const
+    trading_page::get_raw_kdf_coin_cfg(const QString& ticker) const
     {
         QVariant       out;
-        nlohmann::json j = m_system_manager.get_system<mm2_service>().get_raw_mm2_ticker_cfg(ticker.toStdString());
+        nlohmann::json j = m_system_manager.get_system<kdf_service>().get_raw_kdf_ticker_cfg(ticker.toStdString());
         out              = nlohmann_json_object_to_qt_json_object(j);
         return out;
     }
@@ -83,7 +83,7 @@ namespace atomic_dex
         {
             return;
         }
-        if (bool is_wallet_only = m_system_manager.get_system<mm2_service>().get_coin_info(base.toStdString()).wallet_only; is_wallet_only)
+        if (bool is_wallet_only = m_system_manager.get_system<kdf_service>().get_coin_info(base.toStdString()).wallet_only; is_wallet_only)
         {
             // SPDLOG_WARN("{} is wallet only - skipping", base.toStdString());
             return;
@@ -104,7 +104,7 @@ namespace atomic_dex
             this->clear_forms("set_current_orderbook");
         }
 
-        emit mm2MinTradeVolChanged();
+        emit kdfMinTradeVolChanged();
         dispatcher_.trigger<refresh_orderbook_model_data>(base.toStdString(), rel.toStdString());
     }
 
@@ -125,7 +125,7 @@ namespace atomic_dex
     {
         SPDLOG_DEBUG("Enter DEX");
         dispatcher_.trigger<gui_enter_trading>();
-        if (this->m_system_manager.has_system<auto_update_maker_order_service>() && m_system_manager.get_system<mm2_service>().is_orderbook_thread_active())
+        if (this->m_system_manager.has_system<auto_update_maker_order_service>() && m_system_manager.get_system<kdf_service>().is_orderbook_thread_active())
         {
             this->m_system_manager.get_system<auto_update_maker_order_service>().force_update();
         }
@@ -144,7 +144,7 @@ namespace atomic_dex
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
 
-        auto&       mm2_system        = m_system_manager.get_system<mm2_service>();
+        auto&       kdf_system        = m_system_manager.get_system<kdf_service>();
         const auto* market_selector   = get_market_pairs_mdl();
         const auto& base              = market_selector->get_left_selected_coin();
         const auto& rel               = market_selector->get_right_selected_coin();
@@ -163,8 +163,8 @@ namespace atomic_dex
         };
         
         nlohmann::json batch;
-        nlohmann::json setprice_request = mm2::template_request("setprice");
-        mm2::to_json(setprice_request, req);
+        nlohmann::json setprice_request = kdf::template_request("setprice");
+        kdf::to_json(setprice_request, req);
         batch.push_back(setprice_request);
         setprice_request["userpass"] = "*******";
 
@@ -180,9 +180,9 @@ namespace atomic_dex
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
-                    auto& cur_mm2_system = m_system_manager.get_system<mm2_service>();
+                    auto& cur_kdf_system = m_system_manager.get_system<kdf_service>();
                     SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
-                    cur_mm2_system.batch_fetch_orders_and_swap();
+                    cur_kdf_system.batch_fetch_orders_and_swap();
                 }
                 else
                 {
@@ -201,7 +201,7 @@ namespace atomic_dex
         };
 
         //! Async call
-        mm2_system.get_mm2_client()
+        kdf_system.get_kdf_client()
             .async_rpc_batch_standalone(batch)
             .then(answer_functor)
             .then(
@@ -228,7 +228,7 @@ namespace atomic_dex
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
 
-        auto&       mm2_system        = m_system_manager.get_system<mm2_service>();
+        auto&       kdf_system        = m_system_manager.get_system<kdf_service>();
         const auto* market_selector   = get_market_pairs_mdl();
         const auto& base              = market_selector->get_left_selected_coin();
         const auto& rel               = market_selector->get_right_selected_coin();
@@ -307,8 +307,8 @@ namespace atomic_dex
         }
         
         nlohmann::json batch;
-        nlohmann::json buy_request = mm2::template_request("buy");
-        mm2::to_json(buy_request, req);
+        nlohmann::json buy_request = kdf::template_request("buy");
+        kdf::to_json(buy_request, req);
         batch.push_back(buy_request);
         buy_request["userpass"] = "*******";
 
@@ -324,9 +324,9 @@ namespace atomic_dex
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
-                    auto& cur_mm2_system = m_system_manager.get_system<mm2_service>();
+                    auto& cur_kdf_system = m_system_manager.get_system<kdf_service>();
                     SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
-                    cur_mm2_system.batch_fetch_orders_and_swap();
+                    cur_kdf_system.batch_fetch_orders_and_swap();
                 }
                 else
                 {
@@ -345,7 +345,7 @@ namespace atomic_dex
         };
 
         //! Async call
-        mm2_system.get_mm2_client()
+        kdf_system.get_kdf_client()
             .async_rpc_batch_standalone(batch)
             .then(answer_functor)
             .then(
@@ -372,7 +372,7 @@ namespace atomic_dex
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
 
-        auto&       mm2_system                   = m_system_manager.get_system<mm2_service>();
+        auto&       kdf_system                   = m_system_manager.get_system<kdf_service>();
         const auto* market_selector              = get_market_pairs_mdl();
         const auto& base                         = market_selector->get_left_selected_coin();
         const auto& rel                          = market_selector->get_right_selected_coin();
@@ -475,8 +475,8 @@ namespace atomic_dex
         }
 
         nlohmann::json batch;
-        nlohmann::json sell_request = mm2::template_request("sell");
-        mm2::to_json(sell_request, req);
+        nlohmann::json sell_request = kdf::template_request("sell");
+        kdf::to_json(sell_request, req);
         batch.push_back(sell_request);
 
         sell_request["userpass"] = "******";
@@ -493,9 +493,9 @@ namespace atomic_dex
                     auto           answers = nlohmann::json::parse(body);
                     nlohmann::json answer  = answers[0];
                     this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
-                    auto& cur_mm2_system = m_system_manager.get_system<mm2_service>();
+                    auto& cur_kdf_system = m_system_manager.get_system<kdf_service>();
                     // SPDLOG_DEBUG("order successfully placed, refreshing orders and swap");
-                    cur_mm2_system.batch_fetch_orders_and_swap();
+                    cur_kdf_system.batch_fetch_orders_and_swap();
                 }
                 else
                 {
@@ -513,7 +513,7 @@ namespace atomic_dex
         };
 
         //! Async call
-        mm2_system.get_mm2_client()
+        kdf_system.get_kdf_client()
             .async_rpc_batch_standalone(batch)
             .then(answer_functor)
             .then(
@@ -589,17 +589,17 @@ namespace atomic_dex
         {
             return;
         }
-        const auto&     mm2_system = m_system_manager.get_system<mm2_service>();
+        const auto&     kdf_system = m_system_manager.get_system<kdf_service>();
         trading_actions last_action;
         this->m_actions_queue.pop(last_action);
-        if (mm2_system.is_mm2_running())
+        if (kdf_system.is_kdf_running())
         {
             switch (last_action)
             {
             case trading_actions::post_process_orderbook_finished:
             {
                 std::error_code    ec;
-                mm2::orderbook_result_rpc result = mm2_system.get_orderbook(ec);
+                kdf::orderbook_result_rpc result = kdf_system.get_orderbook(ec);
                 
                 if (!ec)
                 {
@@ -805,9 +805,9 @@ namespace atomic_dex
     void
     trading_page::clear_forms(QString from)
     {
-        if (!this->m_system_manager.has_system<mm2_service>())
+        if (!this->m_system_manager.has_system<kdf_service>())
         {
-            SPDLOG_WARN("MM2 service not available, required to clear forms - skipping");
+            SPDLOG_WARN("KDF service not available, required to clear forms - skipping");
             return;
         }
         // SPDLOG_DEBUG("clearing forms : {}", from.toStdString());
@@ -1305,14 +1305,14 @@ namespace atomic_dex
     void
     trading_page::determine_fees()
     {
-        if (!this->m_system_manager.has_system<mm2_service>())
+        if (!this->m_system_manager.has_system<kdf_service>())
         {
-            SPDLOG_WARN("MM2 Service not available, cannot determine fees - skipping");
+            SPDLOG_WARN("KDF Service not available, cannot determine fees - skipping");
             return;
         }
         const auto* market_pair = get_market_pairs_mdl();
         using namespace std::string_literals;
-        auto&       mm2         = this->m_system_manager.get_system<mm2_service>();
+        auto&       kdf         = this->m_system_manager.get_system<kdf_service>();
         // TODO: there is a race condition that sometimes results in base == rel after switching base/rel tickers
         const auto  base        = market_pair->get_left_selected_coin().toStdString();
         const auto  rel         = market_pair->get_right_selected_coin().toStdString();
@@ -1342,14 +1342,14 @@ namespace atomic_dex
         };
 
         nlohmann::json batch;
-        nlohmann::json preimage_request = mm2::template_request("trade_preimage", true);
-        mm2::to_json(preimage_request, req);
+        nlohmann::json preimage_request = kdf::template_request("trade_preimage", true);
+        kdf::to_json(preimage_request, req);
         batch.push_back(preimage_request);
         preimage_request["userpass"] = "******";
         // SPDLOG_DEBUG("trade_preimage request: {}", preimage_request.dump(4));
 
         this->set_preimage_busy(true);
-        auto answer_functor = [this, &mm2](web::http::http_response resp)
+        auto answer_functor = [this, &kdf](web::http::http_response resp)
         {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             // SPDLOG_INFO("[determine_fees] trade_preimage answer received: {}", body);
@@ -1357,7 +1357,7 @@ namespace atomic_dex
             {
                 auto           answers               = nlohmann::json::parse(body);
                 nlohmann::json answer                = answers[0];
-                auto           trade_preimage_answer = mm2::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
+                auto           trade_preimage_answer = kdf::rpc_process_answer_batch<t_trade_preimage_answer>(answer, "trade_preimage");
                 if (trade_preimage_answer.error.has_value())
                 {
                     auto        error_answer = trade_preimage_answer.error.value();
@@ -1389,7 +1389,7 @@ namespace atomic_dex
 
                     for (auto&& cur: success_answer.total_fees)
                     {
-                        if (!mm2.do_i_have_enough_funds(cur.at("coin").get<std::string>(), safe_float(cur.at("required_balance").get<std::string>())))
+                        if (!kdf.do_i_have_enough_funds(cur.at("coin").get<std::string>(), safe_float(cur.at("required_balance").get<std::string>())))
                         {
                             fees["error_fees"] = atomic_dex::nlohmann_json_object_to_qt_json_object(cur);
                             break;
@@ -1402,14 +1402,14 @@ namespace atomic_dex
             }
             this->set_preimage_busy(false);
         };
-        mm2.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+        kdf.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void
     trading_page::determine_error_cases()
     {
         // SPDLOG_DEBUG("determine_error_cases");
-        if (!m_system_manager.has_system<mm2_service>())
+        if (!m_system_manager.has_system<kdf_service>())
             return;
         TradingError current_trading_error = TradingError::None;
 
@@ -1421,42 +1421,42 @@ namespace atomic_dex
         const auto&       rel_min_taker_vol        = get_orderbook_wrapper()->get_rel_min_taker_vol().toStdString();
         const auto        regular_min_taker_vol    = m_market_mode == MarketMode::Sell ? get_min_trade_vol().toStdString() : rel_min_taker_vol;
         const auto&       cur_min_taker_vol        = get_min_trade_vol().toStdString();
-        const auto&       mm2                      = m_system_manager.get_system<mm2_service>();
-        const auto        left_cfg                 = mm2.get_coin_info(left);
-        const auto        right_cfg                = mm2.get_coin_info(right);
+        const auto&       kdf                      = m_system_manager.get_system<kdf_service>();
+        const auto        left_cfg                 = kdf.get_coin_info(left);
+        const auto        right_cfg                = kdf.get_coin_info(right);
         const bool        has_preferred_order      = m_preferred_order.has_value();
         const bool        is_selected_min_max =
             has_preferred_order && m_preferred_order->at("base_min_volume").get<std::string>() == m_preferred_order->at("base_max_volume").get<std::string>();
         
         if (left_cfg.has_parent_fees_ticker && left_cfg.ticker != "QTUM")
         {
-            const auto left_fee_cfg = mm2.get_coin_info(left_cfg.fees_ticker);
+            const auto left_fee_cfg = kdf.get_coin_info(left_cfg.fees_ticker);
             if (!left_fee_cfg.currently_enabled)
             {
                 current_trading_error = TradingError::LeftParentChainNotEnabled;
             }
-            else if (mm2.get_balance_info_f(left_fee_cfg.ticker) <= 0)
+            else if (kdf.get_balance_info_f(left_fee_cfg.ticker) <= 0)
             {
                 current_trading_error = TradingError::LeftParentChainNotEnoughBalance;
             }
         }
         else if (right_cfg.has_parent_fees_ticker && right_cfg.ticker != "QTUM")
         {
-            const auto right_fee_cfg = mm2.get_coin_info(right_cfg.fees_ticker);
+            const auto right_fee_cfg = kdf.get_coin_info(right_cfg.fees_ticker);
             if (!right_fee_cfg.currently_enabled)
             {
                 current_trading_error = TradingError::RightParentChainNotEnabled;
             }
-            else if (mm2.get_balance_info_f(right_fee_cfg.ticker) <= 0)
+            else if (kdf.get_balance_info_f(right_fee_cfg.ticker) <= 0)
             {
                 current_trading_error = TradingError::RightParentChainNotEnoughBalance;
             }
         }
-        else if (!mm2.is_zhtlc_coin_ready(left))
+        else if (!kdf.is_zhtlc_coin_ready(left))
         {
             current_trading_error = TradingError::LeftZhtlcChainNotEnabled;
         }
-        else if (!mm2.is_zhtlc_coin_ready(right))
+        else if (!kdf.is_zhtlc_coin_ready(right))
         {
             current_trading_error = TradingError::RightZhtlcChainNotEnabled;
         }
@@ -1620,12 +1620,12 @@ namespace atomic_dex
     trading_page::generate_fees_error(QVariantMap fees) const
     {
         TradingError last_trading_error = TradingError::None;
-        const auto&  mm2                = m_system_manager.get_system<mm2_service>();
+        const auto&  kdf                = m_system_manager.get_system<kdf_service>();
 
         if (fees.contains("error_fees"))
         {
             auto&& cur_obj = fees.value("error_fees").toJsonObject();
-            if (!mm2.do_i_have_enough_funds(cur_obj["coin"].toString().toStdString(), safe_float(cur_obj["required_balance"].toString().toStdString())))
+            if (!kdf.do_i_have_enough_funds(cur_obj["coin"].toString().toStdString(), safe_float(cur_obj["required_balance"].toString().toStdString())))
             {
                 last_trading_error = TradingError::TotalFeesNotEnoughFunds;
             }

@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  DEX_API: "mm2_kmd"
+  DEX_API: "kdf_kwd"
   DEX_RPCPORT: 7762
   DEX_RPC: "http://127.0.0.1:7762"
   DEX_PROJECT_NAME: "komodo-wallet"
@@ -160,6 +160,7 @@ jobs:
           echo "CHOOSENIM_CHOOSE_VERSION=1.6.2" >> $GITHUB_ENV
           export CHOOSENIM_CHOOSE_VERSION=1.6.2
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
+          sed -i.bak 's|https://github.com/nim-lang/choosenim/releases/download/|https://github.com/dom96/choosenim/releases/download/|g' choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
@@ -171,6 +172,7 @@ jobs:
           echo "CHOOSENIM_CHOOSE_VERSION=1.6.2" >> $GITHUB_ENV
           export CHOOSENIM_CHOOSE_VERSION=1.6.2
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
+          sed -i.bak 's|https://github.com/nim-lang/choosenim/releases/download/|https://github.com/dom96/choosenim/releases/download/|g' choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
           export PATH=/Users/runner/.nimble/bin:$PATH
