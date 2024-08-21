@@ -44,6 +44,7 @@
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
+#include "atomicdex/services/sync/timesync.checker.service.hpp"
 
 namespace
 {
@@ -498,6 +499,7 @@ namespace atomic_dex
         system_manager_.create_system<orderbook_scanner_service>(system_manager_);
         system_manager_.create_system<komodo_prices_provider>();
         system_manager_.create_system<update_checker_service>();
+        system_manager_.create_system<timesync_checker_service>();
         system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
@@ -910,7 +912,18 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! update checker
+//! time sync checker
+namespace atomic_dex
+{
+    timesync_checker_service* application::get_timesync_checker_service() const
+    {
+        auto ptr = const_cast<timesync_checker_service*>(std::addressof(system_manager_.get_system<timesync_checker_service>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
+} // namespace atomic_dex
+
+//! zcash_params checker
 namespace atomic_dex
 {
     zcash_params_service* application::get_zcash_params_service() const
