@@ -37,7 +37,6 @@ namespace
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
         req.set_request_uri(FROM_STD_STR("api/timezone/UTC"));
-        SPDLOG_INFO("req: {}", TO_STD_STR(req.to_string()));
         return g_timesync_client->request(req, g_synctoken_source.get_token());
     }
 
@@ -54,14 +53,13 @@ namespace
         else
         {
             resp = nlohmann::json::parse(resp_str);            
-            int8_t    epoch_ts    = resp["unixtime"];
-            int8_t    current_ts  = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-            int8_t    ts_diff = epoch_ts - current_ts;
+            int64_t   epoch_ts    = resp["unixtime"];
+            int64_t   current_ts  = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+            int64_t   ts_diff = epoch_ts - current_ts;
             if (abs(ts_diff) < 60)
             {
                 sync_ok = true;
             }
-            SPDLOG_WARN("TIME SYNC STATUS [{}]", sync_ok);
         }
         return sync_ok;
     }
@@ -73,42 +71,46 @@ namespace atomic_dex
     timesync_checker_service::timesync_checker_service(entt::registry& registry, QObject* parent) : QObject(parent), system(registry)
     {
         m_timesync_clock  = std::chrono::high_resolution_clock::now();
-        fetch_timesync_info();
+        m_timesync_status = true;
+        fetch_timesync_status();
     }
 
     void timesync_checker_service::update() 
     {
         using namespace std::chrono_literals;
 
-        const auto now = std::chrono::high_resolution_clock::now();
-        const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_timesync_clock);
-        if (s >= 1min)
+        int64_t m_timesync_clock_ts = std::chrono::duration_cast<std::chrono::seconds>(m_timesync_clock.time_since_epoch()).count();
+        int64_t now_ts   = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        int64_t ts_diff  = now_ts - m_timesync_clock_ts;
+        if (abs(ts_diff) >= 60)
         {
-            fetch_timesync_info();
+            fetch_timesync_status();
             m_timesync_clock = std::chrono::high_resolution_clock::now();
         }
     }
 
-    void timesync_checker_service::fetch_timesync_info() 
+    void timesync_checker_service::fetch_timesync_status() 
     {
         if (is_timesync_fetching)
+        {
             return;
+        }
         is_timesync_fetching = true;
         emit isTimesyncFetchingChanged();
         async_fetch_timesync()
             .then([this](web::http::http_response resp) {
-                
-                this->m_timesync_info = get_timesync_info_rpc(resp);
-                is_timesync_fetching = false;
-                emit isTimesyncFetchingChanged();
+                this->m_timesync_status = get_timesync_info_rpc(resp);
                 emit timesyncInfoChanged();
             })
             .then(&handle_exception_pplx_task);
+        is_timesync_fetching = false;
+        emit isTimesyncFetchingChanged();
+
     }
 
     bool timesync_checker_service::get_timesync_info() const 
     {
-        return *m_timesync_info;
+        return *m_timesync_status;
     }
 
 } // namespace atomic_dex

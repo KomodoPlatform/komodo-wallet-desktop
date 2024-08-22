@@ -36,11 +36,11 @@ namespace atomic_dex
         using t_timesync_time_point = std::chrono::high_resolution_clock::time_point;
         using t_bool_synchronized = boost::synchronized_value<bool>;
 
-        t_bool_synchronized     m_timesync_info;
+        t_bool_synchronized     m_timesync_status;
         t_timesync_time_point   m_timesync_clock;
         t_bool_synchronized     is_timesync_fetching;
 
-        void fetch_timesync_info();
+        void fetch_timesync_status();
 
       public:
         explicit timesync_checker_service(entt::registry& registry, QObject* parent = nullptr);
