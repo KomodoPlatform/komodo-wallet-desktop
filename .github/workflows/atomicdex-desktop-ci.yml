@@ -159,9 +159,7 @@ jobs:
           export SHELL=/bin/bash
           echo "CHOOSENIM_CHOOSE_VERSION=1.6.2" >> $GITHUB_ENV
           export CHOOSENIM_CHOOSE_VERSION=1.6.2
-          curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
-          chmod +x choosenim.sh
-          ./choosenim.sh -y
+          ./ci_tools_atomic_dex/ci_scripts/choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
           chmod +x /home/runner/.choosenim/toolchains/nim-1.6.2/bin/*
 
@@ -170,9 +168,7 @@ jobs:
         run: |
           echo "CHOOSENIM_CHOOSE_VERSION=1.6.2" >> $GITHUB_ENV
           export CHOOSENIM_CHOOSE_VERSION=1.6.2
-          curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
-          chmod +x choosenim.sh
-          ./choosenim.sh -y
+          ./ci_tools_atomic_dex/ci_scripts/choosenim.sh -y
           export PATH=/Users/runner/.nimble/bin:$PATH
           chmod +x /Users/runner/.choosenim/toolchains/nim-1.6.2/bin/*
 
