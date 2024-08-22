@@ -27,8 +27,6 @@ DexListView
     delegate: ClipRRect
     {
         property var details: model
-        readonly property bool is_placed_order: !details ? false :
-                               details.order_id !== ''
 
         property bool expanded: order_list_view.currentIndex === index
 
@@ -78,7 +76,7 @@ DexListView
                         height: width
                         anchors.centerIn: parent
                         running: !isSwapDone(details.order_status) && Qt.platform.os != "osx"
-                        DefaultText
+                        DexLabel
                         {
                             anchors.centerIn: parent
                             font.pixelSize: getStatusFontSize(details.order_status)
@@ -105,13 +103,13 @@ DexListView
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    DefaultText
+                    DexLabel
                     {
                         id: base_amount
                         text_value: !details ? "" :
                                     General.formatCrypto("", details.base_amount, details.base_coin).replace(" ","<br>")
                         font: rel_amount.font
-                        privacy: is_placed_order
+                        privacy: true
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
@@ -150,7 +148,7 @@ DexListView
                         height: width
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    DefaultText
+                    DexLabel
                     {
                         id: rel_amount
                         text_value: !details ? "" :
@@ -162,7 +160,7 @@ DexListView
                             weight: Font.Normal
                         })
                         anchors.verticalCenter: parent.verticalCenter
-                        privacy: is_placed_order
+                        privacy: true
                     }
                 }
 
@@ -194,8 +192,9 @@ DexListView
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
-                    text: !details ? "" :
+                    text_value: !details ? "" :
                                 General.formatCrypto("", details.base_amount, details.base_coin)
+                    privacy: true
                 }
                 DexLabel
                 {
@@ -203,8 +202,9 @@ DexListView
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
                     horizontalAlignment: Text.AlignRight
-                    text: !details ? "" :
+                    text_value: !details ? "" :
                                 General.formatCrypto("", details.rel_amount, details.rel_coin)
+                    privacy: true
                 }
             }
 
@@ -215,20 +215,22 @@ DexListView
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 20
                 opacity: .6
-                DefaultText
+                DexLabel
                 {
                     Layout.fillWidth: true 
-                    Layout.fillHeight: true 
+                    Layout.fillHeight: true
                     verticalAlignment: Label.AlignVCenter
-                    text: "%1 %2".arg(API.app.settings_pg.current_currency).arg(details.base_amount_current_currency)
+                    text_value: "%1 %2".arg(API.app.settings_pg.current_currency).arg(details.base_amount_current_currency)
+                    privacy: true
                 }
-                DefaultText
+                DexLabel
                 {
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
                     horizontalAlignment: Text.AlignRight
-                    text: "%1 %2".arg(API.app.settings_pg.current_currency).arg(details.rel_amount_current_currency)
+                    text_value: "%1 %2".arg(API.app.settings_pg.current_currency).arg(details.rel_amount_current_currency)
+                    privacy: true
                 }
             }
 
@@ -244,7 +246,8 @@ DexListView
                     Layout.fillWidth: true 
                     Layout.fillHeight: true 
                     verticalAlignment: Label.AlignVCenter
-                    text: !details ? "" : details.date?? ""
+                    text_value: !details ? "" : details.date?? ""
+                    privacy: true
                 }
                 Item
                 {
@@ -283,7 +286,7 @@ DexListView
 
                         contentItem: ColumnLayout
                         {
-                            DefaultText {
+                            DexLabel {
                                 text_value: qsTr("Funds are recoverable")
                                 font.pixelSize: Constants.Style.textSizeSmall4
                             }

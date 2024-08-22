@@ -176,6 +176,7 @@ ColumnLayout
                 setVolume(text)
                 reset_fees_state()
             }
+            enabled: !General.privacy_mode
         }
 
         OrderFormSubfield
@@ -206,9 +207,9 @@ ColumnLayout
             left_label: "25%"
             middle_label: "50%"
             right_label:  qsTr("Max")
-            left_tooltip_text:  qsTr("Swap 25% of your tradable balance.")
-            middle_tooltip_text:  qsTr("Swap 50% of your tradable balance.")
-            right_tooltip_text:  qsTr("Swap 100% of your tradable balance.")
+            left_tooltip_text: General.privacy_mode ? qsTr("Diasble privacy mode to trade") : qsTr("Swap 25% of your tradable balance.")
+            middle_tooltip_text: General.privacy_mode ? qsTr("Diasble privacy mode to trade") : qsTr("Swap 50% of your tradable balance.")
+            right_tooltip_text: General.privacy_mode ? qsTr("Diasble privacy mode to trade") : qsTr("Swap 100% of your tradable balance.")
         }
     }
 
@@ -421,6 +422,7 @@ ColumnLayout
             radius: 16
             text: API.app.trading_pg.maker_mode ? qsTr("CREATE MAKER SWAP") : qsTr("START TAKER SWAP")
             font.weight: Font.Medium
+            enabled: !General.privacy_mode
         }
     }
 }
