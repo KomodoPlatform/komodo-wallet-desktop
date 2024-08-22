@@ -103,7 +103,8 @@ ColumnLayout
             id: input_price
 
             left_text: qsTr("Price")
-            right_text: right_ticker
+            right_text: General.coinWithoutSuffix(right_ticker)
+            right_fontsize: 10
             enabled: !(API.app.trading_pg.preferred_order.price !== undefined)
             color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.foregroundColor2
             text: backend_price ? backend_price : General.formatDouble(API.app.trading_pg.cex_price)
@@ -167,13 +168,15 @@ ColumnLayout
             height: 36
             radius: 18
             left_text: sell_mode ? qsTr("Send") : qsTr("Receive") 
-            right_text: left_ticker
+            right_text: General.coinWithoutSuffix(left_ticker)
+            right_fontsize: 10
             placeholderText: "0" 
             text: API.app.trading_pg.volume
             onTextChanged: {
                 setVolume(text)
                 reset_fees_state()
             }
+            enabled: !General.privacy_mode
         }
 
         OrderFormSubfield
@@ -204,9 +207,9 @@ ColumnLayout
             left_label: "25%"
             middle_label: "50%"
             right_label:  qsTr("Max")
-            left_tooltip_text:  qsTr("Swap 25% of your tradable balance.")
-            middle_tooltip_text:  qsTr("Swap 50% of your tradable balance.")
-            right_tooltip_text:  qsTr("Swap 100% of your tradable balance.")
+            left_tooltip_text: General.privacy_mode ? qsTr("Diasble privacy mode to trade") : qsTr("Swap 25% of your tradable balance.")
+            middle_tooltip_text: General.privacy_mode ? qsTr("Diasble privacy mode to trade") : qsTr("Swap 50% of your tradable balance.")
+            right_tooltip_text: General.privacy_mode ? qsTr("Diasble privacy mode to trade") : qsTr("Swap 100% of your tradable balance.")
         }
     }
 
@@ -419,6 +422,7 @@ ColumnLayout
             radius: 16
             text: API.app.trading_pg.maker_mode ? qsTr("CREATE MAKER SWAP") : qsTr("START TAKER SWAP")
             font.weight: Font.Medium
+            enabled: !General.privacy_mode
         }
     }
 }
