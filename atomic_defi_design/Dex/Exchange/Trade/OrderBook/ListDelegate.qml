@@ -45,6 +45,10 @@ Item
                 {
                     if (mouse_area.containsMouse)
                     {
+                        if (General.privacy_mode)
+                        {
+                            return qsTr("Orderbook is disabled in privacy mode")
+                        }
                         if (API.app.trading_pg.maker_mode)
                         {
                             return qsTr("Orderbook is disabled while creating maker orders")
@@ -109,6 +113,7 @@ Item
         // Populate form with selected order
         onClicked:
         {
+            if (General.privacy_mode) return
             if (is_mine) return
             if (API.app.trading_pg.maker_mode) return
 

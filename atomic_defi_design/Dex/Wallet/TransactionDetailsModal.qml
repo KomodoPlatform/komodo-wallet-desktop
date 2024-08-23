@@ -124,7 +124,7 @@ MultipageModal
         TextEditWithTitle
         {
             title: qsTr("Date")
-            text: !details ? "" : details.timestamp === 0 ? qsTr("Unconfirmed"):  details.date
+            text: !details ? "" : details.timestamp === 0 ? qsTr("Awaiting confirmation"):  details.timestamp
             label.font.pixelSize: 13
         }
 

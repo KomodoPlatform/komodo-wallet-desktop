@@ -2227,6 +2227,17 @@ namespace atomic_dex
             .passphrase = std::move(passphrase), 
             .rpc_password = std::move(rpcpass) == "" ? std::move(atomic_dex::gen_random_password()) : std::move(rpcpass)
         };
+
+        auto dbdir_parent = std::filesystem::path(utils::get_atomic_dex_data_folder() / "kdf");
+        auto old_dbdir_parent = std::filesystem::path(utils::get_atomic_dex_data_folder() / "mm2");
+        if (not std::filesystem::exists(dbdir_parent))
+        {
+            if (std::filesystem::exists(old_dbdir_parent))
+            {
+                std::filesystem::rename(old_dbdir_parent, dbdir_parent);
+            }
+        }
+
         kdf::set_system_manager(m_system_manager);
         kdf::set_rpc_password(cfg.rpc_password);
         json       json_cfg;
