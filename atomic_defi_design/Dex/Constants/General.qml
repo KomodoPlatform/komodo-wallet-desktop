@@ -446,7 +446,7 @@ QtObject {
         let val = new BigNumber(text).toFixed(decimals)
         if (val.length > max_length)
         {
-            return val.substring(0, max_length) + "..."
+            return val.substring(0, max_length)
         }
         return val
     }
