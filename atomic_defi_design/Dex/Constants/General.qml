@@ -25,6 +25,14 @@ QtObject {
 
     function coinIcon(ticker)
     {
+        if (ticker.toLowerCase() == "smart chain")
+        {
+            return coin_icons_path + "smart_chain.png"
+        }
+        if (ticker.toLowerCase() == "avx")
+        {
+            return coin_icons_path + "avax.png"
+        }
         if (ticker === "" || ticker === "All" || ticker===undefined)
         {
             return ""
@@ -449,7 +457,7 @@ QtObject {
         }
         if (sell_ticker_balance == 0)
         {
-            return qsTr("%1 balance is zero").arg(selectedTicker)
+            return qsTr("Balance is zero!")
         }
         if (!isZhtlcReady(selectedTicker))
         {
