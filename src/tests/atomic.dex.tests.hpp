@@ -23,7 +23,7 @@
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/pages/qt.portfolio.page.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 
 struct tests_context : public antara::gaming::world::app
 {
@@ -53,8 +53,8 @@ struct tests_context : public antara::gaming::world::app
     {
 #if !defined(WIN32) && !defined(_WIN32)
         this->dispatcher_.sink<atomic_dex::coin_fully_initialized>().connect<&tests_context::on_coin_initialized>(*this);
-        //! Creates mm2 service.
-        auto& mm2 = system_manager_.create_system<atomic_dex::mm2_service>(system_manager_);
+        //! Creates kdf service.
+        auto& kdf = system_manager_.create_system<atomic_dex::kdf_service>(system_manager_);
 
         //! Creates special wallet for the unit tests then logs to it.
         auto& wallet_manager = system_manager_.create_system<atomic_dex::qt_wallet_manager>(system_manager_);
@@ -92,15 +92,15 @@ struct tests_context : public antara::gaming::world::app
         }
         wallet_manager.login(test_password != nullptr ? test_password : "fakepasswordtemporary", "komodo-wallet_tests");
 
-        //! Waits for mm2 to be initialized before running tests
-        while (!mm2.is_mm2_running() && !m_test_context_ready) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
-        const auto& enabled_coins = mm2.get_enabled_coins();
+        //! Waits for kdf to be initialized before running tests
+        while (!kdf.is_kdf_running() && !m_test_context_ready) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
+        const auto& enabled_coins = kdf.get_enabled_coins();
         bool        found =
             std::any_of(enabled_coins.begin(), enabled_coins.end(), [](const auto& item) -> bool { return item.ticker == "tBTC-TEST" || item.ticker == "tQTUM"; });
         if (!found)
         {
             SPDLOG_INFO("Extra coins not enabled yet, enabling now");
-           mm2.enable_coins(m_extra_coins);
+           kdf.enable_coins(m_extra_coins);
         }
         while (!m_extra_coins_ready) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
         //! At this point BTC/KMD are enabled but we need ERC20 and QRC20 too / change login behaviour ?

@@ -49,7 +49,7 @@ FloatingBackground
             Layout.preferredWidth: 24
             Layout.alignment: Qt.AlignCenter
 
-            DefaultText
+            DexLabel
             {
                 id: statusText
                 anchors.centerIn: parent
@@ -86,34 +86,34 @@ FloatingBackground
 
                 clip: true
 
-                DefaultText
+                DexLabel
                 {
                     id: baseAmountLabel
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
 
                     font.pixelSize: 12
-                    text:
+                    text_value:
                     {
-                        if (!details) return
 
+                        if (!details) return
                         BigNumber.config({ DECIMAL_PLACES: 6 })
                         return new BigNumber(details.base_amount).toString(10)
                     }
-                    privacy: is_placed_order
+                    privacy: true
                     elide: Text.ElideRight
                     maximumLineCount: 1
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.left: baseAmountLabel.right
                     anchors.leftMargin: 3
                     anchors.verticalCenter: parent.verticalCenter
 
                     font.pixelSize: 12
-                    text: !details ? "" : "(%1 %2)".arg(details.base_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
-                    privacy: is_placed_order
+                    text_value: !details ? "" : "(%1 %2)".arg(details.base_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
+                    privacy: true
                     elide: Text.ElideRight
                     maximumLineCount: 1
                 }
@@ -128,14 +128,14 @@ FloatingBackground
                     iconSize: 18
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.right: relAmountInCurrCurrency.left
                     anchors.rightMargin: 3
                     anchors.verticalCenter: parent.verticalCenter
 
                     font.pixelSize: 12
-                    text:
+                    text_value:
                     {
                         if (!details) return
 
@@ -143,12 +143,12 @@ FloatingBackground
                         return new BigNumber(details.rel_amount).toString(10)
                     }
 
-                    privacy: is_placed_order
+                    privacy: true
                     elide: Text.ElideRight
                     maximumLineCount: 1
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: relAmountInCurrCurrency
 
@@ -156,8 +156,8 @@ FloatingBackground
                     anchors.verticalCenter: parent.verticalCenter
 
                     font.pixelSize: 12
-                    text: !details ? "" : "(%1 %2)".arg(details.rel_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
-                    privacy: is_placed_order
+                    text_value: !details ? "" : "(%1 %2)".arg(details.rel_amount_current_currency).arg(API.app.settings_pg.current_fiat_sign)
+                    privacy: true
                     elide: Text.ElideRight
                     maximumLineCount: 1
                 }
@@ -181,7 +181,7 @@ FloatingBackground
                     source: General.coinIcon(!details ? atomic_app_primary_coin : details.base_coin ?? atomic_app_primary_coin)
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.left: baseIcon.right
                     anchors.leftMargin: 2
@@ -189,13 +189,13 @@ FloatingBackground
 
                     font.weight: Font.Bold
                     font.pixelSize: 12
-                    text: !details ? "" : details.base_coin
-                    privacy: is_placed_order
+                    text_value: !details ? "" : details.base_coin
+                    privacy: true
                     elide: Text.ElideRight
                     maximumLineCount: 1
                 }
 
-                DefaultText
+                DexLabel
                 {
                     visible: clickable
 
@@ -209,7 +209,7 @@ FloatingBackground
                     color: Dex.CurrentTheme.foregroundColor2
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.right: relCoin.left
                     anchors.rightMargin: 2
@@ -217,8 +217,8 @@ FloatingBackground
 
                     font.weight: Font.Bold
                     font.pixelSize: 12
-                    text: !details ? "" : details.rel_coin
-                    privacy: is_placed_order
+                    text_value: !details ? "" : details.rel_coin
+                    privacy: true
                     elide: Text.ElideRight
                     maximumLineCount: 1
                 }
@@ -244,7 +244,7 @@ FloatingBackground
             Layout.preferredWidth: 24
             Layout.alignment: Qt.AlignCenter
 
-            DefaultText
+            DexLabel
             {
                 anchors.centerIn: parent
 
@@ -255,7 +255,7 @@ FloatingBackground
 
                 DefaultTooltip
                 {
-                    contentItem: DefaultText
+                    contentItem: DexLabel
                     {
                         text_value: qsTr("Funds are recoverable")
                         font.pixelSize: Style.textSizeSmall4

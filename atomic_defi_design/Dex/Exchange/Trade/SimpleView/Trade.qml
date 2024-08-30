@@ -160,7 +160,7 @@ ClipRRect // Trade Card
                 opacity: .85
             }
 
-            DefaultText // Description
+            DexLabel // Description
             {
                 anchors.topMargin: 10
                 font.pixelSize: Constants.Style.textSizeSmall4
@@ -231,7 +231,7 @@ ClipRRect // Trade Card
                 radius: 20
                 visible: !coinSelectorSimplified.visible && has_coins_with_balance
 
-                DefaultText // From Text
+                DexLabel // From Text
                 {
                     id: _fromTitle
                     anchors.top: parent.top
@@ -242,7 +242,7 @@ ClipRRect // Trade Card
                     font.pixelSize: Constants.Style.textSizeSmall4
                 }
 
-                Text // Tradable Balance
+                DexLabel // Tradable Balance
                 {
                     readonly property int _maxWidth: 140
 
@@ -252,10 +252,11 @@ ClipRRect // Trade Card
                     anchors.verticalCenter: _fromTitle.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 17
-                    text: qsTr("%1").arg(max_trade_volume) // This is slow to appear
+                    text_value: qsTr("%1").arg(max_trade_volume) // This is slow to appear
                     font.pixelSize: Constants.Style.textSizeSmall2
                     elide: Text.ElideRight
                     color: DexTheme.foregroundColorLightColor1
+                    privacy: true
 
                     DefaultImage
                     {
@@ -282,6 +283,10 @@ ClipRRect // Trade Card
                             visible: parent.containsMouse
                             text:
                             {
+                                if (General.privacy_mode)
+                                {
+                                    return qsTr("Balance: ") + qsTr("****")
+                                }
                                 let balance = Constants.API.app.portfolio_pg.portfolio_mdl.coin_balance(selectedTicker);
                                 return qsTr("Balance: ") + Constants.API.app.portfolio_pg.portfolio_mdl.coin_balance(selectedTicker) + ' (' + parent.parent.text + ' tradable)'
                             } 
@@ -300,7 +305,7 @@ ClipRRect // Trade Card
                 AmountField // Amount
                 {
                     id: _fromValue
-                    enabled: sell_ticker_balance == 0 ? false : waiting_for_sell_coin_info ? false : true
+                    enabled: sell_ticker_balance == 0 ? false : waiting_for_sell_coin_info ? false : General.privacy_mode ? false : true
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 19
                     anchors.left: parent.left
@@ -329,7 +334,7 @@ ClipRRect // Trade Card
                     Component.onCompleted: text = ""
                 }
 
-                Text    // Amount In Fiat
+                DexLabel    // Amount In Fiat
                 {
                     enabled: _fromValue.text
                     visible: enabled
@@ -340,7 +345,8 @@ ClipRRect // Trade Card
                     font.pixelSize: Constants.Style.textSizeSmall1
                     color: DexTheme.foregroundColor
                     opacity: .9
-                    text: enabled ? Constants.General.getFiatText(_fromValue.text, selectedTicker) : ""
+                    text_value: enabled ? Constants.General.getFiatText(_fromValue.text, selectedTicker) : ""
+                    privacy: true
                 }
 
                 Rectangle // Select ticker button
@@ -387,7 +393,7 @@ ClipRRect // Trade Card
                         source: Constants.General.coinIcon(selectedTicker)
                     }
 
-                    DefaultText
+                    DexLabel
                     {
                         id: _selectedTickerText
 
@@ -403,7 +409,7 @@ ClipRRect // Trade Card
 
                         wrapMode: Text.NoWrap
 
-                        DefaultText
+                        DexLabel
                         {
                             id: _selectedTickerTypeText
 
@@ -432,16 +438,13 @@ ClipRRect // Trade Card
                 ClickableText // MAX Button
                 {
                     id: _maxClickableLabel
-
                     anchors.right: _selectTickerBut.left
                     anchors.rightMargin: 10
                     anchors.verticalCenter: _selectTickerBut.verticalCenter
-
                     visible: selectedTicker !== ""
-
                     text: qsTr("MAX")
                     color: Dex.CurrentTheme.foregroundColor2
-
+                    enabled: !General.privacy_mode
                     onClicked: _fromValue.text = max_trade_volume
                 }
 
@@ -464,7 +467,7 @@ ClipRRect // Trade Card
                     && !coinSelectorSimplified.visible
                     && has_coins_with_balance
 
-                DefaultText
+                DexLabel
                 {
                     anchors.fill: parent
                     anchors.leftMargin: 17
@@ -487,7 +490,7 @@ ClipRRect // Trade Card
                     background: Rectangle { color: swap_from_card.color}
                 }
 
-                DefaultText // Amount In Fiat
+                DexLabel // Amount In Fiat
                 {
                     enabled: parseFloat(_toValue.text) > 0 && _toValue.text != ""
                     anchors.top: _toValue.bottom
@@ -533,7 +536,7 @@ ClipRRect // Trade Card
                     }
 
                     // When no order is currently selected.
-                    DefaultText
+                    DexLabel
                     {
                         id: _bestOrderNoTickerText
 
@@ -567,7 +570,7 @@ ClipRRect // Trade Card
                     }
 
                     // Ticker (When a best order is currently selected)
-                    DefaultText
+                    DexLabel
                     {
                         id: _bestOrderTickerText
 
@@ -584,7 +587,7 @@ ClipRRect // Trade Card
                         font.pixelSize: Constants.Style.textSizeSmall2
                         wrapMode: Text.NoWrap
 
-                        DefaultText
+                        DexLabel
                         {
                             id: _bestOrderTickerTypeText
 
@@ -623,14 +626,14 @@ ClipRRect // Trade Card
                         && !coinSelectorSimplified.visible
                         && has_coins_with_balance
 
-                DefaultText
+                DexLabel
                 {
                     Layout.rightMargin: 120
                     font.pixelSize: Constants.Style.textSizeSmall3
                     text: qsTr("Price")
                 }
 
-                DefaultText
+                DexLabel
                 {
                     Layout.alignment: Qt.AlignRight
                     font.pixelSize: Constants.Style.textSizeSmall3
@@ -714,7 +717,10 @@ ClipRRect // Trade Card
 
                     function getAlert()
                     {
-                        console.log("_fromValue.text: " + _fromValue.text)
+                        if (Constants.General.privacy_mode)
+                        {
+                            return qsTr("Disable privacy mode to trade.")
+                        }
                         var right_ticker = Constants.API.app.trading_pg.market_pairs_mdl.right_selected_coin
                         var base_ticker = Constants.API.app.trading_pg.market_pairs_mdl.base_selected_coin
                         var rel_ticker = Constants.API.app.trading_pg.market_pairs_mdl.rel_selected_coin
@@ -932,7 +938,7 @@ ClipRRect // Trade Card
                 anchors.fill: parent
             }
 
-            DefaultText
+            DexLabel
             {
                 anchors.centerIn: parent
                 text: qsTr("Calculating fee estimate... ")
@@ -959,7 +965,7 @@ ClipRRect // Trade Card
                     Component.onCompleted: _feesCard.height += 10
                     Component.onDestruction: _feesCard.height -= 10
 
-                    DefaultText
+                    DexLabel
                     {
                         Layout.alignment: Qt.AlignLeft
                         Layout.leftMargin: 10
@@ -967,7 +973,7 @@ ClipRRect // Trade Card
                         font.pixelSize: Constants.Style.textSizeSmall3
                     }
 
-                    DefaultText
+                    DexLabel
                     {
                         Layout.alignment: Qt.AlignRight
                         Layout.rightMargin: 10

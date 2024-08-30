@@ -174,6 +174,7 @@ DexListView
                 text_value: model.balance.replace(" ","")
                 font.pixelSize: 14
                 wrapMode: Text.NoWrap
+                privacy: true                
             }
 
             DexLabel
@@ -184,6 +185,7 @@ DexListView
                 text_value: "%1".arg(General.getFiatText(model.balance, model.ticker, false))
                 font.pixelSize: 14
                 wrapMode: Text.NoWrap
+                privacy: true
             }
         }
     }

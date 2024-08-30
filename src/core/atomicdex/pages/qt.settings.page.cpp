@@ -26,7 +26,7 @@
 
 // Project Headers
 #include "atomicdex/constants/dex.constants.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.get_public_key.hpp"
+#include "atomicdex/api/kdf/rpc_v2/rpc2.get_public_key.hpp"
 #include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
@@ -34,7 +34,7 @@
 #include "atomicdex/pages/qt.portfolio.page.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -217,9 +217,9 @@ namespace atomic_dex
         if (m_config.spamfilter_enabled != is_enabled)
         {
             
-            auto& mm2       = m_system_manager.get_system<mm2_service>();
+            auto& kdf       = m_system_manager.get_system<kdf_service>();
             auto& wallet_pg = m_system_manager.get_system<wallet_page>();
-            QString ticker  = QString::fromStdString(mm2.get_current_ticker());
+            QString ticker  = QString::fromStdString(kdf.get_current_ticker());
             change_spamfilter_status(m_config, is_enabled);
             emit onSpamFilterEnabledChanged();
             wallet_pg.set_current_ticker(ticker, true);
@@ -453,12 +453,12 @@ namespace atomic_dex
 
     bool settings_page::is_this_ticker_present_in_raw_cfg(const QString& ticker) const
     {
-        return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_raw_cfg(ticker.toStdString());
+        return m_system_manager.get_system<kdf_service>().is_this_ticker_present_in_raw_cfg(ticker.toStdString());
     }
 
     bool settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const
     {
-        return m_system_manager.get_system<mm2_service>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
+        return m_system_manager.get_system<kdf_service>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
     }
 
     QString settings_page::get_custom_coins_icons_path() const
@@ -477,7 +477,7 @@ namespace atomic_dex
         {
             std::string    body = TO_STD_STR(resp.extract_string(true).get());
             nlohmann::json out  = nlohmann::json::object();
-            out["mm2_cfg"]      = nlohmann::json::object();
+            out["kdf_cfg"]      = nlohmann::json::object();
             out["adex_cfg"]     = nlohmann::json::object();
             if (resp.status_code() == 200)
             {
@@ -487,32 +487,32 @@ namespace atomic_dex
                 out["ticker"]                 = ticker;
                 out["name"]                   = name_lowercase;
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), atomic_dex::utils::retrieve_main_ticker(ticker));
-                const auto&    mm2      = this->m_system_manager.get_system<mm2_service>();
-                nlohmann::json qtum_cfg = mm2.get_raw_mm2_ticker_cfg("QTUM");
+                const auto&    kdf      = this->m_system_manager.get_system<kdf_service>();
+                nlohmann::json qtum_cfg = kdf.get_raw_kdf_ticker_cfg("QTUM");
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
-                    out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["type"]                              = "QRC20";
-                    out["mm2_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = "QTUM";
+                    out["kdf_cfg"]["protocol"]                                      = nlohmann::json::object();
+                    out["kdf_cfg"]["protocol"]["type"]                              = "QRC20";
+                    out["kdf_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
+                    out["kdf_cfg"]["protocol"]["protocol_data"]["platform"]         = "QTUM";
                     std::string out_address                                         = "0x" + contract_address.toStdString();
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
-                    out["mm2_cfg"]["coin"]                                          = ticker;
-                    // out["mm2_cfg"]["gui_coin"]                                      = ticker;
-                    out["mm2_cfg"]["mm2"] = 1;
+                    out["kdf_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
+                    out["kdf_cfg"]["coin"]                                          = ticker;
+                    // out["kdf_cfg"]["gui_coin"]                                      = ticker;
+                    out["kdf_cfg"]["kdf"] = 1;
                     if (body_json.at("qrc20").contains("decimals"))
                     {
-                        out["mm2_cfg"]["decimals"] = body_json.at("qrc20").at("decimals").get<int>();
+                        out["kdf_cfg"]["decimals"] = body_json.at("qrc20").at("decimals").get<int>();
                     }
-                    out["mm2_cfg"]["txfee"]                  = qtum_cfg["txfee"];
-                    out["mm2_cfg"]["pubtype"]                = qtum_cfg["pubtype"];
-                    out["mm2_cfg"]["p2shtype"]               = qtum_cfg["p2shtype"];
-                    out["mm2_cfg"]["wiftype"]                = qtum_cfg["wiftype"];
-                    out["mm2_cfg"]["name"]                   = qtum_cfg["name"];
-                    out["mm2_cfg"]["rpcport"]                = qtum_cfg["rpcport"];
-                    out["mm2_cfg"]["segwit"]                 = qtum_cfg["segwit"];
-                    out["mm2_cfg"]["required_confirmations"] = 3;
-                    out["mm2_cfg"]["fname"]                  = name_lowercase;
+                    out["kdf_cfg"]["txfee"]                  = qtum_cfg["txfee"];
+                    out["kdf_cfg"]["pubtype"]                = qtum_cfg["pubtype"];
+                    out["kdf_cfg"]["p2shtype"]               = qtum_cfg["p2shtype"];
+                    out["kdf_cfg"]["wiftype"]                = qtum_cfg["wiftype"];
+                    out["kdf_cfg"]["name"]                   = qtum_cfg["name"];
+                    out["kdf_cfg"]["rpcport"]                = qtum_cfg["rpcport"];
+                    out["kdf_cfg"]["segwit"]                 = qtum_cfg["segwit"];
+                    out["kdf_cfg"]["required_confirmations"] = 3;
+                    out["kdf_cfg"]["fname"]                  = name_lowercase;
                 }
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
@@ -527,17 +527,17 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["active"]            = true;
                     out["adex_cfg"][ticker]["currently_enabled"] = false;
                     out["adex_cfg"][ticker]["is_custom_coin"]    = true;
-                    if (not out.at("mm2_cfg").empty())
+                    if (not out.at("kdf_cfg").empty())
                     {
-                        SPDLOG_INFO("mm2_cfg found, backup from new cfg");
-                        out["adex_cfg"][ticker]["mm2_backup"] = out["mm2_cfg"];
+                        SPDLOG_INFO("kdf_cfg found, backup from new cfg");
+                        out["adex_cfg"][ticker]["kdf_backup"] = out["kdf_cfg"];
                     }
                     else
                     {
-                        if (mm2.is_this_ticker_present_in_raw_cfg(ticker))
+                        if (kdf.is_this_ticker_present_in_raw_cfg(ticker))
                         {
-                            SPDLOG_INFO("mm2_cfg not found backup {} cfg from current cfg", ticker);
-                            out["adex_cfg"][ticker]["mm2_backup"] = mm2.get_raw_mm2_ticker_cfg(ticker);
+                            SPDLOG_INFO("kdf_cfg not found backup {} cfg from current cfg", ticker);
+                            out["adex_cfg"][ticker]["kdf_backup"] = kdf.get_raw_kdf_ticker_cfg(ticker);
                         }
                     }
                 }
@@ -551,7 +551,7 @@ namespace atomic_dex
             this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
             this->set_fetching_custom_token_data_busy(false);
         };
-        mm2::async_process_rpc_get(mm2::g_qtum_proxy_http_client, "qrc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+        kdf::async_process_rpc_get(kdf::g_qtum_proxy_http_client, "qrc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void settings_page::process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type)
@@ -565,17 +565,17 @@ namespace atomic_dex
             {
             // case CoinTypeGadget::QRC20:
             //     return std::make_tuple(
-            //         &mm2::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
+            //         &kdf::g_qtum_proxy_http_client, "/contract/"s + contract_address.toStdString(), "QRC20"s, "QTUM"s, "QRC-20"s, "QTUM"s, "QRC20"s);
             case CoinTypeGadget::ERC20:
                 return std::make_tuple(
-                    &mm2::g_etherscan_proxy_http_client, "/api/v1/token_infos/erc20/"s + contract_address.toStdString(), "ERC20"s, "ETH"s, "ERC-20"s,
+                    &kdf::g_etherscan_proxy_http_client, "/api/v1/token_infos/erc20/"s + contract_address.toStdString(), "ERC20"s, "ETH"s, "ERC-20"s,
                     "ETH"s, "ERC20"s);
             case CoinTypeGadget::BEP20:
                 return std::make_tuple(
-                    &mm2::g_etherscan_proxy_http_client, "/api/v1/token_infos/bep20/"s + contract_address.toStdString(), "BEP20"s, "BNB"s, "BEP-20"s,
+                    &kdf::g_etherscan_proxy_http_client, "/api/v1/token_infos/bep20/"s + contract_address.toStdString(), "BEP20"s, "BNB"s, "BEP-20"s,
                     "BNB"s, "ERC20"s);
             default:
-                return std::make_tuple(&mm2::g_etherscan_proxy_http_client, ""s, ""s, ""s, ""s, ""s, ""s);
+                return std::make_tuple(&kdf::g_etherscan_proxy_http_client, ""s, ""s, ""s, ""s, ""s, ""s);
             }
         };
         auto&& [endpoint, url, type, platform, adex_platform, parent_chain, parent_type] = retrieve_functor_url();
@@ -586,17 +586,17 @@ namespace atomic_dex
             //! Extract answer
             std::string    body = TO_STD_STR(resp.extract_string(true).get());
             nlohmann::json out  = nlohmann::json::object();
-            out["mm2_cfg"]      = nlohmann::json::object();
+            out["kdf_cfg"]      = nlohmann::json::object();
             out["adex_cfg"]     = nlohmann::json::object();
-            const auto& mm2     = this->m_system_manager.get_system<mm2_service>();
+            const auto& kdf     = this->m_system_manager.get_system<kdf_service>();
 
             if (resp.status_code() == 200)
             {
-                nlohmann::json raw_parent_cfg             = mm2.get_raw_mm2_ticker_cfg(parent_chain);
+                nlohmann::json raw_parent_cfg             = kdf.get_raw_kdf_ticker_cfg(parent_chain);
                 nlohmann::json body_json                  = nlohmann::json::parse(body).at("result")[0];
                 const auto     ticker                     = body_json.at("symbol").get<std::string>() + "-" + type;
                 const auto     name_lowercase             = body_json.at("tokenName").get<std::string>();
-                const auto&    coin_info                  = mm2.get_coin_info(parent_chain);
+                const auto&    coin_info                  = kdf.get_coin_info(parent_chain);
                 std::string token_contract_address        = contract_address.toStdString();
                 boost::algorithm::to_lower(token_contract_address);
                 utils::to_eth_checksum(token_contract_address);
@@ -606,22 +606,22 @@ namespace atomic_dex
                 copy_icon(icon_filepath, get_custom_coins_icons_path(), atomic_dex::utils::retrieve_main_ticker(ticker));
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
-                    out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["type"]                              = parent_type;
-                    out["mm2_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = platform;
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = token_contract_address;
-                    out["mm2_cfg"]["rpcport"]                                       = raw_parent_cfg.at("rpcport");
-                    out["mm2_cfg"]["coin"]                                          = ticker;
-                    out["mm2_cfg"]["mm2"]                                           = 1;
-                    out["mm2_cfg"]["decimals"]                                      = std::stoi(body_json.at("divisor").get<std::string>());
-                    out["mm2_cfg"]["avg_blocktime"]                                 = raw_parent_cfg.at("avg_blocktime");
-                    out["mm2_cfg"]["required_confirmations"]                        = raw_parent_cfg.at("required_confirmations");
+                    out["kdf_cfg"]["protocol"]                                      = nlohmann::json::object();
+                    out["kdf_cfg"]["protocol"]["type"]                              = parent_type;
+                    out["kdf_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
+                    out["kdf_cfg"]["protocol"]["protocol_data"]["platform"]         = platform;
+                    out["kdf_cfg"]["protocol"]["protocol_data"]["contract_address"] = token_contract_address;
+                    out["kdf_cfg"]["rpcport"]                                       = raw_parent_cfg.at("rpcport");
+                    out["kdf_cfg"]["coin"]                                          = ticker;
+                    out["kdf_cfg"]["kdf"]                                           = 1;
+                    out["kdf_cfg"]["decimals"]                                      = std::stoi(body_json.at("divisor").get<std::string>());
+                    out["kdf_cfg"]["avg_blocktime"]                                 = raw_parent_cfg.at("avg_blocktime");
+                    out["kdf_cfg"]["required_confirmations"]                        = raw_parent_cfg.at("required_confirmations");
                     if (raw_parent_cfg.contains("chain_id"))
                     {
-                        out["mm2_cfg"]["chain_id"] = raw_parent_cfg.at("chain_id");
+                        out["kdf_cfg"]["chain_id"] = raw_parent_cfg.at("chain_id");
                     }
-                    out["mm2_cfg"]["name"] = name_lowercase;
+                    out["kdf_cfg"]["name"] = name_lowercase;
                 }
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
                 {
@@ -663,7 +663,7 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["fname"]                   = name_lowercase;
                     out["adex_cfg"][ticker]["is_testnet"]              = false;
                     out["adex_cfg"][ticker]["currently_enabled"]       = false;
-                    out["adex_cfg"][ticker]["mm2"]                     = 1;
+                    out["adex_cfg"][ticker]["kdf"]                     = 1;
                     out["adex_cfg"][ticker]["name"]                    = name_lowercase;
                     out["adex_cfg"][ticker]["nodes"]                   = coin_info.urls.value_or(std::vector<node>());
                     out["adex_cfg"][ticker]["parent_coin"]             = parent_chain;
@@ -688,21 +688,21 @@ namespace atomic_dex
             this->set_custom_token_data(nlohmann_json_object_to_qt_json_object(out));
             this->set_fetching_custom_token_data_busy(false);
         };
-        mm2::async_process_rpc_get(*endpoint, "token_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+        kdf::async_process_rpc_get(*endpoint, "token_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void settings_page::submit()
     {
         SPDLOG_DEBUG("submit whole cfg");
         nlohmann::json out = m_custom_token_data.get();
-        this->m_system_manager.get_system<mm2_service>().add_new_coin(out.at("adex_cfg"), out.at("mm2_cfg"));
+        this->m_system_manager.get_system<kdf_service>().add_new_coin(out.at("adex_cfg"), out.at("kdf_cfg"));
         this->set_custom_token_data(QJsonObject{{}});
     }
 
     void settings_page::remove_custom_coin(const QString& ticker)
     {
         SPDLOG_DEBUG("remove ticker: {}", ticker.toStdString());
-        this->m_system_manager.get_system<mm2_service>().remove_custom_coin(ticker.toStdString());
+        this->m_system_manager.get_system<kdf_service>().remove_custom_coin(ticker.toStdString());
     }
 
     void settings_page::set_qml_engine(QQmlApplicationEngine* engine)
@@ -743,12 +743,12 @@ namespace atomic_dex
             const auto     coins   = cfg_mdl->get_enabled_coins();
             for (auto&& [coin, coin_cfg]: coins)
             {
-                mm2::show_priv_key_request req{.coin = coin};
-                nlohmann::json                    req_json = mm2::template_request("show_priv_key");
+                kdf::show_priv_key_request req{.coin = coin};
+                nlohmann::json                    req_json = kdf::template_request("show_priv_key");
                 to_json(req_json, req);
                 batch.push_back(req_json);
             }
-            auto&      mm2_system     = m_system_manager.get_system<mm2_service>();
+            auto&      kdf_system     = m_system_manager.get_system<kdf_service>();
             const auto answer_functor = [this](web::http::http_response resp)
             {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -759,7 +759,7 @@ namespace atomic_dex
                     SPDLOG_WARN("Priv keys fetched, those are sensitive data.");
                     for (auto&& answer: answers)
                     {
-                        auto       show_priv_key_answer = mm2::rpc_process_answer_batch<mm2::show_priv_key_answer>(answer, "show_priv_key");
+                        auto       show_priv_key_answer = kdf::rpc_process_answer_batch<kdf::show_priv_key_answer>(answer, "show_priv_key");
                         auto*      portfolio_mdl        = this->m_system_manager.get_system<portfolio_page>().get_portfolio();
                         const auto idx                  = portfolio_mdl->match(
                                              portfolio_mdl->index(0, 0), portfolio_model::TickerRole, QString::fromStdString(show_priv_key_answer.coin), 1,
@@ -768,16 +768,16 @@ namespace atomic_dex
                         {
                             update_value(portfolio_model::PrivKey, QString::fromStdString(show_priv_key_answer.priv_key), idx.at(0), *portfolio_mdl);
                             std::error_code ec;
-                            QString public_address = QString::fromStdString(m_system_manager.get_system<mm2_service>().address(show_priv_key_answer.coin, ec));
+                            QString public_address = QString::fromStdString(m_system_manager.get_system<kdf_service>().address(show_priv_key_answer.coin, ec));
                             update_value(portfolio_model::Address, public_address, idx.at(0), *portfolio_mdl);
                         }
                     }
                 }
                 this->set_fetching_priv_key_busy(false);
             };
-            mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor);
+            kdf_system.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor);
         }
-        return {QString::fromStdString(seed), QString::fromStdString(mm2::get_rpc_password())};
+        return {QString::fromStdString(seed), QString::fromStdString(kdf::get_rpc_password())};
     }
 
     QString settings_page::get_version()
@@ -790,9 +790,9 @@ namespace atomic_dex
         return QString::fromStdString(utils::get_atomic_dex_logs_folder().string());
     }
 
-    QString settings_page::get_mm2_version()
+    QString settings_page::get_kdf_version()
     {
-        return QString::fromStdString(mm2::rpc_version());
+        return QString::fromStdString(kdf::rpc_version());
     }
 
     QString settings_page::get_rpcport()
@@ -802,7 +802,7 @@ namespace atomic_dex
 
     QString settings_page::get_peerid()
     {
-        return QString::fromStdString(mm2::peer_id());
+        return QString::fromStdString(kdf::peer_id());
     }
 
     QString settings_page::get_export_folder()
@@ -812,7 +812,7 @@ namespace atomic_dex
 
     void settings_page::fetchPublicKey()
     {
-        auto& mm2_system = m_system_manager.get_system<mm2_service>();
+        auto& kdf_system = m_system_manager.get_system<kdf_service>();
         auto  get_pub_key_rpc_callback = [this](auto pub_key_rpc)
         {
             if (pub_key_rpc.error)
@@ -827,6 +827,6 @@ namespace atomic_dex
         fetching_public_key = true;
         emit fetchingPublicKeyChanged();
 
-        mm2_system.get_mm2_client().process_rpc_async<atomic_dex::mm2::get_public_key_rpc>(get_pub_key_rpc_callback);
+        kdf_system.get_kdf_client().process_rpc_async<atomic_dex::kdf::get_public_key_rpc>(get_pub_key_rpc_callback);
     }
 } // namespace atomic_dex

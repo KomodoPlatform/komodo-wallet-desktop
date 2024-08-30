@@ -20,13 +20,10 @@ Text
         }
     }
 
-    font: monospace ? Dex.DexTypo.monoSmall : Dex.DexTypo.body2
-
-    color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
-
     text: privacy && Dex.General.privacy_mode ? Dex.General.privacy_text : text_value
+    font: monospace ? Dex.DexTypo.monoSmall : Dex.DexTypo.body2
+    color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
     wrapMode: Text.WordWrap
-
     onLinkActivated: Qt.openUrlExternally(link)
     linkColor: color
 }

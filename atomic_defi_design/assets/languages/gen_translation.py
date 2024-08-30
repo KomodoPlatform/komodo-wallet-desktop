@@ -10,23 +10,23 @@ There may be some postprocessing required to manually fix bad csv input and nume
 
 def get_lang_dict():
 	with open('translations_matrix.csv') as f:
-	    csv_reader = csv.reader(f, delimiter=',')
-	    lang_dict = {}
-	    line_count = 0
-	    for row in csv_reader:
-	        if line_count == 0:
-	            en = row.index("English")
-	            es = row.index("Spanish")
-	            de = row.index("German")
-	            line_count += 1
-	        else:
-	        	lang_dict.update({
-	        		row[en]: {
-	        			"es": row[es],
-	        			"de": row[de]
-	        		}
-	        	})
-	        line_count += 1
+		csv_reader = csv.reader(f, delimiter=',')
+		lang_dict = {}
+		line_count = 0
+		for row in csv_reader:
+			if line_count == 0:
+				en = row.index("English")
+				es = row.index("Spanish")
+				de = row.index("German")
+				line_count += 1
+			else:
+				lang_dict.update({
+					row[en]: {
+						"es": row[es],
+						"de": row[de]
+					}
+				})
+			line_count += 1
 	return lang_dict
 
 def remove_existing_translations():

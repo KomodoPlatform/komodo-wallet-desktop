@@ -10,6 +10,8 @@ TextField
 
     property alias left_text: left_text.text_value
     property alias right_text: right_text.text_value
+    property alias left_fontsize: left_text.font.pixelSize
+    property alias right_fontsize: right_text.font.pixelSize
     property alias radius: background.radius
     property color backgroundColor: Dex.CurrentTheme.textFieldBackgroundColor
     property color backgroundColorActive: Dex.CurrentTheme.textFieldActiveBackgroundColor

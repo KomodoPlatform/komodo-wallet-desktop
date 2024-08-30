@@ -28,8 +28,8 @@ TEST_CASE("atomic dex cex prices provider constructor")
     //entt::registry registry;
     //ag::ecs::system_manager mgr{registry};
     //registry.set<entt::dispatcher>();
-    //atomic_dex::mm2                 mm2(registry, mgr);
-    //atomic_dex::ohlc_provider provider(registry, mm2);
+    //atomic_dex::kdf                 kdf(registry, mgr);
+    //atomic_dex::ohlc_provider provider(registry, kdf);
 }
 
 /*SCENARIO("atomic dex cex price service functionnality")
@@ -41,12 +41,12 @@ TEST_CASE("atomic dex cex prices provider constructor")
         entt::registry registry;
         registry.set<entt::dispatcher>();
         antara::gaming::ecs::system_manager system_manager_{registry};
-        auto&                               mm2_s      = system_manager_.create_system<atomic_dex::mm2>();
-        auto&                               cex_system = system_manager_.create_system<atomic_dex::ohlc_provider>(mm2_s);
+        auto&                               kdf_s      = system_manager_.create_system<atomic_dex::kdf>();
+        auto&                               cex_system = system_manager_.create_system<atomic_dex::ohlc_provider>(kdf_s);
 
-        THEN("I start mm2")
+        THEN("I start kdf")
         {
-            registry.ctx<entt::dispatcher>().trigger<atomic_dex::mm2_started>();
+            registry.ctx<entt::dispatcher>().trigger<atomic_dex::kdf_started>();
 
             AND_WHEN("i set the current orderbook pair to a valid supported pair (kmd-btc)")
             {

@@ -24,12 +24,12 @@ DefaultText {
         visible: mouse_area.containsMouse
 
         contentItem: ColumnLayout {
-            DefaultText {
+            DexLabel {
                 id: tx_fee_text
                 text_value: General.txFeeText(trade_info, base, false)
                 font.pixelSize: Style.textSizeSmall4
             }
-            DefaultText {
+            DexLabel {
                 text_value: General.tradingFeeText(trade_info, base, false)
                 font.pixelSize: tx_fee_text.font.pixelSize
             }

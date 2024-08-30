@@ -44,7 +44,7 @@ MultipageModal
 
     onCustom_token_dataChanged: {
         const data = custom_token_data
-        if(!data.mm2_cfg) return
+        if(!data.kdf_cfg) return
 
         var fields = General.clone(config_fields)
 

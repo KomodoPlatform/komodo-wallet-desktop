@@ -12,13 +12,13 @@ on:
   workflow_dispatch:
 
 env:
-  DEX_API: "mm2_firo"
+  DEX_API: "kdf_firo"
   DEX_RPCPORT: 7653
   DEX_RPC: "http://127.0.0.1:7653"
   DEX_PROJECT_NAME: "firodex"
   DEX_DISPLAY_NAME: "Firo Dex"
   DEX_COMPANY: "Firo"
-  DEX_VERSION: "0.7.2"
+  DEX_VERSION: "0.8.0"
   DEX_WEBSITE: "https://firo.org/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
@@ -162,13 +162,20 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           export SHELL=/bin/bash
-          echo "CHOOSENIM_CHOOSE_VERSION=1.6.10" >> $GITHUB_ENV
-          export CHOOSENIM_CHOOSE_VERSION=1.6.10
-          curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
-          chmod +x choosenim.sh
-          ./choosenim.sh -y
+          echo "CHOOSENIM_CHOOSE_VERSION=1.6.2" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.6.2
+          ./ci_tools_atomic_dex/ci_scripts/choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
-          chmod +x /home/runner/.choosenim/toolchains/nim-1.6.10/bin/*
+          chmod +x /home/runner/.choosenim/toolchains/nim-1.6.2/bin/*
+
+      - name: Install nim (MacOS)
+        if: runner.os == 'macOS'
+        run: |
+          echo "CHOOSENIM_CHOOSE_VERSION=1.6.2" >> $GITHUB_ENV
+          export CHOOSENIM_CHOOSE_VERSION=1.6.2
+          ./ci_tools_atomic_dex/ci_scripts/choosenim.sh -y
+          export PATH=/Users/runner/.nimble/bin:$PATH
+          chmod +x /Users/runner/.choosenim/toolchains/nim-1.6.2/bin/*
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
