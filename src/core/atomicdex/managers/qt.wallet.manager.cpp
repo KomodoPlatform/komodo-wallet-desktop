@@ -350,9 +350,9 @@ namespace atomic_dex
             }
 
             this->set_wallet_default_name(wallet_name);
-            this->set_status("initializing_mm2");
-            auto& mm2_system = m_system_manager.get_system<mm2_service>();
-            mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed, with_pin_cfg, rpcpass);
+            this->set_status("initializing_kdf");
+            auto& kdf_system = m_system_manager.get_system<kdf_service>();
+            kdf_system.spawn_kdf_instance(get_default_wallet_name().toStdString(), seed, with_pin_cfg, rpcpass);
             this->dispatcher_.trigger<post_login>();
             set_log_status(true);
 

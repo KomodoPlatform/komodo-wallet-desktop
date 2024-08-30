@@ -17,6 +17,25 @@ MouseArea
 
     Connections
     {
+        target: API.app.timesyncCheckerService
+
+        function onTimesyncInfoChanged()
+        {
+            if (!API.app.timesyncCheckerService.timesyncInfo)
+            {
+                _dexLine.timesyncInfo = false
+                if (currentLineType === Main.LineType.DEX) currentLineType = Main.LineType.Portfolio
+                root.lineSelected(Main.LineType.Portfolio);
+            }
+            else 
+            {
+                _dexLine.timesyncInfo = true
+            }
+        }
+    }
+
+    Connections
+    {
         target: parent.parent
 
         function onIsExpandedChanged()
@@ -84,12 +103,15 @@ MouseArea
         FigurativeLine
         {
             id: _dexLine
+            property var timesyncInfo: API.app.timesyncCheckerService.timesyncInfo
 
             Layout.fillWidth: true
             type: Main.LineType.DEX
+            label.color: timesyncInfo ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
             label.text: qsTr("DEX") // isExpanded ? qsTr("DEX") : ""
             icon.source: General.image_path + "menu-exchange-white.svg"
-            onClicked: lineSelected(type)
+            onClicked: timesyncInfo ? lineSelected(type) : null
+            disabled_tt_text: timesyncInfo ? "" : qsTr("DEX is disabled due to system clock synchronization issues. Please check your device time settings.")
         }
 
         FigurativeLine

@@ -24,9 +24,9 @@
 #include <nlohmann/json.hpp>
 
 //! Project
-#include "atomicdex/api/mm2/mm2.hpp"
+#include "atomicdex/api/kdf/kdf.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
 //! Constructor
@@ -66,9 +66,9 @@ namespace atomic_dex
             LOG_PATH("new csv path is: {}", csv_path);
         }
         nlohmann::json            batch           = nlohmann::json::array();
-        nlohmann::json            my_recent_swaps = mm2::template_request("my_recent_swaps");
-        auto&                     mm2             = m_system_manager.get_system<mm2_service>();
-        const auto                swaps_data      = mm2.get_orders_and_swaps();
+        nlohmann::json            my_recent_swaps = kdf::template_request("my_recent_swaps");
+        auto&                     kdf             = m_system_manager.get_system<kdf_service>();
+        const auto                swaps_data      = kdf.get_orders_and_swaps();
         t_my_recent_swaps_request request{
             .limit          = swaps_data.total_finished_swaps,
             .page_number    = 1,
@@ -81,8 +81,8 @@ namespace atomic_dex
         // SPDLOG_INFO("my_recent_swaps req: {}", my_recent_swaps.dump(4));
 
         auto answer_functor = [csv_path](web::http::http_response resp) {
-            auto       answers     = mm2::basic_batch_answer(resp);
-            const auto swap_answer = mm2::rpc_process_answer_batch<t_my_recent_swaps_answer>(answers[0], "my_recent_swaps");
+            auto       answers     = kdf::basic_batch_answer(resp);
+            const auto swap_answer = kdf::rpc_process_answer_batch<t_my_recent_swaps_answer>(answers[0], "my_recent_swaps");
             if (swap_answer.result.has_value())
             {
                 const auto result = swap_answer.result.value();
@@ -123,6 +123,6 @@ namespace atomic_dex
             }
         };
 
-        mm2.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
+        kdf.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(&handle_exception_pplx_task);
     }
 } // namespace atomic_dex

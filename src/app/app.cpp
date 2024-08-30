@@ -40,10 +40,11 @@
 //! Project Headers
 #include "app.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
-#include "atomicdex/services/mm2/auto.update.maker.order.service.hpp"
+#include "atomicdex/services/kdf/auto.update.maker.order.service.hpp"
 #include "atomicdex/services/price/komodo_prices/komodo.prices.provider.hpp"
 #include "atomicdex/services/price/coingecko/coingecko.wallet.charts.hpp"
 #include "atomicdex/services/price/orderbook.scanner.service.hpp"
+#include "atomicdex/services/sync/timesync.checker.service.hpp"
 
 namespace
 {
@@ -73,17 +74,17 @@ namespace atomic_dex
         
         std::vector<std::string> coins_std{};
         coins_std.reserve(coins.size());
-        atomic_dex::mm2_service& mm2 = get_mm2();
+        atomic_dex::kdf_service& kdf = get_kdf();
         std::unordered_set<std::string> extra_coins;
         for (auto&& coin : coins)
         {
-            auto coin_info = mm2.get_coin_info(coin.toStdString());
+            auto coin_info = kdf.get_coin_info(coin.toStdString());
             
             if (coin_info.has_parent_fees_ticker &&
                 coin_info.ticker != coin_info.fees_ticker &&
                 !coins.contains(QString::fromStdString(coin_info.fees_ticker)))
             {
-                auto coin_parent_info = mm2.get_coin_info(coin_info.fees_ticker);
+                auto coin_parent_info = kdf.get_coin_info(coin_info.fees_ticker);
                 // todo: why can it be empty when it has been found ?
                 //       refactor coins enabling logic!!!
                 if (coin_parent_info.ticker != "")
@@ -100,7 +101,7 @@ namespace atomic_dex
         {
             coins_std.push_back(extra_coin);
         }
-        mm2.enable_coins(coins_std);
+        kdf.enable_coins(coins_std);
         return true;
     }
 
@@ -114,14 +115,14 @@ namespace atomic_dex
         QString     primary_coin   = QString::fromStdString(g_primary_dex_coin);
         QString     secondary_coin = QString::fromStdString(g_second_primary_dex_coin);
         QStringList coins_copy;
-        const auto& mm2 = system_manager_.get_system<mm2_service>();
+        const auto& kdf = system_manager_.get_system<kdf_service>();
         for (auto&& coin : coins)
         {
-            const auto coin_info       = mm2.get_coin_info(coin.toStdString());
+            const auto coin_info       = kdf.get_coin_info(coin.toStdString());
             bool       has_parent_fees = coin_info.has_parent_fees_ticker;
             if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
-                if (!get_mm2().is_zhtlc_coin_ready(coin.toStdString()))
+                if (!get_kdf().is_zhtlc_coin_ready(coin.toStdString()))
                 {
                     this->dispatcher_.trigger<disabling_coin_failed>(coin.toStdString(), "Can't disable until fully activated.");
                 }
@@ -147,13 +148,13 @@ namespace atomic_dex
             coins_std.reserve(coins_copy.size());
             for (auto&& coin : coins_copy)
             {
-                if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_primary_coin_fully_enabled)
+                if (QString::fromStdString(get_kdf().get_current_ticker()) == coin && m_primary_coin_fully_enabled)
                 {
                     system_manager_.get_system<wallet_page>().set_current_ticker(primary_coin);
                 }
                 coins_std.push_back(coin.toStdString());
             }
-            get_mm2().disable_multiple_coins(coins_std);
+            get_kdf().disable_multiple_coins(coins_std);
             this->dispatcher_.trigger<update_portfolio_values>(false);
         }
 
@@ -202,7 +203,7 @@ namespace atomic_dex
         std::string       wallet_custom_cfg_filename = "custom-tokens."s + wallet_name + ".json"s;
         const fs::path    wallet_custom_cfg_path{utils::get_atomic_dex_config_folder() / wallet_custom_cfg_filename};
         const fs::path    wallet_cfg_path{utils::get_atomic_dex_config_folder() / wallet_cfg_file};
-        const fs::path    mm2_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+        const fs::path    kdf_coins_file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
         const fs::path    ini_file_path      = atomic_dex::utils::get_current_configs_path() / "cfg.ini";
         const fs::path    cfg_json_file_path = atomic_dex::utils::get_current_configs_path() / "cfg.json";
         const fs::path    logo_path          = atomic_dex::utils::get_logo_path();
@@ -308,7 +309,7 @@ namespace atomic_dex
             file.write(QString::fromStdString(custom_config_json_data.dump()).toUtf8());
             file.close();
         }
-        functor_remove(std::move(mm2_coins_file_path));
+        functor_remove(std::move(kdf_coins_file_path));
         functor_remove(std::move(cfg_json_file_path));
         functor_remove(std::move(logo_path));
         functor_remove(std::move(theme_path));
@@ -342,14 +343,14 @@ namespace atomic_dex
     void application::tick()
     {
         this->process_one_frame();
-        if (m_event_actions[events_action::need_a_full_refresh_of_mm2])
+        if (m_event_actions[events_action::need_a_full_refresh_of_kdf])
         {
-            system_manager_.create_system<mm2_service>(system_manager_);
+            system_manager_.create_system<kdf_service>(system_manager_);
             connect_signals();
-            m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
+            m_event_actions[events_action::need_a_full_refresh_of_kdf] = false;
         }
-        auto& mm2 = get_mm2();
-        if (mm2.is_mm2_running())
+        auto& kdf = get_kdf();
+        if (kdf.is_kdf_running())
         {
             std::vector<std::string> to_init;
             while (not m_portfolio_queue.empty())
@@ -410,13 +411,13 @@ namespace atomic_dex
             switch (last_action)
             {
             case action::post_process_orders_and_swaps_finished:
-                if (mm2.is_mm2_running())
+                if (kdf.is_kdf_running())
                 {
                     qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert();
                 }
                 break;
             case action::post_process_orders_and_swaps_finished_reset:
-                if (mm2.is_mm2_running())
+                if (kdf.is_kdf_running())
                 {
                     qobject_cast<orders_model*>(m_manager_models.at("orders"))->refresh_or_insert(true);
                 }
@@ -425,9 +426,9 @@ namespace atomic_dex
         }
     }
 
-    mm2_service& application::get_mm2()
+    kdf_service& application::get_kdf()
     {
-        return this->system_manager_.get_system<mm2_service>();
+        return this->system_manager_.get_system<kdf_service>();
     }
 
     entt::dispatcher& application::get_dispatcher()
@@ -486,8 +487,8 @@ namespace atomic_dex
         }
 
         // get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
-        //! MM2 system need to be created before the GUI and give the instance to the gui
-        system_manager_.create_system<mm2_service>(system_manager_);
+        //! KDF system need to be created before the GUI and give the instance to the gui
+        system_manager_.create_system<kdf_service>(system_manager_);
         auto& settings_page_system = system_manager_.create_system<settings_page>(system_manager_, m_app, this);
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
@@ -498,6 +499,7 @@ namespace atomic_dex
         system_manager_.create_system<orderbook_scanner_service>(system_manager_);
         system_manager_.create_system<komodo_prices_provider>();
         system_manager_.create_system<update_checker_service>();
+        system_manager_.create_system<timesync_checker_service>();
         system_manager_.create_system<coingecko_wallet_charts_service>(system_manager_);
         system_manager_.create_system<exporter_service>(system_manager_);
         system_manager_.create_system<trading_page>(
@@ -540,17 +542,17 @@ namespace atomic_dex
     bool application::do_i_have_enough_funds(const QString& ticker, const QString& amount) const
     {
         t_float_50 amount_f = safe_float(amount.toStdString());
-        return get_mm2().do_i_have_enough_funds(ticker.toStdString(), amount_f);
+        return get_kdf().do_i_have_enough_funds(ticker.toStdString(), amount_f);
     }
 
-    const mm2_service& application::get_mm2() const
+    const kdf_service& application::get_kdf() const
     {
-        return this->system_manager_.get_system<mm2_service>();
+        return this->system_manager_.get_system<kdf_service>();
     }
 
     QJsonObject application::get_zhtlc_status(const QString& coin)
     {
-        QJsonObject  res = nlohmann_json_object_to_qt_json_object(get_mm2().get_zhtlc_status(coin.toStdString()));
+        QJsonObject  res = nlohmann_json_object_to_qt_json_object(get_kdf().get_zhtlc_status(coin.toStdString()));
         return res;
     }
 
@@ -558,11 +560,11 @@ namespace atomic_dex
     {
         std::error_code ec;
         SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
-        auto            res = get_mm2().get_balance_info(coin.toStdString(), ec);
+        auto            res = get_kdf().get_balance_info(coin.toStdString(), ec);
         return QString::fromStdString(res);
     }
 
-    void application::on_mm2_initialized_event([[maybe_unused]] const mm2_initialized& evt)
+    void application::on_kdf_initialized_event([[maybe_unused]] const kdf_initialized& evt)
     {
         SPDLOG_DEBUG("{} l{}", __FUNCTION__, __LINE__);
         system_manager_.get_system<qt_wallet_manager>().set_status("enabling_coins");
@@ -571,10 +573,10 @@ namespace atomic_dex
     // Function appears to be unused.
     void application::refresh_orders_and_swaps()
     {
-        auto& mm2 = get_mm2();
-        if (mm2.is_mm2_running())
+        auto& kdf = get_kdf();
+        if (kdf.is_kdf_running())
         {
-            mm2.batch_fetch_orders_and_swap();
+            kdf.batch_fetch_orders_and_swap();
         }
     }
 
@@ -611,7 +613,7 @@ namespace atomic_dex
 
 
         //! Mark systems
-        system_manager_.mark_system<mm2_service>();
+        system_manager_.mark_system<kdf_service>();
         //system_manager_.mark_system<coingecko_provider>();
 
         //! Disconnect signals
@@ -621,10 +623,10 @@ namespace atomic_dex
         dispatcher_.sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
         dispatcher_.sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
         dispatcher_.sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
-        dispatcher_.sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
+        dispatcher_.sink<kdf_initialized>().disconnect<&application::on_kdf_initialized_event>(*this);
         dispatcher_.sink<process_swaps_and_orders_finished>().disconnect<&application::on_process_orders_and_swaps_finished_event>(*this);
 
-        m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
+        m_event_actions[events_action::need_a_full_refresh_of_kdf] = true;
 
         //! Resets wallet name.
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
@@ -645,7 +647,7 @@ namespace atomic_dex
         get_dispatcher().sink<ticker_balance_updated>().connect<&application::on_ticker_balance_updated_event>(*this);
         get_dispatcher().sink<fiat_rate_updated>().connect<&application::on_fiat_rate_updated>(*this);
         get_dispatcher().sink<coin_fully_initialized>().connect<&application::on_coin_fully_initialized_event>(*this);
-        get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
+        get_dispatcher().sink<kdf_initialized>().connect<&application::on_kdf_initialized_event>(*this);
         get_dispatcher().sink<process_swaps_and_orders_finished>().connect<&application::on_process_orders_and_swaps_finished_event>(*this);
         // get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
     }
@@ -664,8 +666,8 @@ namespace atomic_dex
     {
         QString result;
 
-        mm2::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
-        auto                                      res = get_mm2().get_mm2_client().rpc_recover_funds(std::move(request));
+        kdf::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
+        auto                                      res = get_kdf().get_kdf_client().rpc_recover_funds(std::move(request));
         result                                        = QString::fromStdString(res.raw_result);
 
         return result;
@@ -793,7 +795,7 @@ namespace atomic_dex
     bool
     application::is_pin_cfg_enabled() const
     {
-        return get_mm2().is_pin_cfg_enabled();
+        return get_kdf().is_pin_cfg_enabled();
     }
 } // namespace atomic_dex
 
@@ -804,7 +806,7 @@ namespace atomic_dex
     application::exit_handler()
     {
         SPDLOG_DEBUG("will quit app, prevent all threading event");
-        this->system_manager_.mark_system<mm2_service>();
+        this->system_manager_.mark_system<kdf_service>();
         this->process_one_frame();
         m_event_actions[events_action::about_to_exit_app] = true;
     }
@@ -910,7 +912,18 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! update checker
+//! time sync checker
+namespace atomic_dex
+{
+    timesync_checker_service* application::get_timesync_checker_service() const
+    {
+        auto ptr = const_cast<timesync_checker_service*>(std::addressof(system_manager_.get_system<timesync_checker_service>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
+} // namespace atomic_dex
+
+//! zcash_params checker
 namespace atomic_dex
 {
     zcash_params_service* application::get_zcash_params_service() const

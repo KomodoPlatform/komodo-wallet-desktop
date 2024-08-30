@@ -8,7 +8,7 @@
 #include <vector>
 
 //! Project Headers
-#include "atomicdex/api/mm2/mm2.error.code.hpp"
+#include "atomicdex/api/kdf/kdf.error.code.hpp"
 
 namespace atomic_dex
 {
@@ -25,7 +25,7 @@ namespace atomic_dex
         std::string              my_balance_change;
         std::string              total_amount;
         std::size_t              block_height;
-        t_mm2_ec                 ec{dextop_error::success};
+        t_kdf_ec                 ec{dextop_error::success};
         bool                     unconfirmed{false};
         std::string              transaction_note{""};
     };

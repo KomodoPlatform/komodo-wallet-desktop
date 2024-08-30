@@ -759,83 +759,93 @@
 <context>
     <name>ConfirmTradeModal</name>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="26"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="27"/>
         <source>Confirm Exchange Details</source>
         <translation>Confirmar Detalles de Intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="112"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="217"/>
         <source>Trade price is more than 50% different to CEX! Confirm?</source>
         <translation>¡El precio comercial es más del 50% diferente al de CEX! ¿Confirmar?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="121"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="405"/>
         <source>This swap request can not be undone and is a final event!</source>
         <translation>¡Esta solicitud de intercambio no se puede deshacer y es un evento final!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="128"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="414"/>
         <source>This transaction can take up to 60 mins - DO NOT close this application!</source>
         <translation>Esta transacción puede demorar hasta 60 minutos. ¡NO cierre esta aplicación!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="172"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="121"/>
         <source>Loading fees...</source>
         <translation>Cargando tarifas...</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="216"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="165"/>
         <source>&lt;b&gt;Total %1 fees:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Cuota total de %1:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="295"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="297"/>
         <source>Security configuration</source>
         <translation>Configuración de seguridad</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="310"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="312"/>
         <source>%1 confirmations for incoming %2 transactions</source>
         <translation>%1 confirmaciones para %2 transacciones entrantes</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="281"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="283"/>
         <source>Read more about dPoW</source>
         <translation>Obtenga más información sobre dPoW</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="267"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="245"/>
+        <source>Cancel all existing orders for %1/%2?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="256"/>
+        <source>Good until cancelled (order will remain on orderbook until filled or cancelled)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="269"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
         <translation>Utilice configuraciones de protección personalizadas para %1 transacciones entrantes</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="280"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="282"/>
         <source>Enable Komodo dPoW security</source>
         <translation>Habilite la seguridad dPoW de Komodo</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="309"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="311"/>
         <source>dPoW protected </source>
         <translation>Protegido por dPoW </translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="345"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="347"/>
         <source>Required Confirmations</source>
         <translation>Confirmaciones Requeridas</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="387"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="389"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
         <translation>Advertencia, este intercambio atómico no está protegido por dPoW!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="414"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="441"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="429"/>
+        <location filename="../../Dex/Exchange/Trade/ConfirmTradeModal.qml" line="456"/>
         <source>Confirm</source>
         <translation>Confirmar</translation>
     </message>
@@ -1760,11 +1770,11 @@ Vuelva a intentarlo o seleccione &apos;Permitir semilla personalizada&apos; pers
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/BestOrder/List.qml" line="17"/>
-        <source>Best Orders</source>
-        <translation>Mejores Ordenes</translation>
+        <source>Best Orders for %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/BestOrder/List.qml" line="35"/>
+        <location filename="../../Dex/Exchange/Trade/BestOrder/List.qml" line="37"/>
         <source>Enter volume to see best orders.</source>
         <translation>Introduce el volumen para ver los mejores ordenes</translation>
     </message>
@@ -1772,17 +1782,22 @@ Vuelva a intentarlo o seleccione &apos;Permitir semilla personalizada&apos; pers
 <context>
     <name>ListDelegate</name>
     <message>
-        <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="126"/>
+        <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="125"/>
         <source> %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Yes&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</source>
         <translation>%1 no está habilitado. ¿Desea habilitarlo para poder seleccionar %2 mejores ordenes?&lt;br&gt;&lt;a href=&apos;#&apos;&gt;Sí&lt;/a&gt; - &lt;a href=&apos;#no&apos;&gt;No&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="127"/>
+        <location filename="../../Dex/Exchange/Trade/BestOrder/ListDelegate.qml" line="126"/>
         <source> %1 is not enabled - Please enable it through the coin activation menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="53"/>
+        <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="50"/>
+        <source>Orderbook is disabled while creating maker orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/Trade/OrderBook/ListDelegate.qml" line="57"/>
         <source>This order requires a minimum amount of %1 %2 &lt;br&gt;You don&apos;t have enough funds.&lt;br&gt; %3</source>
         <translation>Este pedido requiere una cantidad mínima de %1 %2 &lt;br&gt;No tiene fondos suficientes.&lt;br&gt; %3</translation>
     </message>
@@ -1804,8 +1819,8 @@ Vuelva a intentarlo o seleccione &apos;Permitir semilla personalizada&apos; pers
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/Logging.qml" line="42"/>
-        <source>Initializing MM2</source>
-        <translation>Inicializando MM2</translation>
+        <source>Initializing KDF</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Screens/Startup/Logging.qml" line="43"/>
@@ -1916,7 +1931,7 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
         <translation>Recibir</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="100"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="103"/>
         <location filename="../../Dex/Wallet/Main.qml" line="533"/>
         <source>Swap</source>
         <translation>Intercambiar</translation>
@@ -1947,83 +1962,68 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="724"/>
-        <location filename="../../Dex/Wallet/Main.qml" line="759"/>
-        <location filename="../../Dex/Wallet/Main.qml" line="791"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="727"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="762"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="794"/>
         <source>Public Key</source>
         <translation>Clave Pública</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="791"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="794"/>
         <source>Copied to Clipboard</source>
         <translation>Copiada en el Portapapeles</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="825"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="828"/>
         <source>Explore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="986"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="989"/>
         <source>There is no chart data for this ticker yet</source>
         <translation>No hay datos de gráficos para este ticker aún</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="1049"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="1052"/>
         <source>Fetching transactions...</source>
         <translation>Obteniendo transacciones...</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="1050"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="1053"/>
         <source>No transactions available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="1047"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="1050"/>
         <source>Please wait, %1 is %2</source>
         <translation>Por favor espera %1 es %2</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="979"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="982"/>
         <source>Loading ticker chart data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/Main.qml" line="1047"/>
+        <location filename="../../Dex/Wallet/Main.qml" line="1050"/>
         <source>% activated...</source>
         <translation>% activado...</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="30"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="33"/>
         <source>Chart</source>
         <translation>Gráfico</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="38"/>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="110"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="41"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="113"/>
         <source>Orders</source>
         <translation>Pedidos</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="46"/>
-        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="120"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/Main.qml" line="49"/>
+        <location filename="../../Dex/Exchange/Trade/SimpleView/Main.qml" line="123"/>
         <source>History</source>
         <translation>Historial</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="16"/>
-        <source>Place Order</source>
-        <translation>Realizar pedido</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="167"/>
-        <source>Order Selected</source>
-        <translation>Pedido seleccionado</translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="253"/>
-        <source>START SWAP</source>
-        <translation>INICIO INTERCAMBIAR</translation>
     </message>
     <message>
         <location filename="../../Dex/Addressbook/Main.qml" line="62"/>
@@ -2076,6 +2076,16 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
         <source>This contact does not have any registered address.</source>
         <translation>Este contacto no tiene ninguna dirección registrada.</translation>
     </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="115"/>
+        <source>Taker Order</source>
+        <translation type="unfinished">Orden de Taker</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/Main.qml" line="123"/>
+        <source>Maker Order</source>
+        <translation type="unfinished">Orden de Maker</translation>
+    </message>
 </context>
 <context>
     <name>Market</name>
@@ -2093,13 +2103,13 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
 <context>
     <name>MarketModeSelector</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/MarketModeSelector.qml" line="42"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/MarketModeSelector.qml" line="47"/>
         <source>Sell %1</source>
         <comment>TICKER</comment>
         <translation>Vender %1</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/MarketModeSelector.qml" line="43"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/MarketModeSelector.qml" line="48"/>
         <source>Buy %1</source>
         <comment>TICKER</comment>
         <translation>Comprar %1</translation>
@@ -2533,94 +2543,109 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="64"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="105"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="111"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="152"/>
         <source>Reduce 1% relative to CEX market price.</source>
         <translation>Reducción del 1% en relación con el precio de mercado CEX.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="112"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="153"/>
         <source>Use CEX market price.</source>
         <translation>Utilice el precio de mercado CEX.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="113"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="154"/>
         <source>Increase 1% relative to CEX market price.</source>
         <translation>Aumento del 1% en relación con el precio de mercado de CEX.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="128"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="169"/>
         <source>Send</source>
         <translation type="unfinished">Enviar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="128"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="169"/>
         <source>Receive</source>
         <translation type="unfinished">Recibir</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="165"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="206"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="166"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="207"/>
         <source>Swap 25% of your tradable balance.</source>
         <translation>Usar el 25% de su saldo comercial.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="167"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="208"/>
         <source>Swap 50% of your tradable balance.</source>
         <translation>Usar el 50% de su saldo comercial.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="168"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="209"/>
         <source>Swap 100% of your tradable balance.</source>
         <translation>Usar el 100% de su saldo comercial.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="184"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="225"/>
         <source>Min Volume</source>
         <translation>Volumen Mínimo</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="186"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="227"/>
         <source>Min amount to sell</source>
         <translation>Cantidad mínima para vender</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="186"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="227"/>
         <source>Min amount to receive</source>
         <translation>Cantidad mínimo para recibir</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="216"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="257"/>
         <source>Minimum accepted trade equals 10% of order volume.</source>
         <translation>El comercio mínimo aceptado es igual al 10% del volumen del pedido.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="217"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="258"/>
         <source>Minimum accepted trade equals 25% of order volume.</source>
         <translation>El comercio mínimo aceptado es igual al 25% del volumen del pedido.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="218"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="259"/>
         <source>Minimum accepted trade equals 50% of order volume.</source>
         <translation>El comercio mínimo aceptado es igual al 50% del volumen del pedido.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="233"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="274"/>
         <source>Min volume: </source>
         <translation>Volumen mínimo:</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="261"/>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="302"/>
         <source>Use custom minimum trade amount</source>
         <translation>Utilizar una cantidad personalizada de intercambio mínima</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="357"/>
+        <source>Order Selected</source>
+        <translation type="unfinished">Pedido seleccionado</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="420"/>
+        <source>CREATE MAKER SWAP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/PlaceOrderForm/OrderForm.qml" line="420"/>
+        <source>START TAKER SWAP</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2642,104 +2667,114 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
 <context>
     <name>OrderModal</name>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="117"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="118"/>
         <source>Order Type</source>
         <translation>Tipo de Orden</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="118"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="119"/>
         <source>Maker Order</source>
         <translation>Orden de Maker</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="118"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="119"/>
         <source>Taker Order</source>
         <translation>Orden de Taker</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="126"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="147"/>
         <source>Refund State</source>
         <translation>Estado del Reembolso</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="127"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="148"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
         <translation>Su intercambio falló, pero el proceso de reembolso automático para su pago ya comenzó. Espere y mantenga la aplicación abierta hasta que reciba su pago</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="136"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="157"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="187"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="208"/>
         <source>Error ID</source>
         <translation>ID de Error</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="197"/>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="202"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="218"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="223"/>
         <source>Error Log</source>
         <translation>Registro de Error</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="293"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="314"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="254"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="275"/>
         <source>Cancel Order</source>
         <translation>Cancelar Pedido</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="146"/>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="152"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="127"/>
+        <source>Min Volume</source>
+        <translation type="unfinished">Volumen Mínimo</translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="137"/>
+        <source>Max Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="167"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="173"/>
         <source>Swap ID</source>
         <translation>ID de Intercambio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="159"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="180"/>
         <source>Maker Payment Sent Transaction ID</source>
         <translation>ID de la transacción pago enviada de Maker</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="159"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="180"/>
         <source>Maker Payment Spent Transaction ID</source>
         <translation>ID de la transacción pago gastado de Maker</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="166"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="187"/>
         <source>Maker Payment TXID</source>
         <translation>TXID del pago de Maker</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="173"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="194"/>
         <source>Taker Payment Spent Transaction ID</source>
         <translation>ID de la transacción pago gastado de Taker</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="173"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="194"/>
         <source>Taker Payment Sent Transaction ID</source>
         <translation>ID de la transacción pago enviada de Taker</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="179"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="200"/>
         <source>Taker Payment TXID</source>
         <translation>TXID del pago de Taker</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="240"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="261"/>
         <source>Recover Funds</source>
         <translation>Recuperar fondos</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="240"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="261"/>
         <source>Refunding...</source>
         <translation>Reembolso...</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="265"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/OrderModal.qml" line="286"/>
         <source>View on Explorer</source>
         <translation>Ver en Explorer</translation>
     </message>
@@ -2753,10 +2788,9 @@ Se eliminarán del libro de pedidos hasta que vuelva a iniciar sesión.</transla
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="20"/>
-        <source>The selected order does not exist anymore, it might have been matched or canceled, and no order with a better price is available.
+        <source>The selected order does not exist anymore, it might have been matched or cancelled, and no order with a better price is available.
 Please select a new order.</source>
-        <translation>El pedido seleccionado ya no existe, puede haber sido igualado o cancelado, y no hay un pedido con mejor precio disponible.
-Seleccione un nuevo pedido.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/SimpleView/OrderRemovedModal.qml" line="27"/>
@@ -2908,23 +2942,23 @@ Seleccione un nuevo pedido.</translation>
         <translation>Seleccionada</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="76"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="100"/>
         <source>Expensive</source>
         <translation>Caro</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="76"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="100"/>
         <source>Expedient</source>
         <translation>Expediente</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="76"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="100"/>
         <source>%1 compared to CEX</source>
         <comment>PRICE_DIFF%</comment>
         <translation>%1 en comparación con CEX</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="122"/>
+        <location filename="../../Dex/Exchange/ProView/TradingInfo/PriceLine.qml" line="120"/>
         <source>CEXchange rate</source>
         <translation>Tasa de cambio CEX</translation>
     </message>
@@ -2947,17 +2981,17 @@ Seleccione un nuevo pedido.</translation>
         <translation>Tasa de cambio CEX</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/PriceLineSimplified.qml" line="150"/>
+        <location filename="../../Dex/Exchange/Trade/PriceLineSimplified.qml" line="141"/>
         <source>Expensive</source>
         <translation>Caro</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/PriceLineSimplified.qml" line="150"/>
+        <location filename="../../Dex/Exchange/Trade/PriceLineSimplified.qml" line="141"/>
         <source>Expedient</source>
         <translation>Expediente</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/PriceLineSimplified.qml" line="150"/>
+        <location filename="../../Dex/Exchange/Trade/PriceLineSimplified.qml" line="141"/>
         <source>%1 compared to CEX</source>
         <comment>PRICE_DIFF%</comment>
         <translation>%1 en comparación con CEX</translation>
@@ -2966,12 +3000,12 @@ Seleccione un nuevo pedido.</translation>
 <context>
     <name>ProView</name>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ProView.qml" line="91"/>
+        <location filename="../../Dex/Exchange/Trade/ProView.qml" line="90"/>
         <source>Failed to place the order</source>
         <translation>Error al realizar el pedido</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/ProView.qml" line="102"/>
+        <location filename="../../Dex/Exchange/Trade/ProView.qml" line="101"/>
         <source>Placed the order</source>
         <translation>Realizó el pedido El</translation>
     </message>
@@ -3440,7 +3474,7 @@ Seleccione un nuevo pedido.</translation>
     <name>SettingModal</name>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="377"/>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="557"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="583"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -3515,12 +3549,12 @@ Seleccione un nuevo pedido.</translation>
         <translation>Cambiando el tema a %1</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="687"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="713"/>
         <source>Application Version</source>
         <translation>La versión de la aplicación</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="688"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="714"/>
         <source>copied to clipboard</source>
         <translation>copiado al portapapeles</translation>
     </message>
@@ -3562,151 +3596,156 @@ Seleccione un nuevo pedido.</translation>
     </message>
     <message>
         <location filename="../../Dex/Settings/SettingModal.qml" line="376"/>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="556"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="582"/>
         <source>Confirm</source>
         <translation>Confirmar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="532"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="498"/>
+        <source>Show orders after placement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="558"/>
         <source>Ask system&apos;s password before sending coins ? (2FA)</source>
         <translation>¿Preguntar la contraseña del sistema antes de enviar monedas? (2FA)</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="548"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="574"/>
         <source>Disable 2FA?</source>
         <translation>¿Deshabilitar 2FA?</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="549"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="575"/>
         <source>Enter your wallet password to confirm</source>
         <translation>Ingrese la contraseña de su billetera para confirmar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="555"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="581"/>
         <source>Type password</source>
         <translation>Escriba la contraseña</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="568"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="594"/>
         <source>2FA status</source>
         <translation>Estado 2FA</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="569"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="595"/>
         <source>2FA disabled successfully</source>
         <translation>2FA deshabilitado correctamente</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="570"/>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="588"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="596"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="614"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="582"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="608"/>
         <source>Wrong password!</source>
         <translation>¡Contraseña incorrecta!</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="583"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="609"/>
         <source>Wallet password is incorrect</source>
         <translation>Contraseña de la billetera es incorrecta</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="605"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="631"/>
         <source>View seed and private keys</source>
         <translation>Ver semilla y claves privadas</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="606"/>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="667"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="632"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="693"/>
         <source>Show</source>
         <translation>Mostrar</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="614"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="640"/>
         <source>Setup Camouflage Password</source>
         <translation>Configuración de Contraseña Camuflaje</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="615"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="641"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="631"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="657"/>
         <source>Reuse static RPC password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="666"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="692"/>
         <source>Disclaimer and ToS</source>
         <translation>Descargo de Responsabilidad y Terminos de Servicio</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="681"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="707"/>
         <source>Application version</source>
         <translation>Versión de Aplicación</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="702"/>
-        <source>MM2 version</source>
-        <translation>Versión MM2</translation>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="728"/>
+        <source>KDF version</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="709"/>
-        <source>MM2 Version</source>
-        <translation>Versión MM2</translation>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="735"/>
+        <source>KDF Version</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="710"/>
-        <source>MM2 Version copied to clipboard.</source>
-        <translation>Versión MM2 copiada al portapapeles.</translation>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="736"/>
+        <source>KDF Version copied to clipboard.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="724"/>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="731"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="750"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="757"/>
         <source>RPC Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="732"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="758"/>
         <source>RPC Port copied to clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="746"/>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="753"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="772"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="779"/>
         <source>Peer ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="754"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="780"/>
         <source>Peer ID copied to clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="768"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="794"/>
         <source>Qt version</source>
         <translation>Versión Qt</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="775"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="801"/>
         <source>Qt Version</source>
         <translation>Versión Qt</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="776"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="802"/>
         <source>Qt Version copied to clipboard.</source>
         <translation>Versión de Qt copiada al portapapeles.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="801"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="827"/>
         <source>Search for Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Settings/SettingModal.qml" line="818"/>
+        <location filename="../../Dex/Settings/SettingModal.qml" line="844"/>
         <source>Logout</source>
         <translation>Cerrar sesión</translation>
     </message>
@@ -4295,24 +4334,19 @@ There is a toggle in settings where you can turn on/off the display of these tra
         <translation>Configuracion de Vista</translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="125"/>
-        <source>Ticker Selectors</source>
-        <translation>Selectores</translation>
-    </message>
-    <message>
         <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="129"/>
-        <source>Trading Information</source>
-        <translation>Información de Intercambios</translation>
+        <source>Order Book</source>
+        <translation type="unfinished">Libro de Ordenes</translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="133"/>
-        <source>Markets</source>
+        <source>Order Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="137"/>
-        <source>Place Order</source>
-        <translation>Realizar pedido</translation>
+        <location filename="../../Dex/Exchange/Trade/Trading/TradeViewHeader.qml" line="125"/>
+        <source>Trading Information</source>
+        <translation>Información de Intercambios</translation>
     </message>
 </context>
 <context>
@@ -4467,8 +4501,8 @@ There is a toggle in settings where you can turn on/off the display of these tra
     <name>Vertical</name>
     <message>
         <location filename="../../Dex/Exchange/Trade/OrderBook/Vertical.qml" line="14"/>
-        <source>Order Book</source>
-        <translation>Libro de Ordenes</translation>
+        <source>%1 Orderbook</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Dex/Exchange/Trade/OrderBook/Vertical.qml" line="65"/>
@@ -4590,7 +4624,7 @@ Esto puede tardar unos minutos...</translation>
 <context>
     <name>atomic_dex::settings_page</name>
     <message>
-        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="805"/>
+        <location filename="../../../src/core/atomicdex/pages/qt.settings.page.cpp" line="819"/>
         <source>An error has occurred.</source>
         <translation>Se ha producido un error.</translation>
     </message>

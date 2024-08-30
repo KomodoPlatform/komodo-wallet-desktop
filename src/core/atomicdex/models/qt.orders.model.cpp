@@ -19,11 +19,11 @@
 #include <range/v3/algorithm/any_of.hpp>
 
 //! Project
-#include "atomicdex/api/mm2/rpc_v1/rpc.recover_funds_of_swap.hpp"
+#include "atomicdex/api/kdf/rpc_v1/rpc.recover_funds_of_swap.hpp"
 #include "atomicdex/events/qt.events.hpp"
 #include "atomicdex/models/qt.orders.model.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
 //! Constructor
@@ -307,8 +307,8 @@ namespace atomic_dex
             SPDLOG_INFO("Current page: {}, new page: {}", m_model_data.current_page, current_page);
             this->set_fetching_busy(true);
             this->reset_backend("set_current_page"); ///< We change page, we need to clear, but do not notify the front-end
-            auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-            mm2.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(current_page), m_model_data.limit, m_model_data.filtering_infos);
+            auto& kdf = this->m_system_manager.get_system<kdf_service>();
+            kdf.set_orders_and_swaps_pagination_infos(static_cast<std::size_t>(current_page), m_model_data.limit, m_model_data.filtering_infos);
         }
     }
 
@@ -328,8 +328,8 @@ namespace atomic_dex
             {
                 this->set_fetching_busy(true);
                 this->reset_backend("set_limit_nb_elements"); ///< We change page, we need to clear, but do not notify the front-end
-                auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-                mm2.set_orders_and_swaps_pagination_infos(m_model_data.current_page, static_cast<std::size_t>(limit), m_model_data.filtering_infos);
+                auto& kdf = this->m_system_manager.get_system<kdf_service>();
+                kdf.set_orders_and_swaps_pagination_infos(m_model_data.current_page, static_cast<std::size_t>(limit), m_model_data.filtering_infos);
             }
             else
             {
@@ -397,9 +397,9 @@ namespace atomic_dex
     void
     orders_model::on_current_currency_changed([[maybe_unused]] const current_currency_changed&)
     {
-        auto& mm2 = m_system_manager.get_system<mm2_service>();
+        auto& kdf = m_system_manager.get_system<kdf_service>();
 
-        mm2.batch_fetch_orders_and_swap();
+        kdf.batch_fetch_orders_and_swap();
     }
 } // namespace atomic_dex
 
@@ -444,8 +444,8 @@ namespace atomic_dex
                 const QString& rel_coin  = data(idx, OrdersRoles::RelCoinRole).toString();
                 m_dispatcher.trigger<swap_status_notification>(
                     contents.order_id, prev_value.toString(), new_value.toString(), base_coin, rel_coin, new_value_d.toString());
-                auto& mm2 = m_system_manager.get_system<mm2_service>();
-                mm2.process_orderbook(true);
+                auto& kdf = m_system_manager.get_system<kdf_service>();
+                kdf.process_orderbook(true);
             }
             update_value(OrdersRoles::MakerPaymentIdRole, contents.maker_payment_id, idx, *this);
             update_value(OrdersRoles::TakerPaymentIdRole, contents.taker_payment_id, idx, *this);
@@ -495,10 +495,10 @@ namespace atomic_dex
         }
         endInsertRows();
         emit lengthChanged();
-        if (m_system_manager.has_system<mm2_service>())
+        if (m_system_manager.has_system<kdf_service>())
         {
             SPDLOG_DEBUG("Swaps inserted, refreshing orderbook to get new max taker vol");
-            this->m_system_manager.get_system<mm2_service>().process_orderbook(true);
+            this->m_system_manager.get_system<kdf_service>().process_orderbook(true);
         }
         SPDLOG_DEBUG("{} model size: {}", kind, rowCount());
     }
@@ -606,7 +606,7 @@ namespace atomic_dex
 
         if (m_model_data.current_page != contents.current_page)
         {
-            SPDLOG_INFO("Page is different from mm2 contents, force change");
+            SPDLOG_INFO("Page is different from kdf contents, force change");
             this->set_current_page(static_cast<int>(contents.current_page));
         }
     }
@@ -662,8 +662,8 @@ namespace atomic_dex
             SPDLOG_INFO("Fetching busy skipping");
             return;
         }
-        const auto& mm2      = m_system_manager.get_system<mm2_service>();
-        const auto  contents = mm2.get_orders_and_swaps();
+        const auto& kdf      = m_system_manager.get_system<kdf_service>();
+        const auto  contents = kdf.get_orders_and_swaps();
 
         //! If model is empty let's init it once
         if (m_model_data.orders_and_swaps.empty())
@@ -695,14 +695,14 @@ namespace atomic_dex
             this->set_fetching_busy(true);
             this->reset();
             // this->reset_backend("set_filtering_infos"); ///< We change page, we need to clear, but do not notify the front-end
-            if (this->m_system_manager.has_system<mm2_service>())
+            if (this->m_system_manager.has_system<kdf_service>())
             {
-                auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-                mm2.set_orders_and_swaps_pagination_infos(m_model_data.current_page, m_model_data.limit, m_model_data.filtering_infos);
+                auto& kdf = this->m_system_manager.get_system<kdf_service>();
+                kdf.set_orders_and_swaps_pagination_infos(m_model_data.current_page, m_model_data.limit, m_model_data.filtering_infos);
             }
             else
             {
-                SPDLOG_WARN("MM2 is not available, skipping orders and swaps pagination reset");
+                SPDLOG_WARN("KDF is not available, skipping orders and swaps pagination reset");
             }
         }
         else
@@ -721,11 +721,11 @@ namespace atomic_dex
     orders_model::recover_fund(QString uuid)
     {
         this->set_recover_fund_busy(true);
-        auto&                                   mm2_system = m_system_manager.get_system<mm2_service>();
+        auto&                                   kdf_system = m_system_manager.get_system<kdf_service>();
         nlohmann::json                          batch      = nlohmann::json::array();
-        nlohmann::json                          json_data  = mm2::template_request("recover_funds_of_swap");
-        mm2::recover_funds_of_swap_request req{.swap_uuid = uuid.toStdString()};
-        mm2::to_json(json_data, req);
+        nlohmann::json                          json_data  = kdf::template_request("recover_funds_of_swap");
+        kdf::recover_funds_of_swap_request req{.swap_uuid = uuid.toStdString()};
+        kdf::to_json(json_data, req);
         batch.push_back(json_data);
 
         // json_data["userpass"] = "*****";
@@ -741,7 +741,7 @@ namespace atomic_dex
             if (resp.status_code() == web::http::status_codes::OK)
             {
                 auto answers        = nlohmann::json::parse(body);
-                auto recover_answer = mm2::rpc_process_answer_batch<t_recover_funds_of_swap_answer>(answers[0], "recover_funds_of_swap");
+                auto recover_answer = kdf::rpc_process_answer_batch<t_recover_funds_of_swap_answer>(answers[0], "recover_funds_of_swap");
                 if (recover_answer.result.has_value())
                 {
                     auto answer       = recover_answer.result.value();
@@ -765,7 +765,7 @@ namespace atomic_dex
             else if (resp.status_code() == web::http::status_codes::RequestTimeout)
             {
                 j_out["is_valid"] = false;
-                j_out["error"]    = "Request to mm2 timeout - skipping";
+                j_out["error"]    = "Request to kdf timeout - skipping";
             }
             else
             {
@@ -793,6 +793,6 @@ namespace atomic_dex
             }
         };
 
-        mm2_system.get_mm2_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
+        kdf_system.get_kdf_client().async_rpc_batch_standalone(batch).then(answer_functor).then(error_functor);
     }
 } // namespace atomic_dex

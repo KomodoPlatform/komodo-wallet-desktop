@@ -16,7 +16,7 @@ MultipageModalContent
     property string custom_amount
     property alias  tx_hash: tx_hash.text_value
 
-    titleText: qsTr("Transaction Complete!")
+    titleText: qsTr("Transaction Broadcast!")
 
     // Transaction Hash
     TitleText

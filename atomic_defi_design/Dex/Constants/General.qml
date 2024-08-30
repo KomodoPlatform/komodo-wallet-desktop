@@ -25,6 +25,14 @@ QtObject {
 
     function coinIcon(ticker)
     {
+        if (ticker.toLowerCase() == "smart chain")
+        {
+            return coin_icons_path + "smart_chain.png"
+        }
+        if (ticker.toLowerCase() == "avx")
+        {
+            return coin_icons_path + "avax.png"
+        }
         if (ticker === "" || ticker === "All" || ticker===undefined)
         {
             return ""
@@ -175,7 +183,7 @@ QtObject {
     }
 
     function coinContractAddress(ticker) {
-        var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
+        var cfg = API.app.trading_pg.get_raw_kdf_coin_cfg(ticker)
         if (cfg.hasOwnProperty('protocol')) {
             if (cfg.protocol.hasOwnProperty('protocol_data')) {
                 if (cfg.protocol.protocol_data.hasOwnProperty('contract_address')) {
@@ -187,7 +195,7 @@ QtObject {
     }
 
     function coinPlatform(ticker) {
-        var cfg = API.app.trading_pg.get_raw_mm2_coin_cfg(ticker)
+        var cfg = API.app.trading_pg.get_raw_kdf_coin_cfg(ticker)
         if (cfg.hasOwnProperty('protocol')) {
             if (cfg.protocol.hasOwnProperty('protocol_data')) {
                 if (cfg.protocol.protocol_data.hasOwnProperty('platform')) {
@@ -419,6 +427,14 @@ QtObject {
     }
 
     function getFeesDetail(fees) {
+        if (privacy_mode) {
+            return [
+                {"label": privacy_text},
+                {"label": privacy_text},
+                {"label": privacy_text},
+                {"label": privacy_text}
+            ]
+        } 
         return [
             {"label": qsTr("<b>Taker tx fee:</b> "), "fee": fees.base_transaction_fees, "ticker": fees.base_transaction_fees_ticker},
             {"label": qsTr("<b>Dex tx fee:</b> "), "fee": fees.fee_to_send_taker_fee, "ticker": fees.fee_to_send_taker_fee_ticker},
@@ -434,10 +450,23 @@ QtObject {
         return feetype + " " + amount + " " + ticker + " (" + fiat_text + ")"
     }
 
+    function reducedBignum(text, decimals=8, max_length=12) {
+        let val = new BigNumber(text).toFixed(decimals)
+        if (val.length > max_length)
+        {
+            return val.substring(0, max_length)
+        }
+        return val
+    }
+
     function getSimpleFromPlaceholder(selectedTicker, selectedOrder, sell_ticker_balance) {
+        if (privacy_mode)
+        {
+            return "0"
+        }
         if (sell_ticker_balance == 0)
         {
-            return qsTr("%1 balance is zero").arg(selectedTicker)
+            return qsTr("Balance is zero!")
         }
         if (!isZhtlcReady(selectedTicker))
         {
@@ -489,6 +518,7 @@ QtObject {
     }
 
     function getTxExplorerURL(ticker, txid, add_0x=true) {
+        if (privacy_mode) return ''
         if(txid !== '') {
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             const txid_prefix = (add_0x && coin_info.is_erc_family) ? '0x' : ''
@@ -497,6 +527,7 @@ QtObject {
     }
 
     function getAddressExplorerURL(ticker, address) {
+        if (privacy_mode) return ''
         if(address !== '') {
             const coin_info = API.app.portfolio_pg.global_cfg_mdl.get_coin_info(ticker)
             return coin_info.explorer_url + addressTxUri(coin_info) + address
@@ -505,12 +536,14 @@ QtObject {
     }
 
     function viewTxAtExplorer(ticker, txid, add_0x=true) {
+        if (privacy_mode) return ''
         if(txid !== '') {
             Qt.openUrlExternally(getTxExplorerURL(ticker, txid, add_0x))
         }
     }
 
     function viewAddressAtExplorer(ticker, address) {
+        if (privacy_mode) return ''
         if(address !== '') {
             Qt.openUrlExternally(getAddressExplorerURL(ticker, address))
         }
@@ -555,6 +588,7 @@ QtObject {
     }
 
     function convertUsd(v) {
+        if (privacy_mode) return ''
         let rate = API.app.get_rate_conversion("USD", API.app.settings_pg.current_currency)
         let value = parseFloat(v) / parseFloat(rate)
 
@@ -566,6 +600,7 @@ QtObject {
     }
 
     function formatFiat(received, amount, fiat, precision=2) {
+        if (privacy_mode) return ''
         if (precision == 2 && fiat == "BTC") {
             precision = 8
         }
@@ -575,6 +610,7 @@ QtObject {
     }
 
     function formatPercent(value, show_prefix=true) {
+        if (privacy_mode) return ''
         let prefix = ''
         if(value > 0) prefix = '+ '
         else if(value < 0) {
@@ -619,6 +655,7 @@ QtObject {
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat, precision, trail_zeros) {
+        if (privacy_mode) return ''
         return diffPrefix(received) + ticker + " " + formatDouble(amount, precision, trail_zeros) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
@@ -777,15 +814,10 @@ QtObject {
     }
 
     function feeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
-
-
         if(!trade_info || !trade_info.trading_fee) return ""
-
         const tx_fee = txFeeText(trade_info, base_ticker, has_info_icon, has_limited_space)
         const trading_fee = tradingFeeText(trade_info, base_ticker, has_info_icon)
         const minimum_amount = minimumtradingFeeText(trade_info, base_ticker, has_info_icon)
-
-
         return tx_fee + "\n" + trading_fee +"<br>"+minimum_amount
     }
 
@@ -804,13 +836,9 @@ QtObject {
     }
 
     function txFeeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
-
         if(!trade_info || !trade_info.trading_fee) return ""
-
         const has_parent_coin_fees = hasParentCoinFees(trade_info)
-
          var info =  qsTr('%1 Transaction Fee'.arg(trade_info.base_transaction_fees_ticker))+': '+ trade_info.base_transaction_fees + " (%1)".arg(getFiatText(trade_info.base_transaction_fees, trade_info.base_transaction_fees_ticker, has_info_icon))
-
         if (has_parent_coin_fees) {
             info = info+"<br>"+qsTr('%1 Transaction Fee'.arg(trade_info.rel_transaction_fees_ticker))+': '+ trade_info.rel_transaction_fees + " (%1)".arg(getFiatText(trade_info.rel_transaction_fees, trade_info.rel_transaction_fees_ticker, has_info_icon))
         }
