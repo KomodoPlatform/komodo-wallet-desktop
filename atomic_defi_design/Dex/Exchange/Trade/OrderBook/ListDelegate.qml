@@ -21,11 +21,11 @@ Item
     DefaultTooltip
     {
         visible: mouse_area.containsMouse && (tooltip_text.text_value != "")
-        width: 300
+        width: 340
 
         contentItem: RowLayout
         {
-            width: 290
+            width: 330
 
             Qaterial.ColorIcon
             {
@@ -45,6 +45,10 @@ Item
                 {
                     if (mouse_area.containsMouse)
                     {
+                        if (General.privacy_mode)
+                        {
+                            return qsTr("Orderbook is disabled in privacy mode")
+                        }
                         if (API.app.trading_pg.maker_mode)
                         {
                             return qsTr("Orderbook is disabled while creating maker orders")
@@ -109,6 +113,7 @@ Item
         // Populate form with selected order
         onClicked:
         {
+            if (General.privacy_mode) return
             if (is_mine) return
             if (API.app.trading_pg.maker_mode) return
 
@@ -170,12 +175,12 @@ Item
             // Dot on the left side of the row to indicate own order
             Rectangle
             {
-                Layout.leftMargin: 6
+                Layout.leftMargin: 4
                 Layout.alignment: Qt.AlignVCenter
                 opacity: is_mine ? 1 : 0
-                width: 6
-                height: 6
-                radius: 3
+                width: 4
+                height: 4
+                radius: 2
                 color: isAsk ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
             }
 
@@ -183,9 +188,9 @@ Item
             Dex.ElidableText
             {
                 Layout.fillHeight: true
-                Layout.minimumWidth: 90
+                Layout.minimumWidth: 100
                 Layout.alignment: Qt.AlignVCenter
-                text: { new BigNumber(price).toFixed(8) }
+                text: General.reducedBignum(price, 8)
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 color: isAsk ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.okColor
@@ -198,9 +203,9 @@ Item
             Dex.ElidableText
             {
                 Layout.fillHeight: true
-                Layout.minimumWidth: 90
+                Layout.minimumWidth: 100
                 Layout.alignment: Qt.AlignVCenter
-                text: { new BigNumber(base_max_volume).toFixed(6) }
+                text: General.reducedBignum(base_max_volume, 6)
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
                 horizontalAlignment: Text.AlignRight
@@ -214,12 +219,12 @@ Item
             {
                 id: total_text
                 Layout.fillHeight: true
-                Layout.minimumWidth: 90
+                Layout.minimumWidth: 100
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 font.family: DexTypo.fontFamily
                 font.pixelSize: 12
-                text: { new BigNumber(total).toFixed(6) }
+                text: General.reducedBignum(total, 6)
                 horizontalAlignment: Text.AlignRight
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.NoWrap
@@ -231,7 +236,7 @@ Item
             {
                 id: cancel_flat_btn
                 Layout.fillHeight: true
-                width: 30
+                width: 20
                 Layout.alignment: Qt.AlignVCenter
 
                 MouseArea
@@ -256,7 +261,7 @@ Item
                     Qaterial.ColorIcon
                     {
                         anchors.centerIn: parent
-                        iconSize: 16
+                        iconSize: 14
                         color: Dex.CurrentTheme.warningColor
                         source: Qaterial.Icons.close
                         visible: is_mine

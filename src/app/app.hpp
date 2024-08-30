@@ -45,11 +45,12 @@
 #include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/exporter/exporter.service.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 #include "atomicdex/services/price/defi.stats.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/services/update/zcash.params.service.hpp"
+#include "atomicdex/services/sync/timesync.checker.service.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace ag = antara::gaming;
@@ -75,6 +76,7 @@ namespace atomic_dex
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
         Q_PROPERTY(qt_wallet_manager* wallet_mgr READ get_wallet_mgr NOTIFY walletMgrChanged)
         Q_PROPERTY(update_checker_service* updateCheckerService READ get_update_checker_service NOTIFY updateCheckerServiceChanged)
+        Q_PROPERTY(timesync_checker_service* timesyncCheckerService READ get_timesync_checker_service NOTIFY timesyncCheckerServiceChanged)
         Q_PROPERTY(zcash_params_service* zcash_params READ get_zcash_params_service NOTIFY zcashParamsServiceChanged)
 
         //! Private function
@@ -83,7 +85,7 @@ namespace atomic_dex
 
         enum events_action
         {
-            need_a_full_refresh_of_mm2 = 0,
+            need_a_full_refresh_of_kdf = 0,
             about_to_exit_app          = 1,
             size                       = 2
         };
@@ -117,11 +119,11 @@ namespace atomic_dex
         void on_ticker_balance_updated_event(const ticker_balance_updated&);
         void on_fiat_rate_updated(const fiat_rate_updated&);
         void on_coin_fully_initialized_event(const coin_fully_initialized&);
-        void on_mm2_initialized_event(const mm2_initialized&);
+        void on_kdf_initialized_event(const kdf_initialized&);
         void on_process_orders_and_swaps_finished_event(const process_swaps_and_orders_finished&);
 
-        mm2_service&                             get_mm2();
-        [[nodiscard]] const mm2_service&         get_mm2() const;
+        kdf_service&                             get_kdf();
+        [[nodiscard]] const kdf_service&         get_kdf() const;
         entt::dispatcher&                        get_dispatcher();
         const entt::registry&                    get_registry() const;
         entt::registry&                          get_registry();
@@ -135,6 +137,7 @@ namespace atomic_dex
         qt_wallet_manager*                       get_wallet_mgr() const;
         internet_service_checker*                get_internet_checker() const;
         update_checker_service*                  get_update_checker_service() const;
+        timesync_checker_service*                get_timesync_checker_service() const;
         [[nodiscard]] zcash_params_service*      get_zcash_params_service() const;
         exporter_service*                        get_exporter_service() const;
 
@@ -180,6 +183,7 @@ namespace atomic_dex
         void walletPageChanged();
         void ordersChanged();
         void updateCheckerServiceChanged();
+        void timesyncCheckerServiceChanged();
         void zcashParamsServiceChanged();
         void tradingPageChanged();
         void settingsPageChanged();

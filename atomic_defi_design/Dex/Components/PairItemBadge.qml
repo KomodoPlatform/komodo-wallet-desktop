@@ -30,7 +30,8 @@ DexRectangle
     Layout.leftMargin: 10
     Layout.rightMargin: 20
 
-    Dex.Text{
+    DexLabel
+    {
         anchors.bottom: parent.top
         anchors.bottomMargin: 5
         anchors.horizontalCenter: parent.horizontalCenter
@@ -46,6 +47,7 @@ DexRectangle
         Layout.leftMargin: 20
         Layout.rightMargin: 20
 
+        // Coin Icon
         Dex.Image
         {
             id: icon
@@ -58,49 +60,46 @@ DexRectangle
             Layout.topMargin: 0
             Layout.bottomMargin: 0
         }
+
+        //
         ColumnLayout
         {
             spacing: 2
             Layout.alignment: Qt.AlignVCenter
 
-            Dex.Text
+            DexLabel
             {
                 Layout.preferredWidth: parent.width - 15
-
                 text_value: `<font color="${Style.getCoinColor(ticker)}"><b>${ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Dex.CurrentTheme.foregroundColor}">${fullname}</font>`
-                font.pixelSize: Style.textSizeSmall3
+                font: Dex.DexTypo.body2
                 elide: Text.ElideRight
                 wrapMode: Text.NoWrap
             }
 
-            Dex.Text
+            DexLabel
             {
                 id: middle_line
-
                 property string coin_value: amount
-                text: coin_value
+                text_value: coin_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight
-                color: Dex.CurrentTheme.foregroundColor
-                font: DexTypo.body2
                 wrapMode: Label.NoWrap
-                ToolTip.text: coin_value
-                Component.onCompleted: font.pixelSize = 11.5
+                font: DexTypo.body3
+                ToolTip.text: text_value
+                privacy: true
             }
 
-            Dex.Text
+            DexLabel
             {
                 id: bottom_line
-
                 property string fiat_value: General.getFiatText(amount, ticker)
-                text: fiat_value
+                text_value: fiat_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight
-                color: Dex.CurrentTheme.foregroundColor
-                font: DexTypo.body2
+                font: DexTypo.body3
                 wrapMode: Label.NoWrap
-                ToolTip.text: fiat_value
-                Component.onCompleted: font.pixelSize = 11.5
+                ToolTip.text: text_value
+                privacy: true
             }
         }
     }

@@ -24,11 +24,11 @@
 
 namespace atomic_dex
 {
-    using mm2_started               = entt::tag<"mm2_started"_hs>;
+    using kdf_started               = entt::tag<"kdf_started"_hs>;
     using post_login                = entt::tag<"post_login"_hs>;
     using gui_enter_trading         = entt::tag<"gui_enter_trading"_hs>;
     using gui_leave_trading         = entt::tag<"gui_leave_trading"_hs>;
-    using mm2_initialized           = entt::tag<"mm2_running_and_enabling"_hs>;
+    using kdf_initialized           = entt::tag<"kdf_running_and_enabling"_hs>;
     using default_coins_enabled     = entt::tag<"default_coins_enabled"_hs>;
     using current_currency_changed  = entt::tag<"update_orders_and_swap_values"_hs>;
     using force_update_providers    = entt::tag<"force_update_providers"_hs>;

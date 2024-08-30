@@ -11,14 +11,14 @@ on:
   workflow_dispatch:
 
 env:
-  DEX_API: "mm2_shiba"
+  DEX_API: "kdf_shiba"
   DEX_RPCPORT: 7763
   DEX_RPC: "http://127.0.0.1:7783"
   DEX_PROJECT_NAME: "shibadex-desktop"
   DEX_DISPLAY_NAME: "ShibaDex Desktop"
   DEX_COMPANY: "CZ Web Service S.A"
   DEX_WEBSITE: "https://shibadex.io/"
-  DEX_VERSION: "0.7.2"
+  DEX_VERSION: "0.8.0"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
   RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\komodo-wallet-desktop\ci_tools_atomic_dex\vcpkg-repo
@@ -159,9 +159,7 @@ jobs:
           export SHELL=/bin/bash
           echo "CHOOSENIM_CHOOSE_VERSION=1.6.2" >> $GITHUB_ENV
           export CHOOSENIM_CHOOSE_VERSION=1.6.2
-          curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
-          chmod +x choosenim.sh
-          ./choosenim.sh -y
+          ./ci_tools_atomic_dex/ci_scripts/choosenim.sh -y
           export PATH=/home/runner/.nimble/bin:$PATH
           chmod +x /home/runner/.choosenim/toolchains/nim-1.6.2/bin/*
 
@@ -170,9 +168,7 @@ jobs:
         run: |
           echo "CHOOSENIM_CHOOSE_VERSION=1.6.2" >> $GITHUB_ENV
           export CHOOSENIM_CHOOSE_VERSION=1.6.2
-          curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
-          chmod +x choosenim.sh
-          ./choosenim.sh -y
+          ./ci_tools_atomic_dex/ci_scripts/choosenim.sh -y
           export PATH=/Users/runner/.nimble/bin:$PATH
           chmod +x /Users/runner/.choosenim/toolchains/nim-1.6.2/bin/*
 

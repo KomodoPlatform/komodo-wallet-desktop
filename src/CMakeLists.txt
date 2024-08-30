@@ -113,11 +113,11 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         ##! API
         tests/api/coingecko/coingecko.tests.cpp
         tests/api/komodo_prices/komodo.prices.tests.cpp
-        tests/api/mm2/mm2.api.address_format.tests.cpp
-        tests/api/mm2/mm2.api.utxo_merge_params.tests.cpp
-        tests/api/mm2/mm2.api.balance_infos.tests.cpp
-        tests/api/mm2/mm2.fraction.tests.cpp
-        tests/api/mm2/mm2.rpc2.trade_preimage.tests.cpp
+        tests/api/kdf/kdf.api.address_format.tests.cpp
+        tests/api/kdf/kdf.api.utxo_merge_params.tests.cpp
+        tests/api/kdf/kdf.api.balance_infos.tests.cpp
+        tests/api/kdf/kdf.fraction.tests.cpp
+        tests/api/kdf/kdf.rpc2.trade_preimage.tests.cpp
 
         ##! CFG
         tests/config/coins.cfg.tests.cpp
@@ -125,9 +125,9 @@ add_executable(${PROJECT_NAME}_tests MACOSX_BUNDLE ${ICON}
         ##! API
         tests/api/coingecko/coingecko.tests.cpp
         tests/api/komodo_prices/komodo.prices.tests.cpp
-        tests/api/mm2/mm2.rpc2.trade_preimage.tests.cpp
-        tests/api/mm2/mm2.fraction.tests.cpp
-        tests/api/mm2/enable_bch_with_tokens_rpc_tests.cpp
+        tests/api/kdf/kdf.rpc2.trade_preimage.tests.cpp
+        tests/api/kdf/kdf.fraction.tests.cpp
+        tests/api/kdf/enable_bch_with_tokens_rpc_tests.cpp
 
         ##! Utilities
         tests/utilities/qt.utilities.tests.cpp

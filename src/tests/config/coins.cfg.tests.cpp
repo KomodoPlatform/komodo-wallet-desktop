@@ -12,7 +12,7 @@
 #include <antara/gaming/core/real.path.hpp>
 
 #include <atomicdex/config/coins.cfg.hpp>
-#include <atomicdex/services/mm2/mm2.service.hpp>
+#include <atomicdex/services/kdf/kdf.service.hpp>
 #include <atomicdex/utilities/cpprestsdk.utilities.hpp>
 
 constexpr const char* g_komodolive_endpoint = "http://95.216.160.96:8080/api/v1";
@@ -21,7 +21,7 @@ t_http_client_ptr     g_komodolive_client{std::make_unique<t_http_client>(FROM_S
 TEST_CASE("generate all coinpaprika possibilities")
 {
 #if defined(__APPLE__)
-    const auto     resp      = atomic_dex::mm2::async_process_rpc_get(g_komodolive_client, "tickers", "/ticker").get();
+    const auto     resp      = atomic_dex::kdf::async_process_rpc_get(g_komodolive_client, "tickers", "/ticker").get();
     std::string    body      = TO_STD_STR(resp.extract_string(true).get());
     nlohmann::json j_metrics = nlohmann::json::parse(body);
     nlohmann::json metrics   = nlohmann::json::object();

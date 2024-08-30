@@ -169,7 +169,7 @@ namespace atomic_dex
             m_current_chart_category = category;
             QSettings& settings      = entity_registry_.ctx<QSettings>();
             settings.setValue("WalletChartsCategory", qint32(m_current_chart_category));
-            if (m_system_manager.get_system<mm2_service>().is_mm2_running() && m_system_manager.has_system<coingecko_wallet_charts_service>())
+            if (m_system_manager.get_system<kdf_service>().is_kdf_running() && m_system_manager.has_system<coingecko_wallet_charts_service>())
             {
                 m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_chart_category");
             }

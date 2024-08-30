@@ -84,7 +84,7 @@ MultipageModal
         {
             id: config_section
 
-            readonly property var default_config: API.app.trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
+            readonly property var default_config: API.app.trading_pg.get_raw_kdf_coin_cfg(rel_ticker)
             readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization || false
 
             width: dex_pair_badges.width - 40
