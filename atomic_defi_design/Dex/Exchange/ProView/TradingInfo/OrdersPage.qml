@@ -132,6 +132,7 @@ Item {
                 radius: 7
                 label.font: DexTypo.body2
                 text: qsTr("Export CSV")
+                enabled: list_model.length > 0 && ! General.privacy_mode
                 onClicked:
                 {
                     export_csv_dialog.folder = General.os_file_prefix + API.app.settings_pg.get_export_folder()
@@ -142,10 +143,10 @@ Item {
             DefaultButton
             {
                 visible: !root.is_history && list_model.length > 0
-                enabled: list_model.length > 0
                 Layout.preferredHeight: 29
                 radius: 7
                 label.font: DexTypo.body2
+                enabled: list_model.length > 0 && ! General.privacy_mode
                 text: qsTr("Cancel All")
                 iconSource: Qaterial.Icons.close
                 onClicked: API.app.trading_pg.orders.cancel_order(list_model_proxy.get_filtered_ids())

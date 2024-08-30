@@ -47,8 +47,8 @@ namespace atomic_dex
 
       public:
         void                           adjust_min_vol();
-        void                           refresh_orderbook_model_data(mm2::orderbook_result_rpc answer);
-        void                           reset_orderbook(mm2::orderbook_result_rpc answer);
+        void                           refresh_orderbook_model_data(kdf::orderbook_result_rpc answer);
+        void                           reset_orderbook(kdf::orderbook_result_rpc answer);
         void                           clear_orderbook();
         [[nodiscard]] orderbook_model* get_asks() const;
         [[nodiscard]] orderbook_model* get_bids() const;

@@ -247,7 +247,7 @@ namespace atomic_dex
         {
             return false;
         }
-        mm2::order_contents& order = m_model_data.at(index.row());
+        kdf::order_contents& order = m_model_data.at(index.row());
         switch (static_cast<OrderbookRoles>(role))
         {
         case PriceRole:
@@ -397,7 +397,7 @@ namespace atomic_dex
 
 
     void
-    orderbook_model::initialize_order(const mm2::order_contents& order)
+    orderbook_model::initialize_order(const kdf::order_contents& order)
     {
         if (m_orders_id_registry.contains(order.uuid))
         {
@@ -435,7 +435,7 @@ namespace atomic_dex
     }
 
     void
-    orderbook_model::update_order(const mm2::order_contents& order)
+    orderbook_model::update_order(const kdf::order_contents& order)
     {
         if (const auto res = this->match(index(0, 0), UUIDRole, QString::fromStdString(order.uuid)); not res.isEmpty())
         {
@@ -525,7 +525,7 @@ namespace atomic_dex
     orderbook_model::refresh_orderbook_model_data(const t_orders_contents& orderbook, bool is_bestorders)
     {
         // SPDLOG_DEBUG("[orderbook_model::refresh_orderbook_model_data], is_bestorders: {}", is_bestorders);
-        auto refresh_functor = [this](const std::vector<mm2::order_contents>& contents)
+        auto refresh_functor = [this](const std::vector<kdf::order_contents>& contents)
         {
             for (auto&& order: contents)
             {

@@ -20,9 +20,9 @@
 #include <boost/thread/synchronized_value.hpp>
 #include <nlohmann/json.hpp>
 #include "atomicdex/config/app.cfg.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 
-namespace atomic_dex::mm2
+namespace atomic_dex::kdf
 {
     struct defi_stats_volumes_answer
     {
@@ -30,12 +30,12 @@ namespace atomic_dex::mm2
         int                            status_code;
     };
     void from_json(const nlohmann::json& j, defi_stats_volumes_answer& answer);
-} // namespace atomic_dex::mm2
+} // namespace atomic_dex::kdf
 
 
 namespace atomic_dex
 {
-    using t_defi_stats_volumes_answer         = mm2::defi_stats_volumes_answer;
+    using t_defi_stats_volumes_answer         = kdf::defi_stats_volumes_answer;
 } // namespace atomic_dex
 
 namespace atomic_dex

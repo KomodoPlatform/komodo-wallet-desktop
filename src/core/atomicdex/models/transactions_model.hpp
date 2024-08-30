@@ -20,7 +20,7 @@
 #include <QObject>
 
 #include "transactions_proxy_model.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/services/kdf/kdf.service.hpp"
 
 namespace atomic_dex
 {

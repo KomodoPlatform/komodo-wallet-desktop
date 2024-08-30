@@ -22,8 +22,8 @@
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "atomicdex/api/mm2/mm2.client.hpp"
-#include "atomicdex/api/mm2/rpc_v2/rpc2.bestorders.hpp"
+#include "atomicdex/api/kdf/kdf.client.hpp"
+#include "atomicdex/api/kdf/rpc_v2/rpc2.bestorders.hpp"
 
 //! Namespace declaration
 namespace atomic_dex
@@ -33,7 +33,7 @@ namespace atomic_dex
     {
         //! Private typedefs
         using t_update_time_point        = std::chrono::high_resolution_clock::time_point;
-        using t_best_orders_synchronized = boost::synchronized_value<mm2::bestorders_rpc::expected_result_type>;
+        using t_best_orders_synchronized = boost::synchronized_value<kdf::bestorders_rpc::expected_result_type>;
 
         //! Private member fields
         ag::ecs::system_manager&   m_system_manager;

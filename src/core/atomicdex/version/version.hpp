@@ -21,24 +21,24 @@ namespace atomic_dex
     constexpr const char*
     get_version()
     {
-        return "0.7.2-beta";
+        return "0.8.0-beta";
     }
 
     constexpr int
     get_num_version() noexcept
     {
-        return 72;
+        return 80;
     }
 
     constexpr const char*
     get_raw_version()
     {
-        return "0.7.2";
+        return "0.8.0";
     }
 
     constexpr const char*
     get_precedent_raw_version()
     {
-        return "0.7.1";
+        return "0.7.2";
     }
 } // namespace atomic_dex
