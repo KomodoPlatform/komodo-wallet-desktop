@@ -42,6 +42,7 @@ namespace
 
     bool get_timesync_info_rpc(web::http::http_response resp_http)
     {
+        return true;
         using namespace std::string_literals;
         nlohmann::json   resp;
         bool             sync_ok = true;
@@ -73,7 +74,7 @@ namespace atomic_dex
     {
         m_timesync_clock  = std::chrono::high_resolution_clock::now();
         m_timesync_status = true;
-        fetch_timesync_status();
+        // fetch_timesync_status();
     }
 
     void timesync_checker_service::update() 
@@ -85,7 +86,7 @@ namespace atomic_dex
         int64_t ts_diff  = now_ts - m_timesync_clock_ts;
         if (abs(ts_diff) > 300)
         {
-            fetch_timesync_status();
+            // fetch_timesync_status();
             m_timesync_clock = std::chrono::high_resolution_clock::now();
         }
     }
