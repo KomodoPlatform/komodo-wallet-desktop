@@ -30,6 +30,7 @@ namespace atomic_dex::kdf
         std::string                  amount;             ///< ignored if max is true
         std::optional<withdraw_fees> fees{std::nullopt}; ///< ignored if std::nullopt
         std::optional<std::string>   memo;               ///< memo for tendermint
+        std::optional<std::string>   ibc_channel_id;     ///< ibc_channel_id for tendermint
         bool                         max{false};
     };
 
