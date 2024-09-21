@@ -508,7 +508,7 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data, const QString& memo, const QString& ibc_channel_id)
+    wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data, const QString& memo, const QString& ibc_source_channel)
     {
         //! Preparation
         this->set_send_busy(true);
@@ -694,7 +694,7 @@ namespace atomic_dex
                 .amount = max ? "0" : amount.toStdString(),
                 .memo = memo.toStdString(),
                 .max = max,
-                .ibc_channel_id = ibc_channel_id.toStdString()
+                .ibc_source_channel = ibc_source_channel.toStdString()
             };
 
             auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());

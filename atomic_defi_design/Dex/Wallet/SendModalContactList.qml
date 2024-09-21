@@ -26,7 +26,7 @@ MultipageModal
         titleText: qsTr("Select a contact with an %1 address").arg(ticker)
 
         // Searchbar
-        DefaultTextField
+        DexTextField
         {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true

@@ -47,7 +47,7 @@ MultipageModal
 
     function getCryptoAmount() { return _preparePage.cryptoSendMode ? input_amount.text : equivalentAmount.value }
 
-    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price, memo="", ibc_channel_id="") {
+    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price, memo="", ibc_source_channel="") {
         let max = parseFloat(current_ticker_infos.balance) === parseFloat(amount)
         // Save for later check
         async_param_max = max
@@ -60,7 +60,7 @@ MultipageModal
             gas_price,
             gas_limit: gas_limit === "" ? 0 : parseInt(gas_limit)
         }
-        api_wallet_page.send(address, amount, max, with_fees, fees_info, memo, ibc_channel_id)
+        api_wallet_page.send(address, amount, max, with_fees, fees_info, memo, ibc_source_channel)
     }
 
     function sendCoin() {
@@ -263,7 +263,7 @@ MultipageModal
             color: input_address.background.color
             radius: input_address.background.radius
 
-            DefaultTextField
+            DexTextField
             {
                 id: input_address
 
@@ -567,7 +567,7 @@ MultipageModal
             color: input_memo.background.color
             radius: input_memo.background.radius
 
-            DefaultTextField
+            DexTextField
             {
                 id: input_memo
 
@@ -592,7 +592,7 @@ MultipageModal
             color: input_memo.background.color
             radius: input_memo.background.radius
 
-            DefaultTextField
+            DexTextField
             {
                 id: input_ibc_channel_id
 

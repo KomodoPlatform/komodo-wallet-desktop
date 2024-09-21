@@ -1,6 +1,6 @@
 import QtQuick 2.15
 
-DefaultTextField {
+DexTextField {
     readonly property int max_length: 50
 
     validator: RegExpValidator {

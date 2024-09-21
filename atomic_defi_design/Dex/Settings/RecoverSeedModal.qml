@@ -262,7 +262,7 @@ MultipageModal
 
         HorizontalLine { Layout.fillWidth: true }
 
-        DefaultTextField
+        DexTextField
         {
             visible: coinsList.visible
             enabled: coinsList.enabled
