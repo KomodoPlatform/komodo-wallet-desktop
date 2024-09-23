@@ -22,7 +22,7 @@
 #include <nlohmann/json_fwd.hpp> //> nlohmann::json
 
 #include "atomicdex/api/kdf/rpc.hpp"
-#include "atomicdex/api/kdf/balance_info.hpp"
+#include "atomicdex/api/kdf/balance_infos.hpp"
 
 namespace atomic_dex::kdf
 {
@@ -40,7 +40,7 @@ namespace atomic_dex::kdf
         struct expected_result_type
         {
             std::string                                     platform_coin;
-            std::unordered_map<std::string, balance_info>   balances;
+            std::unordered_map<std::string, balance_infos>   balances;
         };
 
         using expected_error_type = rpc_basic_error_type;
@@ -48,7 +48,7 @@ namespace atomic_dex::kdf
         expected_request_type                  request;
         std::optional<expected_result_type>    result;
         std::optional<expected_error_type>     error;
-        std::string                             raw_result;
+        std::string                            raw_result;
     };
 
     using enable_tendermint_token_rpc_request    = enable_tendermint_token_rpc::expected_request_type;

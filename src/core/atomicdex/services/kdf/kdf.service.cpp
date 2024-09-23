@@ -1031,16 +1031,16 @@ namespace atomic_dex
                     {
                         for (const auto& tendermint_coin_info : rpc.request.tokens_params)
                         {
-                            SPDLOG_ERROR("{} {}: ", tendermint_coin_info.ticker, rpc.error->error_type);
-                            fetch_single_balance(get_coin_info(tendermint_coin_info.ticker));
                             std::unique_lock lock(m_coin_cfg_mutex);
                             m_coins_informations[tendermint_coin_info.ticker].currently_enabled = true;
+                            fetch_single_balance(get_coin_info(tendermint_coin_info.ticker));
                             dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {tendermint_coin_info.ticker}});
                         }
                     }
                 }
                 else
                 {
+                    SPDLOG_DEBUG("{} failed to activate", rpc.request.ticker);
                     std::unique_lock lock(m_coin_cfg_mutex);
                     m_coins_informations[rpc.request.ticker].currently_enabled = false;
                     update_coin_active({rpc.request.ticker}, false);
@@ -1058,12 +1058,9 @@ namespace atomic_dex
                     for (const auto& tendermint_token_addresses_info : rpc.result->tendermint_token_balances_infos)
                     {
                         dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {tendermint_token_addresses_info.first}});
-                        process_balance_answer(rpc);
-                        std::unique_lock lock(m_coin_cfg_mutex);
                         m_coins_informations[tendermint_token_addresses_info.first].currently_enabled = true;
                     }
                 }
-                process_balance_answer(rpc);
             }
         };
 
@@ -1176,7 +1173,6 @@ namespace atomic_dex
     {
         const auto& answer = rpc.result.value();
         kdf::balance_answer balance_answer;
-
         balance_answer.address  = answer.balances.begin()->first;
         balance_answer.balance  = answer.balances.begin()->second.spendable;
         balance_answer.coin     = answer.platform_coin;
@@ -1193,7 +1189,7 @@ namespace atomic_dex
         {
             kdf::balance_answer balance_answer;
 
-            balance_answer.coin = rpc.request.ticker;
+            balance_answer.coin = answer.ticker;
             balance_answer.balance = answer.tendermint_balances_infos.balances.spendable;
             balance_answer.address = answer.address;
             {
@@ -1518,10 +1514,18 @@ namespace atomic_dex
                             {
                                 auto&       answer = answers[i];
                                 std::string ticker;
+                                // SPDLOG_DEBUG("batch_balance_and_tx answer: {}", answer.dump(4));
                                 
                                 if (batch_array[i].contains("mmrpc") && batch_array[i].at("mmrpc") == "2.0")
                                 {
-                                    ticker = batch_array[i].at("params").at("coin");
+                                    if (batch_array[i].at("params").contains("coin"))
+                                    {
+                                        ticker = batch_array[i].at("params").at("coin");
+                                    }
+                                    else if (batch_array[i].at("params").contains("ticker"))
+                                    {
+                                        ticker = batch_array[i].at("params").at("ticker");
+                                    }
                                 }
                                 else
                                 {
