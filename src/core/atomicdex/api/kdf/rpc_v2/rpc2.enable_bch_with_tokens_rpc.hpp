@@ -20,7 +20,7 @@
 
 #include "atomicdex/config/electrum.cfg.hpp"
 #include "atomicdex/api/kdf/address_format.hpp"
-#include "atomicdex/api/kdf/balance_info.hpp"
+#include "atomicdex/api/kdf/balance_infos.hpp"
 #include "atomicdex/api/kdf/rpc.hpp"
 #include "atomicdex/api/kdf/utxo_merge_params.hpp"
 
@@ -65,13 +65,13 @@ namespace atomic_dex::kdf
             {
                 derivation_method_t derivation_method;
                 std::string         pubkey;
-                balance_info        balances;
+                balance_infos        balances;
             };
             struct slp_address_infos_t
             {
                 derivation_method_t                             derivation_method;
                 std::string                                     pubkey;
-                std::unordered_map<std::string, balance_info>   balances;
+                std::unordered_map<std::string, balance_infos>   balances;
             };
 
             std::size_t current_block;
