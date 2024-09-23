@@ -74,6 +74,8 @@ namespace atomic_dex::kdf
         std::optional<std::string> internal_id;
         std::optional<std::size_t> confirmations;
         std::optional<std::string> transaction_type;
+        std::optional<std::string> tendermint_transaction_type;
+        std::optional<std::string> tendermint_transaction_type_hash;
         std::optional<std::string> memo;
         std::string                timestamp_as_date; ///< human readeable timestamp
     };
