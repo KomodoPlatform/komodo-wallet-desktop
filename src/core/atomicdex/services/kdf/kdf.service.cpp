@@ -332,10 +332,14 @@ namespace atomic_dex
             }
         }
 
-        if (s_info >= 29s)
+        if (s_info >= 23s)
         {
-            fetch_infos_thread(); // leads to batch_balance_and_tx
-            m_info_clock = std::chrono::high_resolution_clock::now();
+            std::unique_lock lock(m_activation_mutex);
+            if (m_activation_queue.empty())
+            {
+                fetch_infos_thread(); // leads to batch_balance_and_tx
+                m_info_clock = std::chrono::high_resolution_clock::now();
+            }
         }
     }
 
