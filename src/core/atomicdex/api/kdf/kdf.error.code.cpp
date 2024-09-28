@@ -40,6 +40,8 @@ namespace
         {
         case dextop_error::success:
             return "";
+        case dextop_error::balance_info_exception:
+            return "There was a problem with the balance info request";
         case dextop_error::balance_of_a_non_enabled_coin:
             return "You try to retrieve the balance of an unactivated coin";
         case dextop_error::unknown_error:
