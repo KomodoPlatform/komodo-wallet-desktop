@@ -508,8 +508,8 @@ MultipageModal
                     DefaultText
                     {
                         id: fiat_symbol
-                        visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD"
-                        font.pixelSize: API.app.settings_pg.current_currency_sign.length == 1 ? 18 : 18 - API.app.settings_pg.current_currency_sign.length * 2
+                        visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD" && API.app.settings_pg.current_currency_sign != "GLEEC"
+                        font.pixelSize: 18
                         anchors.centerIn: parent
                         text: API.app.settings_pg.current_currency_sign
                     }
