@@ -886,7 +886,7 @@ namespace atomic_dex
                     {
                         kdf_system.decrease_fake_balance(ticker, amount.toStdString());
                     }
-                    kdf_system.fetch_infos_thread();
+                    kdf_system.fetch_infos_thread(true, false);
                 }
                 else
                 {
@@ -1009,48 +1009,54 @@ namespace atomic_dex
     void
     wallet_page::on_tx_fetch_finished(const tx_fetch_finished& evt)
     {
-        if (!evt.with_error && QString::fromStdString(evt.ticker) == get_current_ticker())
+        // Ensure we're working with the correct ticker and no error occurred
+        if (evt.with_error || QString::fromStdString(evt.ticker) != get_current_ticker())
         {
-            std::error_code ec;
-            const auto& settings         = m_system_manager.get_system<settings_page>();
-            t_transactions  transactions = m_system_manager.get_system<kdf_service>().get_tx_history(ec);
-            t_transactions  to_init;
-            if (settings.is_spamfilter_enabled())
-            {
-                for (auto&& cur_tx: transactions)
-                {
-                    if (safe_float(cur_tx.total_amount) != 0)
-                    {
-                        to_init.push_back(cur_tx);
-                    }
-                }
-            }
-            else
-            {
-                to_init = transactions;
-            }
-            if (m_transactions_mdl->rowCount() == 0)
-            {
-                //! insert all transactions
-                m_transactions_mdl->init_transactions(to_init);
-            }
-            else
-            {
-                //! Update tx (only unconfirmed) or insert (new tx)
-                m_transactions_mdl->update_or_insert_transactions(to_init);
-            }
-            if (ec)
-            {
-                this->set_tx_fetching_failed(true);
-            }
-            else
-            {
-                this->set_tx_fetching_failed(false);
-            }
+            this->m_transactions_mdl->reset();
+            this->set_tx_fetching_busy(false);
+            return;
+        }
+        std::error_code ec;
+        const auto& settings = m_system_manager.get_system<settings_page>();
+        t_transactions transactions = m_system_manager.get_system<kdf_service>().get_tx_history(ec);
+
+        // Apply spam filter if enabled
+        t_transactions filtered_transactions;
+        if (settings.is_spamfilter_enabled())
+        {
+            std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(filtered_transactions),
+                        [](const auto& tx) { return safe_float(tx.total_amount) != 0; });
         }
         else
         {
-            this->m_transactions_mdl->reset();
+            filtered_transactions = std::move(transactions);  // Move transactions instead of copying
+        }
+
+        // Initialize or update transactions based on existing data
+        if (m_transactions_mdl->rowCount() == 0)
+        {
+            m_transactions_mdl->init_transactions(filtered_transactions);
+        }
+        else
+        {
+            m_transactions_mdl->update_or_insert_transactions(filtered_transactions);
+        }
+
+        // Handle error status and fetching state
+        handle_tx_fetch_status(ec);
+    }
+
+    // Helper function to handle transaction fetch status
+    void wallet_page::handle_tx_fetch_status(const std::error_code& ec)
+    {
+        if (ec)
+        {
+            SPDLOG_ERROR("Transaction fetching failed with error: {}", ec.message());
+            this->set_tx_fetching_failed(true);
+        }
+        else
+        {
+            this->set_tx_fetching_failed(false);
         }
         this->set_tx_fetching_busy(false);
     }
