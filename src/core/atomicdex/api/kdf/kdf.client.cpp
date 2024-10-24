@@ -75,42 +75,40 @@ namespace
         return request;
     }
 
+
+
     template <atomic_dex::kdf::rpc Rpc>
     Rpc process_rpc_answer(const web::http::http_response& answer)
     {
-        std::string body = TO_STD_STR(answer.extract_string(true).get());
-        // SPDLOG_INFO("body: {}", body);
-        nlohmann::json json_answer;
         Rpc rpc;
+        std::string body;
+
         try
         {
-            json_answer = nlohmann::json::parse(body);
+            body = TO_STD_STR(answer.extract_string(true).get());
+            nlohmann::json json_answer = nlohmann::json::parse(body);
             // SPDLOG_DEBUG("json_answer: {}", json_answer.dump(4));
-        }
-        catch (const nlohmann::json::parse_error& error)
-        {
-            SPDLOG_ERROR("rpc answer error: {}", error.what());
-            // SPDLOG_DEBUG("body: {}", body);
-        }
 
-        if (Rpc::is_v2)
-        {
-            if (answer.status_code() == 200)
+            if (Rpc::is_v2)
             {
-                rpc.result = json_answer.at("result").get<typename Rpc::expected_result_type>();
-                rpc.raw_result = json_answer.at("result").dump();
+                handle_v2_response(answer, json_answer, rpc);
             }
             else
             {
-                SPDLOG_DEBUG("rpc2 answer: error");
-                rpc.error = json_answer.get<typename Rpc::expected_error_type>();
-                rpc.raw_result = json_answer.dump();
+                handle_v1_response(json_answer, rpc);
             }
         }
-        else
+        catch (const nlohmann::json::parse_error& error)
         {
-            rpc.result = json_answer.get<typename Rpc::expected_result_type>();
+            SPDLOG_ERROR("RPC answer JSON parsing error: {}", error.what());
+            rpc.raw_result = body;
         }
+        catch (const std::exception& e)
+        {
+            SPDLOG_ERROR("Exception in RPC processing: {}", e.what());
+            rpc.raw_result = body;
+        }
+
         return rpc;
     }
 } // namespace
@@ -173,11 +171,55 @@ namespace atomic_dex::kdf
     pplx::task<web::http::http_response>
     kdf_client::async_rpc_batch_standalone(nlohmann::json batch_array)
     {
+        // Create the HTTP request object
         web::http::http_request request;
         request.set_method(web::http::methods::POST);
-        request.set_body(batch_array.dump());
-        auto resp = generate_client().request(request, m_token_source.get_token());
-        return resp;
+
+        try
+        {
+            // Serialize the batch array to a string and set it as the body
+            std::string body = batch_array.dump();
+            request.set_body(body);
+            
+            // Log the outgoing request for debugging
+            // auto json_copy        = batch_array[0];
+            // json_copy["userpass"] = "*******";
+            // SPDLOG_INFO("Sending RPC batch request with {} commands. Body of first request: {}", batch_array.size(), json_copy.dump());
+
+            // Generate the client and send the request, passing the cancellation token
+            auto resp = generate_client().request(request, m_token_source.get_token());
+
+            // Return the response task to the caller, handling errors asynchronously
+            return resp.then([body](pplx::task<web::http::http_response> previousTask)
+            {
+                try
+                {
+                    // Retrieve the HTTP response from the task
+                    auto response = previousTask.get();
+                    // Extract the response body as a string
+                    // auto resp_status = response.status_code();
+                    // Log the response body
+                    // SPDLOG_INFO("Body: {} \nHTTP status: {}", body, resp_status);
+                    return response;
+                }
+                catch (const web::http::http_exception& e)
+                {
+                    SPDLOG_ERROR("HTTP exception caught during batch request: {}", e.what());
+                    throw;  // Re-throw or return an appropriate error response
+                }
+                catch (const std::exception& e)
+                {
+                    SPDLOG_ERROR("General exception caught during batch request: {}", e.what());
+                    throw;  // Re-throw to allow the caller to handle it
+                }
+            });
+        }
+        catch (const std::exception& e)
+        {
+            // Catch any exceptions from batch_array.dump() or request creation
+            SPDLOG_ERROR("Exception caught during batch request creation: {}", e.what());
+            throw;  // Re-throw or handle the exception appropriately
+        }
     }
 
     template <rpc Rpc>
@@ -266,6 +308,51 @@ namespace atomic_dex::kdf
     {
         return process_rpc<t_recover_funds_of_swap_request, t_recover_funds_of_swap_answer>(
             std::forward<t_recover_funds_of_swap_request>(request), "recover_funds_of_swap");
+    }
+
+    // Helper functions to reduce code duplication and improve clarity
+    template <atomic_dex::kdf::rpc Rpc>
+    void handle_v2_response(const web::http::http_response& answer, const nlohmann::json& json_answer, Rpc& rpc)
+    {
+        if (answer.status_code() == 200)
+        {
+            if (json_answer.contains("result"))
+            {
+                rpc.result = json_answer.at("result").get<typename Rpc::expected_result_type>();
+                rpc.raw_result = json_answer.at("result").dump();
+            }
+            else
+            {
+                SPDLOG_WARN("Expected 'result' field missing in v2 response");
+            }
+        }
+        else
+        {
+            if (json_answer.contains("error"))
+            {
+                rpc.error = json_answer.get<typename Rpc::expected_error_type>();
+            }
+            else
+            {
+                SPDLOG_WARN("Expected 'error' field missing in v2 error response");
+            }
+            rpc.raw_result = json_answer.dump();
+            SPDLOG_DEBUG("RPC v2 error {} answer: {}", answer.status_code(), rpc.raw_result);
+        }
+    }
+
+    template <atomic_dex::kdf::rpc Rpc>
+    void handle_v1_response(const nlohmann::json& json_answer, Rpc& rpc)
+    {
+        if (json_answer.contains("result"))
+        {
+            rpc.result = json_answer.get<typename Rpc::expected_result_type>();
+        }
+        else
+        {
+            SPDLOG_DEBUG("RPC v1 error: {}", json_answer.dump());
+            SPDLOG_WARN("Expected 'result' field missing in v1 response");
+        }
     }
 } // namespace atomic_dex
 

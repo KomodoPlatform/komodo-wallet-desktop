@@ -6,6 +6,6 @@
 namespace atomic_dex::checksum::api
 {
     // Returns the checksum of the latest
-    [[nodiscard]] pplx::task<std::string>
+    [[nodiscard]] pplx::task<std::optional<std::string>>
     get_latest_checksum();
 }

@@ -138,7 +138,14 @@ namespace atomic_dex
        std::vector<electrum_server>                        get_electrum_server_from_token(const std::string& ticker);
        std::vector<atomic_dex::coin_config_t>                retrieve_coins_informations();
 
-       void handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from, nlohmann::json batch);
+       void handle_exception_pplx_task(pplx::task<void> previous_task, const std::string& from, const nlohmann::json& request);
+       bool is_transient_error(const std::string& error_message) const;
+       void handle_transient_error();
+       bool is_timeout_error(const std::string& error_message) const;
+       void handle_timeout_error();
+       bool is_mutex_lock_error(const std::string& error_message) const;
+       void handle_mutex_lock_error(const std::string& error_message) const;
+
 
      public:
        //! Constructor
@@ -173,6 +180,10 @@ namespace atomic_dex
        void enable_coins(const t_coins& coins);
        void enable_coin(const std::string& ticker);
        void enable_coin(const coin_config_t& coin_config);
+       bool add_coin_to_activation_queue(const coin_config_t& new_coin);
+       void mark_coin_enabled(const std::string& ticker);
+       void mark_coin_failed(const std::string& ticker);
+
      private:
        void update_coin_active(const std::vector<std::string>& tickers, bool status);
        void enable_erc_family_coin(const coin_config_t& coin_config);
@@ -206,6 +217,7 @@ namespace atomic_dex
        [[nodiscard]] bool           is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
        [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;
        [[nodiscard]] nlohmann::json get_zhtlc_status(const std::string coin) const;
+       std::string                  resolve_ticker(const nlohmann::json& j) const;
 
 
        //! Cancel zhtlc activation
@@ -279,6 +291,16 @@ namespace atomic_dex
        void               reset_fake_balance_to_zero(const std::string& ticker);
        void               decrease_fake_balance(const std::string& ticker, const std::string& amount);
        void               batch_fetch_orders_and_swap(bool after_manual_reset = false);
+
+      [[nodiscard]] std::tuple<std::size_t, std::size_t, std::size_t, std::size_t, t_filtering_infos>
+      get_order_and_swap_info();
+      [[nodiscard]] nlohmann::json
+      prepare_my_recent_swaps_request(std::size_t current_page, std::size_t limit, const t_filtering_infos& filter_infos);
+      [[nodiscard]] nlohmann::json
+      prepare_active_swaps_request();
+      void
+      process_orders_and_swaps(const nlohmann::json& answers, orders_and_swaps& result, std::size_t limit, const t_filtering_infos& filter_infos);
+
 
        //! Async API
        kdf::kdf_client& get_kdf_client();

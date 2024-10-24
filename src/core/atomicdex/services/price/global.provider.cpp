@@ -295,7 +295,7 @@ namespace atomic_dex
     {
         // Runs often to update fiat values for all enabled coins.
         // fetch ticker infos loop and on_update_portfolio_values_event triggers this.
-        // SPDLOG_INFO("get_price_in_fiat [{}] [{}]", fiat, ticker);
+        SPDLOG_INFO("get_price_in_fiat [{}] [{}]", fiat, ticker);
         try
         {
             auto& kdf_instance = m_system_manager.get_system<kdf_service>();

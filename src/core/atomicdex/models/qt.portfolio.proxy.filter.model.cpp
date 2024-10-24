@@ -76,58 +76,66 @@ namespace atomic_dex
         }
     }
 
-    bool
-    portfolio_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+    bool portfolio_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
     {
-        QModelIndex idx       = this->sourceModel()->index(source_row, 0, source_parent);
-        assert(this->sourceModel()->hasIndex(idx.row(), 0));
-        QString     ticker    = this->sourceModel()->data(idx, atomic_dex::portfolio_model::TickerRole).toString();
-        QString     type      = this->sourceModel()->data(idx, atomic_dex::portfolio_model::CoinType).toString();
+        // Get a pointer to the source model to avoid repeated calls.
+        const QAbstractItemModel* model = this->sourceModel();
+        QModelIndex idx = model->index(source_row, 0, source_parent);
 
-        if (this->filterRole() == atomic_dex::portfolio_model::MultiTickerCurrentlyEnabled)
-        {
-            bool is_enabled = this->sourceModel()->data(idx, atomic_dex::portfolio_model::MultiTickerCurrentlyEnabled).toBool();
-            if (not is_enabled)
-            {
+        // Gracefully handle invalid index with logging and early exit.
+        if (!model->hasIndex(idx.row(), 0)) {
+            SPDLOG_ERROR("Invalid index at row {}. Model row count: {}", source_row, model->rowCount());
+            return false; // Fail gracefully and continue execution.
+        }
+
+        // Fetch ticker and type data.
+        QString ticker = model->data(idx, atomic_dex::portfolio_model::TickerRole).toString();
+        QString type = model->data(idx, atomic_dex::portfolio_model::CoinType).toString();
+
+        // Handle filter role for currently enabled multi-tickers.
+        if (this->filterRole() == atomic_dex::portfolio_model::MultiTickerCurrentlyEnabled) {
+            bool is_enabled = model->data(idx, atomic_dex::portfolio_model::MultiTickerCurrentlyEnabled).toBool();
+            if (!is_enabled) {
                 return false;
             }
         }
 
         // Filter by ticker name if `m_search_exp` is not empty.
-        if (!m_search_exp.isEmpty())
-        {
-            if (not ticker.contains(m_search_exp, Qt::CaseInsensitive))
-            {
-                return false;
-            }
-        }
-
-        if (am_i_a_market_selector && m_system_mgr.get_system<portfolio_page>().get_global_cfg()->get_coin_info(ticker.toStdString()).wallet_only)
-        {
+        if (!m_search_exp.isEmpty() && !ticker.contains(m_search_exp, Qt::CaseInsensitive)) {
             return false;
         }
 
-        if (m_excluded_coin == ticker)
-        {
+        // Filter out market selector if the coin is wallet-only.
+        if (am_i_a_market_selector &&
+            m_system_mgr.get_system<portfolio_page>()
+                .get_global_cfg()
+                ->get_coin_info(ticker.toStdString())
+                .wallet_only) {
             return false;
         }
 
-        if (m_with_balance)
-        {
-            if (this->sourceModel()->data(idx, portfolio_model::BalanceRole).toString().toFloat() == 0.F)
-            {
+        // Exclude specific coins.
+        if (m_excluded_coin == ticker) {
+            return false;
+        }
+
+        // Filter by balance if required.
+        if (m_with_balance) {
+            float balance = model->data(idx, portfolio_model::BalanceRole).toString().toFloat();
+            if (balance == 0.F) {
                 return false;
             }
         }
 
-        if (m_with_fiat_balance)
-        {
-            if (this->sourceModel()->data(idx, portfolio_model::MainCurrencyBalanceRole).toFloat() == 0.F)
-            {
+        // Filter by fiat balance if required.
+        if (m_with_fiat_balance) {
+            float fiat_balance = model->data(idx, portfolio_model::MainCurrencyBalanceRole).toFloat();
+            if (fiat_balance == 0.F) {
                 return false;
             }
         }
 
+        // If all conditions pass, delegate to the base class.
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 

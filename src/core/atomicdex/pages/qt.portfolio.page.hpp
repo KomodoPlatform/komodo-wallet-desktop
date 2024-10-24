@@ -49,6 +49,7 @@ namespace atomic_dex
         ag::ecs::system_manager& m_system_manager;
         portfolio_model*         m_portfolio_mdl;
         global_coins_cfg_model*  m_global_cfg_mdl;
+        bool                     m_portfolio_update_cooldown{false};
         QString                  m_current_balance_all{"0"};
         QString                  m_main_current_balance_all{"0"};
         WalletChartsCategories   m_current_chart_category{WalletChartsCategories::OneMonth};
@@ -64,6 +65,7 @@ namespace atomic_dex
         //! CPP API
         void initialize_portfolio(const std::vector<std::string>& tickers);
         void disable_coins(const QStringList& coins);
+        void update_portfolio_balance(const QString& fiat_balance);
 
         [[nodiscard]] portfolio_model*        get_portfolio() const;
         [[nodiscard]] global_coins_cfg_model* get_global_cfg() const;
@@ -80,9 +82,10 @@ namespace atomic_dex
         [[nodiscard]] bool                   is_chart_busy() const;
         [[nodiscard]] QVariant               get_charts() const;
         [[nodiscard]] QVariant               get_wallet_stats() const;
-        ;
+
         [[nodiscard]] QString get_min_total_chart() const;
         [[nodiscard]] QString get_max_total_chart() const;
+        
 
         //! Events
         void on_update_portfolio_values_event(const update_portfolio_values&);
