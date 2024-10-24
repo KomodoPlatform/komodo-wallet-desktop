@@ -810,7 +810,7 @@ namespace atomic_dex
             SPDLOG_WARN("KDF service not available, required to clear forms - skipping");
             return;
         }
-        // SPDLOG_DEBUG("clearing forms : {}", from.toStdString());
+        SPDLOG_DEBUG("clearing forms : {}", from.toStdString());
 
         if (m_preferred_order.has_value() && m_current_trading_mode == TradingModeGadget::Simple &&
             m_selected_order_status == SelectedOrderGadget::OrderNotExistingAnymore)

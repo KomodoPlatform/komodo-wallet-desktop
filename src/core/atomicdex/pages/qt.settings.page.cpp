@@ -315,7 +315,7 @@ namespace atomic_dex
             {
                 SPDLOG_WARN("Cannot change currency to {} for reason: {}", current_currency.toStdString(), reason);
                 // Try next in line
-                int8_t selected_idx = utils::get_index_str(m_config.possible_currencies, current_currency.toStdString());
+                unsigned long selected_idx = utils::get_index_str(m_config.possible_currencies, current_currency.toStdString());
                 if (selected_idx < m_config.possible_currencies.size() - 1)
                 {
                     set_current_currency(QString::fromStdString(m_config.possible_currencies[selected_idx + 1]));

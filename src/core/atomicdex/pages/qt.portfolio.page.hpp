@@ -51,7 +51,7 @@ namespace atomic_dex
         global_coins_cfg_model*  m_global_cfg_mdl;
         QString                  m_current_balance_all{"0"};
         QString                  m_main_current_balance_all{"0"};
-        WalletChartsCategories   m_current_chart_category;
+        WalletChartsCategories   m_current_chart_category{WalletChartsCategories::OneMonth};
 
       public:
         //! Constructor
