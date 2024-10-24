@@ -255,6 +255,8 @@ jobs:
 
       - name: Install deps (MacOS/Release)
         run: |
+          rm '/usr/local/bin/2to3-3.12'
+          rm '/usr/local/bin/idle3'
           brew update
           brew upgrade
           brew install autoconf \
@@ -319,6 +321,8 @@ jobs:
 
       - name: Install deps (MacOS/Debug)
         run: |
+          rm '/usr/local/bin/2to3-3.12'
+          rm '/usr/local/bin/idle3'
           brew update
           brew upgrade
           brew install autoconf \

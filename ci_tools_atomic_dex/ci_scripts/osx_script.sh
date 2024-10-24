@@ -2,6 +2,8 @@
 
 # Workaround for https://github.com/actions/setup-python/issues/577
 
+rm '/usr/local/bin/2to3-3.12'
+rm '/usr/local/bin/idle3'
 brew update
 brew install autoconf \
             automake \
