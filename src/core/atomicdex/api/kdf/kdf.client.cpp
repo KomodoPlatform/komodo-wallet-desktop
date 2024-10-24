@@ -205,20 +205,20 @@ namespace atomic_dex::kdf
         auto http_request = make_request<Rpc>(request);
         generate_client()
             .request(http_request, m_token_source.get_token())
-            .template then([on_rpc_processed, request](const web::http::http_response& resp)
-                           {
-                               try
-                               {
-                                   auto rpc = process_rpc_answer<Rpc>(resp);
-                                   rpc.request = request;
-                                   on_rpc_processed(rpc);
-                               }
-                               catch (const std::exception& ex)
-                               {
-                                   // SPDLOG_DEBUG("process_rpc_answer rpc.result: {}", rpc.raw_result);
-                                   SPDLOG_ERROR(ex.what());
-                               }
-                           });
+            .then([on_rpc_processed, request](const web::http::http_response& resp)
+            {
+                try
+                {
+                    auto rpc = process_rpc_answer<Rpc>(resp);
+                    rpc.request = request;
+                    on_rpc_processed(rpc);
+                }
+                catch (const std::exception& ex)
+                {
+                    // SPDLOG_DEBUG("process_rpc_answer rpc.result: {}", rpc.raw_result);
+                    SPDLOG_ERROR(ex.what());
+                }
+            });
     }
 
     void
