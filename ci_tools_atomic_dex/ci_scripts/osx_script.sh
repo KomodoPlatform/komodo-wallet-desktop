@@ -2,8 +2,6 @@
 
 # Workaround for https://github.com/actions/setup-python/issues/577
 
-rm '/usr/local/bin/2to3-3.12'
-rm '/usr/local/bin/idle3'
 brew update
 brew install autoconf \
             automake \
@@ -14,8 +12,11 @@ brew install autoconf \
             gnu-sed \
             coreutils \
             libtool \
-            llvm \
             gnu-getopt
+
+brew unlink python@3.12
+brew install llvm
+brew link --overwrite python@3.12
 
 pip3 install yq
 export CC=clang
