@@ -15,8 +15,10 @@ brew install autoconf \
             gnu-getopt
 
 brew unlink python@3.12
+brew unlink python@3.13
 brew install llvm
 brew link --overwrite python@3.12
+brew link --overwrite python@3.13
 
 pip3 install yq
 export CC=clang

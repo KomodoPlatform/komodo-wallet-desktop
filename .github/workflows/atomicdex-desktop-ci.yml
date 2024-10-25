@@ -204,7 +204,7 @@ jobs:
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'  && 'KomodoPlatform/komodo-wallet-desktop' == github.repository
-        uses: Apple-Actions/import-codesign-certs@v1
+        uses: Apple-Actions/import-codesign-certs@v3
         with:
           keychain: ${{ github.run_id }}
           keychain-password: ${{ github.run_id }}
@@ -213,7 +213,7 @@ jobs:
 
       - name: import installer code signing certificates (macos)
         if: runner.os == 'macOS'  && 'KomodoPlatform/komodo-wallet-desktop' == github.repository
-        uses: apple-actions/import-codesign-certs@v1
+        uses: apple-actions/import-codesign-certs@v3
         with:
           keychain: ${{ github.run_id }}
           keychain-password: ${{ github.run_id }}
@@ -232,7 +232,7 @@ jobs:
           echo $HOME/sdk
           ls $HOME/sdk
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
-          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
+          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
           export APPLE_ID="${{ secrets.APPLE_ID }}"
           export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
@@ -382,7 +382,7 @@ jobs:
         if: runner.os == 'macOS' &&  'KomodoPlatform/komodo-wallet-desktop' == github.repository
         run: |
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
-          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
+          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
           export APPLE_ID="${{ secrets.APPLE_ID }}"
           export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
