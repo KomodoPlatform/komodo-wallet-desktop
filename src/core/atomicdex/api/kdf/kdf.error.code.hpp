@@ -19,6 +19,7 @@
 enum class dextop_error
 {
     success,
+    balance_info_exception,
     balance_of_a_non_enabled_coin,
     tx_history_of_a_non_enabled_coin,
     rpc_withdraw_error,

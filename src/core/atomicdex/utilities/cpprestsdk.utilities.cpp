@@ -30,14 +30,20 @@
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 t_http_request
-create_json_post_request(nlohmann::json&& json_data)
+create_json_post_request(nlohmann::json&& json_data, const std::string& content_type)
 {
     t_http_request req;
     req.set_method(web::http::methods::POST);
-    req.headers().set_content_type(FROM_STD_STR("application/json"));
-    req.set_body(json_data.dump());
+    req.headers().set_content_type(content_type);
+    try {
+        req.set_body(json_data.dump());
+    } catch (const std::exception& e) {
+        SPDLOG_ERROR("Error serializing JSON data: {}", e.what());
+        throw; // rethrow the exception if needed
+    }
     return req;
 }
+
 
 void
 handle_exception_pplx_task(pplx::task<void> previous_task)
@@ -49,6 +55,7 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
     catch (const std::exception& e)
     {
         SPDLOG_ERROR("pplx task error: {}", e.what());
+        throw; // rethrow the exception if needed
 //#if defined(linux) || defined(__APPLE__)
 //        SPDLOG_ERROR("stacktrace: {}", boost::stacktrace::to_string(boost::stacktrace::stacktrace()));
 //#endif

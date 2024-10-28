@@ -47,7 +47,7 @@ MultipageModal
 
     function getCryptoAmount() { return _preparePage.cryptoSendMode ? input_amount.text : equivalentAmount.value }
 
-    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price, memo="") {
+    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price, memo="", ibc_source_channel="") {
         let max = parseFloat(current_ticker_infos.balance) === parseFloat(amount)
         // Save for later check
         async_param_max = max
@@ -60,7 +60,7 @@ MultipageModal
             gas_price,
             gas_limit: gas_limit === "" ? 0 : parseInt(gas_limit)
         }
-        api_wallet_page.send(address, amount, max, with_fees, fees_info, memo)
+        api_wallet_page.send(address, amount, max, with_fees, fees_info, memo, ibc_source_channel)
     }
 
     function sendCoin() {
@@ -263,7 +263,7 @@ MultipageModal
             color: input_address.background.color
             radius: input_address.background.radius
 
-            DefaultTextField
+            DexTextField
             {
                 id: input_address
 
@@ -567,7 +567,7 @@ MultipageModal
             color: input_memo.background.color
             radius: input_memo.background.radius
 
-            DefaultTextField
+            DexTextField
             {
                 id: input_memo
 
@@ -576,6 +576,31 @@ MultipageModal
                 placeholderText: qsTr("Enter memo")
                 forceFocus: true
                 font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
+            }
+        }
+
+        // IBC channel ID
+        DefaultRectangle
+        {
+            visible: (["TENDERMINT", "TENDERMINTTOKEN"].includes(current_ticker_infos.type)) 
+            enabled: !root.is_send_busy
+
+            Layout.preferredWidth: 500
+            Layout.preferredHeight: 44
+            Layout.alignment: Qt.AlignHCenter
+
+            color: input_memo.background.color
+            radius: input_memo.background.radius
+
+            DexTextField
+            {
+                id: input_ibc_channel_id
+
+                width: 470
+                height: 44
+                placeholderText: qsTr("Enter IBC channel ID")
+                forceFocus: true
+                font: DexTypo.body3
             }
         }
 
@@ -786,7 +811,8 @@ MultipageModal
                     General.isSpecialToken(current_ticker_infos),
                     input_custom_fees_gas.text,
                     input_custom_fees_gas_price.text,
-                    input_memo.text
+                    input_memo.text,
+                    input_ibc_channel_id.text
                 )
             }
         }

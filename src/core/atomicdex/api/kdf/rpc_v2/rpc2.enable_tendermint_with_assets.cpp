@@ -25,6 +25,7 @@ namespace atomic_dex::kdf
 
     void from_json(const nlohmann::json& json, enable_tendermint_with_assets_result_rpc& out)
     {
+        out.ticker                           = json["ticker"];
         out.address                          = json["address"];
         out.current_block                    = json["current_block"];
         out.tendermint_balances_infos        = json["balance"].get<typeof(out.tendermint_balances_infos)>();

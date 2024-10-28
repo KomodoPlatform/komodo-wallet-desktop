@@ -85,7 +85,7 @@ ComboBox
         {
             anchors.rightMargin: 5
 
-            DefaultTextField
+            DexTextField
             {
                 id: input_coin_filter
                 placeholderText: qsTr("Search")

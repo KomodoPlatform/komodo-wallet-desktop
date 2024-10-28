@@ -40,6 +40,10 @@ namespace atomic_dex::kdf
 
         template <typename RpcReturnType>
         RpcReturnType rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command);
+        template <atomic_dex::kdf::rpc Rpc>
+        void handle_v2_response(const web::http::http_response& answer, const nlohmann::json& json_answer, Rpc& rpc);
+        template <atomic_dex::kdf::rpc Rpc>
+        void handle_v1_response(const nlohmann::json& json_answer, Rpc& rpc);
 
         t_disable_coin_answer            rpc_disable_coin(t_disable_coin_request&& request);
         t_recover_funds_of_swap_answer   rpc_recover_funds(t_recover_funds_of_swap_request&& request);

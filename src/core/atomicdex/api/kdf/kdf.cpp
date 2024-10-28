@@ -711,11 +711,31 @@ namespace atomic_dex::kdf
 
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
-        if (not url.empty())
+        if (!url.empty())
         {
             req.set_request_uri(FROM_STD_STR(url));
         }
-        return client->request(req);
+
+        // Return the task and handle exceptions
+        return client->request(req)
+            .then([](pplx::task<web::http::http_response> previousTask)
+            {
+                try
+                {
+                    return previousTask.get(); // Retrieve the HTTP response
+                }
+                catch (const web::http::http_exception& e)
+                {
+                    SPDLOG_ERROR("HTTP exception caught: {}", e.what());
+                    // Handle the HTTP exception or propagate an error response
+                    throw; // Re-throw or create a failed http_response
+                }
+                catch (const std::exception& e)
+                {
+                    SPDLOG_ERROR("General exception caught: {}", e.what());
+                    throw; // Re-throw to ensure it's handled by the caller
+                }
+            });
     }
 
     template <typename RpcReturnType>

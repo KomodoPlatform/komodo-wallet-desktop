@@ -48,6 +48,10 @@ namespace atomic_dex::kdf
         obj["params"]["max"]    = cfg.max;
         if (cfg.memo.has_value())
         {
+            obj["params"]["ibc_source_channel"] = cfg.ibc_source_channel.value();
+        }
+        if (cfg.memo.has_value())
+        {
             obj["params"]["memo"] = cfg.memo.value();
         }
         if (cfg.fees.has_value())

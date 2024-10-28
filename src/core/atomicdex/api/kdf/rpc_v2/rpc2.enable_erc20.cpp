@@ -21,6 +21,6 @@ namespace atomic_dex::kdf
     {
         j.at("platform_coin").get_to(in.platform_coin);
         j.at("required_confirmations").get_to(in.required_confirmations);
-        j.at("balances").get_to<std::unordered_map<std::string, balance_info>>(in.balances);
+        j.at("balances").get_to<std::unordered_map<std::string, balance_infos>>(in.balances);
     }
 }

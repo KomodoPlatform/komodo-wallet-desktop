@@ -54,6 +54,7 @@ namespace atomic_dex
         void                              set_tx_fetching_failed(bool status);
         [[nodiscard]] bool                is_tx_fetching_busy() const;
         void                              set_tx_fetching_busy(bool status);
+        void                              handle_tx_fetch_status(const std::error_code& ec);
         [[nodiscard]] bool                is_convert_address_busy() const;
         void                              set_convert_address_busy(bool status);
         [[nodiscard]] bool                is_validate_address_busy() const;
@@ -88,7 +89,7 @@ namespace atomic_dex
                         bool is_auth, const QString& tx_hex, bool is_claiming, bool is_max,
                         const QString& amount); // Broadcast requires OS local user credentials verification. This is called by the Q_INVOKABLE broadcast() method after
                                                 // entering credentials.
-        Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data, const QString& memo);
+        Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data, const QString& memo, const QString& ibc_source_channel);
 
         // QML API Properties
         Q_PROPERTY(transactions_model* transactions_mdl READ get_transactions_mdl NOTIFY transactionsMdlChanged)

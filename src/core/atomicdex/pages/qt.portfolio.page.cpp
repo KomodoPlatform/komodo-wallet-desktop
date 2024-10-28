@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 //! Qt
+#include <QTimer>
 #include <QSettings>
 
 //! Project Headers
@@ -76,24 +77,50 @@ namespace atomic_dex
     void
     portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt)
     {
-        // SPDLOG_DEBUG("Updating portfolio values with model: {}", evt.with_update_model);
+        if (m_portfolio_update_cooldown)
+        {
+            SPDLOG_DEBUG("Portfolio update cooldown active, skipping update.");
+            return;
+        }
 
-        bool res = true;
+        // Set the cooldown timer
+        m_portfolio_update_cooldown = true;
+        QTimer::singleShot(3000, [this]() { m_portfolio_update_cooldown = false; });
+
+        SPDLOG_DEBUG("Updating portfolio values with model: {}", evt.with_update_model);
+
+        bool update_success = true;
         if (evt.with_update_model)
         {
-            res = m_portfolio_mdl->update_currency_values();
+            SPDLOG_DEBUG("Updating currency values and ticker information...");
+            update_success = m_portfolio_mdl->update_currency_values();
             m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
         }
 
+        // Fetch config and price service data
+        const auto& config = m_system_manager.get_system<settings_page>().get_cfg();
+        const auto& price_service = m_system_manager.get_system<global_price_service>();
+
         std::error_code ec;
-        const auto&     config           = m_system_manager.get_system<settings_page>().get_cfg();
-        const auto&     price_service    = m_system_manager.get_system<global_price_service>();
-        auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
-        if (!ec && res)
+        const auto fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
+
+        if (ec)
         {
-            set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
-            m_portfolio_mdl->adjust_percent_current_currency(QString::fromStdString(fiat_balance_std));
+            SPDLOG_ERROR("Failed to retrieve fiat balance: {}", ec.message());
         }
+
+        if (update_success)
+        {
+            SPDLOG_DEBUG("Updating fiat balance display: {}", fiat_balance_std);
+            update_portfolio_balance(QString::fromStdString(fiat_balance_std));
+        }
+    }
+
+    void
+    portfolio_page::update_portfolio_balance(const QString& fiat_balance)
+    {
+        set_current_balance_fiat_all(fiat_balance);
+        m_portfolio_mdl->adjust_percent_current_currency(fiat_balance);
     }
 
     QStringList

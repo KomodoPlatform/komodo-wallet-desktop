@@ -114,7 +114,24 @@ namespace atomic_dex::kdf
 
         if (j.contains("transaction_type"))
         {
-            cfg.transaction_type = j.at("transaction_type").get<std::string>();
+            // Check if the "transaction_type" is an object for tendermint
+            if (j.at("transaction_type").is_object())
+            {
+                for (auto& [k, v] : j.at("transaction_type").items()) {
+                    cfg.tendermint_transaction_type = k;
+                    cfg.tendermint_transaction_type_hash = v;
+                }
+            }
+            // Check if "transaction_type" is a string
+            else if (j.at("transaction_type").is_string())
+            {
+                cfg.transaction_type = j.at("transaction_type").get<std::string>();
+            }
+            else
+            {
+                // Handle the case where "transaction_type" is neither a string nor an object
+                SPDLOG_ERROR("Unexpected type for transaction_type in JSON");
+            }
         }
 
         // transaction_fee only in ZHTLC response
