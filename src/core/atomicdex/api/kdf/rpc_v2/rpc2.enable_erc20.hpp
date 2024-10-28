@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <optional>
 
 #include <nlohmann/json_fwd.hpp> //> nlohmann::json
 #include "atomicdex/api/kdf/rpc.hpp"

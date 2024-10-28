@@ -22,6 +22,7 @@
 //! Deps
 #include <antara/gaming/ecs/system.manager.hpp>
 #include <nlohmann/json.hpp>
+#include <optional>
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"

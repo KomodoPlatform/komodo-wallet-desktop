@@ -7,6 +7,7 @@
 //! Deps
 #include <antara/gaming/core/real.path.hpp>
 #include <nlohmann/json.hpp>
+#include <optional>
 
 //! Project
 #include "atomicdex/api/kdf/kdf.constants.hpp"
