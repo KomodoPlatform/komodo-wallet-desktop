@@ -131,7 +131,9 @@ namespace atomic_dex
                 QJsonObject status = nlohmann_json_object_to_qt_json_object(coin_info.activation_status);
                 update_value(ActivationStatus, status, idx, *this);
                 SPDLOG_DEBUG("updated activation status of: {}", ticker);
+                return true;
             }
+            return false;
         }
     }
 
