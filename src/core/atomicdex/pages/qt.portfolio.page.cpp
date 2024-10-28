@@ -190,12 +190,14 @@ namespace atomic_dex
     void
     portfolio_page::set_chart_category(WalletChartsCategories category)
     {
+        SPDLOG_INFO("new m_current_chart_category: {}", m_current_chart_category);
+        SPDLOG_INFO("qint32(category): {}", qint32(category));
         SPDLOG_INFO("new chart category: {}", QMetaEnum::fromType<WalletChartsCategories>().valueToKey(category));
         if (m_current_chart_category != category)
         {
             m_current_chart_category = category;
             QSettings& settings      = entity_registry_.ctx<QSettings>();
-            settings.setValue("WalletChartsCategory", qint32(m_current_chart_category));
+            settings.setValue("WalletChartsCategory", qint32(category));
             if (m_system_manager.get_system<kdf_service>().is_kdf_running() && m_system_manager.has_system<coingecko_wallet_charts_service>())
             {
                 m_system_manager.get_system<coingecko_wallet_charts_service>().manual_refresh("set_chart_category");
