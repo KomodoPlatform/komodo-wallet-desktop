@@ -855,7 +855,9 @@ namespace atomic_dex
                 .servers         = coin_config.electrum_urls.value_or(get_electrum_server_from_token(coin_config.ticker)),
                 .coin_type       = coin_config.coin_type,
                 .is_testnet      = coin_config.is_testnet.value_or(false),
-                .with_tx_history = true
+                .with_tx_history = true,
+                .min_connected   = 1,
+                .max_connected   = 3
             };
             if (coin_config.merge_utxos.value_or(false))
             {
