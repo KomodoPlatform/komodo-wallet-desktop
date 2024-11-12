@@ -18,6 +18,10 @@
 #include <unordered_set>
 #include <iostream>
 #include <sstream>
+#include <map>
+#include <string>
+#include <vector>
+
 
 #include <boost/thread/thread.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -543,9 +547,7 @@ namespace atomic_dex
         t_coins slp_coins;
         t_coins slp_testnet_coins;
         t_coins zhtlc_coins;
-        t_coins osmosis_coins;
-        t_coins iris_coins;
-        t_coins cosmos_coins;
+        t_coins tendermint_coins;
         t_coins bep20_coins;
         t_coins bep20_testnet_coins;
        
@@ -571,23 +573,7 @@ namespace atomic_dex
             }
             else if (coin_cfg.coin_type == CoinType::TENDERMINT || coin_cfg.coin_type == CoinType::TENDERMINTTOKEN)
             {
-                if (coin_cfg.parent_coin == "ATOM")
-                {
-                    cosmos_coins.push_back(coin_cfg);
-                }
-                else if (coin_cfg.parent_coin == "IRIS")
-                {
-                    iris_coins.push_back(coin_cfg);
-                }
-                else if (coin_cfg.parent_coin == "OSMO")
-                {
-                    osmosis_coins.push_back(coin_cfg);
-                }
-                else
-                {
-                    SPDLOG_WARN("Unexpected Tendermint ticker: {}", coin_cfg.ticker);
-                    SPDLOG_WARN("Parent coin: {}", coin_cfg.parent_coin);
-                }
+                tendermint_coins.push_back(coin_cfg);
             }
             else if (coin_cfg.coin_type == CoinType::ZHTLC)
             {
@@ -643,20 +629,12 @@ namespace atomic_dex
             SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} zhtlc_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", zhtlc_coins.size());
             enable_zhtlc(zhtlc_coins);
         }
-        if (iris_coins.size() > 0)
+        if (tendermint_coins.size() > 0)
         {
-            SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} iris_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", iris_coins.size());
-            enable_tendermint_coins(iris_coins, "IRIS");
-        }
-        if (cosmos_coins.size() > 0)
-        {
-            SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} cosmos_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", cosmos_coins.size());
-            enable_tendermint_coins(cosmos_coins, "ATOM");
-        }
-        if (osmosis_coins.size() > 0)
-        {
-            SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} osmosis_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", osmosis_coins.size());
-            enable_tendermint_coins(osmosis_coins, "OSMO");
+            SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} tendermint_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", tendermint_coins.size());
+            for (const auto& [parent_coin, coins_vector] : groupByParentCoin(tendermint_coins)) {
+                enable_tendermint_coins(coins_vector, parent_coin);
+            }
         }
     }
 
@@ -1014,9 +992,20 @@ namespace atomic_dex
         SPDLOG_DEBUG("kdf_service::enable_erc20_coins done for {}", parent_ticker);
     }
 
-    void kdf_service::enable_tendermint_coin(coin_config_t coin_config, std::string parent_ticker)
+
+    std::map<std::string, std::vector<coin_config_t>>
+    kdf_service::groupByParentCoin(const std::vector<coin_config_t>& coins) {
+        std::map<std::string, std::vector<coin_config_t>> groupedCoins;
+        for (const auto& coin : coins) {
+            groupedCoins[coin.parent_coin].push_back(coin);
+        }
+        return groupedCoins;
+    }
+
+
+    void kdf_service::enable_tendermint_coin(coin_config_t coin_config)
     {
-        enable_tendermint_coins(t_coins{std::move(coin_config)}, parent_ticker);
+        enable_tendermint_coins(t_coins{std::move(coin_config)}, coin_config.parent_coin);
     }
 
     void kdf_service::enable_tendermint_coins(const t_coins& coins, const std::string parent_ticker)
@@ -1098,7 +1087,7 @@ namespace atomic_dex
             kdf::enable_tendermint_with_assets_rpc rpc;
 
             rpc.request.ticker = parent_ticker_info.ticker;
-            rpc.request.rpc_urls = parent_ticker_info.rpc_urls.value_or(std::vector<std::string>{});
+            rpc.request.nodes = parent_ticker_info.rpc_urls.value_or(std::vector<node>{});
             for (const auto& coin_config : coins)
             {
                 if (coin_config.ticker == parent_ticker_info.ticker)

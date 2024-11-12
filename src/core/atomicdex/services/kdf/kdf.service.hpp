@@ -185,7 +185,7 @@ namespace atomic_dex
        void enable_slp_testnet_coins(const t_coins& coins);
        void enable_erc20_coin(coin_config_t coin_config, std::string parent_ticker);
        void enable_erc20_coins(const t_coins& coins, const std::string parent_ticker);
-       void enable_tendermint_coin(coin_config_t coin_config, std::string parent_ticker);
+       void enable_tendermint_coin(coin_config_t coin_config);
        void enable_tendermint_coins(const t_coins& coins, const std::string parent_ticker);
        void enable_zhtlc(const t_coins& coins);
 
@@ -207,6 +207,7 @@ namespace atomic_dex
        [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;
        [[nodiscard]] nlohmann::json get_zhtlc_status(const std::string coin) const;
 
+      std::map<std::string, t_coins> groupByParentCoin(const t_coins& coins);
 
        //! Cancel zhtlc activation
        void enable_z_coin_cancel(const std::int8_t task_id);

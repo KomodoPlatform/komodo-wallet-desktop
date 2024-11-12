@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "atomicdex/api/kdf/rpc.hpp"
+#include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/api/kdf/balance_infos.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
 
@@ -20,9 +21,8 @@ namespace atomic_dex::kdf
                 std::string         ticker;
                 std::optional<int>  required_confirmations;
             };
-
             std::string                                     ticker;
-            std::vector<std::string>                        rpc_urls;
+            std::vector<node>                               nodes;
             bool                                            tx_history{true};
             std::vector<tendermint_token_request_t>         tokens_params;
             std::optional<int>                              required_confirmations;
