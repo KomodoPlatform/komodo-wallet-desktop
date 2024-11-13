@@ -20,6 +20,6 @@ namespace atomic_dex::kdf
     void from_json(const nlohmann::json& j, enable_tendermint_token_rpc_result& in)
     {
         j.at("platform_coin").get_to(in.platform_coin);
-        j.at("balances").get_to<std::unordered_map<std::string, balance_info>>(in.balances);
+        j.at("balances").get_to<std::unordered_map<std::string, balance_infos>>(in.balances);
     }
 }

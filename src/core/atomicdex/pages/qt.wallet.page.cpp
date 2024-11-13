@@ -508,7 +508,7 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data, const QString& memo)
+    wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data, const QString& memo, const QString& ibc_source_channel)
     {
         //! Preparation
         this->set_send_busy(true);
@@ -693,6 +693,7 @@ namespace atomic_dex
                 .to = address.toStdString(),
                 .amount = max ? "0" : amount.toStdString(),
                 .memo = memo.toStdString(),
+                .ibc_source_channel = ibc_source_channel.toStdString(),
                 .max = max
             };
 
@@ -735,6 +736,7 @@ namespace atomic_dex
 
             nlohmann::json json_data = kdf::template_request("withdraw", true);
             kdf::to_json(json_data, withdraw_req);
+            SPDLOG_DEBUG("withdraw request: {}", json_data.dump(4));
 
             batch.push_back(json_data);
 

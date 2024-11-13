@@ -71,6 +71,7 @@ namespace
             json_req.insert(json_req.end(), json_data);
         }
         request.set_body(json_req.dump());
+        // SPDLOG_DEBUG("request: {}", json_req.dump());
         return request;
     }
 
@@ -78,17 +79,18 @@ namespace
     Rpc process_rpc_answer(const web::http::http_response& answer)
     {
         std::string body = TO_STD_STR(answer.extract_string(true).get());
-        // SPDLOG_DEBUG("body: {}", body);
+        // SPDLOG_INFO("body: {}", body);
         nlohmann::json json_answer;
         Rpc rpc;
         try
         {
             json_answer = nlohmann::json::parse(body);
-            // SPDLOG_DEBUG("rpc answer: {}", json_answer.dump(4));
+            // SPDLOG_DEBUG("json_answer: {}", json_answer.dump(4));
         }
         catch (const nlohmann::json::parse_error& error)
         {
             SPDLOG_ERROR("rpc answer error: {}", error.what());
+            // SPDLOG_DEBUG("body: {}", body);
         }
 
         if (Rpc::is_v2)
@@ -103,7 +105,6 @@ namespace
                 SPDLOG_DEBUG("rpc2 answer: error");
                 rpc.error = json_answer.get<typename Rpc::expected_error_type>();
                 rpc.raw_result = json_answer.dump();
-                SPDLOG_DEBUG("rpc.raw_result: {}", rpc.raw_result);
             }
         }
         else

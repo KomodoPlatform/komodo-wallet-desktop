@@ -51,7 +51,7 @@ ColumnLayout
         }
     }
 
-    DefaultTextField
+    DexTextField
     {
         id: input_field
 

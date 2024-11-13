@@ -7,7 +7,7 @@ namespace atomic_dex::kdf
     void to_json(nlohmann::json& j, const enable_tendermint_with_assets_request_rpc& in)
     {
         j["ticker"] = in.ticker;
-        j["rpc_urls"] = in.rpc_urls;
+        j["nodes"] = in.nodes;
         j["tx_history"] = in.tx_history;
         j["tokens_params"] = in.tokens_params;
         if (in.required_confirmations.has_value())
@@ -25,6 +25,7 @@ namespace atomic_dex::kdf
 
     void from_json(const nlohmann::json& json, enable_tendermint_with_assets_result_rpc& out)
     {
+        out.ticker                           = json["ticker"];
         out.address                          = json["address"];
         out.current_block                    = json["current_block"];
         out.tendermint_balances_infos        = json["balance"].get<typeof(out.tendermint_balances_infos)>();

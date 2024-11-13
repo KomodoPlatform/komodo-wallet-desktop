@@ -217,13 +217,7 @@ namespace atomic_dex
         }
         if (j.contains("rpc_urls"))
         {
-            auto rpc_urls_obj = j.at("rpc_urls").get<std::vector<node>>();
-            std::vector<std::string> rpc_urls_list;
-            cfg.rpc_urls = rpc_urls_list;
-            for (const auto& url : rpc_urls_obj)
-            {
-                cfg.rpc_urls->push_back(url.url);
-            }
+            cfg.rpc_urls = j.at("rpc_urls").get<std::vector<node>>();
         }
         if (j.contains("allow_slp_unsafe_conf"))
         {

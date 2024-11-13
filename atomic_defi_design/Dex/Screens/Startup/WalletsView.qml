@@ -79,7 +79,7 @@ SetupPage
             visible: wallet_count > 0
 
             // Searchbar
-            DefaultTextField
+            DexTextField
             {
                 id: wallet_search
                 visible: wallet_count > 5
