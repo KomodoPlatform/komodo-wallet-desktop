@@ -11,14 +11,14 @@ on:
   workflow_dispatch:
 
 env:
-  DEX_API: "kdf_kwd"
-  DEX_RPCPORT: 7762
-  DEX_RPC: "http://127.0.0.1:7762"
-  DEX_PROJECT_NAME: "komodo-wallet"
-  DEX_DISPLAY_NAME: "Komodo Wallet"
-  DEX_COMPANY: "KomodoPlatform"
+  DEX_API: "kdf-gleecdex"
+  DEX_RPCPORT: 7983
+  DEX_RPC: "http://127.0.0.1:7983"
+  DEX_PROJECT_NAME: "GleecDEX"
+  DEX_DISPLAY_NAME: "GleecDEX"
+  DEX_COMPANY: "Gleec"
   DEX_VERSION: "0.8.1"
-  DEX_WEBSITE: "https://atomicdex.io/"
+  DEX_WEBSITE: "https://gleec.com/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
   RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\komodo-wallet-desktop\ci_tools_atomic_dex\vcpkg-repo

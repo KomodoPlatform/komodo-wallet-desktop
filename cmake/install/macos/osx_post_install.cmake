@@ -38,10 +38,11 @@ endif ()
 
 message(STATUS "CREATING DMG")
 if (NOT EXISTS ${CMAKE_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.dmg)
-    message(STATUS "${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -sign-for-notarization=$ENV{MAC_SIGN_IDENTITY}  -verbose=3")
+    ##-------------------------------------------
+    message(STATUS "${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -verbose=3")
     execute_process(
             COMMAND
-            ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -codesign=$ENV{MAC_SIGN_IDENTITY} -timestamp -verbose=1
+            ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite -timestamp -verbose=1
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             ECHO_OUTPUT_VARIABLE
             ECHO_ERROR_VARIABLE
@@ -158,7 +159,7 @@ message(STATUS "Copying ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z T
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${DEX_PROJECT_NAME}.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/packages/com.komodoplatform.atomicdex/data)
 
-execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/${DEX_PROJECT_NAME}_installer -s $ENV{MAC_SIGN_IDENTITY}
+execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./packages/ ${DEX_PROJECT_NAME}_installer
         WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
