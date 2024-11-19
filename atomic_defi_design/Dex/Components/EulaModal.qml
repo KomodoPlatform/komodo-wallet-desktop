@@ -121,31 +121,31 @@ MultipageModal
 
     function getEula()
     {
-        return "<h2>This End-User License Agreement ('EULA') is a legal agreement between you and Komodo Platform.</h2>
-<p>This EULA agreement governs your acquisition and use of our %1 software ('Software', 'Mobile Application', 'Application' or 'App') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a 'Distributor').</p>
+        return "<h2>This End-User License Agreement ('EULA') is a legal agreement between you and CZ Web Service S.A.</h2>
+<p>This EULA agreement governs your acquisition and use of our %1 software ('Software', 'Mobile Application', 'Application' or 'App') directly from CZ Web Service S.A or indirectly through a CZ Web Service S.A authorized entity, reseller or distributor (a 'Distributor').</p>
 <p>Please read this EULA agreement carefully before completing the installation process and using the %1 software. It provides a license to use the %1 software and contains warranty information and liability disclaimers.</p>
 <p>If you register for the beta program of the %1 software, this EULA agreement will also govern that trial. By clicking 'accept' or installing and/or using the %1 software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.</p>
 <p>If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.</p>
-<p>This EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.</p>
+<p>This EULA agreement shall apply only to the Software supplied by CZ Web Service S.A herewith regardless of whether other software is referred to or described herein. The terms also apply to any CZ Web Service S.A updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.</p>
 <h3>License Grant</h3>
-<p>Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the %1 software on your devices in accordance with the terms of this EULA agreement.</p>
+<p>CZ Web Service S.A hereby grants you a personal, non-transferable, non-exclusive licence to use the %1 software on your devices in accordance with the terms of this EULA agreement.</p>
 <p>You are permitted to load the %1 software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the %1 software.</p>
 <p><b>You are not permitted to:</b></p>
 <ul>
 <li>Edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things</li>
 <li>Reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose</li>
 <li>Use the Software in any way which breaches any applicable local, national or international law</li>
-<li>Use the Software for any purpose that Komodo Platform considers is a breach of this EULA agreement</li>
+<li>Use the Software for any purpose that CZ Web Service S.A considers is a breach of this EULA agreement</li>
 </ul>
 <h3>Intellectual Property and Ownership</h3>
-<p>Komodo Platform shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of Komodo Platform.</p>
-<p>Komodo Platform reserves the right to grant licences to use the Software to third parties.</p>
+<p>CZ Web Service S.A shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of CZ Web Service S.A.</p>
+<p>CZ Web Service S.A reserves the right to grant licences to use the Software to third parties.</p>
 <h3>Termination</h3>
-<p>This EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to Komodo Platform.</p>
+<p>This EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to CZ Web Service S.A.</p>
 <p>It will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.</p>
 <h3>Governing Law</h3>
 <p>This EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.</p>
-<p><b>This document was last updated on January 31st, 2020</b></p>"
+<p><b>This document was last updated on January 31st, 2022</b></p>"
             .arg(API.app_name)
     }
 }

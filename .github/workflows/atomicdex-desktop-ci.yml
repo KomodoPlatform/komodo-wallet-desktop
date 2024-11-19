@@ -11,14 +11,14 @@ on:
   workflow_dispatch:
 
 env:
-  DEX_API: "kdf_kwd"
-  DEX_RPCPORT: 7762
-  DEX_RPC: "http://127.0.0.1:7762"
-  DEX_PROJECT_NAME: "komodo-wallet"
-  DEX_DISPLAY_NAME: "Komodo Wallet"
-  DEX_COMPANY: "KomodoPlatform"
+  DEX_API: "kdf_shiba"
+  DEX_RPCPORT: 7763
+  DEX_RPC: "http://127.0.0.1:7783"
+  DEX_PROJECT_NAME: "shibadex-desktop"
+  DEX_DISPLAY_NAME: "ShibaDex Desktop"
+  DEX_COMPANY: "CZ Web Service S.A"
+  DEX_WEBSITE: "https://shibadex.io/"
   DEX_VERSION: "0.8.1"
-  DEX_WEBSITE: "https://atomicdex.io/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
   RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\komodo-wallet-desktop\ci_tools_atomic_dex\vcpkg-repo
