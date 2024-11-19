@@ -1,4 +1,4 @@
-name: komodo-wallet-desktop CD releases
+name: FiroDex-Desktop CD releases
 
 on:
   push:
@@ -6,11 +6,11 @@ on:
     - temporary_disabled
 
 env:
-  DEX_PROJECT_NAME: "komodo-wallet"
-  DEX_DISPLAY_NAME: "Komodo Wallet"
-  DEX_COMPANY: "KomodoPlatform"
+  DEX_PROJECT_NAME: "firodex-desktop"
+  DEX_DISPLAY_NAME: "FiroDex Desktop"
+  DEX_COMPANY: "Firo Core Team"
   DEX_VERSION: "0.8.1"
-  DEX_WEBSITE: "https://atomicdex.io/"
+  DEX_WEBSITE: "https://firo.org/"
 
 jobs:
 
@@ -20,6 +20,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: setup cache variables
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
       - name: Install QT (Linux/Release)
         uses: jurplel/install-qt-action@v2

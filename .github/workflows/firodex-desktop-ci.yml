@@ -1,24 +1,25 @@
-name: komodo-wallet-desktop CI
+name: FiroDex-Desktop CI
 
 on:
   pull_request:
     types: [ opened, synchronize, reopened ]
   push:
     branches:
+      - dev
       - master
   schedule:
     - cron: '0 0 * * 1'
   workflow_dispatch:
 
 env:
-  DEX_API: "kdf_kwd"
-  DEX_RPCPORT: 7762
-  DEX_RPC: "http://127.0.0.1:7762"
-  DEX_PROJECT_NAME: "komodo-wallet"
-  DEX_DISPLAY_NAME: "Komodo Wallet"
-  DEX_COMPANY: "KomodoPlatform"
+  DEX_API: "kdf_firo"
+  DEX_RPCPORT: 7653
+  DEX_RPC: "http://127.0.0.1:7653"
+  DEX_PROJECT_NAME: "firodex"
+  DEX_DISPLAY_NAME: "Firo Dex"
+  DEX_COMPANY: "Firo"
   DEX_VERSION: "0.8.1"
-  DEX_WEBSITE: "https://atomicdex.io/"
+  DEX_WEBSITE: "https://firo.org/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
   RUNVCPKG_VCPKG_ROOT: ${{ github.workspace }}\komodo-wallet-desktop\ci_tools_atomic_dex\vcpkg-repo
@@ -85,8 +86,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
 
-      - name: Expose GitHub Runtime Env
-        uses: crazy-max/ghaction-github-runtime@v2
+      - name: setup cache variables
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -116,7 +121,7 @@ jobs:
 
       - name: Install QT (macOS)
         if: runner.os == 'macOS'
-        uses: jurplel/install-qt-action@v3.3.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
           host: ${{ matrix.host }}
@@ -129,7 +134,7 @@ jobs:
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: jurplel/install-qt-action@v3.3.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
           host: ${{ matrix.host }}
@@ -141,7 +146,7 @@ jobs:
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: jurplel/install-qt-action@v3.3.0
+        uses: jurplel/install-qt-action@v3.0.0
         with:
           version: ${{ matrix.qt }}
           host: ${{ matrix.host }}
@@ -197,33 +202,35 @@ jobs:
           echo "CC=clang-12" >> $GITHUB_ENV
 
       - name: vcpkg deps (All)
-        uses: lukka/run-vcpkg@v11
+        uses: lukka/run-vcpkg@v10
         with:
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          appendedCacheKey: ${{ hashFiles('vcpkg.json') }}
           vcpkgJsonGlob: 'vcpkg.json'
 
-      - name: import code signing certificates (macos)
-        if: runner.os == 'macOS'  && 'KomodoPlatform/komodo-wallet-desktop' == github.repository
-        uses: Apple-Actions/import-codesign-certs@v3
-        with:
-          keychain: ${{ github.run_id }}
-          keychain-password: ${{ github.run_id }}
-          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
-          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
-      - name: import installer code signing certificates (macos)
-        if: runner.os == 'macOS'  && 'KomodoPlatform/komodo-wallet-desktop' == github.repository
-        uses: apple-actions/import-codesign-certs@v3
-        with:
-          keychain: ${{ github.run_id }}
-          keychain-password: ${{ github.run_id }}
-          create-keychain: false
-          p12-file-base64: ${{ secrets.CERTIFICATES_INSTALLER_P12 }}
-          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+      # - name: import code signing certificates (macos)
+      #   if: runner.os == 'macOS'  && 'firoorg/FiroDEX-Desktop' == github.repository
+      #   uses: Apple-Actions/import-codesign-certs@v1
+      #   with:
+      #     keychain: ${{ github.run_id }}
+      #     keychain-password: ${{ github.run_id }}
+      #     p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+      #     p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+
+      # - name: import installer code signing certificates (macos)
+      #   if: runner.os == 'macOS'  && 'firoorg/FiroDEX-Desktop' == github.repository
+      #   uses: apple-actions/import-codesign-certs@v1
+      #   with:
+      #     keychain: ${{ github.run_id }}
+      #     keychain-password: ${{ github.run_id }}
+      #     create-keychain: false
+      #     p12-file-base64: ${{ secrets.CERTIFICATES_INSTALLER_P12 }}
+      #     p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
 
 
-      - name: Build Komodo Wallet (MacOS)
+      - name: Build AtomicDEX (MacOS)
         if: runner.os == 'macOS'
         run: |
           xcrun --sdk macosx --show-sdk-path
@@ -238,7 +245,6 @@ jobs:
           export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export PATH=/Users/runner/.nimble/bin:$PATH
           export MACOSX_DEPLOYMENT_TARGET=10.15
           export CC=clang
           export CXX=clang++
@@ -248,7 +254,7 @@ jobs:
 
 
 
-      - name: Build Komodo Wallet (Linux)
+      - name: Build AtomicDEX (Linux)
         if: runner.os == 'Linux'
         run: |
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
@@ -266,7 +272,7 @@ jobs:
           ./ci_tools_atomic_dex bundle ${{ matrix.type }}
 
 
-      - name: Build Komodo Wallet (Windows)
+      - name: Build FiroDEX (Windows)
         if: runner.os == 'Windows'
         shell: powershell
         run: |
@@ -280,7 +286,6 @@ jobs:
           echo "artifact_name_zstd=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "artifact_name_zip=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "artifact_name_appimage=${{ env.DEX_PROJECT_NAME }}-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
-          echo "target_name_zstd=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "target_name_zip=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
 
@@ -360,7 +365,7 @@ jobs:
       - name: Running Tests (Linux)
         working-directory: ci_tools_atomic_dex
         continue-on-error: true
-        if: runner.os == 'Linux' && 'KomodoPlatform/komodo-wallet-desktop' == github.repository
+        if: runner.os == 'Linux' && 'firoorg/FiroDEX-Desktop' == github.repository
         run: |
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
@@ -379,7 +384,7 @@ jobs:
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
         continue-on-error: true
-        if: runner.os == 'macOS' &&  'KomodoPlatform/komodo-wallet-desktop' == github.repository
+        if: runner.os == 'macOS' &&  'firoorg/FiroDEX-Desktop' == github.repository
         run: |
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
@@ -392,7 +397,6 @@ jobs:
           export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
-          export PATH=/Users/runner/.nimble/bin:$PATH
           export CC=clang
           export CXX=clang++
           #echo "Running tests"
@@ -404,7 +408,7 @@ jobs:
       - name: Running Tests (Windows)
         shell: powershell
         continue-on-error: true
-        if: runner.os == 'Windows' && 'KomodoPlatform/komodo-wallet-desktop' == github.repository
+        if: runner.os == 'Windows' && 'firoorg/FiroDEX-Desktop' == github.repository
         run: |
           #echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
