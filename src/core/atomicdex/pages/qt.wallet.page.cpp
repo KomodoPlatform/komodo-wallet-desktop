@@ -526,7 +526,7 @@ namespace atomic_dex
                 qDebug() << fees_data;
                 auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
                 withdraw_init_req.fees = t_withdraw_init_fees{
-                    .type      = "UtxoFixed",
+                    .type      = "UtxoPerKbyte",
                     .amount    = json_fees.at("fees_amount").get<std::string>()
                 };
             }
@@ -702,7 +702,7 @@ namespace atomic_dex
             {
                 qDebug() << fees_data;
                 withdraw_req.fees = t_withdraw_fees{
-                    .type      = "UtxoFixed",
+                    .type      = "UtxoPerKbyte",
                     .amount    = json_fees.at("fees_amount").get<std::string>(),
                     .gas_limit = json_fees.at("gas_limit").get<int>()};
                 if (coin_info.coin_type == CoinType::ERC20)
