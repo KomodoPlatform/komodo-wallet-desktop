@@ -15,12 +15,12 @@ GradientRectangle
     width: list_bg.width - list_bg.border.width * 2 - 6
     height: 44
     radius: Dex.Style.rectangleCornerRadius + 4
-    property int activation_pct: Dex.General.zhtlcActivationProgress(API.app.get_zhtlc_status(ticker), ticker)
+    property int activation_pct: Dex.General.zhtlcActivationProgress(API.app.get_task_activation_status(ticker), ticker)
     Connections
     {
         target: API.app.settings_pg
         function onZhtlcStatusChanged() {
-            activation_pct = Dex.General.zhtlcActivationProgress(API.app.get_zhtlc_status(ticker), ticker)
+            activation_pct = Dex.General.zhtlcActivationProgress(API.app.get_task_activation_status(ticker), ticker)
         }
     }
 

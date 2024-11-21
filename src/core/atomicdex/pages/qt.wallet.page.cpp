@@ -307,7 +307,7 @@ namespace atomic_dex
             obj["is_vote_coin"]                       = coin_info.is_vote_coin;
 
             std::error_code   ec;
-            if (!kdf_system.is_zhtlc_coin_ready(coin_info.ticker))
+            if (!kdf_system.is_task_activation_ready(coin_info.ticker))
             {
                 obj["address"]        = "activating";
                 obj["qrcode_address"] = "";
@@ -517,7 +517,11 @@ namespace atomic_dex
         const auto&        ticker     = kdf_system.get_current_ticker();
         auto               coin_info = kdf_system.get_coin_info(ticker);
 
-        if (coin_info.is_zhtlc_family)
+        if (coin_info.is_sia_family)
+        {
+            SPDLOG_ERROR("SIA Withdraws are not implemented yet...");
+        }
+        else if (coin_info.is_zhtlc_family)
         {
             t_withdraw_init_request withdraw_init_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .memo = memo.toStdString(), .max = max};
 
@@ -1098,7 +1102,7 @@ namespace atomic_dex
                     }
                     else
                     {
-                        if (!m_system_manager.get_system<kdf_service>().is_zhtlc_coin_ready(ticker.toStdString()))
+                        if (!m_system_manager.get_system<kdf_service>().is_task_activation_ready(ticker.toStdString()))
                         {
                             j_out["reason"]   = "Validation error: Coin not fully enabled";
                         }

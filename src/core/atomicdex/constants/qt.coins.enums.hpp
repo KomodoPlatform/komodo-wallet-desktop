@@ -55,10 +55,11 @@ namespace atomic_dex
             TENDERMINT      = 21,
             TENDERMINTTOKEN = 22,
             EWT             = 23,
-            Disabled        = 24,
-            Invalid         = 25,
-            All             = 26,
-            Size            = 27
+            SIA             = 24,
+            Disabled        = 25,
+            Invalid         = 26,
+            All             = 27,
+            Size            = 28
         };
 
         Q_ENUM(CoinTypeEnum)

@@ -38,6 +38,7 @@ namespace atomic_dex
         using nodes                                     = std::vector<node>;
         using url_list                                  = std::vector<std::string>;
         using eth_family_url_list                       = std::vector<std::string>;
+        using sia_family_url_list                       = std::vector<std::string>;
         using bchd_url_list                             = std::vector<std::string>;
         using light_wallet_d_servers                    = std::vector<std::string>; ///< For ZHTLC
         std::string                                       ticker;
@@ -72,6 +73,7 @@ namespace atomic_dex
         bool                                              has_parent_fees_ticker{false}; ///< True if parent fees is different from current ticker eg: ERC20 tokens
         bool                                              is_erc_family{false};
         bool                                              is_zhtlc_family{false};
+        bool                                              is_sia_family{false};
         bool                                              default_coin{false};
         std::optional<std::string>                        alias_ticker{std::nullopt};
         std::optional<bool>                               allow_slp_unsafe_conf;
@@ -94,6 +96,7 @@ namespace atomic_dex
         std::optional<nodes>                              rpc_urls;
         std::optional<light_wallet_d_servers>             z_urls;
         std::optional<eth_family_url_list>                eth_family_urls;
+        std::optional<sia_family_url_list>                sia_family_urls;
         std::optional<bchd_url_list>                      bchd_urls;
     };
 

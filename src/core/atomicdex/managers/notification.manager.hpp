@@ -41,7 +41,7 @@ namespace atomic_dex
 
         //! Callbacks
         void on_swap_status_notification(const swap_status_notification& evt);
-        void on_enabling_z_coin_status(const enabling_z_coin_status& evt);
+        void on_enabling_task_status(const enabling_task_status& evt);
         void on_enabling_coin_failed(const enabling_coin_failed& evt);
         void on_disabling_coin_failed(const disabling_coin_failed& evt);
         void on_balance_update_notification(const balance_update_notification& evt);

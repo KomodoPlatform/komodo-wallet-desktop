@@ -1452,11 +1452,11 @@ namespace atomic_dex
                 current_trading_error = TradingError::RightParentChainNotEnoughBalance;
             }
         }
-        else if (!kdf.is_zhtlc_coin_ready(left))
+        else if (!kdf.is_task_activation_ready(left))
         {
             current_trading_error = TradingError::LeftZhtlcChainNotEnabled;
         }
-        else if (!kdf.is_zhtlc_coin_ready(right))
+        else if (!kdf.is_task_activation_ready(right))
         {
             current_trading_error = TradingError::RightZhtlcChainNotEnabled;
         }
