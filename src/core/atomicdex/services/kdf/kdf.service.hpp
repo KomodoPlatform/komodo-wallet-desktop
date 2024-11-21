@@ -187,7 +187,7 @@ namespace atomic_dex
        void enable_erc20_coins(const t_coins& coins, const std::string parent_ticker);
        void enable_tendermint_coin(coin_config_t coin_config);
        void enable_tendermint_coins(const t_coins& coins, const std::string parent_ticker);
-       void enable_zhtlc(const t_coins& coins);
+       void enable_task(const t_coins& coins);
 
        // Balances processing functions
        void process_balance_answer(const kdf::enable_bch_with_tokens_rpc& rpc);    // Called after enabling SLP coins along tBCH/BCH.
@@ -204,8 +204,8 @@ namespace atomic_dex
        void                         update_sync_ticker_pair(std::string base, std::string rel);
        [[nodiscard]] bool           is_this_ticker_present_in_raw_cfg(const std::string& ticker) const;
        [[nodiscard]] bool           is_this_ticker_present_in_normal_cfg(const std::string& ticker) const;
-       [[nodiscard]] bool           is_zhtlc_coin_ready(const std::string coin) const;
-       [[nodiscard]] nlohmann::json get_zhtlc_status(const std::string coin) const;
+       [[nodiscard]] bool           is_task_activation_ready(const std::string coin) const;
+       [[nodiscard]] nlohmann::json get_task_activation_status(const std::string coin) const;
 
       std::map<std::string, t_coins> groupByParentCoin(const t_coins& coins);
 
@@ -249,6 +249,12 @@ namespace atomic_dex
 
        //! Get Specific info about one coin
        [[nodiscard]] coin_config_t get_coin_info(const std::string& ticker) const;
+
+       //! Check if tx_history v2 is required
+       [[nodiscard]] bool uses_task_activation(const coin_config_t& coin_info) const;    
+
+       //! Check if a task activation method is required
+       [[nodiscard]] bool uses_v2_history(const coin_config_t& coin_info) const;       
        
        // Tells if the given coin is enabled.
        [[nodiscard]] bool is_coin_enabled(const std::string& ticker) const;

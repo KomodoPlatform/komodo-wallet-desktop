@@ -87,6 +87,7 @@ namespace atomic_dex
         [[nodiscard]] global_coins_cfg_proxy_model*   get_all_bep20_proxy() const;
         [[nodiscard]] global_coins_cfg_proxy_model*   get_all_smartchains_proxy() const;
         [[nodiscard]] global_coins_cfg_proxy_model*   get_all_utxo_proxy() const;
+        [[nodiscard]] global_coins_cfg_proxy_model*   get_all_sia_proxy() const;
         [[nodiscard]] global_coins_cfg_proxy_model*   get_all_slp_proxy() const;
         [[nodiscard]] global_coins_cfg_proxy_model*   get_all_zhtlc_proxy() const;
         [[nodiscard]] int                             get_length() const;
@@ -109,6 +110,7 @@ namespace atomic_dex
         Q_PROPERTY(global_coins_cfg_proxy_model* all_bep20_proxy       READ get_all_bep20_proxy       NOTIFY all_bep20_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_smartchains_proxy READ get_all_smartchains_proxy NOTIFY all_smartchains_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_utxo_proxy        READ get_all_utxo_proxy        NOTIFY all_utxo_proxyChanged)
+        Q_PROPERTY(global_coins_cfg_proxy_model* all_sia_proxy         READ get_all_sia_proxy         NOTIFY all_sia_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_slp_proxy         READ get_all_slp_proxy         NOTIFY all_slp_proxyChanged)
         Q_PROPERTY(global_coins_cfg_proxy_model* all_zhtlc_proxy       READ get_all_zhtlc_proxy       NOTIFY all_zhtlc_proxyChanged)
         Q_PROPERTY(int                           length                READ get_length                NOTIFY lengthChanged)
@@ -126,6 +128,7 @@ namespace atomic_dex
         void all_smartchains_proxyChanged();
         void all_utxo_proxyChanged();
         void all_slp_proxyChanged();
+        void all_sia_proxyChanged();
         void all_zhtlc_proxyChanged();
         void lengthChanged();
         void checked_nbChanged();

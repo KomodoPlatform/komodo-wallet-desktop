@@ -29,12 +29,12 @@ Item
     readonly property string    headerSmallTitleFont: Style.textSizeSmall4
     readonly property string    headerSmallFont: Style.textSizeSmall2
     readonly property string    addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
-    property int activation_pct: General.zhtlcActivationProgress(API.app.get_zhtlc_status(api_wallet_page.ticker), api_wallet_page.ticker)
+    property int activation_pct: General.zhtlcActivationProgress(API.app.get_task_activation_status(api_wallet_page.ticker), api_wallet_page.ticker)
     Connections
     {
         target: API.app.settings_pg
         function onZhtlcStatusChanged() {
-            activation_pct = General.zhtlcActivationProgress(API.app.get_zhtlc_status(api_wallet_page.ticker), api_wallet_page.ticker)
+            activation_pct = General.zhtlcActivationProgress(API.app.get_task_activation_status(api_wallet_page.ticker), api_wallet_page.ticker)
         }
     }
 

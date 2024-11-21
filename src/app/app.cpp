@@ -122,7 +122,7 @@ namespace atomic_dex
             bool       has_parent_fees = coin_info.has_parent_fees_ticker;
             if (not get_orders()->swap_is_in_progress(coin) && coin != primary_coin && coin != secondary_coin)
             {
-                if (!get_kdf().is_zhtlc_coin_ready(coin.toStdString()))
+                if (!get_kdf().is_task_activation_ready(coin.toStdString()))
                 {
                     this->dispatcher_.trigger<disabling_coin_failed>(coin.toStdString(), "Can't disable until fully activated.");
                 }
@@ -550,9 +550,9 @@ namespace atomic_dex
         return this->system_manager_.get_system<kdf_service>();
     }
 
-    QJsonObject application::get_zhtlc_status(const QString& coin)
+    QJsonObject application::get_task_activation_status(const QString& coin)
     {
-        QJsonObject  res = nlohmann_json_object_to_qt_json_object(get_kdf().get_zhtlc_status(coin.toStdString()));
+        QJsonObject  res = nlohmann_json_object_to_qt_json_object(get_kdf().get_task_activation_status(coin.toStdString()));
         return res;
     }
 

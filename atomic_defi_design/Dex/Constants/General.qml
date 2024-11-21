@@ -115,6 +115,10 @@ QtObject {
     {
         return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_zhtlc_family
     }
+    function isSia(coin)
+    {
+        return API.app.portfolio_pg.global_cfg_mdl.get_coin_info(coin).is_sia_family
+    }
 
     function isZhtlcReady(coin)
     {

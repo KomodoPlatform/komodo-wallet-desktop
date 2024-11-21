@@ -106,6 +106,10 @@ namespace
         {
             return CoinType::SmartBCH;
         }
+        if (coin_type == "SIA")
+        {
+            return CoinType::SIA;
+        }
         if (coin_type == "Ethereum Classic")
         {
             return CoinType::EthereumClassic;
@@ -211,9 +215,18 @@ namespace atomic_dex
         {
             // Todo: this is bad, we are using 2 times the required memory. Something can be improved here.
             cfg.urls            = j.at("nodes").get<std::vector<node>>();
-            cfg.eth_family_urls = std::vector<std::string>();
-            cfg.eth_family_urls.value().reserve(cfg.urls.value().size());
-            for (const auto& url: cfg.urls.value()) { cfg.eth_family_urls->push_back(url.url); }
+            if (cfg.type == "SIA")
+            {
+                cfg.sia_family_urls = std::vector<std::string>();
+                cfg.sia_family_urls.value().reserve(cfg.urls.value().size());
+                for (const auto& url: cfg.urls.value()) { cfg.sia_family_urls->push_back(url.url); }
+            }
+            else
+            {
+                cfg.eth_family_urls = std::vector<std::string>();
+                cfg.eth_family_urls.value().reserve(cfg.urls.value().size());
+                for (const auto& url: cfg.urls.value()) { cfg.eth_family_urls->push_back(url.url); }
+            }
         }
         if (j.contains("rpc_urls"))
         {
@@ -392,6 +405,11 @@ namespace atomic_dex
             cfg.is_zhtlc_family        = true;
             cfg.fees_ticker            = cfg.ticker;
             cfg.has_memos              = true;
+            break;
+        case CoinType::SIA:
+            cfg.has_parent_fees_ticker = false;
+            cfg.is_sia_family          = true;
+            cfg.fees_ticker            = cfg.ticker;
             break;
         case CoinType::Invalid:
             cfg.has_parent_fees_ticker = false;

@@ -97,12 +97,12 @@ Dex.DexListView
     delegate: Rectangle
     {
         property color _idleColor: index % 2 === 1 ? Dex.CurrentTheme.listItemOddBackground : Dex.CurrentTheme.listItemEvenBackground
-        property int activation_pct: Dex.General.zhtlcActivationProgress(Dex.API.app.get_zhtlc_status(ticker), ticker)
+        property int activation_pct: Dex.General.zhtlcActivationProgress(Dex.API.app.get_task_activation_status(ticker), ticker)
         Connections
         {
             target: Dex.API.app.settings_pg
             function onZhtlcStatusChanged() {
-                activation_pct = Dex.General.zhtlcActivationProgress(Dex.API.app.get_zhtlc_status(ticker), ticker)
+                activation_pct = Dex.General.zhtlcActivationProgress(Dex.API.app.get_task_activation_status(ticker), ticker)
             }
         }
 

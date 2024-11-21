@@ -18,6 +18,8 @@ namespace atomic_dex
         "MARTY",
         "ZOMBIE",
         "IRISTEST",
+        "TSIA",
+        "ANAGAMI"
     };
     inline const std::vector<std::string> g_vote_coins{
     };

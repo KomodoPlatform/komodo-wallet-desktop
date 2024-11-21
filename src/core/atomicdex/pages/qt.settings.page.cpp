@@ -192,7 +192,7 @@ namespace atomic_dex
         return true;
     }
 
-    nlohmann::json atomic_dex::settings_page::get_zhtlc_status()
+    nlohmann::json atomic_dex::settings_page::get_task_activation_status()
     {
         return m_zhtlc_status.get();
     }

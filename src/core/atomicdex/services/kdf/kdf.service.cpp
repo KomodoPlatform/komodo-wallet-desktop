@@ -39,6 +39,8 @@
 #include "atomicdex/api/kdf/rpc_v2/rpc2.z_coin_tx_history.hpp"
 #include "atomicdex/api/kdf/rpc_v2/rpc2.task.enable_z_coin.init.hpp"
 #include "atomicdex/api/kdf/rpc_v2/rpc2.task.enable_z_coin.status.hpp"
+#include "atomicdex/api/kdf/rpc_v2/rpc2.task.enable_sia_coin.init.hpp"
+#include "atomicdex/api/kdf/rpc_v2/rpc2.task.enable_sia_coin.status.hpp"
 #include "atomicdex/config/kdf.cfg.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
 #include "atomicdex/constants/dex.constants.hpp"
@@ -543,6 +545,7 @@ namespace atomic_dex
     void kdf_service::activate_coins(const t_coins& coins)
     {
         t_coins other_coins;
+        t_coins sia_coins;
         t_coins erc_family_coins;
         t_coins slp_coins;
         t_coins slp_testnet_coins;
@@ -574,6 +577,10 @@ namespace atomic_dex
             else if (coin_cfg.coin_type == CoinType::TENDERMINT || coin_cfg.coin_type == CoinType::TENDERMINTTOKEN)
             {
                 tendermint_coins.push_back(coin_cfg);
+            }
+            else if (coin_cfg.coin_type == CoinType::SIA)
+            {
+                sia_coins.push_back(coin_cfg);
             }
             else if (coin_cfg.coin_type == CoinType::ZHTLC)
             {
@@ -627,7 +634,7 @@ namespace atomic_dex
         if (zhtlc_coins.size() > 0)
         {
             SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} zhtlc_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", zhtlc_coins.size());
-            enable_zhtlc(zhtlc_coins);
+            enable_task(zhtlc_coins);
         }
         if (tendermint_coins.size() > 0)
         {
@@ -635,6 +642,11 @@ namespace atomic_dex
             for (const auto& [parent_coin, coins_vector] : groupByParentCoin(tendermint_coins)) {
                 enable_tendermint_coins(coins_vector, parent_coin);
             }
+        }
+        if (sia_coins.size() > 0)
+        {
+            SPDLOG_INFO(">>>>>>>>>>>>>>>>>>>>>>>>>>> Enabling {} sia_coins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", sia_coins.size());
+            enable_task(sia_coins);
         }
     }
 
@@ -1561,6 +1573,54 @@ namespace atomic_dex
                   { this->handle_exception_pplx_task(previous_task, "batch_balance_and_tx", batch); });
     }
 
+    bool 
+    kdf_service::uses_task_activation(const coin_config_t& coin_info) const
+    {
+        if (coin_info.coin_type == CoinType::ZHTLC)
+        {
+            return true;
+        }
+        if (coin_info.coin_type == CoinType::SIA)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool 
+    kdf_service::uses_v2_history(const coin_config_t& coin_info) const
+    {
+        if (coin_info.coin_type == CoinType::ZHTLC)
+        {
+            return true;
+        }
+        if (coin_info.coin_type == CoinType::SIA)
+        {
+            return true;
+        }
+        if (coin_info.coin_type == CoinType::TENDERMINT)
+        {
+            return true;
+        }
+        if (coin_info.coin_type == CoinType::TENDERMINTTOKEN)
+        {
+            return true;
+        }
+        if (coin_info.coin_type == CoinType::SLP)
+        {
+            return true;
+        }
+        if (coin_info.ticker == "tBCH")
+        {
+            return true;
+        }
+        if (coin_info.ticker == "BCH")
+        {
+            return true;
+        }
+        return false;
+    }
+
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
     kdf_service::prepare_batch_balance_and_tx(bool only_tx) const
     {
@@ -1581,7 +1641,7 @@ namespace atomic_dex
             std::size_t     limit =  5000;
             bool            requires_v2 = false;
             std::string     method = "my_tx_history";
-            if (coin_info.coin_type == CoinTypeGadget::ZHTLC || coin_info.coin_type == CoinTypeGadget::TENDERMINT || coin_info.coin_type == CoinTypeGadget::TENDERMINTTOKEN || coin_info.coin_type == CoinTypeGadget::SLP || coin_info.ticker == "tBCH" || coin_info.ticker == "BCH")
+            if (uses_v2_history(coin_info))
             {
                 requires_v2 = true;
                 if (coin_info.is_zhtlc_family)
@@ -1610,7 +1670,7 @@ namespace atomic_dex
             {
                 coin_info = get_coin_info(ticker);
 
-                if (coin_info.is_zhtlc_family)
+                if (uses_task_activation(coin_info))
                 {
                     // Don't request balance / history if not completely activated.
                     if (coin_info.activation_status.at("result").at("status") != "Ok")
@@ -1672,46 +1732,64 @@ namespace atomic_dex
         return {false, error};
     }
 
-    void kdf_service::enable_zhtlc(const t_coins& coins)
+    void kdf_service::enable_task(const t_coins& coins)
     {
         auto request_functor = [this](coin_config_t coin_info) -> std::pair<nlohmann::json, std::vector<std::string>>
         {
             const auto& settings_system  = m_system_manager.get_system<settings_page>();
-            
-            t_enable_z_coin_request request{
-                .coin_name            = coin_info.ticker,
-                .servers              = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
-                .z_urls               = coin_info.z_urls.value_or(std::vector<std::string>{}),
-                .coin_type            = coin_info.coin_type,
-                .is_testnet           = coin_info.is_testnet.value_or(false),
-                .with_tx_history      = false}; // Tx history not yet ready for ZHTLC
-            bool use_date = settings_system.get_use_sync_date();
-            SPDLOG_INFO("use_date: {}", use_date);
-            if (use_date)
+            nlohmann::json batch = nlohmann::json::array();
+
+            if (coin_info.is_zhtlc_family)
             {
-                int sync_date = settings_system.get_pirate_sync_date();
-                int sync_height = settings_system.get_pirate_sync_height(
-                    sync_date,
-                    coin_info.checkpoint_height,
-                    coin_info.checkpoint_blocktime
-                );
-                request.sync_height = sync_height;
+                t_enable_z_coin_request request{
+                    .coin_name            = coin_info.ticker,
+                    .servers              = coin_info.electrum_urls.value_or(get_electrum_server_from_token(coin_info.ticker)),
+                    .z_urls               = coin_info.z_urls.value_or(std::vector<std::string>{}),
+                    .coin_type            = coin_info.coin_type,
+                    .is_testnet           = coin_info.is_testnet.value_or(false),
+                    .with_tx_history      = false}; // Tx history not yet ready for ZHTLC
+                bool use_date = settings_system.get_use_sync_date();
+                SPDLOG_INFO("use_date: {}", use_date);
+                if (use_date)
+                {
+                    int sync_date = settings_system.get_pirate_sync_date();
+                    int sync_height = settings_system.get_pirate_sync_height(
+                        sync_date,
+                        coin_info.checkpoint_height,
+                        coin_info.checkpoint_blocktime
+                    );
+                    request.sync_height = sync_height;
+                }
+
+                nlohmann::json j = kdf::template_request("task::enable_z_coin::init", true);
+                kdf::to_json(j, request);
+                batch.push_back(j);
+                SPDLOG_INFO("Enable task request: {}", batch.dump(4));
+                return {batch, {coin_info.ticker}};
             }
 
-            nlohmann::json j = kdf::template_request("task::enable_z_coin::init", true);
-            kdf::to_json(j, request);
-            nlohmann::json batch = nlohmann::json::array();
-            batch.push_back(j);
-            // SPDLOG_INFO("ZHTLC request: {}", batch.dump(4));
-            return {batch, {coin_info.ticker}};
+            else if (coin_info.is_sia_family)
+            {
+                t_enable_sia_coin_request request{
+                    .coin_name            = coin_info.ticker,
+                    .server_url           = coin_info.sia_family_urls.value().at(0),
+                    .with_tx_history      = true};
+
+                nlohmann::json j = kdf::template_request("task::enable_sia::init", true);
+                kdf::to_json(j, request);
+                batch.push_back(j);
+                SPDLOG_INFO("Enable task request: {}", batch.dump(4));
+                return {batch, {coin_info.ticker}};
+            }
+
         };
 
-        auto answer_functor = [this](nlohmann::json batch, std::vector<std::string> tickers)
+        auto answer_functor = [this](coin_config_t coin_info, nlohmann::json batch, std::vector<std::string> tickers)
         {
             
             m_kdf_client.async_rpc_batch_standalone(batch)
                 .then(
-                    [this, tickers](web::http::http_response resp) mutable
+                    [this, coin_info, tickers](web::http::http_response resp) mutable
                     {
                         try
                         {
@@ -1738,7 +1816,7 @@ namespace atomic_dex
                                             std::unique_lock lock(m_coin_cfg_mutex);
                                             m_coins_informations[tickers[idx]].currently_enabled = true;
                                             this->dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {tickers[idx]}});
-                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "Complete!");
+                                            this->dispatcher_.trigger<enabling_task_status>(tickers[idx], "Complete!");
                                         }
                                         else
                                         {
@@ -1758,13 +1836,23 @@ namespace atomic_dex
                                                 static std::size_t z_nb_try      = 0;
                                                 nlohmann::json     z_error       = nlohmann::json::array();
                                                 nlohmann::json     z_batch_array = nlohmann::json::array();
-                                                t_enable_z_coin_status_request z_request{.task_id = task_id};
 
-                                                // SPDLOG_INFO("{} enable_z_coin Task ID: {}", tickers[idx], task_id);
+                                                SPDLOG_INFO("{} enable_task Task ID: {}", tickers[idx], task_id);
 
-                                                nlohmann::json j = kdf::template_request("task::enable_z_coin::status", true);
-                                                kdf::to_json(j, z_request);
-                                                z_batch_array.push_back(j);
+                                                if (coin_info.is_zhtlc_family)
+                                                {
+                                                    t_enable_z_coin_status_request z_request{.task_id = task_id};
+                                                    nlohmann::json j = kdf::template_request("task::enable_z_coin::status", true);
+                                                    kdf::to_json(j, z_request);
+                                                    z_batch_array.push_back(j);
+                                                }
+                                                else if (coin_info.is_sia_family)
+                                                {
+                                                    t_enable_sia_coin_status_request z_request{.task_id = task_id};
+                                                    nlohmann::json j = kdf::template_request("task::enable_sia::status", true);
+                                                    kdf::to_json(j, z_request);
+                                                    z_batch_array.push_back(j);
+                                                }
                                                 std::string last_event = "none";
                                                 std::string event = "none";
 
@@ -1845,7 +1933,7 @@ namespace atomic_dex
 
                                                                 dispatcher_.trigger<coin_fully_initialized>(coin_fully_initialized{.tickers = {tickers[idx]}});
                                                             }
-                                                            this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
+                                                            this->dispatcher_.trigger<enabling_task_status>(tickers[idx], event);
                                                             last_event = event;
                                                         }
                                                         // todo(syl): refactor to a background task
@@ -1867,7 +1955,7 @@ namespace atomic_dex
                                                             tickers[idx], idx, tickers.size(), answers.size()
                                                         );
 
-                                                        this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], event);
+                                                        this->dispatcher_.trigger<enabling_task_status>(tickers[idx], event);
                                                         this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], z_error[0].dump(4));
                                                         to_remove.emplace(tickers[idx]);
                                                     }
@@ -1890,7 +1978,7 @@ namespace atomic_dex
                                                     else
                                                     {
                                                         SPDLOG_INFO("{} enable loop complete!", tickers[idx]);
-                                                        this->dispatcher_.trigger<enabling_z_coin_status>(tickers[idx], "Complete!");
+                                                        this->dispatcher_.trigger<enabling_task_status>(tickers[idx], "Complete!");
                                                     }
                                                 }
                                                 catch (const std::exception& error)
@@ -1944,12 +2032,12 @@ namespace atomic_dex
         for (auto&& coin: coins)
         {
             auto&& [request, coins_to_enable] = request_functor(coin);
-            // SPDLOG_INFO("{} {}", request.dump(4), coins_to_enable[0]);
-            answer_functor(request, coins_to_enable);
+            SPDLOG_INFO("{} {}", request.dump(4), coins_to_enable[0]);
+            answer_functor(coin, request, coins_to_enable);
         }
     }
 
-    nlohmann::json kdf_service::get_zhtlc_status(const std::string coin) const
+    nlohmann::json kdf_service::get_task_activation_status(const std::string coin) const
     {
         const auto coin_info       = get_coin_info(coin);
         if (coin_info.is_zhtlc_family)
@@ -1959,10 +2047,10 @@ namespace atomic_dex
         return {};
     }
 
-    bool kdf_service::is_zhtlc_coin_ready(const std::string coin) const
+    bool kdf_service::is_task_activation_ready(const std::string coin) const
     {
         const auto coin_info       = get_coin_info(coin);
-        if (coin_info.is_zhtlc_family)
+        if (uses_task_activation(coin_info))
         {
             if (coin_info.activation_status.contains("result"))
             {
@@ -2347,7 +2435,7 @@ namespace atomic_dex
         {
             if (it == m_balance_informations.cend())
             {
-                if (!is_zhtlc_coin_ready(ticker))
+                if (!is_task_activation_ready(ticker))
                 {
                     return "0";
                 }
