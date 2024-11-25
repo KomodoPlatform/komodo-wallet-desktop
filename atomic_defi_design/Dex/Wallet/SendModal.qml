@@ -681,7 +681,7 @@ MultipageModal
                 Layout.preferredHeight: 38
                 Layout.alignment: Qt.AlignHCenter
 
-                placeholderText: qsTr("Enter the custom fee") + " [" + api_wallet_page.ticker + "]"
+                placeholderText: qsTr("Enter the custom fee") + " (" + api_wallet_page.ticker + "/kb)"
             }
 
             // Token coins
