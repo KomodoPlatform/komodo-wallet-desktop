@@ -207,7 +207,7 @@ DexWindow
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    DefaultText
+                    DexLabel
                     {
                         id: _label
                         text: API.app.wallet_mgr.wallet_default_name ?? ""

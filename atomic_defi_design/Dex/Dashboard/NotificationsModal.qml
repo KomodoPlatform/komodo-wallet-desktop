@@ -402,7 +402,7 @@ DexPopup
         anchors.topMargin: 20
         spacing: 24
 
-        DefaultText
+        DexLabel
         {
             Layout.fillWidth: true
             font
@@ -428,7 +428,7 @@ DexPopup
 
             }
 
-            DefaultText
+            DexLabel
             {
                 anchors.centerIn: parent
                 visible: !list.visible
@@ -517,7 +517,7 @@ DexPopup
                                 bottomPadding: 5
                                 spacing: 5
 
-                                DefaultText
+                                DexLabel
                                 {
                                     text: getNotificationTitle(modelData)
                                     font: DexTypo.subtitle1
@@ -525,7 +525,7 @@ DexPopup
                                     wrapMode: Label.Wrap
                                 }
 
-                                DefaultText
+                                DexLabel
                                 {
                                     text: getNotificationMsg(modelData)
                                     font: DexTypo.subtitle2
@@ -533,7 +533,7 @@ DexPopup
                                     wrapMode: Label.Wrap
                                 }
 
-                                DefaultText
+                                DexLabel
                                 {
                                     text: modelData.human_date
                                     font: DexTypo.caption

@@ -108,7 +108,7 @@ Switch
 
         visible: _label.text != ''
 
-        DefaultText
+        DexLabel
         {
             id: _label
             Layout.fillHeight: true
@@ -122,7 +122,7 @@ Switch
             wrapMode: Label.Wrap
         }
 
-        DefaultText
+        DexLabel
         {
             id: _label2
             Layout.fillHeight: true

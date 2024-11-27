@@ -74,7 +74,7 @@ CheckBox
         height: _label.height
         spacing: 0
 
-        DefaultText
+        DexLabel
         {
             id: _label
             text: control.text

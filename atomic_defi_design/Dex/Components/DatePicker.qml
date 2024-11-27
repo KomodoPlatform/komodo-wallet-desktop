@@ -27,7 +27,7 @@ DefaultMouseArea
         id: column
         width: parent.width
 
-        DefaultText
+        DexLabel
         {
             id: title
             text: qsTr("Date")
@@ -39,7 +39,7 @@ DefaultMouseArea
         {
             width: parent.width
 
-            DefaultText
+            DexLabel
             {
                 id: label
                 text: selectedDate.toLocaleDateString(Locale.ShortFormat, "yyyy-MM-dd")

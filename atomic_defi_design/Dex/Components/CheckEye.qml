@@ -32,7 +32,7 @@ Item
             iconSize: 17
         }
 
-        DefaultText
+        DexLabel
         {
             id: _label
             font.pixelSize: 15

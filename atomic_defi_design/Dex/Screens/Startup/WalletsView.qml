@@ -198,7 +198,7 @@ SetupPage
                                 }
                             }
 
-                            DefaultText
+                            DexLabel
                             {
                                 anchors.left: parent.left
                                 anchors.leftMargin: 40

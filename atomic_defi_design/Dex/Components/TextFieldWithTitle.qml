@@ -42,7 +42,7 @@ ColumnLayout
             visible: text !== ''
         }
 
-        DefaultText
+        DexLabel
         {
             visible: required && input_field.text === ''
             font.pixelSize: Style.textSizeSmall2

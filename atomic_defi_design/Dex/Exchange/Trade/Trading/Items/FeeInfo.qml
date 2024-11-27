@@ -33,7 +33,7 @@ Column
             Layout.rightMargin: Layout.leftMargin
             Layout.alignment: Qt.AlignLeft
 
-            DefaultText
+            DexLabel
             {
                 id: tx_fee_text
                 text_value: General.feeText(curr_fee_info, base_ticker, true, true)
@@ -45,7 +45,7 @@ Column
         }
 
 
-        DefaultText
+        DexLabel
         {
             //visible: !fees.visible
             visible: false

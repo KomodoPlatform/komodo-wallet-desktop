@@ -328,7 +328,7 @@ MultipageModal
 
             Item { Layout.fillWidth: true }
 
-            DefaultText
+            DexLabel
             {
                 id: reason
 
@@ -378,7 +378,7 @@ MultipageModal
                 }
             }
 
-            DefaultText
+            DexLabel
             {
                 anchors.right: maxBut.left
                 anchors.rightMargin: 10
@@ -399,7 +399,7 @@ MultipageModal
                 radius: 7
                 color: maxButMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
 
-                DefaultText
+                DexLabel
                 {
                     anchors.centerIn: parent
                     text: qsTr("MAX")
@@ -433,7 +433,7 @@ MultipageModal
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: 380
 
-            DefaultText
+            DexLabel
             {
                 id: equivalentAmount
 
@@ -505,7 +505,7 @@ MultipageModal
                     anchors.verticalCenter: parent.verticalCenter
                     color: Dex.CurrentTheme.backgroundColor
 
-                    DefaultText
+                    DexLabel
                     {
                         id: fiat_symbol
                         visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD"
@@ -524,7 +524,7 @@ MultipageModal
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: cryptoFiatSwitchText
                     anchors.left: cryptoFiatSwitchIcon.right
@@ -573,35 +573,84 @@ MultipageModal
 
                 width: 470
                 height: 44
-                placeholderText: qsTr("Enter memo")
+                placeholderText: qsTr("Enter memo (optional)")
                 forceFocus: true
                 font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
             }
         }
 
-        // IBC channel ID
-        DefaultRectangle
+        ColumnLayout
         {
             visible: (["TENDERMINT", "TENDERMINTTOKEN"].includes(current_ticker_infos.type)) 
-            enabled: !root.is_send_busy
+            Layout.preferredWidth: 380
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 32
 
-            Layout.preferredWidth: 500
-            Layout.preferredHeight: 44
+            RowLayout
+            {
+                // Custom IBC Channel switch
+                DexSwitch
+                {
+                    id: custom_ibc_switch
+                    visible: (["TENDERMINT", "TENDERMINTTOKEN"].includes(current_ticker_infos.type))
+                    switchButtonWidth: 12
+                    switchButtonHeight: 12
+                    switchButtonRadius: 3
+                    font.pixelSize: 14
+                    enabled: !root.is_send_busy
+                    Layout.preferredWidth: 260
+                    onCheckedChanged: input_ibc_channel_id.text = ""
+                    labelWidth: 200
+                    label.text: qsTr("Use Custom IBC Channel")
+                    label.wrapMode: Label.NoWrap
+                }
+
+                DexTextField
+                {
+                    id: input_ibc_channel_id
+                    visible: custom_ibc_switch.checked
+                    Layout.preferredWidth: 380
+                    Layout.preferredHeight: 38
+                    placeholderText: qsTr("Enter IBC channel ID")
+                    forceFocus: true
+                    font: DexTypo.body3
+                }
+            }
+
+            // Add `?` icon here
+            // https://komodoplatform.com/en/docs/komodo-wallet/guides/how-to-find-the-right-ibc-channel-for-transfers/
+
+            // Custom IBC warning
+            DexLabel
+            {
+                font.pixelSize: 14
+                visible: custom_ibc_switch.checked
+                Layout.alignment: Qt.AlignHCenter
+                horizontalAlignment: DexLabel.AlignHCenter
+                color: Dex.CurrentTheme.warningColor
+                text_value: qsTr("Only use custom IBC channel if you know what you are doing! ")
+            }
+
+            // CEX memo warning
+            DexLabel
+            {
+                font.pixelSize: 14
+                Layout.alignment: Qt.AlignHCenter
+                horizontalAlignment: DexLabel.AlignHCenter
+                color: Dex.CurrentTheme.warningColor
+                text_value: qsTr("Avoid IBC transfers to centralized exchanges, as assets may be lost.")
+            }
+        }
+
+        // IBC channel ID
+        ColumnLayout
+        {
+            visible: custom_ibc_switch.checked
+            Layout.preferredWidth: 380
+            Layout.topMargin: 32
             Layout.alignment: Qt.AlignHCenter
 
-            color: input_memo.background.color
-            radius: input_memo.background.radius
 
-            DexTextField
-            {
-                id: input_ibc_channel_id
-
-                width: 470
-                height: 44
-                placeholderText: qsTr("Enter IBC channel ID")
-                forceFocus: true
-                font: DexTypo.body3
-            }
         }
 
         ColumnLayout
@@ -612,9 +661,10 @@ MultipageModal
             Layout.topMargin: 32
 
             // Custom fees switch
-            DefaultSwitch
+            DexSwitch
             {
                 id: custom_fees_switch
+                font.pixelSize: 14
                 visible: !General.isZhtlc(api_wallet_page.ticker)
                 enabled: !root.is_send_busy
                 Layout.preferredWidth: 260
@@ -622,40 +672,6 @@ MultipageModal
                 labelWidth: 200
                 label.text: qsTr("Enable Custom Fees")
                 label.wrapMode: Label.NoWrap
-            }
-
-            RowLayout
-            {
-                visible: custom_fees_switch.checked
-                // Custom fees warning
-                DefaultText
-                {
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.warningColor
-                }
-
-                DefaultText
-                {
-                    visible: input_custom_fees.visible
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.warningColor
-                    text_value: qsTr("Only use custom fees if you know what you are doing! ")
-                }
-
-                DefaultText
-                {
-                    visible: input_custom_fees_gas.visible
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.warningColor
-                    text_value: qsTr("Only use custom fees if you know what you are doing! ") + General.cex_icon
-                    DefaultInfoTrigger { triggerModal: gas_info_modal }
-                }
             }
         }
 
@@ -719,28 +735,59 @@ MultipageModal
                 }
             }
 
+
+            // Custom fees warning
+            DexLabel
+            {
+                visible: input_custom_fees.visible
+                
+                color: Dex.CurrentTheme.warningColor
+                font.pixelSize: 12
+                horizontalAlignment: DexLabel.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                wrapMode: Label.Wrap
+
+                text_value: qsTr("Only use custom fees if you know what you are doing! ")
+            }
+
+            // Custom gas fees warning
+            DexLabel
+            {
+                visible: input_custom_fees_gas.visible
+
+                color: Dex.CurrentTheme.warningColor
+                font.pixelSize: 12
+                horizontalAlignment: DexLabel.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                wrapMode: Label.Wrap
+
+                text_value: qsTr("Only use custom fees if you know what you are doing! ") + General.cex_icon
+                DefaultInfoTrigger { triggerModal: gas_info_modal }
+            }
+
             // Fee is higher than amount error
-            DefaultText
+            DexLabel
             {
                 id: fee_error
                 visible: feeIsHigherThanAmount()
 
+                color: Dex.CurrentTheme.warningColor
+                font.pixelSize: 12
+                horizontalAlignment: DexLabel.AlignHCenter
                 Layout.alignment: Qt.AlignHCenter
-                horizontalAlignment: DefaultText.AlignHCenter
-
                 wrapMode: Label.Wrap
-                color: Style.colorRed
+
                 text_value: qsTr("Custom Fee can't be higher than the amount") + "\n"
                           + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance_info_qstr(General.getFeesTicker(current_ticker_infos)), General.getFeesTicker(current_ticker_infos)))
             }
         }
 
         // Not enough funds error
-        DefaultText
+        DexLabel
         {
             Layout.topMargin: 16
             Layout.alignment: Qt.AlignHCenter
-            horizontalAlignment: DefaultText.AlignHCenter
+            horizontalAlignment: DexLabel.AlignHCenter
             wrapMode: Label.Wrap
             visible: !fee_error.visible && !hasFunds()
 
@@ -760,11 +807,11 @@ MultipageModal
         }
 
         // Withdraw status
-        DefaultText
+        DexLabel
         {
             Layout.topMargin: 16
             Layout.alignment: Qt.AlignHCenter
-            horizontalAlignment: DefaultText.AlignHCenter
+            horizontalAlignment: DexLabel.AlignHCenter
             wrapMode: Label.Wrap
             visible: General.isZhtlc(api_wallet_page.ticker) && withdraw_status != "Complete"
             color: Dex.CurrentTheme.foregroundColor

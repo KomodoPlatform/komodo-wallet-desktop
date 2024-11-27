@@ -170,13 +170,13 @@ Item
             scale: 0.5
         }
 
-        DefaultText
+        DexLabel
         {
             visible: pair_supported
             text_value: qsTr("Loading pair chart data") + "..."
         }
 
-        DefaultText
+        DexLabel
         {
             visible: !pair_supported && selected_testcoin == ""
             text_value: qsTr("There is no chart data for this pair")
@@ -184,7 +184,7 @@ Item
             Layout.alignment: Qt.AlignCenter
         }
 
-        DefaultText
+        DexLabel
         {
             visible: !pair_supported && selected_testcoin != ""
             text_value: qsTr("There is no chart data for %1 (testcoin) pairs").arg(selected_testcoin)

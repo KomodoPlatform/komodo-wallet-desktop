@@ -39,7 +39,7 @@ Dex.MultipageModal
         titleAlignment: Qt.AlignHCenter
         spacing: 16
 
-        Dex.DefaultText
+        Dex.DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("Fetching...")
@@ -69,7 +69,7 @@ Dex.MultipageModal
         titleAlignment: Qt.AlignHCenter
         spacing: 16
 
-        Dex.DefaultText
+        Dex.DexLabel
         {
             text: qsTr("Could not check new updates for the following reason: \n%1").arg(Dex.API.app.updateCheckerService.updateInfo.status)
         }
@@ -94,13 +94,13 @@ Dex.MultipageModal
         titleAlignment: Qt.AlignHCenter
         spacing: 16
 
-        Dex.DefaultText
+        Dex.DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("%1 %2 is available !").arg(Dex.API.app_name).arg(Dex.API.app.updateCheckerService.updateInfo.newVersion)
         }
 
-        Dex.DefaultText
+        Dex.DexLabel
         {
             visible: Dex.API.app.updateCheckerService.updateInfo.status === "required"
             Layout.alignment: Qt.AlignHCenter
@@ -131,7 +131,7 @@ Dex.MultipageModal
         titleAlignment: Qt.AlignHCenter
         spacing: 16
 
-        Dex.DefaultText
+        Dex.DexLabel
         {
             text: qsTr("Your application is up to date!")
         }

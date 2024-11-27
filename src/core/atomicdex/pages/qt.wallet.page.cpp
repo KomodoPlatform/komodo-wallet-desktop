@@ -693,9 +693,13 @@ namespace atomic_dex
                 .to = address.toStdString(),
                 .amount = max ? "0" : amount.toStdString(),
                 .memo = memo.toStdString(),
-                .ibc_source_channel = ibc_source_channel.toStdString(),
                 .max = max
             };
+
+            if (ibc_source_channel.toStdString() != "")
+            {
+                withdraw_req.ibc_source_channel = ibc_source_channel.toStdString();
+            }
 
             auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
             if (with_fees)

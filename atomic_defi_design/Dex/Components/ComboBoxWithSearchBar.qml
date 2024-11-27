@@ -96,7 +96,7 @@ ComboBox
         width: control.width
         highlighted: control.highlightedIndex === index
 
-        contentItem: DefaultText
+        contentItem: DexLabel
         {
             width: control.width
             font: DexTypo.subtitle2

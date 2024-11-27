@@ -22,7 +22,7 @@ ColumnLayout
 
     spacing: 10
 
-    DefaultText
+    DexLabel
     {
         visible: !price_entered && invalid_cex_price
         text_value: qsTr("Set swap price for evaluation")
@@ -35,7 +35,7 @@ ColumnLayout
         visible: price_entered
         Layout.alignment: Qt.AlignCenter
 
-        DefaultText
+        DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
             text_value: qsTr("Exchange rate") + (preferred_order.price !== undefined ? (" (" + qsTr("Selected") + ")") : "")
@@ -43,7 +43,7 @@ ColumnLayout
         }
 
         // Price reversed
-        DefaultText
+        DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", price_reversed, left_ticker)
@@ -52,7 +52,7 @@ ColumnLayout
         }
 
         // Price
-        DefaultText
+        DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatCrypto("", price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
@@ -69,7 +69,7 @@ ColumnLayout
         RowLayout
         {
             Layout.alignment: Qt.AlignHCenter
-            DefaultText
+            DexLabel
             {
                 text_value: General.formatPercent(lineScale)
                 font.pixelSize: fontSize
@@ -92,7 +92,7 @@ ColumnLayout
                 }
             }
 
-            DefaultText
+            DexLabel
             {
                 id: price_diff_text
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -101,7 +101,7 @@ ColumnLayout
                 font.pixelSize: fontSizeBigger
             }
             
-            DefaultText
+            DexLabel
             {
                 text_value: General.formatPercent(-lineScale)
                 font.pixelSize: fontSize
@@ -115,7 +115,7 @@ ColumnLayout
         visible: !invalid_cex_price
         Layout.alignment: Qt.AlignCenter
 
-        DefaultText {
+        DexLabel {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.cex_icon + " " + qsTr("CEXchange rate")
             font.pixelSize: fontSize
@@ -123,7 +123,7 @@ ColumnLayout
         }
 
         // Price reversed
-        DefaultText
+        DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", cex_price_reversed, left_ticker)
@@ -132,7 +132,7 @@ ColumnLayout
         }
 
         // Price
-        DefaultText
+        DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
             text_value: General.formatCrypto("", cex_price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)

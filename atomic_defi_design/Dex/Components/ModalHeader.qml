@@ -7,7 +7,7 @@ ColumnLayout {
     property alias title: title.text
 
     // Title
-    DefaultText {
+    DexLabel {
         id: title
         font: DexTypo.head6
     }

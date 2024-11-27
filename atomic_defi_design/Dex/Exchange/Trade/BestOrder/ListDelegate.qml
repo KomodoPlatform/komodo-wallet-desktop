@@ -124,7 +124,7 @@ Item
             text_value: !General.isZhtlc(coin) ? 
                 qsTr(" %1 is not enabled - Do you want to enable it to be able to select %2 best orders ?<br><a href='#'>Yes</a> - <a href='#no'>No</a>").arg(coin).arg(coin) :
                 qsTr(" %1 is not enabled - Please enable it through the coin activation menu").arg(coin)
-            wrapMode: DefaultText.Wrap
+            wrapMode: DexLabel.Wrap
             width: 250
             onLinkActivated:
             {

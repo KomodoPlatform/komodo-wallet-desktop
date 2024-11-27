@@ -41,7 +41,7 @@ MultipageModal
                 contentWidth: eula_text.width - 10
                 contentHeight: eula_text.height
 
-                DefaultText
+                DexLabel
                 {
                     id: eula_text
                     font: DexTypo.body1

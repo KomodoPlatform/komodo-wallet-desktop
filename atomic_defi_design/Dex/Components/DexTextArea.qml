@@ -52,9 +52,7 @@ TextArea {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground {
-        auto_set_size: false
-    }
+    background: InnerBackground {}
 
     RightClickMenu {}
 }

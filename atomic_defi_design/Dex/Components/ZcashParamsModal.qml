@@ -20,7 +20,7 @@ Dex.MultipageModal
     {
         titleText: qsTr("%1 Activation Failed!").arg(coins.join(' / '))
 
-        Dex.DefaultText
+        Dex.DexLabel
         {
             Layout.fillWidth: true
             text: qsTr("To activate ZHTLC coins, you need to download the Zcash Params.\nThis might take a few minutes...")

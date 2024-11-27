@@ -99,7 +99,7 @@ RangeSlider
         }
     }
 
-    DefaultText
+    DexLabel
     {
         id: _left_item
         anchors.left: parent.left
@@ -107,7 +107,7 @@ RangeSlider
         text_value: qsTr("Min")
     }
 
-    DefaultText
+    DexLabel
     {
         id: _right_item
         anchors.right: parent.right

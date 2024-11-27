@@ -114,7 +114,7 @@ Item
 
         RowLayout
         {
-            DefaultText { text: root.title; font: DexTypo.subtitle1 }
+            DexLabel { text: root.title; font: DexTypo.subtitle1 }
             Item { Layout.fillWidth: true }
             Qaterial.Icon
             {

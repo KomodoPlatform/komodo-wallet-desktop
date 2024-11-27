@@ -79,7 +79,7 @@ Item
             leftPadding: 20
             topPadding: 20
 
-            DefaultText // Title
+            DexLabel // Title
             {
                 text: qsTr("Orders")
                 font: DexTypo.head6

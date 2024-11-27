@@ -283,7 +283,7 @@ Dex.DexListView
 
                     Dex.DexTooltip
                     {
-                        contentItem: Dex.DefaultText
+                        contentItem: Dex.DexLabel
                         {
                            text: qsTr("Price provider is: %1").arg(DexString.capitalizeFirstLetter(priceProvider))
                            font: Dex.DexTypo.caption

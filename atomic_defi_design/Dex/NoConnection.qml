@@ -15,19 +15,19 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
-        DefaultText {
+        DexLabel {
             text_value: qsTr("No connection")
             Layout.alignment: Qt.AlignHCenter
             font.pixelSize: Style.textSize3
         }
 
-        DefaultText {
+        DexLabel {
             text_value: qsTr("Please make sure you are connected to the internet")
             Layout.alignment: Qt.AlignHCenter
         }
 
 
-        DefaultText {
+        DexLabel {
             text_value: qsTr("Will automatically retry in %1 seconds").arg(General.formatDouble(API.app.internet_checker.seconds_left_to_auto_retry, 0))
             Layout.alignment: Qt.AlignHCenter
         }

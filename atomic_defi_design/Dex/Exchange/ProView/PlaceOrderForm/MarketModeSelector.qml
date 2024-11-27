@@ -39,7 +39,7 @@ Rectangle
         anchors.centerIn: parent
         spacing: 8
 
-        DefaultText
+        DexLabel
         {
             color: API.app.trading_pg.market_mode == marketMode ? Dex.CurrentTheme.gradientButtonTextEnabledColor : Dex.CurrentTheme.foregroundColor
             text:

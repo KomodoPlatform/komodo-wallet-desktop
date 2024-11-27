@@ -13,7 +13,7 @@ MultipageModal {
     MultipageModalContent {
         titleText: General.cex_icon + " " + qsTr("Market Data")
 
-        DefaultText {
+        DexLabel {
             Layout.preferredHeight: 200
             Layout.fillWidth: true
 
