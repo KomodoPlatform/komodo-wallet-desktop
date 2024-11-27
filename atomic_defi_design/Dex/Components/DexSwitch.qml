@@ -29,9 +29,9 @@ Switch
     indicator: DefaultRectangle
     {
         id: _indicator
-        width: 52
-        height: 28
-        radius: 13
+        width: 42
+        height: 24
+        radius: 12
         anchors.verticalCenter: control.verticalCenter
 
         gradient: Gradient
