@@ -242,7 +242,7 @@
 <context>
     <name>App</name>
     <message>
-        <location filename="../../Dex/App.qml" line="187"/>
+        <location filename="../../Dex/App.qml" line="188"/>
         <source>Recover Funds Result</source>
         <translation>Le résultat de la récupération des fonds</translation>
     </message>
@@ -3204,192 +3204,192 @@ Please select a new order.</source>
 <context>
     <name>SendModal</name>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="172"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="173"/>
         <source>Failed to send</source>
         <translation>Échec de l&apos;envoi</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="252"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="254"/>
         <source>Prepare to send </source>
         <translation>Préparez à envoyer du </translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="272"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="274"/>
         <source>Address of the recipient</source>
         <translation>Adresse du destinataire</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="370"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="376"/>
         <source>Amount to send</source>
         <translation>Montant à envoyer</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="734"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="727"/>
         <source>Gas price</source>
         <translation>Prix ​​du gaz</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="830"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="823"/>
         <source>Cancel</source>
         <translation type="unfinished">Annuler</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="893"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="886"/>
         <source>Recipient&apos;s address</source>
         <translation>Adresse du destinataire</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="340"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="342"/>
         <source>The address has to be mixed case.</source>
         <translation>L&apos;adresse doit être mixte (case).</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="202"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="204"/>
         <source>Failed to Broadcast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="351"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="353"/>
         <source>Fix</source>
         <translation>Réparer</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="405"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="411"/>
         <source>MAX</source>
         <translation type="unfinished">MAX</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="449"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="528"/>
         <source>Fiat amount: Unavailable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="453"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="532"/>
         <source>Fiat amount: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="457"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="536"/>
         <source>%1 amount: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="536"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="487"/>
         <source>Specify in Fiat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="537"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="488"/>
         <source>Specify in Crypto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="614"/>
-        <source>Enter IBC channel ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="673"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="666"/>
         <source>Enable Custom Fees</source>
         <translation>Activer les frais personnalisés</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="700"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="693"/>
         <source>Enter the custom fee</source>
         <translation>Entrez les frais personnalisées</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="720"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="713"/>
         <source>Gas Limit</source>
         <translation>Limite de gaz</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="780"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="773"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
         <translation>Les frais personnalisées ne peuvent pas être supérieurs au montant</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="796"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="789"/>
         <source>Not enough funds.</source>
         <translation>Pas assez de fonds.</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="781"/>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="797"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="774"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="790"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation>Vous avez %1</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="576"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="583"/>
         <source>Enter memo (optional)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="604"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="608"/>
         <source>Use Custom IBC Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="631"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="618"/>
+        <source>Enter channel ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="635"/>
         <source>Only use custom IBC channel if you know what you are doing! </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="641"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="645"/>
         <source>Avoid IBC transfers to centralized exchanges, as assets may be lost.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="750"/>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="764"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="743"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="757"/>
         <source>Only use custom fees if you know what you are doing! </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="851"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="844"/>
         <source>Prepare</source>
         <translation>Préparer</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="887"/>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="996"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="880"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="989"/>
         <source>Send</source>
         <translation>Envoyez</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="911"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="904"/>
         <source>%1 address</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="912"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="905"/>
         <source>copied to clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="919"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="912"/>
         <source>Amount</source>
         <translation>Montant</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="937"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="930"/>
         <source>Memo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="945"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="938"/>
         <source>Fees</source>
         <translation>Frais</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="962"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="955"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../../Dex/Wallet/SendModal.qml" line="984"/>
+        <location filename="../../Dex/Wallet/SendModal.qml" line="977"/>
         <source>Back</source>
         <translation>Retour</translation>
     </message>
@@ -4190,7 +4190,7 @@ There is a toggle in settings where you can turn on/off the display of these tra
 <context>
     <name>Toast</name>
     <message>
-        <location filename="../../Dex/Components/Toast.qml" line="53"/>
+        <location filename="../../Dex/Components/Toast.qml" line="54"/>
         <source>Click here to see the details</source>
         <translation>Cliquez ici pour voir les détails</translation>
     </message>

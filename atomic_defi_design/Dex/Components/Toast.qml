@@ -4,6 +4,7 @@
 import QtQuick 2.15
 import "../Constants"
 import App 1.0
+import Dex.Themes 1.0 as Dex
 
 AnimatedRectangle {
     function show(text, duration, info, is_error) {
@@ -36,7 +37,7 @@ AnimatedRectangle {
     radius: margin / 3
 
     opacity: 0
-    color: isError ? DexTheme.warningColor : Style.colorTheme1
+    color: isError ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.colorTheme1
     z: 1000
 
     DexLabel {

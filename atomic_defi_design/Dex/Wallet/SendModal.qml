@@ -168,6 +168,7 @@ MultipageModal
 
         if (result.error_code)
         {
+            console.log("Error code: " + result.error_code)
             root.close()
             toast.show(qsTr("Failed to send"), General.time_toast_important_error, result.error_message)
         }
@@ -198,6 +199,7 @@ MultipageModal
 
         if(root.visible && broadcast_result !== "") {
             if(broadcast_result.indexOf("error") !== -1) {
+                console.log("Broadcast error: " + JSON.stringify(broadcast_result))
                 reset()
                 showError(qsTr("Failed to Broadcast"), General.prettifyJSON(broadcast_result))
             }

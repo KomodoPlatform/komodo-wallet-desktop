@@ -140,6 +140,7 @@ DexRectangle
     function showError(title, content)
     {
         if (content === undefined || content === null) return
+        console.log("Opening error_log_modal for " + title)
         error_log_modal.open()
         error_log_modal.item.header = title
         error_log_modal.item.field.text = content
