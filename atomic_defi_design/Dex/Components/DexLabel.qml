@@ -20,10 +20,14 @@ Text
         }
     }
 
-    text: privacy && Dex.General.privacy_mode ? Dex.General.privacy_text : text_value
-    font: monospace ? Dex.DexTypo.monoSmall : Dex.DexTypo.body2
     color: enabled ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
+    font: monospace ? Dex.DexTypo.monoSmall : Dex.DexTypo.body2
+    text: privacy && Dex.General.privacy_mode ? Dex.General.privacy_text : text_value
     wrapMode: Text.WordWrap
+
     onLinkActivated: Qt.openUrlExternally(link)
     linkColor: color
 }
+
+// 90% similar to DexText.qml
+// This could be refactored down.

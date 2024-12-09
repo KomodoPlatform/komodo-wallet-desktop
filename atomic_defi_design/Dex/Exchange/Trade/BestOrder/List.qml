@@ -32,7 +32,7 @@ Widget
         Layout.preferredWidth: parent.width
         Layout.preferredHeight: parent.height
 
-        DefaultText
+        DexLabel
         {
             text_value: qsTr("Enter volume to see best orders.")
             anchors.fill: parent

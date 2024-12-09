@@ -30,13 +30,13 @@ SetupPage
             scale: 0.8
         }
 
-        DefaultText
+        DexLabel
         {
             text_value: qsTr("Loading, please wait")
             Layout.bottomMargin: 10
         }
 
-        DefaultText
+        DexLabel
         {
             Layout.alignment: Qt.AlignHCenter
             text_value: (current_status === "initializing_kdf" ? qsTr("Initializing KDF") :

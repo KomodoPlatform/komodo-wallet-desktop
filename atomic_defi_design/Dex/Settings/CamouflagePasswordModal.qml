@@ -34,7 +34,7 @@ MultipageModal
                 width: parent.width
                 spacing: 10
 
-                DefaultText
+                DexLabel
                 {
                     width: parent.width - 40
                     horizontalAlignment: Text.AlignHCenter
@@ -44,7 +44,7 @@ MultipageModal
                     font: DexTypo.subtitle2
                 }
 
-                DefaultText
+                DexLabel
                 {
                     width: parent.width - 40
                     horizontalAlignment: Text.AlignHCenter
@@ -53,7 +53,7 @@ MultipageModal
                     text_value: qsTr("Using it to login will display your balance lower than it actually is.")
                 }
 
-                DefaultText
+                DexLabel
                 {
                     width: parent.width - 40
                     horizontalAlignment: Text.AlignHCenter

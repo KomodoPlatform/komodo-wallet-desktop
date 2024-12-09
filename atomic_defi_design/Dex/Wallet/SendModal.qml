@@ -168,6 +168,7 @@ MultipageModal
 
         if (result.error_code)
         {
+            console.log("Error code: " + result.error_code)
             root.close()
             toast.show(qsTr("Failed to send"), General.time_toast_important_error, result.error_message)
         }
@@ -198,6 +199,7 @@ MultipageModal
 
         if(root.visible && broadcast_result !== "") {
             if(broadcast_result.indexOf("error") !== -1) {
+                console.log("Broadcast error: " + JSON.stringify(broadcast_result))
                 reset()
                 showError(qsTr("Failed to Broadcast"), General.prettifyJSON(broadcast_result))
             }
@@ -256,8 +258,8 @@ MultipageModal
         {
             enabled: !root.is_send_busy
 
-            Layout.preferredWidth: 500
-            Layout.preferredHeight: 44
+            width: 500
+            Layout.preferredHeight: 36
             Layout.alignment: Qt.AlignHCenter
 
             color: input_address.background.color
@@ -268,7 +270,7 @@ MultipageModal
                 id: input_address
 
                 width: 470
-                height: 44
+                height: 36
                 placeholderText: qsTr("Address of the recipient")
                 forceFocus: true
                 font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
@@ -328,7 +330,7 @@ MultipageModal
 
             Item { Layout.fillWidth: true }
 
-            DefaultText
+            DexLabel
             {
                 id: reason
 
@@ -355,92 +357,169 @@ MultipageModal
             Item { Layout.fillWidth: true }
         }
 
-        // Amount to send
-        AmountField
+        RowLayout
         {
-            id: input_amount
-
-            enabled: !root.is_send_busy
-
-            Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: 500
-            Layout.preferredHeight: 44
-            Layout.topMargin: 32
-
-            placeholderText: qsTr("Amount to send")
-
-            onTextEdited:
+            Layout.preferredHeight: 36
+            Layout.topMargin: 8
+            Layout.alignment: Qt.AlignHCenter
+    
+            // Amount to send
+            AmountField
             {
-                if (text.length === 0)
+                id: input_amount
+
+                enabled: !root.is_send_busy
+                Layout.preferredWidth: equivalentAmount.visible ? 340 : 500
+                Layout.preferredHeight: 36
+
+                placeholderText: qsTr("Amount to send")
+
+                onTextEdited:
                 {
-                    text = "";
-                    return;
-                }
-            }
-
-            DefaultText
-            {
-                anchors.right: maxBut.left
-                anchors.rightMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
-
-                text: _preparePage.cryptoSendMode ? API.app.wallet_pg.ticker : API.app.settings_pg.current_currency
-                font.pixelSize: 16
-            }
-
-            Rectangle
-            {
-                id: maxBut
-                anchors.right: parent.right
-                anchors.rightMargin: 11
-                anchors.verticalCenter: parent.verticalCenter
-                width: 46
-                height: 23
-                radius: 7
-                color: maxButMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
-
-                DefaultText
-                {
-                    anchors.centerIn: parent
-                    text: qsTr("MAX")
-                }
-
-                DefaultMouseArea
-                {
-                    id: maxButMouseArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked:
+                    if (text.length === 0)
                     {
-                        if (_preparePage.cryptoSendMode)
+                        text = "";
+                        return;
+                    }
+                }
+
+                DexLabel
+                {
+                    anchors.right: maxBut.left
+                    anchors.rightMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    text: _preparePage.cryptoSendMode ? API.app.wallet_pg.ticker : API.app.settings_pg.current_currency
+                    font.pixelSize: 16
+                }
+
+                Rectangle
+                {
+                    id: maxBut
+                    anchors.right: parent.right
+                    anchors.rightMargin: 11
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 46
+                    height: 23
+                    radius: 7
+                    color: maxButMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
+
+                    DexLabel
+                    {
+                        anchors.centerIn: parent
+                        text: qsTr("MAX")
+                    }
+
+                    DefaultMouseArea
+                    {
+                        id: maxButMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked:
                         {
-                            input_amount.text = API.app.get_balance_info_qstr(api_wallet_page.ticker);
-                        }
-                        else
-                        {
-                            let cryptoBalance = new BigNumber(API.app.get_balance_info_qstr(api_wallet_page.ticker));
-                            input_amount.text = cryptoBalance.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
+                            if (_preparePage.cryptoSendMode)
+                            {
+                                input_amount.text = API.app.get_balance_info_qstr(api_wallet_page.ticker);
+                            }
+                            else
+                            {
+                                let cryptoBalance = new BigNumber(API.app.get_balance_info_qstr(api_wallet_page.ticker));
+                                input_amount.text = cryptoBalance.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // Crypto/fiat switch
+
+            Rectangle
+            {
+                enabled: equivalentAmount.enabled
+                visible: equivalentAmount.visible
+
+                radius: 16
+                Layout.preferredWidth: 150
+                Layout.preferredHeight: 36
+
+                color: cryptoFiatSwitchMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
+
+                Rectangle
+                {
+                    id: cryptoFiatSwitchIcon
+                    width: 28
+                    height: 28
+                    radius: width / 2
+                    anchors.left: parent.left
+                    anchors.leftMargin: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: Dex.CurrentTheme.backgroundColor
+
+                    DexLabel
+                    {
+                        id: fiat_symbol
+                        visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD"
+                        font.pixelSize: API.app.settings_pg.current_currency_sign.length == 1 ? 18 : 18 - API.app.settings_pg.current_currency_sign.length * 2
+                        anchors.centerIn: parent
+                        text: API.app.settings_pg.current_currency_sign
+                    }
+
+                    DefaultImage
+                    {
+                        visible: !fiat_symbol.visible
+                        anchors.centerIn: parent
+                        width: 16
+                        height: 16
+                        source: _preparePage.cryptoSendMode ? General.coinIcon(API.app.settings_pg.current_currency_sign) : General.coinIcon(API.app.wallet_pg.ticker)
+                    }
+                }
+
+                // Crypto/fiat switch
+                DexLabel
+                {
+                    id: cryptoFiatSwitchText
+                    anchors.left: cryptoFiatSwitchIcon.right
+                    anchors.leftMargin: 7
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 12
+                    text:
+                    {
+                        if (_preparePage.cryptoSendMode) qsTr("Specify in Fiat");
+                        else                             qsTr("Specify in Crypto");
+                    }
+                }
+
+                DefaultMouseArea
+                {
+                    id: cryptoFiatSwitchMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked:
+                    {
+                        _preparePage.cryptoSendMode = !_preparePage.cryptoSendMode
+                        let temp = input_amount.text
+                        input_amount.text = equivalentAmount.value
+                        equivalentAmount.value = temp == "" ? "0" : temp
+                    }
+                }
+            }
+        }
+        // Crypto/fiat values
         RowLayout
         {
-            Layout.topMargin: 10
+            Layout.topMargin: 3
+            Layout.bottomMargin: 6
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 400
 
-            DefaultText
+            DexLabel
             {
                 id: equivalentAmount
 
                 property string value: "0"
-
                 enabled: !(new BigNumber(current_ticker_infos.current_currency_ticker_price).isLessThanOrEqualTo(0))
                 visible: enabled
+                color: Dex.CurrentTheme.textPlaceholderColor
 
                 text:
                 {
@@ -464,13 +543,13 @@ MultipageModal
 
                     function onTextEdited()
                     {
-                        let imputAmount = new BigNumber(input_amount.text);
-                        if (input_amount.text === "" || imputAmount.isLessThanOrEqualTo(0))
+                        let inputAmount = new BigNumber(input_amount.text);
+                        if (input_amount.text === "" || inputAmount.isLessThanOrEqualTo(0))
                             equivalentAmount.value = "0"
                         else if (_preparePage.cryptoSendMode)
-                            equivalentAmount.value = imputAmount.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
+                            equivalentAmount.value = inputAmount.multipliedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                         else
-                            equivalentAmount.value = imputAmount.dividedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
+                            equivalentAmount.value = inputAmount.dividedBy(current_ticker_infos.current_currency_ticker_price).toFixed(8);
                     }
 
                     function onTextChanged()
@@ -480,78 +559,6 @@ MultipageModal
                 }
             }
 
-            Item { }
-
-            Rectangle
-            {
-                enabled: equivalentAmount.enabled
-                visible: equivalentAmount.visible
-
-                Layout.alignment: Qt.AlignRight
-                Layout.preferredWidth: cryptoFiatSwitchText.width + cryptoFiatSwitchIcon.width + 20
-                Layout.preferredHeight: 32
-                radius: 16
-
-                color: cryptoFiatSwitchMouseArea.containsMouse ? Dex.CurrentTheme.buttonColorHovered : Dex.CurrentTheme.buttonColorEnabled
-
-                Rectangle
-                {
-                    id: cryptoFiatSwitchIcon
-                    width: 28
-                    height: 28
-                    radius: width / 2
-                    anchors.left: parent.left
-                    anchors.leftMargin: 3
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: Dex.CurrentTheme.backgroundColor
-
-                    DefaultText
-                    {
-                        id: fiat_symbol
-                        visible: _preparePage.cryptoSendMode && API.app.settings_pg.current_currency_sign != "KMD"
-                        font.pixelSize: API.app.settings_pg.current_currency_sign.length == 1 ? 18 : 18 - API.app.settings_pg.current_currency_sign.length * 2
-                        anchors.centerIn: parent
-                        text: API.app.settings_pg.current_currency_sign
-                    }
-
-                    DefaultImage
-                    {
-                        visible: !fiat_symbol.visible
-                        anchors.centerIn: parent
-                        width: 18
-                        height: 18
-                        source: _preparePage.cryptoSendMode ? General.coinIcon(API.app.settings_pg.current_currency_sign) : General.coinIcon(API.app.wallet_pg.ticker)
-                    }
-                }
-
-                DefaultText
-                {
-                    id: cryptoFiatSwitchText
-                    anchors.left: cryptoFiatSwitchIcon.right
-                    anchors.leftMargin: 7
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 12
-                    text:
-                    {
-                        if (_preparePage.cryptoSendMode) qsTr("Specify in Fiat");
-                        else                             qsTr("Specify in Crypto");
-                    }
-                }
-
-                DefaultMouseArea
-                {
-                    id: cryptoFiatSwitchMouseArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked:
-                    {
-                        _preparePage.cryptoSendMode = !_preparePage.cryptoSendMode
-                        let temp = input_amount.text
-                        input_amount.text = equivalentAmount.value;
-                        equivalentAmount.value = temp;
-                    }
-                }
-            }
         }
 
         // Memo
@@ -561,7 +568,7 @@ MultipageModal
             enabled: !root.is_send_busy
 
             Layout.preferredWidth: 500
-            Layout.preferredHeight: 44
+            Layout.preferredHeight: 36
             Layout.alignment: Qt.AlignHCenter
 
             color: input_memo.background.color
@@ -572,49 +579,85 @@ MultipageModal
                 id: input_memo
 
                 width: 470
-                height: 44
-                placeholderText: qsTr("Enter memo")
+                height: 36
+                placeholderText: qsTr("Enter memo (optional)")
                 forceFocus: true
                 font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
             }
         }
 
-        // IBC channel ID
-        DefaultRectangle
+        // Custom IBC Channel switch
+        ColumnLayout
         {
             visible: (["TENDERMINT", "TENDERMINTTOKEN"].includes(current_ticker_infos.type)) 
-            enabled: !root.is_send_busy
-
-            Layout.preferredWidth: 500
-            Layout.preferredHeight: 44
+            Layout.preferredWidth: 400
             Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 12
 
-            color: input_memo.background.color
-            radius: input_memo.background.radius
-
-            DexTextField
+            RowLayout
             {
-                id: input_ibc_channel_id
+                DexSwitch
+                {
+                    id: custom_ibc_switch
+                    visible: (["TENDERMINT", "TENDERMINTTOKEN"].includes(current_ticker_infos.type))
+                    font.pixelSize: 14
+                    enabled: !root.is_send_busy
+                    Layout.preferredWidth: 220
+                    onCheckedChanged: input_ibc_channel_id.text = ""
+                    labelWidth: 200
+                    label.text: qsTr("Use Custom IBC Channel")
+                    label.wrapMode: Label.NoWrap
+                }
 
-                width: 470
-                height: 44
-                placeholderText: qsTr("Enter IBC channel ID")
-                forceFocus: true
-                font: DexTypo.body3
+                DexTextField
+                {
+                    id: input_ibc_channel_id
+                    visible: custom_ibc_switch.checked
+                    Layout.preferredWidth: 170
+                    Layout.preferredHeight: 36
+                    placeholderText: qsTr("Enter channel ID")
+                    forceFocus: true
+                    font: DexTypo.body3
+                }
+            }
+
+            // Add `?` icon here
+            // https://komodoplatform.com/en/docs/komodo-wallet/guides/how-to-find-the-right-ibc-channel-for-transfers/
+
+            // Custom IBC warning
+            DexLabel
+            {
+                font.pixelSize: 12
+                visible: custom_ibc_switch.checked
+                Layout.alignment: Qt.AlignHCenter
+                horizontalAlignment: DexLabel.AlignHCenter
+                color: Dex.CurrentTheme.warningColor
+                text_value: qsTr("Only use custom IBC channel if you know what you are doing! ")
+            }
+
+            // CEX memo warning
+            DexLabel
+            {
+                font.pixelSize: 12
+                Layout.alignment: Qt.AlignHCenter
+                horizontalAlignment: DexLabel.AlignHCenter
+                color: Dex.CurrentTheme.warningColor
+                text_value: qsTr("Avoid IBC transfers to centralized exchanges, as assets may be lost.")
             }
         }
 
         ColumnLayout
         {
             visible: General.getCustomFeeType(current_ticker_infos)
-            Layout.preferredWidth: 380
+            Layout.preferredWidth: 400
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 32
+            Layout.topMargin: 12
 
             // Custom fees switch
-            DefaultSwitch
+            DexSwitch
             {
                 id: custom_fees_switch
+                font.pixelSize: 14
                 visible: !General.isZhtlc(api_wallet_page.ticker)
                 enabled: !root.is_send_busy
                 Layout.preferredWidth: 260
@@ -622,40 +665,6 @@ MultipageModal
                 labelWidth: 200
                 label.text: qsTr("Enable Custom Fees")
                 label.wrapMode: Label.NoWrap
-            }
-
-            RowLayout
-            {
-                visible: custom_fees_switch.checked
-                // Custom fees warning
-                DefaultText
-                {
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.warningColor
-                }
-
-                DefaultText
-                {
-                    visible: input_custom_fees.visible
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.warningColor
-                    text_value: qsTr("Only use custom fees if you know what you are doing! ")
-                }
-
-                DefaultText
-                {
-                    visible: input_custom_fees_gas.visible
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.warningColor
-                    text_value: qsTr("Only use custom fees if you know what you are doing! ") + General.cex_icon
-                    DefaultInfoTrigger { triggerModal: gas_info_modal }
-                }
             }
         }
 
@@ -677,8 +686,8 @@ MultipageModal
 
                 enabled: !root.is_send_busy
 
-                Layout.preferredWidth: 380
-                Layout.preferredHeight: 38
+                Layout.preferredWidth: 400
+                Layout.preferredHeight: 36
                 Layout.alignment: Qt.AlignHCenter
 
                 placeholderText: qsTr("Enter the custom fee") + " (" + api_wallet_page.ticker + "/kb)"
@@ -698,8 +707,8 @@ MultipageModal
 
                     enabled: !root.is_send_busy
 
-                    Layout.preferredWidth: 380
-                    Layout.preferredHeight: 38
+                    Layout.preferredWidth: 400
+                    Layout.preferredHeight: 36
 
                     placeholderText: qsTr("Gas Limit")
                 }
@@ -712,35 +721,66 @@ MultipageModal
 
                     enabled: !root.is_send_busy
 
-                    Layout.preferredWidth: 380
-                    Layout.preferredHeight: 38
+                    Layout.preferredWidth: 400
+                    Layout.preferredHeight: 36
 
                     placeholderText: qsTr("Gas price") + " [" + General.tokenUnitName(current_ticker_infos) + "]"
                 }
             }
 
+
+            // Custom fees warning
+            DexLabel
+            {
+                visible: input_custom_fees.visible
+                
+                color: Dex.CurrentTheme.warningColor
+                font.pixelSize: 12
+                horizontalAlignment: DexLabel.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                wrapMode: Label.Wrap
+
+                text_value: qsTr("Only use custom fees if you know what you are doing! ")
+            }
+
+            // Custom gas fees warning
+            DexLabel
+            {
+                visible: input_custom_fees_gas.visible
+
+                color: Dex.CurrentTheme.warningColor
+                font.pixelSize: 12
+                horizontalAlignment: DexLabel.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                wrapMode: Label.Wrap
+
+                text_value: qsTr("Only use custom fees if you know what you are doing! ") + General.cex_icon
+                DefaultInfoTrigger { triggerModal: gas_info_modal }
+            }
+
             // Fee is higher than amount error
-            DefaultText
+            DexLabel
             {
                 id: fee_error
                 visible: feeIsHigherThanAmount()
 
+                color: Dex.CurrentTheme.warningColor
+                font.pixelSize: 12
+                horizontalAlignment: DexLabel.AlignHCenter
                 Layout.alignment: Qt.AlignHCenter
-                horizontalAlignment: DefaultText.AlignHCenter
-
                 wrapMode: Label.Wrap
-                color: Style.colorRed
+
                 text_value: qsTr("Custom Fee can't be higher than the amount") + "\n"
                           + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance_info_qstr(General.getFeesTicker(current_ticker_infos)), General.getFeesTicker(current_ticker_infos)))
             }
         }
 
         // Not enough funds error
-        DefaultText
+        DexLabel
         {
-            Layout.topMargin: 16
+            Layout.topMargin: 12
             Layout.alignment: Qt.AlignHCenter
-            horizontalAlignment: DefaultText.AlignHCenter
+            horizontalAlignment: DexLabel.AlignHCenter
             wrapMode: Label.Wrap
             visible: !fee_error.visible && !hasFunds()
 
@@ -760,11 +800,11 @@ MultipageModal
         }
 
         // Withdraw status
-        DefaultText
+        DexLabel
         {
-            Layout.topMargin: 16
+            Layout.topMargin: 12
             Layout.alignment: Qt.AlignHCenter
-            horizontalAlignment: DefaultText.AlignHCenter
+            horizontalAlignment: DexLabel.AlignHCenter
             wrapMode: Label.Wrap
             visible: General.isZhtlc(api_wallet_page.ticker) && withdraw_status != "Complete"
             color: Dex.CurrentTheme.foregroundColor
@@ -776,15 +816,15 @@ MultipageModal
         RowLayout
         {
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 20
+            Layout.topMargin: 16
 
             CancelButton
             {
                 text: qsTr("Cancel")
 
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: parent.width / 100 * 48
-                Layout.preferredHeight: 48
+                Layout.preferredWidth: parent.width / 100 * 42
+                Layout.preferredHeight: 42
 
                 label.font.pixelSize: 16
                 radius: 18
@@ -799,7 +839,7 @@ MultipageModal
                 enabled: fieldAreFilled() && hasFunds() && !errorView && !root.is_send_busy
 
                 Layout.alignment: Qt.AlignRight
-                Layout.preferredWidth: parent.width / 100 * 48
+                Layout.preferredWidth: parent.width / 100 * 42
 
                 text: qsTr("Prepare")
 

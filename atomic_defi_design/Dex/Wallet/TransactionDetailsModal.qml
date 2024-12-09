@@ -31,7 +31,7 @@ MultipageModal
         titleText: qsTr("Transaction Details")
 
         // Warning for spam/poison transactions
-        DefaultText
+        DexLabel
         {
             id: warning_text
             visible: is_spam
@@ -43,7 +43,7 @@ MultipageModal
         }
 
         // Warning for spam/poison transactions
-        DefaultText
+        DexLabel
         {
             id: warning_text2
             visible: is_spam

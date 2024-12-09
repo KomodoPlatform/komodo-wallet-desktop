@@ -221,7 +221,7 @@ MultipageModal
             left_text: currentType.prefix
         }
 
-        DefaultText
+        DexLabel
         {
             visible: input_contract_address.visible
             Layout.fillWidth: true
@@ -335,7 +335,7 @@ MultipageModal
     {
         titleText: qsTr("Configuration")
 
-        DefaultText
+        DexLabel
         {
             visible: has_contract_address
             Layout.fillWidth: true
@@ -360,7 +360,7 @@ MultipageModal
             field.placeholderText: qsTr("Enter the Coingecko ID")
         }
 
-        DefaultText
+        DexLabel
         {
             visible: input_coingecko_id.visible
             Layout.fillWidth: true
@@ -427,7 +427,7 @@ MultipageModal
     MultipageModalContent {
         titleText: qsTr("Preview Token Configuration")
 
-        DefaultText {
+        DexLabel {
             id: warning_message
             visible: coin_name.visible
             Layout.fillWidth: true
@@ -449,7 +449,7 @@ MultipageModal
             source: input_logo.path
         }
 
-        DefaultText {
+        DexLabel {
             id: error_text
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -460,7 +460,7 @@ MultipageModal
             color: Style.colorRed
         }
 
-        DefaultText {
+        DexLabel {
             id: coin_name
             Layout.alignment: Qt.AlignHCenter
             visible: has_contract_address && !error_text.visible

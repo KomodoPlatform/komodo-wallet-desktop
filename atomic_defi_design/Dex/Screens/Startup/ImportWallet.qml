@@ -113,7 +113,7 @@ SetupPage
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     font: DexTypo.head6
                     Layout.fillWidth: true
@@ -199,7 +199,7 @@ SetupPage
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: _seedError
                     visible: _seedField.error
@@ -263,7 +263,7 @@ SetupPage
                     Layout.preferredWidth: 400
                     spacing: Style.buttonSpacing
 
-                    DefaultText
+                    DexLabel
                     {
                         text_value: text_error
                         color: Dex.CurrentTheme.warningColor
@@ -359,7 +359,7 @@ SetupPage
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     text_value: text_error
                     color: Dex.CurrentTheme.warningColor

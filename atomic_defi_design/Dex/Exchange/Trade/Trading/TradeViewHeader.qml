@@ -118,7 +118,7 @@ Item
                     padding: 8
                     spacing: 8
 
-                    DefaultText { text: qsTr("Display Settings"); font: DexTypo.body2 }
+                    DexLabel { text: qsTr("Display Settings"); font: DexTypo.body2 }
 
                     HorizontalLine { width: parent.width - 20; anchors.horizontalCenter: parent.horizontalCenter; opacity: .4 }
 

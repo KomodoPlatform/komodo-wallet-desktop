@@ -43,13 +43,13 @@ RowLayout
                 {
                     Layout.fillWidth: true
                     spacing: 5
-                    DefaultText
+                    DexLabel
                     {
                         Layout.fillWidth: true
                         text: details ? details.base_coin : ""
                     }
 
-                    DefaultText
+                    DexLabel
                     {
                         Layout.fillWidth: true
                         text: details ? General.coinName(details.base_coin) : ""
@@ -59,7 +59,7 @@ RowLayout
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     Layout.fillWidth: true
                     text: details ? details.base_amount : ""
@@ -108,13 +108,13 @@ RowLayout
                 {
                     Layout.fillWidth: true
                     spacing: 5
-                    DefaultText
+                    DexLabel
                     {
                         Layout.fillWidth: true
                         text: details ? details.rel_coin : ""
                     }
 
-                    DefaultText
+                    DexLabel
                     {
                         Layout.fillWidth: true
                         text: details ? General.coinName(details.rel_coin) : ""
@@ -124,7 +124,7 @@ RowLayout
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     Layout.fillWidth: true
                     text: details ? details.rel_amount : ""

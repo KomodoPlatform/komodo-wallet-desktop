@@ -68,36 +68,36 @@ ColumnLayout {
         visible: !hide_hint
         Layout.fillWidth: true
 
-        DefaultText {
+        DexLabel {
             visible: high_security
             font.pixelSize: Style.textSizeSmall3
             text_value: hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character")
             color: hintColor(hasEnoughLowercaseCharacters())
         }
-        DefaultText {
+        DexLabel {
             visible: high_security
             font.pixelSize: Style.textSizeSmall3
             text_value: hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character")
             color: hintColor(hasEnoughUppercaseCharacters())
         }
-        DefaultText {
+        DexLabel {
             visible: high_security
             font.pixelSize: Style.textSizeSmall3
             text_value: hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character")
             color: hintColor(hasEnoughNumericCharacters())
         }
-        DefaultText {
+        DexLabel {
             visible: high_security
             font.pixelSize: Style.textSizeSmall3
             text_value: hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)")
             color: hintColor(hasEnoughSpecialCharacters())
         }
-        DefaultText {
+        DexLabel {
             font.pixelSize: Style.textSizeSmall3
             text_value: hintPrefix(hasEnoughCharacters()) + qsTr("Between %1 and %2 character(s)").arg(high_security ? 16 : 1).arg(max_pw_len)
             color: hintColor(hasEnoughCharacters())
         }
-        DefaultText {
+        DexLabel {
             font.pixelSize: Style.textSizeSmall3
             text_value: hintPrefix(passwordsDoMatch()) + qsTr(high_security ? "Password and Confirm Password have to be same" : "Password suffix and confirm password suffix must be the same")
             color: hintColor(passwordsDoMatch())

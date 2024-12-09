@@ -198,7 +198,7 @@ ColumnLayout
     }
 
     // Title
-    DefaultText
+    DexLabel
     {
         Layout.fillWidth: true
         text_value: `<font color="${Dex.CurrentTheme.foregroundColor}">` + qsTr("Progress details") + `</font>` +
@@ -234,7 +234,7 @@ ColumnLayout
             width: root.width
             height: 50
 
-            DefaultText {
+            DexLabel {
                 id: icon
 
                 text_value: is_active ? "●" : "○"
@@ -272,7 +272,7 @@ ColumnLayout
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
 
-                DefaultText
+                DexLabel
                 {
                     id: name
 
@@ -299,7 +299,7 @@ ColumnLayout
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     visible: bar.visible
                     font.pixelSize: Style.textSizeSmall2

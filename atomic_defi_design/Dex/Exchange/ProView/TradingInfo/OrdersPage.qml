@@ -112,7 +112,7 @@ Item {
                 onClicked: list_model_proxy.apply_all_filtering()
             }
 
-            DefaultText
+            DexLabel
             {
                 color: Dex.CurrentTheme.foregroundColor2
                 font: DexTypo.caption

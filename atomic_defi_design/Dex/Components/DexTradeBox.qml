@@ -272,7 +272,7 @@ Rectangle {
             height: parent.height
             anchors.right: parent.right
             visible: !isVertical && hidden
-            DefaultText
+            DexLabel
             {
                 id: _texto2
                 leftPadding: 10

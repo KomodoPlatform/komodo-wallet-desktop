@@ -125,7 +125,7 @@ InnerBackground {
                     }
 
                     // Error
-                    DefaultText {
+                    DexLabel {
                         font.pixelSize: Style.textSizeSmall4
                         visible: model.multi_ticker_error > 0
                         anchors.verticalCenter: input_price.verticalCenter
@@ -138,7 +138,7 @@ InnerBackground {
                             visible: parent.visible && mouse_area.containsMouse
 
                             contentItem: ColumnLayout {
-                                DefaultText {
+                                DexLabel {
                                     text_value: General.getTradingError(model.multi_ticker_error, model.multi_ticker_fees_info, base_ticker, model.ticker)
                                     font.pixelSize: Style.textSizeSmall2
                                 }
@@ -164,7 +164,7 @@ InnerBackground {
                         field.enabled: !is_parent_coin
                     }
 
-                    DefaultSwitch {
+                    DexSwitch {
                         id: enable_ticker
                         anchors.rightMargin: 10
                         anchors.right: parent.right

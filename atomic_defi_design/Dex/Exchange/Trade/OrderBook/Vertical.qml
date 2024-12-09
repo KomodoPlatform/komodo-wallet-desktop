@@ -54,7 +54,7 @@ Widget
         Layout.fillWidth: true
     }
 
-    DefaultText
+    DexLabel
     {
         id: volume_text
         visible: parseFloat(pair_volume_24hr) > 0

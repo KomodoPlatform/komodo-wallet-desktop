@@ -13,7 +13,7 @@ MultipageModal {
     MultipageModalContent {
         titleText: General.cex_icon + " " + qsTr("Minimum Trading Amount")
 
-        DefaultText {
+        DexLabel {
             //Layout.preferredHeight: 200
             Layout.fillWidth: true
             wrapMode: Text.Wrap

@@ -30,7 +30,7 @@ ColumnLayout
     Layout.fillHeight: false
     Layout.maximumHeight: window.height - 50
 
-    DefaultText
+    DexLabel
     {
         id: _title
         Layout.topMargin: root.titleTopMargin
@@ -39,7 +39,7 @@ ColumnLayout
         visible: text != ''
     }
 
-    DefaultText
+    DexLabel
     {
         id: _subtitle
         Layout.topMargin: 5

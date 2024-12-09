@@ -30,7 +30,7 @@ ComboBox
     // Main, selected text
     contentItem: Item
     {
-        DefaultText
+        DexLabel
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -108,7 +108,7 @@ ComboBox
         width: control.width
         highlighted: control.highlightedIndex === index
 
-        contentItem: DefaultText
+        contentItem: DexLabel
         {
             width: control.width
             font: DexTypo.subtitle2

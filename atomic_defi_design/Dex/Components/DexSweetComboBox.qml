@@ -172,7 +172,7 @@ ComboBox
                     {
                         width: control.width + 50
                         highlighted: control.highlightedIndex === index
-                        contentItem: DefaultText
+                        contentItem: DexLabel
                         {
                             text_value: "<b><font color='" + Style.getCoinColor(ticker) + "'>" + ticker + "</font></b>" + "    %1".arg(General.coinName(ticker)) 
                         }

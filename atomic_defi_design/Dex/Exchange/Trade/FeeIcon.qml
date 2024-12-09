@@ -5,7 +5,7 @@ import QtQuick.Controls 2.15
 import "../../Components"
 import "../../Constants"
 
-DefaultText {
+DexLabel {
     property var trade_info
     property string base
 

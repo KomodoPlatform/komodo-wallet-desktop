@@ -70,7 +70,7 @@ MouseArea
         }
     }
 
-    DefaultText
+    DexLabel
     {
         id: versionLabel
         anchors.horizontalCenter: dexLogo.horizontalCenter

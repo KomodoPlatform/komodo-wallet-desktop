@@ -36,7 +36,7 @@ MultipageModal {
                 width: parent.width
                 spacing: 10
 
-                DefaultText {
+                DexLabel {
                     width: parent.width - 40
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -45,7 +45,7 @@ MultipageModal {
                     font.pixelSize: Style.textSize2
                 }
 
-                DefaultText {
+                DexLabel {
                     width: parent.width - 40
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -62,7 +62,7 @@ MultipageModal {
             field.placeholderText: qsTr("Enter your wallet password")
         }
 
-        DefaultText {
+        DexLabel {
             text_value: qsTr("Wrong Password")
             color: Style.colorRed
             visible: wrong_password

@@ -52,7 +52,7 @@ MultipageModal
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        DefaultText
+        DexLabel
         {
             id: _title
             Layout.topMargin: 5
@@ -175,7 +175,7 @@ MultipageModal
                                     Layout.preferredHeight: 18
                                 }
 
-                                DefaultText
+                                DexLabel
                                 {
                                     Layout.leftMargin: 4
                                     Layout.alignment: Qt.AlignVCenter
@@ -225,7 +225,7 @@ MultipageModal
             Layout.topMargin: 6
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
-            DefaultText
+            DexLabel
             {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter

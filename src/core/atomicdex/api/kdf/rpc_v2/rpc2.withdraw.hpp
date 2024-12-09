@@ -26,11 +26,11 @@ namespace atomic_dex::kdf
     struct withdraw_request
     {
         std::string                  coin;
-        std::string                  to;                 ///< coins will be withdraw to this address
-        std::string                  amount;             ///< ignored if max is true
-        std::optional<withdraw_fees> fees{std::nullopt}; ///< ignored if std::nullopt
-        std::optional<std::string>   memo;               ///< memo for tendermint
-        std::optional<std::string>   ibc_source_channel;     ///< ibc_source_channel for tendermint
+        std::string                  to;                     ///< coins will be withdraw to this address
+        std::string                  amount;                 ///< ignored if max is true
+        std::optional<withdraw_fees> fees{std::nullopt};     ///< ignored if std::nullopt
+        std::optional<std::string>   memo{""};               ///< memo for tendermint
+        std::optional<std::string>   ibc_source_channel{""}; ///< ibc_source_channel for tendermint
         bool                         max{false};
     };
 

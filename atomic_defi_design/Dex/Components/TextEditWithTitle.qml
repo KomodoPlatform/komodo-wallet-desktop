@@ -25,7 +25,7 @@ ComponentWithTitle
     {
         Layout.fillWidth: true
 
-        DefaultText
+        DexLabel
         {
             id: _text
 
