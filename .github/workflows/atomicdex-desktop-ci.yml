@@ -228,9 +228,10 @@ jobs:
         run: |
           xcrun --sdk macosx --show-sdk-path
           export SDK_PATH=$(xcrun --sdk macosx --show-sdk-path)
-          ls /Applications/Xcode_13.2.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+          echo $SDK_PATH
+          ls $SDK_PATH
           echo $HOME/sdk
-          ls $HOME/sdk
+          ls $HOME/sdk || true
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
