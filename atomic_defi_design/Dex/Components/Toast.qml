@@ -3,10 +3,10 @@
 
 import QtQuick 2.15
 import App 1.0
-import Dex.Themes 1.0 as Dex
 import Dex.Components 1.0 as Dex
 import "../Components" as Dex
 import "../Constants" as Dex
+import Dex.Themes 1.0 as Dex
 
 AnimatedRectangle {
     function show(text, duration, info, is_error) {
