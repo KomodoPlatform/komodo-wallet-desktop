@@ -599,14 +599,14 @@ QtObject {
         return formatFiat("", value, API.app.settings_pg.current_currency)
     }
 
-    function formatFiat(received, amount, fiat, precision=2) {
+    function formatFiat(received, amount, fiat, sf=2) {
         if (privacy_mode) return ''
-        if (precision == 2 && fiat == "BTC") {
-            precision = 8
+        if (sf == 2 && fiat == "BTC") {
+            sf = 8
         }
         return diffPrefix(received) +
                 (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
-                + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), precision, true) : nFormatter(parseFloat(amount), precision))
+                + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), sf, true) : nFormatter(parseFloat(amount), sf))
     }
 
     function formatPercent(value, show_prefix=true) {
@@ -655,14 +655,14 @@ QtObject {
         return `${scaled.toFixed(decimals)}${suffix}`;
     }
 
-    function formatDouble(v, precision = defaultPrecision, trail_zeros = true) {
+    function formatDouble(v, sf = defaultPrecision, trail_zeros = true) {
         if(v === '') return "0"
-        if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
+        if(sf === recommendedPrecision) sf = getRecommendedPrecision(v)
 
-        if(precision === 0) return parseInt(v).toString()
+        if(sf === 0) return parseInt(v).toString()
 
         // Remove more than n decimals, then convert to string without trailing zeros
-        const full_double = parseFloat(v).toFixed(precision || defaultPrecision)
+        const full_double = parseFloat(v).toFixed(sf || defaultPrecision)
 
         return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
@@ -675,9 +675,12 @@ QtObject {
         return parseFloat(formatDouble(value, 2))
     }
 
-    function formatCrypto(received, amount, ticker, fiat_amount, fiat, precision, trail_zeros) {
-        if (privacy_mode) return ''
-        return diffPrefix(received) + ticker + " " + formatDouble(amount, precision, trail_zeros) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
+    function formatCrypto(received, amount, ticker, fiat_amount, fiat, sf, trail_zeros) {
+        if (privacy_mode) {
+            return ""
+        }
+        const prefix = diffPrefix(received)
+        return prefix + ticker + " " + formatDouble(amount, sf, trail_zeros) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
     function formatFullCrypto(received, amount, ticker, fiat_amount, fiat, use_full_ticker) {

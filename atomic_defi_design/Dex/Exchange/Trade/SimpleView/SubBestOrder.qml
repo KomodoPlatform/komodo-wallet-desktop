@@ -206,7 +206,7 @@ DexListView
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 horizontalAlignment: Text.AlignRight
                 // TODO: Adjust fiat to left/right sign based on region
-                text_value: Constants.formatFiat("", price_fiat, Constants.API.app.settings_pg.current_fiat_sign, precision=2)
+                text_value: Constants.formatFiat("", price_fiat, Constants.API.app.settings_pg.current_fiat_sign)
                 opacity: !_isCoinEnabled? .3 : 1
             }
 
