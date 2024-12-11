@@ -187,7 +187,7 @@ DexListView
             {
                 Layout.preferredWidth: _quantityColumnSize
                 horizontalAlignment: Text.AlignRight
-                text_value: Constants.formatNumber(rel_max_volume)
+                text_value: Constants.General.formatNumber(rel_max_volume)
                 font.pixelSize: 14
                 opacity: !_isCoinEnabled? .3 : 1
             }
@@ -196,7 +196,7 @@ DexListView
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
                 horizontalAlignment: Text.AlignRight
-                text_value: Constants.formatNumber(base_max_volume)
+                text_value: Constants.General.formatNumber(base_max_volume)
                 font.pixelSize: 14
                 opacity: !_isCoinEnabled? .3 : 1
             }
@@ -206,7 +206,7 @@ DexListView
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 horizontalAlignment: Text.AlignRight
                 // TODO: Adjust fiat to left/right sign based on region
-                text_value: Constants.formatFiat("", price_fiat, Constants.API.app.settings_pg.current_fiat_sign)
+                text_value: Constants.General.formatFiat("", price_fiat, Constants.API.app.settings_pg.current_fiat_sign)
                 opacity: !_isCoinEnabled? .3 : 1
             }
 
@@ -215,7 +215,7 @@ DexListView
                 Layout.preferredWidth: _cexRateColumnSize
                 horizontalAlignment: Text.AlignRight
                 color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.warningColor : DexTheme.okColor
-                text_value: Constants.getCexRate(cex_rates)
+                text_value: Constants.General.getCexRate(cex_rates)
                 opacity: !_isCoinEnabled? .3 : 1
             }
 
