@@ -38,7 +38,7 @@ Item
 
     Column
     {
-        width: root.currentSubPage === subPages.Trade ? _simpleTrade.best ? 600 : 450 : 450
+        width: root.currentSubPage === subPages.Trade ? _simpleTrade.best ? 720 : 450 : 450
         y: 60
         spacing: 30
         anchors.horizontalCenter: parent.horizontalCenter
@@ -133,7 +133,7 @@ Item
             id: _swipeSimplifiedView
             currentIndex: root.currentSubPage
             anchors.horizontalCenter: parent.horizontalCenter
-            width: 600
+            width: 720
             height: 650
             clip: true
             interactive: false
@@ -144,7 +144,7 @@ Item
                 {
                     id: subTradePage
                     height: _simpleTrade.height
-                    width: _simpleTrade.best ? 600 : _simpleTrade.coinSelection ? 450 : 380
+                    width: _simpleTrade.best ? 720 : _simpleTrade.coinSelection ? 450 : 380
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 20
 
