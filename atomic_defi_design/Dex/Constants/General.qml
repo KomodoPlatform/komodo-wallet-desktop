@@ -621,7 +621,7 @@ QtObject {
         return (show_prefix ? prefix : '') + parseFloat(value).toFixed(3) + ' %'
     }
 
-    readonly property int amountPrecision: 8
+    readonly property int defaultPrecision: 8
     readonly property int sliderDigitLimit: 9
     readonly property int recommendedPrecision: -1337
 
@@ -631,17 +631,38 @@ QtObject {
 
     function getRecommendedPrecision(v, limit) {
         const lim = limit || sliderDigitLimit
-        return Math.min(Math.max(lim - getDigitCount(v), 0), amountPrecision)
+        return Math.min(Math.max(lim - getDigitCount(v), 0), defaultPrecision)
     }
 
-    function formatDouble(v, precision, trail_zeros) {
+    /**
+    * Converts a float into a readable string with K, M, B, etc.
+    * @param {number} num - The number to format.
+    * @param {number} decimals - The number of decimal places to include (default is 2).
+    * @param {number} extra_decimals - The number of decimal places to include if no suffix (default is 8).
+    * @returns {string} - The formatted string.
+    */
+    function formatNumber(num, decimals = 2, extra_decimals = 8) {
+        if (isNaN(num) || num === null) return "0";
+
+        const suffixes = ['', 'K', 'M', 'B', 'T']; // Add more as needed for larger numbers
+        const tier = Math.floor(Math.log10(Math.abs(num)) / 3); // Determine the tier (e.g., thousands, millions)
+
+        if (tier === 0) return num.toFixed(extra_decimals); // No suffix needed
+
+        const scaled = num / Math.pow(10, tier * 3);
+        const suffix = suffixes[tier] || `e${tier * 3}`; // Use scientific notation if beyond defined suffixes
+
+        return `${scaled.toFixed(decimals)}${suffix}`;
+    }
+
+    function formatDouble(v, precision = defaultPrecision, trail_zeros = true) {
         if(v === '') return "0"
         if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
 
         if(precision === 0) return parseInt(v).toString()
 
         // Remove more than n decimals, then convert to string without trailing zeros
-        const full_double = parseFloat(v).toFixed(precision || amountPrecision)
+        const full_double = parseFloat(v).toFixed(precision || defaultPrecision)
 
         return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
