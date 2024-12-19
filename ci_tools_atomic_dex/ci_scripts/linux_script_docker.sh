@@ -1,59 +1,5 @@
 #!/bin/bash
 
-# Update repositories and remove unnecessary packages
-sudo apt-get update  # Prevents repository 404 errors
-sudo apt-get remove -y php* msodbcsql17 mysql*
-
-# Install essential build dependencies
-sudo apt-get install -y build-essential \
-                        libgl1-mesa-dev \
-                        curl \
-                        wget \
-                        zstd \
-                        software-properties-common \
-                        lsb-release \
-                        libpulse-dev \
-                        libtool \
-                        autoconf \
-                        unzip \
-                        libfuse2 \
-                        libssl-dev \
-                        libxkbcommon-x11-0 \
-                        libxcb-icccm4 \
-                        libxcb-image0 \
-                        libxcb1-dev \
-                        libxcb-keysyms1-dev \
-                        libxcb-render-util0-dev \
-                        libxcb-xinerama0 \
-                        libgstreamer-plugins-base1.0-dev \
-                        libxcb-shape0-dev \
-                        libxcb-xfixes0-dev \
-                        libx11-xcb-dev \
-                        libxrender-dev \
-                        libxcb-image0-dev \
-                        libxcb-util1-dev \
-                        libxcb-randr0-dev \
-                        libxcb-xinerama0-dev \
-                        libxcb-icccm4-dev \
-                        libxcb-sync-dev \
-                        libxcb-present-dev \
-                        libxcb-dri3-dev \
-                        libxcb-glx0-dev \
-                        gtk2-engines-pixbuf \
-                        libgtk2.0-0 \
-                        libgtk2.0-dev \
-                        git
-
-# Deps for QT web engine view
-sudo apt-get install libnss3-dev \
-    libnspr4-dev \
-    libxcomposite-dev \
-    libxdamage-dev  \
-    libxrandr-dev  \
-    libxcursor-dev  \
-    libxi-dev  \
-    libxtst-dev  \
-    libasound2-dev -y
 
 # Update `ninja` to the latest compatible version (>= 1.10.2)
 wget https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip

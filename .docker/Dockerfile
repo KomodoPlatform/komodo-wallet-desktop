@@ -10,29 +10,74 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /build
 
 RUN apt-get update -y && \
-    apt-get install -y  \
-        ca-certificates \
-        curl \
-        zip \
-        unzip \
-        tar \
-        sudo \
-        git \
-        wget \
-        python3-dev \
-        python3-venv \
-        python3-pip \
-        python-is-python3
+    apt-get install -y build-essential \
+    libgtk-3-dev \
+    libgdk-pixbuf2.0-dev \
+    libglib2.0-dev \
+    autoconf \
+    automake \
+    libtool \
+    libgl1-mesa-dev \
+    ca-certificates \
+    zip \
+    tar \
+    sudo \
+    python3-dev \
+    python3-venv \
+    python3-pip \
+    python-is-python3 \
+    curl \
+    wget \
+    zstd \
+    software-properties-common \
+    lsb-release \
+    libpulse-dev \
+    libtool \
+    autoconf \
+    unzip \
+    libfuse2 \
+    libssl-dev \
+    libxkbcommon-x11-0 \
+    libxcb-icccm4 \
+    libxcb-image0 \
+    qt5-gtk-platformtheme \
+    libxcb1-dev \
+    libxcb-keysyms1-dev \
+    libxcb-render-util0-dev \
+    libxcb-xinerama0 \
+    libxcb-shape0-dev \
+    libxcb-xfixes0-dev \
+    libxcb-image0-dev \
+    libxcb-randr0-dev \
+    libxcb-xinerama0-dev \
+    libxcb-icccm4-dev \
+    libxcb-sync-dev \
+    libxcb-present-dev \
+    libxcb-dri3-dev \
+    libxcb-glx0-dev \
+    libxcomposite-dev \
+    libxdamage-dev  \
+    libxrandr-dev  \
+    libxcursor-dev  \
+    libxi-dev  \
+    libxtst-dev  \
+    libx11-xcb-dev \
+    libxrender-dev \
+    gtk2-engines-pixbuf \
+    libgtk2.0-0 \
+    libgtk2.0-dev \
+    libgbm-dev \
+    git \
+    libnss3-dev \
+    libnspr4-dev \
+    libgstreamer-plugins-base1.0-dev \
+    libasound2-dev
 
 ARG branch='update/docs'
 RUN git clone --branch $branch https://github.com/KomodoPlatform/komodo-wallet-desktop.git --recursive
+RUN git config --global --add safe.directory /build/komodo-wallet-desktop
 RUN cd /build/komodo-wallet-desktop && ./ci_tools_atomic_dex/ci_scripts/linux_script_docker.sh
 
-RUN ninja --version
-RUN cmake --version
-
-RUN echo $(ninja --version) > /build/ninja2b.log
-RUN echo $(cmake --version) > /build/cmake2b.log
 
 ENV CXX=clang++-12
 ENV CC=clang-12
@@ -60,19 +105,17 @@ ENV PATH=/root/.nimble/bin:$PATH
     
 RUN cd /build/komodo-wallet-desktop/ci_tools_atomic_dex/vcpkg-repo && ./bootstrap-vcpkg.sh
 
-RUN echo $(ninja --version) > /build/ninja3.log
-RUN echo $(cmake --version) > /build/cmake3.log
-
-RUN ninja --version
-RUN cmake --version
 
 # USAGE: ###
 #
+#  To build the build container
 #    docker build -t kw-build-container -f .docker/Dockerfile . --progress=plain --no-cache
-#    docker run -v "$(pwd)":/build/komodo-wallet-desktop -w /build/komodo-wallet-desktop/ci_tools_atomic_dex kw-build-container bash -c  "./ci_tools_atomic_dex build Debug"
-#    docker run -v "$(pwd)":/build/komodo-wallet-desktop -w /build/komodo-wallet-desktop/ci_tools_atomic_dex kw-build-container bash -c  "./ci_tools_atomic_dex build Release"
 #
-#    docker run -it kw-build-container bash                           # (to enter container for debugging)
+#  To build the app
+#    ./docker-build-linux.sh
+#    
+#  To enter container for debugging
+#    docker run -it kw-build-container bash                           
 ###
 
 CMD [ "bash" ]
