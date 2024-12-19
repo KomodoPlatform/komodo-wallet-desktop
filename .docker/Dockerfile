@@ -26,8 +26,6 @@ RUN apt-get update -y && \
 
 ARG branch='update/docs'
 RUN git clone --branch $branch https://github.com/KomodoPlatform/komodo-wallet-desktop.git --recursive
-
-RUN cp -f /build/linux_script.sh /build/komodo-wallet-desktop/ci_tools_atomic_dex/ci_scripts/linux_script.sh
 RUN cd /build/komodo-wallet-desktop && ./ci_tools_atomic_dex/ci_scripts/linux_script_docker.sh
 
 RUN ninja --version
