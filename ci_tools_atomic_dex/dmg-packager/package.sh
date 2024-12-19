@@ -2,6 +2,8 @@
 
 # Edited for KomodoPlatform/atomicDEX-Pro
 
+set -x
+
 # Original version is by Andy Maloney
 # http://asmaloney.com/2013/07/howto/packaging-a-mac-os-x-application-using-a-dmg/
 
@@ -69,9 +71,11 @@ if [ $? -ne 0 ]; then
    exit
 fi
 
+sleep 5
 # create the temp DMG file
-hdiutil create -srcfolder "${STAGING_DIR}" -volname "${VOL_NAME}" -fs HFS+ \
-      -fsargs "-c c=64,a=16,e=16" -format UDRW -size ${SIZE}M "${DMG_TMP}"
+for i in {1..5}; do hdiutil create -srcfolder "${STAGING_DIR}" -volname "${VOL_NAME}" -fs HFS+ \
+      -fsargs "-c c=64,a=16,e=16" -format UDRW -size ${SIZE}M "${DMG_TMP}" && break || echo "DMG create attempt $i" && sleep 15; done
+
 
 echo "Created DMG: ${DMG_TMP}"
 
