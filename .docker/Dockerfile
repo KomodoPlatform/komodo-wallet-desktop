@@ -68,7 +68,7 @@ RUN cmake --version
 
 # USAGE: ###
 #
-#    docker build -t kw-build-container -f .docker/Dockerfile .
+#    docker build -t kw-build-container -f .docker/Dockerfile . --progress=plain --no-cache
 #    docker run -v "$(pwd)":/build/komodo-wallet-desktop -w /build/komodo-wallet-desktop/ci_tools_atomic_dex kw-build-container bash -c  "./ci_tools_atomic_dex build Debug"
 #    docker run -v "$(pwd)":/build/komodo-wallet-desktop -w /build/komodo-wallet-desktop/ci_tools_atomic_dex kw-build-container bash -c  "./ci_tools_atomic_dex build Release"
 #

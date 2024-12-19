@@ -6,7 +6,7 @@ TARGET="${1:-Debug}"
 docker run -v "$(pwd)":/build/komodo-wallet-desktop \
     kw-build-container \
     bash -c  "cd /build/komodo-wallet-desktop/ci_tools_atomic_dex && \
-        nimble build && \ 
+        nimble build -y && \
         ./ci_tools_atomic_dex build $TARGET && \
         ./ci_tools_atomic_dex bundle $TARGET" 2>&1 | tee build.log
 
