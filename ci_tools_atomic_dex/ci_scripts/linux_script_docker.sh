@@ -26,6 +26,22 @@ sudo apt-get install -y build-essential \
                         libxcb-render-util0-dev \
                         libxcb-xinerama0 \
                         libgstreamer-plugins-base1.0-dev \
+                        libxcb-shape0-dev \
+                        libxcb-xfixes0-dev \
+                        libx11-xcb-dev \
+                        libxrender-dev \
+                        libxcb-image0-dev \
+                        libxcb-util1-dev \
+                        libxcb-randr0-dev \
+                        libxcb-xinerama0-dev \
+                        libxcb-icccm4-dev \
+                        libxcb-sync-dev \
+                        libxcb-present-dev \
+                        libxcb-dri3-dev \
+                        libxcb-glx0-dev \
+                        gtk2-engines-pixbuf \
+                        libgtk2.0-0 \
+                        libgtk2.0-dev \
                         git
 
 # Deps for QT web engine view
