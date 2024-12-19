@@ -16,6 +16,7 @@ sudo apt-get install -y build-essential \
                         libtool \
                         autoconf \
                         unzip \
+                        libfuse2 \
                         libssl-dev \
                         libxkbcommon-x11-0 \
                         libxcb-icccm4 \
