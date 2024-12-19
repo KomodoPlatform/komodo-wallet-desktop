@@ -62,14 +62,11 @@ foreach (current_lib ${LIST_LIBS})
 endforeach ()
 
 message(STATUS "Executing linuxdeployqt to fix dependencies")
-message(STATUS "Executing cmd: [${LINUX_DEPLOY_PATH} --appimage-extract-and-run ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage]")
-execute_process(COMMAND ${LINUX_DEPLOY_PATH} --appimage-extract-and-run ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage
+message(STATUS "Executing cmd: [${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage]")
+execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
-
-message(STATUS "Renaming ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-${VERSION_ID}-x86_64.AppImage to ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage")
-file(RENAME ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-${VERSION_ID}-x86_64.AppImage ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage)
 
 message(STATUS "Copying ${PROJECT_APP_PATH} to ${TARGET_APP_PATH}/${PROJECT_APP_DIR}")
 file(COPY ${PROJECT_APP_PATH} DESTINATION ${TARGET_APP_PATH})
@@ -82,5 +79,8 @@ execute_process(COMMAND tar --zstd -cf ${DEX_PROJECT_NAME}-linux-${VERSION_ID}.t
         WORKING_DIRECTORY ${TARGET_APP_PATH}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
+
+message(STATUS "Renaming ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-${VERSION_ID}-x86_64.AppImage to ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage")
+file(RENAME ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-${VERSION_ID}-x86_64.AppImage ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage)
 
 file(COPY ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage DESTINATION ${TARGET_APP_PATH})

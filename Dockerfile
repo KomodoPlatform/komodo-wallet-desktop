@@ -7,7 +7,9 @@ ENV TZ=Etc/UTC
 ENV SHELL=/bin/bash
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-WORKDIR /build
+WORKDIR /build/komodo-wallet-desktop
+COPY . /build/komodo-wallet-desktop
+RUN rm -rf .git build logs tmp
 
 RUN apt-get update -y && \
     apt-get install -y build-essential \
@@ -73,8 +75,6 @@ RUN apt-get update -y && \
     libgstreamer-plugins-base1.0-dev \
     libasound2-dev
 
-ARG branch='update/docs'
-RUN git clone --branch $branch https://github.com/KomodoPlatform/komodo-wallet-desktop.git --recursive
 RUN git config --global --add safe.directory /build/komodo-wallet-desktop
 RUN cd /build/komodo-wallet-desktop && ./ci_tools_atomic_dex/ci_scripts/linux_script_docker.sh
 
@@ -109,7 +109,7 @@ RUN cd /build/komodo-wallet-desktop/ci_tools_atomic_dex/vcpkg-repo && ./bootstra
 # USAGE: ###
 #
 #  To build the build container
-#    docker build -t kw-build-container -f .docker/Dockerfile . --progress=plain --no-cache
+#    docker build -t kw-build-container . --progress=plain --no-cache
 #
 #  To build the app
 #    ./docker-build-linux.sh
