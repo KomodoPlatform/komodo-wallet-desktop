@@ -1,15 +1,14 @@
 #!/bin/bash
 
-# Define the Docker Compose service to run
-SERVICE="kw-build"
-
 # Define the target for the build (Debug or Release)
-TARGET="Debug"
+TARGET="${1:-Debug}"
 
-# Run Docker Compose and capture logs
-docker-compose run --rm \
-  -w /build/komodo-wallet-desktop/ci_tools_atomic_dex $SERVICE \
-  bash -c "./ci_tools_atomic_dex build $TARGET" 2>&1 | tee build.log
+docker run -v "$(pwd)":/build/komodo-wallet-desktop \
+    -w /build/komodo-wallet-desktop/ci_tools_atomic_dex kw-build-container \
+    bash -c  "cd /build/komodo-wallet-desktop/ci_tools_atomic_dex && \
+        nimble build && \ 
+        ./ci_tools_atomic_dex build $TARGET && \
+        ./ci_tools_atomic_dex bundle $TARGET" 2>&1 | tee build.log
 
 # Check if the build was successful
 if [ "${PIPESTATUS[0]}" -eq 0 ]; then

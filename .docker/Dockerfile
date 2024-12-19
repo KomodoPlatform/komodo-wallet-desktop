@@ -66,14 +66,6 @@ RUN echo $(cmake --version) > /build/cmake3.log
 RUN ninja --version
 RUN cmake --version
 
-RUN cd /build/komodo-wallet-desktop/ci_tools_atomic_dex && nimble build -y
-
-RUN ninja --version
-RUN cmake --version
-
-RUN echo $(ninja --version) > /build/ninja4.log
-RUN echo $(cmake --version) > /build/cmake4.log
-
 # USAGE: ###
 #
 #    docker build -t kw-build-container -f .docker/Dockerfile .
