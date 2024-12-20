@@ -39,7 +39,7 @@ AnimatedRectangle {
     radius: margin / 3
 
     opacity: 0
-    color: isError ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.colorTheme1
+    color: isError ? Dex.CurrentTheme.warningColor : "#3CC9BF"
     z: 1000
 
     DexLabel {

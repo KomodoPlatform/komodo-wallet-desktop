@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo rm bundled
+sudo rm -rf build bundled
 # Define the target for the build (Debug or Release)
 TARGET="${1:-Debug}"
 

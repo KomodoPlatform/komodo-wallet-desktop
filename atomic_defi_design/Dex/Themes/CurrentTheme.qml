@@ -212,14 +212,9 @@ ThemeData
         {
             addressBookTagColors[i] = Dex.Color.argbStrFromRgbaStr(addressBookTagColors[i])
         }
-
         okColor                     = Dex.Color.argbStrFromRgbaStr(themeData.okColor || defaultTheme.okColor);
         warningColor                = Dex.Color.argbStrFromRgbaStr(themeData.warningColor || defaultTheme.warningColor);
         swapIconColor               = Dex.Color.argbStrFromRgbaStr(themeData.swapIconColor || defaultTheme.swapIconColor);
-        colorTheme1                 = Dex.Color.argbStrFromRgbaStr(themeData.colorTheme1 || defaultTheme.colorTheme1);
-        colorPlaceholderText        = Dex.Color.argbStrFromRgbaStr(themeData.colorPlaceholderText || defaultTheme.colorPlaceholderText);
-        colorSelectedText           = Dex.Color.argbStrFromRgbaStr(themeData.colorSelectedText || defaultTheme.colorSelectedText);
-        colorSelection              = Dex.Color.argbStrFromRgbaStr(themeData.colorSelection || defaultTheme.colorSelection);
 
         senderColorStart            = Dex.Color.argbStrFromRgbaStr(themeData.senderColorStart || defaultTheme.senderColorStart);
         receiverColorStart          = Dex.Color.argbStrFromRgbaStr(themeData.receiverColorStart || defaultTheme.receiverColorStart);
