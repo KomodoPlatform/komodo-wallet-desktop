@@ -317,9 +317,9 @@ QtObject {
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
     readonly property string colorTextDisabled: dark_theme ? Style.colorWhite8 : "#B5B9C1"
 
-    readonly property string colorPlaceholderText: Style.colorWhite9
-    readonly property string colorSelectedText: Style.colorTheme9
-    readonly property string colorSelection: Style.colorGreen2
+    readonly property string colorPlaceholderText: dark_theme ? Style.colorWhite9 : Style.colorWhite9
+    readonly property string colorSelectedText: dark_theme ? Style.colorTheme9 : Style.colorTheme9
+    readonly property string colorSelection: dark_theme ? Style.colorGreen2 : Style.colorGreen2
 
     readonly property string colorTrendingLine: dark_theme ? Style.colorGreen : "#37a6ef"
 

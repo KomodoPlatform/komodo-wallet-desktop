@@ -89,3 +89,8 @@ atomic_legacy_imgui
 .vscode/tasks.json
 bundled
 build.log
+.venv/*
+ci_tools_atomic_dex/cmake-3.19.0-rc3-Linux-x86_64/*
+ci_tools_atomic_dex/cmake-3.19.0-rc3-Linux-x86_64
+cmake-3.19.0-rc3-Linux-x86_64/*
+cmake-3.19.0-rc3-Linux-x86_64

@@ -138,6 +138,9 @@ QtObject
     property color  receiverColorStart
 
     property color  lineSeparatorColor
+    property color  colorPlaceholderText
+    property color  colorSelectedText
+    property color  colorSelection
 
     // Logos
     property string logoPath
