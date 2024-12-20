@@ -621,15 +621,21 @@ QtObject {
         return (show_prefix ? prefix : '') + parseFloat(value).toFixed(3) + ' %'
     }
 
+
+    function formatCexRates(value) {
+        if (value === "0") return "N/A"
+        if (parseFloat(value) > 0) {
+            return "+"+formatNumber(value, 2)+"%"
+        }
+        return formatNumber(value, 2)+"%"
+    }
+     
+
     readonly property int defaultPrecision: 8
     readonly property int sliderDigitLimit: 9
     readonly property int recommendedPrecision: -1337
 
     function getDigitCount(v) {
-        console.log("===========")
-        console.log(typeof(v))
-        console.log(v)
-        console.log("===========")
         return v.toString().replace("-", "").split(".")[0].length
     }
 
@@ -645,18 +651,38 @@ QtObject {
     * @param {number} extra_decimals - The number of decimal places to include if no suffix (default is 8).
     * @returns {string} - The formatted string.
     */
-    function formatNumber(num, decimals = 2, extra_decimals = 8) {
-        if (isNaN(num) || num === null) return "0";
+    function formatNumber(num, decimals = 8) {
+        let r = "0";
+        let suffix;
+
+        if (isNaN(num) || num === null) {
+            return r;
+        }
+
+        if (typeof(num) == 'string') {
+            num = parseFloat(num)
+        }
 
         const suffixes = ['', 'K', 'M', 'B', 'T']; // Add more as needed for larger numbers
         const tier = Math.floor(Math.log10(Math.abs(num)) / 3); // Determine the tier (e.g., thousands, millions)
 
-        if (tier === 0) return num.toFixed(extra_decimals); // No suffix needed
-
-        const scaled = num / Math.pow(10, tier * 3);
-        const suffix = suffixes[tier] || `e${tier * 3}`; // Use scientific notation if beyond defined suffixes
-
-        return `${scaled.toFixed(decimals)}${suffix}`;
+        if (tier === 0) {
+            r = num.toFixed(decimals);
+            return r
+        }
+        if (0 <= tier && tier <= suffixes.length) {
+            suffix = suffixes[tier]
+            num = (num / Math.pow(10, tier * 3));
+        }
+        else if (tier < 0 && num > 0.00000001 ) {
+            suffix = ''
+        }
+        else {
+            suffix = "e" + tier * 3
+            num = (num / Math.pow(10, tier * 3));
+        }
+        r = num.toFixed(decimals) + "" + suffix;
+        return r;
     }
 
     function formatDouble(v, sf = defaultPrecision, trail_zeros = true) {
@@ -672,10 +698,6 @@ QtObject {
     }
 
     function getComparisonScale(value) {
-        console.log("-----------")
-        console.log(typeof(value))
-        console.log(value)
-        console.log("-----------")
         return Math.min(Math.pow(10, getDigitCount(parseFloat(value))), 1000000000)
     }
 

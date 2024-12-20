@@ -215,7 +215,7 @@ DexListView
                 Layout.preferredWidth: _cexRateColumnSize
                 horizontalAlignment: Text.AlignRight
                 color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.warningColor : DexTheme.okColor
-                text_value: Constants.General.getCexRate(cex_rates)
+                text_value: Constants.General.formatCexRates(cex_rates)
                 opacity: !_isCoinEnabled? .3 : 1
             }
 
