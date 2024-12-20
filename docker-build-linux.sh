@@ -16,6 +16,8 @@ if [ "${PIPESTATUS[0]}" -eq 0 ]; then
   echo "Build completed successfully!"
 else
   echo "Build failed. Check build.log for details."
-  echo "Make sure you run 'docker build -t kw-build-container -f .docker/Dockerfile .' first"
+  echo "Make sure you run 'docker build -t kw-build-container .' first"
   exit 1
 fi
+
+sudo chown $USER:$USER bundled -R

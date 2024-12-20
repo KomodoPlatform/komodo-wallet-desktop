@@ -132,6 +132,9 @@
 
     "arrowUpColor": "#F85757FF",
     "arrowDownColor": "#845FEFFF",
+    "colorPlaceholderText": "#444444FF",
+    "colorSelectedText": "#0E1021FF",
+    "colorSelection": "#14bca6FF",
 
     "lineSeparatorColor": "#262941FF"
 }

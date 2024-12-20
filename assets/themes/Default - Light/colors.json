@@ -130,6 +130,10 @@
 
     "arrowUpColor": "#F85757FF",
     "arrowDownColor": "#845FEFFF",
+    "colorPlaceholderText": "#8E9293FF",
+    "colorSelectedText": "#F9F9FBFF",
+    "colorSelection": "#14bca6FF",
+
 
     "lineSeparatorColor": "#CDD3DC88"
 }
