@@ -85,8 +85,11 @@ namespace atomic_dex
         int64_t ts_diff  = now_ts - m_timesync_clock_ts;
         if (abs(ts_diff) > 300)
         {
-            fetch_timesync_status();
-            m_timesync_clock = std::chrono::high_resolution_clock::now();
+            if (!m_timesync_status)
+            {
+                fetch_timesync_status();
+                m_timesync_clock = std::chrono::high_resolution_clock::now();
+            }
         }
     }
 

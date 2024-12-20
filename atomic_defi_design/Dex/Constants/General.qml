@@ -626,6 +626,10 @@ QtObject {
     readonly property int recommendedPrecision: -1337
 
     function getDigitCount(v) {
+        console.log("===========")
+        console.log(typeof(v))
+        console.log(v)
+        console.log("===========")
         return v.toString().replace("-", "").split(".")[0].length
     }
 
@@ -668,6 +672,10 @@ QtObject {
     }
 
     function getComparisonScale(value) {
+        console.log("-----------")
+        console.log(typeof(value))
+        console.log(value)
+        console.log("-----------")
         return Math.min(Math.pow(10, getDigitCount(parseFloat(value))), 1000000000)
     }
 

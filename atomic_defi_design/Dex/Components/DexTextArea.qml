@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
 import App 1.0
+import Dex.Components 1.0 as Dex
 import Dex.Themes 1.0 as Dex
 
 TextArea {
