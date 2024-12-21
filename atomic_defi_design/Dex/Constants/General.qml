@@ -653,7 +653,7 @@ QtObject {
     */
     function formatNumber(num, decimals = 8) {
         let r = "0";
-        let suffix;
+        let suffix = "";
 
         if (isNaN(num) || num === null) {
             return r;
@@ -666,16 +666,16 @@ QtObject {
         const suffixes = ['', 'K', 'M', 'B', 'T']; // Add more as needed for larger numbers
         const tier = Math.floor(Math.log10(Math.abs(num)) / 3); // Determine the tier (e.g., thousands, millions)
 
-        if (tier === 0) {
+        if ([-1, 0].includes(tier)) {
             r = num.toFixed(decimals);
             return r
         }
-        if (0 <= tier && tier <= suffixes.length) {
+        if (tier <= suffixes.length - 1) {
             suffix = suffixes[tier]
-            num = (num / Math.pow(10, tier * 3));
-        }
-        else if (tier < 0 && num > 0.00000001 ) {
-            suffix = ''
+            if (suffix != '') 
+            {
+                num = (num / Math.pow(10, tier * 3));
+            }
         }
         else {
             suffix = "e" + tier * 3
