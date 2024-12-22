@@ -47,7 +47,7 @@ ClipRRect // Trade Card
     Component.onCompleted: _fromValue.forceActiveFocus()
     onBestChanged: if (best) Constants.API.app.trading_pg.orderbook.refresh_best_orders()
 
-    width: bestOrderSimplified.visible ? 600 : coinSelection ? 450 : 380
+    width: bestOrderSimplified.visible ? 720 : coinSelection ? 450 : 380
     height: swap_card_content.height + 15
     radius: 20
 
@@ -865,7 +865,7 @@ ClipRRect // Trade Card
                 tradeCard: _tradeCard
                 anchors.fill: parent
                 anchors.topMargin: 10
-                visible: _tradeCard.width == 600
+                visible: _tradeCard.width == 720
 
                 onSelectedOrderChanged:
                 {

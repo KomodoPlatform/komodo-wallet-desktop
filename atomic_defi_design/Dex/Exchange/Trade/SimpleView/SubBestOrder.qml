@@ -27,11 +27,11 @@ DexListView
 
     property int    _rowWidth: width
     property int    _rowHeight: 40
-    property int    _tokenColumnSize: 90
-    property int    _quantityColumnSize: 90
+    property int    _tokenColumnSize: 120
+    property int    _quantityColumnSize: 95
     property int    _quantityInBaseColumnSize: 120
-    property int    _fiatVolumeColumnSize: 80
-    property int    _cexRateColumnSize: 60
+    property int    _fiatVolumeColumnSize: 95
+    property int    _cexRateColumnSize: 75
 
     headerPositioning: ListView.OverlayHeader
     reuseItems: true
@@ -187,7 +187,7 @@ DexListView
             {
                 Layout.preferredWidth: _quantityColumnSize
                 horizontalAlignment: Text.AlignRight
-                text_value: parseFloat(General.formatDouble(rel_max_volume, General.amountPrecision, true)).toFixed(8)
+                text_value: Constants.General.formatNumber(rel_max_volume)
                 font.pixelSize: 14
                 opacity: !_isCoinEnabled? .3 : 1
             }
@@ -196,7 +196,7 @@ DexListView
             {
                 Layout.preferredWidth: _quantityInBaseColumnSize
                 horizontalAlignment: Text.AlignRight
-                text_value: parseFloat(General.formatDouble(base_max_volume, General.amountPrecision, true)).toFixed(8)
+                text_value: Constants.General.formatNumber(base_max_volume)
                 font.pixelSize: 14
                 opacity: !_isCoinEnabled? .3 : 1
             }
@@ -206,16 +206,16 @@ DexListView
                 Layout.preferredWidth: _fiatVolumeColumnSize
                 horizontalAlignment: Text.AlignRight
                 // TODO: Adjust fiat to left/right sign based on region
-                text_value: parseFloat(price_fiat).toFixed(2)+Constants.API.app.settings_pg.current_fiat_sign
+                text_value: Constants.General.formatFiat("", price_fiat, Constants.API.app.settings_pg.current_fiat_sign)
                 opacity: !_isCoinEnabled? .3 : 1
             }
 
-            DexLabel
+            DexLabel                         // Order CEX Rate
             {
                 Layout.preferredWidth: _cexRateColumnSize
                 horizontalAlignment: Text.AlignRight
                 color: cex_rates=== "0" ? Qt.darker(DexTheme.foregroundColor) : parseFloat(cex_rates)>0? DexTheme.warningColor : DexTheme.okColor
-                text_value: cex_rates=== "0" ? "N/A" : parseFloat(cex_rates)>0? "+"+parseFloat(cex_rates).toFixed(2)+"%" : parseFloat(cex_rates).toFixed(2)+"%"
+                text_value: Constants.General.formatCexRates(cex_rates)
                 opacity: !_isCoinEnabled? .3 : 1
             }
 
