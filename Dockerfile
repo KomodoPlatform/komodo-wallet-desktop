@@ -37,6 +37,7 @@ RUN apt-get update -y && \
     libtool \
     autoconf \
     unzip \
+    fuse \
     libfuse2 \
     libssl-dev \
     libxkbcommon-x11-0 \
@@ -73,6 +74,8 @@ RUN apt-get update -y && \
     libnss3-dev \
     libnspr4-dev \
     libgstreamer-plugins-base1.0-dev \
+    libqt5charts5-dev \
+    libqt5webchannel5-dev \
     libasound2-dev
 
 RUN git config --global --add safe.directory /build/komodo-wallet-desktop
@@ -86,8 +89,9 @@ ENV CC=clang-12
 
 # Install Qt
 RUN python3 -m venv /build/.venv && \
-    /build/.venv/bin/pip install aqtinstall==3.1.1 && \
+    /build/.venv/bin/pip install aqtinstall && \
     /build/.venv/bin/python -m aqt install-qt linux desktop 5.15.2 -O $HOME/Qt -b https://qt-mirror.dannhauer.de/ -m qtcharts debug_info qtwebengine
+
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SHELL=/bin/bash

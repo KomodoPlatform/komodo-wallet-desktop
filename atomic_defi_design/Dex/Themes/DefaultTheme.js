@@ -127,6 +127,7 @@ function getHardcoded()
 
         okColor: "#00C058FF",
         warningColor: "#E52167FF",
+        colorTheme1: "#3CC9BFFF",
       
         senderColorStart: "#F85757FF",
         receiverColorStart: "#845FEFFF",
@@ -134,6 +135,11 @@ function getHardcoded()
         arrowUpColor: "#F85757FF",
         arrowDownColor: "#845FEFFF",
 
-        lineSeparatorColor: "#CDD3DCFF"
+        lineSeparatorColor: "#CDD3DCFF",
+
+        colorPlaceholderText: "#444444FF",
+        colorSelectedText: "#0E1021FF",
+        colorSelection: "#14bca6FF"
+
     }
 }

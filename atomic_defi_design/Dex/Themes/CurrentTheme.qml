@@ -212,7 +212,6 @@ ThemeData
         {
             addressBookTagColors[i] = Dex.Color.argbStrFromRgbaStr(addressBookTagColors[i])
         }
-
         okColor                     = Dex.Color.argbStrFromRgbaStr(themeData.okColor || defaultTheme.okColor);
         warningColor                = Dex.Color.argbStrFromRgbaStr(themeData.warningColor || defaultTheme.warningColor);
         swapIconColor               = Dex.Color.argbStrFromRgbaStr(themeData.swapIconColor || defaultTheme.swapIconColor);
@@ -221,6 +220,7 @@ ThemeData
         receiverColorStart          = Dex.Color.argbStrFromRgbaStr(themeData.receiverColorStart || defaultTheme.receiverColorStart);
 
         lineSeparatorColor          = Dex.Color.argbStrFromRgbaStr(themeData.lineSeparatorColor || defaultTheme.lineSeparatorColor);
+        colorPlaceholderText        = Dex.Color.argbStrFromRgbaStr(themeData.colorPlaceholderText || defaultTheme.colorPlaceholderText);
     }
 
     function loadLogo(themeName)
@@ -341,6 +341,7 @@ ThemeData
         console.info("Dex.Themes.CurrentTheme.printValues.receiverColorStart : %1".arg(receiverColorStart));
 
         console.info("Dex.Themes.CurrentTheme.printValues.lineSeparatorColor : %1".arg(lineSeparatorColor));
+        console.info("Dex.Themes.CurrentTheme.printValues.colorPlaceholderText : %1".arg(colorPlaceholderText));
 
         console.info("Dex.Themes.CurrentTheme.printValues.logoPath : %1".arg(logoPath));
         console.info("Dex.Themes.CurrentTheme.printValues.bigLogoPath : %1".arg(bigLogoPath));
