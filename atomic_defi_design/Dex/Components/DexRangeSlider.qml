@@ -83,7 +83,7 @@ RangeSlider {
         //border.color: "#bdbebf"
     }
 
-    DefaultText {
+    DexLabel {
         id: secondTooltip
         visible: parent.second.pressed
         anchors.horizontalCenter: parent.second.handle.horizontalCenter
@@ -92,7 +92,7 @@ RangeSlider {
         text_value: parent.second.value
         font.pixelSize: Constants.Style.textSizeSmall1
     }
-    DefaultText {
+    DexLabel {
         id: firstTooltip
         visible: parent.first.pressed
         anchors.horizontalCenter: parent.first.handle.horizontalCenter
@@ -101,21 +101,21 @@ RangeSlider {
         text_value: parent.first.value
         font.pixelSize: Constants.Style.textSizeSmall1
     }
-    DefaultText {
+    DexLabel {
         id: _left_item
         anchors.left: parent.left
         anchors.top: parent.bottom
 
         text_value: qsTr("Min")
     }
-    DefaultText {
+    DexLabel {
         id: _half_item
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.bottom
 
         text_value: qsTr("Half")
     }
-    DefaultText {
+    DexLabel {
         id: _right_item
         anchors.right: parent.right
         anchors.top: parent.bottom

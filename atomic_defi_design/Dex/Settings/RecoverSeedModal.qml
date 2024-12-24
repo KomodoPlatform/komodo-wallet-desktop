@@ -56,7 +56,7 @@ MultipageModal
     {
         titleText: qsTr("View seed and private keys")
 
-        DefaultText
+        DexLabel
         {
             text_value: qsTr("Please enter your password to view the seed.")
         }
@@ -188,14 +188,14 @@ MultipageModal
 
                     ColumnLayout
                     {
-                        DefaultText
+                        DexLabel
                         {
                             text: qsTr("Backup Seed")
                             font.pixelSize: Style.textSizeSmall2
                             color: Dex.CurrentTheme.foregroundColor2
                         }
 
-                        DefaultText
+                        DexLabel
                         {
                             id: seedLabel
                             Layout.fillWidth: true
@@ -241,13 +241,13 @@ MultipageModal
 
                     ColumnLayout
                     {
-                        DefaultText
+                        DexLabel
                         {
                             text: qsTr("RPC Password")
                             font.pixelSize: Style.textSizeSmall2
                             color: Dex.CurrentTheme.foregroundColor2
                         }
-                        DefaultText
+                        DexLabel
                         {
                             id: rpcPwLabel
                             Layout.fillWidth: true
@@ -262,7 +262,7 @@ MultipageModal
 
         HorizontalLine { Layout.fillWidth: true }
 
-        DefaultTextField
+        DexTextField
         {
             visible: coinsList.visible
             enabled: coinsList.enabled
@@ -314,7 +314,7 @@ MultipageModal
                                 Layout.alignment: Qt.AlignCenter
                             }
 
-                            DefaultText
+                            DexLabel
                             {
                                 text: model.name
                                 font.pixelSize: Style.textSizeSmall4
@@ -362,14 +362,14 @@ MultipageModal
                                 {
                                     spacing: 5
                                     Layout.fillWidth: true
-                                    DefaultText
+                                    DexLabel
                                     {
                                         text: qsTr("Public Address")
                                         font.pixelSize: Style.textSizeSmall2
                                         color: Dex.CurrentTheme.foregroundColor2
                                     }
 
-                                    DefaultText
+                                    DexLabel
                                     {
                                         id: publicAddress
                                         text: model.public_address != 'Invalid Ticker' ? model.public_address : "Please wait for " + model.name + " to fully activate..."
@@ -415,14 +415,14 @@ MultipageModal
                                     spacing: 5
                                     Layout.fillWidth: true
 
-                                    DefaultText
+                                    DexLabel
                                     {
                                         text: qsTr("Private Key")
                                         font.pixelSize: Style.textSizeSmall2
                                         color: Dex.CurrentTheme.foregroundColor2
                                     }
 
-                                    DefaultText
+                                    DexLabel
                                     {
                                         id: privateKey
                                         font: DexTypo.body3

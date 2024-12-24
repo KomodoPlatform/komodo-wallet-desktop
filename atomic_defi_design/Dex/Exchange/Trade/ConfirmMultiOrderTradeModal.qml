@@ -70,27 +70,27 @@ MultipageModal {
                 id: warning_texts
                 anchors.centerIn: parent
 
-                DefaultText {
+                DexLabel {
                     Layout.alignment: Qt.AlignHCenter
 
                     text_value: qsTr("These swaps requests can not be undone and this is the final event!")
                 }
 
-                DefaultText {
+                DexLabel {
                     Layout.alignment: Qt.AlignHCenter
 
                     text_value: qsTr("These transactions can take up to 60 mins - DO NOT close this application!")
                     font.pixelSize: Style.textSizeSmall4
                 }
 
-                DefaultText {
+                DexLabel {
                     Layout.alignment: Qt.AlignHCenter
 
                     text_value: qsTr("Same funds will be used until an order matches.")
                     font.pixelSize: Style.textSizeSmall4
                 }
 
-                DefaultText {
+                DexLabel {
                     Layout.alignment: Qt.AlignHCenter
 
                     text_value: qsTr("Note that if one order is filled other will not be cancelled.")

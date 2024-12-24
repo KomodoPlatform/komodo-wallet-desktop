@@ -26,7 +26,7 @@ MultipageModal
         titleText: qsTr("Select a contact with an %1 address").arg(ticker)
 
         // Searchbar
-        DefaultTextField
+        DexTextField
         {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -71,7 +71,7 @@ MultipageModal
                     }
                 }
 
-                DefaultText // Contact Name
+                DexLabel // Contact Name
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
@@ -81,7 +81,7 @@ MultipageModal
                     elide: Qt.ElideRight
                 }
 
-                DefaultText // Contact Addresses Count
+                DexLabel // Contact Addresses Count
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
@@ -138,7 +138,7 @@ MultipageModal
             Layout.fillWidth: true
             spacing: 0
 
-            DefaultText
+            DexLabel
             {
                 Layout.leftMargin: addressesView.columnsMargin
                 Layout.preferredWidth: addressesView.nameColumnWidth
@@ -146,7 +146,7 @@ MultipageModal
                 color: Dex.CurrentTheme.foregroundColor2
             }
 
-            DefaultText
+            DexLabel
             {
                 Layout.leftMargin: addressesView.columnsMargin
                 text: qsTr("Address")
@@ -179,7 +179,7 @@ MultipageModal
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: addressKeyLabel
                     width: addressesView.nameColumnWidth
@@ -190,7 +190,7 @@ MultipageModal
                     elide: Qt.ElideRight
                 }
 
-                DefaultText
+                DexLabel
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: addressKeyLabel.right

@@ -12,13 +12,16 @@ brew install autoconf \
             gnu-sed \
             coreutils \
             libtool \
-            llvm \
             gnu-getopt
+
+brew unlink python@3.12
+brew install llvm
+brew link --overwrite python@3.12
 
 pip3 install yq
 export CC=clang
 export CXX=clang++
-export MACOSX_DEPLOYMENT_TARGET=10.15
+export MACOSX_DEPLOYMENT_TARGET=14.2
 
 # get curl
 #git clone https://github.com/KomodoPlatform/curl.git

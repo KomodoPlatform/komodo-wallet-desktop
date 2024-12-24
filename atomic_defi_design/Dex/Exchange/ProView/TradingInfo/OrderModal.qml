@@ -95,7 +95,7 @@ MultipageModal
 
             },
 
-            DefaultText
+            DexLabel
             {
                 Layout.alignment: Qt.AlignHCenter
                 visible: text_value != ""

@@ -79,7 +79,7 @@ SetupPage
             visible: wallet_count > 0
 
             // Searchbar
-            DefaultTextField
+            DexTextField
             {
                 id: wallet_search
                 visible: wallet_count > 5
@@ -198,7 +198,7 @@ SetupPage
                                 }
                             }
 
-                            DefaultText
+                            DexLabel
                             {
                                 anchors.left: parent.left
                                 anchors.leftMargin: 40

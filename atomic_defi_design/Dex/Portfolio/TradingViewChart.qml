@@ -121,12 +121,12 @@ Item {
                                          scale: 0.5
                                      }
 
-                                     DefaultText {
+                                     DexLabel {
                                          text_value: qsTr("Loading market data") + "..."
                                      }
                                  }
 
-                                 DefaultText {
+                                 DexLabel {
                                      visible: !ticker_supported
                                      text_value: qsTr("There is no chart data for this ticker yet")
                                      anchors.centerIn: parent

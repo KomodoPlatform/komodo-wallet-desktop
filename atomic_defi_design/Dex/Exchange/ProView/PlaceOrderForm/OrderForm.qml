@@ -269,7 +269,7 @@ ColumnLayout
         Layout.preferredHeight: 24
         visible: !_useCustomMinTradeAmountCheckbox.checked
 
-        DefaultText
+        DexLabel
         {
             id: minVolLabel
             anchors.horizontalCenter: parent.horizontalCenter
@@ -295,7 +295,7 @@ ColumnLayout
             onToggled: setMinimumAmount(0)
         }
 
-        DefaultText
+        DexLabel
         {
             Layout.fillWidth: true
             height: _useCustomMinTradeAmountCheckbox.height
@@ -353,7 +353,7 @@ ColumnLayout
             anchors.fill: parent
             anchors.verticalCenter: parent.verticalCenter
 
-            DefaultText
+            DexLabel
             {
                 Layout.leftMargin: 15
                 color: Dex.CurrentTheme.warningColor

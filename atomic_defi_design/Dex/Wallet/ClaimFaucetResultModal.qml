@@ -18,7 +18,7 @@ MultipageModal {
         titleText: claiming_faucet_rpc_result && claiming_faucet_rpc_result.status ?
                    claiming_faucet_rpc_result.status : ""
 
-        DefaultText {
+        DexLabel {
             id: message
             width: parent.width
             text_value: claiming_faucet_rpc_result && claiming_faucet_rpc_result.message ?

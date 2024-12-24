@@ -66,7 +66,7 @@ Item {
                         anchors.fill: bBox2
                         source: bBox2
                         radius: 32
-                        DefaultText {
+                        DexLabel {
                             anchors.centerIn: parent
                             text: "Jemm"
                         }

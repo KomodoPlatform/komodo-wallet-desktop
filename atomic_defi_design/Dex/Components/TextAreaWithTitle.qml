@@ -66,7 +66,7 @@ ColumnLayout
     Item {
         Layout.fillWidth: true
         Layout.preferredHeight: input_field.height + 5
-        DefaultTextArea {
+        DexTextArea {
             id: input_field
             enabled: !saveable
             width: parent.width - 6

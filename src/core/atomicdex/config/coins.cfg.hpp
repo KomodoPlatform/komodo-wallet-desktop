@@ -91,7 +91,7 @@ namespace atomic_dex
         std::optional<std::set<CoinType>>                 other_types;
         std::optional<electrum_servers>                   electrum_urls;
         std::optional<nodes>                              urls;
-        std::optional<url_list>                           rpc_urls;
+        std::optional<nodes>                              rpc_urls;
         std::optional<light_wallet_d_servers>             z_urls;
         std::optional<eth_family_url_list>                eth_family_urls;
         std::optional<bchd_url_list>                      bchd_urls;

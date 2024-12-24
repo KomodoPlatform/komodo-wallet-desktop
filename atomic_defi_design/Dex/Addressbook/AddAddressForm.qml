@@ -134,7 +134,7 @@ Dex.Rectangle
                     Layout.fillHeight: true
                     Layout.leftMargin: 4
                 }
-                Dex.DefaultText {
+                Dex.DexLabel {
                     Layout.minimumWidth: 120
                     Layout.maximumWidth: 120
                     text: qsTr("Use standard network address")

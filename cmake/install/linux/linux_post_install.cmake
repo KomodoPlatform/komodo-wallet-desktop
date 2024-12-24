@@ -34,7 +34,7 @@ else ()
     message(FATAL_ERROR "Didn't find ${PROJECT_APP_PATH}")
 endif ()
 
-set(LINUX_DEPLOY_PATH ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/linux_misc/linuxdeployqt-7-x86_64.AppImage)
+set(LINUX_DEPLOY_PATH ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/linux_misc/linuxdeployqt-continuous-x86_64.AppImage)
 if (EXISTS ${LINUX_DEPLOY_PATH})
     message(STATUS "linuxdeployqt path is -> ${LINUX_DEPLOY_PATH}")
 else ()
@@ -62,14 +62,16 @@ foreach (current_lib ${LIST_LIBS})
 endforeach ()
 
 message(STATUS "Executing linuxdeployqt to fix dependencies")
-message(STATUS "Executing cmd: [${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage]")
-execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -verbose=1 -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage
+message(STATUS "Executing cmd: [${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage -verbose=2]")
+execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJECT_QML_DIR} -bundle-non-qt-libs -exclude-libs='libnss3.so,libnssutil3.so' -unsupported-allow-new-glibc -no-copy-copyright-files -extra-plugins=iconengines,platformthemes/libqgtk3.so -appimage -verbose=2
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
 
 message(STATUS "Renaming ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-${VERSION_ID}-x86_64.AppImage to ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage")
 file(RENAME ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-${VERSION_ID}-x86_64.AppImage ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage)
+
+file(COPY ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage DESTINATION ${TARGET_APP_PATH})
 
 message(STATUS "Copying ${PROJECT_APP_PATH} to ${TARGET_APP_PATH}/${PROJECT_APP_DIR}")
 file(COPY ${PROJECT_APP_PATH} DESTINATION ${TARGET_APP_PATH})
@@ -82,5 +84,3 @@ execute_process(COMMAND tar --zstd -cf ${DEX_PROJECT_NAME}-linux-${VERSION_ID}.t
         WORKING_DIRECTORY ${TARGET_APP_PATH}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
-
-file(COPY ${CMAKE_SOURCE_DIR}/${DEX_PROJECT_NAME}-linux-${VERSION_ID}-x86_64.AppImage DESTINATION ${TARGET_APP_PATH})

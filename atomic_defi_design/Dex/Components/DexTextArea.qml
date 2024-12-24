@@ -2,15 +2,18 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../Constants"
 import App 1.0
+import Dex.Components 1.0 as Dex
+import Dex.Themes 1.0 as Dex
 
 TextArea {
     id: text_field
 
     font.family: Style.font_family
 
-    placeholderTextColor: Style.colorPlaceholderText
-    selectedTextColor: Style.colorSelectedText
-    selectionColor: Style.colorSelection
+    color: Dex.CurrentTheme.foregroundColor
+    placeholderTextColor: Dex.CurrentTheme.colorPlaceholderText
+    selectedTextColor: Dex.CurrentTheme.colorSelectedText
+    selectionColor: Dex.CurrentTheme.colorSelection
 
     Behavior on color {
         ColorAnimation {
@@ -52,9 +55,7 @@ TextArea {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground {
-        auto_set_size: false
-    }
+    background: InnerBackground {}
 
     RightClickMenu {}
 }

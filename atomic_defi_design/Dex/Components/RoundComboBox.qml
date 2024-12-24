@@ -35,7 +35,7 @@ ComboBox
     contentItem: Item
     {
         anchors.fill: parent
-        DefaultText
+        DexLabel
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left

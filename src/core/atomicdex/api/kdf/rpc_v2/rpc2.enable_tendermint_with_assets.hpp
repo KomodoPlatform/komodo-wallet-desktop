@@ -3,7 +3,8 @@
 #include <vector>
 
 #include "atomicdex/api/kdf/rpc.hpp"
-#include "atomicdex/api/kdf/balance_info.hpp"
+#include "atomicdex/config/enable.cfg.hpp"
+#include "atomicdex/api/kdf/balance_infos.hpp"
 #include "atomicdex/config/electrum.cfg.hpp"
 
 namespace atomic_dex::kdf
@@ -20,9 +21,8 @@ namespace atomic_dex::kdf
                 std::string         ticker;
                 std::optional<int>  required_confirmations;
             };
-
             std::string                                     ticker;
-            std::vector<std::string>                        rpc_urls;
+            std::vector<node>                               nodes;
             bool                                            tx_history{true};
             std::vector<tendermint_token_request_t>         tokens_params;
             std::optional<int>                              required_confirmations;
@@ -33,13 +33,14 @@ namespace atomic_dex::kdf
         {
             struct tendermint_balance_infos_t
             {
-                balance_info        balances;
+                balance_infos        balances;
             };
 
+            std::string                                                       ticker;
             std::string                                                       address;
             std::size_t                                                       current_block;
             tendermint_balance_infos_t                                        tendermint_balances_infos;
-            std::unordered_map<std::string, balance_info>                     tendermint_token_balances_infos;
+            std::unordered_map<std::string, balance_infos>                    tendermint_token_balances_infos;
         };
 
         using expected_error_type = rpc_basic_error_type;

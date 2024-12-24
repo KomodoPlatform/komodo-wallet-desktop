@@ -37,7 +37,7 @@ Rectangle
         }
     }
 
-    DefaultTextField
+    DexTextField
     {
         id: _textField
 

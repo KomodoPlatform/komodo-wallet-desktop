@@ -15,8 +15,8 @@ Popup 1.0 DefaultPopup.qml
 Rectangle 1.0 DefaultRectangle.qml
 ScrollView 1.0 DefaultScrollView.qml
 SearchField 1.0 SearchField.qml
-Text 1.0 DefaultText.qml
-TextField 1.0 DefaultTextField.qml
+Text 1.0 DexLabel.qml
+TextField 1.0 DexTextField.qml
 TextFieldWithTitle 1.0 TextFieldWithTitle.qml
 ToolTip 1.0 DefaultTooltip.qml
 UserIcon 1.0 UserIcon.qml

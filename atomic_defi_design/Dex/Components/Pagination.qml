@@ -72,7 +72,7 @@ RowLayout
         popupBackgroundColor: Dex.CurrentTheme.backgroundColor
     }
 
-    DefaultText {
+    DexLabel {
         Layout.alignment: Qt.AlignCenter
         font.pixelSize: 11
         text_value: qsTr("items per page")

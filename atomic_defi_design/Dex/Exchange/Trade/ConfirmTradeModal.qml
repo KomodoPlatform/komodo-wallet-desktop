@@ -116,7 +116,7 @@ MultipageModal
                         scale: 0.8
                     }
 
-                    DefaultText
+                    DexLabel
                     {
                         text_value: qsTr("Loading fees...")
                         Layout.bottomMargin: 8
@@ -130,7 +130,7 @@ MultipageModal
                     anchors.centerIn: parent
                     visible: root.fees.hasOwnProperty('error') // Should be handled before this modal, but leaving here as a fallback
 
-                    DefaultText
+                    DexLabel
                     {
                         width: parent.width
                         text_value: root.fees.hasOwnProperty('error') ? root.fees["error"].split("] ").slice(-1) : ""
@@ -149,7 +149,7 @@ MultipageModal
                     Repeater
                     {
                         model: root.fees.hasOwnProperty('base_transaction_fees_ticker') && !API.app.trading_pg.preimage_rpc_busy ? General.getFeesDetail(root.fees) : []
-                        delegate: DefaultText
+                        delegate: DexLabel
                         {
                             font.pixelSize: Style.textSizeSmall1
                             text: General.getFeesDetailText(modelData.label, modelData.fee, modelData.ticker)
@@ -159,7 +159,7 @@ MultipageModal
                     Repeater
                     {
                         model: root.fees.hasOwnProperty('base_transaction_fees_ticker')  && !API.app.trading_pg.preimage_rpc_busy ? root.fees.total_fees : []
-                        delegate: DefaultText
+                        delegate: DexLabel
                         {
                             text: General.getFeesDetailText(
                                     qsTr("<b>Total %1 fees:</b>").arg(modelData.coin),
@@ -169,13 +169,13 @@ MultipageModal
                         Layout.alignment: Qt.AlignHCenter
                     }
 
-                    DefaultText
+                    DexLabel
                     {
                         id: errors
                         visible: text_value != ''
                         Layout.alignment: Qt.AlignHCenter
                         width: parent.width
-                        horizontalAlignment: DefaultText.AlignHCenter
+                        horizontalAlignment: DexLabel.AlignHCenter
                         font: DexTypo.caption
                         color: Dex.CurrentTheme.warningColor
                         text_value: General.getTradingError(
@@ -269,7 +269,7 @@ MultipageModal
                         text: qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker)
                     }
 
-                    DefaultSwitch
+                    DexSwitch
                     {
                         id: enable_dpow_confs
                         visible: enable_custom_config.checked && config_section.is_dpow_configurable
@@ -289,7 +289,7 @@ MultipageModal
                         Layout.alignment: Qt.AlignCenter
                         spacing: 5
 
-                        DefaultText
+                        DexLabel
                         {
                             height: 16
                             Layout.alignment: Qt.AlignCenter
@@ -298,7 +298,7 @@ MultipageModal
                             font.weight: Font.Medium
                         }
 
-                        DefaultText
+                        DexLabel
                         {
                             height: 12
                             font: DexTypo.caption
@@ -338,7 +338,7 @@ MultipageModal
                         Layout.alignment: Qt.AlignCenter
                         spacing: 3
 
-                        DefaultText
+                        DexLabel
                         {
                             height: 30
                             Layout.alignment: Qt.AlignCenter
@@ -378,7 +378,7 @@ MultipageModal
                             enable_custom_config.checked && (config_section.is_dpow_configurable && !enable_dpow_confs.checked)
                         }
 
-                        DefaultText
+                        DexLabel
                         {
                             id: dpow_off_warning
                             anchors.fill: parent
@@ -399,7 +399,7 @@ MultipageModal
                 Layout.alignment: Qt.AlignHCenter
 
 
-                DefaultText
+                DexLabel
                 {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: qsTr("This swap request can not be undone and is a final event!")
@@ -407,7 +407,7 @@ MultipageModal
                     color: Dex.CurrentTheme.foregroundColor2
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: warnings_tx_time_text
                     Layout.alignment: Qt.AlignHCenter

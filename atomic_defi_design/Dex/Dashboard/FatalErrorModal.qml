@@ -26,7 +26,7 @@ MultipageModal {
     MultipageModalContent {
         titleText: qsTr("Fatal Error")
 
-        DefaultText {
+        DexLabel {
             text: message === "connection dropped" ? qsTr("Connection has been lost. You have been disconnected.") :
                                                      message
         }

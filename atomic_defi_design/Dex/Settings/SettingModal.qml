@@ -558,7 +558,7 @@ Qaterial.Dialog
                                     text: qsTr("Ask system's password before sending coins ? (2FA)")
                                 }
 
-                                DefaultSwitch
+                                DexSwitch
                                 {
                                     checked: parseInt(atomic_settings2.value("2FA")) === 1
                                     onCheckedChanged:

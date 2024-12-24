@@ -17,7 +17,7 @@ env:
   DEX_PROJECT_NAME: "komodo-wallet"
   DEX_DISPLAY_NAME: "Komodo Wallet"
   DEX_COMPANY: "KomodoPlatform"
-  DEX_VERSION: "0.8.0"
+  DEX_VERSION: "0.8.1"
   DEX_WEBSITE: "https://atomicdex.io/"
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/b/vcpkg_cache
   VCPKG_BINARY_SOURCES: clear;x-gha,readwrite
@@ -56,13 +56,13 @@ jobs:
             host: 'linux'
 
           - name: osx-release
-            os: macos-12
+            os: macos-13
             qt: '5.15.2'
             type: 'Release'
             host: 'mac'
 
           - name: osx-debug
-            os: macos-12
+            os: macos-13
             qt: '5.15.2'
             type: 'Debug'
             host: 'mac'
@@ -112,7 +112,6 @@ jobs:
           copy src\ccan\ccan\base64\base64.c src\ccan\ccan\base64\base64_.c
           cl /utf-8 /DUSE_ECMULT_STATIC_PRECOMPUTATION /DECMULT_WINDOW_SIZE=15 /DWALLY_CORE_BUILD /DHAVE_CONFIG_H /DSECP256K1_BUILD /I$env:LIBWALLY_DIR\src\wrap_js\windows_config /I$env:LIBWALLY_DIR /I$env:LIBWALLY_DIR\src /I$env:LIBWALLY_DIR\include /I$env:LIBWALLY_DIR\src\ccan /I$env:LIBWALLY_DIR\src\ccan\base64 /I$env:LIBWALLY_DIR\src\secp256k1 /Zi /LD src/aes.c src/anti_exfil.c src/base58.c src/base64.c src/bech32.c src/bip32.c src/bip38.c src/bip39.c src/blech32.c src/ecdh.c src/elements.c src/hex.c src/hmac.c src/internal.c src/mnemonic.c src/pbkdf2.c src/pullpush.c src/psbt.c src/script.c src/scrypt.c src/sign.c src/symmetric.c src/transaction.c src/wif.c src/wordlist.c src/ccan/ccan/crypto/ripemd160/ripemd160.c src/ccan/ccan/crypto/sha256/sha256.c src/ccan/ccan/crypto/sha512/sha512.c src/ccan/ccan/base64/base64_.c src\ccan\ccan\str\hex\hex_.c src/secp256k1/src/secp256k1.c src/secp256k1/src/precomputed_ecmult_gen.c src/secp256k1/src/precomputed_ecmult.c /Fewally.dll
           Copy-Item "${{ github.workspace }}\libwally-core\wally.dll" -Destination "${{ github.workspace }}\wally\wally.dll" -force
-
 
       - name: Install QT (macOS)
         if: runner.os == 'macOS'
@@ -204,7 +203,7 @@ jobs:
 
       - name: import code signing certificates (macos)
         if: runner.os == 'macOS'  && 'KomodoPlatform/komodo-wallet-desktop' == github.repository
-        uses: Apple-Actions/import-codesign-certs@v1
+        uses: Apple-Actions/import-codesign-certs@v3
         with:
           keychain: ${{ github.run_id }}
           keychain-password: ${{ github.run_id }}
@@ -213,7 +212,7 @@ jobs:
 
       - name: import installer code signing certificates (macos)
         if: runner.os == 'macOS'  && 'KomodoPlatform/komodo-wallet-desktop' == github.repository
-        uses: apple-actions/import-codesign-certs@v1
+        uses: apple-actions/import-codesign-certs@v3
         with:
           keychain: ${{ github.run_id }}
           keychain-password: ${{ github.run_id }}
@@ -221,32 +220,32 @@ jobs:
           p12-file-base64: ${{ secrets.CERTIFICATES_INSTALLER_P12 }}
           p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
-
-
       - name: Build Komodo Wallet (MacOS)
         if: runner.os == 'macOS'
         run: |
           xcrun --sdk macosx --show-sdk-path
           export SDK_PATH=$(xcrun --sdk macosx --show-sdk-path)
-          ls /Applications/Xcode_13.2.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+          echo $SDK_PATH
+          ls $SDK_PATH
           echo $HOME/sdk
-          ls $HOME/sdk
+          ls $HOME/sdk || true
+          ls $(xcrun --show-sdk-path)/usr/include/c++
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
-          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
+          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
           export APPLE_ID="${{ secrets.APPLE_ID }}"
           export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=/Users/runner/.nimble/bin:$PATH
-          export MACOSX_DEPLOYMENT_TARGET=10.15
+          export MACOSX_DEPLOYMENT_TARGET=14.2
           export CC=clang
           export CXX=clang++
+          export CXXFLAGS=-stdlib=libc++
+          export LDFLAGS=-stdlib=libc++
           cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX10.15.sdk --compiler=clang++
-
-
+          ./ci_tools_atomic_dex bundle ${{ matrix.type }} --osx_sdk=$HOME/sdk/MacOSX14.2.sdk --compiler=clang++
 
       - name: Build Komodo Wallet (Linux)
         if: runner.os == 'Linux'
@@ -264,7 +263,6 @@ jobs:
 
           ./ci_tools_atomic_dex build ${{ matrix.type }}
           ./ci_tools_atomic_dex bundle ${{ matrix.type }}
-
 
       - name: Build Komodo Wallet (Windows)
         if: runner.os == 'Windows'
@@ -284,11 +282,9 @@ jobs:
           echo "target_name_zip=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "target_name_appimage=${{ env.DEX_PROJECT_NAME }}-linux-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
 
-
-
       - name: Upload bundle artifact (Linux ZSTD)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_zstd }}
           path: ./bundled/linux/${{ env.target_name_zstd }}
@@ -296,7 +292,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/linux/${{ env.target_name_zip }}
@@ -304,7 +300,7 @@ jobs:
 
       - name: Upload bundle artifact (Linux AppImage)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_appimage }}
           path: ./bundled/linux/${{ env.target_name_appimage }}
@@ -318,7 +314,7 @@ jobs:
 
       - name: Upload artifacts (MacOS dmg)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_dmg }}
           path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}.dmg
@@ -326,7 +322,7 @@ jobs:
 
       - name: Upload artifacts (MacOS installer)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/osx/${{ env.DEX_PROJECT_NAME }}_installer.7z
@@ -341,7 +337,7 @@ jobs:
 
       - name: Upload artifacts (Windows zip)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}.zip
@@ -349,13 +345,11 @@ jobs:
 
       - name: Upload artifacts (Windows installer)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name_installer }}
           path: ./bundled/windows/${{ env.DEX_PROJECT_NAME }}_installer.exe
           retention-days: 7
-
-
 
       - name: Running Tests (Linux)
         working-directory: ci_tools_atomic_dex
@@ -382,11 +376,11 @@ jobs:
         if: runner.os == 'macOS' &&  'KomodoPlatform/komodo-wallet-desktop' == github.repository
         run: |
           export MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
-          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.INSTALLER_MAC_SIGN_IDENTITY }}"
+          export INSTALLER_MAC_SIGN_IDENTITY="${{ secrets.MAC_SIGN_IDENTITY }}"
           export APPLE_ATOMICDEX_PASSWORD="${{ secrets.APPLE_ATOMICDEX_PASSWORD }}"
           export APPLE_ID="${{ secrets.APPLE_ID }}"
           export ASC_PUBLIC_ID="${{ secrets.ASC_PUBLIC_ID }}"
-          export MACOSX_DEPLOYMENT_TARGET=10.13
+          export MACOSX_DEPLOYMENT_TARGET=14.2
           export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export ATOMICDEX_TEST_SEED=${{ secrets.ATOMICDEX_TEST_SEED }}
           export ATOMICDEX_PASSWORD=${{ secrets.ATOMICDEX_PASSWORD }}

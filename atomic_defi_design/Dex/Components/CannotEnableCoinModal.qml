@@ -13,7 +13,7 @@ MultipageModal
     MultipageModalContent
     {
         titleText: qsTr("Failed to enable %1").arg(coin_to_enable_ticker)
-        DefaultText
+        DexLabel
         {
             Layout.fillWidth: true
             text: qsTr("Enabling %1 did not succeed. Limit of enabled coins might have been reached.")

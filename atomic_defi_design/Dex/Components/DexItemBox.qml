@@ -145,7 +145,7 @@ InnerBackground {
                 anchors.fill: parent
                 Layout.rightMargin: 10
                 Layout.leftMargin: 10
-                DefaultText {
+                DexLabel {
                     id: _texto
                     leftPadding: 10
                     Layout.alignment: Qt.AlignVCenter
@@ -239,7 +239,7 @@ InnerBackground {
             radius: parent.parent.height < 41 ? parent.parent.radius : 0
             color: DexTheme.backgroundDarkColor6
             visible: !isVertical && hidden
-            DefaultText {
+            DexLabel {
                 id: _texto2
                 leftPadding: 10
                 Layout.alignment: Qt.AlignVCenter

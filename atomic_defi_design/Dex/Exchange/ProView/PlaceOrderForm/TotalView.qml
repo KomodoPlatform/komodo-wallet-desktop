@@ -19,7 +19,7 @@ ColumnLayout
         Layout.preferredWidth: parent.width
         Layout.preferredHeight: 30
 
-        DefaultText
+        DexLabel
         {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft
@@ -31,7 +31,7 @@ ColumnLayout
             DefaultInfoTrigger { triggerModal: cex_info_modal }
         }
 
-        DefaultText
+        DexLabel
         {
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -55,7 +55,7 @@ ColumnLayout
         Layout.preferredWidth: parent.width
         Layout.preferredHeight: 30
 
-        DefaultText
+        DexLabel
         {
             Layout.fillWidth: true
             color: Dex.CurrentTheme.foregroundColor3
@@ -66,7 +66,7 @@ ColumnLayout
             font.weight: Font.Normal
         }
 
-        DefaultText
+        DexLabel
         {
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

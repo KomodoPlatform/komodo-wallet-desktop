@@ -154,7 +154,7 @@ MouseArea
                 }
             }
 
-            DefaultSwitch
+            DexSwitch
             {
                 id: privacySwitch
 

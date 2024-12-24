@@ -16,7 +16,6 @@
 
 //! Deps
 #include <nlohmann/json.hpp>
-#include <ranges>
 
 //! Project Headers
 #include "atomicdex/api/kdf/rpc_v2/rpc2.orderbook.hpp"

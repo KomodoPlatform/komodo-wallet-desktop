@@ -2,8 +2,11 @@
 // https://gist.github.com/jonmcclung/bae669101d17b103e94790341301c129
 
 import QtQuick 2.15
-import "../Constants"
 import App 1.0
+import Dex.Components 1.0 as Dex
+import "../Components" as Dex
+import "../Constants" as Dex
+import Dex.Themes 1.0 as Dex
 
 AnimatedRectangle {
     function show(text, duration, info, is_error) {
@@ -36,7 +39,7 @@ AnimatedRectangle {
     radius: margin / 3
 
     opacity: 0
-    color: isError ? DexTheme.warningColor : Style.colorTheme1
+    color: isError ? Dex.CurrentTheme.warningColor : "#3CC9BF"
     z: 1000
 
     DexLabel {
@@ -50,7 +53,7 @@ AnimatedRectangle {
             margins: margin / 2
         }
         font.pixelSize: Style.textSizeSmall2
-        text_value: title + (General.isFilled(details) ? (" - " + qsTr("Click here to see the details")) : "")
+        text_value: title + (Dex.General.isFilled(details) ? (" - " + qsTr("Click here to see the details")) : "")
     }
 
     SequentialAnimation on opacity {

@@ -12,7 +12,7 @@ MultipageModal
     {
         titleText: qsTr("Selected Order Removed")
 
-        DefaultText
+        DexLabel
         {
             Layout.fillWidth: true
 

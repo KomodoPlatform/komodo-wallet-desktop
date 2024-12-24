@@ -85,7 +85,7 @@ ComboBox
         {
             anchors.rightMargin: 5
 
-            DefaultTextField
+            DexTextField
             {
                 id: input_coin_filter
                 placeholderText: qsTr("Search")
@@ -172,7 +172,7 @@ ComboBox
                     {
                         width: control.width + 50
                         highlighted: control.highlightedIndex === index
-                        contentItem: DefaultText
+                        contentItem: DexLabel
                         {
                             text_value: "<b><font color='" + Style.getCoinColor(ticker) + "'>" + ticker + "</font></b>" + "    %1".arg(General.coinName(ticker)) 
                         }

@@ -1,6 +1,6 @@
 import QtQuick 2.15
 
-DefaultTextField
+DexTextField
 {
     property bool allowFloat: false
     validator: RegExpValidator

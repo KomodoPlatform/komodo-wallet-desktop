@@ -1,6 +1,6 @@
 import QtQuick 2.12
 
-DefaultText
+DexLabel
 {
     elide: Text.ElideRight
 }

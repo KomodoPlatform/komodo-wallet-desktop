@@ -41,7 +41,7 @@ RowLayout
             color: Dex.CurrentTheme.inputModifierBackgroundColor
         }
 
-        DefaultText
+        DexLabel
         {
             id: _left_label
             anchors.centerIn: parent
@@ -61,7 +61,7 @@ RowLayout
                 anchors.topMargin: 30
                 color: Dex.CurrentTheme.accentColor
 
-                DefaultText
+                DexLabel
                 {
                     text: left_tooltip_text
                     font: Dex.DexTypo.caption
@@ -107,7 +107,7 @@ RowLayout
                 hoverEnabled: true
             }
 
-            DefaultText
+            DexLabel
             {
                 id: _middle_label
                 anchors.centerIn: parent
@@ -127,7 +127,7 @@ RowLayout
                     anchors.topMargin: 30
                     color: Dex.CurrentTheme.accentColor
 
-                    DefaultText
+                    DexLabel
                     {
                         text: middle_tooltip_text
                         font: Dex.DexTypo.caption
@@ -162,7 +162,7 @@ RowLayout
             color: Dex.CurrentTheme.inputModifierBackgroundColor
         }
 
-        DefaultText
+        DexLabel
         {
             id: _right_label
             anchors.centerIn: parent
@@ -183,7 +183,7 @@ RowLayout
                 anchors.topMargin: 30
                 color: Dex.CurrentTheme.accentColor
 
-                DefaultText
+                DexLabel
                 {
                     text: right_tooltip_text
                     font: Dex.DexTypo.caption
@@ -211,7 +211,7 @@ RowLayout
 
     Item { Layout.fillWidth: true }
 
-    DefaultText
+    DexLabel
     {
         id: _fiat_label
         font.pixelSize: pixel_size

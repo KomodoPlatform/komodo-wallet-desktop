@@ -9,7 +9,7 @@ env:
   DEX_PROJECT_NAME: "komodo-wallet"
   DEX_DISPLAY_NAME: "Komodo Wallet"
   DEX_COMPANY: "KomodoPlatform"
-  DEX_VERSION: "0.8.0"
+  DEX_VERSION: "0.8.1"
   DEX_WEBSITE: "https://atomicdex.io/"
 
 jobs:
@@ -120,7 +120,7 @@ jobs:
           zip AtomicDEX-Pro-Installer.zip ./installer/AtomicDEX-Pro-Installer
 
       - name: Upload artifacts (Linux)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: AtomicDEX-Pro-Installer-linux-release
           path: ./ci_tools_atomic_dex/AtomicDEX-Pro-Installer.zip
@@ -232,7 +232,7 @@ jobs:
           zip AtomicDEX-Pro-Installer.zip ./installer/AtomicDEX-Pro-Installer
 
       - name: Upload artifacts (Linux/Debug)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: AtomicDEX-Pro-Installer-linux-debug
           path: ./ci_tools_atomic_dex/AtomicDEX-Pro-Installer.zip
@@ -296,7 +296,7 @@ jobs:
           ls bundle-Release/atomicDEX-Pro.dmg
 
       - name: Upload artifacts (MacOS/Release)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: dexpro-mac-release.dmg
           path: ./ci_tools_atomic_dex/bundle-Release/atomicDEX-Pro.dmg
@@ -360,7 +360,7 @@ jobs:
           ls bundle-Debug/atomicDEX-Pro.dmg
 
       - name: Upload artifacts (MacOS/Debug)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: dexpro-mac-debug.dmg
           path: ./ci_tools_atomic_dex/bundle-Debug/atomicDEX-Pro.dmg
@@ -438,7 +438,7 @@ jobs:
           ls bundle-Release/bundle.zip
 
       - name: Upload artifacts (Win/Release)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: dexpro-win-release
           path: ./ci_tools_atomic_dex/bundle-Release/bundle.zip
@@ -516,7 +516,7 @@ jobs:
           ls bundle-Debug/bundle.zip
 
       - name: Upload artifacts (Windows/Debug)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: dexpro-win-debug
           path: ./ci_tools_atomic_dex/bundle-Debug/bundle.zip

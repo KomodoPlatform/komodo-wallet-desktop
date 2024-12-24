@@ -33,7 +33,7 @@ ColumnLayout
             visible: price_entered
             Layout.fillWidth: true
 
-            DefaultText
+            DexLabel
             {
                 Layout.fillWidth: true
                 horizontalAlignment: invalid_cex_price ? Text.AlignHCenter : Text.AlignLeft
@@ -42,7 +42,7 @@ ColumnLayout
             }
 
             // Price reversed
-            DefaultText
+            DexLabel
             {
                 Layout.fillWidth: true
                 horizontalAlignment: invalid_cex_price ? Text.AlignHCenter : Text.AlignLeft
@@ -51,7 +51,7 @@ ColumnLayout
             }
 
             // Price
-            DefaultText
+            DexLabel
             {
                 visible: price != 1
                 Layout.fillWidth: true
@@ -66,7 +66,7 @@ ColumnLayout
             visible: !invalid_cex_price
             Layout.fillWidth: true
 
-            DefaultText
+            DexLabel
             {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignRight
@@ -76,7 +76,7 @@ ColumnLayout
             }
 
             // Price reversed
-            DefaultText
+            DexLabel
             {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignRight
@@ -85,7 +85,7 @@ ColumnLayout
             }
 
             // Price
-            DefaultText
+            DexLabel
             {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignRight
@@ -122,7 +122,7 @@ ColumnLayout
                     anchors.horizontalCenterOffset: 0.5 * parent.width * Math.min(Math.max(parseFloat(cexPriceDiff) / lineScale, -1), 1)
                 }
 
-                DefaultText
+                DexLabel
                 {
                     text_value: General.formatPercent(lineScale)
                     font.pixelSize: fontSize
@@ -131,7 +131,7 @@ ColumnLayout
                     anchors.topMargin: -15
                 }
 
-                DefaultText
+                DexLabel
                 {
                     id: price_diff_text
                     anchors.top: parent.top
@@ -142,7 +142,7 @@ ColumnLayout
                     font.pixelSize: fontSizeBigger
                 }
         
-                DefaultText
+                DexLabel
                 {
                     text_value: General.formatPercent(-lineScale)
                     font.pixelSize: fontSize

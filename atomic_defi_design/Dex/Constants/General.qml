@@ -599,14 +599,14 @@ QtObject {
         return formatFiat("", value, API.app.settings_pg.current_currency)
     }
 
-    function formatFiat(received, amount, fiat, precision=2) {
+    function formatFiat(received, amount, fiat, sf=2) {
         if (privacy_mode) return ''
-        if (precision == 2 && fiat == "BTC") {
-            precision = 8
+        if (sf == 2 && fiat == "BTC") {
+            sf = 8
         }
         return diffPrefix(received) +
                 (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
-                + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), precision, true) : nFormatter(parseFloat(amount), precision))
+                + " " + (amount < 1E5 ? formatDouble(parseFloat(amount), sf, true) : nFormatter(parseFloat(amount), sf))
     }
 
     function formatPercent(value, show_prefix=true) {
@@ -621,7 +621,17 @@ QtObject {
         return (show_prefix ? prefix : '') + parseFloat(value).toFixed(3) + ' %'
     }
 
-    readonly property int amountPrecision: 8
+
+    function formatCexRates(value) {
+        if (value === "0") return "N/A"
+        if (parseFloat(value) > 0) {
+            return "+"+formatNumber(value, 2)+"%"
+        }
+        return formatNumber(value, 2)+"%"
+    }
+     
+
+    readonly property int defaultPrecision: 8
     readonly property int sliderDigitLimit: 9
     readonly property int recommendedPrecision: -1337
 
@@ -631,17 +641,58 @@ QtObject {
 
     function getRecommendedPrecision(v, limit) {
         const lim = limit || sliderDigitLimit
-        return Math.min(Math.max(lim - getDigitCount(v), 0), amountPrecision)
+        return Math.min(Math.max(lim - getDigitCount(v), 0), defaultPrecision)
     }
 
-    function formatDouble(v, precision, trail_zeros) {
-        if(v === '') return "0"
-        if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
+    /**
+    * Converts a float into a readable string with K, M, B, etc.
+    * @param {number} num - The number to format.
+    * @param {number} decimals - The number of decimal places to include (default is 2).
+    * @param {number} extra_decimals - The number of decimal places to include if no suffix (default is 8).
+    * @returns {string} - The formatted string.
+    */
+    function formatNumber(num, decimals = 8) {
+        let r = "0";
+        let suffix = "";
 
-        if(precision === 0) return parseInt(v).toString()
+        if (isNaN(num) || num === null) {
+            return r;
+        }
+
+        if (typeof(num) == 'string') {
+            num = parseFloat(num)
+        }
+
+        const suffixes = ['', 'K', 'M', 'B', 'T']; // Add more as needed for larger numbers
+        const tier = Math.floor(Math.log10(Math.abs(num)) / 3); // Determine the tier (e.g., thousands, millions)
+
+        if ([-1, 0].includes(tier)) {
+            r = num.toFixed(decimals);
+            return r
+        }
+        if (tier <= suffixes.length - 1) {
+            suffix = suffixes[tier]
+            if (suffix != '') 
+            {
+                num = (num / Math.pow(10, tier * 3));
+            }
+        }
+        else {
+            suffix = "e" + tier * 3
+            num = (num / Math.pow(10, tier * 3));
+        }
+        r = num.toFixed(decimals) + "" + suffix;
+        return r;
+    }
+
+    function formatDouble(v, sf = defaultPrecision, trail_zeros = true) {
+        if(v === '') return "0"
+        if(sf === recommendedPrecision) sf = getRecommendedPrecision(v)
+
+        if(sf === 0) return parseInt(v).toString()
 
         // Remove more than n decimals, then convert to string without trailing zeros
-        const full_double = parseFloat(v).toFixed(precision || amountPrecision)
+        const full_double = parseFloat(v).toFixed(sf || defaultPrecision)
 
         return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
@@ -654,9 +705,12 @@ QtObject {
         return parseFloat(formatDouble(value, 2))
     }
 
-    function formatCrypto(received, amount, ticker, fiat_amount, fiat, precision, trail_zeros) {
-        if (privacy_mode) return ''
-        return diffPrefix(received) + ticker + " " + formatDouble(amount, precision, trail_zeros) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
+    function formatCrypto(received, amount, ticker, fiat_amount, fiat, sf, trail_zeros) {
+        if (privacy_mode) {
+            return ""
+        }
+        const prefix = diffPrefix(received)
+        return prefix + ticker + " " + formatDouble(amount, sf, trail_zeros) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
     function formatFullCrypto(received, amount, ticker, fiat_amount, fiat, use_full_ticker) {

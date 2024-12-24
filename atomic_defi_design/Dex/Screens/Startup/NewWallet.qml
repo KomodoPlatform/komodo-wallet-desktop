@@ -349,7 +349,7 @@ SetupPage
 
                         spacing: 10
 
-                        DefaultText
+                        DexLabel
                         {
                             width: parent.width - 40
                             color: Style.colorWhite0
@@ -358,7 +358,7 @@ SetupPage
                             text_value: qsTr("Important: Back up your seed phrase before proceeding!")
                         }
 
-                        DefaultText
+                        DexLabel
                         {
                             width: parent.width - 40
                             color: Style.colorWhite0
@@ -384,7 +384,7 @@ SetupPage
                     RowLayout
                     {
                         width: parent.width
-                        DefaultText
+                        DexLabel
                         {
                             text: qsTr("Generated Seed")
                             font: DexTypo.body1
@@ -431,7 +431,7 @@ SetupPage
                                     radius: 10
                                     opacity: .8
                                     color: Dex.CurrentTheme.backgroundColor
-                                    DefaultText
+                                    DexLabel
                                     {
                                         id: _insideLabel
                                         text: (index + 1) + ". " + modelData
@@ -455,7 +455,7 @@ SetupPage
                     Layout.preferredWidth: 400
                     spacing: Style.buttonSpacing
 
-                    DefaultText
+                    DexLabel
                     {
                         text_value: text_error
                         color: Dex.CurrentTheme.warningColor
@@ -523,7 +523,7 @@ SetupPage
 
                         spacing: 5
 
-                        DefaultText
+                        DexLabel
                         {
                             width: parent.width - 40
                             anchors.horizontalCenter: parent.horizontalCenter
@@ -534,7 +534,7 @@ SetupPage
                             text_value: qsTr("Let's double check your seed phrase")
                         }
 
-                        DefaultText
+                        DexLabel
                         {
                             width: parent.width - 40
                             anchors.horizontalCenter: parent.horizontalCenter
@@ -616,7 +616,7 @@ SetupPage
                         color: Dex.CurrentTheme.inputLeftIconBackgroundColor
                         anchors.verticalCenter: parent.verticalCenter
 
-                        DefaultText
+                        DexLabel
                         {
                             anchors.centerIn: parent
                             font: DexTypo.body1
@@ -663,7 +663,7 @@ SetupPage
                 {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 20
-                    DefaultText
+                    DexLabel
                     {
                         text_value: guess_text_error
                         color: Dex.CurrentTheme.warningColor
@@ -742,7 +742,7 @@ SetupPage
                     }
                 }
 
-                DefaultText
+                DexLabel
                 {
                     text_value: text_error
                     color: Dex.CurrentTheme.warningColor

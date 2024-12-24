@@ -17,10 +17,11 @@
 #pragma once
 
 #include <string>
+#include <optional>
 
 #include <nlohmann/json_fwd.hpp> //> nlohmann::json
 #include "atomicdex/api/kdf/rpc.hpp"
-#include "atomicdex/api/kdf/balance_info.hpp"
+#include "atomicdex/api/kdf/balance_infos.hpp"
 
 namespace atomic_dex::kdf
 {
@@ -39,7 +40,7 @@ namespace atomic_dex::kdf
         {
             std::string                                     platform_coin;
             int                                             required_confirmations;
-            std::unordered_map<std::string, balance_info>   balances;
+            std::unordered_map<std::string, balance_infos>   balances;
         };
 
         using expected_error_type = rpc_basic_error_type;

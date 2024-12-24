@@ -87,7 +87,7 @@ Item
             leftPadding: 20
             topPadding: 20
 
-            DefaultText // Title
+            DexLabel // Title
             {
                 text: qsTr("History")
                 font: DexTypo.head6
@@ -160,7 +160,7 @@ Item
                     rightPadding: 15
                     visible: parent.height > 250
 
-                    DefaultText
+                    DexLabel
                     {
                         text: qsTr("Filter settings")
                         topPadding: 10

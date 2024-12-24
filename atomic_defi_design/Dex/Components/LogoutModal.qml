@@ -18,7 +18,7 @@ MultipageModal {
         titleText: qsTr("Exit %1 or go to login menu?").arg(API.app_name)
 
         // Swap in progress warning
-        DefaultText
+        DexLabel
         {
             visible: orders
             font.pixelSize: 14

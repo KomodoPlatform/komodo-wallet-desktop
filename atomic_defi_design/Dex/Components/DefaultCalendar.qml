@@ -51,7 +51,7 @@ Calendar
                 onClicked: control.showPreviousMonth()
             }
 
-            DefaultText
+            DexLabel
             {
                 id: dateText
                 text: styleData.title
@@ -113,7 +113,7 @@ Calendar
             readonly property color selectedDateTextColor: Dex.CurrentTheme.foregroundColor
             readonly property color differentMonthDateTextColor: Dex.CurrentTheme.foregroundColor3
             readonly property color invalidDateColor: Dex.CurrentTheme.textDisabledColor
-            DefaultText
+            DexLabel
             {
                 id: dayDelegateText
                 text: styleData.hasOwnProperty('date') ? styleData.date.getDate() : ""
