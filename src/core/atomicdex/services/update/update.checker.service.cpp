@@ -108,7 +108,7 @@ namespace atomic_dex
                 this->m_update_info = result;
                 is_fetching = false;
                 emit isFetchingChanged();
-                if (result["updateNeeded"] === true)
+                if (result["updateNeeded"] == true)
                 {
                     emit updateInfoChanged();
                 }
