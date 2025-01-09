@@ -35,7 +35,7 @@ namespace
     pplx::task<web::http::http_response> async_check_retrieve() 
     {
         // Uncomment this when testing the next release.
-        nlohmann::json json_data{{"testing", "true"}};
+        nlohmann::json json_data{{"testing", true}};
         return g_komodolive_client->request(create_json_post_request(std::move(json_data)));
     }
 
