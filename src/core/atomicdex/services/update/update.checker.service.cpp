@@ -108,7 +108,10 @@ namespace atomic_dex
                 this->m_update_info = result;
                 is_fetching = false;
                 emit isFetchingChanged();
-                emit updateInfoChanged();
+                if (result["updateNeeded"] === true)
+                {
+                    emit updateInfoChanged();
+                }
             })
             .then(&handle_exception_pplx_task);
     }
