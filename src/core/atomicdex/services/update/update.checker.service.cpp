@@ -36,6 +36,7 @@ namespace
     {
         // Uncomment this when testing the next release.
         // nlohmann::json json_data{{"testing", true}};
+        nlohmann::json json_data{{"testing", false}};
         return g_komodolive_client->request(create_json_post_request(std::move(json_data)));
     }
 
