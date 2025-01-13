@@ -12,7 +12,7 @@ MouseArea
 
     signal lineSelected(var lineType)
 
-    height: lineHeight * 5
+    height: lineHeight * 4
     hoverEnabled: true
 
     Connections
