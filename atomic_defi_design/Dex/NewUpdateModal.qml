@@ -160,8 +160,7 @@ Dex.MultipageModal
             console.log("updateInfo.changelog: " + Dex.API.app.updateCheckerService.updateInfo.changelog)
             if (Dex.API.app.updateCheckerService.updateInfo)
             {
-                let status = Dex.API.app.updateCheckerService.updateInfo.status
-                if (status === "recommended" || status === "required")
+                if (Dex.API.app.updateCheckerService.updateInfo.updateNeeded == true)
                 {
                     root.open()
                 }
