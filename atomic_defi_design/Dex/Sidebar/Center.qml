@@ -109,7 +109,7 @@ MouseArea
             label.color: timesyncInfo ? Dex.CurrentTheme.textDisabledColor : Dex.CurrentTheme.textDisabledColor
             label.text: qsTr("DEX")
             icon.source: General.image_path + "menu-exchange-white.svg"
-            disabled_tt_text: qsTr("DEX is temporarily disabled. Please check https://komodoplatform.com/en/blog/ for more details.")
+            disabled_tt_text: qsTr("DEX is temporarily disabled.")
         }
 
         FigurativeLine
