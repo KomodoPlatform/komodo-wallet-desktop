@@ -105,14 +105,11 @@ namespace atomic_dex
         emit isFetchingChanged();
         async_check_retrieve()
             .then([this](web::http::http_response resp) {
-                nlohmann::json result = process_update_info_resp(resp);
-                this->m_update_info = result;
+                this->m_update_info = process_update_info_resp(resp);
+                SPDLOG_INFO("UpdateInfo has updated...")
                 is_fetching = false;
                 emit isFetchingChanged();
-                if (result["updateNeeded"] == true)
-                {
-                    emit updateInfoChanged();
-                }
+                emit updateInfoChanged();
             })
             .then(&handle_exception_pplx_task);
     }
