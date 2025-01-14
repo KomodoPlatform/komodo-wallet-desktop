@@ -106,7 +106,7 @@ namespace atomic_dex
         async_check_retrieve()
             .then([this](web::http::http_response resp) {
                 this->m_update_info = process_update_info_resp(resp);
-                SPDLOG_INFO("UpdateInfo has updated...")
+                SPDLOG_INFO("UpdateInfo has updated...");
                 is_fetching = false;
                 emit isFetchingChanged();
                 emit updateInfoChanged();
