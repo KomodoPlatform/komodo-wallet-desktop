@@ -26,7 +26,7 @@ namespace atomic_dex
     struct node
     {
         std::string                     url;
-        std::optional<bool>             gui_auth{false};
+        std::optional<bool>             komodo_proxy{false};
     };
 
     void to_json(nlohmann::json& j, const node& cfg);
