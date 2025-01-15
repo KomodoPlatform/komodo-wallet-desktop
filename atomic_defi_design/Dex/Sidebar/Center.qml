@@ -12,7 +12,7 @@ MouseArea
 
     signal lineSelected(var lineType)
 
-    height: lineHeight * 5
+    height: lineHeight * 4
     hoverEnabled: true
 
     Connections
@@ -47,7 +47,6 @@ MouseArea
                 _walletLine.label.opacity = 0;
                 _dexLine.label.opacity = 0;
                 _addressBookLine.label.opacity = 0;
-                _fiatLine.label.opacity = 0;
             }
         }
     }
@@ -55,7 +54,7 @@ MouseArea
     NumberAnimation
     {
         id: waitForSidebarExpansionAnimation
-        targets: [_portfolioLine.label, _walletLine.label, _dexLine.label, _addressBookLine.label, _fiatLine.label]
+        targets: [_portfolioLine.label, _walletLine.label, _dexLine.label, _addressBookLine.label]
         properties: "opacity"
         duration: 200
         from: 0
@@ -66,7 +65,7 @@ MouseArea
     NumberAnimation
     {
         id: labelsOpacityAnimation
-        targets: [_portfolioLine.label, _walletLine.label, _dexLine.label, _addressBookLine.label, _fiatLine.label]
+        targets: [_portfolioLine.label, _walletLine.label, _dexLine.label, _addressBookLine.label]
         properties: "opacity"
         duration: 350
         from: 0.0
@@ -107,11 +106,10 @@ MouseArea
 
             Layout.fillWidth: true
             type: Main.LineType.DEX
-            label.color: timesyncInfo ? Dex.CurrentTheme.foregroundColor : Dex.CurrentTheme.textDisabledColor
-            label.text: qsTr("DEX") // isExpanded ? qsTr("DEX") : ""
+            label.color: timesyncInfo ? Dex.CurrentTheme.textDisabledColor : Dex.CurrentTheme.textDisabledColor
+            label.text: qsTr("DEX")
             icon.source: General.image_path + "menu-exchange-white.svg"
-            onClicked: timesyncInfo ? lineSelected(type) : null
-            disabled_tt_text: timesyncInfo ? "" : qsTr("DEX is disabled due to system clock synchronization issues. Please check your device time settings.")
+            disabled_tt_text: qsTr("DEX is temporarily disabled.")
         }
 
         FigurativeLine
@@ -123,17 +121,6 @@ MouseArea
             label.text: qsTr("Address Book") // isExpanded ? qsTr("Address Book") : ""
             icon.source: General.image_path + "menu-news-white.svg"
             onClicked: lineSelected(type)
-        }
-
-        FigurativeLine
-        {
-            id: _fiatLine
-
-            label.enabled: false
-            icon.enabled: false
-            Layout.fillWidth: true
-            label.text: qsTr("Fiat") // isExpanded ? qsTr("Fiat") : ""
-            icon.source: General.image_path + "bill.svg"
         }
     }
 }

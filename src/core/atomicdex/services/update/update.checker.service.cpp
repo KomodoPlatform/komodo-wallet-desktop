@@ -34,11 +34,13 @@ namespace
 
     pplx::task<web::http::http_response> async_check_retrieve() 
     {
-        nlohmann::json json_data{{"currentVersion", atomic_dex::get_raw_version()}};
+        // Uncomment this when testing the next release.
+        // nlohmann::json json_data{{"testing", true}};
+        nlohmann::json json_data{{"testing", false}};
         return g_komodolive_client->request(create_json_post_request(std::move(json_data)));
     }
 
-    nlohmann::json get_update_info_rpc(web::http::http_response resp_http)
+    nlohmann::json process_update_info_resp(web::http::http_response resp_http)
     {
         using namespace std::string_literals;
         nlohmann::json resp;
@@ -59,20 +61,16 @@ namespace
         result["currentVersion"] = atomic_dex::get_raw_version();
         if (resp_http.status_code() == 200)
         {
-            bool        update_needed       = false;
-            std::string current_version_str = atomic_dex::get_raw_version();
-            std::string endpoint_version    = resp.at("new_version").get<std::string>();
-            boost::algorithm::replace_all(current_version_str, ".", "");
-            boost::algorithm::replace_all(endpoint_version, ".", "");
-            boost::algorithm::trim_left_if(current_version_str, boost::is_any_of("0"));
-            boost::algorithm::trim_left_if(endpoint_version, boost::is_any_of("0"));
-            update_needed         = std::stoi(current_version_str) < std::stoi(endpoint_version);
-            result["updateNeeded"] = update_needed;
-            result["newVersion"] = resp["new_version"];
-            result["downloadUrl"] = resp["download_url"];
-            result["changelog"] = resp["changelog"];
-            result["status"] = resp["status"];
+            int   current_version  = atomic_dex::get_num_version();
+            int   endpoint_version = stoi(resp.at("version_num").get<std::string>());
+            result["updateNeeded"] = current_version < endpoint_version;
+            result["newVersion"]   = resp["new_version"];
+            result["downloadUrl"]  = resp["download_url"];
+            result["changelog"]    = resp["changelog"];
+            result["status"]       = resp["status"];
+            result["version_num"]  = resp["version_num"];
         }
+        SPDLOG_INFO(result.dump());
         return result;
     }
 }
@@ -107,7 +105,8 @@ namespace atomic_dex
         emit isFetchingChanged();
         async_check_retrieve()
             .then([this](web::http::http_response resp) {
-                this->m_update_info = get_update_info_rpc(resp);
+                this->m_update_info = process_update_info_resp(resp);
+                SPDLOG_INFO("UpdateInfo has updated...");
                 is_fetching = false;
                 emit isFetchingChanged();
                 emit updateInfoChanged();

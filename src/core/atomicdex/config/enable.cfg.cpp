@@ -27,9 +27,9 @@ namespace atomic_dex
     to_json(nlohmann::json& j, const node& cfg)
     {
         j["url"] = cfg.url;
-        if (cfg.gui_auth.has_value())
+        if (cfg.komodo_proxy.has_value())
         {
-            j["gui_auth"] = cfg.gui_auth.value();
+            j["komodo_proxy"] = cfg.komodo_proxy.value();
         }
     }
 
@@ -37,9 +37,9 @@ namespace atomic_dex
     from_json(const nlohmann::json& j, node& cfg)
     {
         j.at("url").get_to(cfg.url);
-        if (j.count("gui_auth") == 1)
+        if (j.count("komodo_proxy") == 1)
         {
-            cfg.gui_auth = j.at("gui_auth").get<bool>();
+            cfg.komodo_proxy = j.at("komodo_proxy").get<bool>();
         }
     }
 } // namespace atomic_dex
