@@ -108,8 +108,6 @@ Item
             anchors.topMargin: 70
             onLineSelected:
             {
-                if (lineType === Main.LineType.DEX)
-                    return;
                 if (currentLineType === lineType)
                     return;
                 currentLineType = lineType;

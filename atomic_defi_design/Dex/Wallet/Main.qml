@@ -522,7 +522,7 @@ Item
             {
                 Layout.preferredWidth: 165
                 Layout.preferredHeight: 40
-                visible: false
+                visible: true
 
                 DefaultButton
                 {
