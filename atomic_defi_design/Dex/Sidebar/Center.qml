@@ -110,6 +110,8 @@ MouseArea
             label.text: qsTr("DEX")
             icon.source: General.image_path + "menu-exchange-white.svg"
             disabled_tt_text: qsTr("DEX is temporarily disabled.")
+            onClicked: timesyncInfo ? lineSelected(type) : null
+
         }
 
         FigurativeLine
